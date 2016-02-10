@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="groovy-2.4">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4" recursive="false" />
+  </library>
+</component>

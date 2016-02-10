@@ -7,7 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/ocpp-common/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/ocpp-v1_6/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ocpp-v1_6/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/ocpp-v1_6/src/it/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/ocpp-v1_6/src/it/groovy" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -21,5 +21,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="spock-core-0.7-groovy-2.0" level="project" />
+    <orderEntry type="library" name="groovy-2.4" level="project" />
   </component>
 </module>
