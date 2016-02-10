@@ -1,0 +1,49 @@
+<component name="libraryTable">
+  <library name="groovy-2.4.4">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/ant-1.9.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/ant-antlr-1.9.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/ant-junit-1.9.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/ant-launcher-1.9.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/bsf-2.4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/commons-cli-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/commons-logging-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/gpars-1.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-ant-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-bsf-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-console-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-docgenerator-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-groovydoc-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-groovysh-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-jmx-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-json-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-jsr223-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-nio-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-servlet-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-sql-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-swing-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-templates-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-test-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-testng-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/groovy-xml-2.4.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/hamcrest-core-1.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/ivy-2.4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/jansi-1.11.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/jcommander-1.47.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/jline-2.12.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/jsp-api-2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/jsr166y-1.7.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/junit-4.12.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/multiverse-core-0.7.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/openbeans-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/qdox-1.12.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/servlet-api-2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/testng-6.8.13.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/xmlpull-1.1.3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../3rdPart/groovy-2.4.4/xstream-1.4.7.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
