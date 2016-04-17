@@ -10,8 +10,9 @@ import java.util.Collection;
  */
 public class FakeCentralSystem
 {
-    private boolean receivedMessage;
+    private String receivedMessage;
     private WebSocketServer server;
+    private String callResultFormat = "[3,\"%s\",{%s}]";
 
     public void start() throws Exception
     {
@@ -31,7 +32,7 @@ public class FakeCentralSystem
             @Override
             public void onMessage(WebSocket webSocket, String s)
             {
-                receivedMessage = true;
+                receivedMessage = s;
             }
 
             @Override
@@ -45,21 +46,45 @@ public class FakeCentralSystem
 
     public boolean hasReceivedBootNotification()
     {
-        return receivedMessage;
+        String action = extractAction(receivedMessage);
+        return "BootNotification".equals(action);
     }
 
-    public void sendBootConfirmation()
+    public boolean hasReceivedAuthorizeRequest()
+    {
+        String action = extractAction(receivedMessage);
+        return "Authorize".equals(action);
+    }
+
+    private String extractAction(String message)
+    {
+        if ("".equals(message))
+            return "";
+
+        String[] segments = message.substring(1,message.length()-1).split(",");
+        return segments[2].substring(1, segments[2].length()-1);
+    }
+
+    public void sendBootConfirmation(String id)
+    {
+        send(String.format(callResultFormat, id, ""));
+    }
+
+    private void send(String message)
     {
         Collection<WebSocket> con = server.connections();
-        synchronized ( con ) {
-            for (WebSocket ws : con) {
-                ws.send("boot");
-            }
+        for (WebSocket ws : con) {
+            ws.send(message);
         }
+    }
+
+    public void sendAuthorizeConfirmation(String id)
+    {
+        send(String.format(callResultFormat, id, ""));
     }
 
     public void clean()
     {
-        receivedMessage = false;
+        receivedMessage = "";
     }
 }

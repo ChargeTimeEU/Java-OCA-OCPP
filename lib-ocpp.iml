@@ -26,6 +26,6 @@
     </orderEntry>
     <orderEntry type="library" scope="TEST" name="spock-core-0.7-groovy-2.0" level="project" />
     <orderEntry type="library" name="groovy-2.4" level="project" />
-    <orderEntry type="library" name="java_websocket" level="application" />
+    <orderEntry type="library" name="java_websocket" level="project" />
   </component>
 </module>

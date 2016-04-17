@@ -1,5 +1,4 @@
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.handshake.ServerHandshake;
+import eu.chargetime.ocpp.v1_6.WebSocketConnection;
 
 import java.net.URI;
 
@@ -8,52 +7,42 @@ import java.net.URI;
  */
 public class FakeChargePoint
 {
-    private WebSocketClient client;
-    private boolean receivedConfirmation;
+    private WebSocketConnection webSocketConnection;
+    private String receivedConfirmation;
+    private String callFormat = "[2,\"%s\",\"%s\",{%s}]";
 
     public void connected() throws Exception
     {
         clean();
-        client = new WebSocketClient(URI.create("ws://localhost:8887"))
-        {
-            @Override
-            public void onOpen(ServerHandshake serverHandshake)
-            {
-            }
-
-            @Override
-            public void onMessage(String s)
-            {
-                receivedConfirmation = true;
-            }
-
-            @Override
-            public void onClose(int i, String s, boolean b)
-            {
-
-            }
-
-            @Override
-            public void onError(Exception e)
-            {
-
-            }
-        };
-        client.connectBlocking();
+        webSocketConnection = new WebSocketConnection(URI.create("ws://localhost:8887"));
     }
 
-    public void sendBootNotification()
+    private boolean match(String message, String id)
     {
-        client.send("boot");
+        if (message == null || "".equals(message) || id == null || "".equals(id))
+            return false;
+
+        String[] segments = message.substring(1, message.length()-1).split(",");
+        return id.equals(segments[1].substring(1, segments[1].length()-1));
     }
 
-    public boolean hasReceivedBootConfirmation()
+    public void sendBootNotification(String id)
     {
-        return receivedConfirmation;
+        webSocketConnection.sendRequest(String.format(callFormat, id, "BootNotification", "")).whenComplete((s, throwable) -> receivedConfirmation = s);
+    }
+
+    public void sendAuthorizeRequest(String id)
+    {
+        webSocketConnection.sendRequest(String.format(callFormat, id, "Authorize", "")).whenComplete((s, throwable) -> receivedConfirmation = s);
+    }
+
+    public boolean hasConfirmation(String id)
+    {
+        return match(receivedConfirmation, id);
     }
 
     public void clean()
     {
-        receivedConfirmation = false;
+        receivedConfirmation = "";
     }
 }

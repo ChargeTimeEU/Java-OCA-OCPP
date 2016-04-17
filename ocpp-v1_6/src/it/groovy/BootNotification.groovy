@@ -6,12 +6,26 @@ class BootNotification extends Specification
     @Shared FakeChargePoint chargePoint = new FakeChargePoint();
 
     def setupSpec() {
+        // When a Central System is running
         centralSystem.start();
     }
 
     def setup() {
-        centralSystem.clean()
         chargePoint.connected();
+    }
+
+    def "No initial request received"() {
+        expect:
+        ! centralSystem.hasReceivedBootNotification();
+    }
+
+    def "Charge point sends boot notification, receives no immediate confirmation"() {
+        when:
+        chargePoint.sendBootNotification();
+
+        then:
+        ! chargePoint.hasConfirmation();
+
     }
 
     def "Charge point sends boot notification which the central system receives"() {
@@ -23,24 +37,15 @@ class BootNotification extends Specification
     }
 
     def "Central system sends boot confirmation which charge point receives"() {
+        def uniqueId = "42";
+        chargePoint.sendBootNotification(uniqueId);
+
         when:
-        centralSystem.sendBootConfirmation();
+        centralSystem.sendBootConfirmation(uniqueId);
 
         then:
-        chargePoint.hasReceivedBootConfirmation();
+        chargePoint.hasConfirmation(uniqueId);
     }
 
-    def "No initial request received"() {
-        expect:
-        centralSystem.hasReceivedBootNotification() == false;
-    }
-
-    def "Charge point sends boot notification, receives no immediate confirmation"() {
-        when:
-        chargePoint.sendBootNotification();
-
-        then:
-        chargePoint.hasReceivedBootConfirmation() == false;
-    }
 
 }
