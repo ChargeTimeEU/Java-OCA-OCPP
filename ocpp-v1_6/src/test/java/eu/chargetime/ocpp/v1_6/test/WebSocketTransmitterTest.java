@@ -1,26 +1,25 @@
 package eu.chargetime.ocpp.v1_6.test;
 
-import eu.chargetime.ocpp.Transmitter;
-import eu.chargetime.ocpp.v1_6.WebSocketConnection;
+import eu.chargetime.ocpp.TransmitterEvents;
+import eu.chargetime.ocpp.v1_6.WebSocketTransmitter;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
 import java.net.URI;
-import java.util.concurrent.CompletableFuture;
 
 import static org.hamcrest.core.Is.is;
 
-public class WebSocketConnectionTest
+public class WebSocketTransmitterTest
 {
-    WebSocketConnection webSocketConnection;
+    WebSocketTransmitter webSocketTransmitter;
     @Mock
-    Transmitter transmitter;
+    TransmitterEvents transmitterEvents;
 
     @Before
     public void setup() throws Exception
     {
-        webSocketConnection = new WebSocketConnection(URI.create("localhost"), transmitter);
+        webSocketTransmitter = new WebSocketTransmitter();
     }
 
     @Test
@@ -30,7 +29,7 @@ public class WebSocketConnectionTest
         String request = "Boot";
 
         // When
-        webSocketConnection.sendMessage(request);
+        webSocketTransmitter.send(request);
 
         // Then
         // Mock

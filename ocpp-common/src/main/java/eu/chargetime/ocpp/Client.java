@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp;
 
-import eu.chargetime.ocpp.v1_6.WebSocketConnection;
+import eu.chargetime.ocpp.v1_6.WebSocketTransmitter;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -13,18 +13,19 @@ public class Client
 {
     private String CALLFORMAT = "[2,\"%s\",\"%s\",{%s}]";
 
-    private WebSocketConnection webSocketConnection;
     private Queue queue;
     private HashMap<String, CompletableFuture<String>> promises;
+    private Transmitter transmitter;
 
-    public Client() {
+    public Client(Transmitter transmitter) {
+        queue = new Queue();
         promises = new HashMap<>();
+        this.transmitter = transmitter;
     }
 
-    public void connect(String uri) throws Exception
+    public void connect(String uri)
     {
-        queue = new Queue();
-        Transmitter transmitter = new Transmitter()
+        TransmitterEvents transmitterEvents = new TransmitterEvents()
         {
             @Override
             public void receivedMessage(String s) {
@@ -39,13 +40,13 @@ public class Client
             @Override
             public void disconnected() { }
         };
-        webSocketConnection = new WebSocketConnection(URI.create(uri), transmitter);
+        transmitter.connect(uri, transmitterEvents);
     }
 
     public void disconnect()
     {
         try {
-            webSocketConnection.disconnect();
+            transmitter.disconnect();
         } catch (Exception ex) {
             System.err.println(ex.getStackTrace());
         }
@@ -65,7 +66,7 @@ public class Client
         String id = queue.store(request);
         CompletableFuture<String> promis = new CompletableFuture<>();
         promises.put(id, promis);
-        webSocketConnection.sendMessage(String.format(CALLFORMAT, id, request, payload));
+        transmitter.send(String.format(CALLFORMAT, id, request, payload));
         return promis;
     }
 }
