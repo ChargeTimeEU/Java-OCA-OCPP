@@ -1,17 +1,24 @@
-import spock.lang.*;
+import eu.chargetime.ocpp.test.FakeCentralSystem
+import eu.chargetime.ocpp.test.FakeChargePoint
+import spock.lang.*
+import spock.util.concurrent.PollingConditions;
 
 class BootNotification extends Specification
 {
-    @Shared FakeCentralSystem centralSystem = new FakeCentralSystem();
+    @Shared FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
     @Shared FakeChargePoint chargePoint = new FakeChargePoint();
 
     def setupSpec() {
         // When a Central System is running
-        centralSystem.start();
+        centralSystem.started();
     }
 
     def setup() {
-        chargePoint.connected();
+        chargePoint.connect();
+    }
+
+    def cleanup() {
+        chargePoint.disconnect();
     }
 
     def "No initial request received"() {
@@ -19,33 +26,22 @@ class BootNotification extends Specification
         ! centralSystem.hasReceivedBootNotification();
     }
 
-    def "Charge point sends boot notification, receives no immediate confirmation"() {
+    def "Charge point sends boot notification and receives a response"() {
+        def conditions = new PollingConditions(timeout: 1)
         when:
-        chargePoint.sendBootNotification();
+        chargePoint.sendBootNotification("VendorX", "SingleSocketCharger");
 
         then:
-        ! chargePoint.hasConfirmation();
-
-    }
-
-    def "Charge point sends boot notification which the central system receives"() {
-        when:
-        chargePoint.sendBootNotification();
-
-        then:
-        centralSystem.hasReceivedBootNotification();
-    }
-
-    def "Central system sends boot confirmation which charge point receives"() {
-        def uniqueId = "42";
-        chargePoint.sendBootNotification(uniqueId);
+        conditions.eventually {
+            centralSystem.hasReceivedBootNotification("VendorX", "SingleSocketCharger");
+        }
 
         when:
-        centralSystem.sendBootConfirmation(uniqueId);
+        centralSystem.sendBootConfirmation(FakeCentralSystem.RegistrationStatus.Accepted);
 
         then:
-        chargePoint.hasConfirmation(uniqueId);
+        conditions.eventually {
+            chargePoint.hasReceivedBootConfirmation();
+        }
     }
-
-
 }

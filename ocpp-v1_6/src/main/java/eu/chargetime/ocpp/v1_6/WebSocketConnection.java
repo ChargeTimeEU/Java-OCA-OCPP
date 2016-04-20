@@ -1,35 +1,34 @@
 package eu.chargetime.ocpp.v1_6;
 
+import eu.chargetime.ocpp.Transmitter;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
-import java.util.concurrent.CompletableFuture;
 
 public class WebSocketConnection
 {
     private WebSocketClient client;
-    CompletableFuture<String> promise = new CompletableFuture<>();
 
-    public WebSocketConnection(URI host) throws Exception {
+    public WebSocketConnection(URI host, Transmitter transmitter) throws Exception {
         client = new WebSocketClient(host)
         {
             @Override
             public void onOpen(ServerHandshake serverHandshake)
             {
-
+                transmitter.connected();
             }
 
             @Override
             public void onMessage(String s)
             {
-                promise.complete(s);
+                transmitter.receivedMessage(s);
             }
 
             @Override
             public void onClose(int i, String s, boolean b)
             {
-
+                transmitter.disconnected();
             }
 
             @Override
@@ -41,8 +40,12 @@ public class WebSocketConnection
         client.connectBlocking();
     }
 
-    public CompletableFuture<String> sendRequest(String request) {
+    public void disconnect() throws Exception
+    {
+        client.closeBlocking();
+    }
+
+    public void sendMessage(String request) {
         client.send(request);
-        return promise;
     }
 }

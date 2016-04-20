@@ -1,18 +1,25 @@
+import eu.chargetime.ocpp.test.FakeCentralSystem
+import eu.chargetime.ocpp.test.FakeChargePoint
 import spock.lang.Shared
-import spock.lang.Specification;
+import spock.lang.Specification
+import spock.util.concurrent.PollingConditions;
 
 class AuthorizeRequest extends Specification
 {
-    @Shared FakeCentralSystem centralSystem = new FakeCentralSystem();
+    @Shared FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
     @Shared FakeChargePoint chargePoint = new FakeChargePoint();
 
     def setupSpec() {
         // When a Central System is running
-        centralSystem.start();
+        centralSystem.started();
     }
 
     def setup() {
-        chargePoint.connected();
+        chargePoint.connect();
+    }
+
+    def cleanup() {
+        chargePoint.disconnect();
     }
 
     def "No initial request received"() {
@@ -20,32 +27,23 @@ class AuthorizeRequest extends Specification
         ! centralSystem.hasReceivedAuthorizeRequest();
     }
 
-    def "Charge point sends authorize request, receives no immediate confirmation"() {
-        when:
-        chargePoint.sendAuthorizeRequest();
-
-        then:
-        ! chargePoint.hasConfirmation();
-
-    }
-
-    def "Charge point sends authorize request which the central system receives"() {
-        when:
-        chargePoint.sendAuthorizeRequest();
-
-        then:
-        centralSystem.hasReceivedAuthorizeRequest();
-    }
-
     def "Central system sends boot confirmation which charge point receives"() {
-        def uniqueId = "42";
-        chargePoint.sendAuthorizeRequest(uniqueId);
-
+        def conditions = new PollingConditions(timeout: 1);
         when:
-        centralSystem.sendAuthorizeConfirmation(uniqueId);
+        chargePoint.sendAuthorizeRequest("test123");
 
         then:
-        chargePoint.hasConfirmation(uniqueId);
+        conditions.eventually {
+            centralSystem.hasReceivedAuthorizeRequest();
+        }
+
+        when:
+            centralSystem.sendAuthorizeConfirmation(FakeCentralSystem.AuthorizationStatus.Accepted);
+
+        then:
+        conditions.eventually {
+            chargePoint.hasReceivedAuthorizeConfirmation();
+        }
     }
 
     def "A authorize request isn't seen as a boot notification"() {
