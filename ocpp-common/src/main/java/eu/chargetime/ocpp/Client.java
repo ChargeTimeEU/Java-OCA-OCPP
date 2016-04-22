@@ -17,8 +17,8 @@ public class Client
     private HashMap<String, CompletableFuture<String>> promises;
     private Transmitter transmitter;
 
-    public Client(Transmitter transmitter) {
-        queue = new Queue();
+    public Client(Transmitter transmitter, Queue queue) {
+        this.queue = queue;
         promises = new HashMap<>();
         this.transmitter = transmitter;
     }

@@ -1,6 +1,7 @@
 package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.Client;
+import eu.chargetime.ocpp.Queue;
 import eu.chargetime.ocpp.Transmitter;
 import eu.chargetime.ocpp.TransmitterEvents;
 import org.junit.Before;
@@ -19,24 +20,26 @@ import static org.mockito.Mockito.*;
  */
 public class ClientTest
 {
-    Client client;
-    TransmitterEvents events;
+    private Client client;
+    private TransmitterEvents events;
 
     @Mock
-    Transmitter mockedTransmitter;
+    private Transmitter mockedTransmitter;
+    @Mock
+    private Queue queue;
 
-    String aMessage = "Message";
-    String aPayload = "";
+    private String aMessage = "Message";
+    private String aPayload = "";
 
     @Before
     public void setup() {
         mockedTransmitter = mock(Transmitter.class);
-
-        client = new Client(mockedTransmitter);
+        queue = mock(Queue.class);
+        client = new Client(mockedTransmitter, queue);
     }
 
     @Test
-    public void connect_callsAdapter() {
+    public void connect_connects() {
         // Given
         String someUrl = "localhost";
 
@@ -48,7 +51,7 @@ public class ClientTest
     }
 
     @Test
-    public void send_message_callsAdapter() {
+    public void send_aMessage_isTransmitted() {
 
         // When
         client.send(aMessage, aPayload);
@@ -57,14 +60,17 @@ public class ClientTest
         verify(mockedTransmitter, times(1)).send(anyString());
     }
 
-    public void messageReceived_sendMessage_completesPromis() {
+    @Test
+    public void responseReceived_aMessageWasSend_PromiseIsCompleted() {
         // Given
+        String id = "testIdentification";
         doAnswer(invocation -> events = invocation.getArgumentAt(1, TransmitterEvents.class)).when(mockedTransmitter).connect(any(), any());
-        client.connect("");
-        CompletableFuture<String> promis = client.send(aMessage, aPayload);
+        when(queue.store(any())).thenReturn(id);
 
         // When
-        events.receivedMessage("[3,\"b0e21938-765d-4424-9f61-5064bdae3371\",{\"idTagInfo\": {\"status\":\"Accepted\"}}]");
+        client.connect(null);
+        CompletableFuture<String> promis = client.send(aMessage, aPayload);
+        events.receivedMessage(String.format("[3,\"%s\",{\"idTagInfo\": {\"status\":\"Accepted\"}}]", id));
 
         // Then
         assertThat(promis.isDone(), is(true));

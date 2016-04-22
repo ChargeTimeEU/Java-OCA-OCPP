@@ -1,6 +1,7 @@
 package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.Client;
+import eu.chargetime.ocpp.Queue;
 import eu.chargetime.ocpp.v1_6.WebSocketTransmitter;
 
 /**
@@ -8,11 +9,11 @@ import eu.chargetime.ocpp.v1_6.WebSocketTransmitter;
  */
 public class FakeChargePoint
 {
-    Client client;
+    private Client client;
     private String receivedConfirmation;
 
     public FakeChargePoint() {
-        client = new Client(new WebSocketTransmitter());
+        client = new Client(new WebSocketTransmitter(), new Queue());
     }
 
     public void connect() {
