@@ -1,6 +1,5 @@
 package eu.chargetime.ocpp.profiles;
 
-import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.AuthorizeRequest;
 import eu.chargetime.ocpp.model.BootNotificationRequest;
 
@@ -9,13 +8,16 @@ import eu.chargetime.ocpp.model.BootNotificationRequest;
  */
 public class CoreProfile implements Profile
 {
-    public AuthorizeRequest createAuthorizeRequest(String idToken)
-    {
+    ClientCoreEventHandler eventHandler;
+    public CoreProfile(ClientCoreEventHandler handler) {
+        eventHandler = handler;
+    }
+
+    public AuthorizeRequest createAuthorizeRequest(String idToken) {
         return new AuthorizeRequest(idToken);
     }
 
-    public BootNotificationRequest createBootNotificationRequest(String vendor, String model)
-    {
+    public BootNotificationRequest createBootNotificationRequest(String vendor, String model) {
         return new BootNotificationRequest(vendor, model);
     }
 }

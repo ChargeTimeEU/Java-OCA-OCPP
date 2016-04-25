@@ -12,6 +12,7 @@ import java.util.concurrent.CompletableFuture;
 public class Client
 {
     private final String CALLFORMAT = "[2,\"%s\",\"%s\",%s]";
+    private final int INDEX_UNIQUEID = 1;
 
     private Queue queue;
     private HashMap<String, CompletableFuture<Request>> promises;
@@ -56,19 +57,36 @@ public class Client
 
     private String getUniqueId(String message)
     {
+        return extractValueAt(message, INDEX_UNIQUEID);
+    }
+
+    private String extractValueAt(String message, int index) {
         if (message == null || "".equals(message))
             return "";
-
         String[] segments = message.substring(1, message.length()-1).split(",");
-        return segments[1].substring(1, segments[1].length()-1);
+        return segments[index].substring(1, segments[index].length()-1);
     }
 
     public CompletableFuture<Request> send(Request request)
     {
-        String id = queue.store(request);
-        CompletableFuture<Request> promise = new CompletableFuture<>();
-        promises.put(id, promise);
-        transmitter.send(String.format(CALLFORMAT, id, request.action(), new JSONObject(request)));
+        String id = storeRequest(request);
+        CompletableFuture<Request> promise = createPromise(id);
+
+        transmitter.send(createCallMessage(id, request.action(), new JSONObject(request)));
         return promise;
+    }
+
+    private CompletableFuture<Request> createPromise(String uniqueId) {
+        CompletableFuture<Request> promise = new CompletableFuture<>();
+        promises.put(uniqueId, promise);
+        return promise;
+    }
+
+    private String storeRequest(Request request) {
+        return queue.store(request);
+    }
+
+    private String createCallMessage(String uniqueId, String action, JSONObject payload) {
+        return String.format(CALLFORMAT, uniqueId, action, payload);
     }
 }

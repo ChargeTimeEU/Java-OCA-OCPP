@@ -4,6 +4,7 @@ import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.model.AuthorizeRequest;
 import eu.chargetime.ocpp.model.BootNotificationRequest;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.profiles.ClientCoreEventHandler;
 import eu.chargetime.ocpp.profiles.CoreProfile;
 import eu.chargetime.ocpp.v1_6.WebSocketTransmitter;
 
@@ -17,7 +18,7 @@ public class FakeChargePoint
     private CoreProfile core;
 
     public FakeChargePoint() {
-        core = new CoreProfile();
+        core = new CoreProfile(new ClientCoreEventHandler() {});
         client = new Client(new WebSocketTransmitter(), new Queue());
     }
 
