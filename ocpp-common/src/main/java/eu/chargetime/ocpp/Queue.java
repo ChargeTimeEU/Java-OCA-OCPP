@@ -1,5 +1,7 @@
 package eu.chargetime.ocpp;
 
+import eu.chargetime.ocpp.model.Request;
+
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -8,20 +10,20 @@ import java.util.UUID;
  */
 public class Queue
 {
-    HashMap<String, String> requestQueue;
+    HashMap<String, Request> requestQueue;
 
     public Queue () {
         requestQueue = new HashMap<>();
     }
 
-    public String store(String request) {
+    public String store(Request request) {
         String ticket = UUID.randomUUID().toString();
         requestQueue.put(ticket, request);
         return ticket;
     }
 
-    public String restoreRequest(String ticket) {
-        String request = null;
+    public Request restoreRequest(String ticket) {
+        Request request = null;
         try {
             request = requestQueue.get(ticket);
             requestQueue.remove(ticket);

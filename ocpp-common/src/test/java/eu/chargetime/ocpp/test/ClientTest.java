@@ -1,13 +1,10 @@
 package eu.chargetime.ocpp.test;
 
-import eu.chargetime.ocpp.Client;
-import eu.chargetime.ocpp.Queue;
-import eu.chargetime.ocpp.Transmitter;
-import eu.chargetime.ocpp.TransmitterEvents;
+import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.model.Request;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -23,16 +20,19 @@ public class ClientTest
     private Client client;
     private TransmitterEvents events;
 
+    private String aMessage = "Message";
+    private String aPayload = "";
+
     @Mock
     private Transmitter mockedTransmitter;
     @Mock
     private Queue queue;
-
-    private String aMessage = "Message";
-    private String aPayload = "";
+    @Mock
+    private Request request;
 
     @Before
     public void setup() {
+        request = mock(Request.class);
         mockedTransmitter = mock(Transmitter.class);
         queue = mock(Queue.class);
         client = new Client(mockedTransmitter, queue);
@@ -52,9 +52,8 @@ public class ClientTest
 
     @Test
     public void send_aMessage_isTransmitted() {
-
         // When
-        client.send(aMessage, aPayload);
+        client.send(request);
 
         // Then
         verify(mockedTransmitter, times(1)).send(anyString());
@@ -69,11 +68,10 @@ public class ClientTest
 
         // When
         client.connect(null);
-        CompletableFuture<String> promis = client.send(aMessage, aPayload);
+        CompletableFuture<Request> promise = client.send(request);
         events.receivedMessage(String.format("[3,\"%s\",{\"idTagInfo\": {\"status\":\"Accepted\"}}]", id));
 
         // Then
-        assertThat(promis.isDone(), is(true));
+        assertThat(promise.isDone(), is(true));
     }
-
 }

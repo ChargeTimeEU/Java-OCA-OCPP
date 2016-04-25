@@ -1,8 +1,8 @@
 package eu.chargetime.ocpp;
 
-import eu.chargetime.ocpp.v1_6.WebSocketTransmitter;
+import eu.chargetime.ocpp.model.Request;
+import org.json.JSONObject;
 
-import java.net.URI;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
@@ -11,10 +11,10 @@ import java.util.concurrent.CompletableFuture;
  */
 public class Client
 {
-    private String CALLFORMAT = "[2,\"%s\",\"%s\",{%s}]";
+    private final String CALLFORMAT = "[2,\"%s\",\"%s\",%s]";
 
     private Queue queue;
-    private HashMap<String, CompletableFuture<String>> promises;
+    private HashMap<String, CompletableFuture<Request>> promises;
     private Transmitter transmitter;
 
     public Client(Transmitter transmitter, Queue queue) {
@@ -29,7 +29,9 @@ public class Client
         {
             @Override
             public void receivedMessage(String s) {
-                System.out.println("ChargePoint   - Message received: " + s);
+                // TODO: Remove debug code
+                System.out.println("Client        - Message received: " + s);
+
                 String id = getUniqueId(s);
                 promises.get(id).complete(queue.restoreRequest(id));
             }
@@ -61,12 +63,12 @@ public class Client
         return segments[1].substring(1, segments[1].length()-1);
     }
 
-    public CompletableFuture<String> send(String request, String payload)
+    public CompletableFuture<Request> send(Request request)
     {
         String id = queue.store(request);
-        CompletableFuture<String> promis = new CompletableFuture<>();
-        promises.put(id, promis);
-        transmitter.send(String.format(CALLFORMAT, id, request, payload));
-        return promis;
+        CompletableFuture<Request> promise = new CompletableFuture<>();
+        promises.put(id, promise);
+        transmitter.send(String.format(CALLFORMAT, id, request.action(), new JSONObject(request)));
+        return promise;
     }
 }

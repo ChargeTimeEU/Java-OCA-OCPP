@@ -1,7 +1,10 @@
 package eu.chargetime.ocpp.test;
 
-import eu.chargetime.ocpp.Client;
-import eu.chargetime.ocpp.Queue;
+import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.model.AuthorizeRequest;
+import eu.chargetime.ocpp.model.BootNotificationRequest;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.profiles.CoreProfile;
 import eu.chargetime.ocpp.v1_6.WebSocketTransmitter;
 
 /**
@@ -10,9 +13,11 @@ import eu.chargetime.ocpp.v1_6.WebSocketTransmitter;
 public class FakeChargePoint
 {
     private Client client;
-    private String receivedConfirmation;
+    private Request receivedConfirmation;
+    private CoreProfile core;
 
     public FakeChargePoint() {
+        core = new CoreProfile();
         client = new Client(new WebSocketTransmitter(), new Queue());
     }
 
@@ -24,27 +29,27 @@ public class FakeChargePoint
         }
     }
 
-    public void sendBootNotification(String chargePointVendor, String chargePointModel) {
-        String payload = "\"chargePointVendor\": \"%s\", \"chargePointModel\": \"%s\"";
-        send("BootNotification", String.format(payload, chargePointVendor, chargePointModel));
+    public void sendBootNotification(String vendor, String model) {
+        Request request = core.createBootNotificationRequest(vendor, model);
+        send(request);
     }
 
     public void sendAuthorizeRequest(String idToken) {
-        String payload = "\"idTag\": \"%s\"";
-        send("Authorize", String.format(payload, idToken));
+        Request request = core.createAuthorizeRequest(idToken);
+        send(request);
     }
 
-    private void send(String request, String payload)
+    private void send(Request request)
     {
-        client.send(request, payload).whenComplete((s, ex) -> receivedConfirmation = s);
+        client.send(request).whenComplete((s, ex) -> receivedConfirmation = s);
     }
 
     public boolean hasReceivedBootConfirmation() {
-        return "BootNotification".equals(receivedConfirmation);
+        return (receivedConfirmation instanceof BootNotificationRequest);
     }
 
     public boolean hasReceivedAuthorizeConfirmation() {
-        return "Authorize".equals(receivedConfirmation);
+        return receivedConfirmation instanceof AuthorizeRequest;
     }
 
     public void disconnect()
