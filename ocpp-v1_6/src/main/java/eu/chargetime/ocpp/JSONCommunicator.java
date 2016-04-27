@@ -16,12 +16,10 @@ import java.util.Collection;
 public class JSONCommunicator implements Communicator
 {
     @Override
-    public <T> T unpack(String message, Class<T> type) {
-        JSONArray array = new JSONArray(message);
-
+    public <T> T unpack(String payload, Class<T> type) {
         T object = null;
         try {
-            JSONObject json = array.optJSONObject(2);
+            JSONObject json = new JSONObject(payload);
             object = parseJSON(json, type);
         } catch (Exception ex) {
             System.err.println(ex.getStackTrace());
@@ -31,7 +29,7 @@ public class JSONCommunicator implements Communicator
 
     @Override
     public String pack(Object payload) {
-        return null;
+        return new JSONObject(payload).toString();
     }
 
     private <T> T parseJSON(JSONObject json, Class<T> type) throws Exception {
@@ -64,6 +62,9 @@ public class JSONCommunicator implements Communicator
         }
         else if (type == Long.class || genericType == Long.TYPE) {
             output = json.getLong(key);
+        }
+        else if (type == Double.class || genericType == Double.TYPE) {
+            output = json.getDouble(key);
         }
         else if (type == Boolean.class || genericType == Boolean.TYPE) {
             output = json.getBoolean(key);
@@ -102,28 +103,27 @@ public class JSONCommunicator implements Communicator
     }
 
     private String extractKey(Method method) {
+        String key = null;
+        if (methodIsSetter(method)) {
+            key = method.getName().substring(3);
+            key = key.substring(0, 1).toLowerCase() + key.substring(1);
+        }
+        return key;
+    }
+
+    private boolean methodIsSetter(Method method) {
+        boolean isSetter;
+        String methodName = method.getName();
 
         // Setter must take one parameter and no return type
-        if (method.getParameterCount() != 1 || !method.getReturnType().equals(Void.TYPE))
-            return null;
+        isSetter =  method.getParameterCount() == 1;
+        isSetter &= method.getReturnType().equals(Void.TYPE);
 
-        String methodName = method.getName();
-        if (methodName.length() <= 2)
-            return null;
+        // Name convention must be set<ValueName>
+        isSetter &= methodName.length() > 3;
+        isSetter &= methodName.startsWith("set");
+        isSetter &= Character.isUpperCase(methodName.charAt(3));
 
-        String key;
-        if (methodName.length() > 3 && methodName.startsWith("set") && Character.isUpperCase(methodName.charAt(3))) {
-            key = methodName.substring(3);
-        }
-        else if (methodName.startsWith("is") && Character.isUpperCase(methodName.charAt(2))) {
-            key = methodName.substring(2);
-        }
-        else {
-            return null;
-        }
-
-        key = key.substring(0,1).toLowerCase() + key.substring(1);
-
-        return key;
+        return isSetter;
     }
 }

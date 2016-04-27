@@ -52,8 +52,9 @@ public class FakeChargePoint
         assertThat(((BootNotificationConfirmation)receivedConfirmation).getStatus(), is(status));
     }
 
-    public void hasReceivedAuthorizeConfirmation() {
-        assertThat(receivedConfirmation, instanceOf(AuthorizeRequest.class));
+    public void hasReceivedAuthorizeConfirmation(String status) {
+        assertThat(receivedConfirmation, instanceOf(AuthorizeConfirmation.class));
+        assertThat(((AuthorizeConfirmation)receivedConfirmation).getIdTagInfo().getStatus(), is(status));
     }
 
     public void disconnect()

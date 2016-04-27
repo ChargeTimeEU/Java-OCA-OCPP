@@ -5,4 +5,15 @@ package eu.chargetime.ocpp.model;
  */
 public class AuthorizeConfirmation implements Confirmation
 {
+    private IdTagInfo idTagInfo;
+
+    public IdTagInfo getIdTagInfo()
+    {
+        return idTagInfo;
+    }
+
+    public void setIdTagInfo(IdTagInfo idTagInfo)
+    {
+        this.idTagInfo = idTagInfo;
+    }
 }

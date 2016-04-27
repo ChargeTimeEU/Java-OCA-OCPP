@@ -44,7 +44,8 @@ public class Client
                 System.out.println("Client        - Message received: " + s);
 
                 String id = getUniqueId(s);
-                Confirmation conf = communicator.unpack(s, core.findConfirmation(queue.restoreRequest(id)).getClass());
+                Object[] message = unpack(s);
+                Confirmation conf = communicator.unpack(message[2].toString(), core.findConfirmation(queue.restoreRequest(id)).getClass());
                 promises.get(id).complete(conf);
             }
 
@@ -55,6 +56,18 @@ public class Client
             public void disconnected() { }
         };
         transmitter.connect(uri, transmitterEvents);
+    }
+
+    private Object[] unpack(String message) {
+        if (message == null || "".equals(message))
+            return null;
+
+        JSONArray json = new JSONArray(message);
+        Object[] output = new Object[json.length()];
+        for (int i = 0; i < json.length(); i++) {
+            output[i] = json.get(i);
+        }
+        return output;
     }
 
     public void disconnect()

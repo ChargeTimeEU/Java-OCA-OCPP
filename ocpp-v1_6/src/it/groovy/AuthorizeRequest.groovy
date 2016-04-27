@@ -42,7 +42,7 @@ class AuthorizeRequest extends Specification
 
         then:
         conditions.eventually {
-            chargePoint.hasReceivedAuthorizeConfirmation();
+            chargePoint.hasReceivedAuthorizeConfirmation("Accepted");
         }
     }
 
