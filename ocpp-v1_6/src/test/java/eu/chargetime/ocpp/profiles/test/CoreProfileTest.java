@@ -1,16 +1,15 @@
 package eu.chargetime.ocpp.profiles.test;
 
-import eu.chargetime.ocpp.model.AuthorizeRequest;
-import eu.chargetime.ocpp.model.BootNotificationRequest;
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.*;
 import eu.chargetime.ocpp.profiles.ClientCoreEventHandler;
 import eu.chargetime.ocpp.profiles.CoreProfile;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -54,5 +53,30 @@ public class CoreProfileTest
         assertThat(result.getChargePointVendor(), is(legalVendor));
         assertThat(result.getChargePointModel(), is(legalModel));
     }
+
+    @Test
+    public void findConfirmation_withBootNotificationRequest_returnsBootNotificationConfirmation() {
+        // Given
+        BootNotificationRequest request = core.createBootNotificationRequest("", "");
+
+        // When
+        Confirmation conf = core.findConfirmation(request);
+
+        // Then
+        assertThat(conf, instanceOf(BootNotificationConfirmation.class));
+    }
+
+    @Test
+    public void findConfirmation_withAuthorizeRequest_returnsAuthorizeConfirmation() {
+        // Given
+        AuthorizeRequest request = core.createAuthorizeRequest("");
+
+        // When
+        Confirmation conf = core.findConfirmation(request);
+
+        // Then
+        assertThat(conf, instanceOf(AuthorizeConfirmation.class));
+    }
+
 
 }

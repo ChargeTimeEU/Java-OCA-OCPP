@@ -1,12 +1,14 @@
 package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.*;
-import eu.chargetime.ocpp.model.AuthorizeRequest;
-import eu.chargetime.ocpp.model.BootNotificationRequest;
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.*;
 import eu.chargetime.ocpp.profiles.ClientCoreEventHandler;
 import eu.chargetime.ocpp.profiles.CoreProfile;
 import eu.chargetime.ocpp.v1_6.WebSocketTransmitter;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Created by Thomas Volden on 15-Feb-16.
@@ -14,12 +16,12 @@ import eu.chargetime.ocpp.v1_6.WebSocketTransmitter;
 public class FakeChargePoint
 {
     private Client client;
-    private Request receivedConfirmation;
+    private Confirmation receivedConfirmation;
     private CoreProfile core;
 
     public FakeChargePoint() {
         core = new CoreProfile(new ClientCoreEventHandler() {});
-        client = new Client(new WebSocketTransmitter(), new Queue());
+        client = new Client(new WebSocketTransmitter(), new Queue(), core, new JSONCommunicator());
     }
 
     public void connect() {
@@ -45,12 +47,13 @@ public class FakeChargePoint
         client.send(request).whenComplete((s, ex) -> receivedConfirmation = s);
     }
 
-    public boolean hasReceivedBootConfirmation() {
-        return (receivedConfirmation instanceof BootNotificationRequest);
+    public void hasReceivedBootConfirmation(String status) {
+        assertThat(receivedConfirmation, instanceOf(BootNotificationConfirmation.class));
+        assertThat(((BootNotificationConfirmation)receivedConfirmation).getStatus(), is(status));
     }
 
-    public boolean hasReceivedAuthorizeConfirmation() {
-        return receivedConfirmation instanceof AuthorizeRequest;
+    public void hasReceivedAuthorizeConfirmation() {
+        assertThat(receivedConfirmation, instanceOf(AuthorizeRequest.class));
     }
 
     public void disconnect()

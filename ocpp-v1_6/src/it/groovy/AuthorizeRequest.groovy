@@ -51,7 +51,7 @@ class AuthorizeRequest extends Specification
         chargePoint.sendAuthorizeRequest();
 
         then:
-        ! centralSystem.hasReceivedBootNotification();
+        centralSystem.receivedMessageIsNot("BootNotification");
     }
 
 }

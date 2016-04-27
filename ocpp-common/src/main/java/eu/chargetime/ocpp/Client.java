@@ -1,7 +1,12 @@
 package eu.chargetime.ocpp;
 
+import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.profiles.CoreProfile;
+import jdk.nashorn.internal.runtime.regexp.joni.Config;
+import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONString;
 
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
@@ -15,13 +20,18 @@ public class Client
     private final int INDEX_UNIQUEID = 1;
 
     private Queue queue;
-    private HashMap<String, CompletableFuture<Request>> promises;
+    private HashMap<String, CompletableFuture<Confirmation>> promises;
     private Transmitter transmitter;
+    private Communicator communicator;
+    private CoreProfile core;
 
-    public Client(Transmitter transmitter, Queue queue) {
+    public Client(Transmitter transmitter, Queue queue, CoreProfile core, Communicator communicator) {
+        this.core = core;
+        this.communicator = communicator;
         this.queue = queue;
-        promises = new HashMap<>();
         this.transmitter = transmitter;
+
+        promises = new HashMap<>();
     }
 
     public void connect(String uri)
@@ -34,7 +44,8 @@ public class Client
                 System.out.println("Client        - Message received: " + s);
 
                 String id = getUniqueId(s);
-                promises.get(id).complete(queue.restoreRequest(id));
+                Confirmation conf = communicator.unpack(s, core.findConfirmation(queue.restoreRequest(id)).getClass());
+                promises.get(id).complete(conf);
             }
 
             @Override
@@ -63,21 +74,21 @@ public class Client
     private String extractValueAt(String message, int index) {
         if (message == null || "".equals(message))
             return "";
-        String[] segments = message.substring(1, message.length()-1).split(",");
+        String[] segments = message.substring(1, message.length()-1).split(",", 3);
         return segments[index].substring(1, segments[index].length()-1);
     }
 
-    public CompletableFuture<Request> send(Request request)
+    public CompletableFuture<Confirmation> send(Request request)
     {
         String id = storeRequest(request);
-        CompletableFuture<Request> promise = createPromise(id);
+        CompletableFuture<Confirmation> promise = createPromise(id);
 
         transmitter.send(createCallMessage(id, request.action(), new JSONObject(request)));
         return promise;
     }
 
-    private CompletableFuture<Request> createPromise(String uniqueId) {
-        CompletableFuture<Request> promise = new CompletableFuture<>();
+    private CompletableFuture<Confirmation> createPromise(String uniqueId) {
+        CompletableFuture<Confirmation> promise = new CompletableFuture<>();
         promises.put(uniqueId, promise);
         return promise;
     }

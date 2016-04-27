@@ -20,12 +20,7 @@ class BootNotification extends Specification
     def cleanup() {
         chargePoint.disconnect();
     }
-
-    def "No initial request received"() {
-        expect:
-        ! centralSystem.hasReceivedBootNotification();
-    }
-
+    
     def "Charge point sends boot notification and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
         when:
@@ -41,7 +36,7 @@ class BootNotification extends Specification
 
         then:
         conditions.eventually {
-            chargePoint.hasReceivedBootConfirmation();
+            chargePoint.hasReceivedBootConfirmation("Accepted");
         }
     }
 }

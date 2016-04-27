@@ -13,6 +13,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.TimeZone;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+
 /**
  * Created by Thomas Volden on 15-Feb-16.
  */
@@ -65,18 +68,20 @@ public class FakeCentralSystem
         }
     }
 
-    public boolean hasReceivedBootNotification() {
-        return receivedMessage != null && "BootNotification".equals(getAction());
+    public void receivedMessageIsNot(String action) {
+        assertThat(receivedMessage, is(not(nullValue())));
+        assertThat(getAction(), is(not(equalTo(action))));
     }
 
-    public boolean hasReceivedBootNotification(String chargePointVendor, String chargePointModel) {
-        boolean valid = hasReceivedBootNotification();
-        if (valid) {
-            JSONObject payload = getPayload();
-            valid &= payload.getString("chargePointVendor").equals(chargePointVendor);
-            valid &= payload.getString("chargePointModel").equals(chargePointModel);
-        }
-        return valid;
+    public void hasReceivedBootNotification() {
+        assertThat(receivedMessage, is(not(nullValue())));
+        assertThat(getAction(), equalTo("BootNotification"));
+    }
+
+    public void hasReceivedBootNotification(String chargePointVendor, String chargePointModel) {
+        JSONObject payload = getPayload();
+        assertThat(payload.getString("chargePointVendor"), equalTo(chargePointVendor));
+        assertThat(payload.getString("chargePointModel"), equalTo(chargePointModel));
     }
 
     public boolean hasReceivedAuthorizeRequest()

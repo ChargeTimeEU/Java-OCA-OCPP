@@ -1,7 +1,9 @@
 package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.profiles.CoreProfile;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -30,12 +32,15 @@ public class ClientTest
     @Mock
     private Request request;
 
+    private Communicator communicator;
+    private CoreProfile core;
+
     @Before
     public void setup() {
         request = mock(Request.class);
         mockedTransmitter = mock(Transmitter.class);
         queue = mock(Queue.class);
-        client = new Client(mockedTransmitter, queue);
+        client = new Client(mockedTransmitter, queue, core, communicator);
     }
 
     @Test
@@ -68,7 +73,7 @@ public class ClientTest
 
         // When
         client.connect(null);
-        CompletableFuture<Request> promise = client.send(request);
+        CompletableFuture<Confirmation> promise = client.send(request);
         events.receivedMessage(String.format("[3,\"%s\",{\"idTagInfo\": {\"status\":\"Accepted\"}}]", id));
 
         // Then
