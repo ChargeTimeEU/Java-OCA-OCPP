@@ -4,6 +4,7 @@ import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.profiles.CoreProfile;
+import eu.chargetime.ocpp.profiles.Profile;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -22,25 +23,25 @@ public class ClientTest
     private Client client;
     private TransmitterEvents events;
 
-    private String aMessage = "Message";
-    private String aPayload = "";
-
     @Mock
     private Transmitter mockedTransmitter;
     @Mock
     private Queue queue;
     @Mock
     private Request request;
-
+    @Mock
     private Communicator communicator;
-    private CoreProfile core;
+    @Mock
+    private Profile profile;
 
     @Before
     public void setup() {
         request = mock(Request.class);
         mockedTransmitter = mock(Transmitter.class);
         queue = mock(Queue.class);
-        client = new Client(mockedTransmitter, queue, core, communicator);
+        communicator = mock(Communicator.class);
+        profile = mock(Profile.class);
+        client = new Client(mockedTransmitter, queue, profile, communicator);
     }
 
     @Test
@@ -70,6 +71,8 @@ public class ClientTest
         String id = "testIdentification";
         doAnswer(invocation -> events = invocation.getArgumentAt(1, TransmitterEvents.class)).when(mockedTransmitter).connect(any(), any());
         when(queue.store(any())).thenReturn(id);
+        when(communicator.unpack(anyString(), any())).thenReturn(mock(Confirmation.class));
+        when(profile.findConfirmation(any())).thenReturn(mock(Confirmation.class));
 
         // When
         client.connect(null);

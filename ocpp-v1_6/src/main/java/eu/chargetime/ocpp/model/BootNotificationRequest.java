@@ -15,6 +15,8 @@ public class BootNotificationRequest implements Request
     private String meterSerialNumber;
     private String meterType;
 
+    public BootNotificationRequest() { }
+
     public BootNotificationRequest(String vendor, String model) {
         chargePointVendor = vendor;
         chargePointModel = model;

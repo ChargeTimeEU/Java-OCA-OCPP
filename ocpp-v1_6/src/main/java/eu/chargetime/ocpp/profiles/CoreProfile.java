@@ -21,13 +21,23 @@ public class CoreProfile implements Profile
         return new BootNotificationRequest(vendor, model);
     }
 
-    public Confirmation findConfirmation(Request request)
-    {
-        if (request instanceof BootNotificationRequest)
-            return new BootNotificationConfirmation();
-        if (request instanceof AuthorizeRequest)
-            return new AuthorizeConfirmation();
+    @Override
+    public Confirmation findConfirmation(Request request) {
+        Confirmation output = null;
+        if (request instanceof BootNotificationRequest) {
+            output = new BootNotificationConfirmation();
+        }
+        else if (request instanceof AuthorizeRequest) {
+            output = new AuthorizeConfirmation();
+        }
+        return output;
+    }
 
-        return null;
+    public Request findRequest(String action) {
+        Request output = null;
+        if ("ChangeAvailability".equals(action)) {
+            output = new ChangeAvailabilityRequest();
+        }
+        return output;
     }
 }

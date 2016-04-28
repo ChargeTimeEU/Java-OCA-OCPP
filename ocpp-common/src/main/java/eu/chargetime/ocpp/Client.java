@@ -2,11 +2,9 @@ package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.profiles.CoreProfile;
-import jdk.nashorn.internal.runtime.regexp.joni.Config;
+import eu.chargetime.ocpp.profiles.Profile;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONString;
 
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
@@ -23,10 +21,10 @@ public class Client
     private HashMap<String, CompletableFuture<Confirmation>> promises;
     private Transmitter transmitter;
     private Communicator communicator;
-    private CoreProfile core;
+    private Profile profile;
 
-    public Client(Transmitter transmitter, Queue queue, CoreProfile core, Communicator communicator) {
-        this.core = core;
+    public Client(Transmitter transmitter, Queue queue, Profile profile, Communicator communicator) {
+        this.profile = profile;
         this.communicator = communicator;
         this.queue = queue;
         this.transmitter = transmitter;
@@ -45,8 +43,13 @@ public class Client
 
                 String id = getUniqueId(s);
                 Object[] message = unpack(s);
-                Confirmation conf = communicator.unpack(message[2].toString(), core.findConfirmation(queue.restoreRequest(id)).getClass());
-                promises.get(id).complete(conf);
+                if (message[0].equals(3)) {
+                    Confirmation conf = communicator.unpack(message[2].toString(), profile.findConfirmation(queue.restoreRequest(id)).getClass());
+                    promises.get(id).complete(conf);
+                } else if (message[0].equals(2)) {
+                    Request request = communicator.unpack(message[3].toString(), profile.findRequest(message[2].toString()).getClass());
+
+                }
             }
 
             @Override

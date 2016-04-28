@@ -40,7 +40,9 @@ public class JSONCommunicator implements Communicator
             if ((key = extractKey(method)) == null)
                 continue; // Skip non-setter method
 
-            method.invoke(object, parseValue(method, json, key));
+            if (json.has(key)) {
+                method.invoke(object, parseValue(method, json, key));
+            }
         }
         return object;
     }

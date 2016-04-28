@@ -61,4 +61,14 @@ public class FakeChargePoint
     {
         client.disconnect();
     }
+
+    public void hasReceivedChangeAvailabilityRequest()
+    {
+        
+    }
+
+    public void sendChangeAvailabilityConfirmation()
+    {
+
+    }
 }

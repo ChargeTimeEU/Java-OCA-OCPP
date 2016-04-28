@@ -1,7 +1,8 @@
 package eu.chargetime.ocpp.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by Thomas Volden on 26-Apr-16.
@@ -12,8 +13,14 @@ public class BootNotificationConfirmation implements Confirmation
     private int interval;
     private String status;
 
-    public Calendar getCurrentTime()
+    public String getCurrentTime()
     {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
+        return formatter.format(currentTime.getTime());
+    }
+
+    public Calendar objCurrentTime() {
         return currentTime;
     }
 

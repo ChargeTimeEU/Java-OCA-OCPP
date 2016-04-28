@@ -21,7 +21,8 @@ import static org.hamcrest.Matchers.*;
  */
 public class FakeCentralSystem
 {
-    private final String CALLRESULTFORMAT = "[3,\"%s\",{%s}]";
+    private static final String CALLFORMAT = "[2,\"%s\",\"%s\",{%s}";
+    private static final String CALLRESULTFORMAT = "[3,\"%s\",{%s}]";
 
     private Object[] receivedMessage;
     private WebSocketServer server;
@@ -123,19 +124,32 @@ public class FakeCentralSystem
         return formatter.format(new Date());
     }
 
-    public enum RegistrationStatus {
-        Accepted, Pending, Rejected
+    public void hasReceivedChangeAvailabilityConfirmation()
+    {
+
     }
 
+    public enum AvailabilityType {
+        Inoperative, Operative
+    }
+
+    public void sendChangeAvailability(int connectorId, AvailabilityType type)
+    {
+        String payload = "\"connectorId\":%d,\"type\":\"%s\"";
+        sendRequest("ChangeAvailability", String.format(payload, connectorId, type));
+    }
+
+    public enum RegistrationStatus {
+        Accepted, Pending, Rejected;
+    }
     public void sendBootConfirmation(RegistrationStatus status) {
         String payload = "\"currentTime\": \"%s\", \"interval\": %d, \"status\": \"%s\"";
         sendConfirmation(String.format(payload, now(), 300, status));
     }
 
     public enum AuthorizationStatus {
-        Accepted, Blocked, Expired, Invalid
+        Accepted, Blocked, Expired, Invalid;
     }
-
     public void sendAuthorizeConfirmation(AuthorizationStatus status) {
         String payload = "\"idTagInfo\": {\"status\":\"%s\"}";
         sendConfirmation(String.format(payload, status));
@@ -143,6 +157,10 @@ public class FakeCentralSystem
 
     private void sendConfirmation(String payload) {
         send(String.format(CALLRESULTFORMAT, getUniqueId(), payload));
+    }
+
+    private void sendRequest(String action, String payload) {
+        send(String.format(CALLFORMAT, action, action, payload));
     }
 
     private void send(String message) {

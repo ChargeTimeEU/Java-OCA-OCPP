@@ -22,17 +22,4 @@ public class WebSocketTransmitterTest
         webSocketTransmitter = new WebSocketTransmitter();
     }
 
-    @Test
-    public void sendRequest_BootNotification_RequestTransmitted()
-    {
-        // Given
-        String request = "Boot";
-
-        // When
-        webSocketTransmitter.send(request);
-
-        // Then
-        // Mock
-    }
-
 }
