@@ -111,10 +111,4 @@ public class BootNotificationRequest implements Request
     {
         this.meterType = meterType;
     }
-
-    @Override
-    public String action()
-    {
-        return "BootNotification";
-    }
 }

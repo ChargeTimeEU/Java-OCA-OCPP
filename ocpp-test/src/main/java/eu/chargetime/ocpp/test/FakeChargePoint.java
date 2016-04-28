@@ -2,8 +2,8 @@ package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.model.*;
-import eu.chargetime.ocpp.profiles.ClientCoreEventHandler;
-import eu.chargetime.ocpp.profiles.CoreProfile;
+import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
+import eu.chargetime.ocpp.feature.profile.CoreProfile;
 import eu.chargetime.ocpp.v1_6.WebSocketTransmitter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -21,7 +21,8 @@ public class FakeChargePoint
 
     public FakeChargePoint() {
         core = new CoreProfile(new ClientCoreEventHandler() {});
-        client = new Client(new WebSocketTransmitter(), new Queue(), core, new JSONCommunicator());
+        client = new Client(new WebSocketTransmitter(), new Queue(), new JSONCommunicator());
+        client.addFeatureProfile(core);
     }
 
     public void connect() {
@@ -42,8 +43,7 @@ public class FakeChargePoint
         send(request);
     }
 
-    private void send(Request request)
-    {
+    private void send(Request request) {
         client.send(request).whenComplete((s, ex) -> receivedConfirmation = s);
     }
 
@@ -62,13 +62,11 @@ public class FakeChargePoint
         client.disconnect();
     }
 
-    public void hasReceivedChangeAvailabilityRequest()
-    {
-        
+    public void hasReceivedChangeAvailabilityRequest() {
+        assertThat(receivedConfirmation, instanceOf(ChangeAvailabilityRequest.class));
     }
 
-    public void sendChangeAvailabilityConfirmation()
-    {
+    public void sendChangeAvailabilityConfirmation() {
 
     }
 }

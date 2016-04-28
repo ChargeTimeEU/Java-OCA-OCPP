@@ -1,10 +1,10 @@
 package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.profiles.CoreProfile;
-import eu.chargetime.ocpp.profiles.Profile;
+import eu.chargetime.ocpp.feature.profile.Profile;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -21,14 +21,14 @@ import static org.mockito.Mockito.*;
 public class ClientTest
 {
     private Client client;
+    private Request request;
     private TransmitterEvents events;
+    private Feature feature;
 
     @Mock
     private Transmitter mockedTransmitter;
     @Mock
     private Queue queue;
-    @Mock
-    private Request request;
     @Mock
     private Communicator communicator;
     @Mock
@@ -36,12 +36,36 @@ public class ClientTest
 
     @Before
     public void setup() {
-        request = mock(Request.class);
+        request = new Request() {};
+        feature = new Feature() {
+            @Override
+            public Class<? extends Request> getRequestType() {
+                return request.getClass();
+            }
+
+            @Override
+            public Class<? extends Confirmation> getConfirmationType() {
+                return Confirmation.class;
+            }
+
+            @Override
+            public String getAction() {
+                return null;
+            }
+        };
+
         mockedTransmitter = mock(Transmitter.class);
         queue = mock(Queue.class);
         communicator = mock(Communicator.class);
         profile = mock(Profile.class);
-        client = new Client(mockedTransmitter, queue, profile, communicator);
+        client = new Client(mockedTransmitter, queue, communicator);
+
+        when(profile.getFeatureList()).thenReturn(aList(feature));
+        client.addFeatureProfile(profile);
+    }
+
+    private <T> T[] aList(T... objects) {
+        return objects;
     }
 
     @Test
@@ -71,8 +95,8 @@ public class ClientTest
         String id = "testIdentification";
         doAnswer(invocation -> events = invocation.getArgumentAt(1, TransmitterEvents.class)).when(mockedTransmitter).connect(any(), any());
         when(queue.store(any())).thenReturn(id);
+        when(queue.restoreRequest(any())).thenReturn(request);
         when(communicator.unpack(anyString(), any())).thenReturn(mock(Confirmation.class));
-        when(profile.findConfirmation(any())).thenReturn(mock(Confirmation.class));
 
         // When
         client.connect(null);

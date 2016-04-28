@@ -16,10 +16,4 @@ public class AuthorizeRequest implements Request
     {
         return idTag;
     }
-
-    @Override
-    public String action()
-    {
-        return "Authorize";
-    }
 }

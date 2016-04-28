@@ -1,11 +1,12 @@
 package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.profiles.Profile;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
@@ -21,15 +22,30 @@ public class Client
     private HashMap<String, CompletableFuture<Confirmation>> promises;
     private Transmitter transmitter;
     private Communicator communicator;
-    private Profile profile;
+    private ArrayList<Feature> featureList;
 
-    public Client(Transmitter transmitter, Queue queue, Profile profile, Communicator communicator) {
-        this.profile = profile;
-        this.communicator = communicator;
-        this.queue = queue;
+    public Client(Transmitter transmitter, Queue queue, Communicator communicator) {
+        this.promises = new HashMap<>();
+        this.featureList = new ArrayList<>();
+
         this.transmitter = transmitter;
+        this.queue = queue;
+        this.communicator = communicator;
+    }
 
-        promises = new HashMap<>();
+    public void addFeatureProfile(Profile profile) {
+        Feature[] features = profile.getFeatureList();
+        for (Feature feature: features)
+            featureList.add(feature);
+    }
+
+    private Class<? extends Request> getRequestType(String action) {
+        return findFeature(action).getRequestType();
+    }
+
+    private Class<? extends Confirmation> getConfirmationType(String id) {
+        Request request = queue.restoreRequest(id);
+        return findFeature(request).getConfirmationType();
     }
 
     public void connect(String uri)
@@ -44,10 +60,10 @@ public class Client
                 String id = getUniqueId(s);
                 Object[] message = unpack(s);
                 if (message[0].equals(3)) {
-                    Confirmation conf = communicator.unpack(message[2].toString(), profile.findConfirmation(queue.restoreRequest(id)).getClass());
+                    Confirmation conf = communicator.unpack(message[2].toString(), getConfirmationType(id));
                     promises.get(id).complete(conf);
                 } else if (message[0].equals(2)) {
-                    Request request = communicator.unpack(message[3].toString(), profile.findRequest(message[2].toString()).getClass());
+                    Request request = communicator.unpack(message[3].toString(), getRequestType(message[2].toString()));
 
                 }
             }
@@ -94,12 +110,38 @@ public class Client
         return segments[index].substring(1, segments[index].length()-1);
     }
 
-    public CompletableFuture<Confirmation> send(Request request)
-    {
+    private Feature findFeature(String action) {
+        Feature output = null;
+
+        for(Feature feature: featureList) {
+            if (feature.getAction().equals(action)) {
+                output = feature;
+                break;
+            }
+        }
+
+        return output;
+    }
+
+    private Feature findFeature(Request request) {
+        Feature output = null;
+
+        for(Feature feature: featureList) {
+            if (feature.getRequestType().equals(request.getClass())) {
+                output = feature;
+                break;
+            }
+        }
+
+        return output;
+    }
+
+    public CompletableFuture<Confirmation> send(Request request) {
+        Feature feature = findFeature(request);
         String id = storeRequest(request);
         CompletableFuture<Confirmation> promise = createPromise(id);
 
-        transmitter.send(createCallMessage(id, request.action(), new JSONObject(request)));
+        transmitter.send(createCallMessage(id, feature.getAction(), request));
         return promise;
     }
 
@@ -113,7 +155,7 @@ public class Client
         return queue.store(request);
     }
 
-    private String createCallMessage(String uniqueId, String action, JSONObject payload) {
-        return String.format(CALLFORMAT, uniqueId, action, payload);
+    private String createCallMessage(String uniqueId, String action, Request payload) {
+        return String.format(CALLFORMAT, uniqueId, action, communicator.pack(payload));
     }
 }

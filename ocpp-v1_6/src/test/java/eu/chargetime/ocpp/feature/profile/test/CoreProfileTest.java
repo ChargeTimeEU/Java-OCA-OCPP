@@ -1,8 +1,8 @@
-package eu.chargetime.ocpp.profiles.test;
+package eu.chargetime.ocpp.feature.profile.test;
 
+import eu.chargetime.ocpp.feature.profile.CoreProfile;
 import eu.chargetime.ocpp.model.*;
-import eu.chargetime.ocpp.profiles.ClientCoreEventHandler;
-import eu.chargetime.ocpp.profiles.CoreProfile;
+import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

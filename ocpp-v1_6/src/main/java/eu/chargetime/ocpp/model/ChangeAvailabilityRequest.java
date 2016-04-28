@@ -23,9 +23,4 @@ public class ChangeAvailabilityRequest implements Request
     public void setType(String type) {
         this.type = type;
     }
-
-    @Override
-    public String action() {
-        return "ChangeAvailability";
-    }
 }
