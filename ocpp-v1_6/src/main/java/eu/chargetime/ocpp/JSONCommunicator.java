@@ -9,9 +9,7 @@ import org.json.JSONObject;
 import javax.xml.bind.DatatypeConverter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.Calendar;
-import java.util.Collection;
 
 /**
  * Created by Thomas Volden on 26-Apr-16.

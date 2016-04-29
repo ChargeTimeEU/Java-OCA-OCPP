@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.v1_6.test;
+package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.JSONCommunicator;
 import eu.chargetime.ocpp.Transmitter;

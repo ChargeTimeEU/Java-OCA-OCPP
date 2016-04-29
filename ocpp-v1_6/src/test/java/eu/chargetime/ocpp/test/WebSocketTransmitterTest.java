@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.v1_6.test;
+package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.TransmitterEvents;
 import eu.chargetime.ocpp.WebSocketTransmitter;
