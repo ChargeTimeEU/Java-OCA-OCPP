@@ -1,12 +1,9 @@
 package eu.chargetime.ocpp.v1_6.test;
 
 import eu.chargetime.ocpp.TransmitterEvents;
-import eu.chargetime.ocpp.v1_6.WebSocketTransmitter;
+import eu.chargetime.ocpp.WebSocketTransmitter;
 import org.junit.Before;
-import org.junit.Test;
 import org.mockito.Mock;
-
-import java.net.URI;
 
 import static org.hamcrest.core.Is.is;
 

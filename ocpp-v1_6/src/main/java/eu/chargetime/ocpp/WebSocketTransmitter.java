@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.v1_6;
+package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.Transmitter;
 import eu.chargetime.ocpp.TransmitterEvents;

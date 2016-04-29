@@ -1,5 +1,8 @@
 package eu.chargetime.ocpp;
 
+import eu.chargetime.ocpp.model.CallMessage;
+import eu.chargetime.ocpp.model.CallResultMessage;
+import eu.chargetime.ocpp.model.Message;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -7,16 +10,32 @@ import javax.xml.bind.DatatypeConverter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Thomas Volden on 26-Apr-16.
  */
-public class JSONCommunicator implements Communicator
-{
+public class JSONCommunicator extends Communicator {
+
+    private static final int INDEX_MESSAGEID = 0;
+    private static final int TYPENUMBER_CALL = 2;
+    private static final int INDEX_CALL_ACTION = 2;
+    private static final int INDEX_CALL_PAYLOAD = 3;
+    private static final int TYPENUMBER_CALLRESULT = 3;
+    private static final int INDEX_CALLRESULT_PAYLOAD = 2;
+    private static final int INDEX_UNIQUEID = 1;
+    private static final String CALL_FORMAT = "[2,\"%s\",\"%s\",%s]";
+    private static final String CALLRESULT_FORMAT = "[3,\"%s\",%s]";
+
+    public JSONCommunicator(Transmitter transmitter) {
+        super(transmitter);
+    }
+
     @Override
-    public <T> T unpack(String payload, Class<T> type) {
+    public <T> T unpackPayload(String payload, Class<T> type) {
         T object = null;
         try {
             JSONObject json = new JSONObject(payload);
@@ -28,8 +47,36 @@ public class JSONCommunicator implements Communicator
     }
 
     @Override
-    public String pack(Object payload) {
+    public String packPayload(Object payload) {
         return new JSONObject(payload).toString();
+    }
+
+    @Override
+    protected String makeCallResult(String uniqueId, String payload) {
+        return String.format(CALLRESULT_FORMAT, uniqueId, payload);
+    }
+
+    @Override
+    protected String makeCall(String uniqueId, String action, String payload) {
+        return String.format(CALL_FORMAT, uniqueId, action, payload);
+    }
+
+    @Override
+    protected Message parse(String json) {
+        Message message = null;
+        JSONArray array = new JSONArray(json);
+
+        if (array.getInt(INDEX_MESSAGEID) == TYPENUMBER_CALL) {
+            message = new CallMessage();
+            ((CallMessage)message).setAction(array.getString(INDEX_CALL_ACTION));
+            message.setPayload(array.get(INDEX_CALL_PAYLOAD).toString());
+        } else if (array.getInt(INDEX_MESSAGEID) == TYPENUMBER_CALLRESULT) {
+            message = new CallResultMessage();
+            message.setPayload(array.get(INDEX_CALLRESULT_PAYLOAD).toString());
+        }
+        message.setId(array.getString(INDEX_UNIQUEID));
+
+        return message;
     }
 
     private <T> T parseJSON(JSONObject json, Class<T> type) throws Exception {

@@ -4,7 +4,7 @@ import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.model.*;
 import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.CoreProfile;
-import eu.chargetime.ocpp.v1_6.WebSocketTransmitter;
+import eu.chargetime.ocpp.WebSocketTransmitter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
@@ -21,7 +21,7 @@ public class FakeChargePoint
 
     public FakeChargePoint() {
         core = new CoreProfile(new ClientCoreEventHandler() {});
-        client = new Client(new WebSocketTransmitter(), new Queue(), new JSONCommunicator());
+        client = new Client(new Queue(), new JSONCommunicator(new WebSocketTransmitter()));
         client.addFeatureProfile(core);
     }
 

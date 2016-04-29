@@ -1,10 +1,12 @@
 package eu.chargetime.ocpp.v1_6.test;
 
 import eu.chargetime.ocpp.JSONCommunicator;
+import eu.chargetime.ocpp.Transmitter;
 import eu.chargetime.ocpp.model.BootNotificationConfirmation;
 import eu.chargetime.ocpp.model.BootNotificationRequest;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.util.*;
 
@@ -12,6 +14,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.Mockito.mock;
 
 /**
  * Created by Thomas Volden on 27-Apr-16.
@@ -20,9 +23,12 @@ public class JSONCommunicatorTest
 {
     private JSONCommunicator communicator;
 
+    @Mock
+    Transmitter transmitter = mock(Transmitter.class);
+
     @Before
     public void setup() {
-        communicator = new JSONCommunicator();
+        communicator = new JSONCommunicator(transmitter);
     }
 
     @Test
@@ -32,7 +38,7 @@ public class JSONCommunicatorTest
         Class<?> type = BootNotificationRequest.class;
 
         // When
-        Object result = communicator.unpack(payload, type);
+        Object result = communicator.unpackPayload(payload, type);
 
         // Then
         assertThat(result, instanceOf(type));
@@ -48,7 +54,7 @@ public class JSONCommunicatorTest
         Class<?> type = BootNotificationConfirmation.class;
 
         // When
-        Object result = communicator.unpack(String.format(payload, currentType, interval, status), type);
+        Object result = communicator.unpackPayload(String.format(payload, currentType, interval, status), type);
 
         // Then
         assertThat(result, instanceOf(type));
@@ -64,7 +70,7 @@ public class JSONCommunicatorTest
         BootNotificationRequest request = new BootNotificationRequest("VendorX", "SingleSocketCharger");
 
         // When
-        String payload = communicator.pack(request);
+        String payload = communicator.packPayload(request);
 
         // Then
         assertThat(payload, equalTo(expected));
@@ -80,7 +86,7 @@ public class JSONCommunicatorTest
         confirmation.setStatus("Accepted");
 
         // When
-        String payload = communicator.pack(confirmation);
+        String payload = communicator.packPayload(confirmation);
 
         // Then
         assertThat(payload, equalTo(expected));

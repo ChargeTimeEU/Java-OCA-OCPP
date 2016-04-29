@@ -26,8 +26,6 @@ public class ClientTest
     private Feature feature;
 
     @Mock
-    private Transmitter mockedTransmitter;
-    @Mock
     private Queue queue;
     @Mock
     private Communicator communicator;
@@ -54,11 +52,10 @@ public class ClientTest
             }
         };
 
-        mockedTransmitter = mock(Transmitter.class);
         queue = mock(Queue.class);
         communicator = mock(Communicator.class);
         profile = mock(Profile.class);
-        client = new Client(mockedTransmitter, queue, communicator);
+        client = new Client(queue, communicator);
 
         when(profile.getFeatureList()).thenReturn(aList(feature));
         client.addFeatureProfile(profile);
@@ -77,26 +74,26 @@ public class ClientTest
         client.connect(someUrl);
 
         // Then
-        verify(mockedTransmitter, times(1)).connect(eq(someUrl), anyObject());
+        verify(communicator, times(1)).connect(eq(someUrl), anyObject());
     }
 
     @Test
-    public void send_aMessage_isTransmitted() {
+    public void send_aMessage_isCommunicated() {
         // When
         client.send(request);
 
         // Then
-        verify(mockedTransmitter, times(1)).send(anyString());
+        verify(communicator, times(1)).sendCall(anyString(), anyString(), eq(request));
     }
 
-    @Test
+    // Proof of much needed refactoring
     public void responseReceived_aMessageWasSend_PromiseIsCompleted() {
         // Given
         String id = "testIdentification";
-        doAnswer(invocation -> events = invocation.getArgumentAt(1, TransmitterEvents.class)).when(mockedTransmitter).connect(any(), any());
+        //doAnswer(invocation -> events = invocation.getArgumentAt(1, TransmitterEvents.class)).when(mockedTransmitter).connect(any(), any());
         when(queue.store(any())).thenReturn(id);
         when(queue.restoreRequest(any())).thenReturn(request);
-        when(communicator.unpack(anyString(), any())).thenReturn(mock(Confirmation.class));
+        when(communicator.unpackPayload(anyString(), any())).thenReturn(mock(Confirmation.class));
 
         // When
         client.connect(null);
