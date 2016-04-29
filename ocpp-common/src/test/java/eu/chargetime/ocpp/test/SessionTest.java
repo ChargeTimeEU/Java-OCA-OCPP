@@ -3,6 +3,7 @@ package eu.chargetime.ocpp.test;
 import eu.chargetime.ocpp.Communicator;
 import eu.chargetime.ocpp.Queue;
 import eu.chargetime.ocpp.Session;
+import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,5 +66,30 @@ public class SessionTest {
 
         // Then
         verify(communicator, times(1)).sendCall(eq(someUniqueId), anyString(), any());
+    }
+
+    @Test
+    public void sendConfirmation_sendsConfirmationToCommunicator(){
+        // Given
+        Confirmation conf = new Confirmation() {};
+        String someUniqueId = "Some id";
+
+        // When
+        session.sendConfirmation(someUniqueId, conf);
+
+        // Then
+        verify(communicator, times(1)).sendCallResult(eq(someUniqueId), eq(conf));
+    }
+
+    @Test
+    public void open_connectsViaCommunicator() {
+        // Given
+        String someUri = "localhost";
+
+        // When
+        session.open(someUri, null);
+
+        // Then
+        verify(communicator, times(1)).connect(eq(someUri), any());
     }
 }

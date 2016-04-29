@@ -21,7 +21,7 @@ public class FakeChargePoint
 
     public FakeChargePoint() {
         core = new CoreProfile(new ClientCoreEventHandler() {});
-        client = new Client(new Queue(), new JSONCommunicator(new WebSocketTransmitter()));
+        client = new Client(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue()));
         client.addFeatureProfile(core);
     }
 

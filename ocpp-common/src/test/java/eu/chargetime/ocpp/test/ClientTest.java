@@ -22,15 +22,13 @@ public class ClientTest
 {
     private Client client;
     private Request request;
-    private TransmitterEvents events;
     private Feature feature;
+    private SessionEvents events;
 
     @Mock
-    private Queue queue;
+    private Session session = mock(Session.class);
     @Mock
-    private Communicator communicator;
-    @Mock
-    private Profile profile;
+    private Profile profile = mock(Profile.class);
 
     @Before
     public void setup() {
@@ -52,10 +50,8 @@ public class ClientTest
             }
         };
 
-        queue = mock(Queue.class);
-        communicator = mock(Communicator.class);
-        profile = mock(Profile.class);
-        client = new Client(queue, communicator);
+        doAnswer(invocation -> events = invocation.getArgumentAt(1, SessionEvents.class)).when(session).open(any(), any());
+        client = new Client(session);
 
         when(profile.getFeatureList()).thenReturn(aList(feature));
         client.addFeatureProfile(profile);
@@ -74,7 +70,7 @@ public class ClientTest
         client.connect(someUrl);
 
         // Then
-        verify(communicator, times(1)).connect(eq(someUrl), anyObject());
+        verify(session, times(1)).open(eq(someUrl), anyObject());
     }
 
     @Test
@@ -83,22 +79,19 @@ public class ClientTest
         client.send(request);
 
         // Then
-        verify(communicator, times(1)).sendCall(anyString(), anyString(), eq(request));
+        verify(session, times(1)).sendRequest(anyString(), eq(request));
     }
 
-    // Proof of much needed refactoring
+    @Test
     public void responseReceived_aMessageWasSend_PromiseIsCompleted() {
         // Given
-        String id = "testIdentification";
-        //doAnswer(invocation -> events = invocation.getArgumentAt(1, TransmitterEvents.class)).when(mockedTransmitter).connect(any(), any());
-        when(queue.store(any())).thenReturn(id);
-        when(queue.restoreRequest(any())).thenReturn(request);
-        when(communicator.unpackPayload(anyString(), any())).thenReturn(mock(Confirmation.class));
+        String someUniqueId = "Some id";
+        when(session.sendRequest(anyString(), any())).thenReturn(someUniqueId);
 
         // When
         client.connect(null);
         CompletableFuture<Confirmation> promise = client.send(request);
-        events.receivedMessage(String.format("[3,\"%s\",{\"idTagInfo\": {\"status\":\"Accepted\"}}]", id));
+        events.handleConfirmation(someUniqueId, null);
 
         // Then
         assertThat(promise.isDone(), is(true));

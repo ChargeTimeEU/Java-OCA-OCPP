@@ -1,10 +1,9 @@
 package eu.chargetime.ocpp;
 
-import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.profile.Profile;
+import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,17 +16,14 @@ public class Client
 {
     private final int INDEX_UNIQUEID = 1;
 
-    private Queue queue;
     private HashMap<String, CompletableFuture<Confirmation>> promises;
-    private Communicator communicator;
     private ArrayList<Feature> featureList;
+    private Session session;
 
-    public Client(Queue queue, Communicator communicator) {
+    public Client(Session session) {
         this.promises = new HashMap<>();
         this.featureList = new ArrayList<>();
-
-        this.queue = queue;
-        this.communicator = communicator;
+        this.session = session;
     }
 
     public void addFeatureProfile(Profile profile) {
@@ -36,66 +32,50 @@ public class Client
             featureList.add(feature);
     }
 
-    private Class<? extends Request> getRequestType(String action) {
-        return findFeature(action).getRequestType();
-    }
-
-    private Class<? extends Confirmation> getConfirmationType(String id) {
-        Request request = queue.restoreRequest(id);
-        return findFeature(request).getConfirmationType();
-    }
-
     public void connect(String uri)
     {
-        communicator.connect(uri, new CommunicatorEvents() {
+        session.open(uri, new SessionEvents() {
             @Override
-            public void onCallResult(String id, String payload) {
-                Confirmation conf = communicator.unpackPayload(payload, getConfirmationType(id));
-                promises.get(id).complete(conf);
+            public Feature findFeatureByAction(String action) {
+                return findFeature(action);
             }
 
             @Override
-            public void onCall(String id, String action, String payload) {
-
+            public Feature findFeatureByRequest(Request request) {
+                return findFeature(request);
             }
 
             @Override
-            public void onError(String id, String payload) { }
+            public Feature findFeatureByConfirmation(Confirmation confirmation) {
+                return findFeature(confirmation);
+            }
 
             @Override
-            public void onDisconnected() { }
+            public void handleConfirmation(String uniqueId, Confirmation confirmation) {
+                promises.get(uniqueId).complete(confirmation);
+            }
 
             @Override
-            public void onConnected() { }
+            public Confirmation handleRequest(Request request) {
+                return null;
+            }
         });
     }
 
     public void disconnect()
     {
         try {
-            communicator.disconnect();
+            //session.disconnect();
         } catch (Exception ex) {
             System.err.println(ex.getStackTrace());
         }
     }
 
-    private String getUniqueId(String message)
-    {
-        return extractValueAt(message, INDEX_UNIQUEID);
-    }
-
-    private String extractValueAt(String message, int index) {
-        if (message == null || "".equals(message))
-            return "";
-        String[] segments = message.substring(1, message.length()-1).split(",", 3);
-        return segments[index].substring(1, segments[index].length()-1);
-    }
-
-    private Feature findFeature(String action) {
+    private Feature findFeature(Object needle) {
         Feature output = null;
 
         for(Feature feature: featureList) {
-            if (feature.getAction().equals(action)) {
+            if (featureContains(feature, needle)) {
                 output = feature;
                 break;
             }
@@ -104,25 +84,18 @@ public class Client
         return output;
     }
 
-    private Feature findFeature(Request request) {
-        Feature output = null;
-
-        for(Feature feature: featureList) {
-            if (feature.getRequestType().equals(request.getClass())) {
-                output = feature;
-                break;
-            }
-        }
-
-        return output;
+    private boolean featureContains(Feature feature, Object object) {
+        boolean contains = false;
+        contains |= object instanceof String && feature.getAction().equals(object);
+        contains |= object instanceof Request && feature.getRequestType() == object.getClass();
+        contains |= object instanceof Confirmation && feature.getConfirmationType() == object.getClass();
+        return contains;
     }
 
     public CompletableFuture<Confirmation> send(Request request) {
         Feature feature = findFeature(request);
-        String id = storeRequest(request);
+        String id = session.sendRequest(feature.getAction(), request);
         CompletableFuture<Confirmation> promise = createPromise(id);
-
-        communicator.sendCall(id, feature.getAction(), request);
         return promise;
     }
 
@@ -132,7 +105,4 @@ public class Client
         return promise;
     }
 
-    private String storeRequest(Request request) {
-        return queue.store(request);
-    }
 }
