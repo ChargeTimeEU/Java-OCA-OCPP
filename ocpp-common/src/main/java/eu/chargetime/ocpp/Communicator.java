@@ -13,16 +13,16 @@ public abstract class Communicator
 
     protected Transmitter transmitter;
 
-    public Communicator(Transmitter transmitter) {
-        this.transmitter = transmitter;
-    }
-
     public abstract <T> T unpackPayload(String payload, Class<T> type);
     public abstract String packPayload(Object payload);
-
     protected abstract String makeCallResult(String uniqueId, String payload);
     protected abstract String makeCall(String uniqueId, String action, String payload);
     protected abstract Message parse(String message);
+
+
+    public Communicator(Transmitter transmitter) {
+        this.transmitter = transmitter;
+    }
 
     public void connect(String uri, CommunicatorEvents events) {
         transmitter.connect(uri, new TransmitterEvents() {

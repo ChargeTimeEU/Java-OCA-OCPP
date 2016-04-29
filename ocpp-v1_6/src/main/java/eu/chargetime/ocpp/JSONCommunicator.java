@@ -10,10 +10,8 @@ import javax.xml.bind.DatatypeConverter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by Thomas Volden on 26-Apr-16.
@@ -118,24 +116,8 @@ public class JSONCommunicator extends Communicator {
         else if (type == Boolean.class || genericType == Boolean.TYPE) {
             output = json.getBoolean(key);
         }
-        else if (type == Collection.class) {
-            output = parseArray(type, json.getJSONArray(key));
-        }
         else {
             output = parseJSON(json.optJSONObject(key), type);
-        }
-
-        return output;
-    }
-
-    private <T> T parseArray(Class<T> type, JSONArray jsonArray) throws Exception
-    {
-        T output = type.newInstance();
-        TypeVariable<Class<T>> typeParameter = type.getTypeParameters()[0];
-        Method addMethod = type.getMethod("add");
-
-        for(int i = 0; i < jsonArray.length(); i++) {
-            addMethod.invoke(output, parseJSON(jsonArray.getJSONObject(i), typeParameter.getGenericDeclaration()));
         }
 
         return output;

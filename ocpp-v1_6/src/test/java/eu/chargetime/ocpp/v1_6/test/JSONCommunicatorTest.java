@@ -4,6 +4,7 @@ import eu.chargetime.ocpp.JSONCommunicator;
 import eu.chargetime.ocpp.Transmitter;
 import eu.chargetime.ocpp.model.BootNotificationConfirmation;
 import eu.chargetime.ocpp.model.BootNotificationRequest;
+import eu.chargetime.ocpp.model.test.TestModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -12,6 +13,7 @@ import java.util.*;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
@@ -32,9 +34,9 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_bootNotificationCallPayload_returnBootNotificationRequest() {
+    public void unpack_emptyPayload_returnRequestedType() {
         // Given
-        String payload = "{\"chargePointModel\":\"SingleSocketCharger\",\"chargePointVendor\":\"VendorX\"}";
+        String payload = "{}";
         Class<?> type = BootNotificationRequest.class;
 
         // When
@@ -43,6 +45,149 @@ public class JSONCommunicatorTest
         // Then
         assertThat(result, instanceOf(type));
     }
+
+    @Test
+    public void unpack_aStringPayload_returnsTestModelWithAString() {
+        // Given
+        String aString = "Some string";
+        String payload = "{\"stringTest\":\"%s\"}";
+
+        // When
+        TestModel model = communicator.unpackPayload(String.format(payload, aString), TestModel.class);
+
+        // Then
+        assertThat(model.getStringTest(), equalTo(aString));
+    }
+
+    // TODO find good solution for date compare
+    public void unpack_aCalendarPayload_returnsTestModelWithACalendar() {
+        // Given
+        String aCalendar = "2016-04-28T07:16:11.988Z";
+        String payload = "{\"calendarTest\":\"%s\"}";
+
+        // When
+        TestModel model = communicator.unpackPayload(String.format(payload, aCalendar), TestModel.class);
+
+        // Then
+        assertThat(model.getCalendarTest().getTime(), is(new Date(aCalendar)));
+    }
+
+    @Test
+    public void unpack_anIntegerPayload_returnsTestModelWithAnInteger() {
+        // Given
+        Integer anInteger = 1337;
+        String payload = "{\"integerTest\":%d}";
+
+        // When
+        TestModel model = communicator.unpackPayload(String.format(payload, anInteger), TestModel.class);
+
+        // Then
+        assertThat(model.getIntegerTest(), equalTo(anInteger));
+    }
+
+    @Test
+    public void unpack_aGenericIntPayload_returnsTestModelWithAGenericInt() {
+        // Given
+        int anInteger = 1337;
+        String payload = "{\"intTest\":%d}";
+
+        // When
+        TestModel model = communicator.unpackPayload(String.format(payload, anInteger), TestModel.class);
+
+        // Then
+        assertThat(model.getIntTest(), equalTo(anInteger));
+    }
+
+    @Test
+    public void unpack_aLongPayload_returnsTestModelWithALong() {
+        // Given
+        Long aLong = 1337L;
+        String payload = "{\"longTest\":%d}";
+
+        // When
+        TestModel model = communicator.unpackPayload(String.format(payload, aLong), TestModel.class);
+
+        // Then
+        assertThat(model.getLongTest(), equalTo(aLong));
+    }
+
+    @Test
+    public void unpack_aGenericLongPayload_returnsTestModelWithAGenericLong() {
+        // Given
+        long aLong = 1337;
+        String payload = "{\"genericLongTest\":%d}";
+
+        // When
+        TestModel model = communicator.unpackPayload(String.format(payload, aLong), TestModel.class);
+
+        // Then
+        assertThat(model.getGenericLongTest(), equalTo(aLong));
+    }
+
+    @Test
+    public void unpack_aDoublePayload_returnsTestModelWithADouble() {
+        // Given
+        Double aDouble = 13.37D;
+        String payload = "{\"doubleTest\":%f}";
+
+        // When
+        TestModel model = communicator.unpackPayload(String.format(payload, aDouble), TestModel.class);
+
+        // Then
+        assertThat(model.getDoubleTest(), equalTo(aDouble));
+    }
+
+    @Test
+    public void unpack_aGenericDoublePayload_returnsTestModelWithAGenericDouble() {
+        // Given
+        double aDouble = 13.37;
+        String payload = "{\"genericDoubleTest\":%f}";
+
+        // When
+        TestModel model = communicator.unpackPayload(String.format(payload, aDouble), TestModel.class);
+
+        // Then
+        assertThat(model.getGenericDoubleTest(), equalTo(aDouble));
+    }
+
+    @Test
+    public void unpack_aBooleanPayload_returnsTestModelWithABoolean() {
+        // Given
+        Boolean aBoolean = false;
+        String payload = "{\"booleanTest\":%b}";
+
+        // When
+        TestModel model = communicator.unpackPayload(String.format(payload, aBoolean), TestModel.class);
+
+        // Then
+        assertThat(model.getBooleanTest(), equalTo(aBoolean));
+    }
+
+    @Test
+    public void unpack_aGenericBooleanPayload_returnsTestModelWithAGenericBoolean() {
+        // Given
+        boolean aBoolean = false;
+        String payload = "{\"genericBooleanTest\":%b}";
+
+        // When
+        TestModel model = communicator.unpackPayload(String.format(payload, aBoolean), TestModel.class);
+
+        // Then
+        assertThat(model.isGenericBoleanTest(), equalTo(aBoolean));
+    }
+
+    @Test
+    public void unpack_anObjectPayload_returnsTestModelWithAnObject() {
+        // Given
+        String payload = "{\"objectTest\":{}}";
+
+        // When
+        TestModel model = communicator.unpackPayload((payload), TestModel.class);
+
+        // Then
+        assertThat(model.getObjectTest(), instanceOf(TestModel.class));
+    }
+
 
     @Test
     public void unpack_bootNotificationCallResultPayload_returnBootNotificationConfirmation() {
@@ -97,5 +242,12 @@ public class JSONCommunicatorTest
         dateTime.setTimeInMillis(dateInMillis);
         return dateTime;
     }
+/*
+    private Date createDate(int year, int month, int day, int hours, int minuts, int seconds, int milliseconds) {
+        Calendar dateTime = new GregorianCalendar(TimeZone.getTimeZone("GMT+00:00"));
+        dateTime.set(year, month, day, hours, minuts, seconds);
+        dateTime.getTimeInMillis()
+    }
+*/
 
 }
