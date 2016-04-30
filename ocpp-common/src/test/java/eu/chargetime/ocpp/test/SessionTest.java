@@ -132,6 +132,20 @@ public class SessionTest {
     }
 
     @Test
+    public void onCall_callbackThrowsException_callSendCallResult() {
+        // Given
+        String someId = "Some id";
+        when(sessionEvents.handleRequest(any())).thenThrow(Exception.class);
+
+        // When
+        eventHandler.onCall(someId, null, null);
+        try { Thread.sleep(10); } catch (Exception ex) {} // TODO make async invoker injectable
+
+        // then
+        verify(communicator, times(1)).sendCallError(eq(someId), anyString(), anyString());
+    }
+
+    @Test
     public void onCall_unknownAction_callSendCallError() {
         // Given
         String someId = "Some id";
