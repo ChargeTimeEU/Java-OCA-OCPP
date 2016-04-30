@@ -10,7 +10,6 @@ import eu.chargetime.ocpp.model.Request;
 public interface SessionEvents {
     Feature findFeatureByAction(String action);
     Feature findFeatureByRequest(Request request);
-    Feature findFeatureByConfirmation(Confirmation confirmation);
 
     void            handleConfirmation(String uniqueId, Confirmation confirmation);
     Confirmation    handleRequest(Request request);

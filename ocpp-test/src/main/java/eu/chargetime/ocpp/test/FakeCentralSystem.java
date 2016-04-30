@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.*;
  */
 public class FakeCentralSystem
 {
-    private static final String CALLFORMAT = "[2,\"%s\",\"%s\",{%s}";
+    private static final String CALLFORMAT = "[2,\"%s\",\"%s\",{%s}]";
     private static final String CALLRESULTFORMAT = "[3,\"%s\",{%s}]";
 
     private Object[] receivedMessage;
@@ -80,7 +80,7 @@ public class FakeCentralSystem
     }
 
     public void hasReceivedBootNotification(String chargePointVendor, String chargePointModel) {
-        JSONObject payload = getPayload();
+        JSONObject payload = getCallPayload();
         assertThat(payload.getString("chargePointVendor"), equalTo(chargePointVendor));
         assertThat(payload.getString("chargePointModel"), equalTo(chargePointModel));
     }
@@ -90,9 +90,13 @@ public class FakeCentralSystem
         return receivedMessage != null && "Authorize".equals(getAction());
     }
 
-    private JSONObject getPayload()
+    private JSONObject getCallPayload()
     {
         return (JSONObject)receivedMessage[3];
+    }
+    private JSONObject getCallResultPayload()
+    {
+        return (JSONObject)receivedMessage[2];
     }
 
     private String getAction()
@@ -124,9 +128,10 @@ public class FakeCentralSystem
         return formatter.format(new Date());
     }
 
-    public void hasReceivedChangeAvailabilityConfirmation()
+    public void hasReceivedChangeAvailabilityConfirmation(String status)
     {
-
+        assertThat(getUniqueId(), equalTo("ChangeAvailability"));
+        assertThat(getCallResultPayload().getString("status"), equalTo(status));
     }
 
     public enum AvailabilityType {

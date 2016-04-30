@@ -1,8 +1,8 @@
 package eu.chargetime.ocpp.feature.profile.test;
 
+import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.CoreProfile;
 import eu.chargetime.ocpp.model.*;
-import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by Thomas Volden on 25-Apr-16.
@@ -20,11 +20,10 @@ public class CoreProfileTest
     CoreProfile core;
 
     @Mock
-    ClientCoreEventHandler handler;
+    ClientCoreEventHandler handler = mock(ClientCoreEventHandler.class);
 
     @Before
     public void setup() {
-        handler = mock(ClientCoreEventHandler.class);
         core = new CoreProfile(handler);
     }
 
@@ -55,28 +54,27 @@ public class CoreProfileTest
     }
 
     @Test
-    public void findConfirmation_withBootNotificationRequest_returnsBootNotificationConfirmation() {
+    public void handleRequest_aChangeAvailabilityRequest_callsHandleBootNotificationRequest() {
         // Given
-        BootNotificationRequest request = core.createBootNotificationRequest("", "");
+        ChangeAvailabilityRequest request = new ChangeAvailabilityRequest();
 
         // When
-        Confirmation conf = core.findConfirmation(request);
+        core.handleRequest(request);
 
         // Then
-        assertThat(conf, instanceOf(BootNotificationConfirmation.class));
+        verify(handler, times(1)).handleChangeAvailabilityRequest(eq(request));
     }
 
     @Test
-    public void findConfirmation_withAuthorizeRequest_returnsAuthorizeConfirmation() {
+    public void handleRequest_aChangeAvailabilityRequest_returnsChangeAvailabilityConfirmation() {
         // Given
-        AuthorizeRequest request = core.createAuthorizeRequest("");
+        when(handler.handleChangeAvailabilityRequest(any())).thenReturn(new ChangeAvailabilityConfirmation());
+        ChangeAvailabilityRequest request = new ChangeAvailabilityRequest();
 
         // When
-        Confirmation conf = core.findConfirmation(request);
+        Confirmation conf = core.handleRequest(request);
 
         // Then
-        assertThat(conf, instanceOf(AuthorizeConfirmation.class));
+        assertThat(conf, instanceOf(ChangeAvailabilityConfirmation.class));
     }
-
-
 }

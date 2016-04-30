@@ -55,8 +55,11 @@ public class Session {
 
         @Override
         public void onCall(String id, String action, String payload) {
-            handleIncommingRequest(communicator.unpackPayload(payload, getRequestType(action)))
-                    .whenComplete(((confirmation, throwable) -> communicator.sendCallResult(id, confirmation)));
+            Feature feature = events.findFeatureByAction(action);
+            if (feature != null) {
+                handleIncommingRequest(communicator.unpackPayload(payload, feature.getRequestType()))
+                        .whenComplete(((confirmation, throwable) -> communicator.sendCallResult(id, confirmation)));
+            }
         }
 
         @Override
@@ -73,7 +76,7 @@ public class Session {
             new Thread(() -> {
                 Confirmation conf = events.handleRequest(request);
                 promise.complete(conf);
-            });
+            }).start();
             return promise;
         }
     }

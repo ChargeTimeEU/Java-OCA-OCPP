@@ -17,10 +17,17 @@ public class FakeChargePoint
 {
     private Client client;
     private Confirmation receivedConfirmation;
+    private Request receivedRequest;
     private CoreProfile core;
 
     public FakeChargePoint() {
-        core = new CoreProfile(new ClientCoreEventHandler() {});
+        core = new CoreProfile(new ClientCoreEventHandler() {
+            @Override
+            public ChangeAvailabilityConfirmation handleChangeAvailabilityRequest(ChangeAvailabilityRequest request) {
+                receivedRequest = request;
+                return new ChangeAvailabilityConfirmation("Accepted");
+            }
+        });
         client = new Client(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue()));
         client.addFeatureProfile(core);
     }
@@ -62,11 +69,8 @@ public class FakeChargePoint
         client.disconnect();
     }
 
-    public void hasReceivedChangeAvailabilityRequest() {
-        assertThat(receivedConfirmation, instanceOf(ChangeAvailabilityRequest.class));
+    public void hasHandledChangeAvailabilityRequest() {
+        assertThat(receivedRequest, instanceOf(ChangeAvailabilityRequest.class));
     }
 
-    public void sendChangeAvailabilityConfirmation() {
-
-    }
 }

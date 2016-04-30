@@ -28,15 +28,8 @@ class ChangeAvailability extends Specification
 
         then:
         conditions.eventually {
-            chargePoint.hasReceivedChangeAvailabilityRequest();
-        }
-
-        when:
-        chargePoint.sendChangeAvailabilityConfirmation();
-
-        then:
-        conditions.eventually {
-            centralSystem.hasReceivedChangeAvailabilityConfirmation();
+            chargePoint.hasHandledChangeAvailabilityRequest();
+            centralSystem.hasReceivedChangeAvailabilityConfirmation("Accepted");
         }
     }
 }

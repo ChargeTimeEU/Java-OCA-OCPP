@@ -46,18 +46,14 @@ public class Client
             }
 
             @Override
-            public Feature findFeatureByConfirmation(Confirmation confirmation) {
-                return findFeature(confirmation);
-            }
-
-            @Override
             public void handleConfirmation(String uniqueId, Confirmation confirmation) {
                 promises.get(uniqueId).complete(confirmation);
             }
 
             @Override
             public Confirmation handleRequest(Request request) {
-                return null;
+                Feature feature = findFeatureByRequest(request);
+                return feature.handleRequest(request);
             }
         });
     }
