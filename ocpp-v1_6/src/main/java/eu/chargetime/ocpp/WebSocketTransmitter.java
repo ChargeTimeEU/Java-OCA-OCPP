@@ -46,6 +46,7 @@ public class WebSocketTransmitter implements Transmitter
         }
     }
 
+    @Override
     public void disconnect()
     {
         try {

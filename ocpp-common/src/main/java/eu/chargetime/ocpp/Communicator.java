@@ -7,18 +7,17 @@ import org.json.JSONArray;
 /**
  * Created by Thomas Volden on 26-Apr-16.
  */
-public abstract class Communicator
-{
-    private final String CALLFORMAT = "[2,\"%s\",\"%s\",%s]";
-
+public abstract class Communicator {
     protected Transmitter transmitter;
 
     public abstract <T> T unpackPayload(String payload, Class<T> type);
     public abstract String packPayload(Object payload);
     protected abstract String makeCallResult(String uniqueId, String payload);
     protected abstract String makeCall(String uniqueId, String action, String payload);
-    protected abstract Message parse(String message);
+    protected abstract String makeCallError(String uniqueId, String errorCode, String errorDescription);
 
+
+    protected abstract Message parse(String message);
 
     public Communicator(Transmitter transmitter) {
         this.transmitter = transmitter;
@@ -56,6 +55,10 @@ public abstract class Communicator
 
     public void sendCallResult(String uniqueId, Confirmation confirmation) {
         transmitter.send(makeCallResult(uniqueId, packPayload(confirmation)));
+    }
+
+    public void sendCallError(String uniqueId, String errorCode, String errorDescription) {
+        transmitter.send(makeCallError(uniqueId, errorCode, errorDescription));
     }
 
     public void disconnect() {

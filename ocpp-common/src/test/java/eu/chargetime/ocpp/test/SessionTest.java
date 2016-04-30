@@ -1,15 +1,15 @@
 package eu.chargetime.ocpp.test;
 
-import eu.chargetime.ocpp.Communicator;
-import eu.chargetime.ocpp.Queue;
-import eu.chargetime.ocpp.Session;
+import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import groovy.transform.Synchronized;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -19,14 +19,23 @@ import static org.mockito.Mockito.*;
 public class SessionTest {
     private Session session;
 
+    CommunicatorEvents eventHandler;
+
     @Mock
     Communicator communicator = mock(Communicator.class);
     @Mock
     Queue queue = mock(Queue.class);
+    @Mock
+    SessionEvents sessionEvents = mock(SessionEvents.class);
+    @Mock
+    Feature feature = mock(Feature.class);
 
     @Before
     public void setup() throws Exception {
+        when(sessionEvents.findFeatureByAction(any())).thenReturn(feature);
         session = new Session(communicator, queue);
+        doAnswer(invocation -> eventHandler = invocation.getArgumentAt(1, CommunicatorEvents.class)).when(communicator).connect(any(), any());
+        session.open(null, sessionEvents);
     }
 
     @Test
@@ -92,4 +101,47 @@ public class SessionTest {
         // Then
         verify(communicator, times(1)).connect(eq(someUri), any());
     }
+
+    @Test
+    public void onCall_unhandledCallback_callSendCallError() {
+        // Given
+        String someId = "Some id";
+        when(sessionEvents.handleRequest(any())).thenReturn(null);
+
+        // When
+        eventHandler.onCall(someId, null, null);
+        try { Thread.sleep(10); } catch (Exception ex) {} // TODO make async invoker injectable
+
+        // then
+        verify(communicator, times(1)).sendCallError(eq(someId), anyString(), anyString());
+    }
+
+    @Test
+    public void onCall_handledCallback_callSendCallResult() {
+        // Given
+        String someId = "Some id";
+        Confirmation aConfirmation = new Confirmation() {};
+        when(sessionEvents.handleRequest(any())).thenReturn(aConfirmation);
+
+        // When
+        eventHandler.onCall(someId, null, null);
+        try { Thread.sleep(10); } catch (Exception ex) {} // TODO make async invoker injectable
+
+        // then
+        verify(communicator, times(1)).sendCallResult(anyString(), eq(aConfirmation));
+    }
+
+    @Test
+    public void onCall_unknownAction_callSendCallError() {
+        // Given
+        String someId = "Some id";
+        when(sessionEvents.findFeatureByAction(any())).thenReturn(null);
+
+        // When
+        eventHandler.onCall(someId, null, null);
+
+        // then
+        verify(communicator, times(1)).sendCallError(eq(someId), anyString(), anyString());
+    }
+
 }

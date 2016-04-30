@@ -3,7 +3,7 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import groovyx.gpars.dataflow.Promise;
+import groovy.transform.Synchronized;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -37,11 +37,6 @@ public class Session {
         return feature.getConfirmationType();
     }
 
-    private Class<? extends Request> getRequestType(String action) {
-        Feature feature = events.findFeatureByAction(action);
-        return feature.getRequestType();
-    }
-
     public void open(String uri, SessionEvents eventHandler) {
         this.events = eventHandler;
         communicator.connect(uri, new CommunicatorEventHandler());
@@ -57,8 +52,18 @@ public class Session {
         public void onCall(String id, String action, String payload) {
             Feature feature = events.findFeatureByAction(action);
             if (feature != null) {
-                handleIncommingRequest(communicator.unpackPayload(payload, feature.getRequestType()))
-                        .whenComplete(((confirmation, throwable) -> communicator.sendCallResult(id, confirmation)));
+                CompletableFuture<Confirmation> promise = handleIncomingRequest(communicator.unpackPayload(payload, feature.getRequestType()));
+                promise.whenComplete(((confirmation, throwable) -> {
+                    if (promise.isCompletedExceptionally()) {
+                        communicator.sendCallError(id, "InternalError", "An internal error occurred and the receiver was not able to process the requested Action successfully");
+                    } else if (confirmation == null) {
+                        communicator.sendCallError(id, "NotSupported", "Requested Action is recognized but not supported by the receiver");
+                    } else {
+                        communicator.sendCallResult(id, confirmation);
+                    }
+                }));
+            } else {
+                communicator.sendCallError(id, "NotImplemented", "Requested Action is not known by receiver");
             }
         }
 
@@ -71,11 +76,15 @@ public class Session {
         @Override
         public void onConnected() { }
 
-        private CompletableFuture<Confirmation> handleIncommingRequest(Request request) {
+        private CompletableFuture<Confirmation> handleIncomingRequest(Request request) {
             CompletableFuture<Confirmation> promise = new CompletableFuture<>();
             new Thread(() -> {
-                Confirmation conf = events.handleRequest(request);
-                promise.complete(conf);
+                try {
+                    Confirmation conf = events.handleRequest(request);
+                    promise.complete(conf);
+                } catch (Exception ex) {
+                    promise.completeExceptionally(ex);
+                }
             }).start();
             return promise;
         }

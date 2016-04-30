@@ -9,14 +9,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by Thomas Volden on 27-Apr-16.
@@ -235,6 +237,28 @@ public class JSONCommunicatorTest
 
         // Then
         assertThat(payload, equalTo(expected));
+    }
+
+    @Test
+    public void disconnect_disconnects() {
+        // When
+        communicator.disconnect();
+
+        // Then
+        verify(transmitter, times(1)).disconnect();
+    }
+
+    @Test
+    public void sendError_transmitsError() {
+        // Given
+        String errorCode = "NotImplemented";
+        String errorDescription = "Requested Action is not known by receiver";
+
+        // When
+        communicator.sendCallError(null, errorCode, errorDescription);
+
+        // Then
+        verify(transmitter, times(1)).send(anyString());
     }
 
     private Calendar createDateTimeInMillis(long dateInMillis) {

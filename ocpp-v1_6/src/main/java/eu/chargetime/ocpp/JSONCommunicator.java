@@ -25,6 +25,7 @@ public class JSONCommunicator extends Communicator {
     private static final int INDEX_UNIQUEID = 1;
     private static final String CALL_FORMAT = "[2,\"%s\",\"%s\",%s]";
     private static final String CALLRESULT_FORMAT = "[3,\"%s\",%s]";
+    private static final String CALLERROR_FORMAT = "[4,\"%s\",\"%s\",\"%s\",%s]";
 
     public JSONCommunicator(Transmitter transmitter) {
         super(transmitter);
@@ -55,6 +56,11 @@ public class JSONCommunicator extends Communicator {
     @Override
     protected String makeCall(String uniqueId, String action, String payload) {
         return String.format(CALL_FORMAT, uniqueId, action, payload);
+    }
+
+    @Override
+    protected String makeCallError(String uniqueId, String errorCode, String errorDescription) {
+        return String.format(CALLERROR_FORMAT, uniqueId, errorCode, errorDescription, "{}");
     }
 
     @Override
