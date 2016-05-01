@@ -3,7 +3,6 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import groovy.transform.Synchronized;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -40,6 +39,10 @@ public class Session {
     public void open(String uri, SessionEvents eventHandler) {
         this.events = eventHandler;
         communicator.connect(uri, new CommunicatorEventHandler());
+    }
+
+    public void close() {
+        communicator.disconnect();
     }
 
     private class CommunicatorEventHandler implements CommunicatorEvents {

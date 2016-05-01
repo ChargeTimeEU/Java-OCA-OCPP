@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.xml.bind.DatatypeConverter;
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Calendar;
@@ -90,19 +91,27 @@ public class JSONCommunicator extends Communicator {
                 continue; // Skip non-setter method
 
             if (json.has(key)) {
-                method.invoke(object, parseValue(method, json, key));
+                method.invoke(object, parseValue(key, json, method));
             }
         }
         return object;
     }
 
-    private Object parseValue(Method method, JSONObject json, String key) throws Exception
+    private Object parseValue(String key, JSONObject json, Method method) throws Exception
     {
         Class<?> type = setterParameterType(method);
         Type genericType = setterGenericParameterType(method);
 
-        Object output;
-        if      (type == String.class) {
+        return parseValue(key, json, type, genericType);
+    }
+
+    private Object parseValue(String key, JSONObject json, Class<?> type, Type genericType) throws Exception {
+        Object output = null;
+
+        if (type.isArray()) {
+            output = parseArray(json.getJSONArray(key), type.getComponentType());
+        }
+        else if (type == String.class) {
             output = json.getString(key);
         }
         else if (type == Calendar.class) {
@@ -122,6 +131,41 @@ public class JSONCommunicator extends Communicator {
         }
         else {
             output = parseJSON(json.optJSONObject(key), type);
+        }
+
+        return output;
+    }
+
+    private <T> T[] parseArray(JSONArray array, Class<?> type) throws Exception {
+        T[] output = (T[]) Array.newInstance(type, array.length());
+        for(int i = 0; i < array.length(); i++)
+            output[i] = (T)parseArrayItem(array, i, type);
+        return output;
+    }
+
+    private Object parseArrayItem(JSONArray array, int index, Class<?> type) throws Exception {
+        Object output = null;
+
+        if (type == String.class) {
+            output = array.getString(index);
+        }
+        else if (type == Calendar.class) {
+            output = DatatypeConverter.parseDateTime(array.getString(index));
+        }
+        else if (type == Integer.class || type == Integer.TYPE) {
+            output = array.getInt(index);
+        }
+        else if (type == Long.class || type == Long.TYPE) {
+            output = array.getLong(index);
+        }
+        else if (type == Double.class || type == Double.TYPE) {
+            output = array.getDouble(index);
+        }
+        else if (type == Boolean.class || type == Boolean.TYPE) {
+            output = array.getBoolean(index);
+        }
+        else {
+            output = parseJSON(array.optJSONObject(index), type);
         }
 
         return output;

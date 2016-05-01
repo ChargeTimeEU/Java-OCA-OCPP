@@ -146,6 +146,15 @@ public class SessionTest {
     }
 
     @Test
+    public void close_disconnects() {
+        // When
+        session.close();
+
+        // Then
+        verify(communicator, times(1)).disconnect();
+    }
+
+    @Test
     public void onCall_unknownAction_callSendCallError() {
         // Given
         String someId = "Some id";
@@ -157,5 +166,4 @@ public class SessionTest {
         // then
         verify(communicator, times(1)).sendCallError(eq(someId), anyString(), anyString());
     }
-
 }

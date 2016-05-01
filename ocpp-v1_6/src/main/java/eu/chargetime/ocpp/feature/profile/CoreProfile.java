@@ -1,9 +1,6 @@
 package eu.chargetime.ocpp.feature.profile;
 
-import eu.chargetime.ocpp.feature.AuthorizeFeature;
-import eu.chargetime.ocpp.feature.BootNotificationFeature;
-import eu.chargetime.ocpp.feature.ChangeAvailabilityFeature;
-import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.model.*;
 
 import java.util.ArrayList;
@@ -23,6 +20,7 @@ public class CoreProfile implements Profile
         features.add(new BootNotificationFeature(null));
         features.add(new AuthorizeFeature(null));
         features.add(new ChangeAvailabilityFeature(this));
+        features.add(new GetConfigurationFeature(this));
     }
 
     public AuthorizeRequest createAuthorizeRequest(String idToken) {
@@ -40,7 +38,15 @@ public class CoreProfile implements Profile
 
     @Override
     public Confirmation handleRequest(Request request) {
-        return eventHandler.handleChangeAvailabilityRequest((ChangeAvailabilityRequest) request);
-    }
+        Confirmation result = null;
 
+        if (request instanceof ChangeAvailabilityRequest) {
+            result = eventHandler.handleChangeAvailabilityRequest((ChangeAvailabilityRequest) request);
+        }
+        else if (request instanceof GetConfigurationRequest) {
+            result = eventHandler.handleGetConfigurationRequest((GetConfigurationRequest) request);
+        }
+
+        return result;
+    }
 }

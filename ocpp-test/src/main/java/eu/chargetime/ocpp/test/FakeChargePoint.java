@@ -27,6 +27,12 @@ public class FakeChargePoint
                 receivedRequest = request;
                 return new ChangeAvailabilityConfirmation("Accepted");
             }
+
+            @Override
+            public GetConfigurationConfirmation handleGetConfigurationRequest(GetConfigurationRequest request) {
+                receivedRequest = request;
+                return new GetConfigurationConfirmation();
+            }
         });
         client = new Client(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue()));
         client.addFeatureProfile(core);
@@ -64,8 +70,7 @@ public class FakeChargePoint
         assertThat(((AuthorizeConfirmation)receivedConfirmation).getIdTagInfo().getStatus(), is(status));
     }
 
-    public void disconnect()
-    {
+    public void disconnect() {
         client.disconnect();
     }
 
@@ -73,4 +78,7 @@ public class FakeChargePoint
         assertThat(receivedRequest, instanceOf(ChangeAvailabilityRequest.class));
     }
 
+    public void hasHandledGetConfigurationRequest() {
+        assertThat(receivedRequest, instanceOf(GetConfigurationRequest.class));
+    }
 }

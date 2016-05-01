@@ -61,7 +61,7 @@ public class Client
     public void disconnect()
     {
         try {
-            //session.disconnect();
+            session.close();
         } catch (Exception ex) {
             System.err.println(ex.getStackTrace());
         }

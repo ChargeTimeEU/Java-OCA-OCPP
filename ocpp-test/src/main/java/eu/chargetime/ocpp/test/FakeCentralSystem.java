@@ -134,8 +134,24 @@ public class FakeCentralSystem
         assertThat(getCallResultPayload().getString("status"), equalTo(status));
     }
 
+    public void hasReceivedGetConfigurationConfirmation() {
+        assertThat(getUniqueId(), equalTo("GetConfiguration"));
+    }
+
+    public void sendGetConfigurationRequest(String... keys) {
+        String payload = "\"key\":%s";
+        sendRequest("GetConfiguration", String.format(payload, formatList(keys)));
+    }
+
+    public String formatList(String[] items) {
+        StringBuilder output = new StringBuilder();
+        for (String item : items)
+            output.append(String.format(",\"%s\"", item));
+        return String.format("[%s]", output.substring(1));
+    }
+
     public enum AvailabilityType {
-        Inoperative, Operative
+        Inoperative, Operative;
     }
 
     public void sendChangeAvailability(int connectorId, AvailabilityType type)
