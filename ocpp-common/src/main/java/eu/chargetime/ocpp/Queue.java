@@ -29,7 +29,7 @@ public class Queue
             request = requestQueue.get(ticket);
             requestQueue.remove(ticket);
         } catch (Exception ex) {
-            System.err.println(ex.getStackTrace());
+            ex.printStackTrace();
         }
         return request;
     }

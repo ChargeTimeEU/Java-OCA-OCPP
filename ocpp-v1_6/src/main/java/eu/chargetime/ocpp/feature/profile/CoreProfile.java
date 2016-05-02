@@ -21,6 +21,7 @@ public class CoreProfile implements Profile
         features.add(new AuthorizeFeature(null));
         features.add(new ChangeAvailabilityFeature(this));
         features.add(new GetConfigurationFeature(this));
+        features.add(new ChangeConfigurationFeature(this));
     }
 
     public AuthorizeRequest createAuthorizeRequest(String idToken) {
@@ -45,6 +46,9 @@ public class CoreProfile implements Profile
         }
         else if (request instanceof GetConfigurationRequest) {
             result = eventHandler.handleGetConfigurationRequest((GetConfigurationRequest) request);
+        }
+        else if (request instanceof ChangeConfigurationRequest) {
+            result = eventHandler.handleChangeConfigurationRequest((ChangeConfigurationRequest) request);
         }
 
         return result;

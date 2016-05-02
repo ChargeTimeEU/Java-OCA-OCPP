@@ -63,7 +63,7 @@ public class Client
         try {
             session.close();
         } catch (Exception ex) {
-            System.err.println(ex.getStackTrace());
+            ex.printStackTrace();
         }
     }
 

@@ -39,7 +39,7 @@ public class JSONCommunicator extends Communicator {
             JSONObject json = new JSONObject(payload);
             object = parseJSON(json, type);
         } catch (Exception ex) {
-            System.err.println(ex.getStackTrace());
+            ex.printStackTrace();
         }
         return object;
     }

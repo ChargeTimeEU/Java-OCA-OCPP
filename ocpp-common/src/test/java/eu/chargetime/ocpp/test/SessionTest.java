@@ -8,6 +8,7 @@ import groovy.transform.Synchronized;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.testng.TestException;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -135,7 +136,7 @@ public class SessionTest {
     public void onCall_callbackThrowsException_callSendCallResult() {
         // Given
         String someId = "Some id";
-        when(sessionEvents.handleRequest(any())).thenThrow(Exception.class);
+        when(sessionEvents.handleRequest(any())).thenThrow(TestException.class);
 
         // When
         eventHandler.onCall(someId, null, null);

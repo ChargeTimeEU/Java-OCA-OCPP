@@ -8,4 +8,5 @@ import eu.chargetime.ocpp.model.*;
 public interface ClientCoreEventHandler {
     ChangeAvailabilityConfirmation handleChangeAvailabilityRequest(ChangeAvailabilityRequest request);
     GetConfigurationConfirmation handleGetConfigurationRequest(GetConfigurationRequest request);
+    ChangeConfigurationConfirmation handleChangeConfigurationRequest(ChangeConfigurationRequest request);
 }

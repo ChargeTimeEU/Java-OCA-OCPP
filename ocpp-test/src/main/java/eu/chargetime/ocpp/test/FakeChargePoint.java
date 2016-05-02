@@ -33,6 +33,12 @@ public class FakeChargePoint
                 receivedRequest = request;
                 return new GetConfigurationConfirmation();
             }
+
+            @Override
+            public ChangeConfigurationConfirmation handleChangeConfigurationRequest(ChangeConfigurationRequest request) {
+                receivedRequest = request;
+                return new ChangeConfigurationConfirmation();
+            }
         });
         client = new Client(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue()));
         client.addFeatureProfile(core);
@@ -42,7 +48,7 @@ public class FakeChargePoint
         try {
             client.connect("ws://localhost:8887");
         } catch (Exception ex) {
-            System.err.println(ex.getStackTrace());
+            ex.printStackTrace();
         }
     }
 
@@ -74,11 +80,19 @@ public class FakeChargePoint
         client.disconnect();
     }
 
+    private void confirmRequest(Class<?> type) {
+        assertThat(receivedRequest, instanceOf(type));
+    }
+
     public void hasHandledChangeAvailabilityRequest() {
-        assertThat(receivedRequest, instanceOf(ChangeAvailabilityRequest.class));
+        confirmRequest(ChangeAvailabilityRequest.class);
     }
 
     public void hasHandledGetConfigurationRequest() {
-        assertThat(receivedRequest, instanceOf(GetConfigurationRequest.class));
+        confirmRequest(GetConfigurationRequest.class);
+    }
+
+    public void hasHandledChangeConfigurationRequest() {
+        confirmRequest(ChangeConfigurationRequest.class);
     }
 }

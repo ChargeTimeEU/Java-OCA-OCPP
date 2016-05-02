@@ -86,6 +86,7 @@ public class Session {
                     Confirmation conf = events.handleRequest(request);
                     promise.complete(conf);
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     promise.completeExceptionally(ex);
                 }
             }).start();

@@ -54,7 +54,7 @@ public class CoreProfileTest
     }
 
     @Test
-    public void handleRequest_aChangeAvailabilityRequest_callsHandleBootNotificationRequest() {
+    public void handleRequest_aChangeAvailabilityRequest_callsHandleChangeAvailabilityRequest() {
         // Given
         ChangeAvailabilityRequest request = new ChangeAvailabilityRequest();
 
@@ -76,5 +76,55 @@ public class CoreProfileTest
 
         // Then
         assertThat(conf, instanceOf(ChangeAvailabilityConfirmation.class));
+    }
+
+    @Test
+    public void handleRequest_aGetConfigurationRequest_callsHandleGetConfigurationRequest() {
+        // Given
+        GetConfigurationRequest request = new GetConfigurationRequest();
+
+        // When
+        core.handleRequest(request);
+
+        // Then
+        verify(handler, times(1)).handleGetConfigurationRequest(eq(request));
+    }
+
+    @Test
+    public void handleRequest_aGetConfigurationRequest_returnGetConfigurationConfirmation() {
+        // Given
+        when(handler.handleGetConfigurationRequest(any())).thenReturn(new GetConfigurationConfirmation());
+        GetConfigurationRequest request = new GetConfigurationRequest();
+
+        // When
+        Confirmation conf = core.handleRequest(request);
+
+        // Then
+        assertThat(conf, instanceOf(GetConfigurationConfirmation.class));
+    }
+
+    @Test
+    public void handleRequest_aChangeConfigurationRequest_callsHandleChangeConfigurationRequest() {
+        // Given
+        ChangeConfigurationRequest request = new ChangeConfigurationRequest();
+
+        // When
+        core.handleRequest(request);
+
+        // Then
+        verify(handler, times(1)).handleChangeConfigurationRequest(eq(request));
+    }
+
+    @Test
+    public void handleRequest_aChangeConfigurationRequest_returnsChangeConfigurationConfirmation() {
+        // Given
+        when(handler.handleChangeConfigurationRequest(any())).thenReturn(new ChangeConfigurationConfirmation());
+        ChangeConfigurationRequest request = new ChangeConfigurationRequest();
+
+        // When
+        Confirmation conf = core.handleRequest(request);
+
+        // Then
+        assertThat(conf, instanceOf(ChangeConfigurationConfirmation.class));
     }
 }

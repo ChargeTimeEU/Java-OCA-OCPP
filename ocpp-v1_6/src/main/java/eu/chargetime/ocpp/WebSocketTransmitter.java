@@ -36,13 +36,13 @@ public class WebSocketTransmitter implements Transmitter
             @Override
             public void onError(Exception ex)
             {
-                System.err.println(ex.getStackTrace());
+                ex.printStackTrace();
             }
         };
         try {
             client.connectBlocking();
         } catch (Exception ex) {
-            System.err.println(ex.getStackTrace());
+            ex.printStackTrace();
         }
     }
 
@@ -52,7 +52,7 @@ public class WebSocketTransmitter implements Transmitter
         try {
             client.closeBlocking();
         } catch (Exception ex) {
-            System.err.println(ex.getStackTrace());
+            ex.printStackTrace();
         }
     }
 

@@ -117,7 +117,8 @@ public class FakeCentralSystem
         JSONArray json = new JSONArray(message);
         Object[] output = new Object[json.length()];
         for (int i = 0; i < json.length(); i++) {
-            output[i] = json.get(i);
+            if (!json.isNull(i))
+                output[i] = json.get(i);
         }
         return output;
     }
@@ -138,9 +139,18 @@ public class FakeCentralSystem
         assertThat(getUniqueId(), equalTo("GetConfiguration"));
     }
 
+    public void hasReceivedChangeConfigurationConfirmation() {
+        assertThat(getUniqueId(), equalTo("ChangeConfiguration"));
+    }
+
     public void sendGetConfigurationRequest(String... keys) {
         String payload = "\"key\":%s";
         sendRequest("GetConfiguration", String.format(payload, formatList(keys)));
+    }
+
+    public void sendChangeConfigurationRequest(String key, String value) {
+        String payload = "\"key\":\"%s\",\"value\":\"%s\"";
+        sendRequest("ChangeConfiguration", String.format(payload, key, value));
     }
 
     public String formatList(String[] items) {
@@ -151,7 +161,7 @@ public class FakeCentralSystem
     }
 
     public enum AvailabilityType {
-        Inoperative, Operative;
+        Inoperative, Operative
     }
 
     public void sendChangeAvailability(int connectorId, AvailabilityType type)
@@ -161,7 +171,7 @@ public class FakeCentralSystem
     }
 
     public enum RegistrationStatus {
-        Accepted, Pending, Rejected;
+        Accepted, Pending, Rejected
     }
     public void sendBootConfirmation(RegistrationStatus status) {
         String payload = "\"currentTime\": \"%s\", \"interval\": %d, \"status\": \"%s\"";
@@ -169,7 +179,7 @@ public class FakeCentralSystem
     }
 
     public enum AuthorizationStatus {
-        Accepted, Blocked, Expired, Invalid;
+        Accepted, Blocked, Expired, Invalid
     }
     public void sendAuthorizeConfirmation(AuthorizationStatus status) {
         String payload = "\"idTagInfo\": {\"status\":\"%s\"}";
