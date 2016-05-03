@@ -143,6 +143,10 @@ public class FakeCentralSystem
         assertThat(getUniqueId(), equalTo("ChangeConfiguration"));
     }
 
+    public void hasReceivedClearCacheConfirmation() {
+        assertThat(getUniqueId(), equalTo("ClearCache"));
+    }
+
     public void sendGetConfigurationRequest(String... keys) {
         String payload = "\"key\":%s";
         sendRequest("GetConfiguration", String.format(payload, formatList(keys)));
@@ -151,6 +155,10 @@ public class FakeCentralSystem
     public void sendChangeConfigurationRequest(String key, String value) {
         String payload = "\"key\":\"%s\",\"value\":\"%s\"";
         sendRequest("ChangeConfiguration", String.format(payload, key, value));
+    }
+
+    public void sendClearCacheRequest() {
+        sendRequest("ClearCache", "");
     }
 
     public String formatList(String[] items) {
@@ -196,6 +204,7 @@ public class FakeCentralSystem
 
     private void send(String message) {
         Collection<WebSocket> con = server.connections();
+
         for (WebSocket ws : con) {
             ws.send(message);
         }

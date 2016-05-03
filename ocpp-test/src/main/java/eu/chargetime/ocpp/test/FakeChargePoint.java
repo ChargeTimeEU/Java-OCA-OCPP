@@ -39,6 +39,12 @@ public class FakeChargePoint
                 receivedRequest = request;
                 return new ChangeConfigurationConfirmation();
             }
+
+            @Override
+            public ClearCacheConfirmation handleClearCacheRequest(ClearCacheRequest request) {
+                receivedRequest = request;
+                return new ClearCacheConfirmation();
+            }
         });
         client = new Client(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue()));
         client.addFeatureProfile(core);
@@ -94,5 +100,9 @@ public class FakeChargePoint
 
     public void hasHandledChangeConfigurationRequest() {
         confirmRequest(ChangeConfigurationRequest.class);
+    }
+
+    public void hasHandledClearCacheRequest() {
+        confirmRequest(ClearCacheRequest.class);
     }
 }

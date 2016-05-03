@@ -22,6 +22,7 @@ public class CoreProfile implements Profile
         features.add(new ChangeAvailabilityFeature(this));
         features.add(new GetConfigurationFeature(this));
         features.add(new ChangeConfigurationFeature(this));
+        features.add(new ClearCacheFeature(this));
     }
 
     public AuthorizeRequest createAuthorizeRequest(String idToken) {
@@ -49,6 +50,9 @@ public class CoreProfile implements Profile
         }
         else if (request instanceof ChangeConfigurationRequest) {
             result = eventHandler.handleChangeConfigurationRequest((ChangeConfigurationRequest) request);
+        }
+        else if (request instanceof ClearCacheRequest) {
+            result = eventHandler.handleClearCacheRequest((ClearCacheRequest) request);
         }
 
         return result;

@@ -1,5 +1,7 @@
 package eu.chargetime.ocpp.feature.profile.test;
 
+import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.CoreProfile;
 import eu.chargetime.ocpp.model.*;
@@ -54,6 +56,24 @@ public class CoreProfileTest
     }
 
     @Test
+    public void getFeatureList_containsBootNotificationFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // then
+        assertThat(findFeature(features, "BootNotification"), is(instanceOf(BootNotificationFeature.class)));
+    }
+
+    @Test
+    public void getFeatureList_containsAuthorizeFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // then
+        assertThat(findFeature(features, "Authorize"), is(instanceOf(AuthorizeFeature.class)));
+    }
+
+    @Test
     public void handleRequest_aChangeAvailabilityRequest_callsHandleChangeAvailabilityRequest() {
         // Given
         ChangeAvailabilityRequest request = new ChangeAvailabilityRequest();
@@ -77,6 +97,16 @@ public class CoreProfileTest
         // Then
         assertThat(conf, instanceOf(ChangeAvailabilityConfirmation.class));
     }
+
+    @Test
+    public void getFeatureList_containsChangeAvailabilityFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // then
+        assertThat(findFeature(features, "ChangeAvailability"), is(instanceOf(ChangeAvailabilityFeature.class)));
+    }
+
 
     @Test
     public void handleRequest_aGetConfigurationRequest_callsHandleGetConfigurationRequest() {
@@ -104,6 +134,15 @@ public class CoreProfileTest
     }
 
     @Test
+    public void getFeatureList_containsGetConfigurationFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // then
+        assertThat(findFeature(features, "GetConfiguration"), is(instanceOf(GetConfigurationFeature.class)));
+    }
+
+    @Test
     public void handleRequest_aChangeConfigurationRequest_callsHandleChangeConfigurationRequest() {
         // Given
         ChangeConfigurationRequest request = new ChangeConfigurationRequest();
@@ -126,5 +165,59 @@ public class CoreProfileTest
 
         // Then
         assertThat(conf, instanceOf(ChangeConfigurationConfirmation.class));
+    }
+
+    @Test
+    public void getFeatureList_containsChangeConfigurationFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // then
+        assertThat(findFeature(features, "ChangeConfiguration"), is(instanceOf(ChangeConfigurationFeature.class)));
+    }
+
+    @Test
+    public void handleRequest_aClearCacheRequest_callsHandleClearCacheRequest() {
+        // Given
+        ClearCacheRequest request = new ClearCacheRequest();
+
+        // When
+        core.handleRequest(request);
+
+        // Then
+        verify(handler, times(1)).handleClearCacheRequest(request);
+    }
+
+    @Test
+    public void handleRequest_aClearCacheRequest_returnsClearCacheConfirmation() {
+        // Given
+        when(handler.handleClearCacheRequest(any())).thenReturn(new ClearCacheConfirmation());
+        ClearCacheRequest request = new ClearCacheRequest();
+
+        // When
+        Confirmation conf = core.handleRequest(request);
+
+        // Then
+        assertThat(conf, instanceOf(ClearCacheConfirmation.class));
+    }
+
+    @Test
+    public void getFeatureList_containsClearCacheFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // then
+        assertThat(findFeature(features, "ClearCache"), is(instanceOf(ClearCacheFeature.class)));
+    }
+
+    private Feature findFeature(Feature[] features, String action) {
+        Feature output = null;
+        for (Feature feature: features) {
+            if (action.equals(feature.getAction())) {
+                output = feature;
+                break;
+            }
+        }
+        return output;
     }
 }
