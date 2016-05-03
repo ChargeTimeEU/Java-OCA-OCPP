@@ -1,7 +1,5 @@
 package eu.chargetime.ocpp;
 
-import eu.chargetime.ocpp.Transmitter;
-import eu.chargetime.ocpp.TransmitterEvents;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
