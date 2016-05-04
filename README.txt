@@ -21,3 +21,6 @@ spock-core-0.7-groovy-2.0
 To use version 1.6 you need the following libraries:
 org.json:json:20160212
 org.java_websocket
+
+# License
+MIT License
