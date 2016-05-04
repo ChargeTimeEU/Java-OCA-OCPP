@@ -23,4 +23,9 @@ public class ChangeAvailabilityRequest implements Request
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public boolean validate() {
+        return false;
+    }
 }

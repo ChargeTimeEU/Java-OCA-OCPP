@@ -48,4 +48,9 @@ public class BootNotificationConfirmation implements Confirmation
     {
         this.status = status;
     }
+
+    @Override
+    public boolean validate() {
+        return false;
+    }
 }

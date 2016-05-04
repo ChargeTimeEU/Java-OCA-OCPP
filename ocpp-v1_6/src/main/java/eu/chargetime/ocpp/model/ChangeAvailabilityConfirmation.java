@@ -20,4 +20,9 @@ public class ChangeAvailabilityConfirmation implements Confirmation {
     public ChangeAvailabilityConfirmation(String status) {
         this.status = status;
     }
+
+    @Override
+    public boolean validate() {
+        return false;
+    }
 }

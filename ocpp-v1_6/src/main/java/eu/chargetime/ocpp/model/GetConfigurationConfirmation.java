@@ -23,4 +23,9 @@ public class GetConfigurationConfirmation implements Confirmation {
     }
 
     private String[] unknownKey;
+
+    @Override
+    public boolean validate() {
+        return false;
+    }
 }

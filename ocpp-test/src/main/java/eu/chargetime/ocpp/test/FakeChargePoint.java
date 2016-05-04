@@ -64,8 +64,12 @@ public class FakeChargePoint
     }
 
     public void sendAuthorizeRequest(String idToken) {
-        Request request = core.createAuthorizeRequest(idToken);
-        send(request);
+        try {
+            Request request = core.createAuthorizeRequest(idToken);
+            send(request);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void send(Request request) {

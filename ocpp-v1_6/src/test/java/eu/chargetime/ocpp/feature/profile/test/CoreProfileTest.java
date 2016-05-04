@@ -30,7 +30,7 @@ public class CoreProfileTest
     }
 
     @Test
-    public void createAuthorizeRequest_withIdToken_returnsAuthorizeRequestWithIdTag() {
+    public void createAuthorizeRequest_withIdToken_returnsAuthorizeRequestWithIdTag() throws Exception {
         // Given
         String legalIdToken = "test123";
 

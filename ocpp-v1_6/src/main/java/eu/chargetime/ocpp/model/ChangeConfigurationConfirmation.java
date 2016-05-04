@@ -13,4 +13,9 @@ public class ChangeConfigurationConfirmation implements Confirmation{
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Override
+    public boolean validate() {
+        return false;
+    }
 }

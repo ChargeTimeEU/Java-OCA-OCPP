@@ -13,4 +13,9 @@ public class GetConfigurationRequest implements Request {
     public void setKey(String[] key) {
         this.key = key;
     }
+
+    @Override
+    public boolean validate() {
+        return false;
+    }
 }

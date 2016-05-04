@@ -111,4 +111,9 @@ public class BootNotificationRequest implements Request
     {
         this.meterType = meterType;
     }
+
+    @Override
+    public boolean validate() {
+        return false;
+    }
 }

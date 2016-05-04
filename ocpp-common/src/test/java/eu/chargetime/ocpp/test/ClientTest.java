@@ -35,7 +35,12 @@ public class ClientTest
 
     @Before
     public void setup() {
-        request = new Request() {};
+        request = new Request() {
+            @Override
+            public boolean validate() {
+                return false;
+            }
+        };
         doReturn(request.getClass()).when(feature).getRequestType();
         doReturn(TestConfirmation.class).when(feature).getConfirmationType();
         when(feature.getAction()).thenReturn(null);

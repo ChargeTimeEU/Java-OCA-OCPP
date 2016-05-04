@@ -12,8 +12,14 @@ public class AuthorizeConfirmation implements Confirmation
         return idTagInfo;
     }
 
-    public void setIdTagInfo(IdTagInfo idTagInfo)
-    {
+    public void setIdTagInfo(IdTagInfo idTagInfo) {
         this.idTagInfo = idTagInfo;
+    }
+
+    @Override
+    public boolean validate() {
+        boolean valid = true;
+        valid &= idTagInfo != null;
+        return valid;
     }
 }

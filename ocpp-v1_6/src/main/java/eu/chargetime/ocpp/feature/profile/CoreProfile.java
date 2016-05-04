@@ -1,5 +1,6 @@
 package eu.chargetime.ocpp.feature.profile;
 
+import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.model.*;
 
@@ -25,7 +26,7 @@ public class CoreProfile implements Profile
         features.add(new ClearCacheFeature(this));
     }
 
-    public AuthorizeRequest createAuthorizeRequest(String idToken) {
+    public AuthorizeRequest createAuthorizeRequest(String idToken) throws PropertyConstraintException {
         return new AuthorizeRequest(idToken);
     }
 

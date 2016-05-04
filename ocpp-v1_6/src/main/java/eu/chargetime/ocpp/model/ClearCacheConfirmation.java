@@ -13,4 +13,9 @@ public class ClearCacheConfirmation implements Confirmation{
     }
 
     private String status;
+
+    @Override
+    public boolean validate() {
+        return false;
+    }
 }

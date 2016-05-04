@@ -56,7 +56,12 @@ public class SessionTest {
     public void sendRequest_sendRequestToCommunicator() {
         // Given
         String  someAction      = "Test action";
-        Request someRequest     = new Request() {};
+        Request someRequest     = new Request() {
+            @Override
+            public boolean validate() {
+                return false;
+            }
+        };
 
         // When
         session.sendRequest(someAction, someRequest);
@@ -81,7 +86,12 @@ public class SessionTest {
     @Test
     public void sendConfirmation_sendsConfirmationToCommunicator(){
         // Given
-        Confirmation conf = new Confirmation() {};
+        Confirmation conf = new Confirmation() {
+            @Override
+            public boolean validate() {
+                return false;
+            }
+        };
         String someUniqueId = "Some id";
 
         // When
@@ -121,7 +131,12 @@ public class SessionTest {
     public void onCall_handledCallback_callSendCallResult() {
         // Given
         String someId = "Some id";
-        Confirmation aConfirmation = new Confirmation() {};
+        Confirmation aConfirmation = new Confirmation() {
+            @Override
+            public boolean validate() {
+                return false;
+            }
+        };
         when(sessionEvents.handleRequest(any())).thenReturn(aConfirmation);
 
         // When

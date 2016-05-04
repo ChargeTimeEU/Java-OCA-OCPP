@@ -22,4 +22,9 @@ public class ChangeConfigurationRequest implements Request {
     public void setValue(String value) {
         this.value = value;
     }
+
+    @Override
+    public boolean validate() {
+        return false;
+    }
 }
