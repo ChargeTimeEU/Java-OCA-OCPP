@@ -19,7 +19,8 @@ public class AuthorizeConfirmation implements Confirmation
     @Override
     public boolean validate() {
         boolean valid = true;
-        valid &= idTagInfo != null;
+        if (valid &= idTagInfo != null)
+            valid &= idTagInfo.validate();
         return valid;
     }
 }

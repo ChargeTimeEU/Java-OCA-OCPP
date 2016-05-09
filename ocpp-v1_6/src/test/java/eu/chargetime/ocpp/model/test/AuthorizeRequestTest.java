@@ -26,34 +26,19 @@ public class AuthorizeRequestTest {
     @Test
     public void setIdToken_exceed20chars_throwsPropertyConstraintException() {
         // Given
-        String nullValue = "1234567890123456789012";
+        String illegalValue = "1234567890123456789012";
 
         // When
         try {
-            request.setIdTag(nullValue);
+            request.setIdTag(illegalValue);
 
+            Assert.fail("Expected exception");
         // Then
         } catch (PropertyConstraintException ex) {
             assertThat(ex.getFieldKey(), equalTo("idTag"));
-            assertThat(ex.getFieldValue(), equalTo(nullValue));
+            assertThat(ex.getFieldValue(), equalTo(illegalValue ));
         }
 
-    }
-
-    @Test
-    public void setIdToken_legalValue_storedValue() {
-        // Given
-        String legalValue = "12345678901234567890";
-
-        // When
-        try {
-            request.setIdTag(legalValue);
-
-        // Then
-            assertThat(request.getIdTag(), equalTo(legalValue));
-        } catch (Exception ex) {
-            Assert.fail("Unexpected exception was thrown");
-        }
     }
 
     @Test
