@@ -48,7 +48,7 @@ class AuthorizeRequest extends Specification
 
     def "A authorize request isn't seen as a boot notification"() {
         when:
-        chargePoint.sendAuthorizeRequest();
+        chargePoint.sendAuthorizeRequest("token");
 
         then:
         centralSystem.receivedMessageIsNot("BootNotification");

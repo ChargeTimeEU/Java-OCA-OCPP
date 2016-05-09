@@ -14,4 +14,8 @@ public class ModelUtil {
         }
         return found;
     }
+
+    public static boolean validate(String input, int maxLength) {
+        return input != null && input.length() <= maxLength;
+    }
 }

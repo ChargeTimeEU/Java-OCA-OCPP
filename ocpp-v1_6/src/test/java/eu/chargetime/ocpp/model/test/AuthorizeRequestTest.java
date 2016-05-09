@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -51,7 +50,7 @@ public class AuthorizeRequestTest {
     }
 
     @Test
-    public void validate_idTagSet_returnFalse() throws Exception{
+    public void validate_idTagSet_returnTrue() throws Exception{
         // Given
         request.setIdTag("42");
 
@@ -59,7 +58,7 @@ public class AuthorizeRequestTest {
         boolean isValid = request.validate();
 
         // Then
-        assertThat(isValid, is(false));
+        assertThat(isValid, is(true));
     }
 
 }

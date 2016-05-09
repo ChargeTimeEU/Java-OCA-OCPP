@@ -1,5 +1,8 @@
 package eu.chargetime.ocpp.model;
 
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.utilities.ModelUtil;
+
 /**
  * Created by Thomas Volden on 25-Apr-16.
  */
@@ -27,8 +30,10 @@ public class BootNotificationRequest implements Request
         return chargePointVendor;
     }
 
-    public void setChargePointVendor(String chargePointVendor)
-    {
+    public void setChargePointVendor(String chargePointVendor) throws PropertyConstraintException {
+        if (!ModelUtil.validate(chargePointVendor, 20))
+            throw new PropertyConstraintException("chargePointVendor", chargePointVendor);
+
         this.chargePointVendor = chargePointVendor;
     }
 
@@ -37,8 +42,11 @@ public class BootNotificationRequest implements Request
         return chargePointModel;
     }
 
-    public void setChargePointModel(String chargePointModel)
+    public void setChargePointModel(String chargePointModel) throws PropertyConstraintException
     {
+        if (!ModelUtil.validate(chargePointModel, 20))
+            throw new PropertyConstraintException("chargePointModel", chargePointModel);
+
         this.chargePointModel = chargePointModel;
     }
 
@@ -47,8 +55,11 @@ public class BootNotificationRequest implements Request
         return chargeBoxSerialNumber;
     }
 
-    public void setChargeBoxSerialNumber(String chargeBoxSerialNumber)
+    public void setChargeBoxSerialNumber(String chargeBoxSerialNumber) throws PropertyConstraintException
     {
+        if (!ModelUtil.validate(chargeBoxSerialNumber, 25))
+            throw new PropertyConstraintException("chargeBoxSerialNumber", chargeBoxSerialNumber);
+
         this.chargeBoxSerialNumber = chargeBoxSerialNumber;
     }
 
@@ -57,8 +68,10 @@ public class BootNotificationRequest implements Request
         return chargePointSerialNumber;
     }
 
-    public void setChargePointSerialNumber(String chargePointSerialNumber)
-    {
+    public void setChargePointSerialNumber(String chargePointSerialNumber) throws PropertyConstraintException {
+        if (!ModelUtil.validate(chargePointSerialNumber, 25))
+            throw new PropertyConstraintException("chargePointSerialNumber", chargePointSerialNumber);
+
         this.chargePointSerialNumber = chargePointSerialNumber;
     }
 
@@ -67,8 +80,10 @@ public class BootNotificationRequest implements Request
         return firmwareVersion;
     }
 
-    public void setFirmwareVersion(String firmwareVersion)
-    {
+    public void setFirmwareVersion(String firmwareVersion) throws PropertyConstraintException {
+        if (!ModelUtil.validate(firmwareVersion, 50))
+            throw new PropertyConstraintException("firmwareVersion", firmwareVersion);
+
         this.firmwareVersion = firmwareVersion;
     }
 
@@ -77,8 +92,10 @@ public class BootNotificationRequest implements Request
         return iccid;
     }
 
-    public void setIccid(String iccid)
-    {
+    public void setIccid(String iccid) throws PropertyConstraintException {
+        if (!ModelUtil.validate(iccid, 20))
+            throw new PropertyConstraintException("iccid", iccid);
+
         this.iccid = iccid;
     }
 
@@ -87,8 +104,10 @@ public class BootNotificationRequest implements Request
         return imsi;
     }
 
-    public void setImsi(String imsi)
-    {
+    public void setImsi(String imsi) throws PropertyConstraintException {
+        if (!ModelUtil.validate(imsi, 20))
+            throw new PropertyConstraintException("imsi", imsi);
+
         this.imsi = imsi;
     }
 
@@ -97,8 +116,10 @@ public class BootNotificationRequest implements Request
         return meterSerialNumber;
     }
 
-    public void setMeterSerialNumber(String meterSerialNumber)
-    {
+    public void setMeterSerialNumber(String meterSerialNumber) throws PropertyConstraintException {
+        if (!ModelUtil.validate(meterSerialNumber, 25))
+            throw new PropertyConstraintException("meterSerialNumber", meterSerialNumber);
+
         this.meterSerialNumber = meterSerialNumber;
     }
 
@@ -107,8 +128,10 @@ public class BootNotificationRequest implements Request
         return meterType;
     }
 
-    public void setMeterType(String meterType)
-    {
+    public void setMeterType(String meterType) throws PropertyConstraintException {
+        if (!ModelUtil.validate(meterType, 25))
+            throw new PropertyConstraintException("meterType", meterType);
+
         this.meterType = meterType;
     }
 
