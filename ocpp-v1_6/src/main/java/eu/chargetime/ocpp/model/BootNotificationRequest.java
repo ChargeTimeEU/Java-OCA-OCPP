@@ -137,6 +137,9 @@ public class BootNotificationRequest implements Request
 
     @Override
     public boolean validate() {
-        return false;
+        boolean valid = true;
+        valid &= ModelUtil.validate(chargePointModel, 20);
+        valid &= ModelUtil.validate(chargePointVendor, 20);
+        return valid;
     }
 }

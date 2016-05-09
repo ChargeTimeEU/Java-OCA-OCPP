@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 /**
@@ -237,5 +238,27 @@ public class BootNotificationRequestTest {
             assertThat(ex.getFieldKey(), equalTo("meterType"));
             assertThat(ex.getFieldValue(), equalTo(stringLength26));
         }
+    }
+
+    @Test
+    public void validate_chargePointVendorAndChargePointModelIsSet_returnsTrue() throws Exception {
+        // Given
+        bootNotificationRequest.setChargePointModel(stringLength20);
+        bootNotificationRequest.setChargePointVendor(stringLength20);
+
+        // When
+        boolean isValid = bootNotificationRequest.validate();
+
+        // Then
+        assertThat(isValid, is(true));
+    }
+
+    @Test
+    public void validate_nothingIsSet_returnsFalse() throws Exception {
+        // When
+        boolean isValid = bootNotificationRequest.validate();
+
+        // Then
+        assertThat(isValid, is(false));
     }
 }
