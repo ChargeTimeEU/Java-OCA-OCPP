@@ -1,5 +1,8 @@
 package eu.chargetime.ocpp.model;
 
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.utilities.ModelUtil;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -34,8 +37,10 @@ public class BootNotificationConfirmation implements Confirmation
         return interval;
     }
 
-    public void setInterval(int interval)
-    {
+    public void setInterval(int interval) throws PropertyConstraintException {
+        if (interval <= 0)
+            throw new PropertyConstraintException("interval", interval, "Must be a positive value");
+
         this.interval = interval;
     }
 
@@ -44,13 +49,23 @@ public class BootNotificationConfirmation implements Confirmation
         return status;
     }
 
-    public void setStatus(String status)
-    {
+    public void setStatus(String status) throws PropertyConstraintException {
+        if (!isValidStatus(status))
+            throw new PropertyConstraintException("status", status);
+
         this.status = status;
+    }
+
+    private boolean isValidStatus(String status) {
+        return ModelUtil.isAmoung(status, "Accepted", "Pending", "Rejected");
     }
 
     @Override
     public boolean validate() {
-        return false;
+        boolean valid = true;
+        valid &= isValidStatus(this.status);
+        valid &= currentTime != null;
+        valid &= interval > 0;
+        return valid;
     }
 }

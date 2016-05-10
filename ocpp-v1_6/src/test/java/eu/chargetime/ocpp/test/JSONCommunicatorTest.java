@@ -1,10 +1,12 @@
 package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.JSONCommunicator;
+import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.Transmitter;
 import eu.chargetime.ocpp.model.BootNotificationConfirmation;
 import eu.chargetime.ocpp.model.BootNotificationRequest;
 import eu.chargetime.ocpp.model.test.TestModel;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -61,17 +63,20 @@ public class JSONCommunicatorTest
         assertThat(model.getStringTest(), equalTo(aString));
     }
 
-    // TODO find good solution for date compare
+    @Test
     public void unpack_aCalendarPayload_returnsTestModelWithACalendar() {
         // Given
         String aCalendar = "2016-04-28T07:16:11.988Z";
         String payload = "{\"calendarTest\":\"%s\"}";
 
+        Calendar someDate = new Calendar.Builder().setDate(2016,03,28)
+                .setTimeOfDay(07,16,11,988).setTimeZone(TimeZone.getTimeZone("GMT+00:00")).build();
+
         // When
         TestModel model = communicator.unpackPayload(String.format(payload, aCalendar), TestModel.class);
 
         // Then
-        assertThat(model.getCalendarTest().getTime(), is(new Date(aCalendar)));
+        assertThat(model.getCalendarTest().compareTo(someDate), is(0));
     }
 
     @Test
@@ -224,7 +229,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void pack_bootNotificationConfirmation_returnsBootNotificationConfirmationPayload() {
+    public void pack_bootNotificationConfirmation_returnsBootNotificationConfirmationPayload() throws Exception {
         // Given
         String expected = "{\"currentTime\":\"2016-04-28T06:41:13.720Z\",\"interval\":300,\"status\":\"Accepted\"}";
         BootNotificationConfirmation confirmation = new BootNotificationConfirmation();
