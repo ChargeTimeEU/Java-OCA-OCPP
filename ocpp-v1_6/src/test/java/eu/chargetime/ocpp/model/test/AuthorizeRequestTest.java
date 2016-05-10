@@ -23,6 +23,18 @@ public class AuthorizeRequestTest {
     }
 
     @Test
+    public void  setIdToken_stringLength20_idTokenIsSet() throws Exception {
+        // Given
+        String stringLength20 = "12345678901234567890";
+
+        // When
+        request.setIdTag(stringLength20);
+
+        // Then
+        assertThat(request.getIdTag(), equalTo(stringLength20));
+    }
+
+    @Test
     public void setIdToken_exceed20chars_throwsPropertyConstraintException() {
         // Given
         String illegalValue = "1234567890123456789012";
