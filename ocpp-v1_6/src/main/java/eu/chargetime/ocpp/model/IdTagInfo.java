@@ -46,7 +46,7 @@ public class IdTagInfo implements validatable
     }
 
     private boolean isValidStatus(String status) {
-        return ModelUtil.isAmoung(status, "Accepted", "Blocked", "Expired", "Invalid", "ConcurrentTx");
+        return ModelUtil.isAmong(status, "Accepted", "Blocked", "Expired", "Invalid", "ConcurrentTx");
     }
 
     @Override

@@ -57,7 +57,7 @@ public class BootNotificationConfirmation implements Confirmation
     }
 
     private boolean isValidStatus(String status) {
-        return ModelUtil.isAmoung(status, "Accepted", "Pending", "Rejected");
+        return ModelUtil.isAmong(status, "Accepted", "Pending", "Rejected");
     }
 
     @Override
