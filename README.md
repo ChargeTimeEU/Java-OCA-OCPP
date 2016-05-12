@@ -32,4 +32,4 @@ To use version 1.6 you need the following libraries:
 License
 =======
 
-[MIT License](/LICENCE)
+[MIT License](LICENSE)
