@@ -24,7 +24,6 @@ Java-OCA-OCPP uses the following libraries:
 * [spock-core-0.7-groovy-2.0](http://spockframework.org)
 
 To use version 1.6 you need the following libraries:
-----------------------------------------------------
 
 * [org.json:json:20160212](https://github.com/stleary/JSON-java)
 * [org.java_websocket](https://github.com/TooTallNate/Java-WebSocket)
