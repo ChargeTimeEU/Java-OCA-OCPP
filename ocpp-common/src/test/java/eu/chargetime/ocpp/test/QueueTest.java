@@ -1,7 +1,6 @@
 package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.Queue;
-import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Request;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +37,7 @@ import static org.mockito.Mockito.mock;
  */
 public class QueueTest
 {
-    Queue queue;
+    private Queue queue;
 
 
     @Before

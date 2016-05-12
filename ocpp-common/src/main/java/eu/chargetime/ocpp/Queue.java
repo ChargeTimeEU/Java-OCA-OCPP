@@ -1,6 +1,5 @@
 package eu.chargetime.ocpp;
 
-import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Request;
 
 import java.util.HashMap;
@@ -34,7 +33,7 @@ import java.util.UUID;
  */
 public class Queue
 {
-    HashMap<String, Request> requestQueue;
+    private HashMap<String, Request> requestQueue;
 
     public Queue () {
         requestQueue = new HashMap<>();

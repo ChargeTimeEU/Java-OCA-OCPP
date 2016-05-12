@@ -4,7 +4,6 @@ import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.model.*;
 import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.CoreProfile;
-import eu.chargetime.ocpp.WebSocketTransmitter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;

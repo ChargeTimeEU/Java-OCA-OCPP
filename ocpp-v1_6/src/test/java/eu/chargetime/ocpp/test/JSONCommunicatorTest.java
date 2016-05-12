@@ -1,18 +1,15 @@
 package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.JSONCommunicator;
-import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.Transmitter;
 import eu.chargetime.ocpp.model.BootNotificationConfirmation;
 import eu.chargetime.ocpp.model.BootNotificationRequest;
 import eu.chargetime.ocpp.model.test.TestModel;
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 

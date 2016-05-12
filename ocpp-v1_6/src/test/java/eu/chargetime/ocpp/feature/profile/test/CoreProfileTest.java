@@ -1,7 +1,6 @@
 package eu.chargetime.ocpp.feature.profile.test;
 
 import eu.chargetime.ocpp.feature.*;
-import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.CoreProfile;
 import eu.chargetime.ocpp.model.*;
@@ -42,7 +41,7 @@ import static org.mockito.Mockito.*;
  */
 public class CoreProfileTest
 {
-    CoreProfile core;
+    private CoreProfile core;
 
     @Mock
     ClientCoreEventHandler handler = mock(ClientCoreEventHandler.class);

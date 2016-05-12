@@ -4,7 +4,6 @@ import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import groovy.transform.Synchronized;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -43,7 +42,7 @@ import static org.mockito.Mockito.*;
 public class SessionTest {
     private Session session;
 
-    CommunicatorEvents eventHandler;
+    private CommunicatorEvents eventHandler;
 
     @Mock
     Communicator communicator = mock(Communicator.class);

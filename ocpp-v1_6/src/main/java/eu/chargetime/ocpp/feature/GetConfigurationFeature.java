@@ -1,6 +1,5 @@
 package eu.chargetime.ocpp.feature;
 
-import eu.chargetime.ocpp.feature.profile.CoreProfile;
 import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.GetConfigurationConfirmation;

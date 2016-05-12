@@ -1,8 +1,6 @@
 package eu.chargetime.ocpp.model.test;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 
 /**
  ChargeTime.eu - Java-OCA-OCPP

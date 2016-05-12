@@ -1,8 +1,6 @@
 package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.model.*;
-import org.apache.ivy.core.report.ConfigurationResolveReport;
-import org.json.JSONArray;
 
 /**
  ChargeTime.eu - Java-OCA-OCPP

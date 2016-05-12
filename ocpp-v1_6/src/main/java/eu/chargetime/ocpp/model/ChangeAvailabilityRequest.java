@@ -1,5 +1,8 @@
 package eu.chargetime.ocpp.model;
 
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.utilities.ModelUtil;
+
 /**
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -28,14 +31,17 @@ package eu.chargetime.ocpp.model;
  */
 public class ChangeAvailabilityRequest implements Request
 {
-    private int connectorId;
+    private int connectorId = -1;
     private String type;
 
     public int getConnectorId() {
         return connectorId;
     }
 
-    public void setConnectorId(int connectorId) {
+    public void setConnectorId(int connectorId) throws PropertyConstraintException {
+        if (connectorId < 0)
+            throw new PropertyConstraintException("connectorId", connectorId, "Must be >= 0");
+
         this.connectorId = connectorId;
     }
 
@@ -43,12 +49,22 @@ public class ChangeAvailabilityRequest implements Request
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(String type) throws PropertyConstraintException {
+        if (!isValidType(type))
+            throw new PropertyConstraintException("type", type, "Not valid availabilityType");
+
         this.type = type;
+    }
+
+    private boolean isValidType(String type) {
+        return ModelUtil.isAmong(type, "Inoperative", "Operative");
     }
 
     @Override
     public boolean validate() {
-        return false;
+        boolean valid = true;
+        valid &= isValidType(this.type);
+        valid &= connectorId >= 0;
+        return valid;
     }
 }
