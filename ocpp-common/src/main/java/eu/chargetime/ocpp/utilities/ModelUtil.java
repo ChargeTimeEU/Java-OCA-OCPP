@@ -53,4 +53,18 @@ public abstract class ModelUtil {
     public static boolean validate(String input, int maxLength) {
         return input != null && input.length() <= maxLength;
     }
+
+    public static String aString(int length) {
+        String lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus bibendum eros vitae sapien metusa.";
+
+        if (lorem.length() < length) {
+            StringBuilder extender = new StringBuilder(lorem);
+            while (extender.length() < length) {
+                extender.append(lorem);
+            }
+            lorem = extender.toString();
+        }
+
+        return lorem.substring(0, length);
+    }
 }

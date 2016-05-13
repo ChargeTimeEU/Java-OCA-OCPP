@@ -1,12 +1,14 @@
 package eu.chargetime.ocpp.model;
 
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.utilities.ModelUtil;
+
 /**
  ChargeTime.eu - Java-OCA-OCPP
- Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
  MIT License
 
- Copyright (c) 2016 Thomas Volden
+ Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +28,7 @@ package eu.chargetime.ocpp.model;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
 public class ChangeConfigurationRequest implements Request {
     private String key;
     private String value;
@@ -34,20 +37,37 @@ public class ChangeConfigurationRequest implements Request {
         return key;
     }
 
-    public void setKey(String key) {
+    public void setKey(String key) throws PropertyConstraintException {
+        if (!isValidKey(key))
+            throw new PropertyConstraintException("key", key);
+
         this.key = key;
+    }
+
+    private boolean isValidKey(String key) {
+        return ModelUtil.validate(key, 50);
     }
 
     public String getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(String value) throws PropertyConstraintException {
+        if (!isValidValue(value))
+            throw new PropertyConstraintException("value", value);
+
         this.value = value;
+    }
+
+    private boolean isValidValue(String value) {
+        return ModelUtil.validate(value, 500);
     }
 
     @Override
     public boolean validate() {
-        return false;
+        boolean valid = true;
+        valid &= isValidKey(this.key);
+        valid &= isValidValue(this.value);
+        return valid;
     }
 }
