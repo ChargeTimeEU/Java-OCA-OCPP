@@ -1,5 +1,8 @@
 package eu.chargetime.ocpp.model;
 
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.utilities.ModelUtil;
+
 /**
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -28,6 +31,7 @@ package eu.chargetime.ocpp.model;
  */
 public class GetConfigurationConfirmation implements Confirmation {
     private KeyValueType[] configurationKey;
+    private String[] unknownKey;
 
     public KeyValueType[] getConfigurationKey() {
         return configurationKey;
@@ -41,14 +45,36 @@ public class GetConfigurationConfirmation implements Confirmation {
         return unknownKey;
     }
 
-    public void setUnknownKey(String[] unknownKey) {
+    public void setUnknownKey(String[] unknownKey) throws PropertyConstraintException {
+        if (!isValidUnknownKey(unknownKey))
+            throw new PropertyConstraintException("unknownKey", unknownKey);
+
         this.unknownKey = unknownKey;
     }
 
-    private String[] unknownKey;
+    private boolean isValidUnknownKey(String[] unknownKeys) {
+        boolean output = true;
+        for(String key: unknownKeys) {
+            if ((output = ModelUtil.validate(key, 50)) == false) break;
+        }
+        return output;
+    }
+
+    private boolean validateConfigurationKeys() {
+        boolean output = true;
+        if (configurationKey != null && configurationKey.length > 0) {
+            for (KeyValueType key : configurationKey) {
+                if ((output = key.validate()) == false)
+                    break;
+            }
+        }
+        return output;
+    }
 
     @Override
     public boolean validate() {
-        return false;
+        boolean output = true;
+        output &= validateConfigurationKeys();
+        return output;
     }
 }

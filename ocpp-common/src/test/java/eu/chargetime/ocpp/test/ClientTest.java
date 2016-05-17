@@ -43,8 +43,7 @@ import static org.mockito.Mockito.*;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-public class ClientTest
-{
+public class ClientTest extends TestUtilities {
     private Client client;
     private Request request;
     private SessionEvents eventHandler;
@@ -73,10 +72,6 @@ public class ClientTest
 
         when(profile.getFeatureList()).thenReturn(aList(feature));
         client.addFeatureProfile(profile);
-    }
-
-    private <T> T[] aList(T... objects) {
-        return objects;
     }
 
     @Test

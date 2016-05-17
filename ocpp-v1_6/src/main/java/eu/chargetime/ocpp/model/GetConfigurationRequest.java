@@ -1,5 +1,8 @@
 package eu.chargetime.ocpp.model;
 
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.utilities.ModelUtil;
+
 /**
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -33,12 +36,24 @@ public class GetConfigurationRequest implements Request {
         return key;
     }
 
-    public void setKey(String[] key) {
+    public void setKey(String[] key) throws PropertyConstraintException {
+        if (!isValidKey(key))
+            throw new PropertyConstraintException("key", key);
+
         this.key = key;
+    }
+
+    private boolean isValidKey(String[] keys) {
+        boolean output = true;
+        for(String key: keys) {
+            if ((output = ModelUtil.validate(key, 50)) == false)
+                break;
+        }
+        return output;
     }
 
     @Override
     public boolean validate() {
-        return false;
+        return true;
     }
 }

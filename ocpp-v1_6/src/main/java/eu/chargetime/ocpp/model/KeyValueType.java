@@ -1,5 +1,8 @@
 package eu.chargetime.ocpp.model;
 
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.utilities.ModelUtil;
+
 /**
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -26,32 +29,61 @@ package eu.chargetime.ocpp.model;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-public class KeyValueType {
+public class KeyValueType implements validatable {
     private String key;
-    private boolean readonly;
+    private Boolean readonly;
     private String value;
 
     public String getKey() {
         return key;
     }
 
-    public void setKey(String key) {
+    public void setKey(String key) throws PropertyConstraintException{
+        if (!isValidKey(key))
+            throw new PropertyConstraintException("key", key);
+
         this.key = key;
     }
 
-    public boolean isReadonly() {
-        return readonly;
+    private boolean isValidKey(String key) {
+        return ModelUtil.validate(key, 50);
     }
 
-    public void setReadonly(boolean readonly) {
+    public void setReadonly(Boolean readonly) throws PropertyConstraintException {
+        if (!isValidReadonly(readonly))
+            throw new PropertyConstraintException("readonly", readonly);
+
         this.readonly = readonly;
+    }
+
+    private boolean isValidReadonly(Boolean readonly) {
+        return readonly != null;
+    }
+
+    public Boolean getReadonly() {
+        return readonly;
     }
 
     public String getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(String value) throws PropertyConstraintException {
+        if (!isValidValue(value))
+            throw new PropertyConstraintException("value", value);
+
         this.value = value;
+    }
+
+    private boolean isValidValue(String value) {
+        return ModelUtil.validate(value, 500);
+    }
+
+    @Override
+    public boolean validate() {
+        boolean output = true;
+        output &= isValidKey(this.key);
+        output &= isValidReadonly(this.readonly);
+        return output;
     }
 }

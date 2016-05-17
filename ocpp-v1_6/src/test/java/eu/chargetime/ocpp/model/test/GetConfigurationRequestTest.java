@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.ChangeConfigurationRequest;
+import eu.chargetime.ocpp.model.GetConfigurationRequest;
 import eu.chargetime.ocpp.test.TestUtilities;
 import org.junit.Assert;
 import org.junit.Before;
@@ -35,117 +35,76 @@ import static org.junit.Assert.*;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-public class ChangeConfigurationRequestTest extends TestUtilities {
-    ChangeConfigurationRequest request;
+public class GetConfigurationRequestTest extends TestUtilities {
+    GetConfigurationRequest request;
 
     @Before
     public void setUp() throws Exception {
-
-        request = new ChangeConfigurationRequest();
+        request = new GetConfigurationRequest();
     }
 
     @Test
     public void setKey_stringLength51_throwsPropertyConstraintException() {
         // Given
-        String stringLength51 = aString(51);
+        String[] aList = aList(aString(51));
 
         try {
             // When
-            request.setKey(stringLength51);
+            request.setKey(aList);
 
             Assert.fail("Expected PropertyConstraintException");
         } catch (PropertyConstraintException ex) {
-            // Then
             assertThat(ex.getFieldKey(), equalTo("key"));
-            assertThat(ex.getFieldValue(), equalTo(stringLength51));
+            assertThat(ex.getFieldValue(), equalTo(aList));
         }
     }
 
     @Test
-    public void setKey_stringLength50_keyIsSet() throws Exception{
+    public void setKey_stringLength50_keyIsSet() throws Exception {
         // Given
-        String stringLength50 = aString(50);
+        String[] aList = aList(aString(50));
 
         // When
-        request.setKey(stringLength50);
+        request.setKey(aList);
 
         // Then
-        assertThat(request.getKey(), equalTo(stringLength50));
+        assertThat(request.getKey(), equalTo(aList));
     }
 
     @Test
-    public void setValue_stringLength501_throwsPropertyConstraintException() {
+    public void setKey_listWithOneStringLength51_throwsPropertyConstraintException() {
         // Given
-        String stringLength501 = aString(501);
+        String[] aList = aList(aString(50), aString(51), aString(50));
 
         try {
             // When
-            request.setValue(stringLength501);
+            request.setKey(aList);
 
             Assert.fail("Expected PropertyConstraintException");
         } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("value"));
-            assertThat(ex.getFieldValue(), equalTo(stringLength501));
+            assertThat(ex.getFieldKey(), equalTo("key"));
+            assertThat(ex.getFieldValue(), equalTo(aList));
         }
     }
 
     @Test
-    public void setValue_stringLength500_valueIsSet() throws Exception {
+    public void setKey_listWithStringLength50_keyIsSet() throws Exception {
         // Given
-        String stringLength500 = aString(500);
+        String[] aList = aList(aString(50), aString(50), aString(50));
 
         // When
-        request.setValue(stringLength500);
+        request.setKey(aList);
 
         // Then
-        assertThat(request.getValue(), equalTo(stringLength500));
+        assertThat(request.getKey(), equalTo(aList));
     }
 
     @Test
-    public void validate_keyAndValueIsSet_returnTrue() throws Exception {
-        // Given
-        request.setKey("some key");
-        request.setValue("some value");
-
+    public void validate_returnTrue() {
         // When
         boolean isValid = request.validate();
 
-        // Given
+        // Then
         assertThat(isValid, is(true));
-    }
-
-    @Test
-    public void validate_returnFalse() {
-        // When
-        boolean isValid = request.validate();
-
-        // Then
-        assertThat(isValid, is(false));
-    }
-
-    @Test
-    public void validate_onlyKeyIsSet_returnFalse() throws Exception{
-        // Given
-        request.setKey("some key");
-
-        // When
-        boolean isValid = request.validate();
-
-        // Then
-        assertThat(isValid, is(false));
-    }
-
-    @Test
-    public void validate_onlyValueIsSet_returnFalse() throws Exception{
-        // Given
-        request.setValue("some value");
-
-        // When
-        boolean isValid = request.validate();
-
-        // Then
-        assertThat(isValid, is(false));
     }
 }
