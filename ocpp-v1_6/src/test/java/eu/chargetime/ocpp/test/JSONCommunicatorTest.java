@@ -58,7 +58,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_emptyPayload_returnRequestedType() {
+    public void unpack_emptyPayload_returnRequestedType() throws Exception {
         // Given
         String payload = "{}";
         Class<?> type = BootNotificationRequest.class;
@@ -71,7 +71,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aStringPayload_returnsTestModelWithAString() {
+    public void unpack_aStringPayload_returnsTestModelWithAString() throws Exception {
         // Given
         String aString = "Some string";
         String payload = "{\"stringTest\":\"%s\"}";
@@ -84,7 +84,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aCalendarPayload_returnsTestModelWithACalendar() {
+    public void unpack_aCalendarPayload_returnsTestModelWithACalendar() throws Exception {
         // Given
         String aCalendar = "2016-04-28T07:16:11.988Z";
         String payload = "{\"calendarTest\":\"%s\"}";
@@ -100,7 +100,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_anIntegerPayload_returnsTestModelWithAnInteger() {
+    public void unpack_anIntegerPayload_returnsTestModelWithAnInteger() throws Exception {
         // Given
         Integer anInteger = 1337;
         String payload = "{\"integerTest\":%d}";
@@ -113,7 +113,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aGenericIntPayload_returnsTestModelWithAGenericInt() {
+    public void unpack_aGenericIntPayload_returnsTestModelWithAGenericInt() throws Exception {
         // Given
         int anInteger = 1337;
         String payload = "{\"intTest\":%d}";
@@ -126,7 +126,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aLongPayload_returnsTestModelWithALong() {
+    public void unpack_aLongPayload_returnsTestModelWithALong() throws Exception {
         // Given
         Long aLong = 1337L;
         String payload = "{\"longTest\":%d}";
@@ -139,7 +139,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aGenericLongPayload_returnsTestModelWithAGenericLong() {
+    public void unpack_aGenericLongPayload_returnsTestModelWithAGenericLong() throws Exception {
         // Given
         long aLong = 1337;
         String payload = "{\"genericLongTest\":%d}";
@@ -152,7 +152,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aDoublePayload_returnsTestModelWithADouble() {
+    public void unpack_aDoublePayload_returnsTestModelWithADouble() throws Exception {
         // Given
         Double aDouble = 13.37D;
         String payload = "{\"doubleTest\":%f}";
@@ -165,7 +165,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aGenericDoublePayload_returnsTestModelWithAGenericDouble() {
+    public void unpack_aGenericDoublePayload_returnsTestModelWithAGenericDouble() throws Exception {
         // Given
         double aDouble = 13.37;
         String payload = "{\"genericDoubleTest\":%f}";
@@ -178,7 +178,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aBooleanPayload_returnsTestModelWithABoolean() {
+    public void unpack_aBooleanPayload_returnsTestModelWithABoolean() throws Exception {
         // Given
         Boolean aBoolean = false;
         String payload = "{\"booleanTest\":%b}";
@@ -191,7 +191,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aGenericBooleanPayload_returnsTestModelWithAGenericBoolean() {
+    public void unpack_aGenericBooleanPayload_returnsTestModelWithAGenericBoolean() throws Exception {
         // Given
         boolean aBoolean = false;
         String payload = "{\"genericBooleanTest\":%b}";
@@ -204,7 +204,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_anObjectPayload_returnsTestModelWithAnObject() {
+    public void unpack_anObjectPayload_returnsTestModelWithAnObject() throws Exception {
         // Given
         String payload = "{\"objectTest\":{}}";
 
@@ -217,7 +217,7 @@ public class JSONCommunicatorTest
 
 
     @Test
-    public void unpack_bootNotificationCallResultPayload_returnBootNotificationConfirmation() {
+    public void unpack_bootNotificationCallResultPayload_returnBootNotificationConfirmation() throws Exception {
         // Given
         String currentType = "2016-04-28T07:16:11.988Z";
         int interval = 300;

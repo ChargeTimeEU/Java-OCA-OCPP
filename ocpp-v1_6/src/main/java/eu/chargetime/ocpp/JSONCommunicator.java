@@ -56,15 +56,9 @@ public class JSONCommunicator extends Communicator {
     }
 
     @Override
-    public <T> T unpackPayload(String payload, Class<T> type) {
-        T object = null;
-        try {
-            JSONObject json = new JSONObject(payload);
-            object = parseJSON(json, type);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return object;
+    public <T> T unpackPayload(String payload, Class<T> type) throws Exception {
+        JSONObject json = new JSONObject(payload);
+        return parseJSON(json, type);
     }
 
     @Override
@@ -129,7 +123,7 @@ public class JSONCommunicator extends Communicator {
     }
 
     private Object parseValue(String key, JSONObject json, Class<?> type, Type genericType) throws Exception {
-        Object output = null;
+        Object output;
 
         if (type.isArray()) {
             output = parseArray(json.getJSONArray(key), type.getComponentType());
@@ -167,7 +161,7 @@ public class JSONCommunicator extends Communicator {
     }
 
     private Object parseArrayItem(JSONArray array, int index, Class<?> type) throws Exception {
-        Object output = null;
+        Object output;
 
         if (type == String.class) {
             output = array.getString(index);

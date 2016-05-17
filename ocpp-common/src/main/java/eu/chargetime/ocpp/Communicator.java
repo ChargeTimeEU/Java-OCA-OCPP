@@ -31,7 +31,7 @@ import eu.chargetime.ocpp.model.*;
 public abstract class Communicator {
     protected Transmitter transmitter;
 
-    public abstract <T> T unpackPayload(String payload, Class<T> type);
+    public abstract <T> T unpackPayload(String payload, Class<T> type) throws Exception;
     public abstract String packPayload(Object payload);
     protected abstract String makeCallResult(String uniqueId, String payload);
     protected abstract String makeCall(String uniqueId, String action, String payload);

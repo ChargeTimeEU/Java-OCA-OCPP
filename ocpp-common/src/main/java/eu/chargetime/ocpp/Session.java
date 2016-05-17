@@ -71,23 +71,52 @@ public class Session {
     private class CommunicatorEventHandler implements CommunicatorEvents {
         @Override
         public void onCallResult(String id, String payload) {
-            events.handleConfirmation(id, communicator.unpackPayload(payload, getConfirmationType(id)));
+            try {
+                Confirmation confirmation = communicator.unpackPayload(payload, getConfirmationType(id));
+                if (confirmation.validate()) {
+                    events.handleConfirmation(id, confirmation);
+                } else {
+                    communicator.sendCallError(id, "OccurenceConstraintViolation", "Payload for Action is syntactically correct but at least one of the fields violates occurence constraints");
+                }
+            }
+            catch (PropertyConstraintException ex) {
+                String message = "Field %s violates constraints with value: \"%s\". %s";
+                communicator.sendCallError(id, "TypeConstraintViolation", String.format(message, ex.getFieldKey(), ex.getFieldValue(), ex.getMessage()));
+                ex.printStackTrace();
+            } catch (Exception ex) {
+                communicator.sendCallError(id, "FormationViolation", "Unable to process action");
+                ex.printStackTrace();
+            }
         }
 
         @Override
         public void onCall(String id, String action, String payload) {
             Feature feature = events.findFeatureByAction(action);
             if (feature != null) {
-                CompletableFuture<Confirmation> promise = handleIncomingRequest(communicator.unpackPayload(payload, feature.getRequestType()));
-                promise.whenComplete(((confirmation, throwable) -> {
-                    if (promise.isCompletedExceptionally()) {
-                        communicator.sendCallError(id, "InternalError", "An internal error occurred and the receiver was not able to process the requested Action successfully");
-                    } else if (confirmation == null) {
-                        communicator.sendCallError(id, "NotSupported", "Requested Action is recognized but not supported by the receiver");
+                try {
+                    Request request = communicator.unpackPayload(payload, feature.getRequestType());
+                    if (request.validate()) {
+                        CompletableFuture<Confirmation> promise = handleIncomingRequest(request);
+                        promise.whenComplete(((confirmation, throwable) -> {
+                            if (promise.isCompletedExceptionally()) {
+                                communicator.sendCallError(id, "InternalError", "An internal error occurred and the receiver was not able to process the requested Action successfully");
+                            } else if (confirmation == null) {
+                                communicator.sendCallError(id, "NotSupported", "Requested Action is recognized but not supported by the receiver");
+                            } else {
+                                communicator.sendCallResult(id, confirmation);
+                            }
+                        }));
                     } else {
-                        communicator.sendCallResult(id, confirmation);
+                        communicator.sendCallError(id, "OccurenceConstraintViolation", "Payload for Action is syntactically correct but at least one of the fields violates occurence constraints");
                     }
-                }));
+                } catch (PropertyConstraintException ex) {
+                    String message = "Field %s violates constraints with value: \"%s\". %s";
+                    communicator.sendCallError(id, "TypeConstraintViolation", String.format(message, ex.getFieldKey(), ex.getFieldValue(), ex.getMessage()));
+                    ex.printStackTrace();
+                } catch (Exception ex) {
+                    communicator.sendCallError(id, "FormationViolation", "Unable to process action");
+                    ex.printStackTrace();
+                }
             } else {
                 communicator.sendCallError(id, "NotImplemented", "Requested Action is not known by receiver");
             }

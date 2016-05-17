@@ -31,6 +31,6 @@ import eu.chargetime.ocpp.model.Confirmation;
 public class TestConfirmation implements Confirmation {
     @Override
     public boolean validate() {
-        return false;
+        return true;
     }
 }
