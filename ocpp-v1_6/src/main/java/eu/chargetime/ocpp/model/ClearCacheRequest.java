@@ -29,6 +29,6 @@ package eu.chargetime.ocpp.model;
 public class ClearCacheRequest implements Request {
     @Override
     public boolean validate() {
-        return false;
+        return true;
     }
 }
