@@ -108,15 +108,20 @@ public class FakeCentralSystem
         assertThat(payload.getString("chargePointModel"), equalTo(chargePointModel));
     }
 
+    public void hasReceivedDataTransferRequest() {
+        assertThat(receivedMessage, is(not(nullValue())));
+        assertThat(getAction(), equalTo("DataTransfer"));
+    }
+
     public boolean hasReceivedAuthorizeRequest()
     {
         return receivedMessage != null && "Authorize".equals(getAction());
     }
-
     private JSONObject getCallPayload()
     {
         return (JSONObject)receivedMessage[3];
     }
+
     private JSONObject getCallResultPayload()
     {
         return (JSONObject)receivedMessage[2];
@@ -170,6 +175,10 @@ public class FakeCentralSystem
         assertThat(getUniqueId(), equalTo("ClearCache"));
     }
 
+    public void hasReceivedDataTransferConfirmation() {
+        assertThat(getUniqueId(), equalTo("DataTransfer"));
+    }
+
     public void sendGetConfigurationRequest(String... keys) {
         String payload = "\"key\":%s";
         sendRequest("GetConfiguration", String.format(payload, formatList(keys)));
@@ -191,26 +200,39 @@ public class FakeCentralSystem
         return String.format("[%s]", output.substring(1));
     }
 
-    public enum AvailabilityType {
-        Inoperative, Operative
+    public void sendDataTransferRequest(String vendorId, String messageId, String data) {
+        String payload = "\"vendorId\": \"%s\", \"messageId\": %s, \"data\": \"%s\"";
+        sendRequest("DataTransfer", String.format(payload, vendorId, messageId, data));
     }
 
+
+
+    public enum AvailabilityType {
+        Inoperative, Operative;
+    }
     public void sendChangeAvailability(int connectorId, AvailabilityType type)
     {
         String payload = "\"connectorId\":%d,\"type\":\"%s\"";
         sendRequest("ChangeAvailability", String.format(payload, connectorId, type));
     }
 
+
+
     public enum RegistrationStatus {
-        Accepted, Pending, Rejected
+        Accepted, Pending, Rejected;
     }
     public void sendBootConfirmation(RegistrationStatus status) {
         String payload = "\"currentTime\": \"%s\", \"interval\": %d, \"status\": \"%s\"";
         sendConfirmation(String.format(payload, now(), 300, status));
     }
 
+    public void sendDataTransferConfirmation(String status) {
+        String payload = "\"status\": \"%s\"";
+        sendConfirmation(String.format(payload, status));
+    }
+
     public enum AuthorizationStatus {
-        Accepted, Blocked, Expired, Invalid
+        Accepted, Blocked, Expired, Invalid;
     }
     public void sendAuthorizeConfirmation(AuthorizationStatus status) {
         String payload = "\"idTagInfo\": {\"status\":\"%s\"}";

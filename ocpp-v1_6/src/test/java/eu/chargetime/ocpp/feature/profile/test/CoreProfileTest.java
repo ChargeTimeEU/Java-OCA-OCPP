@@ -156,6 +156,31 @@ public class CoreProfileTest
     }
 
     @Test
+    public void handleRequest_aDataTransferRequest_callsHandleDataTransferRequest() {
+        // Given
+        DataTransferRequest request = new DataTransferRequest();
+
+        // When
+        core.handleRequest(request);
+
+        // Then
+        verify(handler, times(1)).handleDataTransferRequest(eq(request));
+    }
+
+    @Test
+    public void handleRequest_aDataTransferRequest_returnDataTransferConfirmation() {
+        // Given
+        when(handler.handleDataTransferRequest(any())).thenReturn(new DataTransferConfirmation());
+        DataTransferRequest request = new DataTransferRequest();
+
+        // When
+        Confirmation conf = core.handleRequest(request);
+
+        // Then
+        assertThat(conf, instanceOf(DataTransferConfirmation.class));
+    }
+
+    @Test
     public void getFeatureList_containsGetConfigurationFeature() {
         // When
         Feature[] features = core.getFeatureList();
@@ -230,6 +255,15 @@ public class CoreProfileTest
 
         // then
         assertThat(findFeature(features, "ClearCache"), is(instanceOf(ClearCacheFeature.class)));
+    }
+
+    @Test
+    public void getFeatureList_containsDataTransfer() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "DataTransfer"), is(instanceOf(DataTransferFeature.class)));
     }
 
     private Feature findFeature(Feature[] features, String action) {

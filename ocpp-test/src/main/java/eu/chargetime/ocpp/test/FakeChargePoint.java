@@ -6,6 +6,7 @@ import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.CoreProfile;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
@@ -67,6 +68,12 @@ public class FakeChargePoint
                 receivedRequest = request;
                 return new ClearCacheConfirmation();
             }
+
+            @Override
+            public DataTransferConfirmation handleDataTransferRequest(DataTransferRequest request) {
+                receivedRequest = request;
+                return new DataTransferConfirmation();
+            }
         });
         client = new Client(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue()));
         client.addFeatureProfile(core);
@@ -94,6 +101,18 @@ public class FakeChargePoint
         }
     }
 
+    public void sendDataTransferRequest(String vendorId, String messageId, String data) {
+        try {
+            DataTransferRequest request = core.createDataTransferRequest(vendorId);
+            request.setMessageId(messageId);
+            request.setData(data);
+
+            send(request);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     private void send(Request request) {
         client.send(request).whenComplete((s, ex) -> receivedConfirmation = s);
     }
@@ -106,6 +125,11 @@ public class FakeChargePoint
     public void hasReceivedAuthorizeConfirmation(String status) {
         assertThat(receivedConfirmation, instanceOf(AuthorizeConfirmation.class));
         assertThat(((AuthorizeConfirmation)receivedConfirmation).getIdTagInfo().getStatus(), is(status));
+    }
+
+    public void hasReceivedDataTransferConfirmation(String status) {
+        assertThat(receivedConfirmation, instanceOf(DataTransferConfirmation.class));
+        assertThat(((DataTransferConfirmation)receivedConfirmation).getStatus(), equalTo(status));
     }
 
     public void disconnect() {
@@ -130,5 +154,9 @@ public class FakeChargePoint
 
     public void hasHandledClearCacheRequest() {
         confirmRequest(ClearCacheRequest.class);
+    }
+
+    public void hasHandledDataTransferRequest() {
+        confirmRequest(DataTransferRequest.class);
     }
 }

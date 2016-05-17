@@ -4,7 +4,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions;
 
-class AuthorizeRequest extends Specification
+class Authorize extends Specification
 {
     @Shared FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
     @Shared FakeChargePoint chargePoint = new FakeChargePoint();

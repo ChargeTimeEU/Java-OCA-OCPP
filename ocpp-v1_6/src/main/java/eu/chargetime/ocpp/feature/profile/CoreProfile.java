@@ -47,6 +47,7 @@ public class CoreProfile implements Profile
         features.add(new GetConfigurationFeature(this));
         features.add(new ChangeConfigurationFeature(this));
         features.add(new ClearCacheFeature(this));
+        features.add(new DataTransferFeature(this));
     }
 
     public AuthorizeRequest createAuthorizeRequest(String idToken) throws PropertyConstraintException {
@@ -55,6 +56,10 @@ public class CoreProfile implements Profile
 
     public BootNotificationRequest createBootNotificationRequest(String vendor, String model) {
         return new BootNotificationRequest(vendor, model);
+    }
+
+    public DataTransferRequest createDataTransferRequest(String vendorId) {
+        return new DataTransferRequest(vendorId);
     }
 
     @Override
@@ -77,6 +82,9 @@ public class CoreProfile implements Profile
         }
         else if (request instanceof ClearCacheRequest) {
             result = eventHandler.handleClearCacheRequest((ClearCacheRequest) request);
+        }
+        else if (request instanceof DataTransferRequest) {
+            result = eventHandler.handleDataTransferRequest((DataTransferRequest)request);
         }
 
         return result;

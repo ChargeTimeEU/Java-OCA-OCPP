@@ -33,4 +33,5 @@ public interface ClientCoreEventHandler {
     GetConfigurationConfirmation handleGetConfigurationRequest(GetConfigurationRequest request);
     ChangeConfigurationConfirmation handleChangeConfigurationRequest(ChangeConfigurationRequest request);
     ClearCacheConfirmation handleClearCacheRequest(ClearCacheRequest request);
+    DataTransferConfirmation handleDataTransferRequest(DataTransferRequest request);
 }
