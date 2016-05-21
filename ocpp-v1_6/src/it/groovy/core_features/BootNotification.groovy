@@ -1,3 +1,5 @@
+package core_features
+
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
 import spock.lang.*
@@ -21,7 +23,7 @@ class BootNotification extends Specification
         chargePoint.disconnect();
     }
     
-    def "Charge point sends boot notification and receives a response"() {
+    def "Charge point sends Boot Notification and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
         when:
         chargePoint.sendBootNotification("VendorX", "SingleSocketCharger");

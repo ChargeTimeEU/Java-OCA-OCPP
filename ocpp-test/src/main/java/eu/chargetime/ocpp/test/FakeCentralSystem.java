@@ -108,15 +108,20 @@ public class FakeCentralSystem
         assertThat(payload.getString("chargePointModel"), equalTo(chargePointModel));
     }
 
+    public void hasReceivedHeartbeat() {
+        assertThat(receivedMessage, is(not(nullValue())));
+        assertThat(getAction(), equalTo("Heartbeat"));
+    }
+
     public void hasReceivedDataTransferRequest() {
         assertThat(receivedMessage, is(not(nullValue())));
         assertThat(getAction(), equalTo("DataTransfer"));
     }
-
     public boolean hasReceivedAuthorizeRequest()
     {
         return receivedMessage != null && "Authorize".equals(getAction());
     }
+
     private JSONObject getCallPayload()
     {
         return (JSONObject)receivedMessage[3];
@@ -205,22 +210,24 @@ public class FakeCentralSystem
         sendRequest("DataTransfer", String.format(payload, vendorId, messageId, data));
     }
 
-
-
     public enum AvailabilityType {
-        Inoperative, Operative;
+        Inoperative, Operative
     }
+
     public void sendChangeAvailability(int connectorId, AvailabilityType type)
     {
         String payload = "\"connectorId\":%d,\"type\":\"%s\"";
         sendRequest("ChangeAvailability", String.format(payload, connectorId, type));
     }
-
-
-
     public enum RegistrationStatus {
-        Accepted, Pending, Rejected;
+        Accepted, Pending, Rejected
     }
+
+    public void sendHeartbeatConfirmation() {
+        String payload = "\"currentTime\": \"%s\"";
+        sendConfirmation(String.format(payload, now()));
+    }
+
     public void sendBootConfirmation(RegistrationStatus status) {
         String payload = "\"currentTime\": \"%s\", \"interval\": %d, \"status\": \"%s\"";
         sendConfirmation(String.format(payload, now(), 300, status));

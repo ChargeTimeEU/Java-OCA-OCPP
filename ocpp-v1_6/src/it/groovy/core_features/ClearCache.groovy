@@ -1,10 +1,12 @@
+package core_features
+
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class ChangeConfiguration extends Specification
+class ClearCache extends Specification
 {
     @Shared FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
     @Shared FakeChargePoint chargePoint = new FakeChargePoint();
@@ -22,16 +24,16 @@ class ChangeConfiguration extends Specification
         chargePoint.disconnect();
     }
 
-    def "Central System sends a ChangeConfiguration request and receives a response"() {
+    def "Central System sends a ClearCache request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
 
         when:
-        centralSystem.sendChangeConfigurationRequest("key", "value");
+        centralSystem.sendClearCacheRequest();
 
         then:
         conditions.eventually {
-            chargePoint.hasHandledChangeConfigurationRequest();
-            centralSystem.hasReceivedChangeConfigurationConfirmation();
+            chargePoint.hasHandledClearCacheRequest();
+            centralSystem.hasReceivedClearCacheConfirmation();
         }
     }
 }

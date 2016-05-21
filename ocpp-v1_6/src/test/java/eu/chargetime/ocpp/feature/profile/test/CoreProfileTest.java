@@ -1,5 +1,6 @@
 package eu.chargetime.ocpp.feature.profile.test;
 
+import core_features.Heartbeat;
 import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.CoreProfile;
@@ -78,6 +79,15 @@ public class CoreProfileTest
     }
 
     @Test
+    public void createHeartbeat_returnsHeartbeatRequest() {
+        // When
+        Request result = core.createHeartbeatRequest();
+
+        // Then
+        assertThat(result, instanceOf(HeartbeatRequest.class));
+    }
+
+    @Test
     public void getFeatureList_containsBootNotificationFeature() {
         // When
         Feature[] features = core.getFeatureList();
@@ -93,6 +103,15 @@ public class CoreProfileTest
 
         // then
         assertThat(findFeature(features, "Authorize"), is(instanceOf(AuthorizeFeature.class)));
+    }
+
+    @Test
+    public void getFeatureList_containsHeartbeatFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "Heartbeat"), is(instanceOf(HeartbeatFeature.class)));
     }
 
     @Test

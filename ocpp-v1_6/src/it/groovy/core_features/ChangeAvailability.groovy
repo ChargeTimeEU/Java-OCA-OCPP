@@ -1,10 +1,11 @@
+package core_features
+
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
-import spock.lang.Shared
-import spock.lang.Specification
-import spock.util.concurrent.PollingConditions
+import spock.lang.*
+import spock.util.concurrent.PollingConditions;
 
-class GetConfiguration extends Specification
+class ChangeAvailability extends Specification
 {
     @Shared FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
     @Shared FakeChargePoint chargePoint = new FakeChargePoint();
@@ -22,16 +23,15 @@ class GetConfiguration extends Specification
         chargePoint.disconnect();
     }
 
-    def "Central System sends a GetConfiguration request and receives a response"() {
+    def "Central System sends a ChangeAvailability request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
-
         when:
-        centralSystem.sendGetConfigurationRequest("key1");
+        centralSystem.sendChangeAvailability(0, FakeCentralSystem.AvailabilityType.Inoperative);
 
         then:
         conditions.eventually {
-            chargePoint.hasHandledGetConfigurationRequest();
-            centralSystem.hasReceivedGetConfigurationConfirmation();
+            chargePoint.hasHandledChangeAvailabilityRequest();
+            centralSystem.hasReceivedChangeAvailabilityConfirmation("Accepted");
         }
     }
 }

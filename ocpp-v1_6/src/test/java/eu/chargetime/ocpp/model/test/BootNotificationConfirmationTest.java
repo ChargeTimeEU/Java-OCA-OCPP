@@ -43,7 +43,6 @@ public class BootNotificationConfirmationTest {
 
     @Before
     public void setUp() throws Exception {
-
         confirmation = new BootNotificationConfirmation();
     }
 

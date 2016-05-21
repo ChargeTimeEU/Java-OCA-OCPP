@@ -101,6 +101,11 @@ public class FakeChargePoint
         }
     }
 
+    public void sendHeartbeatRequest() {
+        Request request = core.createHeartbeatRequest();
+        send(request);
+    }
+
     public void sendDataTransferRequest(String vendorId, String messageId, String data) {
         try {
             DataTransferRequest request = core.createDataTransferRequest(vendorId);
@@ -130,6 +135,10 @@ public class FakeChargePoint
     public void hasReceivedDataTransferConfirmation(String status) {
         assertThat(receivedConfirmation, instanceOf(DataTransferConfirmation.class));
         assertThat(((DataTransferConfirmation)receivedConfirmation).getStatus(), equalTo(status));
+    }
+
+    public void hasReceivedHeartbeatConfirmation() {
+        assertThat(receivedConfirmation, instanceOf(HeartbeatConfirmation.class));
     }
 
     public void disconnect() {

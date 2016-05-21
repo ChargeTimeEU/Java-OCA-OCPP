@@ -48,6 +48,7 @@ public class CoreProfile implements Profile
         features.add(new ChangeConfigurationFeature(this));
         features.add(new ClearCacheFeature(this));
         features.add(new DataTransferFeature(this));
+        features.add(new HeartbeatFeature(this));
     }
 
     public AuthorizeRequest createAuthorizeRequest(String idToken) throws PropertyConstraintException {
@@ -60,6 +61,10 @@ public class CoreProfile implements Profile
 
     public DataTransferRequest createDataTransferRequest(String vendorId) {
         return new DataTransferRequest(vendorId);
+    }
+
+    public HeartbeatRequest createHeartbeatRequest() {
+        return new HeartbeatRequest();
     }
 
     @Override

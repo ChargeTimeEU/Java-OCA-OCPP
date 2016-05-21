@@ -1,3 +1,5 @@
+package core_features
+
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
 import spock.lang.Shared
@@ -27,7 +29,7 @@ class Authorize extends Specification
         ! centralSystem.hasReceivedAuthorizeRequest();
     }
 
-    def "Central system sends boot confirmation which charge point receives"() {
+    def "Charge point sends Authorize request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1);
         when:
         chargePoint.sendAuthorizeRequest("test123");
@@ -46,7 +48,7 @@ class Authorize extends Specification
         }
     }
 
-    def "A authorize request isn't seen as a boot notification"() {
+    def "A Authorize request isn't seen as a Boot Notification"() {
         when:
         chargePoint.sendAuthorizeRequest("token");
 
