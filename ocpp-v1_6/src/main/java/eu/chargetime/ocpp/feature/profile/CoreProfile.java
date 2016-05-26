@@ -67,6 +67,10 @@ public class CoreProfile implements Profile
         return new HeartbeatRequest();
     }
 
+    public MeterValuesRequest createMeterValuesRequest() {
+        return null;
+    }
+
     @Override
     public Feature[] getFeatureList() {
         return features.toArray(new Feature[0]);

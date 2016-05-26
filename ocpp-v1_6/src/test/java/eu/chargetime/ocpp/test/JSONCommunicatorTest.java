@@ -9,9 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
+import java.util.*;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -45,7 +43,7 @@ import static org.mockito.Mockito.*;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-public class JSONCommunicatorTest
+public class JSONCommunicatorTest extends TestUtilities
 {
     private JSONCommunicator communicator;
 
@@ -58,7 +56,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_emptyPayload_returnRequestedType() throws Exception {
+    public void unpackPayload_emptyPayload_returnRequestedType() throws Exception {
         // Given
         String payload = "{}";
         Class<?> type = BootNotificationRequest.class;
@@ -71,7 +69,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aStringPayload_returnsTestModelWithAString() throws Exception {
+    public void unpackPayload_aStringPayload_returnsTestModelWithAString() throws Exception {
         // Given
         String aString = "Some string";
         String payload = "{\"stringTest\":\"%s\"}";
@@ -84,7 +82,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aCalendarPayload_returnsTestModelWithACalendar() throws Exception {
+    public void unpackPayload_aCalendarPayload_returnsTestModelWithACalendar() throws Exception {
         // Given
         String aCalendar = "2016-04-28T07:16:11.988Z";
         String payload = "{\"calendarTest\":\"%s\"}";
@@ -100,7 +98,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_anIntegerPayload_returnsTestModelWithAnInteger() throws Exception {
+    public void unpackPayload_anIntegerPayload_returnsTestModelWithAnInteger() throws Exception {
         // Given
         Integer anInteger = 1337;
         String payload = "{\"integerTest\":%d}";
@@ -113,7 +111,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aGenericIntPayload_returnsTestModelWithAGenericInt() throws Exception {
+    public void unpackPayload_aGenericIntPayload_returnsTestModelWithAGenericInt() throws Exception {
         // Given
         int anInteger = 1337;
         String payload = "{\"intTest\":%d}";
@@ -126,7 +124,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aLongPayload_returnsTestModelWithALong() throws Exception {
+    public void unpackPayload_aLongPayload_returnsTestModelWithALong() throws Exception {
         // Given
         Long aLong = 1337L;
         String payload = "{\"longTest\":%d}";
@@ -139,7 +137,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aGenericLongPayload_returnsTestModelWithAGenericLong() throws Exception {
+    public void unpackPayload_aGenericLongPayload_returnsTestModelWithAGenericLong() throws Exception {
         // Given
         long aLong = 1337;
         String payload = "{\"genericLongTest\":%d}";
@@ -152,7 +150,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aDoublePayload_returnsTestModelWithADouble() throws Exception {
+    public void unpackPayload_aDoublePayload_returnsTestModelWithADouble() throws Exception {
         // Given
         Double aDouble = 13.37D;
         String payload = "{\"doubleTest\":%f}";
@@ -165,7 +163,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aGenericDoublePayload_returnsTestModelWithAGenericDouble() throws Exception {
+    public void unpackPayload_aGenericDoublePayload_returnsTestModelWithAGenericDouble() throws Exception {
         // Given
         double aDouble = 13.37;
         String payload = "{\"genericDoubleTest\":%f}";
@@ -178,7 +176,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aBooleanPayload_returnsTestModelWithABoolean() throws Exception {
+    public void unpackPayload_aBooleanPayload_returnsTestModelWithABoolean() throws Exception {
         // Given
         Boolean aBoolean = false;
         String payload = "{\"booleanTest\":%b}";
@@ -191,7 +189,7 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_aGenericBooleanPayload_returnsTestModelWithAGenericBoolean() throws Exception {
+    public void unpackPayload_aGenericBooleanPayload_returnsTestModelWithAGenericBoolean() throws Exception {
         // Given
         boolean aBoolean = false;
         String payload = "{\"genericBooleanTest\":%b}";
@@ -204,20 +202,32 @@ public class JSONCommunicatorTest
     }
 
     @Test
-    public void unpack_anObjectPayload_returnsTestModelWithAnObject() throws Exception {
+    public void unpackPayload_anObjectPayload_returnsTestModelWithAnObject() throws Exception {
         // Given
         String payload = "{\"objectTest\":{}}";
 
         // When
-        TestModel model = communicator.unpackPayload((payload), TestModel.class);
+        TestModel model = communicator.unpackPayload(payload, TestModel.class);
 
         // Then
         assertThat(model.getObjectTest(), instanceOf(TestModel.class));
     }
 
+    @Test
+    public void unpackPayload_anArrayOfInts_returnsTestModelWithAnArrayOfInts() throws Exception {
+        // Given
+        Integer[] anArray = {1,2,3};
+        String payload = "{\"arrayTest\": [%s]}";
+
+        // When
+        TestModel model = communicator.unpackPayload(String.format(payload, join(",", anArray)), TestModel.class);
+
+        // Then
+        assertThat(model.getArrayTest(), equalTo(anArray));
+    }
 
     @Test
-    public void unpack_bootNotificationCallResultPayload_returnBootNotificationConfirmation() throws Exception {
+    public void unpackPayload_bootNotificationCallResultPayload_returnBootNotificationConfirmation() throws Exception {
         // Given
         String currentType = "2016-04-28T07:16:11.988Z";
         int interval = 300;
@@ -291,12 +301,5 @@ public class JSONCommunicatorTest
         dateTime.setTimeInMillis(dateInMillis);
         return dateTime;
     }
-/*
-    private Date createDate(int year, int month, int day, int hours, int minuts, int seconds, int milliseconds) {
-        Calendar dateTime = new GregorianCalendar(TimeZone.getTimeZone("GMT+00:00"));
-        dateTime.set(year, month, day, hours, minuts, seconds);
-        dateTime.getTimeInMillis()
-    }
-*/
 
 }

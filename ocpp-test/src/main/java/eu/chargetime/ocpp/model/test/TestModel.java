@@ -1,6 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
 import java.util.Calendar;
+import java.util.List;
 
 /**
  ChargeTime.eu - Java-OCA-OCPP
@@ -40,6 +41,15 @@ public class TestModel {
     private Boolean booleanTest;
     private boolean genericBoleanTest;
     private TestModel objectTest;
+    private Integer[] arrayTest;
+
+    public Integer[] getArrayTest() {
+        return arrayTest;
+    }
+
+    public void setArrayTest(Integer[] arrayTest) {
+        this.arrayTest = arrayTest;
+    }
 
     public TestModel getObjectTest() {
         return objectTest;

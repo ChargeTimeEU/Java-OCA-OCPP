@@ -1,4 +1,12 @@
-package eu.chargetime.ocpp.test;
+package eu.chargetime.ocpp.model.test;
+
+import eu.chargetime.ocpp.model.SampledValue;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
 
 /**
  * ChargeTime.eu - Java-OCA-OCPP
@@ -25,33 +33,36 @@ package eu.chargetime.ocpp.test;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class TestUtilities {
+public class SampledValueTest {
+    SampledValue sampledValue;
 
-    protected String aString(int length) {
-        String lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus bibendum eros vitae sapien metusa.";
-
-        if (lorem.length() < length) {
-            StringBuilder extender = new StringBuilder(lorem);
-            while (extender.length() < length) {
-                extender.append(lorem);
-            }
-            lorem = extender.toString();
-        }
-
-        return lorem.substring(0, length);
+    @Before
+    public void setUp() throws Exception {
+        sampledValue = new SampledValue();
     }
 
-    protected <T> T[] aList(T... objects) {
-        return objects;
+    @Test
+    public void setValue_anyString_valueIsSet() {
+        // Given
+        String aString = "Some string";
+
+        // When
+        sampledValue.setValue(aString);
+
+        // Then
+        assertThat(sampledValue.getValue(), equalTo(aString));
     }
 
-    protected String join(String delimiter, Object[] array) {
-        StringBuilder output = new StringBuilder();
+    @Test
+    public void validate_valueIsSet_returnTrue() {
+        // Given
+        sampledValue.setValue("something");
 
-        for (Object current: array)
-            output.append(String.format("%s%s", delimiter, current));
+        // When
+        boolean isValid = sampledValue.validate();
 
-        return output.toString().substring(1);
+        // Then
+        assertThat(isValid, is(true));
     }
 
 }

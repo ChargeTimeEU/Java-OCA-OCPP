@@ -106,6 +106,11 @@ public class FakeChargePoint
         send(request);
     }
 
+    public void sendMeterValuesRequest() {
+        Request request = core.createMeterValuesRequest();
+        send(request);
+    }
+
     public void sendDataTransferRequest(String vendorId, String messageId, String data) {
         try {
             DataTransferRequest request = core.createDataTransferRequest(vendorId);

@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test;
+package eu.chargetime.ocpp.model;
 
 /**
  * ChargeTime.eu - Java-OCA-OCPP
@@ -25,33 +25,19 @@ package eu.chargetime.ocpp.test;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class TestUtilities {
+public class SampledValue implements validatable{
+    private String value;
 
-    protected String aString(int length) {
-        String lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus bibendum eros vitae sapien metusa.";
-
-        if (lorem.length() < length) {
-            StringBuilder extender = new StringBuilder(lorem);
-            while (extender.length() < length) {
-                extender.append(lorem);
-            }
-            lorem = extender.toString();
-        }
-
-        return lorem.substring(0, length);
+    @Override
+    public boolean validate() {
+        return false;
     }
 
-    protected <T> T[] aList(T... objects) {
-        return objects;
+    public void setValue(String value) {
+        this.value = value;
     }
 
-    protected String join(String delimiter, Object[] array) {
-        StringBuilder output = new StringBuilder();
-
-        for (Object current: array)
-            output.append(String.format("%s%s", delimiter, current));
-
-        return output.toString().substring(1);
+    public String getValue() {
+        return value;
     }
-
 }

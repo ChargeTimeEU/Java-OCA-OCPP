@@ -1,4 +1,8 @@
-package eu.chargetime.ocpp.test;
+package eu.chargetime.ocpp.model;
+
+import eu.chargetime.ocpp.PropertyConstraintException;
+
+import java.util.Calendar;
 
 /**
  * ChargeTime.eu - Java-OCA-OCPP
@@ -25,33 +29,40 @@ package eu.chargetime.ocpp.test;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class TestUtilities {
+public class MeterValue implements validatable {
 
-    protected String aString(int length) {
-        String lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus bibendum eros vitae sapien metusa.";
+    private Calendar timestamp;
+    private SampledValue[] sampledValue;
 
-        if (lorem.length() < length) {
-            StringBuilder extender = new StringBuilder(lorem);
-            while (extender.length() < length) {
-                extender.append(lorem);
-            }
-            lorem = extender.toString();
+    @Override
+    public boolean validate() {
+        boolean valid = true;
+        if (valid &= sampledValue != null) {
+            for (SampledValue value : sampledValue)
+                valid &= value.validate();
         }
-
-        return lorem.substring(0, length);
+        return valid;
     }
 
-    protected <T> T[] aList(T... objects) {
-        return objects;
+    public void setTimestamp(Calendar timestamp) throws PropertyConstraintException {
+        if (timestamp == null)
+            throw new PropertyConstraintException("timestamp", timestamp);
+
+        this.timestamp = timestamp;
     }
 
-    protected String join(String delimiter, Object[] array) {
-        StringBuilder output = new StringBuilder();
-
-        for (Object current: array)
-            output.append(String.format("%s%s", delimiter, current));
-
-        return output.toString().substring(1);
+    public Calendar getTimestamp() {
+        return timestamp;
     }
 
+    public void setSampledValue(SampledValue[] sampledValue) throws PropertyConstraintException {
+        if (sampledValue == null)
+            throw new PropertyConstraintException("sampledValue", sampledValue);
+
+        this.sampledValue = sampledValue;
+    }
+
+    public SampledValue[] getSampledValue() {
+        return sampledValue;
+    }
 }
