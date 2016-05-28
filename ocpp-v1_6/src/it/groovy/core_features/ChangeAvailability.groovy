@@ -2,8 +2,9 @@ package core_features
 
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
-import spock.lang.*
-import spock.util.concurrent.PollingConditions;
+import spock.lang.Shared
+import spock.lang.Specification
+import spock.util.concurrent.PollingConditions
 
 class ChangeAvailability extends Specification
 {
@@ -26,7 +27,7 @@ class ChangeAvailability extends Specification
     def "Central System sends a ChangeAvailability request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
         when:
-        centralSystem.sendChangeAvailability(0, FakeCentralSystem.AvailabilityType.Inoperative);
+        centralSystem.sendChangeAvailabilityRequest(0, FakeCentralSystem.AvailabilityType.Inoperative);
 
         then:
         conditions.eventually {

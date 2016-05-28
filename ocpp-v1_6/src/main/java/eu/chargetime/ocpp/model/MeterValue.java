@@ -2,7 +2,9 @@ package eu.chargetime.ocpp.model;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * ChargeTime.eu - Java-OCA-OCPP
@@ -51,7 +53,13 @@ public class MeterValue implements validatable {
         this.timestamp = timestamp;
     }
 
-    public Calendar getTimestamp() {
+    public String getTimestamp() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
+        return formatter.format(timestamp.getTime());
+    }
+
+    public Calendar objTimestamp() {
         return timestamp;
     }
 

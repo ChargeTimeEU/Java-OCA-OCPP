@@ -29,10 +29,9 @@ class MeterValues extends Specification
         when:
         chargePoint.sendMeterValuesRequest();
 
-
         then:
         conditions.eventually {
-            centralSystem.hasReceivedMeterValues();
+            centralSystem.hasReceivedMeterValuesRequest();
         }
 
         when:

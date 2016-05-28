@@ -1,14 +1,14 @@
 package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.*;
-import eu.chargetime.ocpp.model.*;
 import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.CoreProfile;
+import eu.chargetime.ocpp.model.*;
+
+import java.util.Calendar;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
 /**
  ChargeTime.eu - Java-OCA-OCPP
@@ -107,8 +107,12 @@ public class FakeChargePoint
     }
 
     public void sendMeterValuesRequest() {
-        Request request = core.createMeterValuesRequest();
-        send(request);
+        try {
+            Request request = core.createMeterValuesRequest(42, Calendar.getInstance(), "42");
+            send(request);
+        } catch (PropertyConstraintException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void sendDataTransferRequest(String vendorId, String messageId, String data) {
@@ -144,6 +148,10 @@ public class FakeChargePoint
 
     public void hasReceivedHeartbeatConfirmation() {
         assertThat(receivedConfirmation, instanceOf(HeartbeatConfirmation.class));
+    }
+
+    public void hasReceivedMeterValuesConfirmation() {
+        assertThat(receivedConfirmation, instanceOf(MeterValuesConfirmation.class));
     }
 
     public void disconnect() {

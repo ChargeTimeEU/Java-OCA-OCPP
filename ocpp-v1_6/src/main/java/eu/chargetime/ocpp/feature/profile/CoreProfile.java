@@ -5,6 +5,7 @@ import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.model.*;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  ChargeTime.eu - Java-OCA-OCPP
@@ -49,6 +50,7 @@ public class CoreProfile implements Profile
         features.add(new ClearCacheFeature(this));
         features.add(new DataTransferFeature(this));
         features.add(new HeartbeatFeature(this));
+        features.add(new MeterValuesFeature(this));
     }
 
     public AuthorizeRequest createAuthorizeRequest(String idToken) throws PropertyConstraintException {
@@ -67,8 +69,24 @@ public class CoreProfile implements Profile
         return new HeartbeatRequest();
     }
 
-    public MeterValuesRequest createMeterValuesRequest() {
-        return null;
+    public MeterValuesRequest createMeterValuesRequest(Integer connectorId, Calendar timestamp, String value) throws PropertyConstraintException {
+        SampledValue sampledValue = new SampledValue();
+        sampledValue.setValue(value);
+        return createMeterValuesRequest(connectorId, timestamp, sampledValue);
+    }
+
+    public MeterValuesRequest createMeterValuesRequest(Integer connectorId, Calendar timestamp, SampledValue... sampledValues) throws PropertyConstraintException {
+        MeterValue meterValue = new MeterValue();
+        meterValue.setTimestamp(timestamp);
+        meterValue.setSampledValue(sampledValues);
+        return createMeterValuesRequest(connectorId, meterValue);
+    }
+
+    public MeterValuesRequest createMeterValuesRequest(Integer connectorId, MeterValue... meterValues) throws PropertyConstraintException {
+        MeterValuesRequest request = new MeterValuesRequest();
+        request.setConnectorId(connectorId);
+        request.setMeterValue(meterValues);
+        return request;
     }
 
     @Override

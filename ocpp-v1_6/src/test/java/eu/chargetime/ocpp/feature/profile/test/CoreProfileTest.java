@@ -1,6 +1,5 @@
 package eu.chargetime.ocpp.feature.profile.test;
 
-import core_features.Heartbeat;
 import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.CoreProfile;
@@ -8,6 +7,8 @@ import eu.chargetime.ocpp.model.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+
+import java.util.Calendar;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -88,6 +89,15 @@ public class CoreProfileTest
     }
 
     @Test
+    public void createMeterValues_returnsMeterValuesRequest() throws Exception {
+        // When
+        Request result = core.createMeterValuesRequest(42, Calendar.getInstance(), "42");
+
+        // Then
+        assertThat(result, instanceOf(MeterValuesRequest.class));
+    }
+
+    @Test
     public void getFeatureList_containsBootNotificationFeature() {
         // When
         Feature[] features = core.getFeatureList();
@@ -112,6 +122,15 @@ public class CoreProfileTest
 
         // Then
         assertThat(findFeature(features, "Heartbeat"), is(instanceOf(HeartbeatFeature.class)));
+    }
+
+    @Test
+    public void getFeatureList_containsMeterValuesFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "MeterValues"), is(instanceOf(MeterValuesFeature.class)));
     }
 
     @Test

@@ -137,10 +137,11 @@ public class SessionTest {
     }
 
     @Test
-    public void onCall_unhandledCallback_callSendCallError() {
+    public void onCall_unhandledCallback_callSendCallError() throws Exception {
         // Given
         String someId = "Some id";
         when(sessionEvents.handleRequest(any())).thenReturn(null);
+        when(communicator.unpackPayload(any(), any())).thenReturn(new TestRequest());
 
         // When
         eventHandler.onCall(someId, null, null);

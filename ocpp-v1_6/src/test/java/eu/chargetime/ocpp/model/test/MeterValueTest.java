@@ -12,7 +12,7 @@ import java.util.Calendar;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
@@ -74,7 +74,7 @@ public class MeterValueTest extends TestUtilities{
         meterValue.setTimestamp(now);
 
         // Then
-        assertThat(meterValue.getTimestamp(), equalTo(now));
+        assertThat(meterValue.objTimestamp(), equalTo(now));
     }
 
     @Test
