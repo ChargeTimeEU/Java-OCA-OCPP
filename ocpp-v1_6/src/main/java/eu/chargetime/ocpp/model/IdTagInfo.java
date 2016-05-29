@@ -31,7 +31,7 @@ import java.util.Calendar;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-public class IdTagInfo implements validatable
+public class IdTagInfo implements Validatable
 {
     private Calendar expiryDate;
     private String parentIdTag;

@@ -134,6 +134,15 @@ public class CoreProfileTest
     }
 
     @Test
+    public void getFeatureList_containsRemoteStartTransactionFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "RemoteStartTransaction"), is(instanceOf(RemoteStartTransactionFeature.class)));
+    }
+
+    @Test
     public void handleRequest_aChangeAvailabilityRequest_callsHandleChangeAvailabilityRequest() {
         // Given
         ChangeAvailabilityRequest request = new ChangeAvailabilityRequest();
@@ -143,6 +152,18 @@ public class CoreProfileTest
 
         // Then
         verify(handler, times(1)).handleChangeAvailabilityRequest(eq(request));
+    }
+
+    @Test
+    public void handleRequest_aRemoteStartTransactionRequest_callsHandleRemoteStartTransactionRequest() {
+        // Given
+        RemoteStartTransactionRequest request = new RemoteStartTransactionRequest();
+
+        // When
+        core.handleRequest(request);
+
+        // Then
+        verify(handler, times(1)).handleRemoteStartTransactionRequest(eq(request));
     }
 
     @Test

@@ -28,7 +28,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class SampledValue implements validatable{
+public class SampledValue implements Validatable {
     private String value;
     private String context;
     private String format;

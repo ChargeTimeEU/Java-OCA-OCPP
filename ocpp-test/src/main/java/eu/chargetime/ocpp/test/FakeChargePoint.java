@@ -74,6 +74,12 @@ public class FakeChargePoint
                 receivedRequest = request;
                 return new DataTransferConfirmation();
             }
+
+            @Override
+            public RemoteStartTransactionConfirmation handleRemoteStartTransactionRequest(RemoteStartTransactionRequest request) {
+                receivedRequest = request;
+                return new RemoteStartTransactionConfirmation("Accepted");
+            }
         });
         client = new Client(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue()));
         client.addFeatureProfile(core);
@@ -180,5 +186,9 @@ public class FakeChargePoint
 
     public void hasHandledDataTransferRequest() {
         confirmRequest(DataTransferRequest.class);
+    }
+
+    public void hasHandledRemoteStartTransactionRequest() {
+        confirmRequest(RemoteStartTransactionRequest.class);
     }
 }

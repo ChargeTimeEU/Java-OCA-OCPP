@@ -29,7 +29,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-public class KeyValueType implements validatable {
+public class KeyValueType implements Validatable {
     private String key;
     private Boolean readonly;
     private String value;

@@ -26,5 +26,5 @@ package eu.chargetime.ocpp.model;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-public interface Confirmation extends validatable {
+public interface Confirmation extends Validatable {
 }

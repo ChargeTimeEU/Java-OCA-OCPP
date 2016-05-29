@@ -26,6 +26,6 @@ package eu.chargetime.ocpp.model;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-public interface validatable {
+public interface Validatable {
     boolean validate();
 }
