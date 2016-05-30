@@ -52,6 +52,7 @@ public class CoreProfile implements Profile
         features.add(new HeartbeatFeature(this));
         features.add(new MeterValuesFeature(this));
         features.add(new RemoteStartTransactionFeature(this));
+        features.add(new RemoteStopTransactionFeature(this));
     }
 
     public AuthorizeRequest createAuthorizeRequest(String idToken) throws PropertyConstraintException {
@@ -115,6 +116,8 @@ public class CoreProfile implements Profile
             result = eventHandler.handleDataTransferRequest((DataTransferRequest)request);
         } else if (request instanceof RemoteStartTransactionRequest) {
             result = eventHandler.handleRemoteStartTransactionRequest((RemoteStartTransactionRequest) request);
+        } else if (request instanceof RemoteStopTransactionRequest) {
+            result = eventHandler.handleRemoteStopTransactionRequest((RemoteStopTransactionRequest) request);
         }
 
         return result;

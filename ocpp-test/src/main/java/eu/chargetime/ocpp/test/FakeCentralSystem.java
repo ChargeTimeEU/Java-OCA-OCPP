@@ -193,6 +193,11 @@ public class FakeCentralSystem
         assertThat(getCallResultPayload().getString("status"), equalTo(status));
     }
 
+    public void hasReceivedRemoteStopTransactionConfirmation(String status) {
+        assertThat(getUniqueId(), equalTo("RemoteStopTransaction"));
+        assertThat(getCallResultPayload().getString("status"), equalTo(status));
+    }
+
     public void sendGetConfigurationRequest(String... keys) {
         String payload = "\"key\":%s";
         sendRequest("GetConfiguration", String.format(payload, formatList(keys)));
@@ -222,6 +227,11 @@ public class FakeCentralSystem
     public void sendRemoteStartTransactionRequest(String idTag) {
         String payload = "\"idTag\": { \"idToken\": \"%s\"}";
         sendRequest("RemoteStartTransaction", String.format(payload, idTag));
+    }
+
+    public void sendRemoteStopTransactionRequest(int transactionId) {
+        String payload = "\"transactionId\": %d";
+        sendRequest("RemoteStopTransaction", String.format(payload, transactionId));
     }
 
     public enum AvailabilityType {
