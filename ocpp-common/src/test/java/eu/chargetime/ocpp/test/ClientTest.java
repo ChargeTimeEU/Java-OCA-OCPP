@@ -1,10 +1,12 @@
 package eu.chargetime.ocpp.test;
 
-import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.Client;
+import eu.chargetime.ocpp.Session;
+import eu.chargetime.ocpp.SessionEvents;
 import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.test.TestConfirmation;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
@@ -87,7 +89,7 @@ public class ClientTest extends TestUtilities {
     }
 
     @Test
-    public void send_aMessage_isCommunicated() {
+    public void send_aMessage_isCommunicated() throws Exception {
         // When
         client.send(request);
 
@@ -96,7 +98,7 @@ public class ClientTest extends TestUtilities {
     }
 
     @Test
-    public void responseReceived_aMessageWasSend_PromiseIsCompleted() {
+    public void responseReceived_aMessageWasSend_PromiseIsCompleted() throws Exception {
         // Given
         String someUniqueId = "Some id";
         when(session.sendRequest(any(), any())).thenReturn(someUniqueId);

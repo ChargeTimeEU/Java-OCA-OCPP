@@ -66,7 +66,7 @@ public class CoreProfileTest
     }
 
     @Test
-    public void createBootNotification_withVendorAndModel_returnsBootNotificationRequestWithVendorAndModel() {
+    public void createBootNotificationRequest_withVendorAndModel_returnsBootNotificationRequestWithVendorAndModel() {
         // Given
         String legalVendor = "vendor";
         String legalModel = "model";
@@ -80,7 +80,7 @@ public class CoreProfileTest
     }
 
     @Test
-    public void createHeartbeat_returnsHeartbeatRequest() {
+    public void createHeartbeatRequest_returnsHeartbeatRequest() {
         // When
         Request result = core.createHeartbeatRequest();
 
@@ -89,12 +89,21 @@ public class CoreProfileTest
     }
 
     @Test
-    public void createMeterValues_returnsMeterValuesRequest() throws Exception {
+    public void createMeterValuesRequest_returnsMeterValuesRequest() throws Exception {
         // When
         Request result = core.createMeterValuesRequest(42, Calendar.getInstance(), "42");
 
         // Then
         assertThat(result, instanceOf(MeterValuesRequest.class));
+    }
+
+    @Test
+    public void createStartTransactionRequest_returnsStartTransactionRequest() throws Exception {
+        // When
+        Request result = core.createStartTransactionRequest(42, "some token", 42, Calendar.getInstance());
+
+        // Then
+        assertThat(result, instanceOf(StartTransactionRequest.class));
     }
 
     @Test
@@ -159,6 +168,16 @@ public class CoreProfileTest
         // Then
         assertThat(findFeature(features, "Reset"), is(instanceOf(ResetFeature.class)));
     }
+
+    @Test
+    public void getFeatureList_containsStartTransactionFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "StartTransaction"), is(instanceOf(StartTransactionFeature.class)));
+    }
+
 
     @Test
     public void handleRequest_aChangeAvailabilityRequest_callsHandleChangeAvailabilityRequest() {

@@ -133,6 +133,15 @@ public class FakeChargePoint
         }
     }
 
+    public void sendStartTransactionRequest() {
+        try {
+            Request request = core.createStartTransactionRequest(41, "some id", 42, Calendar.getInstance());
+            send(request);
+        } catch (PropertyConstraintException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public void sendDataTransferRequest(String vendorId, String messageId, String data) {
         try {
             DataTransferRequest request = core.createDataTransferRequest(vendorId);
@@ -146,7 +155,11 @@ public class FakeChargePoint
     }
 
     private void send(Request request) {
-        client.send(request).whenComplete((s, ex) -> receivedConfirmation = s);
+        try {
+            client.send(request).whenComplete((s, ex) -> receivedConfirmation = s);
+        } catch (UnsupportedFeatureException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void hasReceivedBootConfirmation(String status) {
@@ -170,6 +183,10 @@ public class FakeChargePoint
 
     public void hasReceivedMeterValuesConfirmation() {
         assertThat(receivedConfirmation, instanceOf(MeterValuesConfirmation.class));
+    }
+
+    public void hasReceivedStartTransactionConfirmation() {
+        assertThat(receivedConfirmation, instanceOf(StartTransactionConfirmation.class));
     }
 
     public void disconnect() {

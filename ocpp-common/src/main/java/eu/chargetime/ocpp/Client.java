@@ -111,8 +111,11 @@ public class Client
         return contains;
     }
 
-    public CompletableFuture<Confirmation> send(Request request) {
+    public CompletableFuture<Confirmation> send(Request request) throws UnsupportedFeatureException {
         Feature feature = findFeature(request);
+        if (feature == null)
+            throw new UnsupportedFeatureException();
+
         String id = session.sendRequest(feature.getAction(), request);
         CompletableFuture<Confirmation> promise = createPromise(id);
         return promise;

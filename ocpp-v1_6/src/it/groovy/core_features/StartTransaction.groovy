@@ -1,0 +1,48 @@
+package core_features
+
+import eu.chargetime.ocpp.test.FakeCentralSystem
+import eu.chargetime.ocpp.test.FakeChargePoint
+import spock.lang.Shared
+import spock.lang.Specification
+import spock.util.concurrent.PollingConditions;
+
+class StartTransaction extends Specification {
+    @Shared
+    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
+    @Shared
+    FakeChargePoint chargePoint = new FakeChargePoint();
+
+    def setupSpec() {
+        // When a Central System is running
+        centralSystem.started();
+    }
+
+    def setup() {
+        chargePoint.connect();
+    }
+
+    def cleanup() {
+        chargePoint.disconnect();
+    }
+
+    def "Charge point sends StartTransaction request and receives a response"() {
+        def conditions = new PollingConditions(timeout: 1);
+        when:
+        chargePoint.sendStartTransactionRequest();
+
+        then:
+        conditions.eventually {
+            centralSystem.hasReceivedStartTransactionRequest();
+        }
+
+        when:
+        centralSystem.sendStartTransactionConfirmation();
+
+        then:
+        conditions.eventually {
+            chargePoint.hasReceivedStartTransactionConfirmation();
+        }
+
+    }
+
+}

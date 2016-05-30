@@ -54,6 +54,7 @@ public class CoreProfile implements Profile
         features.add(new RemoteStartTransactionFeature(this));
         features.add(new RemoteStopTransactionFeature(this));
         features.add(new ResetFeature(this));
+        features.add(new StartTransactionFeature(this));
     }
 
     public AuthorizeRequest createAuthorizeRequest(String idToken) throws PropertyConstraintException {
@@ -89,6 +90,17 @@ public class CoreProfile implements Profile
         MeterValuesRequest request = new MeterValuesRequest();
         request.setConnectorId(connectorId);
         request.setMeterValue(meterValues);
+        return request;
+    }
+
+    public StartTransactionRequest createStartTransactionRequest(Integer connectorId, String idTag, Integer meterStart, Calendar timestamp) throws PropertyConstraintException {
+        StartTransactionRequest request = new StartTransactionRequest();
+        request.setConnectorId(connectorId);
+        IdToken idToken = new IdToken();
+        idToken.setIdToken(idTag);
+        request.setIdTag(idToken);
+        request.setMeterStart(meterStart);
+        request.setTimestamp(timestamp);
         return request;
     }
 

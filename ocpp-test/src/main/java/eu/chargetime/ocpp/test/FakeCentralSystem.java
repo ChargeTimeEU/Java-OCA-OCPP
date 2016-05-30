@@ -126,6 +126,10 @@ public class FakeCentralSystem
         return receivedMessage != null && "MeterValues".equals(getAction());
     }
 
+    public boolean hasReceivedStartTransactionRequest() {
+        return receivedMessage != null && "StartTransaction".equals(getAction());
+    }
+
     private JSONObject getCallPayload()
     {
         return (JSONObject)receivedMessage[3];
@@ -247,7 +251,6 @@ public class FakeCentralSystem
     public enum AvailabilityType {
         Inoperative, Operative
     }
-
     public void sendChangeAvailabilityRequest(int connectorId, AvailabilityType type)
     {
         String payload = "\"connectorId\":%d,\"type\":\"%s\"";
@@ -257,10 +260,14 @@ public class FakeCentralSystem
     public enum RegistrationStatus {
         Accepted, Pending, Rejected
     }
-
     public void sendHeartbeatConfirmation() {
         String payload = "\"currentTime\": \"%s\"";
         sendConfirmation(String.format(payload, now()));
+    }
+
+    public void sendStartTransactionConfirmation() {
+        String payload = "\"idTagInfo\": {\"status\": \"Accepted\"}, \"transactionId\": 42";
+        sendConfirmation(payload);
     }
 
     public void sendMeterValuesConfirmation() {
