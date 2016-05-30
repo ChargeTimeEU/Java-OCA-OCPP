@@ -86,6 +86,12 @@ public class FakeChargePoint
                 receivedRequest = request;
                 return new RemoteStopTransactionConfirmation("Accepted");
             }
+
+            @Override
+            public ResetConfirmation handleResetRequest(ResetRequest request) {
+                receivedRequest = request;
+                return new ResetConfirmation("Accepted");
+            }
         });
         client = new Client(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue()));
         client.addFeatureProfile(core);
@@ -200,5 +206,9 @@ public class FakeChargePoint
 
     public void hasHandledRemoteStopTransactionRequest() {
         confirmRequest(RemoteStopTransactionRequest.class);
+    }
+
+    public void hasHandledResetRequest() {
+        confirmRequest(ResetRequest.class);
     }
 }

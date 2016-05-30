@@ -35,6 +35,7 @@ public interface ClientCoreEventHandler {
     ClearCacheConfirmation handleClearCacheRequest(ClearCacheRequest request);
     DataTransferConfirmation handleDataTransferRequest(DataTransferRequest request);
     RemoteStartTransactionConfirmation handleRemoteStartTransactionRequest(RemoteStartTransactionRequest request);
-
     RemoteStopTransactionConfirmation handleRemoteStopTransactionRequest(RemoteStopTransactionRequest request);
+
+    ResetConfirmation handleResetRequest(ResetRequest request);
 }

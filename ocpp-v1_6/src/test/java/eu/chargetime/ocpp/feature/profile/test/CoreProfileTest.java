@@ -152,6 +152,15 @@ public class CoreProfileTest
     }
 
     @Test
+    public void getFeatureList_containsResetFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "Reset"), is(instanceOf(ResetFeature.class)));
+    }
+
+    @Test
     public void handleRequest_aChangeAvailabilityRequest_callsHandleChangeAvailabilityRequest() {
         // Given
         ChangeAvailabilityRequest request = new ChangeAvailabilityRequest();
@@ -186,6 +195,19 @@ public class CoreProfileTest
         // Then
         verify(handler, times(1)).handleRemoteStopTransactionRequest(eq(request));
     }
+
+    @Test
+    public void handleRequest_aResetRequest_callsHandleResetRequest() {
+        // Given
+        ResetRequest request = new ResetRequest();
+
+        // When
+        core.handleRequest(request);
+
+        // Then
+        verify(handler, times(1)).handleResetRequest(eq(request));
+    }
+
 
     @Test
     public void handleRequest_aChangeAvailabilityRequest_returnsChangeAvailabilityConfirmation() {
