@@ -130,6 +130,10 @@ public class FakeCentralSystem
         return receivedMessage != null && "StartTransaction".equals(getAction());
     }
 
+    public boolean hasReceivedStatusNotificationRequest() {
+        return receivedMessage != null && "StatusNotification".equals(getAction());
+    }
+
     private JSONObject getCallPayload()
     {
         return (JSONObject)receivedMessage[3];
@@ -251,6 +255,7 @@ public class FakeCentralSystem
     public enum AvailabilityType {
         Inoperative, Operative
     }
+
     public void sendChangeAvailabilityRequest(int connectorId, AvailabilityType type)
     {
         String payload = "\"connectorId\":%d,\"type\":\"%s\"";
@@ -263,6 +268,10 @@ public class FakeCentralSystem
     public void sendHeartbeatConfirmation() {
         String payload = "\"currentTime\": \"%s\"";
         sendConfirmation(String.format(payload, now()));
+    }
+
+    public void sendStatusNotificationConfirmation() {
+        sendConfirmation("");
     }
 
     public void sendStartTransactionConfirmation() {

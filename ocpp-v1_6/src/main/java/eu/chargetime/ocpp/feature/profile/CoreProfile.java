@@ -55,6 +55,7 @@ public class CoreProfile implements Profile
         features.add(new RemoteStopTransactionFeature(this));
         features.add(new ResetFeature(this));
         features.add(new StartTransactionFeature(this));
+        features.add(new StatusNotificationFeature(this));
     }
 
     public AuthorizeRequest createAuthorizeRequest(String idToken) throws PropertyConstraintException {
@@ -101,6 +102,14 @@ public class CoreProfile implements Profile
         request.setIdTag(idToken);
         request.setMeterStart(meterStart);
         request.setTimestamp(timestamp);
+        return request;
+    }
+
+    public StatusNotificationRequest createStatusNotificationRequest(Integer connectorId, String errorCode, String status) throws PropertyConstraintException {
+        StatusNotificationRequest request = new StatusNotificationRequest();
+        request.setConnectorId(connectorId);
+        request.setErrorCode(errorCode);
+        request.setStatus(status);
         return request;
     }
 

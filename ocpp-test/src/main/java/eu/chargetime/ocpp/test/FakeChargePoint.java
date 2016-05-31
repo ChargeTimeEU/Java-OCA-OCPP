@@ -154,6 +154,15 @@ public class FakeChargePoint
         }
     }
 
+    public void sendStatusNotificationRequest() {
+        try {
+            StatusNotificationRequest request = core.createStatusNotificationRequest(42, "NoError", "Available");
+            send(request);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     private void send(Request request) {
         try {
             client.send(request).whenComplete((s, ex) -> receivedConfirmation = s);
@@ -187,6 +196,10 @@ public class FakeChargePoint
 
     public void hasReceivedStartTransactionConfirmation() {
         assertThat(receivedConfirmation, instanceOf(StartTransactionConfirmation.class));
+    }
+
+    public void hasReceivedStatusNotificationConfirmation() {
+        assertThat(receivedConfirmation, instanceOf(StatusNotificationConfirmation.class));
     }
 
     public void disconnect() {

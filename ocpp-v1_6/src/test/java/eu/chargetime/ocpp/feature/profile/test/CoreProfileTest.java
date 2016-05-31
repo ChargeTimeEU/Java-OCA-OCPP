@@ -107,6 +107,15 @@ public class CoreProfileTest
     }
 
     @Test
+    public void createStatusNotificationRequest_returnsStatusNotificationRequest() throws Exception {
+        // When
+        Request result = core.createStatusNotificationRequest(42, "NoError", "Available");
+
+        // Then
+        assertThat(result, instanceOf(StatusNotificationRequest.class));
+    }
+
+    @Test
     public void getFeatureList_containsBootNotificationFeature() {
         // When
         Feature[] features = core.getFeatureList();
@@ -178,6 +187,14 @@ public class CoreProfileTest
         assertThat(findFeature(features, "StartTransaction"), is(instanceOf(StartTransactionFeature.class)));
     }
 
+    @Test
+    public void getFeatureList_containsStatusNotificationFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "StatusNotification"), is(instanceOf(StatusNotificationFeature.class)));
+    }
 
     @Test
     public void handleRequest_aChangeAvailabilityRequest_callsHandleChangeAvailabilityRequest() {
