@@ -92,6 +92,12 @@ public class FakeChargePoint
                 receivedRequest = request;
                 return new ResetConfirmation("Accepted");
             }
+
+            @Override
+            public UnlockConnectorConfirmation handleUnlockConnectorRequest(UnlockConnectorRequest request) {
+                receivedRequest = request;
+                return new UnlockConnectorConfirmation("Unlocked");
+            }
         });
         client = new Client(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue()));
         client.addFeatureProfile(core);
@@ -249,5 +255,9 @@ public class FakeChargePoint
 
     public void hasHandledResetRequest() {
         confirmRequest(ResetRequest.class);
+    }
+
+    public void hasHandledUnlockConnectorRequest() {
+        confirmRequest(UnlockConnectorRequest.class);
     }
 }

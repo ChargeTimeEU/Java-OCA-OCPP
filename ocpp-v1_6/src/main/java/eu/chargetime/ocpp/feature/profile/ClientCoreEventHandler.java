@@ -36,6 +36,7 @@ public interface ClientCoreEventHandler {
     DataTransferConfirmation handleDataTransferRequest(DataTransferRequest request);
     RemoteStartTransactionConfirmation handleRemoteStartTransactionRequest(RemoteStartTransactionRequest request);
     RemoteStopTransactionConfirmation handleRemoteStopTransactionRequest(RemoteStopTransactionRequest request);
-
     ResetConfirmation handleResetRequest(ResetRequest request);
+
+    UnlockConnectorConfirmation handleUnlockConnectorRequest(UnlockConnectorRequest request);
 }

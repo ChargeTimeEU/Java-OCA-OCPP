@@ -1,7 +1,6 @@
 package eu.chargetime.ocpp.model;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.utilities.ModelUtil;
 
 /**
  * ChargeTime.eu - Java-OCA-OCPP
@@ -28,37 +27,22 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class ResetConfirmation implements Confirmation {
-    private String status;
-
-    public ResetConfirmation() {
-    }
-
-    public ResetConfirmation(String status) {
-        try {
-            setStatus(status);
-        } catch (PropertyConstraintException e) {
-            e.printStackTrace();
-        }
-    }
+public class UnlockConnectorRequest implements Request {
+    private Integer connectorId;
 
     @Override
     public boolean validate() {
-        return isValidStatus(status);
+        return connectorId != null;
     }
 
-    public void setStatus(String status) throws PropertyConstraintException {
-        if (!isValidStatus(status))
-            throw new PropertyConstraintException("status", status);
+    public void setConnectorId(Integer connectorId) throws PropertyConstraintException {
+        if (connectorId <= 0)
+            throw new PropertyConstraintException("connectorId", connectorId);
 
-        this.status = status;
+        this.connectorId = connectorId;
     }
 
-    private boolean isValidStatus(String status) {
-        return ModelUtil.isAmong(status, "Accepted", "Rejected");
-    }
-
-    public String getStatus() {
-        return status;
+    public Integer getConnectorId() {
+        return connectorId;
     }
 }

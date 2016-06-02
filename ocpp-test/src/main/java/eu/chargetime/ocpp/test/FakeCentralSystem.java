@@ -215,6 +215,11 @@ public class FakeCentralSystem
         assertThat(getCallResultPayload().getString("status"), equalTo(status));
     }
 
+    public void hasReceivedUnlockConnectorConfirmation(String status) {
+        assertThat(getUniqueId(), equalTo("UnlockConnector"));
+        assertThat(getCallResultPayload().getString("status"), equalTo(status));
+    }
+
     public void sendGetConfigurationRequest(String... keys) {
         String payload = "\"key\":%s";
         sendRequest("GetConfiguration", String.format(payload, formatList(keys)));
@@ -254,6 +259,11 @@ public class FakeCentralSystem
     public void sendResetRequest(String type) {
         String payload = "\"type\": \"%s\"";
         sendRequest("Reset", String.format(payload, type));
+    }
+
+    public void sendUnlockConnectorRequest(int connectorId) {
+        String payload = "\"connectorId\": %d";
+        sendRequest("UnlockConnector", String.format(payload, connectorId));
     }
 
     public enum AvailabilityType {

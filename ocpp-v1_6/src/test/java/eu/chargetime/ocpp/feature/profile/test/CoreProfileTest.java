@@ -215,6 +215,16 @@ public class CoreProfileTest
     }
 
     @Test
+    public void getFeatureList_containsUnlockConnectorFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "UnlockConnector"), is(instanceOf(UnlockConnectorFeature.class)));
+    }
+
+
+    @Test
     public void handleRequest_aChangeAvailabilityRequest_callsHandleChangeAvailabilityRequest() {
         // Given
         ChangeAvailabilityRequest request = new ChangeAvailabilityRequest();
@@ -262,6 +272,17 @@ public class CoreProfileTest
         verify(handler, times(1)).handleResetRequest(eq(request));
     }
 
+    @Test
+    public void handleRequest_anUnlockConnectorRequest_callsHandleUnlockConnectorRequest() {
+        // Given
+        UnlockConnectorRequest request = new UnlockConnectorRequest();
+
+        // When
+        core.handleRequest(request);
+
+        // Then
+        verify(handler, times(1)).handleUnlockConnectorRequest(eq(request));
+    }
 
     @Test
     public void handleRequest_aChangeAvailabilityRequest_returnsChangeAvailabilityConfirmation() {

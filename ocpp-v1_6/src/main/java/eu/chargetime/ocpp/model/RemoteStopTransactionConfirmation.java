@@ -35,7 +35,11 @@ public class RemoteStopTransactionConfirmation implements Confirmation {
     }
 
     public RemoteStopTransactionConfirmation(String status) {
-        this.status = status;
+        try {
+            setStatus(status);
+        } catch (PropertyConstraintException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

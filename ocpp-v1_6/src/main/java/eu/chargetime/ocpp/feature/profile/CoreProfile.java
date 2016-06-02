@@ -57,6 +57,7 @@ public class CoreProfile implements Profile
         features.add(new StartTransactionFeature(this));
         features.add(new StatusNotificationFeature(this));
         features.add(new StopTransactionFeature(this));
+        features.add(new UnlockConnectorFeature(this));
     }
 
     public AuthorizeRequest createAuthorizeRequest(String idToken) throws PropertyConstraintException {
@@ -151,6 +152,8 @@ public class CoreProfile implements Profile
             result = eventHandler.handleRemoteStopTransactionRequest((RemoteStopTransactionRequest) request);
         } else if (request instanceof ResetRequest) {
             result = eventHandler.handleResetRequest((ResetRequest) request);
+        } else if (request instanceof UnlockConnectorRequest) {
+            result = eventHandler.handleUnlockConnectorRequest((UnlockConnectorRequest) request);
         }
 
         return result;

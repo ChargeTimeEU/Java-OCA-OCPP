@@ -1,7 +1,10 @@
-package eu.chargetime.ocpp.model;
+package eu.chargetime.ocpp.feature;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.utilities.ModelUtil;
+import eu.chargetime.ocpp.feature.profile.Profile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.UnlockConnectorConfirmation;
+import eu.chargetime.ocpp.model.UnlockConnectorRequest;
 
 /**
  * ChargeTime.eu - Java-OCA-OCPP
@@ -28,37 +31,23 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class ResetConfirmation implements Confirmation {
-    private String status;
-
-    public ResetConfirmation() {
-    }
-
-    public ResetConfirmation(String status) {
-        try {
-            setStatus(status);
-        } catch (PropertyConstraintException e) {
-            e.printStackTrace();
-        }
+public class UnlockConnectorFeature extends Feature {
+    public UnlockConnectorFeature(Profile ownerProfile) {
+        super(ownerProfile);
     }
 
     @Override
-    public boolean validate() {
-        return isValidStatus(status);
+    public Class<? extends Request> getRequestType() {
+        return UnlockConnectorRequest.class;
     }
 
-    public void setStatus(String status) throws PropertyConstraintException {
-        if (!isValidStatus(status))
-            throw new PropertyConstraintException("status", status);
-
-        this.status = status;
+    @Override
+    public Class<? extends Confirmation> getConfirmationType() {
+        return UnlockConnectorConfirmation.class;
     }
 
-    private boolean isValidStatus(String status) {
-        return ModelUtil.isAmong(status, "Accepted", "Rejected");
-    }
-
-    public String getStatus() {
-        return status;
+    @Override
+    public String getAction() {
+        return "UnlockConnector";
     }
 }

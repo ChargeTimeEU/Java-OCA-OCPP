@@ -28,13 +28,13 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class ResetConfirmation implements Confirmation {
+public class UnlockConnectorConfirmation implements Confirmation {
     private String status;
 
-    public ResetConfirmation() {
+    public UnlockConnectorConfirmation() {
     }
 
-    public ResetConfirmation(String status) {
+    public UnlockConnectorConfirmation(String status) {
         try {
             setStatus(status);
         } catch (PropertyConstraintException e) {
@@ -55,7 +55,7 @@ public class ResetConfirmation implements Confirmation {
     }
 
     private boolean isValidStatus(String status) {
-        return ModelUtil.isAmong(status, "Accepted", "Rejected");
+        return ModelUtil.isAmong(status, "Unlocked", "UnlockFailed", "NotSupported");
     }
 
     public String getStatus() {
