@@ -142,6 +142,11 @@ public class FakeChargePoint
         }
     }
 
+    public void sendStopTransactionRequest() {
+        StopTransactionRequest request = core.createStopTransactionRequest(42, Calendar.getInstance(), 42);
+        send(request);
+    }
+
     public void sendDataTransferRequest(String vendorId, String messageId, String data) {
         try {
             DataTransferRequest request = core.createDataTransferRequest(vendorId);
@@ -200,6 +205,10 @@ public class FakeChargePoint
 
     public void hasReceivedStatusNotificationConfirmation() {
         assertThat(receivedConfirmation, instanceOf(StatusNotificationConfirmation.class));
+    }
+
+    public void hasReceivedStopTransactionConfirmation() {
+        assertThat(receivedConfirmation, instanceOf(StopTransactionConfirmation.class));
     }
 
     public void disconnect() {

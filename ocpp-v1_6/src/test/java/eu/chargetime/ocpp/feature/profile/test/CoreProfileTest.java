@@ -116,6 +116,15 @@ public class CoreProfileTest
     }
 
     @Test
+    public void createStopTransactionRequest_returnsStopTransactionRequest() throws Exception {
+        // When
+        Request result = core.createStopTransactionRequest(42, Calendar.getInstance(), 42);
+
+        // Then
+        assertThat(result, instanceOf(StopTransactionRequest.class));
+    }
+
+    @Test
     public void getFeatureList_containsBootNotificationFeature() {
         // When
         Feature[] features = core.getFeatureList();
@@ -194,6 +203,15 @@ public class CoreProfileTest
 
         // Then
         assertThat(findFeature(features, "StatusNotification"), is(instanceOf(StatusNotificationFeature.class)));
+    }
+
+    @Test
+    public void getFeatureList_containsStopTransactionFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "StopTransaction"), is(instanceOf(StopTransactionFeature.class)));
     }
 
     @Test
