@@ -1,4 +1,4 @@
-package core_features
+package eu.chargetime.ocpp.test.core
 
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
@@ -6,11 +6,10 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class UnlockConnector extends Specification {
-    @Shared
-    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
-    @Shared
-    FakeChargePoint chargePoint = new FakeChargePoint();
+class GetConfiguration extends Specification
+{
+    @Shared FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
+    @Shared FakeChargePoint chargePoint = new FakeChargePoint();
 
     def setupSpec() {
         // When a Central System is running
@@ -25,15 +24,16 @@ class UnlockConnector extends Specification {
         chargePoint.disconnect();
     }
 
-    def "Central System sends a UnlockConnector request and receives a response"() {
+    def "Central System sends a GetConfiguration request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
+
         when:
-        centralSystem.sendUnlockConnectorRequest(1);
+        centralSystem.sendGetConfigurationRequest("key1");
 
         then:
         conditions.eventually {
-            chargePoint.hasHandledUnlockConnectorRequest();
-            centralSystem.hasReceivedUnlockConnectorConfirmation("Unlocked");
+            chargePoint.hasHandledGetConfigurationRequest();
+            centralSystem.hasReceivedGetConfigurationConfirmation();
         }
     }
 }

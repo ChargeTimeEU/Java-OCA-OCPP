@@ -1,4 +1,4 @@
-package core_features
+package eu.chargetime.ocpp.test.core
 
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
@@ -6,10 +6,11 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class ClearCache extends Specification
-{
-    @Shared FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
-    @Shared FakeChargePoint chargePoint = new FakeChargePoint();
+class RemoteStopTransaction extends Specification {
+    @Shared
+    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
+    @Shared
+    FakeChargePoint chargePoint = new FakeChargePoint();
 
     def setupSpec() {
         // When a Central System is running
@@ -24,16 +25,15 @@ class ClearCache extends Specification
         chargePoint.disconnect();
     }
 
-    def "Central System sends a ClearCache request and receives a response"() {
+    def "Central System sends a RemoteStopTransaction request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
-
         when:
-        centralSystem.sendClearCacheRequest();
+        centralSystem.sendRemoteStopTransactionRequest(0);
 
         then:
         conditions.eventually {
-            chargePoint.hasHandledClearCacheRequest();
-            centralSystem.hasReceivedClearCacheConfirmation();
+            chargePoint.hasHandledRemoteStopTransactionRequest();
+            centralSystem.hasReceivedRemoteStopTransactionConfirmation("Accepted");
         }
     }
 }

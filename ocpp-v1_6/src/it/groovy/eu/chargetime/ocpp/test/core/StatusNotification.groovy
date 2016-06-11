@@ -1,12 +1,12 @@
-package core_features
+package eu.chargetime.ocpp.test.core
 
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
 import spock.lang.Shared
 import spock.lang.Specification
-import spock.util.concurrent.PollingConditions
+import spock.util.concurrent.PollingConditions;
 
-class Reset extends Specification {
+class StatusNotification extends Specification {
     @Shared
     FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
     @Shared
@@ -25,15 +25,24 @@ class Reset extends Specification {
         chargePoint.disconnect();
     }
 
-    def "Central System sends a Reset request and receives a response"() {
-        def conditions = new PollingConditions(timeout: 1)
+    def "Charge point sends StatusNotification request and receives a response"() {
+        def conditions = new PollingConditions(timeout: 1);
         when:
-        centralSystem.sendResetRequest("Soft");
+        chargePoint.sendStatusNotificationRequest();
 
         then:
         conditions.eventually {
-            chargePoint.hasHandledResetRequest();
-            centralSystem.hasReceivedResetConfirmation("Accepted");
+            centralSystem.hasReceivedStatusNotificationRequest();
         }
+
+        when:
+        centralSystem.sendStatusNotificationConfirmation();
+
+        then:
+        conditions.eventually {
+            chargePoint.hasReceivedStatusNotificationConfirmation();
+        }
+
     }
+
 }

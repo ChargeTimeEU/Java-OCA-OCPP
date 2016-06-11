@@ -1,12 +1,12 @@
-package core_features
+package eu.chargetime.ocpp.test.core
 
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
 import spock.lang.Shared
 import spock.lang.Specification
-import spock.util.concurrent.PollingConditions;
+import spock.util.concurrent.PollingConditions
 
-class StatusNotification extends Specification {
+class RemoteStartTransaction extends Specification {
     @Shared
     FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
     @Shared
@@ -25,24 +25,15 @@ class StatusNotification extends Specification {
         chargePoint.disconnect();
     }
 
-    def "Charge point sends StatusNotification request and receives a response"() {
-        def conditions = new PollingConditions(timeout: 1);
+    def "Central System sends a RemoteStartTransaction request and receives a response"() {
+        def conditions = new PollingConditions(timeout: 1)
         when:
-        chargePoint.sendStatusNotificationRequest();
+        centralSystem.sendRemoteStartTransactionRequest("some id");
 
         then:
         conditions.eventually {
-            centralSystem.hasReceivedStatusNotificationRequest();
+            chargePoint.hasHandledRemoteStartTransactionRequest();
+            centralSystem.hasReceivedRemoteStartTransactionConfirmation("Accepted");
         }
-
-        when:
-        centralSystem.sendStatusNotificationConfirmation();
-
-        then:
-        conditions.eventually {
-            chargePoint.hasReceivedStatusNotificationConfirmation();
-        }
-
     }
-
 }

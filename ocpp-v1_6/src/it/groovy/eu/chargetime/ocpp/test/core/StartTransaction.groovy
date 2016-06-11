@@ -1,4 +1,4 @@
-package core_features
+package eu.chargetime.ocpp.test.core
 
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
@@ -6,10 +6,11 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions;
 
-class Heartbeat extends Specification
-{
-    @Shared FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
-    @Shared FakeChargePoint chargePoint = new FakeChargePoint();
+class StartTransaction extends Specification {
+    @Shared
+    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
+    @Shared
+    FakeChargePoint chargePoint = new FakeChargePoint();
 
     def setupSpec() {
         // When a Central System is running
@@ -24,23 +25,22 @@ class Heartbeat extends Specification
         chargePoint.disconnect();
     }
 
-    def "Charge point sends Heartbeat and receives a response"() {
+    def "Charge point sends StartTransaction request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1);
         when:
-        chargePoint.sendHeartbeatRequest();
-
+        chargePoint.sendStartTransactionRequest();
 
         then:
         conditions.eventually {
-            centralSystem.hasReceivedHeartbeat();
+            centralSystem.hasReceivedStartTransactionRequest();
         }
 
         when:
-            centralSystem.sendHeartbeatConfirmation();
+        centralSystem.sendStartTransactionConfirmation();
 
         then:
         conditions.eventually {
-            chargePoint.hasReceivedHeartbeatConfirmation();
+            chargePoint.hasReceivedStartTransactionConfirmation();
         }
 
     }

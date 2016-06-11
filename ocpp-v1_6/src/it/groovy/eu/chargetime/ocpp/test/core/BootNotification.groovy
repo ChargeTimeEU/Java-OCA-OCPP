@@ -1,9 +1,10 @@
-package core_features
+package eu.chargetime.ocpp.test.core
 
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
-import spock.lang.*
-import spock.util.concurrent.PollingConditions;
+import spock.lang.Shared
+import spock.lang.Specification
+import spock.util.concurrent.PollingConditions
 
 class BootNotification extends Specification
 {
