@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test;
+package eu.chargetime.ocpp.utilities;
 
 /**
  * ChargeTime.eu - Java-OCA-OCPP

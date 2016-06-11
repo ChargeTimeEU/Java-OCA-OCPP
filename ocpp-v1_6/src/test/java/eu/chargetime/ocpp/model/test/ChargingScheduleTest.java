@@ -3,7 +3,7 @@ package eu.chargetime.ocpp.model.test;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.ChargingSchedule;
 import eu.chargetime.ocpp.model.ChargingSchedulePeriod;
-import eu.chargetime.ocpp.test.TestUtilities;
+import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

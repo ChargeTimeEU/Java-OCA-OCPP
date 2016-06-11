@@ -3,14 +3,14 @@ package eu.chargetime.ocpp.model.test;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.MeterValue;
 import eu.chargetime.ocpp.model.MeterValuesRequest;
-import eu.chargetime.ocpp.test.TestUtilities;
+import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
