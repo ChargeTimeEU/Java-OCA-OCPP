@@ -1,8 +1,5 @@
 package eu.chargetime.ocpp.model;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.utilities.ModelUtil;
-
 /**
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -30,25 +27,23 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  SOFTWARE.
  */
 public class ClearCacheConfirmation implements Confirmation{
+
+    private ClearCacheStatus status;
+
     public String getStatus() {
+        return status.toString();
+    }
+
+    public ClearCacheStatus objStatus() {
         return status;
     }
 
-    public void setStatus(String status) throws PropertyConstraintException {
-        if (!isValidStatus(status))
-            throw new PropertyConstraintException("status", status);
-
+    public void setStatus(ClearCacheStatus status) {
         this.status = status;
     }
 
-    private boolean isValidStatus(String status) {
-        return ModelUtil.isAmong(status, "Accepted", "Rejected");
-    }
-
-    private String status;
-
     @Override
     public boolean validate() {
-        return isValidStatus(this.status);
+        return this.status != null;
     }
 }

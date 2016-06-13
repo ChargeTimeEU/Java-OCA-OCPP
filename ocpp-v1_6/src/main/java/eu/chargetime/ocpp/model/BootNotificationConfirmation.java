@@ -1,7 +1,6 @@
 package eu.chargetime.ocpp.model;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.utilities.ModelUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,7 +36,7 @@ public class BootNotificationConfirmation implements Confirmation
 {
     private Calendar currentTime;
     private int interval;
-    private String status;
+    private RegistrationStatus status;
 
     public String getCurrentTime()
     {
@@ -67,26 +66,24 @@ public class BootNotificationConfirmation implements Confirmation
         this.interval = interval;
     }
 
-    public String getStatus()
+    public RegistrationStatus objStatus()
     {
         return status;
     }
 
-    public void setStatus(String status) throws PropertyConstraintException {
-        if (!isValidStatus(status))
-            throw new PropertyConstraintException("status", status);
-
-        this.status = status;
+    public String getStatus()
+    {
+        return status.toString();
     }
 
-    private boolean isValidStatus(String status) {
-        return ModelUtil.isAmong(status, "Accepted", "Pending", "Rejected");
+    public void setStatus(RegistrationStatus status) throws PropertyConstraintException {
+        this.status = status;
     }
 
     @Override
     public boolean validate() {
         boolean valid = true;
-        valid &= isValidStatus(this.status);
+        valid &= status != null;
         valid &= currentTime != null;
         valid &= interval > 0;
         return valid;

@@ -109,7 +109,7 @@ public class CoreProfileTest
     @Test
     public void createStatusNotificationRequest_returnsStatusNotificationRequest() throws Exception {
         // When
-        Request result = core.createStatusNotificationRequest(42, "NoError", "Available");
+        Request result = core.createStatusNotificationRequest(42, ChargePointErrorCode.NoError, ChargePointStatus.Available);
 
         // Then
         assertThat(result, instanceOf(StatusNotificationRequest.class));

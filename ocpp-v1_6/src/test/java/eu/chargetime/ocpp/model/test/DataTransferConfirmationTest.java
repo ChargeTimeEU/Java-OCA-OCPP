@@ -1,14 +1,13 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.DataTransferConfirmation;
-import org.junit.Assert;
+import eu.chargetime.ocpp.model.DataTransferStatus;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * ChargeTime.eu - Java-OCA-OCPP
@@ -44,68 +43,15 @@ public class DataTransferConfirmationTest {
     }
 
     @Test
-    public void setStatus_illegalStatus_throwsPropertyConstraintException() {
+    public void setStatus_dataTransferStatus_statusIsSet() throws Exception {
         // Given
-        String illegalStatus = "Some status";
-
-        try {
-            // When
-            confirmation.setStatus(illegalStatus);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("status"));
-            assertThat(ex.getFieldValue(), equalTo(illegalStatus));
-        }
-    }
-
-    @Test
-    public void setStatus_accepted_statusIsSet() throws Exception {
-        // Given
-        String dataTransferStatus = "Accepted";
+        DataTransferStatus dataTransferStatus = DataTransferStatus.Accepted;
 
         // When
         confirmation.setStatus(dataTransferStatus);
 
         // Then
-        assertThat(confirmation.getStatus(), equalTo(dataTransferStatus));
-    }
-
-    @Test
-    public void setStatus_rejected_statusIsSet() throws Exception {
-        // Given
-        String dataTransferStatus = "Rejected";
-
-        // When
-        confirmation.setStatus(dataTransferStatus);
-
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(dataTransferStatus));
-    }
-
-    @Test
-    public void setStatus_unknownMessageId_statusIsSet() throws Exception {
-        // Given
-        String dataTransferStatus = "UnknownMessageId";
-
-        // When
-        confirmation.setStatus(dataTransferStatus);
-
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(dataTransferStatus));
-    }
-
-    @Test
-    public void setStatus_unknownVendorId_statusIsSet() throws Exception {
-        // Given
-        String dataTransferStatus = "UnknownVendorId";
-
-        // When
-        confirmation.setStatus(dataTransferStatus);
-
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(dataTransferStatus));
+        assertThat(confirmation.objStatus(), equalTo(dataTransferStatus));
     }
 
     @Test
@@ -123,7 +69,7 @@ public class DataTransferConfirmationTest {
     @Test
     public void validate_statusIsSet_returnTrue() throws Exception {
         // Given
-        confirmation.setStatus("Accepted");
+        confirmation.setStatus(DataTransferStatus.Accepted);
 
         // When
         boolean isValid = confirmation.validate();

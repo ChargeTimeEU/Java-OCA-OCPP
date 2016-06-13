@@ -1,11 +1,10 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.IdToken;
 import eu.chargetime.ocpp.model.MeterValue;
+import eu.chargetime.ocpp.model.Reason;
 import eu.chargetime.ocpp.model.StopTransactionRequest;
 import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -98,151 +97,15 @@ public class StopTransactionRequestTest extends TestUtilities {
     }
 
     @Test
-    public void setReason_illegalString_throwsPropertyConstraintException() {
+    public void setReason_reason_throwsPropertyConstraintException() throws Exception {
         // Given
-        String illegal = "some reason";
-
-        try {
-            // When
-            request.setReason(illegal);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("reason"));
-            assertThat(ex.getFieldValue(), equalTo(illegal));
-        }
-    }
-
-    @Test
-    public void setReason_emergencyStop_throwsPropertyConstraintException() throws Exception {
-        // Given
-        String reason = "EmergencyStop";
+        Reason reason = Reason.DeAuthorized;
 
         // When
         request.setReason(reason);
 
         // Then
-        assertThat(request.getReason(), equalTo(reason));
-    }
-
-    @Test
-    public void setReason_evDisconnected_throwsPropertyConstraintException() throws Exception {
-        // Given
-        String reason = "EVDisconnected";
-
-        // When
-        request.setReason(reason);
-
-        // Then
-        assertThat(request.getReason(), equalTo(reason));
-    }
-
-    @Test
-    public void setReason_hardReset_throwsPropertyConstraintException() throws Exception {
-        // Given
-        String reason = "HardReset";
-
-        // When
-        request.setReason(reason);
-
-        // Then
-        assertThat(request.getReason(), equalTo(reason));
-    }
-
-    @Test
-    public void setReason_local_throwsPropertyConstraintException() throws Exception {
-        // Given
-        String reason = "Local";
-
-        // When
-        request.setReason(reason);
-
-        // Then
-        assertThat(request.getReason(), equalTo(reason));
-    }
-
-    @Test
-    public void setReason_other_throwsPropertyConstraintException() throws Exception {
-        // Given
-        String reason = "Other";
-
-        // When
-        request.setReason(reason);
-
-        // Then
-        assertThat(request.getReason(), equalTo(reason));
-    }
-
-    @Test
-    public void setReason_powerLoss_throwsPropertyConstraintException() throws Exception {
-        // Given
-        String reason = "PowerLoss";
-
-        // When
-        request.setReason(reason);
-
-        // Then
-        assertThat(request.getReason(), equalTo(reason));
-    }
-
-    @Test
-    public void setReason_reboot_throwsPropertyConstraintException() throws Exception {
-        // Given
-        String reason = "Reboot";
-
-        // When
-        request.setReason(reason);
-
-        // Then
-        assertThat(request.getReason(), equalTo(reason));
-    }
-
-    @Test
-    public void setReason_remote_throwsPropertyConstraintException() throws Exception {
-        // Given
-        String reason = "Remote";
-
-        // When
-        request.setReason(reason);
-
-        // Then
-        assertThat(request.getReason(), equalTo(reason));
-    }
-
-    @Test
-    public void setReason_softReset_throwsPropertyConstraintException() throws Exception {
-        // Given
-        String reason = "SoftReset";
-
-        // When
-        request.setReason(reason);
-
-        // Then
-        assertThat(request.getReason(), equalTo(reason));
-    }
-
-    @Test
-    public void setReason_unlockCommand_throwsPropertyConstraintException() throws Exception {
-        // Given
-        String reason = "UnlockCommand";
-
-        // When
-        request.setReason(reason);
-
-        // Then
-        assertThat(request.getReason(), equalTo(reason));
-    }
-
-    @Test
-    public void setReason_deAuthorized_throwsPropertyConstraintException() throws Exception {
-        // Given
-        String reason = "DeAuthorized";
-
-        // When
-        request.setReason(reason);
-
-        // Then
-        assertThat(request.getReason(), equalTo(reason));
+        assertThat(request.objReason(), equalTo(reason));
     }
 
     @Test

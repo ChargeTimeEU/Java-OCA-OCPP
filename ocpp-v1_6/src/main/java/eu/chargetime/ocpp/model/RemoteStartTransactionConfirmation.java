@@ -1,8 +1,5 @@
 package eu.chargetime.ocpp.model;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.utilities.ModelUtil;
-
 /**
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -29,36 +26,29 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  * SOFTWARE.
  */
 public class RemoteStartTransactionConfirmation implements Confirmation {
-    private String status;
+    private RemoteStartStopStatus status;
 
     public RemoteStartTransactionConfirmation() {
     }
 
-    public RemoteStartTransactionConfirmation(String status) {
-        try {
+    public RemoteStartTransactionConfirmation(RemoteStartStopStatus status) {
             setStatus(status);
-        } catch (PropertyConstraintException ex) {
-            ex.printStackTrace();
-        }
+    }
+
+    public String getStatus() {
+        return status.toString();
+    }
+
+    public RemoteStartStopStatus objStatus() {
+        return status;
+    }
+
+    public void setStatus(RemoteStartStopStatus status) {
+        this.status = status;
     }
 
     @Override
     public boolean validate() {
-        return isValidStatus(status);
-    }
-
-    public void setStatus(String status) throws PropertyConstraintException {
-        if (!isValidStatus(status))
-            throw new PropertyConstraintException("status", status);
-
-        this.status = status;
-    }
-
-    private boolean isValidStatus(String status) {
-        return ModelUtil.isAmong(status, "Accepted", "Rejected");
-    }
-
-    public String getStatus() {
-        return status;
+        return status != null;
     }
 }

@@ -1,13 +1,13 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.ClearCacheConfirmation;
-import org.junit.Assert;
+import eu.chargetime.ocpp.model.ClearCacheStatus;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * ChargeTime.eu - Java-OCA-OCPP
@@ -43,44 +43,15 @@ public class ClearCacheConfirmationTest {
     }
 
     @Test
-    public void setStatus_illegalStatus_throwsPropertyConstraintException() {
+    public void setStatus_clearCacheStatus_statusIsSet() throws Exception {
         // Given
-        String illegalStatus = "some status";
-
-        try {
-            // When
-            confirmation.setStatus(illegalStatus);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("status"));
-            assertThat(ex.getFieldValue(), equalTo(illegalStatus));
-        }
-    }
-
-    @Test
-    public void setStatus_accepted_statusIsSet() throws Exception {
-        // Given
-        String clearCacheStatus = "Accepted";
+        ClearCacheStatus clearCacheStatus = ClearCacheStatus.Accepted;
 
         // When
         confirmation.setStatus(clearCacheStatus);
 
         // Then
-        assertThat(confirmation.getStatus(), equalTo(clearCacheStatus));
-    }
-
-    @Test
-    public void setStatus_rejected_statusIsSet() throws Exception {
-        // Given
-        String clearCacheStatus = "Rejected";
-
-        // When
-        confirmation.setStatus(clearCacheStatus);
-
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(clearCacheStatus));
+        assertThat(confirmation.objStatus(), equalTo(clearCacheStatus));
     }
 
     @Test
@@ -95,7 +66,7 @@ public class ClearCacheConfirmationTest {
     @Test
     public void validate_statusIsSet_returnTrue() throws Exception {
         // Given
-        confirmation.setStatus("Accepted");
+        confirmation.setStatus(ClearCacheStatus.Accepted);
 
         // When
         boolean isValid = confirmation.validate();

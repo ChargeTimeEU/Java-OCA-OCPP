@@ -1,7 +1,6 @@
 package eu.chargetime.ocpp.model;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.utilities.ModelUtil;
 
 /**
  ChargeTime.eu - Java-OCA-OCPP
@@ -32,7 +31,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 public class ChangeAvailabilityRequest implements Request
 {
     private int connectorId = -1;
-    private String type;
+    private AvailabilityType type;
 
     public int getConnectorId() {
         return connectorId;
@@ -46,24 +45,22 @@ public class ChangeAvailabilityRequest implements Request
     }
 
     public String getType() {
+        return type.toString();
+    }
+
+    public AvailabilityType objType() {
         return type;
     }
 
-    public void setType(String type) throws PropertyConstraintException {
-        if (!isValidType(type))
-            throw new PropertyConstraintException("type", type, "Not valid availabilityType");
-
+    public void setType(AvailabilityType type) {
         this.type = type;
     }
 
-    private boolean isValidType(String type) {
-        return ModelUtil.isAmong(type, "Inoperative", "Operative");
-    }
 
     @Override
     public boolean validate() {
         boolean valid = true;
-        valid &= isValidType(this.type);
+        valid &= type != null;
         valid &= connectorId >= 0;
         return valid;
     }

@@ -1,5 +1,7 @@
 package eu.chargetime.ocpp.test;
 
+import eu.chargetime.ocpp.model.AvailabilityType;
+import eu.chargetime.ocpp.model.RegistrationStatus;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -266,18 +268,12 @@ public class FakeCentralSystem
         sendRequest("UnlockConnector", String.format(payload, connectorId));
     }
 
-    public enum AvailabilityType {
-        Inoperative, Operative
-    }
     public void sendChangeAvailabilityRequest(int connectorId, AvailabilityType type)
     {
         String payload = "\"connectorId\":%d,\"type\":\"%s\"";
         sendRequest("ChangeAvailability", String.format(payload, connectorId, type));
     }
 
-    public enum RegistrationStatus {
-        Accepted, Pending, Rejected
-    }
     public void sendHeartbeatConfirmation() {
         String payload = "\"currentTime\": \"%s\"";
         sendConfirmation(String.format(payload, now()));

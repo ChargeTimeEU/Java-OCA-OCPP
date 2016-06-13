@@ -1,7 +1,6 @@
 package eu.chargetime.ocpp.model;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.utilities.ModelUtil;
 
 import java.util.Calendar;
 
@@ -35,6 +34,7 @@ public class IdTagInfo implements Validatable
 {
     private Calendar expiryDate;
     private String parentIdTag;
+    private AuthorizationStatus status;
 
     public Calendar getExpiryDate() {
         return expiryDate;
@@ -55,27 +55,22 @@ public class IdTagInfo implements Validatable
         this.parentIdTag = parentIdTag;
     }
 
-    private String status;
-
     public String getStatus() {
+        return status.toString();
+    }
+
+    public AuthorizationStatus objStatus() {
         return status;
     }
 
-    public void setStatus(String status) throws PropertyConstraintException {
-        if (! isValidStatus(status))
-            throw new PropertyConstraintException("status", status, "Illegal value");
-
+    public void setStatus(AuthorizationStatus status) throws PropertyConstraintException {
         this.status = status;
-    }
-
-    private boolean isValidStatus(String status) {
-        return ModelUtil.isAmong(status, "Accepted", "Blocked", "Expired", "Invalid", "ConcurrentTx");
     }
 
     @Override
     public boolean validate() {
         boolean valid = true;
-        valid &= isValidStatus(this.status);
+        valid &= this.status != null;
         return valid;
     }
 }

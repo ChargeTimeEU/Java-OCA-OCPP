@@ -4,6 +4,7 @@ import eu.chargetime.ocpp.JSONCommunicator;
 import eu.chargetime.ocpp.Transmitter;
 import eu.chargetime.ocpp.model.BootNotificationConfirmation;
 import eu.chargetime.ocpp.model.BootNotificationRequest;
+import eu.chargetime.ocpp.model.RegistrationStatus;
 import eu.chargetime.ocpp.model.test.TestModel;
 import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Before;
@@ -234,7 +235,7 @@ public class JSONCommunicatorTest extends TestUtilities
         // Given
         String currentType = "2016-04-28T07:16:11.988Z";
         int interval = 300;
-        String status = "Accepted";
+        RegistrationStatus status = RegistrationStatus.Accepted;
         String payload = "{\"currentTime\": \"%s\", \"interval\": %d, \"status\": \"%s\"}";
         Class<?> type = BootNotificationConfirmation.class;
 
@@ -245,7 +246,7 @@ public class JSONCommunicatorTest extends TestUtilities
         assertThat(result, instanceOf(type));
         assertThat(((BootNotificationConfirmation)result).getCurrentTime(), equalTo(currentType));
         assertThat(((BootNotificationConfirmation)result).getInterval(), is(interval));
-        assertThat(((BootNotificationConfirmation)result).getStatus(), is(status));
+        assertThat(((BootNotificationConfirmation) result).objStatus(), is(status));
     }
 
     @Test
@@ -268,7 +269,7 @@ public class JSONCommunicatorTest extends TestUtilities
         BootNotificationConfirmation confirmation = new BootNotificationConfirmation();
         confirmation.setCurrentTime(createDateTimeInMillis(1461825673720L));
         confirmation.setInterval(300);
-        confirmation.setStatus("Accepted");
+        confirmation.setStatus(RegistrationStatus.Accepted);
 
         // When
         String payload = communicator.packPayload(confirmation);

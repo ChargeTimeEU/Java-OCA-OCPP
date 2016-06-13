@@ -145,6 +145,8 @@ public class JSONCommunicator extends Communicator {
         }
         else if (type == Boolean.class || genericType == Boolean.TYPE) {
             output = json.getBoolean(key);
+        } else if (type.isEnum()) {
+            output = Enum.valueOf((Class<Enum>) type, json.getString(key));
         }
         else {
             output = parseJSON(json.optJSONObject(key), type);

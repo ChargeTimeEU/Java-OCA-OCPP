@@ -1,8 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.ResetRequest;
-import org.junit.Assert;
+import eu.chargetime.ocpp.model.ResetType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,45 +42,19 @@ public class ResetRequestTest {
         request = new ResetRequest();
     }
 
-    @Test
-    public void setType_illegalString_throwsPropertyConstraintException() {
-        // Given
-        String illegal = "some type";
-
-        try {
-            // When
-            request.setType(illegal);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("type"));
-            assertThat(ex.getFieldValue(), equalTo(illegal));
-        }
-    }
 
     @Test
-    public void setType_hard_typeIsSet() throws Exception {
+    public void setType_resetType_typeIsSet() throws Exception {
         // Given
-        String resetType = "Hard";
+        ResetType resetType = ResetType.Hard;
 
         // When
         request.setType(resetType);
 
         // Then
-        assertThat(request.getType(), equalTo(resetType));
+        assertThat(request.objType(), equalTo(resetType));
     }
 
-    @Test
-    public void setType_soft_typeIsSet() throws Exception {
-        // Given
-        String resetType = "Soft";
-
-        // When
-        request.setType(resetType);
-
-        // Then
-        assertThat(request.getType(), equalTo(resetType));
-    }
 
     @Test
     public void validate_returnFalse() {
@@ -95,7 +68,7 @@ public class ResetRequestTest {
     @Test
     public void validate_typeIsSet_returnTrue() throws Exception {
         // Given
-        request.setType("Hard");
+        request.setType(ResetType.Hard);
 
         // When
         boolean isValid = request.validate();

@@ -1,13 +1,13 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.ChangeConfigurationConfirmation;
-import org.junit.Assert;
+import eu.chargetime.ocpp.model.ConfigurationStatus;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * ChargeTime.eu - Java-OCA-OCPP
@@ -43,73 +43,21 @@ public class ChangeConfigurationConfirmationTest {
     }
 
     @Test
-    public void setStatus_illegalStatus_throwsPropertyConstraintException() {
+    public void setStatus_configurationStatus_statusIsSet() throws Exception {
         // Given
-        String illegalStatus = "some status";
-
-        try {
-            // When
-            confirmation.setStatus(illegalStatus);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("status"));
-            assertThat(ex.getFieldValue(), equalTo(illegalStatus));
-        }
-    }
-
-    @Test
-    public void setStatus_accepted_statusIsSet() throws Exception {
-        // Given
-        String configurationStatus = "Accepted";
+        ConfigurationStatus configurationStatus = ConfigurationStatus.Accepted;
 
         // When
         confirmation.setStatus(configurationStatus);
 
         // Then
-        assertThat(confirmation.getStatus(), equalTo(configurationStatus));
-    }
-
-    @Test
-    public void setStatus_rejected_statusIsSet() throws Exception {
-        // Given
-        String configurationStatus = "Rejected";
-
-        // When
-        confirmation.setStatus(configurationStatus);
-
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(configurationStatus));
-    }
-
-    @Test
-    public void setStatus_rebootRequired_statusIsSet() throws Exception {
-        // Given
-        String configurationStatus = "RebootRequired";
-
-        // When
-        confirmation.setStatus(configurationStatus);
-
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(configurationStatus));
-    }
-
-    @Test
-    public void setStatus_notSupported_statusIsSet() throws Exception {
-        // Given
-        String configurationStatus = "NotSupported";
-
-        // When
-        confirmation.setStatus(configurationStatus);
-
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(configurationStatus));
+        assertThat(confirmation.objStatus(), equalTo(configurationStatus));
     }
 
     @Test
     public void validate_statusIsSet_returnTrue() throws Exception {
         // Given
-        confirmation.setStatus("Accepted");
+        confirmation.setStatus(ConfigurationStatus.Accepted);
 
         // When
         boolean isValid = confirmation.validate();

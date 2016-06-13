@@ -1,5 +1,6 @@
 package eu.chargetime.ocpp.test.core
 
+import eu.chargetime.ocpp.model.RegistrationStatus
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
 import spock.lang.Shared
@@ -35,11 +36,11 @@ class BootNotification extends Specification
         }
 
         when:
-        centralSystem.sendBootConfirmation(FakeCentralSystem.RegistrationStatus.Accepted);
+        centralSystem.sendBootConfirmation(RegistrationStatus.Accepted);
 
         then:
         conditions.eventually {
-            chargePoint.hasReceivedBootConfirmation("Accepted");
+            chargePoint.hasReceivedBootConfirmation(RegistrationStatus.Accepted);
         }
     }
 }

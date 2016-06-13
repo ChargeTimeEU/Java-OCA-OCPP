@@ -1,6 +1,8 @@
 package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.ChargePointErrorCode;
+import eu.chargetime.ocpp.model.ChargePointStatus;
 import eu.chargetime.ocpp.model.StatusNotificationRequest;
 import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Assert;
@@ -75,211 +77,15 @@ public class StatusNotificationRequestTest extends TestUtilities {
     }
 
     @Test
-    public void setErrorCode_illegal_throwsPropertyConstraintException() {
+    public void setErrorCode_chargePointErrorCode_errorCodeIsSet() throws Exception {
         // Given
-        String illegal = "some error code";
-
-        try {
-            // When
-            request.setErrorCode(illegal);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("errorCode"));
-            assertThat(ex.getFieldValue(), equalTo(illegal));
-        }
-    }
-
-    @Test
-    public void setErrorCode_connectorLockFailure_errorCodeIsSet() throws Exception {
-        // Given
-        String chargePointErrorCode = "ConnectorLockFailure";
+        ChargePointErrorCode chargePointErrorCode = ChargePointErrorCode.NoError;
 
         // When
         request.setErrorCode(chargePointErrorCode);
 
         // Then
-        assertThat(request.getErrorCode(), equalTo(chargePointErrorCode));
-    }
-
-    @Test
-    public void setErrorCode_evCommunicationError_errorCodeIsSet() throws Exception {
-        // Given
-        String chargePointErrorCode = "EVCommunicationError";
-
-        // When
-        request.setErrorCode(chargePointErrorCode);
-
-        // Then
-        assertThat(request.getErrorCode(), equalTo(chargePointErrorCode));
-    }
-
-    @Test
-    public void setErrorCode_groundFailure_errorCodeIsSet() throws Exception {
-        // Given
-        String chargePointErrorCode = "GroundFailure";
-
-        // When
-        request.setErrorCode(chargePointErrorCode);
-
-        // Then
-        assertThat(request.getErrorCode(), equalTo(chargePointErrorCode));
-    }
-
-    @Test
-    public void setErrorCode_highTemperature_errorCodeIsSet() throws Exception {
-        // Given
-        String chargePointErrorCode = "HighTemperature";
-
-        // When
-        request.setErrorCode(chargePointErrorCode);
-
-        // Then
-        assertThat(request.getErrorCode(), equalTo(chargePointErrorCode));
-    }
-
-    @Test
-    public void setErrorCode_internalError_errorCodeIsSet() throws Exception {
-        // Given
-        String chargePointErrorCode = "InternalError";
-
-        // When
-        request.setErrorCode(chargePointErrorCode);
-
-        // Then
-        assertThat(request.getErrorCode(), equalTo(chargePointErrorCode));
-    }
-
-    @Test
-    public void setErrorCode_localListConflict_errorCodeIsSet() throws Exception {
-        // Given
-        String chargePointErrorCode = "LocalListConflict";
-
-        // When
-        request.setErrorCode(chargePointErrorCode);
-
-        // Then
-        assertThat(request.getErrorCode(), equalTo(chargePointErrorCode));
-    }
-
-    @Test
-    public void setErrorCode_noError_errorCodeIsSet() throws Exception {
-        // Given
-        String chargePointErrorCode = "NoError";
-
-        // When
-        request.setErrorCode(chargePointErrorCode);
-
-        // Then
-        assertThat(request.getErrorCode(), equalTo(chargePointErrorCode));
-    }
-
-    @Test
-    public void setErrorCode_otherError_errorCodeIsSet() throws Exception {
-        // Given
-        String chargePointErrorCode = "OtherError";
-
-        // When
-        request.setErrorCode(chargePointErrorCode);
-
-        // Then
-        assertThat(request.getErrorCode(), equalTo(chargePointErrorCode));
-    }
-
-    @Test
-    public void setErrorCode_overCurrentFailure_errorCodeIsSet() throws Exception {
-        // Given
-        String chargePointErrorCode = "OverCurrentFailure";
-
-        // When
-        request.setErrorCode(chargePointErrorCode);
-
-        // Then
-        assertThat(request.getErrorCode(), equalTo(chargePointErrorCode));
-    }
-
-    @Test
-    public void setErrorCode_overVoltage_errorCodeIsSet() throws Exception {
-        // Given
-        String chargePointErrorCode = "OverVoltage";
-
-        // When
-        request.setErrorCode(chargePointErrorCode);
-
-        // Then
-        assertThat(request.getErrorCode(), equalTo(chargePointErrorCode));
-    }
-
-    @Test
-    public void setErrorCode_powerMeterFailure_errorCodeIsSet() throws Exception {
-        // Given
-        String chargePointErrorCode = "PowerMeterFailure";
-
-        // When
-        request.setErrorCode(chargePointErrorCode);
-
-        // Then
-        assertThat(request.getErrorCode(), equalTo(chargePointErrorCode));
-    }
-
-    @Test
-    public void setErrorCode_powerSwitchFailure_errorCodeIsSet() throws Exception {
-        // Given
-        String chargePointErrorCode = "PowerSwitchFailure";
-
-        // When
-        request.setErrorCode(chargePointErrorCode);
-
-        // Then
-        assertThat(request.getErrorCode(), equalTo(chargePointErrorCode));
-    }
-
-    @Test
-    public void setErrorCode_readerFailure_errorCodeIsSet() throws Exception {
-        // Given
-        String chargePointErrorCode = "ReaderFailure";
-
-        // When
-        request.setErrorCode(chargePointErrorCode);
-
-        // Then
-        assertThat(request.getErrorCode(), equalTo(chargePointErrorCode));
-    }
-
-    @Test
-    public void setErrorCode_resetFailure_errorCodeIsSet() throws Exception {
-        // Given
-        String chargePointErrorCode = "ResetFailure";
-
-        // When
-        request.setErrorCode(chargePointErrorCode);
-
-        // Then
-        assertThat(request.getErrorCode(), equalTo(chargePointErrorCode));
-    }
-
-    @Test
-    public void setErrorCode_underVoltage_errorCodeIsSet() throws Exception {
-        // Given
-        String chargePointErrorCode = "UnderVoltage";
-
-        // When
-        request.setErrorCode(chargePointErrorCode);
-
-        // Then
-        assertThat(request.getErrorCode(), equalTo(chargePointErrorCode));
-    }
-
-    @Test
-    public void setErrorCode_weakSignal_errorCodeIsSet() throws Exception {
-        // Given
-        String chargePointErrorCode = "WeakSignal";
-
-        // When
-        request.setErrorCode(chargePointErrorCode);
-
-        // Then
-        assertThat(request.getErrorCode(), equalTo(chargePointErrorCode));
+        assertThat(request.objErrorCode(), equalTo(chargePointErrorCode));
     }
 
     @Test
@@ -311,127 +117,15 @@ public class StatusNotificationRequestTest extends TestUtilities {
     }
 
     @Test
-    public void setStatus_illegal_throwsPropertyConstraintException() {
+    public void setStatus_chargePointStatus_statusIsSet() throws Exception {
         // Given
-        String illegal = "some status";
-
-        try {
-            // When
-            request.setStatus(illegal);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("status"));
-            assertThat(ex.getFieldValue(), equalTo(illegal));
-        }
-    }
-
-    @Test
-    public void setStatus_available_statusIsSet() throws Exception {
-        // Given
-        String chargePointStatus = "Available";
+        ChargePointStatus chargePointStatus = ChargePointStatus.Available;
 
         // When
         request.setStatus(chargePointStatus);
 
         // Then
-        assertThat(request.getStatus(), equalTo(chargePointStatus));
-    }
-
-    @Test
-    public void setStatus_preparing_statusIsSet() throws Exception {
-        // Given
-        String chargePointStatus = "Preparing";
-
-        // When
-        request.setStatus(chargePointStatus);
-
-        // Then
-        assertThat(request.getStatus(), equalTo(chargePointStatus));
-    }
-
-    @Test
-    public void setStatus_charging_statusIsSet() throws Exception {
-        // Given
-        String chargePointStatus = "Charging";
-
-        // When
-        request.setStatus(chargePointStatus);
-
-        // Then
-        assertThat(request.getStatus(), equalTo(chargePointStatus));
-    }
-
-    @Test
-    public void setStatus_suspendedEVSE_statusIsSet() throws Exception {
-        // Given
-        String chargePointStatus = "SuspendedEVSE";
-
-        // When
-        request.setStatus(chargePointStatus);
-
-        // Then
-        assertThat(request.getStatus(), equalTo(chargePointStatus));
-    }
-
-    @Test
-    public void setStatus_suspendedEV_statusIsSet() throws Exception {
-        // Given
-        String chargePointStatus = "SuspendedEV";
-
-        // When
-        request.setStatus(chargePointStatus);
-
-        // Then
-        assertThat(request.getStatus(), equalTo(chargePointStatus));
-    }
-
-    @Test
-    public void setStatus_finishing_statusIsSet() throws Exception {
-        // Given
-        String chargePointStatus = "Finishing";
-
-        // When
-        request.setStatus(chargePointStatus);
-
-        // Then
-        assertThat(request.getStatus(), equalTo(chargePointStatus));
-    }
-
-    @Test
-    public void setStatus_reserved_statusIsSet() throws Exception {
-        // Given
-        String chargePointStatus = "Reserved";
-
-        // When
-        request.setStatus(chargePointStatus);
-
-        // Then
-        assertThat(request.getStatus(), equalTo(chargePointStatus));
-    }
-
-    @Test
-    public void setStatus_unavailable_statusIsSet() throws Exception {
-        // Given
-        String chargePointStatus = "Unavailable";
-
-        // When
-        request.setStatus(chargePointStatus);
-
-        // Then
-        assertThat(request.getStatus(), equalTo(chargePointStatus));
-    }
-
-    @Test
-    public void setStatus_faulted_statusIsSet() throws Exception {
-        // Given
-        String chargePointStatus = "Faulted";
-
-        // When
-        request.setStatus(chargePointStatus);
-
-        // Then
-        assertThat(request.getStatus(), equalTo(chargePointStatus));
+        assertThat(request.objStatus(), equalTo(chargePointStatus));
     }
 
     @Test
@@ -516,8 +210,8 @@ public class StatusNotificationRequestTest extends TestUtilities {
     public void validate_connectorIdAndErrorCodeAndStatusIsSet_returnTrue() throws Exception {
         // Given
         request.setConnectorId(42);
-        request.setErrorCode("NoError");
-        request.setStatus("Available");
+        request.setErrorCode(ChargePointErrorCode.NoError);
+        request.setStatus(ChargePointStatus.Available);
 
         // When
         boolean isValid = request.validate();

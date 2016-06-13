@@ -1,8 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.RemoteStartStopStatus;
 import eu.chargetime.ocpp.model.RemoteStopTransactionConfirmation;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,44 +42,17 @@ public class RemoteStopTransactionConfirmationTest {
         confirmation = new RemoteStopTransactionConfirmation();
     }
 
-    @Test
-    public void setStatus_illegalString_throwsPropertyConstraintException() {
-        // Given
-        String illegal = "some status";
-
-        try {
-            // When
-            confirmation.setStatus(illegal);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("status"));
-            assertThat(ex.getFieldValue(), equalTo(illegal));
-        }
-    }
 
     @Test
-    public void setStatus_accepted_statusIsSet() throws Exception {
+    public void setStatus_remoteStartStopStatus_statusIsSet() throws Exception {
         // Given
-        String remoteStartStopStatus = "Accepted";
+        RemoteStartStopStatus remoteStartStopStatus = RemoteStartStopStatus.Accepted;
 
         // When
         confirmation.setStatus(remoteStartStopStatus);
 
         // Then
-        assertThat(confirmation.getStatus(), equalTo(remoteStartStopStatus));
-    }
-
-    @Test
-    public void setStatus_rejected_statusIsSet() throws Exception {
-        // Given
-        String remoteStartStopStatus = "Rejected";
-
-        // When
-        confirmation.setStatus(remoteStartStopStatus);
-
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(remoteStartStopStatus));
+        assertThat(confirmation.objStatus(), equalTo(remoteStartStopStatus));
     }
 
     @Test
@@ -95,7 +67,7 @@ public class RemoteStopTransactionConfirmationTest {
     @Test
     public void validate_statusIsSet_returnTrue() throws Exception {
         // Given
-        confirmation.setStatus("Accepted");
+        confirmation.setStatus(RemoteStartStopStatus.Accepted);
 
         // When
         boolean isValid = confirmation.validate();

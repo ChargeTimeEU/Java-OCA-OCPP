@@ -1,10 +1,9 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.ChargingRateUnitType;
 import eu.chargetime.ocpp.model.ChargingSchedule;
 import eu.chargetime.ocpp.model.ChargingSchedulePeriod;
 import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -72,45 +71,17 @@ public class ChargingScheduleTest extends TestUtilities {
         assertThat(chargingSchedule.objStartSchedule(), equalTo(now));
     }
 
-    @Test
-    public void setChargingRateUnit_illegalString_throwsPropertyConstraintException() {
-        // Given
-        String illegal = "some rate unit";
-
-        try {
-            // When
-            chargingSchedule.setChargingRateUnit(illegal);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("chargingRateUnit"));
-            assertThat(ex.getFieldValue(), equalTo(illegal));
-        }
-    }
 
     @Test
-    public void setChargingRateUnit_w_chargingRateUnitIsSet() throws Exception {
+    public void setChargingRateUnit_chargingRateUnitType_chargingRateUnitIsSet() throws Exception {
         // Given
-        String chargingRateUnitType = "W";
+        ChargingRateUnitType chargingRateUnitType = ChargingRateUnitType.A;
 
         // When
         chargingSchedule.setChargingRateUnit(chargingRateUnitType);
 
         // Then
-        assertThat(chargingSchedule.getChargingRateUnit(), equalTo(chargingRateUnitType));
-    }
-
-    @Test
-    public void setChargingRateUnit_a_chargingRateUnitIsSet() throws Exception {
-        // Given
-        String chargingRateUnitType = "A";
-
-        // When
-        chargingSchedule.setChargingRateUnit(chargingRateUnitType);
-
-        // Then
-        assertThat(chargingSchedule.getChargingRateUnit(), equalTo(chargingRateUnitType));
+        assertThat(chargingSchedule.objChargingRateUnit(), equalTo(chargingRateUnitType));
     }
 
     @Test
@@ -140,7 +111,7 @@ public class ChargingScheduleTest extends TestUtilities {
     @Test
     public void validate_chargingSchedulePeriodIsSet_chargingSchedulePeriodIsValidated() throws Exception {
         // Given
-        chargingSchedule.setChargingRateUnit("W");
+        chargingSchedule.setChargingRateUnit(ChargingRateUnitType.W);
         ChargingSchedulePeriod chargingSchedulePeriod = mock(ChargingSchedulePeriod.class);
         chargingSchedule.setChargingSchedulePeriod(aList(chargingSchedulePeriod));
 
@@ -155,7 +126,7 @@ public class ChargingScheduleTest extends TestUtilities {
     public void validate_chargingRateUnitAndChargingSchedulePeriodIsSet_returnTrue() throws Exception {
         // Given
         ChargingSchedulePeriod chargingSchedulePeriod = mock(ChargingSchedulePeriod.class);
-        chargingSchedule.setChargingRateUnit("W");
+        chargingSchedule.setChargingRateUnit(ChargingRateUnitType.W);
         chargingSchedule.setChargingSchedulePeriod(aList(chargingSchedulePeriod));
         when(chargingSchedulePeriod.validate()).thenReturn(true);
 

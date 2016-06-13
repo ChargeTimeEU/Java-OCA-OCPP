@@ -31,18 +31,18 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 public class SampledValue implements Validatable {
     private String value;
     private String context;
-    private String format;
+    private ValueFormat format;
     private String measurand;
     private String phase;
-    private String location;
+    private Location location;
     private String unit;
 
     public SampledValue() {
         try {
             setContext("Sample.Periodic");
-            setFormat("Raw");
+            setFormat(ValueFormat.Raw);
             setMeasurand("Energy.Active.Import.Register");
-            setLocation("Outlet");
+            setLocation(Location.Outlet);
             setUnit("Wh");
         } catch (PropertyConstraintException ex) {
             ex.printStackTrace();
@@ -78,14 +78,15 @@ public class SampledValue implements Validatable {
         return context;
     }
 
-    public void setFormat(String format) throws PropertyConstraintException {
-        if (!ModelUtil.isAmong(format, "Raw", "SignedData"))
-            throw new PropertyConstraintException("format", format);
-
+    public void setFormat(ValueFormat format) {
         this.format = format;
     }
 
     public String getFormat() {
+        return format.toString();
+    }
+
+    public ValueFormat objFormat() {
         return format;
     }
 
@@ -120,18 +121,15 @@ public class SampledValue implements Validatable {
         return phase;
     }
 
-    public void setLocation(String location) throws PropertyConstraintException {
-        if (!isValidLocation(location))
-            throw new PropertyConstraintException("location", location);
-
+    public void setLocation(Location location) {
         this.location = location;
     }
 
-    private boolean isValidLocation(String location) {
-        return ModelUtil.isAmong(location, "Body", "Cable", "EV", "Inlet", "Outlet");
+    public String getLocation() {
+        return location.toString();
     }
 
-    public String getLocation() {
+    public Location objLocation() {
         return location;
     }
 

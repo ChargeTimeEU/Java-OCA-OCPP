@@ -1,6 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.AvailabilityType;
 import eu.chargetime.ocpp.model.ChangeAvailabilityRequest;
 import org.junit.Assert;
 import org.junit.Before;
@@ -86,50 +87,21 @@ public class ChangeAvailabilityRequestTest {
     }
 
     @Test
-    public void setType_illegalType_throwsPropertyConstraintException() {
+    public void setType_availabilityType_typeIsSet() throws Exception {
         // Given
-        String illegalType = "Some type";
-
-        // When
-        try {
-            request.setType(illegalType);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("type"));
-            assertThat(ex.getFieldValue(), equalTo(illegalType));
-        }
-    }
-
-    @Test
-    public void setType_inoperative_typeIsSet() throws Exception {
-        // Given
-        String availabilityType = "Inoperative";
+        AvailabilityType availabilityType = AvailabilityType.Operative;
 
         // When
         request.setType(availabilityType);
 
         // Then
-        assertThat(request.getType(), equalTo(availabilityType));
-    }
-
-    @Test
-    public void setType_operative_typeIsSet() throws Exception {
-        // Given
-        String availabilityType = "Operative";
-
-        // When
-        request.setType(availabilityType);
-
-        // Then
-        assertThat(request.getType(), equalTo(availabilityType));
+        assertThat(request.objType(), equalTo(availabilityType));
     }
 
     @Test
     public void validate_typeAndConnectorIdIsSet_returnsTrue() throws Exception {
         // Given
-        request.setType("Operative");
+        request.setType(AvailabilityType.Operative);
         request.setConnectorId(0);
 
         // When
@@ -142,7 +114,7 @@ public class ChangeAvailabilityRequestTest {
     @Test
     public void validate_onlyTypeIsSet_returnsFalse() throws Exception {
         // Given
-        request.setType("Operative");
+        request.setType(AvailabilityType.Operative);
 
         // When
         boolean isValid = request.validate();

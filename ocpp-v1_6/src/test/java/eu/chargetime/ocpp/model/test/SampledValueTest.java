@@ -1,7 +1,9 @@
 package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.Location;
 import eu.chargetime.ocpp.model.SampledValue;
+import eu.chargetime.ocpp.model.ValueFormat;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -192,43 +194,15 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setFormat_illegalValue_throwsPropertyConstraintException() {
+    public void setFormat_valueFormat_formatIsSet() throws Exception {
         // Given
-        String illegalValue = "some value";
-
-        try {
-            // When
-            sampledValue.setFormat(illegalValue);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("format"));
-            assertThat(ex.getFieldValue(), equalTo(illegalValue));
-        }
-    }
-
-    @Test
-    public void setFormat_raw_formatIsSet() throws Exception {
-        // Given
-        String valueFormat = "Raw";
+        ValueFormat valueFormat = ValueFormat.Raw;
 
         // When
         sampledValue.setFormat(valueFormat);
 
         // Then
-        assertThat(sampledValue.getFormat(), equalTo(valueFormat));
-    }
-
-    @Test
-    public void setFormat_signedData_formatIsSet() throws Exception {
-        // Given
-        String valueFormat = "SignedData";
-
-        // When
-        sampledValue.setFormat(valueFormat);
-
-        // Then
-        assertThat(sampledValue.getFormat(), equalTo(valueFormat));
+        assertThat(sampledValue.objFormat(), equalTo(valueFormat));
     }
 
     @Test
@@ -672,79 +646,15 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setLocation_illegalValue_throwsPropertyConstraintException() {
+    public void setLocation_location_locationIsSet() throws Exception {
         // Given
-        String illegalValue = "Some location";
-
-        try {
-            // When
-            sampledValue.setLocation(illegalValue);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("location"));
-            assertThat(ex.getFieldValue(), equalTo(illegalValue));
-        }
-    }
-
-    @Test
-    public void setLocation_body_locationIsSet() throws Exception {
-        // Given
-        String location = "Body";
+        Location location = Location.Outlet;
 
         // When
         sampledValue.setLocation(location);
 
         // Then
-        assertThat(sampledValue.getLocation(), equalTo(location));
-    }
-
-    @Test
-    public void setLocation_cable_locationIsSet() throws Exception {
-        // Given
-        String location = "Cable";
-
-        // When
-        sampledValue.setLocation(location);
-
-        // Then
-        assertThat(sampledValue.getLocation(), equalTo(location));
-    }
-
-    @Test
-    public void setLocation_ev_locationIsSet() throws Exception {
-        // Given
-        String location = "EV";
-
-        // When
-        sampledValue.setLocation(location);
-
-        // Then
-        assertThat(sampledValue.getLocation(), equalTo(location));
-    }
-
-    @Test
-    public void setLocation_inlet_locationIsSet() throws Exception {
-        // Given
-        String location = "Inlet";
-
-        // When
-        sampledValue.setLocation(location);
-
-        // Then
-        assertThat(sampledValue.getLocation(), equalTo(location));
-    }
-
-    @Test
-    public void setLocation_outlet_locationIsSet() throws Exception {
-        // Given
-        String location = "Outlet";
-
-        // When
-        sampledValue.setLocation(location);
-
-        // Then
-        assertThat(sampledValue.getLocation(), equalTo(location));
+        assertThat(sampledValue.objLocation(), equalTo(location));
     }
 
     @Test

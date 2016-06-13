@@ -48,7 +48,7 @@ public class FakeChargePoint
             @Override
             public ChangeAvailabilityConfirmation handleChangeAvailabilityRequest(ChangeAvailabilityRequest request) {
                 receivedRequest = request;
-                return new ChangeAvailabilityConfirmation("Accepted");
+                return new ChangeAvailabilityConfirmation(AvailabilityStatus.Accepted);
             }
 
             @Override
@@ -78,25 +78,25 @@ public class FakeChargePoint
             @Override
             public RemoteStartTransactionConfirmation handleRemoteStartTransactionRequest(RemoteStartTransactionRequest request) {
                 receivedRequest = request;
-                return new RemoteStartTransactionConfirmation("Accepted");
+                return new RemoteStartTransactionConfirmation(RemoteStartStopStatus.Accepted);
             }
 
             @Override
             public RemoteStopTransactionConfirmation handleRemoteStopTransactionRequest(RemoteStopTransactionRequest request) {
                 receivedRequest = request;
-                return new RemoteStopTransactionConfirmation("Accepted");
+                return new RemoteStopTransactionConfirmation(RemoteStartStopStatus.Accepted);
             }
 
             @Override
             public ResetConfirmation handleResetRequest(ResetRequest request) {
                 receivedRequest = request;
-                return new ResetConfirmation("Accepted");
+                return new ResetConfirmation(ResetStatus.Accepted);
             }
 
             @Override
             public UnlockConnectorConfirmation handleUnlockConnectorRequest(UnlockConnectorRequest request) {
                 receivedRequest = request;
-                return new UnlockConnectorConfirmation("Unlocked");
+                return new UnlockConnectorConfirmation(UnlockStatus.Unlocked);
             }
         });
         client = new Client(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue()));
@@ -167,7 +167,7 @@ public class FakeChargePoint
 
     public void sendStatusNotificationRequest() {
         try {
-            StatusNotificationRequest request = core.createStatusNotificationRequest(42, "NoError", "Available");
+            StatusNotificationRequest request = core.createStatusNotificationRequest(42, ChargePointErrorCode.NoError, ChargePointStatus.Available);
             send(request);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -182,9 +182,9 @@ public class FakeChargePoint
         }
     }
 
-    public void hasReceivedBootConfirmation(String status) {
+    public void hasReceivedBootConfirmation(RegistrationStatus status) {
         assertThat(receivedConfirmation, instanceOf(BootNotificationConfirmation.class));
-        assertThat(((BootNotificationConfirmation)receivedConfirmation).getStatus(), is(status));
+        assertThat(((BootNotificationConfirmation) receivedConfirmation).objStatus(), is(status));
     }
 
     public void hasReceivedAuthorizeConfirmation(String status) {

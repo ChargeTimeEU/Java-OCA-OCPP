@@ -1,8 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.ChargingProfile;
-import eu.chargetime.ocpp.model.ChargingSchedule;
+import eu.chargetime.ocpp.model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -119,149 +118,39 @@ public class ChargingProfileTest {
     }
 
     @Test
-    public void setChargingProfilePurpose_illegalString_throwsPropertyConstraintException() {
+    public void setChargingProfilePurpose_chargingProfilePurposeType_chargingProfilePurposeIsSet() throws Exception {
         // Given
-        String illegal = "Some purpose";
-
-        try {
-            // When
-            chargingProfile.setChargingProfilePurpose(illegal);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("chargingProfilePurpose"));
-            assertThat(ex.getFieldValue(), equalTo(illegal));
-        }
-    }
-
-    @Test
-    public void setChargingProfilePurpose_chargePointMaxProfile_chargingProfilePurposeIsSet() throws Exception {
-        // Given
-        String chargingProfilePurposeType = "ChargePointMaxProfile";
+        ChargingProfilePurposeType chargingProfilePurposeType = ChargingProfilePurposeType.ChargePointMaxProfile;
 
         // When
         chargingProfile.setChargingProfilePurpose(chargingProfilePurposeType);
 
         // Then
-        assertThat(chargingProfile.getChargingProfilePurpose(), equalTo(chargingProfilePurposeType));
+        assertThat(chargingProfile.objChargingProfilePurpose(), equalTo(chargingProfilePurposeType));
     }
 
     @Test
-    public void setChargingProfilePurpose_txDefaultProfile_chargingProfilePurposeIsSet() throws Exception {
+    public void setChargingProfileKind_chargingProfileKindType_chargingProfileKindIsSet() throws Exception {
         // Given
-        String chargingProfilePurposeType = "TxDefaultProfile";
-
-        // When
-        chargingProfile.setChargingProfilePurpose(chargingProfilePurposeType);
-
-        // Then
-        assertThat(chargingProfile.getChargingProfilePurpose(), equalTo(chargingProfilePurposeType));
-    }
-
-    @Test
-    public void setChargingProfilePurpose_txProfile_chargingProfilePurposeIsSet() throws Exception {
-        // Given
-        String chargingProfilePurposeType = "TxProfile";
-
-        // When
-        chargingProfile.setChargingProfilePurpose(chargingProfilePurposeType);
-
-        // Then
-        assertThat(chargingProfile.getChargingProfilePurpose(), equalTo(chargingProfilePurposeType));
-    }
-
-    @Test
-    public void setChargingProfileKind_illegalString_throwsPropertyConstraintException() {
-        // Given
-        String illegal = "Some kind";
-
-        try {
-            // When
-            chargingProfile.setChargingProfileKind(illegal);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("chargingProfileKind"));
-            assertThat(ex.getFieldValue(), equalTo(illegal));
-        }
-    }
-
-    @Test
-    public void setChargingProfileKind_absolute_chargingProfileKindIsSet() throws Exception {
-        // Given
-        String chargingProfileKindType = "Absolute";
+        ChargingProfileKindType chargingProfileKindType = ChargingProfileKindType.Absolute;
 
         // When
         chargingProfile.setChargingProfileKind(chargingProfileKindType);
 
         // Then
-        assertThat(chargingProfile.getChargingProfileKind(), equalTo(chargingProfileKindType));
+        assertThat(chargingProfile.objChargingProfileKind(), equalTo(chargingProfileKindType));
     }
 
     @Test
-    public void setChargingProfileKind_recurring_chargingProfileKindIsSet() throws Exception {
+    public void setRecurrencyKind_recurrencyKindType_recurrencyKindIsSet() throws Exception {
         // Given
-        String chargingProfileKindType = "Recurring";
-
-        // When
-        chargingProfile.setChargingProfileKind(chargingProfileKindType);
-
-        // Then
-        assertThat(chargingProfile.getChargingProfileKind(), equalTo(chargingProfileKindType));
-    }
-
-    @Test
-    public void setChargingProfileKind_relative_chargingProfileKindIsSet() throws Exception {
-        // Given
-        String chargingProfileKindType = "Relative";
-
-        // When
-        chargingProfile.setChargingProfileKind(chargingProfileKindType);
-
-        // Then
-        assertThat(chargingProfile.getChargingProfileKind(), equalTo(chargingProfileKindType));
-    }
-
-    @Test
-    public void setRecurrencyKind_illegalString_throwsPropertyConstraintException() {
-        // Given
-        String illegal = "Some kind";
-
-        try {
-            // When
-            chargingProfile.setRecurrencyKind(illegal);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("recurrencyKind"));
-            assertThat(ex.getFieldValue(), equalTo(illegal));
-        }
-    }
-
-    @Test
-    public void setRecurrencyKind_daily_recurrencyKindIsSet() throws Exception {
-        // Given
-        String recurrencyKindType = "Daily";
+        RecurrencyKindType recurrencyKindType = RecurrencyKindType.Daily;
 
         // When
         chargingProfile.setRecurrencyKind(recurrencyKindType);
 
         // Then
-        assertThat(chargingProfile.getRecurrencyKind(), equalTo(recurrencyKindType));
-    }
-
-    @Test
-    public void setRecurrencyKind_weekly_recurrencyKindIsSet() throws Exception {
-        // Given
-        String recurrencyKindType = "Weekly";
-
-        // When
-        chargingProfile.setRecurrencyKind(recurrencyKindType);
-
-        // Then
-        assertThat(chargingProfile.getRecurrencyKind(), equalTo(recurrencyKindType));
+        assertThat(chargingProfile.objRecurrencyKind(), equalTo(recurrencyKindType));
     }
 
     @Test
@@ -305,8 +194,8 @@ public class ChargingProfileTest {
         // Given
         chargingProfile.setChargingProfileId(42);
         chargingProfile.setStackLevel(0);
-        chargingProfile.setChargingProfilePurpose("TxProfile");
-        chargingProfile.setChargingProfileKind("Absolute");
+        chargingProfile.setChargingProfilePurpose(ChargingProfilePurposeType.TxProfile);
+        chargingProfile.setChargingProfileKind(ChargingProfileKindType.Absolute);
         ChargingSchedule chargingSchedule = mock(ChargingSchedule.class);
         when(chargingSchedule.validate()).thenReturn(true);
         chargingProfile.setChargingSchedule(chargingSchedule);
@@ -323,13 +212,13 @@ public class ChargingProfileTest {
         // Given
         chargingProfile.setChargingProfileId(42);
         chargingProfile.setStackLevel(0);
-        chargingProfile.setChargingProfileKind("Absolute");
+        chargingProfile.setChargingProfileKind(ChargingProfileKindType.Absolute);
         ChargingSchedule chargingSchedule = mock(ChargingSchedule.class);
         when(chargingSchedule.validate()).thenReturn(true);
         chargingProfile.setChargingSchedule(chargingSchedule);
 
         chargingProfile.setTransactionId(42);
-        chargingProfile.setChargingProfilePurpose("TxDefaultProfile");
+        chargingProfile.setChargingProfilePurpose(ChargingProfilePurposeType.TxDefaultProfile);
 
         // When
         boolean isValid = chargingProfile.validate();

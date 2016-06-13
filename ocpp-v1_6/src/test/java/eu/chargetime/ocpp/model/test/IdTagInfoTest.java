@@ -1,12 +1,15 @@
 package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.AuthorizationStatus;
 import eu.chargetime.ocpp.model.IdTagInfo;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
  ChargeTime.eu - Java-OCA-OCPP
@@ -43,23 +46,6 @@ public class IdTagInfoTest {
     }
 
     @Test
-    public void setStatus_illegalValue_throwsPropertyConstraintException() {
-        // Given
-        // Legal values: Accepted, Blocked, Expired, Invalid, ConcurrentTx
-        String illegalValue = "something";
-
-        // When
-        try {
-            idTagInfo.setStatus(illegalValue);
-            Assert.fail("Expected exception");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("status"));
-            assertThat(ex.getFieldValue(), equalTo(illegalValue));
-        }
-    }
-
-    @Test
     public void setParentIdTag_stringLength21_throwsPropertyConstraintException() {
         // Given
         String illegalValue = "123456789012345678901";
@@ -86,7 +72,7 @@ public class IdTagInfoTest {
     @Test
     public void validate_statusSet_returnsTrue() throws Exception {
         // Given
-        idTagInfo.setStatus("Accepted");
+        idTagInfo.setStatus(AuthorizationStatus.Accepted);
 
         // When
         boolean isValid = idTagInfo.validate();

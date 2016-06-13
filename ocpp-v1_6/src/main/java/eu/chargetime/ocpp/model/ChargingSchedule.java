@@ -1,29 +1,26 @@
 package eu.chargetime.ocpp.model;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.utilities.ModelUtil;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
 /**
  * ChargeTime.eu - Java-OCA-OCPP
- * <p>
+ *
  * MIT License
- * <p>
+ *
  * Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
- * <p>
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * <p>
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * <p>
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -35,7 +32,7 @@ import java.util.TimeZone;
 public class ChargingSchedule implements Validatable {
     private Integer duration;
     private Calendar startSchedule;
-    private String chargingRateUnit;
+    private ChargingRateUnitType chargingRateUnit;
     private ChargingSchedulePeriod[] chargingSchedulePeriod;
     private Double minChargingRate;
 
@@ -72,18 +69,15 @@ public class ChargingSchedule implements Validatable {
         return startSchedule;
     }
 
-    public void setChargingRateUnit(String chargingRateUnit) throws PropertyConstraintException {
-        if (!isValidChargingRateUnit(chargingRateUnit))
-            throw new PropertyConstraintException("chargingRateUnit", chargingRateUnit);
-
+    public void setChargingRateUnit(ChargingRateUnitType chargingRateUnit) {
         this.chargingRateUnit = chargingRateUnit;
     }
 
-    private boolean isValidChargingRateUnit(String chargingRateUnit) {
-        return ModelUtil.isAmong(chargingRateUnit, "W", "A");
+    public String getChargingRateUnit() {
+        return chargingRateUnit.toString();
     }
 
-    public String getChargingRateUnit() {
+    public ChargingRateUnitType objChargingRateUnit() {
         return chargingRateUnit;
     }
 

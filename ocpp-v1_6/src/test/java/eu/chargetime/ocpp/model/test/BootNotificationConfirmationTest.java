@@ -2,6 +2,7 @@ package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.BootNotificationConfirmation;
+import eu.chargetime.ocpp.model.RegistrationStatus;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +10,8 @@ import org.junit.Test;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -103,56 +105,15 @@ public class BootNotificationConfirmationTest {
     }
 
     @Test
-    public void setStatus_illegal_throwsPropertyConstraintException() {
+    public void setStatus_enumValue_statusIsAccepted() throws Exception {
         // Given
-        String illegalStatus = "Illegal";
-
-        // When
-        try {
-            confirmation.setStatus(illegalStatus);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("status"));
-            assertThat(ex.getFieldValue(), equalTo(illegalStatus));
-        }
-    }
-
-    @Test
-    public void setStatus_accepted_statusIsAccepted() throws Exception {
-        // Given
-        String status = "Accepted";
+        RegistrationStatus status = RegistrationStatus.Accepted;
 
         // When
         confirmation.setStatus(status);
 
         // Then
-        assertThat(confirmation.getStatus(), equalTo(status));
-    }
-
-    @Test
-    public void setStatus_pending_statusIsAccepted() throws Exception {
-        // Given
-        String status = "Pending";
-
-        // When
-        confirmation.setStatus(status);
-
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(status));
-    }
-
-    @Test
-    public void setStatus_rejected_statusIsAccepted() throws Exception {
-        // Given
-        String status = "Rejected";
-
-        // When
-        confirmation.setStatus(status);
-
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(status));
+        assertThat(confirmation.objStatus(), equalTo(status));
     }
 
     @Test
@@ -160,7 +121,7 @@ public class BootNotificationConfirmationTest {
         // Given
         confirmation.setCurrentTime(Calendar.getInstance());
         confirmation.setInterval(42);
-        confirmation.setStatus("Accepted");
+        confirmation.setStatus(RegistrationStatus.Accepted);
 
         // When
         boolean isValid = confirmation.validate();

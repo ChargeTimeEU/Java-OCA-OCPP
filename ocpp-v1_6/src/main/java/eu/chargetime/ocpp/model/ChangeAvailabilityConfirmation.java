@@ -1,8 +1,5 @@
 package eu.chargetime.ocpp.model;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.utilities.ModelUtil;
-
 /**
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -31,31 +28,28 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  */
 public class ChangeAvailabilityConfirmation implements Confirmation {
 
-    private String status;
+    private AvailabilityStatus status;
 
     public String getStatus() {
+        return status.toString();
+    }
+
+    public AvailabilityStatus objStatus() {
         return status;
     }
 
-    public void setStatus(String status) throws PropertyConstraintException {
-        if (!isValidStatus(status))
-            throw new PropertyConstraintException("status", status, "Not valid availabilityStatus");
-
+    public void setStatus(AvailabilityStatus status) {
         this.status = status;
-    }
-
-    private boolean isValidStatus(String status) {
-        return ModelUtil.isAmong(status, "Accepted", "Rejected", "Scheduled");
     }
 
     public ChangeAvailabilityConfirmation() { }
 
-    public ChangeAvailabilityConfirmation(String status) {
+    public ChangeAvailabilityConfirmation(AvailabilityStatus status) {
         this.status = status;
     }
 
     @Override
     public boolean validate() {
-        return isValidStatus(this.status);
+        return this.status != null;
     }
 }

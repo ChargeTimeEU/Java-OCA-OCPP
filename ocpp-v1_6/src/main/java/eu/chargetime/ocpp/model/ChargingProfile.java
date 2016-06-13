@@ -1,7 +1,6 @@
 package eu.chargetime.ocpp.model;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.utilities.ModelUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,9 +35,9 @@ public class ChargingProfile implements Validatable {
     private Integer chargingProfileId;
     private Integer transactionId;
     private Integer stackLevel;
-    private String chargingProfilePurpose;
-    private String chargingProfileKind;
-    private String recurrencyKind;
+    private ChargingProfilePurposeType chargingProfilePurpose;
+    private ChargingProfileKindType chargingProfileKind;
+    private RecurrencyKindType recurrencyKind;
     private Calendar validFrom;
     private Calendar validTo;
     private ChargingSchedule chargingSchedule;
@@ -48,9 +47,9 @@ public class ChargingProfile implements Validatable {
         boolean valid = true;
         valid &= chargingProfileId != null;
         valid &= stackLevel >= 0;
-        valid &= isValidChargingProfilePurpose(chargingProfilePurpose);
+        valid &= chargingProfilePurpose != null;
         valid &= transactionId == null || "TxProfile".equals(chargingProfilePurpose);
-        valid &= isValidChargingProfileKind(chargingProfileKind);
+        valid &= chargingProfileKind != null;
         valid &= chargingSchedule != null && chargingSchedule.validate();
         return valid;
     }
@@ -85,48 +84,39 @@ public class ChargingProfile implements Validatable {
         return stackLevel;
     }
 
-    public void setChargingProfilePurpose(String chargingProfilePurpose) throws PropertyConstraintException {
-        if (!isValidChargingProfilePurpose(chargingProfilePurpose))
-            throw new PropertyConstraintException("chargingProfilePurpose", chargingProfilePurpose);
-
+    public void setChargingProfilePurpose(ChargingProfilePurposeType chargingProfilePurpose) throws PropertyConstraintException {
         this.chargingProfilePurpose = chargingProfilePurpose;
     }
 
-    private boolean isValidChargingProfilePurpose(String chargingProfilePurpose) {
-        return ModelUtil.isAmong(chargingProfilePurpose, "ChargePointMaxProfile", "TxDefaultProfile", "TxProfile");
+    public String getChargingProfilePurpose() {
+        return chargingProfilePurpose.toString();
     }
 
-    public String getChargingProfilePurpose() {
+    public ChargingProfilePurposeType objChargingProfilePurpose() {
         return chargingProfilePurpose;
     }
 
-    public void setChargingProfileKind(String chargingProfileKind) throws PropertyConstraintException {
-        if (!isValidChargingProfileKind(chargingProfileKind))
-            throw new PropertyConstraintException("chargingProfileKind", chargingProfileKind);
-
+    public void setChargingProfileKind(ChargingProfileKindType chargingProfileKind) throws PropertyConstraintException {
         this.chargingProfileKind = chargingProfileKind;
     }
 
-    private boolean isValidChargingProfileKind(String chargingProfileKind) {
-        return ModelUtil.isAmong(chargingProfileKind, "Absolute", "Recurring", "Relative");
+    public String getChargingProfileKind() {
+        return chargingProfileKind.toString();
     }
 
-    public String getChargingProfileKind() {
+    public ChargingProfileKindType objChargingProfileKind() {
         return chargingProfileKind;
     }
 
-    public void setRecurrencyKind(String recurrencyKind) throws PropertyConstraintException {
-        if (!isValidRecurrencyKind(recurrencyKind))
-            throw new PropertyConstraintException("recurrencyKind", recurrencyKind);
-
+    public void setRecurrencyKind(RecurrencyKindType recurrencyKind) throws PropertyConstraintException {
         this.recurrencyKind = recurrencyKind;
     }
 
-    private boolean isValidRecurrencyKind(String recurrencyKind) {
-        return ModelUtil.isAmong(recurrencyKind, "Daily", "Weekly");
+    public String getRecurrencyKind() {
+        return recurrencyKind.toString();
     }
 
-    public String getRecurrencyKind() {
+    public RecurrencyKindType objRecurrencyKind() {
         return recurrencyKind;
     }
 

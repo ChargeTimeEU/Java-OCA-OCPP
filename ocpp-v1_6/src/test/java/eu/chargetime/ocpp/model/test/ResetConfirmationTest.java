@@ -1,8 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.ResetConfirmation;
-import org.junit.Assert;
+import eu.chargetime.ocpp.model.ResetStatus;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,43 +43,15 @@ public class ResetConfirmationTest {
     }
 
     @Test
-    public void setStatus_illegalString_throwsPropertyConstraintException() {
+    public void setStatus_resetStatus_statusIsSet() throws Exception {
         // Given
-        String illegal = "some status";
-
-        try {
-            // When
-            confirmation.setStatus(illegal);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("status"));
-            assertThat(ex.getFieldValue(), equalTo(illegal));
-        }
-    }
-
-    @Test
-    public void setStatus_accepted_statusIsSet() throws Exception {
-        // Given
-        String resetStatus = "Accepted";
+        ResetStatus resetStatus = ResetStatus.Accepted;
 
         // When
         confirmation.setStatus(resetStatus);
 
         // Then
-        assertThat(confirmation.getStatus(), equalTo(resetStatus));
-    }
-
-    @Test
-    public void setStatus_rejected_statusIsSet() throws Exception {
-        // Given
-        String resetStatus = "Rejected";
-
-        // When
-        confirmation.setStatus(resetStatus);
-
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(resetStatus));
+        assertThat(confirmation.objStatus(), equalTo(resetStatus));
     }
 
     @Test
@@ -95,7 +66,7 @@ public class ResetConfirmationTest {
     @Test
     public void validate_statusIsSet_returnTrue() throws Exception {
         // Given
-        confirmation.setStatus("Accepted");
+        confirmation.setStatus(ResetStatus.Accepted);
 
         // When
         boolean isValid = confirmation.validate();

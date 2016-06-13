@@ -1,7 +1,6 @@
 package eu.chargetime.ocpp.model;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.utilities.ModelUtil;
 
 /**
  * ChargeTime.eu - Java-OCA-OCPP
@@ -30,21 +29,18 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  */
 public class DataTransferConfirmation implements Confirmation{
 
-    private String status;
+    private DataTransferStatus status;
     private String data;
 
-    public void setStatus(String status) throws PropertyConstraintException {
-        if (!isValidStatus(status))
-            throw new PropertyConstraintException("status", status);
-
+    public void setStatus(DataTransferStatus status) throws PropertyConstraintException {
         this.status = status;
     }
 
-    private boolean isValidStatus(String status) {
-        return ModelUtil.isAmong(status, "Accepted", "Rejected", "UnknownMessageId", "UnknownVendorId");
+    public String getStatus() {
+        return status.toString();
     }
 
-    public String getStatus() {
+    public DataTransferStatus objStatus() {
         return status;
     }
 
@@ -58,6 +54,6 @@ public class DataTransferConfirmation implements Confirmation{
 
     @Override
     public boolean validate() {
-        return isValidStatus(this.status);
+        return this.status != null;
     }
 }

@@ -1,14 +1,13 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.AvailabilityStatus;
 import eu.chargetime.ocpp.model.ChangeAvailabilityConfirmation;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * ChargeTime.eu - Java-OCA-OCPP
@@ -45,62 +44,21 @@ public class ChangeAvailabilityConfirmationTest {
     }
 
     @Test
-    public void setStatus_illegalValue_throwsPropertyConstraintException() {
+    public void setStatus_availabilityStatus_statusIsSet() throws Exception {
         // Given
-        String illegalValue = "Some value";
-
-        // When
-        try {
-            confirmation.setStatus(illegalValue);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("status"));
-            assertThat(ex.getFieldValue(), equalTo(illegalValue));
-        }
-    }
-
-    @Test
-    public void setStatus_accepted_statusIsSet() throws Exception {
-        // Given
-        String availabilityStatus = "Accepted";
+        AvailabilityStatus availabilityStatus = AvailabilityStatus.Accepted;
 
         // When
         confirmation.setStatus(availabilityStatus);
 
         // Then
-        assertThat(confirmation.getStatus(), equalTo(availabilityStatus));
-    }
-
-    @Test
-    public void setStatus_Rejected_statusIsSet() throws Exception {
-        // Given
-        String availabilityStatus = "Rejected";
-
-        // When
-        confirmation.setStatus(availabilityStatus);
-
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(availabilityStatus));
-    }
-
-    @Test
-    public void setStatus_Scheduled_statusIsSet() throws Exception {
-        // Given
-        String availabilityStatus = "Scheduled";
-
-        // When
-        confirmation.setStatus(availabilityStatus);
-
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(availabilityStatus));
+        assertThat(confirmation.objStatus(), equalTo(availabilityStatus));
     }
 
     @Test
     public void validate_statusIsSet_returnTrue() throws Exception {
         // Given
-        confirmation.setStatus("Accepted");
+        confirmation.setStatus(AvailabilityStatus.Accepted);
 
         // When
         boolean isValid = confirmation.validate();

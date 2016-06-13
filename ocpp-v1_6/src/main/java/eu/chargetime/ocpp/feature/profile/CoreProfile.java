@@ -107,7 +107,7 @@ public class CoreProfile implements Profile
         return request;
     }
 
-    public StatusNotificationRequest createStatusNotificationRequest(Integer connectorId, String errorCode, String status) throws PropertyConstraintException {
+    public StatusNotificationRequest createStatusNotificationRequest(Integer connectorId, ChargePointErrorCode errorCode, ChargePointStatus status) throws PropertyConstraintException {
         StatusNotificationRequest request = new StatusNotificationRequest();
         request.setConnectorId(connectorId);
         request.setErrorCode(errorCode);

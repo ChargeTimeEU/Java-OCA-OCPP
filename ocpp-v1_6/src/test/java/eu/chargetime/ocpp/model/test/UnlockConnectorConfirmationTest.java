@@ -1,8 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.UnlockConnectorConfirmation;
-import org.junit.Assert;
+import eu.chargetime.ocpp.model.UnlockStatus;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,55 +43,15 @@ public class UnlockConnectorConfirmationTest {
     }
 
     @Test
-    public void setStatus_illegalString_throwsPropertyConstraintException() {
+    public void setStatus_unlockStatus_statusIsSet() throws Exception {
         // Given
-        String illegal = "some status";
-
-        try {
-            // When
-            confirmation.setStatus(illegal);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("status"));
-            assertThat(ex.getFieldValue(), equalTo(illegal));
-        }
-    }
-
-    @Test
-    public void setStatus_unlocked_statusIsSet() throws Exception {
-        // Given
-        String unlockStatus = "Unlocked";
+        UnlockStatus unlockStatus = UnlockStatus.Unlocked;
 
         // When
         confirmation.setStatus(unlockStatus);
 
         // Then
-        assertThat(confirmation.getStatus(), equalTo(unlockStatus));
-    }
-
-    @Test
-    public void setStatus_unlockFailed_statusIsSet() throws Exception {
-        // Given
-        String unlockStatus = "UnlockFailed";
-
-        // When
-        confirmation.setStatus(unlockStatus);
-
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(unlockStatus));
-    }
-
-    @Test
-    public void setStatus_notSupported_statusIsSet() throws Exception {
-        // Given
-        String unlockStatus = "NotSupported";
-
-        // When
-        confirmation.setStatus(unlockStatus);
-
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(unlockStatus));
+        assertThat(confirmation.objStatus(), equalTo(unlockStatus));
     }
 
     @Test
@@ -107,7 +66,7 @@ public class UnlockConnectorConfirmationTest {
     @Test
     public void validate_statusIsSet_returnTrue() throws Exception {
         // Given
-        confirmation.setStatus("Unlocked");
+        confirmation.setStatus(UnlockStatus.Unlocked);
 
         // When
         boolean isValid = confirmation.validate();
