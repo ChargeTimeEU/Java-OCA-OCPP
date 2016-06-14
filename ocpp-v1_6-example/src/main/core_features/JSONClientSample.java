@@ -9,7 +9,7 @@ import eu.chargetime.ocpp.model.*;
 /**
  * ChargeTime.eu - Java-OCA-OCPP
  * Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
- * <p>
+ *
  * MIT License
  *
  * Copyright (c) 2016 Thomas Volden
@@ -46,7 +46,7 @@ public class JSONClientSample {
                 System.out.println(request);
                 // ... handle event
 
-                return null; // returning null means unsupported feature
+                return new ChangeAvailabilityConfirmation(AvailabilityStatus.Accepted);
             }
 
             @Override
