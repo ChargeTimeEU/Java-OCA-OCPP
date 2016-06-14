@@ -60,18 +60,14 @@ public class ClientTest extends TestUtilities {
 
     @Before
     public void setup() {
-        request = new Request() {
-            @Override
-            public boolean validate() {
-                return false;
-            }
-        };
+        request = () -> false;
         doReturn(request.getClass()).when(feature).getRequestType();
         doReturn(TestConfirmation.class).when(feature).getConfirmationType();
         when(feature.getAction()).thenReturn(null);
         doAnswer(invocation -> eventHandler = invocation.getArgumentAt(1, SessionEvents.class)).when(session).open(any(), any());
 
-        client = new Client(session);
+        client = new Client(session) {
+        };
 
         when(profile.getFeatureList()).thenReturn(aList(feature));
         client.addFeatureProfile(profile);

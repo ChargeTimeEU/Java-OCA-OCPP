@@ -1,6 +1,9 @@
 package eu.chargetime.ocpp.test;
 
-import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.Client;
+import eu.chargetime.ocpp.JSONClient;
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.UnsupportedFeatureException;
 import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.CoreProfile;
 import eu.chargetime.ocpp.model.*;
@@ -99,8 +102,7 @@ public class FakeChargePoint
                 return new UnlockConnectorConfirmation(UnlockStatus.Unlocked);
             }
         });
-        client = new Client(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue()));
-        client.addFeatureProfile(core);
+        client = new JSONClient(core);
     }
 
     public void connect() {

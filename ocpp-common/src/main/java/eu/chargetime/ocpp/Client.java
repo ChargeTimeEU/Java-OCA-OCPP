@@ -35,10 +35,8 @@ import java.util.concurrent.CompletableFuture;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-public class Client
+public abstract class Client
 {
-    private final int INDEX_UNIQUEID = 1;
-
     private HashMap<String, CompletableFuture<Confirmation>> promises;
     private ArrayList<Feature> featureList;
     private Session session;
