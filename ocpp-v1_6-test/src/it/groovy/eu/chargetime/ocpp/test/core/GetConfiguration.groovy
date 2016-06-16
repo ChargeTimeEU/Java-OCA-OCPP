@@ -32,8 +32,8 @@ class GetConfiguration extends Specification
 
         then:
         conditions.eventually {
-            chargePoint.hasHandledGetConfigurationRequest();
-            centralSystem.hasReceivedGetConfigurationConfirmation();
+            assert chargePoint.hasHandledGetConfigurationRequest();
+            assert centralSystem.hasReceivedGetConfigurationConfirmation();
         }
     }
 }

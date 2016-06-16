@@ -32,8 +32,8 @@ class UnlockConnector extends Specification {
 
         then:
         conditions.eventually {
-            chargePoint.hasHandledUnlockConnectorRequest();
-            centralSystem.hasReceivedUnlockConnectorConfirmation("Unlocked");
+            assert chargePoint.hasHandledUnlockConnectorRequest();
+            assert centralSystem.hasReceivedUnlockConnectorConfirmation("Unlocked");
         }
     }
 }

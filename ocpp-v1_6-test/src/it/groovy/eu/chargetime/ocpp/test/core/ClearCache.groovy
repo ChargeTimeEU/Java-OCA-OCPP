@@ -32,8 +32,8 @@ class ClearCache extends Specification
 
         then:
         conditions.eventually {
-            chargePoint.hasHandledClearCacheRequest();
-            centralSystem.hasReceivedClearCacheConfirmation();
+            assert chargePoint.hasHandledClearCacheRequest();
+            assert centralSystem.hasReceivedClearCacheConfirmation();
         }
     }
 }

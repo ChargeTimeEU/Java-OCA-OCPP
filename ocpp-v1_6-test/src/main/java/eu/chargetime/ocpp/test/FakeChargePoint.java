@@ -10,9 +10,6 @@ import eu.chargetime.ocpp.model.*;
 
 import java.util.Calendar;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-
 /**
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -184,82 +181,81 @@ public class FakeChargePoint
         }
     }
 
-    public void hasReceivedBootConfirmation(RegistrationStatus status) {
-        assertThat(receivedConfirmation, instanceOf(BootNotificationConfirmation.class));
-        assertThat(((BootNotificationConfirmation) receivedConfirmation).objStatus(), is(status));
+    public boolean hasReceivedBootConfirmation(RegistrationStatus status) {
+        if (receivedConfirmation instanceof BootNotificationConfirmation)
+            return ((BootNotificationConfirmation) receivedConfirmation).objStatus().equals(status);
+        return false;
     }
 
-    public void hasReceivedAuthorizeConfirmation(String status) {
-        assertThat(receivedConfirmation, instanceOf(AuthorizeConfirmation.class));
-        assertThat(((AuthorizeConfirmation)receivedConfirmation).getIdTagInfo().getStatus(), is(status));
+    public boolean hasReceivedAuthorizeConfirmation(String status) {
+        if (receivedConfirmation instanceof AuthorizeConfirmation)
+            return ((AuthorizeConfirmation) receivedConfirmation).getIdTagInfo().getStatus().equals(status);
+        return false;
     }
 
-    public void hasReceivedDataTransferConfirmation(String status) {
-        assertThat(receivedConfirmation, instanceOf(DataTransferConfirmation.class));
-        assertThat(((DataTransferConfirmation)receivedConfirmation).getStatus(), equalTo(status));
+    public boolean hasReceivedDataTransferConfirmation(String status) {
+        if (receivedConfirmation instanceof DataTransferConfirmation)
+            return ((DataTransferConfirmation) receivedConfirmation).getStatus().equals(status);
+        return false;
     }
 
-    public void hasReceivedHeartbeatConfirmation() {
-        assertThat(receivedConfirmation, instanceOf(HeartbeatConfirmation.class));
+    public boolean hasReceivedHeartbeatConfirmation() {
+        return (receivedConfirmation instanceof HeartbeatConfirmation);
     }
 
-    public void hasReceivedMeterValuesConfirmation() {
-        assertThat(receivedConfirmation, instanceOf(MeterValuesConfirmation.class));
+    public boolean hasReceivedMeterValuesConfirmation() {
+        return (receivedConfirmation instanceof MeterValuesConfirmation);
     }
 
-    public void hasReceivedStartTransactionConfirmation() {
-        assertThat(receivedConfirmation, instanceOf(StartTransactionConfirmation.class));
+    public boolean hasReceivedStartTransactionConfirmation() {
+        return (receivedConfirmation instanceof StartTransactionConfirmation);
     }
 
-    public void hasReceivedStatusNotificationConfirmation() {
-        assertThat(receivedConfirmation, instanceOf(StatusNotificationConfirmation.class));
+    public boolean hasReceivedStatusNotificationConfirmation() {
+        return (receivedConfirmation instanceof StatusNotificationConfirmation);
     }
 
-    public void hasReceivedStopTransactionConfirmation() {
-        assertThat(receivedConfirmation, instanceOf(StopTransactionConfirmation.class));
+    public boolean hasReceivedStopTransactionConfirmation() {
+        return (receivedConfirmation instanceof StopTransactionConfirmation);
     }
 
     public void disconnect() {
         client.disconnect();
     }
 
-    private void confirmRequest(Class<?> type) {
-        assertThat(receivedRequest, instanceOf(type));
+    public boolean hasHandledChangeAvailabilityRequest() {
+        return receivedRequest instanceof ChangeAvailabilityRequest;
     }
 
-    public void hasHandledChangeAvailabilityRequest() {
-        confirmRequest(ChangeAvailabilityRequest.class);
+    public boolean hasHandledGetConfigurationRequest() {
+        return receivedRequest instanceof GetConfigurationRequest;
     }
 
-    public void hasHandledGetConfigurationRequest() {
-        confirmRequest(GetConfigurationRequest.class);
+    public boolean hasHandledChangeConfigurationRequest() {
+        return receivedRequest instanceof ChangeConfigurationRequest;
     }
 
-    public void hasHandledChangeConfigurationRequest() {
-        confirmRequest(ChangeConfigurationRequest.class);
+    public boolean hasHandledClearCacheRequest() {
+        return receivedRequest instanceof ClearCacheRequest;
     }
 
-    public void hasHandledClearCacheRequest() {
-        confirmRequest(ClearCacheRequest.class);
+    public boolean hasHandledDataTransferRequest() {
+        return receivedRequest instanceof DataTransferRequest;
     }
 
-    public void hasHandledDataTransferRequest() {
-        confirmRequest(DataTransferRequest.class);
+    public boolean hasHandledRemoteStartTransactionRequest() {
+        return receivedRequest instanceof RemoteStartTransactionRequest;
     }
 
-    public void hasHandledRemoteStartTransactionRequest() {
-        confirmRequest(RemoteStartTransactionRequest.class);
+    public boolean hasHandledRemoteStopTransactionRequest() {
+        return receivedRequest instanceof RemoteStopTransactionRequest;
     }
 
-    public void hasHandledRemoteStopTransactionRequest() {
-        confirmRequest(RemoteStopTransactionRequest.class);
+    public boolean hasHandledResetRequest() {
+        return receivedRequest instanceof ResetRequest;
     }
 
-    public void hasHandledResetRequest() {
-        confirmRequest(ResetRequest.class);
-    }
-
-    public void hasHandledUnlockConnectorRequest() {
-        confirmRequest(UnlockConnectorRequest.class);
+    public boolean hasHandledUnlockConnectorRequest() {
+        return receivedRequest instanceof UnlockConnectorRequest;
     }
 }

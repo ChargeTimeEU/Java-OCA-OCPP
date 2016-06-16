@@ -4,13 +4,12 @@ import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.test.TestRequest;
+import eu.chargetime.ocpp.model.TestRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.testng.TestException;
 
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -176,7 +175,7 @@ public class SessionTest {
     public void onCall_callbackThrowsException_callSendCallResult() throws Exception {
         // Given
         String someId = "Some id";
-        when(sessionEvents.handleRequest(any())).thenThrow(TestException.class);
+        when(sessionEvents.handleRequest(any())).thenThrow(Exception.class);
         when(communicator.unpackPayload(any(), any())).thenReturn(new TestRequest());
 
         // When

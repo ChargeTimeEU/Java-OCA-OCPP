@@ -7,7 +7,7 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.test.TestConfirmation;
+import eu.chargetime.ocpp.model.TestConfirmation;
 import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import java.util.concurrent.CompletableFuture;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 

@@ -32,8 +32,8 @@ class ChangeConfiguration extends Specification
 
         then:
         conditions.eventually {
-            chargePoint.hasHandledChangeConfigurationRequest();
-            centralSystem.hasReceivedChangeConfigurationConfirmation();
+            assert chargePoint.hasHandledChangeConfigurationRequest();
+            assert centralSystem.hasReceivedChangeConfigurationConfirmation();
         }
     }
 }

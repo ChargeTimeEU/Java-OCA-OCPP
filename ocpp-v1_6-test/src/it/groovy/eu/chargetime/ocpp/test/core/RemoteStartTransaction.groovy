@@ -32,8 +32,8 @@ class RemoteStartTransaction extends Specification {
 
         then:
         conditions.eventually {
-            chargePoint.hasHandledRemoteStartTransactionRequest();
-            centralSystem.hasReceivedRemoteStartTransactionConfirmation("Accepted");
+            assert chargePoint.hasHandledRemoteStartTransactionRequest();
+            assert centralSystem.hasReceivedRemoteStartTransactionConfirmation("Accepted");
         }
     }
 }

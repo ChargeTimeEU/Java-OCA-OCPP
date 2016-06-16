@@ -32,7 +32,7 @@ class BootNotification extends Specification
 
         then:
         conditions.eventually {
-            centralSystem.hasReceivedBootNotification("VendorX", "SingleSocketCharger");
+            assert centralSystem.hasReceivedBootNotification("VendorX", "SingleSocketCharger");
         }
 
         when:
@@ -40,7 +40,7 @@ class BootNotification extends Specification
 
         then:
         conditions.eventually {
-            chargePoint.hasReceivedBootConfirmation(RegistrationStatus.Accepted);
+            assert chargePoint.hasReceivedBootConfirmation(RegistrationStatus.Accepted);
         }
     }
 }

@@ -5,7 +5,7 @@ import eu.chargetime.ocpp.Transmitter;
 import eu.chargetime.ocpp.model.BootNotificationConfirmation;
 import eu.chargetime.ocpp.model.BootNotificationRequest;
 import eu.chargetime.ocpp.model.RegistrationStatus;
-import eu.chargetime.ocpp.model.test.TestModel;
+import eu.chargetime.ocpp.model.TestModel;
 import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,10 +15,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.*;
 
 /**

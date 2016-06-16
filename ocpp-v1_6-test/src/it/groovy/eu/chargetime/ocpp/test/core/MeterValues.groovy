@@ -31,7 +31,7 @@ class MeterValues extends Specification
 
         then:
         conditions.eventually {
-            centralSystem.hasReceivedMeterValuesRequest();
+            assert centralSystem.hasReceivedMeterValuesRequest();
         }
 
         when:
@@ -39,7 +39,7 @@ class MeterValues extends Specification
 
         then:
         conditions.eventually {
-            chargePoint.hasReceivedMeterValuesConfirmation();
+            assert chargePoint.hasReceivedMeterValuesConfirmation();
         }
 
     }

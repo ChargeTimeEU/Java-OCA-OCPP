@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.test;
+package eu.chargetime.ocpp.model;
 
 import java.util.Calendar;
 

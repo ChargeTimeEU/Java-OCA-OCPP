@@ -32,8 +32,8 @@ class Reset extends Specification {
 
         then:
         conditions.eventually {
-            chargePoint.hasHandledResetRequest();
-            centralSystem.hasReceivedResetConfirmation("Accepted");
+            assert chargePoint.hasHandledResetRequest();
+            assert centralSystem.hasReceivedResetConfirmation("Accepted");
         }
     }
 }

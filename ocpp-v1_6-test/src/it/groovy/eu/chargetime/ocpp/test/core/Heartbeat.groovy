@@ -32,7 +32,7 @@ class Heartbeat extends Specification
 
         then:
         conditions.eventually {
-            centralSystem.hasReceivedHeartbeat();
+            assert centralSystem.hasReceivedHeartbeat();
         }
 
         when:
@@ -40,7 +40,7 @@ class Heartbeat extends Specification
 
         then:
         conditions.eventually {
-            chargePoint.hasReceivedHeartbeatConfirmation();
+            assert chargePoint.hasReceivedHeartbeatConfirmation();
         }
 
     }

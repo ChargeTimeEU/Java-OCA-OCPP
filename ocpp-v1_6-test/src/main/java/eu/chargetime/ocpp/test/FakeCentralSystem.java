@@ -15,8 +15,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.TimeZone;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 
 /**
  ChargeTime.eu - Java-OCA-OCPP
@@ -94,50 +92,45 @@ public class FakeCentralSystem
         }
     }
 
-    public void receivedMessageIsNot(String action) {
-        assertThat(receivedMessage, is(not(nullValue())));
-        assertThat(getAction(), is(not(equalTo(action))));
+    public boolean receivedMessageIsNot(String action) {
+        return !action.equals(getAction());
     }
 
-    public void hasReceivedBootNotification() {
-        assertThat(receivedMessage, is(not(nullValue())));
-        assertThat(getAction(), equalTo("BootNotification"));
+    public boolean hasReceivedBootNotification() {
+        return "BootNotification".equals(getAction());
     }
 
-    public void hasReceivedBootNotification(String chargePointVendor, String chargePointModel) {
+    public boolean hasReceivedBootNotification(String chargePointVendor, String chargePointModel) {
         JSONObject payload = getCallPayload();
-        assertThat(payload.getString("chargePointVendor"), equalTo(chargePointVendor));
-        assertThat(payload.getString("chargePointModel"), equalTo(chargePointModel));
+        return payload.getString("chargePointVendor").equals(chargePointVendor) && payload.getString("chargePointModel").equals(chargePointModel);
     }
 
-    public void hasReceivedHeartbeat() {
-        assertThat(receivedMessage, is(not(nullValue())));
-        assertThat(getAction(), equalTo("Heartbeat"));
+    public boolean hasReceivedHeartbeat() {
+        return "Heartbeat".equals(getAction());
     }
 
-    public void hasReceivedDataTransferRequest() {
-        assertThat(receivedMessage, is(not(nullValue())));
-        assertThat(getAction(), equalTo("DataTransfer"));
+    public boolean hasReceivedDataTransferRequest() {
+        return "DataTransfer".equals(getAction());
     }
-    public boolean hasReceivedAuthorizeRequest()
-    {
-        return receivedMessage != null && "Authorize".equals(getAction());
+
+    public boolean hasReceivedAuthorizeRequest() {
+        return "Authorize".equals(getAction());
     }
 
     public boolean hasReceivedMeterValuesRequest() {
-        return receivedMessage != null && "MeterValues".equals(getAction());
+        return "MeterValues".equals(getAction());
     }
 
     public boolean hasReceivedStartTransactionRequest() {
-        return receivedMessage != null && "StartTransaction".equals(getAction());
+        return "StartTransaction".equals(getAction());
     }
 
     public boolean hasReceivedStatusNotificationRequest() {
-        return receivedMessage != null && "StatusNotification".equals(getAction());
+        return "StatusNotification".equals(getAction());
     }
 
     public boolean hasReceivedStopTransactionRequest() {
-        return receivedMessage != null && "StopTransaction".equals(getAction());
+        return "StopTransaction".equals(getAction());
     }
 
     private JSONObject getCallPayload()
@@ -152,12 +145,22 @@ public class FakeCentralSystem
 
     private String getAction()
     {
-        return receivedMessage[2].toString();
+        try {
+            return receivedMessage[2].toString();
+        } catch (Exception ex) {
+            // ignored
+            return null;
+        }
     }
 
     private String getUniqueId()
     {
-        return receivedMessage[1].toString();
+        try {
+            return receivedMessage[1].toString();
+        } catch (Exception ex) {
+            // ignore error
+            return null;
+        }
     }
 
     private Object[] unpack(String message)
@@ -180,46 +183,51 @@ public class FakeCentralSystem
         return formatter.format(new Date());
     }
 
-    public void hasReceivedChangeAvailabilityConfirmation(String status)
+    public boolean hasReceivedChangeAvailabilityConfirmation(String status)
     {
-        assertThat(getUniqueId(), equalTo("ChangeAvailability"));
-        assertThat(getCallResultPayload().getString("status"), equalTo(status));
+        if ("ChangeAvailability".equals(getUniqueId()))
+            return getCallResultPayload().getString("status").equals(status);
+        return false;
     }
 
-    public void hasReceivedGetConfigurationConfirmation() {
-        assertThat(getUniqueId(), equalTo("GetConfiguration"));
+    public boolean hasReceivedGetConfigurationConfirmation() {
+        return "GetConfiguration".equals(getUniqueId());
     }
 
-    public void hasReceivedChangeConfigurationConfirmation() {
-        assertThat(getUniqueId(), equalTo("ChangeConfiguration"));
+    public boolean hasReceivedChangeConfigurationConfirmation() {
+        return "ChangeConfiguration".equals(getUniqueId());
     }
 
-    public void hasReceivedClearCacheConfirmation() {
-        assertThat(getUniqueId(), equalTo("ClearCache"));
+    public boolean hasReceivedClearCacheConfirmation() {
+        return "ClearCache".equals(getUniqueId());
     }
 
-    public void hasReceivedDataTransferConfirmation() {
-        assertThat(getUniqueId(), equalTo("DataTransfer"));
+    public boolean hasReceivedDataTransferConfirmation() {
+        return "DataTransfer".equals(getUniqueId());
     }
 
-    public void hasReceivedRemoteStartTransactionConfirmation(String status) {
-        assertThat(getUniqueId(), equalTo("RemoteStartTransaction"));
-        assertThat(getCallResultPayload().getString("status"), equalTo(status));
+    public boolean hasReceivedRemoteStartTransactionConfirmation(String status) {
+        if ("RemoteStartTransaction".equals(getUniqueId()))
+            return getCallResultPayload().getString("status").equals(status);
+        return false;
     }
 
-    public void hasReceivedRemoteStopTransactionConfirmation(String status) {
-        assertThat(getUniqueId(), equalTo("RemoteStopTransaction"));
-        assertThat(getCallResultPayload().getString("status"), equalTo(status));
+    public boolean hasReceivedRemoteStopTransactionConfirmation(String status) {
+        if ("RemoteStopTransaction".equals(getUniqueId()))
+            return getCallResultPayload().getString("status").equals(status);
+        return false;
     }
 
-    public void hasReceivedResetConfirmation(String status) {
-        assertThat(getUniqueId(), equalTo("Reset"));
-        assertThat(getCallResultPayload().getString("status"), equalTo(status));
+    public boolean hasReceivedResetConfirmation(String status) {
+        if ("Reset".equals(getUniqueId()))
+            return getCallResultPayload().getString("status").equals(status);
+        return false;
     }
 
-    public void hasReceivedUnlockConnectorConfirmation(String status) {
-        assertThat(getUniqueId(), equalTo("UnlockConnector"));
-        assertThat(getCallResultPayload().getString("status"), equalTo(status));
+    public boolean hasReceivedUnlockConnectorConfirmation(String status) {
+        if ("UnlockConnector".equals(getUniqueId()))
+            return getCallResultPayload().getString("status").equals(status);
+        return false;
     }
 
     public void sendGetConfigurationRequest(String... keys) {
@@ -307,7 +315,7 @@ public class FakeCentralSystem
     }
 
     public enum AuthorizationStatus {
-        Accepted, Blocked, Expired, Invalid;
+        Accepted, Blocked, Expired, Invalid
     }
     public void sendAuthorizeConfirmation(AuthorizationStatus status) {
         String payload = "\"idTagInfo\": {\"status\":\"%s\"}";

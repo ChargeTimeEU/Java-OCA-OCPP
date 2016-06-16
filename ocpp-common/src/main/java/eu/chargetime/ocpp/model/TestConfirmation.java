@@ -1,6 +1,4 @@
-package eu.chargetime.ocpp.model.test;
-
-import eu.chargetime.ocpp.model.Confirmation;
+package eu.chargetime.ocpp.model;
 
 /**
  ChargeTime.eu - Java-OCA-OCPP

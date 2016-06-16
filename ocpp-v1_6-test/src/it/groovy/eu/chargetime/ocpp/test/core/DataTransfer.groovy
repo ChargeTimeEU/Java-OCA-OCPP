@@ -32,8 +32,8 @@ class DataTransfer extends Specification
 
         then:
         conditions.eventually {
-            chargePoint.hasHandledDataTransferRequest();
-            centralSystem.hasReceivedDataTransferConfirmation();
+            assert chargePoint.hasHandledDataTransferRequest();
+            assert centralSystem.hasReceivedDataTransferConfirmation();
         }
     }
 
@@ -45,7 +45,7 @@ class DataTransfer extends Specification
 
         then:
         conditions.eventually {
-            centralSystem.hasReceivedDataTransferRequest();
+            assert centralSystem.hasReceivedDataTransferRequest();
         }
 
         when:
@@ -53,7 +53,7 @@ class DataTransfer extends Specification
 
         then:
         conditions.eventually {
-            chargePoint.hasReceivedDataTransferConfirmation("Accepted");
+            assert chargePoint.hasReceivedDataTransferConfirmation("Accepted");
         }
     }
 }

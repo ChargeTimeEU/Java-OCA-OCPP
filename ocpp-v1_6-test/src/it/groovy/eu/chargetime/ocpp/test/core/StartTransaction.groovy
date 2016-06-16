@@ -32,7 +32,7 @@ class StartTransaction extends Specification {
 
         then:
         conditions.eventually {
-            centralSystem.hasReceivedStartTransactionRequest();
+            assert centralSystem.hasReceivedStartTransactionRequest();
         }
 
         when:
@@ -40,7 +40,7 @@ class StartTransaction extends Specification {
 
         then:
         conditions.eventually {
-            chargePoint.hasReceivedStartTransactionConfirmation();
+            assert chargePoint.hasReceivedStartTransactionConfirmation();
         }
 
     }

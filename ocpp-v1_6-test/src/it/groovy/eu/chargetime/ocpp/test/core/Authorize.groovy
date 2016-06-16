@@ -36,7 +36,7 @@ class Authorize extends Specification
 
         then:
         conditions.eventually {
-            centralSystem.hasReceivedAuthorizeRequest();
+            assert centralSystem.hasReceivedAuthorizeRequest();
         }
 
         when:
@@ -44,7 +44,7 @@ class Authorize extends Specification
 
         then:
         conditions.eventually {
-            chargePoint.hasReceivedAuthorizeConfirmation("Accepted");
+            assert chargePoint.hasReceivedAuthorizeConfirmation("Accepted");
         }
     }
 

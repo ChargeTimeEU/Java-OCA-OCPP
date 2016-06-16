@@ -50,7 +50,7 @@ public class QueueTest
     public void addRequest_getTicket()
     {
         // When
-        String ticket = queue.store(null);
+        queue.store(null);
     }
 
     @Test

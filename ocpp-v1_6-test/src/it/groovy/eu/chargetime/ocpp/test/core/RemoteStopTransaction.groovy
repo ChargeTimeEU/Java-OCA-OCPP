@@ -32,8 +32,8 @@ class RemoteStopTransaction extends Specification {
 
         then:
         conditions.eventually {
-            chargePoint.hasHandledRemoteStopTransactionRequest();
-            centralSystem.hasReceivedRemoteStopTransactionConfirmation("Accepted");
+            assert chargePoint.hasHandledRemoteStopTransactionRequest();
+            assert centralSystem.hasReceivedRemoteStopTransactionConfirmation("Accepted");
         }
     }
 }

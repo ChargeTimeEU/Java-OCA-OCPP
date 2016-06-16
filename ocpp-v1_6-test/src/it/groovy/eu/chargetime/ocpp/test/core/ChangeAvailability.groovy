@@ -32,8 +32,8 @@ class ChangeAvailability extends Specification
 
         then:
         conditions.eventually {
-            chargePoint.hasHandledChangeAvailabilityRequest();
-            centralSystem.hasReceivedChangeAvailabilityConfirmation("Accepted");
+            assert chargePoint.hasHandledChangeAvailabilityRequest();
+            assert centralSystem.hasReceivedChangeAvailabilityConfirmation("Accepted");
         }
     }
 }

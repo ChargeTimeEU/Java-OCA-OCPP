@@ -32,7 +32,7 @@ class StatusNotification extends Specification {
 
         then:
         conditions.eventually {
-            centralSystem.hasReceivedStatusNotificationRequest();
+            assert centralSystem.hasReceivedStatusNotificationRequest();
         }
 
         when:
@@ -40,7 +40,7 @@ class StatusNotification extends Specification {
 
         then:
         conditions.eventually {
-            chargePoint.hasReceivedStatusNotificationConfirmation();
+            assert chargePoint.hasReceivedStatusNotificationConfirmation();
         }
 
     }
