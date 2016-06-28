@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -26,10 +26,25 @@ package eu.chargetime.ocpp;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Call back handler for communicator events.
+ */
 public interface CommunicatorEvents {
+    /**
+     * Handle call result from the server.
+     * Use the unique id to identify the confirmation type, you can choose to use the {@link Communicator}s unpackPayload feature.
+     *
+     * @param id      unique id used to identify the original request.
+     * @param payload raw payload.
+     */
     void onCallResult(String id, String payload);
+
     void onCall(String id, String action, String payload);
+
     void onError(String id, String payload);
+
     void onDisconnected();
+
     void onConnected();
 }

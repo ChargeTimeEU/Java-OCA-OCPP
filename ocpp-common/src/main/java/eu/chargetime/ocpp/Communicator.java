@@ -2,7 +2,7 @@ package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.model.*;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -28,22 +28,91 @@ import eu.chargetime.ocpp.model.*;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Abstract class.
+ * Handles basic communication:
+ * Pack and send messages.
+ * Receive and unpack messages.
+ * <p>
+ * Requires a {@link Transmitter} to send and receive messages.
+ * Must be overloaded to implement a specific format.
+ */
 public abstract class Communicator {
     protected Transmitter transmitter;
 
+    /**
+     * Convert a formatted string into a {@link Request}/{@link Confirmation}.
+     * This is useful for call results, where the  confirmation type isn't given.
+     *
+     * @param   payload     the raw formatted payload.
+     * @param   type        the expected return type.
+     * @return the unpacked payload.
+     * @throws Exception   error occurred while converting.
+     */
     public abstract <T> T unpackPayload(String payload, Class<T> type) throws Exception;
+
+    /**
+     * Convert a {@link Request}/{@link Confirmation} into a formatted string.
+     *
+     * @param   payload     the payload model.
+     * @return the payload in the form of a formatted string.
+     */
     public abstract String packPayload(Object payload);
+
+    /**
+     * Create a call result envelope to transmit to the server.
+     *
+     * @param   uniqueId    the id the server expects.
+     * @param   payload     packed payload.
+     * @return a fully packed message ready to send.
+     */
     protected abstract String makeCallResult(String uniqueId, String payload);
+
+    /**
+     * Create a call envelope to transmit to the server.
+     *
+     * @param   uniqueId    the id the server must reply with.
+     * @param   action      action name of the feature.
+     * @param   payload     packed payload.
+     * @return a fully packed message ready to send.
+     */
     protected abstract String makeCall(String uniqueId, String action, String payload);
+
+    /**
+     * Create a call error envelope to transmit to the server.
+     *
+     * @param   uniqueId            the id the server expects.
+     * @param   errorCode           an OCPP error code.
+     * @param   errorDescription    an associated error description.
+     * @return a fully packed message ready to send.
+     */
     protected abstract String makeCallError(String uniqueId, String errorCode, String errorDescription);
 
-
+    /**
+     * Identify an incoming call and parse it into one of the following:
+     * {@link CallMessage} a request from the server.
+     * {@link CallResultMessage} a response from the server.
+     *
+     * @param   message raw message from server
+     * @return CallMessage or {@link CallResultMessage}
+     */
     protected abstract Message parse(String message);
 
+    /**
+     * Constructore
+     *
+     * @param   transmitter Injected {@link Transmitter}
+     */
     public Communicator(Transmitter transmitter) {
         this.transmitter = transmitter;
     }
 
+    /**
+     * Use the injected {@link Transmitter} to connect to server.
+     * @param   uri     the url and port of the server.
+     * @param   events  handler for call back events.
+     */
     public void connect(String uri, CommunicatorEvents events) {
         transmitter.connect(uri, new TransmitterEvents() {
             @Override
@@ -70,18 +139,41 @@ public abstract class Communicator {
         });
     }
 
+    /**
+     * Send a new {@link Request} to the server.
+     *
+     * @param   uniqueId    the id the server should use to reply.
+     * @param   action      action name of the {@link eu.chargetime.ocpp.feature.Feature}.
+     * @param   request     the outgoing {@link Request}
+     */
     public void sendCall(String uniqueId, String action, Request request) {
         transmitter.send(makeCall(uniqueId, action, packPayload(request)));
     }
 
+    /**
+     * Send a {@link Confirmation} reply to a server {@link Request}.
+     *
+     * @param   uniqueId        the id the server expects.
+     * @param   confirmation    the outgoing {@link Confirmation}
+     */
     public void sendCallResult(String uniqueId, Confirmation confirmation) {
         transmitter.send(makeCallResult(uniqueId, packPayload(confirmation)));
     }
 
+    /**
+     * Send an error to the server.
+     *
+     * @param   uniqueId            the id the server expects a response to.
+     * @param   errorCode           an OCPP error Code
+     * @param   errorDescription    a associated error description.
+     */
     public void sendCallError(String uniqueId, String errorCode, String errorDescription) {
         transmitter.send(makeCallError(uniqueId, errorCode, errorDescription));
     }
 
+    /**
+     * Disconnect from the server. Uses the {@link Transmitter}.
+     */
     public void disconnect() {
         transmitter.disconnect();
     }

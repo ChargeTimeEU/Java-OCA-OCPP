@@ -8,8 +8,7 @@ import eu.chargetime.ocpp.model.Request;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
-
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -35,24 +34,51 @@ import java.util.concurrent.CompletableFuture;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Abstract class.
+ * Handles basic client logic:
+ * Hold s list of supported features.
+ * Keeps track of outgoing request.
+ * Calls back when a confirmation is received.
+ * <p>
+ * Must be overloaded in order to support specific protocols and formats.
+ */
 public abstract class Client
 {
     private HashMap<String, CompletableFuture<Confirmation>> promises;
     private ArrayList<Feature> featureList;
     private Session session;
 
+    /**
+     * Constructor
+     *
+     * @param   session     Inject session object
+     * @see                 Session
+     */
     public Client(Session session) {
         this.promises = new HashMap<>();
         this.featureList = new ArrayList<>();
         this.session = session;
     }
 
+    /**
+     * Add {@link Profile} to support a group of features.
+     *
+     * @param   profile     supported feature {@link Profile}
+     * @see                 Profile
+     */
     public void addFeatureProfile(Profile profile) {
         Feature[] features = profile.getFeatureList();
         for (Feature feature: features)
             featureList.add(feature);
     }
 
+    /**
+     * Connect to server
+     *
+     * @param   uri     url and port of the server
+     */
     public void connect(String uri)
     {
         session.open(uri, new SessionEvents() {
@@ -79,6 +105,9 @@ public abstract class Client
         });
     }
 
+    /**
+     * Disconnect from server
+     */
     public void disconnect()
     {
         try {
@@ -88,6 +117,18 @@ public abstract class Client
         }
     }
 
+    /**
+     * Search for supported features added with the addProfile.
+     * If no supported feature is found, null is returned
+     *
+     * Can take multiple inputs:
+     * {@link String}, search for the action name of the feature.
+     * {@link Request}/{@link Confirmation}, search for a feature that matches.
+     * Anything else will return null.
+     *
+     * @param   needle  Object supports {@link String}, {@link Request} or {@link Confirmation}
+     * @return Instance of the supported Feature
+     */
     private Feature findFeature(Object needle) {
         Feature output = null;
 
@@ -101,6 +142,18 @@ public abstract class Client
         return output;
     }
 
+    /**
+     * Tries to match {@link Feature} with an {@link Object}.
+     * Different outcome based on the type:
+     * {@link String}, matches the action name of the feature.
+     * {@link Request}, matches the request type of the feature.
+     * {@link Confirmation}, matches the confirmation type of the feature.
+     * Other wise returns false.
+     *
+     * @param   feature to match
+     * @param   object  to match with, supports {@link String}, {@link Request} or {@link Confirmation}
+     * @return true if the {@link Feature} matches the {@link Object}
+     */
     private boolean featureContains(Feature feature, Object object) {
         boolean contains = false;
         contains |= object instanceof String && feature.getAction().equals(object);
@@ -109,6 +162,15 @@ public abstract class Client
         return contains;
     }
 
+    /**
+     * Send a {@link Request} to the server.
+     * Can only send {@link Request} that the client supports, see {@link #addFeatureProfile(Profile)}
+     *
+     * @param   request                         outgoing request
+     * @return call back object, will be fulfilled with confirmation when received
+     * @throws UnsupportedFeatureException     trying to send a request from an unsupported feature
+     * @see                                     CompletableFuture
+     */
     public CompletableFuture<Confirmation> send(Request request) throws UnsupportedFeatureException {
         Feature feature = findFeature(request);
         if (feature == null)
@@ -119,6 +181,12 @@ public abstract class Client
         return promise;
     }
 
+    /**
+     * Creates call back {@link CompletableFuture} for later use
+     *
+     * @param   uniqueId    identification for the {@link Request}
+     * @return call back {@link CompletableFuture}
+     */
     private CompletableFuture<Confirmation> createPromise(String uniqueId) {
         CompletableFuture<Confirmation> promise = new CompletableFuture<>();
         promises.put(uniqueId, promise);
