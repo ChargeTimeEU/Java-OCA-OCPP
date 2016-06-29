@@ -1,7 +1,7 @@
 Java-OCA-OCPP
 =============
 
-Client and server library of Open Charge-Point Protocol from openchargealliance.org
+A client and server library of Open Charge-Point Protocol from openchargealliance.org
 
 With this library, you can easily get started with the Open Charge-Point Protocol.
 The design is driven by test, which will ensure premium software that is easy to adapt and modify to your needs.
@@ -32,3 +32,13 @@ License
 =======
 
 [MIT License](LICENSE)
+
+About ChargeTime.eu
+=======
+
+We are devoted to push the marked for vehicles charging forward.
+There are many standards out there, we intend implement and share them. Any help is much appreciated!
+
+The market is in its defining state, the practices and standards we come up with now, may very well be stick around for decades to come. Just think, we can help mature these standards.
+
+See our vision at http://www.chargetime.eu/
