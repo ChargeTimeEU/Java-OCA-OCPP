@@ -51,7 +51,7 @@ public abstract class Client
     private Session session;
 
     /**
-     * Constructor
+     * Handle required injections.
      *
      * @param   session     Inject session object
      * @see                 Session

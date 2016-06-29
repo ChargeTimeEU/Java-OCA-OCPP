@@ -6,7 +6,7 @@ import eu.chargetime.ocpp.model.Request;
 
 import java.util.concurrent.CompletableFuture;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -32,38 +32,73 @@ import java.util.concurrent.CompletableFuture;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Unites outgoing {@link Request} with incoming {@link Confirmation}s or errors.
+ * Catches errors and responds with error messages.
+ */
 public class Session {
 
     private Communicator communicator;
     private Queue queue;
     private SessionEvents events;
 
+    /**
+     * Handles required injections.
+     *
+     * @param communicator send and receive messages.
+     * @param queue        store and restore requests based on unique ids.
+     */
     public Session(Communicator communicator, Queue queue) {
         this.communicator = communicator;
         this.queue = queue;
     }
 
+    /**
+     * Send a {@link Request}.
+     *
+     * @param action    action name to identify the feature.
+     * @param payload   the {@link Request} payload to send
+     * @return unique identification to identify the request.
+     */
     public String sendRequest(String action, Request payload) {
         String uuid = queue.store(payload);
         communicator.sendCall(uuid, action, payload);
         return uuid;
     }
 
+    /**
+     * Send a {@link Confirmation} to a {@link Request}
+     *
+     * @param uniqueId      the unique identification the receiver expects.
+     * @param confirmation  the {@link Confirmation} payload to send.
+     */
     public void sendConfirmation(String uniqueId, Confirmation confirmation) {
         communicator.sendCallResult(uniqueId, confirmation);
     }
 
-    private Class<? extends Confirmation> getConfirmationType(String uniqueId) {
+    private Class<? extends Confirmation> getConfirmationType(String uniqueId) throws UnsupportedFeatureException {
         Request request = queue.restoreRequest(uniqueId);
         Feature feature = events.findFeatureByRequest(request);
+        if (feature == null)
+            throw new UnsupportedFeatureException();
         return feature.getConfirmationType();
     }
 
+    /**
+     * Connect to a specific uri, provided a call back handler for connection related events.
+     *
+     * @param uri             url and port of the remote system.
+     * @param eventHandler    call back handler for connection related events.
+     */
     public void open(String uri, SessionEvents eventHandler) {
         this.events = eventHandler;
         communicator.connect(uri, new CommunicatorEventHandler());
     }
 
+    /**
+     * Close down the connection.
+     */
     public void close() {
         communicator.disconnect();
     }
@@ -82,6 +117,9 @@ public class Session {
             catch (PropertyConstraintException ex) {
                 String message = "Field %s violates constraints with value: \"%s\". %s";
                 communicator.sendCallError(id, "TypeConstraintViolation", String.format(message, ex.getFieldKey(), ex.getFieldValue(), ex.getMessage()));
+                ex.printStackTrace();
+            } catch (UnsupportedFeatureException ex) {
+                communicator.sendCallError(id, "InternalError", "An internal error occurred and the receiver was not able to process the requested Action successfully");
                 ex.printStackTrace();
             } catch (Exception ex) {
                 communicator.sendCallError(id, "FormationViolation", "Unable to process action");
@@ -123,13 +161,19 @@ public class Session {
         }
 
         @Override
-        public void onError(String id, String payload) { }
+        public void onError(String id, String payload) {
+            events.handleError(id);
+        }
 
         @Override
-        public void onDisconnected() { }
+        public void onDisconnected() {
+            events.handleConnectionClosed();
+        }
 
         @Override
-        public void onConnected() { }
+        public void onConnected() {
+            events.handleConnectionOpened();
+        }
 
         private CompletableFuture<Confirmation> handleIncomingRequest(Request request) {
             CompletableFuture<Confirmation> promise = new CompletableFuture<>();

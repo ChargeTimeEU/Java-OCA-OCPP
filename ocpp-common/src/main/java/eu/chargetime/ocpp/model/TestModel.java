@@ -2,7 +2,7 @@ package eu.chargetime.ocpp.model;
 
 import java.util.Calendar;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -27,6 +27,11 @@ import java.util.Calendar;
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
+ */
+
+/**
+ * Test model used to check conversion of different field types.
+ * Used for tests.
  */
 public class TestModel {
     private String stringTest;

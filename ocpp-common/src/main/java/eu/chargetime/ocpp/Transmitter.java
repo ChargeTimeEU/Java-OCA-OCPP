@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -26,9 +26,29 @@ package eu.chargetime.ocpp;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Send and receive data. Maintain connection.
+ */
 public interface Transmitter
 {
+    /**
+     * Connect to a specific node.
+     *
+     * @param uri    url and port of the node.
+     * @param events connection related events.
+     */
     void connect(String uri, TransmitterEvents events);
+
+    /**
+     * Disconnect from a node.
+     */
     void disconnect();
+
+    /**
+     * Send a message to a node.
+     *
+     * @param message    test message to send.
+     */
     void send(String message);
 }

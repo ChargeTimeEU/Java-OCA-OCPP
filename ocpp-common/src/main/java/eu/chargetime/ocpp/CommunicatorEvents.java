@@ -32,19 +32,43 @@ package eu.chargetime.ocpp;
  */
 public interface CommunicatorEvents {
     /**
-     * Handle call result from the server.
-     * Use the unique id to identify the confirmation type, you can choose to use the {@link Communicator}s unpackPayload feature.
+     * Handle call result.
+     * <p>
+     * Hint: Use the id to identify the confirmation type, you can then choose to use the {@link Communicator}s unpackPayload method.
      *
      * @param id      unique id used to identify the original request.
      * @param payload raw payload.
      */
     void onCallResult(String id, String payload);
 
+    /**
+     * Handle call.
+     * <p>
+     * Hint: Use the action name to identify the request, you can then choose to use {@link Communicator}s unpackPayload method.
+     *
+     * @param id      unique id used to reply to server.
+     * @param action  action name used to identify the feature.
+     * @param payload raw payload.
+     */
     void onCall(String id, String action, String payload);
 
+    /**
+     * Handle call error.
+     * <p>
+     * Hint: Use the id to identify the original call. You can use {@link Communicator}s unpackPayload method.
+     *
+     * @param id        unique id used to identify the original request.
+     * @param payload   raw error payload.
+     */
     void onError(String id, String payload);
 
+    /**
+     * The connection was disconnected.
+     */
     void onDisconnected();
 
+    /**
+     * A connection was established.
+     */
     void onConnected();
 }

@@ -4,7 +4,7 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -30,7 +30,24 @@ import eu.chargetime.ocpp.model.Request;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Interface used for Feature Profiles.
+ */
 public interface Profile {
+
+    /**
+     * Get a list of supported Feature for this Feature Profile.
+     *
+     * @return supported {@link Feature}s
+     */
     Feature[] getFeatureList();
+
+    /**
+     * Handle {@link Request}
+     *
+     * @param request the {@link Request} to be handled.
+     * @return the {@link Confirmation} to be send.
+     */
     Confirmation handleRequest(Request request);
 }

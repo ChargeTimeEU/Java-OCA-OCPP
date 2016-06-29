@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -26,24 +26,33 @@ package eu.chargetime.ocpp;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Exception used when validating fields.
+ */
 public class PropertyConstraintException extends Exception {
     private final String fieldKey;
     private final Object fieldValue;
+    private final String message;
 
     @Override
     public String getMessage() {
         return message;
     }
 
+    /**
+     * @return value of the failing field.
+     */
     public Object getFieldValue() {
         return fieldValue;
     }
 
+    /**
+     * @return name of the failing field.
+     */
     public String getFieldKey() {
         return fieldKey;
     }
-
-    private final String message;
 
     public PropertyConstraintException(String fieldKey, Object fieldValue) {
         this(fieldKey, fieldValue, null);

@@ -48,7 +48,7 @@ public abstract class Communicator {
      * @param   payload     the raw formatted payload.
      * @param   type        the expected return type.
      * @return the unpacked payload.
-     * @throws Exception   error occurred while converting.
+     * @throws Exception    error occurred while converting.
      */
     public abstract <T> T unpackPayload(String payload, Class<T> type) throws Exception;
 
@@ -61,9 +61,9 @@ public abstract class Communicator {
     public abstract String packPayload(Object payload);
 
     /**
-     * Create a call result envelope to transmit to the server.
+     * Create a call result envelope to transmit.
      *
-     * @param   uniqueId    the id the server expects.
+     * @param   uniqueId    the id the receiver expects.
      * @param   payload     packed payload.
      * @return a fully packed message ready to send.
      */
@@ -72,7 +72,7 @@ public abstract class Communicator {
     /**
      * Create a call envelope to transmit to the server.
      *
-     * @param   uniqueId    the id the server must reply with.
+     * @param   uniqueId    the id the receiver must reply with.
      * @param   action      action name of the feature.
      * @param   payload     packed payload.
      * @return a fully packed message ready to send.
@@ -80,9 +80,9 @@ public abstract class Communicator {
     protected abstract String makeCall(String uniqueId, String action, String payload);
 
     /**
-     * Create a call error envelope to transmit to the server.
+     * Create a call error envelope to transmit.
      *
-     * @param   uniqueId            the id the server expects.
+     * @param   uniqueId            the id the receiver expects.
      * @param   errorCode           an OCPP error code.
      * @param   errorDescription    an associated error description.
      * @return a fully packed message ready to send.
@@ -91,16 +91,16 @@ public abstract class Communicator {
 
     /**
      * Identify an incoming call and parse it into one of the following:
-     * {@link CallMessage} a request from the server.
-     * {@link CallResultMessage} a response from the server.
+     * {@link CallMessage} a request.
+     * {@link CallResultMessage} a response.
      *
-     * @param   message raw message from server
+     * @param   message     the raw message
      * @return CallMessage or {@link CallResultMessage}
      */
     protected abstract Message parse(String message);
 
     /**
-     * Constructore
+     * Handle required injections.
      *
      * @param   transmitter Injected {@link Transmitter}
      */
@@ -140,9 +140,9 @@ public abstract class Communicator {
     }
 
     /**
-     * Send a new {@link Request} to the server.
+     * Send a new {@link Request}.
      *
-     * @param   uniqueId    the id the server should use to reply.
+     * @param   uniqueId    the id the receiver should use to reply.
      * @param   action      action name of the {@link eu.chargetime.ocpp.feature.Feature}.
      * @param   request     the outgoing {@link Request}
      */
@@ -151,9 +151,9 @@ public abstract class Communicator {
     }
 
     /**
-     * Send a {@link Confirmation} reply to a server {@link Request}.
+     * Send a {@link Confirmation} reply to a {@link Request}.
      *
-     * @param   uniqueId        the id the server expects.
+     * @param   uniqueId        the id the receiver expects.
      * @param   confirmation    the outgoing {@link Confirmation}
      */
     public void sendCallResult(String uniqueId, Confirmation confirmation) {
@@ -161,9 +161,9 @@ public abstract class Communicator {
     }
 
     /**
-     * Send an error to the server.
+     * Send an error.
      *
-     * @param   uniqueId            the id the server expects a response to.
+     * @param   uniqueId            the id the receiver expects a response to.
      * @param   errorCode           an OCPP error Code
      * @param   errorDescription    a associated error description.
      */
@@ -172,7 +172,7 @@ public abstract class Communicator {
     }
 
     /**
-     * Disconnect from the server. Uses the {@link Transmitter}.
+     * Close down the connection. Uses the {@link Transmitter}.
      */
     public void disconnect() {
         transmitter.disconnect();

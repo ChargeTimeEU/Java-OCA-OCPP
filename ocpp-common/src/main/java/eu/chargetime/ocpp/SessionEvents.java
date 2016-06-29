@@ -4,7 +4,7 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -30,10 +30,59 @@ import eu.chargetime.ocpp.model.Request;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Call back handler for {@link Session} events.
+ */
 public interface SessionEvents {
+    /**
+     * Find a {@link Feature} by it's related action name.
+     * If null is returned, a "NotImplemented" error will be send.
+     *
+     * @param action action name of the {@link Feature}
+     * @return {@Link Feature} found.
+     */
     Feature findFeatureByAction(String action);
+
+    /**
+     * Find a {@link Feature} by a {@link Request}.
+     * If null is returned, a "InternalError" error will be send.
+     *
+     * @param request
+     * @return
+     */
     Feature findFeatureByRequest(Request request);
 
-    void            handleConfirmation(String uniqueId, Confirmation confirmation);
+    /**
+     * Handle a {@link Confirmation} to a {@link Request}.
+     *
+     * @param uniqueId        the unique id used for the {@link Request}.
+     * @param confirmation    the {@link Confirmation} to the {@link Request}.
+     */
+    void handleConfirmation(String uniqueId, Confirmation confirmation);
+
+    /**
+     * Handle a incoming {@link Request}.
+     *
+     * @param request   the {@link Request}.
+     * @return a {@link Confirmation} to send as a response.
+     */
     Confirmation    handleRequest(Request request);
+
+    /**
+     * Handle a error to a {@link Request}.
+     *
+     * @param uniqueId  the unique identifier for the {@link Request}.
+     */
+    void handleError(String uniqueId); // TODO: Cross protocol errors
+
+    /**
+     * Handle a closed connection.
+     */
+    void handleConnectionClosed();
+
+    /**
+     * Handle a opened connection.
+     */
+    void handleConnectionOpened();
 }

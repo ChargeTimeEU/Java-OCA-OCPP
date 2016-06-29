@@ -5,7 +5,7 @@ import eu.chargetime.ocpp.model.Request;
 import java.util.HashMap;
 import java.util.UUID;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -31,6 +31,10 @@ import java.util.UUID;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Class to store and restore requests based on a unique id.
+ */
 public class Queue
 {
     private HashMap<String, Request> requestQueue;
@@ -39,12 +43,26 @@ public class Queue
         requestQueue = new HashMap<>();
     }
 
+    /**
+     * Store a {@link Request} and get a unique identifier to fetch it later on.
+     *
+     * @param request the {@link Request}.
+     * @return a unique identifier used to fetch the request.
+     */
     public String store(Request request) {
         String ticket = UUID.randomUUID().toString();
         requestQueue.put(ticket, request);
         return ticket;
     }
 
+    /**
+     * Restore a {@link Request} using a unique identifier.
+     * The identifier can only be used once.
+     * If no Request was found, null is returned.
+     *
+     * @param ticket    unique identifier returned when {@link Request} was initially stored.
+     * @return the stored {@link Request}
+     */
     public Request restoreRequest(String ticket) {
         Request request = null;
         try {
