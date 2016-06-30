@@ -7,7 +7,7 @@ import eu.chargetime.ocpp.model.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -33,11 +33,22 @@ import java.util.Calendar;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * The core feature profile contains the features from OCPP v. 1.5
+ * <p>
+ * Contains methods to create outgoing client requests.
+ */
 public class CoreProfile implements Profile
 {
     ClientCoreEventHandler eventHandler;
     ArrayList<Feature> features;
 
+    /**
+     * Set up handler for client core feature requests.
+
+     * @param handler   call back methods for client events
+     */
     public CoreProfile(ClientCoreEventHandler handler) {
         features = new ArrayList<>();
         eventHandler = handler;
@@ -60,28 +71,83 @@ public class CoreProfile implements Profile
         features.add(new UnlockConnectorFeature(this));
     }
 
+    /**
+     * Create a client {@link AuthorizeRequest} with required values.
+     *
+     * @param idToken   required identification token.
+     * @return an instance of {@link AuthorizeRequest}.
+     * @throws PropertyConstraintException  cast if requires fields isn't filled out correctly.
+     * @see AuthorizeRequest
+     * @see AuthorizeFeature
+     */
     public AuthorizeRequest createAuthorizeRequest(String idToken) throws PropertyConstraintException {
         return new AuthorizeRequest(idToken);
     }
 
+    /**
+     * Create a client {@link BootNotificationRequest} with required values.
+     *
+     * @param vendor    required. Vendor name.
+     * @param model     required. Charge box model.
+     * @return an instance of {@link BootNotificationRequest}
+     * @see BootNotificationRequest
+     * @see BootNotificationFeature
+     */
     public BootNotificationRequest createBootNotificationRequest(String vendor, String model) {
         return new BootNotificationRequest(vendor, model);
     }
 
+    /**
+     * Create a client {@link DataTransferRequest} with required values.
+     *
+     * @param vendorId  required. Vendor identification.
+     * @return an instance of {@link DataTransferRequest}.
+     * @see DataTransferRequest
+     * @see DataTransferFeature
+     */
     public DataTransferRequest createDataTransferRequest(String vendorId) {
         return new DataTransferRequest(vendorId);
     }
 
+    /**
+     * Create a client {@link HeartbeatRequest}.
+     *
+     * @return an instance of {@link HeartbeatRequest}
+     * @see HeartbeatRequest
+     * @see HeartbeatFeature
+     */
     public HeartbeatRequest createHeartbeatRequest() {
         return new HeartbeatRequest();
     }
 
+    /**
+     * Create a client {@link MeterValuesRequest} with one {@link SampledValue} and one {@link MeterValue}
+     *
+     * @param connectorId   required. Identification of connector.
+     * @param timestamp     required. Time of sample.
+     * @param value         required. Value of sample.
+     * @return an instance of {@link MeterValuesRequest}.
+     * @throws PropertyConstraintException  thrown if a required field isn't filled out correctly.
+     * @see MeterValuesRequest
+     * @see MeterValuesFeature
+     */
     public MeterValuesRequest createMeterValuesRequest(Integer connectorId, Calendar timestamp, String value) throws PropertyConstraintException {
         SampledValue sampledValue = new SampledValue();
         sampledValue.setValue(value);
         return createMeterValuesRequest(connectorId, timestamp, sampledValue);
     }
 
+    /**
+     * Create a client {@link MeterValuesRequest} with some {@link SampledValue}s and one {@link MeterValue}.
+     *
+     * @param connectorId   required. Identification of connector.
+     * @param timestamp     required. Time of sample.
+     * @param sampledValues required. Params list of {@link SampledValue}s
+     * @return an instance of {@link MeterValuesRequest}
+     * @throws PropertyConstraintException  thrown if a required field isn't filled out correctly.
+     * @see MeterValuesRequest
+     * @see MeterValuesFeature
+     */
     public MeterValuesRequest createMeterValuesRequest(Integer connectorId, Calendar timestamp, SampledValue... sampledValues) throws PropertyConstraintException {
         MeterValue meterValue = new MeterValue();
         meterValue.setTimestamp(timestamp);
@@ -89,6 +155,16 @@ public class CoreProfile implements Profile
         return createMeterValuesRequest(connectorId, meterValue);
     }
 
+    /**
+     * Create a client {@link MeterValuesRequest} with some {@link MeterValue}s.
+     *
+     * @param connectorId   required. Identification of connector.
+     * @param meterValues   required. Params list of {@link MeterValue}s
+     * @return an instance of {@link MeterValuesRequest}
+     * @throws PropertyConstraintException  thrown if a required field isn't filled out correctly.
+     * @see MeterValuesRequest
+     * @see MeterValuesFeature
+     */
     public MeterValuesRequest createMeterValuesRequest(Integer connectorId, MeterValue... meterValues) throws PropertyConstraintException {
         MeterValuesRequest request = new MeterValuesRequest();
         request.setConnectorId(connectorId);
@@ -96,6 +172,18 @@ public class CoreProfile implements Profile
         return request;
     }
 
+    /**
+     * Create a client {@link StartTransactionRequest} with required values.
+     *
+     * @param connectorId   required. Identification of the connector.
+     * @param idTag         required. Authorization identification tag.
+     * @param meterStart    required. The initial value of the meter.
+     * @param timestamp     required. Time of start.
+     * @return an instance of {@link StartTransactionRequest}.
+     * @throws PropertyConstraintException thrown if a required field isn't filled out correctly.
+     * @see StartTransactionRequest
+     * @see StartTransactionFeature
+     */
     public StartTransactionRequest createStartTransactionRequest(Integer connectorId, String idTag, Integer meterStart, Calendar timestamp) throws PropertyConstraintException {
         StartTransactionRequest request = new StartTransactionRequest();
         request.setConnectorId(connectorId);
@@ -107,6 +195,17 @@ public class CoreProfile implements Profile
         return request;
     }
 
+    /**
+     * Create a client {@link StatusNotificationRequest} with required values.
+     *
+     * @param connectorId   required. Identification of the connector.
+     * @param errorCode     required. {@link ChargePointErrorCode} of the connector.
+     * @param status        required. {@link ChargePointStatus} of the connector.
+     * @return an instance of {@link StatusNotificationRequest}.
+     * @throws PropertyConstraintException thrown if a required field isn't filled out correctly.
+     * @see StatusNotificationRequest
+     * @see StatusNotificationFeature
+     */
     public StatusNotificationRequest createStatusNotificationRequest(Integer connectorId, ChargePointErrorCode errorCode, ChargePointStatus status) throws PropertyConstraintException {
         StatusNotificationRequest request = new StatusNotificationRequest();
         request.setConnectorId(connectorId);
@@ -115,6 +214,14 @@ public class CoreProfile implements Profile
         return request;
     }
 
+    /**
+     * Create a client {@link StopTransactionRequest} with required values.
+     *
+     * @param meterStop        required. The final value of the meter.
+     * @param timestamp        required. Time of stop.
+     * @param transactionId    required. The identification of the transaction.
+     * @return an instance of {@link StopTransactionRequest}.
+     */
     public StopTransactionRequest createStopTransactionRequest(int meterStop, Calendar timestamp, int transactionId) {
         StopTransactionRequest request = new StopTransactionRequest();
         request.setMeterStop(meterStop);

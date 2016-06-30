@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Calendar;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -38,6 +38,10 @@ import java.util.Calendar;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Communicator for JSON messages
+ */
 public class JSONCommunicator extends Communicator {
 
     private static final int INDEX_MESSAGEID = 0;
@@ -47,10 +51,16 @@ public class JSONCommunicator extends Communicator {
     private static final int TYPENUMBER_CALLRESULT = 3;
     private static final int INDEX_CALLRESULT_PAYLOAD = 2;
     private static final int INDEX_UNIQUEID = 1;
+
     private static final String CALL_FORMAT = "[2,\"%s\",\"%s\",%s]";
     private static final String CALLRESULT_FORMAT = "[3,\"%s\",%s]";
     private static final String CALLERROR_FORMAT = "[4,\"%s\",\"%s\",\"%s\",%s]";
 
+    /**
+     * Handle required injections.
+     *
+     * @param transmitter instance of the {@link Transmitter}.
+     */
     public JSONCommunicator(Transmitter transmitter) {
         super(transmitter);
     }
