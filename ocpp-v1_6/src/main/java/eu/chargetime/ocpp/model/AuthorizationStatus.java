@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  * <p>
  * MIT License
@@ -24,6 +24,12 @@ package eu.chargetime.ocpp.model;
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ */
+
+/**
+ * Accepted values {@link IdTagInfo} for {@link AuthorizeConfirmation}.
+ *
+ * @see IdTagInfo
  */
 public enum AuthorizationStatus {
     Accepted, Blocked, Expired, Invalid, ConcurrentTx

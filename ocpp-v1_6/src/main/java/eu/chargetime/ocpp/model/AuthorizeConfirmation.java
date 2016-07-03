@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -26,15 +26,29 @@ package eu.chargetime.ocpp.model;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Sent by the Centarl System to the Charge Point in response to a {@link AuthorizeRequest}.
+ */
 public class AuthorizeConfirmation implements Confirmation
 {
     private IdTagInfo idTagInfo;
 
+    /**
+     * This contains information about authorization status, expiry and parent id.
+     *
+     * @return an instance of {@link IdTagInfo}.
+     */
     public IdTagInfo getIdTagInfo()
     {
         return idTagInfo;
     }
 
+    /**
+     * Required. This contains information about authorization status, expiry and parent id.
+     *
+     * @param idTagInfo an instance of {@link IdTagInfo}.
+     */
     public void setIdTagInfo(IdTagInfo idTagInfo) {
         this.idTagInfo = idTagInfo;
     }

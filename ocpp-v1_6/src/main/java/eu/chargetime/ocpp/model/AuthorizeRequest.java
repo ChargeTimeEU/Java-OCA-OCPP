@@ -3,7 +3,7 @@ package eu.chargetime.ocpp.model;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -29,22 +29,43 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Sent by the Charge Point to the Central System.
+ */
 public class AuthorizeRequest implements Request
 {
     private String idTag;
 
     public AuthorizeRequest() {}
 
+    /**
+     * Handle required fields.
+     *
+     * @param idToken authorize id.
+     * @throws PropertyConstraintException field isn't filled out correct.
+     */
     public AuthorizeRequest(String idToken) throws PropertyConstraintException
     {
          setIdTag(idToken);
     }
 
+    /**
+     * This contains the identifier that needs to be authorized.
+     *
+     * @return String, max 20 characters. Case insensitive.
+     */
     public String getIdTag()
     {
         return idTag;
     }
 
+    /**
+     * Required. This contains the identifier that needs to be authorized.
+     *
+     * @param idTag                         String, max 20 characters. Case insensitive.
+     * @throws PropertyConstraintException  field isn't filled out correct.
+     */
     public void setIdTag(String idTag) throws PropertyConstraintException {
         if (!ModelUtil.validate(idTag, 20))
             throw new PropertyConstraintException("idTag", idTag, "Exceeded limit");
