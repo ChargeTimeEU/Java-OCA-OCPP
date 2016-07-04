@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -26,24 +26,48 @@ package eu.chargetime.ocpp.model;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * return by Charge Point to Central System.
+ */
 public class ChangeAvailabilityConfirmation implements Confirmation {
 
     private AvailabilityStatus status;
 
+    /**
+     * This indicates whether the Charge Point is able to perform the availability change.
+     *
+     * @return String, the {@link AvailabilityStatus} of the connector
+     */
     public String getStatus() {
         return status.toString();
     }
 
+    /**
+     * This indicates whether the Charge Point is able to perform the availability change.
+     *
+     * @return The {@link AvailabilityStatus} of the connector.
+     */
     public AvailabilityStatus objStatus() {
         return status;
     }
 
+    /**
+     * Required. This indicates whether the Charge Point is able to perform the availability change.
+     *
+     * @param status the {@link AvailabilityStatus} of connector.
+     */
     public void setStatus(AvailabilityStatus status) {
         this.status = status;
     }
 
     public ChangeAvailabilityConfirmation() { }
 
+    /**
+     * Handle required fields.
+     *
+     * @param status the {@link AvailabilityStatus}, see {@link #setStatus(AvailabilityStatus)}
+     */
     public ChangeAvailabilityConfirmation(AvailabilityStatus status) {
         this.status = status;
     }

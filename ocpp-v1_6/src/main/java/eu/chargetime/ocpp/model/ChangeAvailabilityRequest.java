@@ -2,7 +2,7 @@ package eu.chargetime.ocpp.model;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -28,15 +28,32 @@ import eu.chargetime.ocpp.PropertyConstraintException;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Sent by the Central System to the Charge Point.
+ */
 public class ChangeAvailabilityRequest implements Request
 {
     private int connectorId = -1;
     private AvailabilityType type;
 
+    /**
+     * The id of the connector for which availability needs to change.
+     * Id '0' (zero) is used if the availability of the Charge Point and all its connectors needs to change.
+     *
+     * @return identification of the connector. 0 = all.
+     */
     public int getConnectorId() {
         return connectorId;
     }
 
+    /**
+     * Required. The id of the connector for which availability needs to change.
+     * Id '0' (zero) is used if the availability of the Charge Point and all its connectors needs to change.
+     *
+     * @param connectorId integer, must be a positive number.
+     * @throws PropertyConstraintException Value was a negative number.
+     */
     public void setConnectorId(int connectorId) throws PropertyConstraintException {
         if (connectorId < 0)
             throw new PropertyConstraintException("connectorId", connectorId, "Must be >= 0");
@@ -44,14 +61,29 @@ public class ChangeAvailabilityRequest implements Request
         this.connectorId = connectorId;
     }
 
+    /**
+     * This contains the type of availability change that the Charge Point should perform.
+     *
+     * @return Stirng version of {@link AvailabilityType}.
+     */
     public String getType() {
         return type.toString();
     }
 
+    /**
+     * This contains the type of availability change that the Charge Point should perform.
+     *
+     * @return  {@link AvailabilityType} of the connector.
+     */
     public AvailabilityType objType() {
         return type;
     }
 
+    /**
+     * Required. This contains the type of availability change that the Charge Point should perform.
+     *
+     * @param type    {@link AvailabilityType} of the connector
+     */
     public void setType(AvailabilityType type) {
         this.type = type;
     }
