@@ -3,7 +3,7 @@ package eu.chargetime.ocpp.model;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -27,6 +27,10 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ */
+
+/**
+ * Single sampled value in {@link MeterValue}. Each value can be accompanied by optional fields.
  */
 public class SampledValue implements Validatable {
     private String value;
@@ -54,14 +58,55 @@ public class SampledValue implements Validatable {
         return this.value != null;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
-
+    /**
+     * Value as a Raw (@code decimal) number or {@code SignedData}.
+     * Field Type is String to allow for digitally signed data readings.
+     * Decimal numeric values are also acceptable to allow fractional values for measurands such as Temperature and Current.
+     *
+     * @return String, the value.
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * Required. Value as a {@code Raw} (decimal) number or {@code SignedData}.
+     * Field Type is String to allow for digitally signed data readings.
+     * Decimal numeric values are also acceptable to allow fractional values for measurands such as Temperature and Current.
+     *
+     * @param value String, the value.
+     */
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    /**
+     * Type of detail value: start, end or sample.
+     *
+     * @return enum value for context.
+     */
+    public String getContext() {
+        return context;
+    }
+
+    /**
+     * Optional. Type of detail value: start, end or sample.
+     * Default = {@code Sample.Periodic}
+     * <p>
+     * Enum value with accepted values:
+     * {@code Interruption.Begin},
+     * {@code Interruption.End},
+     * {@code Other},
+     * {@code Sample.Clock},
+     * {@code Sample.Periodic},
+     * {@code Transaction.Begin},
+     * {@code Transaction.End},
+     * {@code Trigger}
+     *
+     * @param context String, see description for accepted values.
+     * @throws PropertyConstraintException Value wasn't accepted.
+     */
+    // TODO: Change to enum, solve format issue.
     public void setContext(String context) throws PropertyConstraintException {
         if (!isValidContext(context))
             throw new PropertyConstraintException("context", context);
@@ -74,22 +119,75 @@ public class SampledValue implements Validatable {
         return ModelUtil.isAmong(context, readingContext);
     }
 
-    public String getContext() {
-        return context;
-    }
-
-    public void setFormat(ValueFormat format) {
-        this.format = format;
-    }
-
+    /**
+     * Raw or signed data.
+     *
+     * @return the {@link ValueFormat}.
+     */
     public String getFormat() {
         return format.toString();
     }
 
+    /**
+     *Raw or signed data.
+     *
+     * @return the {@link ValueFormat}.
+     */
     public ValueFormat objFormat() {
         return format;
     }
 
+    /**
+     * Optional. Raw or signed data.
+     * Default = {@code Raw}.
+     *
+     * @param format the {@link ValueFormat}.
+     */
+    public void setFormat(ValueFormat format) {
+        this.format = format;
+    }
+
+    /**
+     * Type of measurement.
+     *
+     * @return enum value of measurand.
+     */
+    public String getMeasurand() {
+        return measurand;
+    }
+
+    /**
+     * Optional. Type of measurement.
+     * Default = {@code Energy.Active.Import.Register}.
+     * <p>
+     * Enum value with accepted values:
+     * {@code Current.Export},
+     * {@code Current.Import},
+     * {@code Current.Offered},
+     * {@code Energy.Active.Export.Register},
+     * {@code Energy.Active.Import.Register},
+     * {@code Energy.Reactive.Export.Register},
+     * {@code Energy.Reactive.Import.Register},
+     * {@code Energy.Active.Export.Interval},
+     * {@code Energy.Active.Import.Interval},
+     * {@code Energy.Reactive.Export.Interval},
+     * {@code Energy.Reactive.Import.Interval},
+     * {@code Frequency},
+     * {@code Power.Active.Export},
+     * {@code Power.Active.Import},
+     * {@code Power.Factor},
+     * {@code Power.Offered},
+     * {@code Power.Reactive.Export},
+     * {@code Power.Reactive.Import},
+     * {@code RPM},
+     * {@code SoC},
+     * {@code Temperature},
+     * {@code Voltage}
+     *
+     * @param measurand String, enum value of measurand.
+     * @throws PropertyConstraintException Value wasn't accepted.
+     */
+    // TODO: Change to enum, solve format issue.
     public void setMeasurand(String measurand) throws PropertyConstraintException {
         if (!isValidMeasurand(measurand))
             throw new PropertyConstraintException("measurand", measurand);
@@ -102,10 +200,38 @@ public class SampledValue implements Validatable {
         return ModelUtil.isAmong(measurand, measurandValues);
     }
 
-    public String getMeasurand() {
-        return measurand;
+    /**
+     * Indicates how the measured value is to be interpreted.
+     * For instance between L1 and neutral (L1-N).
+     *
+     * @return enum value of phase.
+     */
+    public String getPhase() {
+        return phase;
     }
 
+    /**
+     * Optional. Indicates how the measured value is to be interpreted.
+     * For instance between L1 and neutral (L1-N).
+     * Please note that not all values of phase are applicable to all Measurands.
+     * When phase is absent, the measured value is interpreted as an overall value.
+     * <p>
+     * Enum value with accepted values:
+     * {@code L1},
+     * {@code L2},
+     * {@code L3},
+     * {@code N},
+     * {@code L1-N},
+     * {@code L2-N},
+     * {@code L3-N},
+     * {@code L1-L2},
+     * {@code L2-L3},
+     * {@code L3-L1}
+     *
+     * @param phase                         String, enum value of phase.
+     * @throws PropertyConstraintException  Value wasn't accepted.
+     */
+    // TODO: Change to enum, solve format issue.
     public void setPhase(String phase) throws PropertyConstraintException {
         if (!isValidPhase(phase))
             throw new PropertyConstraintException("phase", phase);
@@ -117,22 +243,69 @@ public class SampledValue implements Validatable {
         return ModelUtil.isAmong(phase, "L1", "L2", "L3", "N", "L1-N", "L2-N", "L3-N", "L1-L2", "L2-L3", "L3-L1");
     }
 
-    public String getPhase() {
-        return phase;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
+    /**
+     * Location of measurement.
+     *
+     * @return String, the {@link Location}.
+     */
     public String getLocation() {
         return location.toString();
     }
 
+    /**
+     * Location of measurement.
+     *
+     * @return the {@link Location}.
+     */
     public Location objLocation() {
         return location;
     }
 
+    /**
+     * Optional. Location of measurement.
+     * Default={@code Outlet}
+     *
+     * @param location the {@link Location}.
+     */
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    /**
+     * Unit of the value.
+     *
+     * @return Unit of Measure.
+     */
+    public String getUnit() {
+        return unit;
+    }
+
+    /**
+     * Optional. Unit of the value.
+     * Default = {@code Wh} if the (default) measurand is an {@code Energy} type.
+     * <p>
+     * Enum value with accepted values:
+     * {@code Wh},
+     * {@code kWh},
+     * {@code varh},
+     * {@code kvarh},
+     * {@code W},
+     * {@code kW},
+     * {@code VA},
+     * {@code kVA},
+     * {@code var},
+     * {@code kvar},
+     * {@code A},
+     * {@code V},
+     * {@code Celsius},
+     * {@code Fahrenheit},
+     * {@code K},
+     * {@code Percent}
+     *
+     * @param unit String, enum value, Unit of Measure.
+     * @throws PropertyConstraintException Value wasn't accepted.
+     */
+    // TODO: Change to enum, solve format issue.
     public void setUnit(String unit) throws PropertyConstraintException {
         if (!isValidUnit(unit))
             throw new PropertyConstraintException("unit", unit);
@@ -142,9 +315,5 @@ public class SampledValue implements Validatable {
     private boolean isValidUnit(String unit) {
         String[] unitOfMeasure = {"Wh", "kWh", "varh", "kvarh", "W", "kW", "VA", "kVA", "var", "kvar", "A", "V", "Celsius", "Fahrenheit", "K", "Percent"};
         return ModelUtil.isAmong(unit, unitOfMeasure);
-    }
-
-    public String getUnit() {
-        return unit;
     }
 }

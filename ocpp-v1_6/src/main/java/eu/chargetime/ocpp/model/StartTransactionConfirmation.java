@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -25,6 +25,10 @@ package eu.chargetime.ocpp.model;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Sent by the Central System to the Charge Point in response to a {@link StartTransactionRequest}.
+ */
 public class StartTransactionConfirmation implements Confirmation {
     private IdTagInfo idTagInfo;
     private Integer transactionId;
@@ -37,19 +41,39 @@ public class StartTransactionConfirmation implements Confirmation {
         return valid;
     }
 
-    public void setIdTagInfo(IdTagInfo idTagInfo) {
-        this.idTagInfo = idTagInfo;
-    }
-
+    /**
+     * This contains information about authorization status, expiry and parent id.
+     *
+     * @return the {@link IdTagInfo}.
+     */
     public IdTagInfo getIdTagInfo() {
         return idTagInfo;
     }
 
-    public void setTransactionId(Integer transactionId) {
-        this.transactionId = transactionId;
+    /**
+     * Required. This contains information about authorization status, expiry and parent id.
+     *
+     * @param idTagInfo the {@link IdTagInfo}.
+     */
+    public void setIdTagInfo(IdTagInfo idTagInfo) {
+        this.idTagInfo = idTagInfo;
     }
 
+    /**
+     * This contains the transaction id supplied by the Central System.
+     *
+     * @return transaction id.
+     */
     public Integer getTransactionId() {
         return transactionId;
+    }
+
+    /**
+     * Required. This contains the transaction id supplied by the Central System.
+     *
+     * @param transactionId integer, transaction.
+     */
+    public void setTransactionId(Integer transactionId) {
+        this.transactionId = transactionId;
     }
 }

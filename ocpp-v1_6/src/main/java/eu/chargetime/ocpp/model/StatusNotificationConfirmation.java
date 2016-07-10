@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -25,6 +25,7 @@ package eu.chargetime.ocpp.model;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 public class StatusNotificationConfirmation implements Confirmation {
     @Override
     public boolean validate() {

@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -25,12 +25,21 @@ package eu.chargetime.ocpp.model;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Sent by the Charge Point to the Central System in response to a {@link ResetRequest}.
+ */
 public class ResetConfirmation implements Confirmation {
     private ResetStatus status;
 
     public ResetConfirmation() {
     }
 
+    /**
+     * Set required fields.
+     *
+     * @param status the {@link ResetStatus}, see {@link #setStatus(ResetStatus)}.
+     */
     public ResetConfirmation(ResetStatus status) {
         setStatus(status);
     }
@@ -40,14 +49,29 @@ public class ResetConfirmation implements Confirmation {
         return status != null;
     }
 
+    /**
+     * This indicates whether the Charge Point is able to perform the reset.
+     *
+     * @return the {@link ResetStatus}.
+     */
     public String getStatus() {
         return status.toString();
     }
 
+    /**
+     * This indicates whether the Charge Point is able to perform the reset.
+     *
+     * @return the {@link ResetStatus}.
+     */
     public ResetStatus objStatus() {
         return status;
     }
 
+    /**
+     * Required. This indicates whether the Charge Point is able to perform the reset.
+     *
+     * @param status the {@link ResetStatus}.
+     */
     public void setStatus(ResetStatus status) {
         this.status = status;
     }

@@ -1,8 +1,6 @@
 package eu.chargetime.ocpp.model;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -27,29 +25,57 @@ import eu.chargetime.ocpp.PropertyConstraintException;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Sent by the Charge Point to the Central System or vice versa in response to a {@link DataTransferRequest}.
+ */
 public class DataTransferConfirmation implements Confirmation{
 
     private DataTransferStatus status;
     private String data;
 
-    public void setStatus(DataTransferStatus status) throws PropertyConstraintException {
-        this.status = status;
-    }
-
+    /**
+     * This indicates the success or failure of the data transfer.
+     *
+     * @return String, the {@link DataTransferStatus}.
+     */
     public String getStatus() {
         return status.toString();
     }
 
+    /**
+     * This indicates the success or failure of the data transfer.
+     * @return the {@link DataTransferStatus}.
+     */
     public DataTransferStatus objStatus() {
         return status;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    /**
+     * Required. This indicates the success or failure of the data transfer.
+     *
+     * @param status                        the {@link DataTransferStatus}.
+     */
+    public void setStatus(DataTransferStatus status) {
+        this.status = status;
     }
 
+    /**
+     * Optional. Data in response to request.
+     *
+     * @return data.
+     */
     public String getData() {
         return data;
+    }
+
+    /**
+     * Optional. Data in response to request.
+     *
+     * @param data  String, data
+     */
+    public void setData(String data) {
+        this.data = data;
     }
 
     @Override

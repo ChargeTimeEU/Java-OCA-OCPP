@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -25,6 +25,10 @@ package eu.chargetime.ocpp.model;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Sent by the Central System to the Charge Point in response to a {@link StopTransactionRequest}.
+ */
 public class StopTransactionConfirmation implements Confirmation {
     private IdTagInfo idTagInfo;
 
@@ -36,11 +40,23 @@ public class StopTransactionConfirmation implements Confirmation {
         return valid;
     }
 
-    public void setIdTagInfo(IdTagInfo idTagInfo) {
-        this.idTagInfo = idTagInfo;
-    }
-
+    /**
+     * This contains information about authorization status, expiry and parent id.
+     * Null = transaction was stopped without an identifier.
+     *
+     * @return the {@link IdTagInfo}.
+     */
     public IdTagInfo getIdTagInfo() {
         return idTagInfo;
+    }
+
+    /**
+     * Optional. This contains information about authorization status, expiry and parent id.
+     * It is optional, because a transaction may have been stopped without an identifier.
+     *
+     * @param idTagInfo the {@link IdTagInfo}.
+     */
+    public void setIdTagInfo(IdTagInfo idTagInfo) {
+        this.idTagInfo = idTagInfo;
     }
 }

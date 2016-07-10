@@ -15,8 +15,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.TimeZone;
 
-
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 

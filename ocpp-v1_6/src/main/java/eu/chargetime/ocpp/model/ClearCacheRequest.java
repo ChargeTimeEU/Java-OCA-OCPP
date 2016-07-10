@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -25,6 +25,11 @@ package eu.chargetime.ocpp.model;
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
+ */
+
+/**
+ * Sent by the Central System to the Charge Point.
+ * Request holds no values and is always valid.
  */
 public class ClearCacheRequest implements Request {
     @Override

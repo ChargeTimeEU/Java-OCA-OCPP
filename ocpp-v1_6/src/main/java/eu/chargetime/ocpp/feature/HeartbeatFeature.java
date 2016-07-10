@@ -6,7 +6,7 @@ import eu.chargetime.ocpp.model.HeartbeatConfirmation;
 import eu.chargetime.ocpp.model.HeartbeatRequest;
 import eu.chargetime.ocpp.model.Request;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License

@@ -1,17 +1,14 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.AuthorizationStatus;
 import eu.chargetime.ocpp.model.IdTagInfo;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -43,21 +40,6 @@ public class IdTagInfoTest {
     @Before
     public void setUp() throws Exception {
         idTagInfo = new IdTagInfo();
-    }
-
-    @Test
-    public void setParentIdTag_stringLength21_throwsPropertyConstraintException() {
-        // Given
-        String illegalValue = "123456789012345678901";
-
-        // When
-        try {
-            idTagInfo.setParentIdTag(illegalValue);
-            Assert.fail("Excepted exception");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("parentIdTag"));
-            assertThat(ex.getFieldValue(), equalTo(illegalValue));
-        }
     }
 
     @Test

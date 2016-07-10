@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -25,12 +25,21 @@ package eu.chargetime.ocpp.model;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Sent by the Charge Point to the Central System in response to an {@link UnlockConnectorRequest}.
+ */
 public class UnlockConnectorConfirmation implements Confirmation {
     private UnlockStatus status;
 
     public UnlockConnectorConfirmation() {
     }
 
+    /**
+     * Set required values.
+     *
+     * @param status the {@link UnlockStatus}, see {@link #setStatus(UnlockStatus)}.
+     */
     public UnlockConnectorConfirmation(UnlockStatus status) {
         setStatus(status);
     }
@@ -40,15 +49,30 @@ public class UnlockConnectorConfirmation implements Confirmation {
         return status != null;
     }
 
-    public void setStatus(UnlockStatus status) {
-        this.status = status;
-    }
-
+    /**
+     * This indicates whether the Charge Point has unlocked the connector.
+     *
+     * @return String, the {@link UnlockStatus}
+     */
     public String getStatus() {
         return status.toString();
     }
 
+    /**
+     * This indicates whether the Charge Point has unlocked the connector.
+     *
+     * @return the {@link UnlockStatus}
+     */
     public UnlockStatus objStatus() {
         return status;
+    }
+
+    /**
+     * Required. This indicates whether the Charge Point has unlocked the connector.
+     *
+     * @param status the {@link UnlockStatus}.
+     */
+    public void setStatus(UnlockStatus status) {
+        this.status = status;
     }
 }

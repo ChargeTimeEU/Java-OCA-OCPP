@@ -2,7 +2,7 @@ package eu.chargetime.ocpp.model;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -27,6 +27,10 @@ import eu.chargetime.ocpp.PropertyConstraintException;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Sent by the Central System to the Charge Point.
+ */
 public class UnlockConnectorRequest implements Request {
     private Integer connectorId;
 
@@ -35,14 +39,25 @@ public class UnlockConnectorRequest implements Request {
         return connectorId != null;
     }
 
+    /**
+     * This contains the identifier of the connector to be unlocked.
+     *
+     * @return connector.
+     */
+    public Integer getConnectorId() {
+        return connectorId;
+    }
+
+    /**
+     * Required. This contains the identifier of the connector to be unlocked.
+     *
+     * @param connectorId integer, value &gt; 0.
+     * @throws PropertyConstraintException Value was zero or negative.
+     */
     public void setConnectorId(Integer connectorId) throws PropertyConstraintException {
         if (connectorId <= 0)
             throw new PropertyConstraintException("connectorId", connectorId);
 
         this.connectorId = connectorId;
-    }
-
-    public Integer getConnectorId() {
-        return connectorId;
     }
 }

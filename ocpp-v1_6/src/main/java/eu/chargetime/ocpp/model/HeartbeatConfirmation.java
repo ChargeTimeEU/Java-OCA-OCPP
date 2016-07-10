@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -29,19 +29,38 @@ import java.util.TimeZone;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Sent by the Central System to the Charge Point in response to a {@link HeartbeatRequest}.
+ */
 public class HeartbeatConfirmation implements Confirmation {
     private Calendar currentTime;
 
+    /**
+     * This contains the current time of the Central System.
+     *
+     * @return The current time.
+     */
     public Calendar objCurrentTime() {
         return currentTime;
     }
 
+    /**
+     * This contains the current time of the Central System.
+     *
+     * @return String, current time.
+     */
     public String getCurrentTime() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
         return formatter.format(currentTime.getTime());
     }
 
+    /**
+     * Required. This contains the current time of the Central System.
+     *
+     * @param currentTime Calendar, current time.
+     */
     public void setCurrentTime(Calendar currentTime) {
         this.currentTime = currentTime;
     }

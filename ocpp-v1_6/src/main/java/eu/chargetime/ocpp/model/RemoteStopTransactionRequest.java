@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -25,6 +25,10 @@ package eu.chargetime.ocpp.model;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * sent to Charge Point by Central System.
+ */
 public class RemoteStopTransactionRequest implements Request {
     private Integer transactionId;
 
@@ -33,11 +37,21 @@ public class RemoteStopTransactionRequest implements Request {
         return transactionId != null;
     }
 
-    public void setTransactionId(Integer transactionId) {
-        this.transactionId = transactionId;
-    }
-
+    /**
+     * The identifier of the transaction which Charge Point is requested to stop.
+     *
+     * @return transaction id.
+     */
     public Integer getTransactionId() {
         return transactionId;
+    }
+
+    /**
+     * Required. The identifier of the transaction which Charge Point is requested to stop.
+     *
+     * @param transactionId integer, transaction id.
+     */
+    public void setTransactionId(Integer transactionId) {
+        this.transactionId = transactionId;
     }
 }

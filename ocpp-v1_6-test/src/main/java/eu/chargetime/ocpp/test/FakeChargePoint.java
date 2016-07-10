@@ -10,7 +10,7 @@ import eu.chargetime.ocpp.model.*;
 
 import java.util.Calendar;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 

@@ -3,7 +3,7 @@ package eu.chargetime.ocpp.model;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
 
  MIT License
@@ -29,14 +29,31 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  SOFTWARE.
  */
 
+/**
+ * Sent by Central System to Charge Point.
+ * <p>
+ * It is RECOMMENDED that the content and meaning of the 'key' and 'value'
+ * fields is agreed upon between Charge Point and Central System.
+ */
 public class ChangeConfigurationRequest implements Request {
     private String key;
     private String value;
 
+    /**
+     * The name of the configuration setting to change.
+     *
+     * @return Name of the configuration setting.
+     */
     public String getKey() {
         return key;
     }
 
+    /**
+     * Required. The name of the configuration setting to change.
+     *
+     * @param key                           String, max 50 characters, case insensitive.
+     * @throws PropertyConstraintException  Value exceeds 50 characters.
+     */
     public void setKey(String key) throws PropertyConstraintException {
         if (!isValidKey(key))
             throw new PropertyConstraintException("key", key);
@@ -48,10 +65,21 @@ public class ChangeConfigurationRequest implements Request {
         return ModelUtil.validate(key, 50);
     }
 
+    /**
+     * The new value as string for the setting.
+     *
+     * @return Value of the configuration setting.
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * Required. The new value as string for the setting.
+     *
+     * @param value                         String, max 500 characters, case insensitive.
+     * @throws PropertyConstraintException  Value exceeds 500 characters.
+     */
     public void setValue(String value) throws PropertyConstraintException {
         if (!isValidValue(value))
             throw new PropertyConstraintException("value", value);

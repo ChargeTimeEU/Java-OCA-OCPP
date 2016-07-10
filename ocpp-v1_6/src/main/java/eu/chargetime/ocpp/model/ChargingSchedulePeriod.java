@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -25,10 +25,14 @@ package eu.chargetime.ocpp.model;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Class Type used with {@link ChargingSchedule}.
+ */
 public class ChargingSchedulePeriod implements Validatable {
     private Integer startPeriod;
     private Double limit;
-    private Integer numberPhases;
+    private Integer numberPhases = 3;
 
     @Override
     public boolean validate() {
@@ -38,26 +42,62 @@ public class ChargingSchedulePeriod implements Validatable {
         return valid;
     }
 
+    /**
+     * Required. Start of the period, in seconds from the start of schedule.
+     * The value of StartPeriod also defines the stop time of the previous period.
+     *
+     * @param startPeriod integer, seconds from start of schedule.
+     */
     public void setStartPeriod(Integer startPeriod) {
         this.startPeriod = startPeriod;
     }
 
+    /**
+     * Start of the period, in seconds from the start of schedule.
+     * The value of StartPeriod also defines the stop time of the previous period.
+     *
+     * @return Seconds from start of schedule.
+     */
     public Integer getStartPeriod() {
         return startPeriod;
     }
 
+    /**
+     * Required. Power limit during the schedule period, expressed in Amperes.
+     * Accepts at most one digit fraction (e.g. 8.1).
+     *
+     * @param limit decimal, power limit.
+     */
     public void setLimit(Double limit) {
         this.limit = limit;
     }
 
+    /**
+     * Power limit during the schedule period, expressed in Amperes.
+     * Accepts at most one digit fraction (e.g. 8.1).
+     *
+     * @return Power limit.
+     */
     public Double getLimit() {
         return limit;
     }
 
+    /**
+     * Optional. The number of phases that can be used for charging.
+     * Value is set to 3 by default.
+     *
+     * @param numberPhases integer, default is 3.
+     */
     public void setNumberPhases(Integer numberPhases) {
         this.numberPhases = numberPhases;
     }
 
+    /**
+     * The number of phases that can be used for charging.
+     * Value is set to 3 by default.
+     *
+     * @return Number of phases.
+     */
     public Integer getNumberPhases() {
         return numberPhases;
     }

@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.utilities;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -25,8 +25,18 @@ package eu.chargetime.ocpp.utilities;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Utilities for tests. Used to quickly create usefull objects.
+ */
 public class TestUtilities {
 
+    /**
+     * Create a string of a given length.
+     *
+     * @param length the desired length.
+     * @return A string of the desired length.
+     */
     protected String aString(int length) {
         String lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus bibendum eros vitae sapien metusa.";
 
@@ -41,10 +51,24 @@ public class TestUtilities {
         return lorem.substring(0, length);
     }
 
+    /**
+     * Create an array of elements.
+     *
+     * @param objects   Params of elements to add to the list.
+     * @param <T>       The type of the elements.
+     * @return An array of the given elements.
+     */
     protected <T> T[] aList(T... objects) {
         return objects;
     }
 
+    /**
+     * Create a String from an Array.
+     *
+     * @param delimiter Used to split the values.
+     * @param array     The array to print.
+     * @return Formatted string, with array values.
+     */
     protected String join(String delimiter, Object[] array) {
         StringBuilder output = new StringBuilder();
 

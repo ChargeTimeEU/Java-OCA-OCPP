@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -25,17 +25,36 @@ package eu.chargetime.ocpp.model;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Sent by the Central System to the Charge Point.
+ */
 public class ResetRequest implements Request {
     private ResetType type;
 
+    /**
+     * This contains the type of reset that the Charge Point should perform.
+     *
+     * @return String, the {@link ResetType}.
+     */
     public String getType() {
         return type.toString();
     }
 
+    /**
+     * This contains the type of reset that the Charge Point should perform.
+     *
+     * @return the {@link ResetType}.
+     */
     public ResetType objType() {
         return type;
     }
 
+    /**
+     * Required. This contains the type of reset that the Charge Point should perform.
+     *
+     * @param type the {@link ResetType}.
+     */
     public void setType(ResetType type) {
         this.type = type;
     }

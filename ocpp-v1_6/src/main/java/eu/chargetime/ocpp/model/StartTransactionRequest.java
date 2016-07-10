@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -31,6 +31,10 @@ import java.util.TimeZone;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Sent by the Charge Point to the Central System.
+ */
 public class StartTransactionRequest implements Request {
     private Integer connectorId;
     private IdToken idTag;
@@ -49,6 +53,21 @@ public class StartTransactionRequest implements Request {
         return valid;
     }
 
+    /**
+     * This identifies which connector of the Charge Point is used.
+     *
+     * @return connector.
+     */
+    public Integer getConnectorId() {
+        return connectorId;
+    }
+
+    /**
+     * Required. This identifies which connector of the Charge Point is used.
+     *
+     * @param connectorId integer. value &gt; 0
+     * @throws PropertyConstraintException Value was 0 or negative.
+     */
     public void setConnectorId(Integer connectorId) throws PropertyConstraintException {
         if (connectorId <= 0)
             throw new PropertyConstraintException("connectorId", connectorId);
@@ -56,45 +75,86 @@ public class StartTransactionRequest implements Request {
         this.connectorId = connectorId;
     }
 
-    public Integer getConnectorId() {
-        return connectorId;
-    }
-
-    public void setIdTag(IdToken idTag) {
-        this.idTag = idTag;
-    }
-
+    /**
+     * This contains the identifier for which a transaction has to be started.
+     *
+     * @return the {@link IdToken}.
+     */
     public IdToken getIdTag() {
         return idTag;
     }
 
-    public void setMeterStart(Integer meterStart) {
-        this.meterStart = meterStart;
+    /**
+     * Required. This contains the identifier for which a transaction has to be started.
+     *
+     * @param idTag the {@link IdToken}.
+     */
+    public void setIdTag(IdToken idTag) {
+        this.idTag = idTag;
     }
 
+    /**
+     * This contains the meter value in Wh for the connector at start of the transaction.
+     *
+     * @return Wh at start.
+     */
     public Integer getMeterStart() {
         return meterStart;
     }
 
-    public void setReservationId(Integer reservationId) {
-        this.reservationId = reservationId;
+    /**
+     * Required. This contains the meter value in Wh for the connector at start of the transaction.
+     *
+     * @param meterStart    integer, Wh at start.
+     */
+    public void setMeterStart(Integer meterStart) {
+        this.meterStart = meterStart;
     }
 
+    /**
+     * This contains the id of the reservation that terminates as a result of this transaction.
+     *
+     * @return reservation.
+     */
     public Integer getReservationId() {
         return reservationId;
     }
 
-    public void setTimestamp(Calendar timestamp) {
-        this.timestamp = timestamp;
+    /**
+     * Optional. This contains the id of the reservation that terminates as a result of this transaction.
+     *
+     * @param reservationId integer, reservation.
+     */
+    public void setReservationId(Integer reservationId) {
+        this.reservationId = reservationId;
     }
 
+    /**
+     * This contains the date and time on which the transaction is started.
+     *
+     * @return String, start time formattet.
+     */
     public String getTimestamp() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
         return formatter.format(timestamp.getTime());
     }
 
+    /**
+     * This contains the date and time on which the transaction is started.
+     *
+     * @return start time.
+     */
     public Calendar objTimestamp() {
         return timestamp;
+    }
+
+    /**
+     * Required. This contains the date and time on which the transaction is started.
+     *
+     * @param timestamp Calendar, start time.
+     */
+    public void setTimestamp(Calendar timestamp) {
+        this.timestamp = timestamp;
     }
 }

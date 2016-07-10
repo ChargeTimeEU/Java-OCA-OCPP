@@ -3,7 +3,7 @@ package eu.chargetime.ocpp.model;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -28,6 +28,13 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Contains the identifier to use for authorization.
+ * It is a case insensitive string.
+ * <p>
+ * In future releases this may become a complex type to support multiple forms of identifiers.
+ */
 public class IdToken implements Validatable {
     private String idToken;
 
@@ -36,6 +43,21 @@ public class IdToken implements Validatable {
         return isValidIdToken(idToken);
     }
 
+    /**
+     * IdToken is case insensitive.
+     *
+     * @return Identification of the token.
+     */
+    public String getIdToken() {
+        return idToken;
+    }
+
+    /**
+     * Required. IdToken is case insensitive.
+     *
+     * @param idToken                       String, max 20 characters.
+     * @throws PropertyConstraintException  Value exceeds 20 characters.
+     */
     public void setIdToken(String idToken) throws PropertyConstraintException {
         if (!isValidIdToken(idToken))
             throw new PropertyConstraintException("idToken", idToken);
@@ -45,9 +67,5 @@ public class IdToken implements Validatable {
 
     private boolean isValidIdToken(String idToken) {
         return ModelUtil.validate(idToken, 20);
-    }
-
-    public String getIdToken() {
-        return idToken;
     }
 }

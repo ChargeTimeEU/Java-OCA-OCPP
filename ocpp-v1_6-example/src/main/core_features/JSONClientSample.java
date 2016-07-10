@@ -6,7 +6,7 @@ import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.CoreProfile;
 import eu.chargetime.ocpp.model.*;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  * Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
  *

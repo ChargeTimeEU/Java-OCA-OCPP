@@ -1,12 +1,10 @@
 package eu.chargetime.ocpp.model;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -31,6 +29,11 @@ import java.util.TimeZone;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Collection of one or more sampled values in {@link MeterValuesRequest}.
+ * All {@link SampledValue} in a {@link MeterValue} are sampled at the same point in time.
+ */
 public class MeterValue implements Validatable {
 
     private Calendar timestamp;
@@ -39,6 +42,7 @@ public class MeterValue implements Validatable {
     @Override
     public boolean validate() {
         boolean valid = true;
+        valid &= timestamp != null;
         if (valid &= sampledValue != null) {
             for (SampledValue value : sampledValue)
                 valid &= value.validate();
@@ -46,31 +50,50 @@ public class MeterValue implements Validatable {
         return valid;
     }
 
-    public void setTimestamp(Calendar timestamp) throws PropertyConstraintException {
-        if (timestamp == null)
-            throw new PropertyConstraintException("timestamp", timestamp);
-
-        this.timestamp = timestamp;
-    }
-
+    /**
+     * Timestamp for measured value(s).
+     *
+     * @return String, formatted timestamp.
+     */
     public String getTimestamp() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
         return formatter.format(timestamp.getTime());
     }
 
+    /**
+     * Timestamp for measured value(s).
+     *
+     * @return original timestamp.
+     */
     public Calendar objTimestamp() {
         return timestamp;
     }
 
-    public void setSampledValue(SampledValue[] sampledValue) throws PropertyConstraintException {
-        if (sampledValue == null)
-            throw new PropertyConstraintException("sampledValue", sampledValue);
-
-        this.sampledValue = sampledValue;
+    /**
+     * Required. Timestamp for measured value(s).
+     *
+     * @param timestamp {@link Calendar} timestamp
+     */
+    public void setTimestamp(Calendar timestamp) {
+        this.timestamp = timestamp;
     }
 
+    /**
+     * One or more measured values.
+     *
+     * @return Array of {@link SampledValue}.
+     */
     public SampledValue[] getSampledValue() {
         return sampledValue;
+    }
+
+    /**
+     * Required. One or more measured values.
+     *
+     * @param sampledValue Array of {@link SampledValue}.
+     */
+    public void setSampledValue(SampledValue[] sampledValue) {
+        this.sampledValue = sampledValue;
     }
 }

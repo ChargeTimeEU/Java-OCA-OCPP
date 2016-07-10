@@ -2,7 +2,7 @@ package eu.chargetime.ocpp.model;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -27,6 +27,10 @@ import eu.chargetime.ocpp.PropertyConstraintException;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Sent to Charge Point by Central System.
+ */
 public class RemoteStartTransactionRequest implements Request {
 
     private Integer connectorId;
@@ -38,11 +42,31 @@ public class RemoteStartTransactionRequest implements Request {
         boolean valid = true;
         if (valid &= idTag != null)
             valid &= idTag.validate();
-        if (chargingProfile != null)
+
+        if (chargingProfile != null) {
             valid &= chargingProfile.validate();
+            valid &= "TxProfile".equals(chargingProfile.getChargingProfilePurpose());
+        }
         return valid;
     }
 
+    /**
+     * Number of the connector on which to start the transaction.
+     * connectorId SHALL be &gt; 0.
+     *
+     * @return Connector.
+     */
+    public Integer getConnectorId() {
+        return connectorId;
+    }
+
+    /**
+     * Optional. Number of the connector on which to start the transaction.
+     * connectorId SHALL be &gt; 0.
+     *
+     * @param connectorId integer, connector
+     * @throws PropertyConstraintException Value is 0 or negative.
+     */
     public void setConnectorId(Integer connectorId) throws PropertyConstraintException {
         if (connectorId <= 0)
             throw new PropertyConstraintException("connectorId", connectorId);
@@ -50,26 +74,40 @@ public class RemoteStartTransactionRequest implements Request {
         this.connectorId = connectorId;
     }
 
-    public Integer getConnectorId() {
-        return connectorId;
-    }
-
-    public void setIdTag(IdToken idTag) throws PropertyConstraintException {
-        if (idTag == null)
-            throw new PropertyConstraintException("idTag", idTag);
-
-        this.idTag = idTag;
-    }
-
+    /**
+     * The identifier that Charge Point must use to start a transaction.
+     *
+     * @return an {@link IdToken}.
+     */
     public IdToken getIdTag() {
         return idTag;
     }
 
-    public void setChargingProfile(ChargingProfile chargingProfile) {
-        this.chargingProfile = chargingProfile;
+    /**
+     * Required. The identifier that Charge Point must use to start a transaction.
+     *
+     * @param idTag    an {@link IdToken}.
+     */
+    public void setIdTag(IdToken idTag) {
+        this.idTag = idTag;
     }
 
+    /**
+     * Charging Profile to be used by the Charge Point for the requested transaction.
+     *
+     * @return the {@link ChargingProfile}.
+     */
     public ChargingProfile getChargingProfile() {
         return chargingProfile;
+    }
+
+    /**
+     * Optional. Charging Profile to be used by the Charge Point for the requested transaction.
+     * {@link ChargingProfile#setChargingProfilePurpose(ChargingProfilePurposeType)} MUST be set to TxProfile.
+     *
+     * @param chargingProfile   the {@link ChargingProfile}.
+     */
+    public void setChargingProfile(ChargingProfile chargingProfile) {
+        this.chargingProfile = chargingProfile;
     }
 }

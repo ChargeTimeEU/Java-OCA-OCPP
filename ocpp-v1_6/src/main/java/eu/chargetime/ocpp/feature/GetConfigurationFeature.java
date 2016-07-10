@@ -6,7 +6,7 @@ import eu.chargetime.ocpp.model.GetConfigurationConfirmation;
 import eu.chargetime.ocpp.model.GetConfigurationRequest;
 import eu.chargetime.ocpp.model.Request;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 

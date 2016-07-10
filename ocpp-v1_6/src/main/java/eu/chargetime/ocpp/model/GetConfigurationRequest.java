@@ -3,7 +3,7 @@ package eu.chargetime.ocpp.model;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -29,13 +29,28 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Sent by the the Central System to the Charge Point.
+ */
 public class GetConfigurationRequest implements Request {
     private String[] key;
 
+    /**
+     * List of keys for which the configuration value is requested.
+     *
+     * @return Array of key names.
+     */
     public String[] getKey() {
         return key;
     }
 
+    /**
+     * Optional. List of keys for which the configuration value is requested.
+     *
+     * @param key Array of Strings, max 50 characters each, case insensitive.
+     * @throws PropertyConstraintException At least one of the Strings exceeds 50 characters.
+     */
     public void setKey(String[] key) throws PropertyConstraintException {
         if (!isValidKey(key))
             throw new PropertyConstraintException("key", key);

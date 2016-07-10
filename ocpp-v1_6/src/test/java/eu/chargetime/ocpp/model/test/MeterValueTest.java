@@ -1,10 +1,8 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.MeterValue;
 import eu.chargetime.ocpp.model.SampledValue;
 import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +13,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -50,22 +48,6 @@ public class MeterValueTest extends TestUtilities{
     }
 
     @Test
-    public void setTimestamp_nullValue_throwsPropertyConstraintException() {
-        // Given
-        Calendar nullValue = null;
-
-        try {
-            // When
-            meterValue.setTimestamp(nullValue);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("timestamp"));
-            assertThat(ex.getFieldValue(), equalTo(nullValue));
-        }
-    }
-
-    @Test
     public void setTimestamp_now_timestampIsSet() throws Exception {
         // Given
         Calendar now = Calendar.getInstance();
@@ -75,22 +57,6 @@ public class MeterValueTest extends TestUtilities{
 
         // Then
         assertThat(meterValue.objTimestamp(), equalTo(now));
-    }
-
-    @Test
-    public void setSampledValue_nullValue_throwsPropertyConstraintException() {
-        // Given
-        SampledValue[] nullValue = null;
-
-        try {
-            // When
-            meterValue.setSampledValue(nullValue);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("sampledValue"));
-            assertThat(ex.getFieldValue(), equalTo(nullValue));
-        }
     }
 
     @Test
@@ -105,6 +71,7 @@ public class MeterValueTest extends TestUtilities{
     @Test
     public void validate_sampledValueIsSet_validatesSampledValue() throws Exception {
         // Given
+        meterValue.setTimestamp(Calendar.getInstance());
         meterValue.setSampledValue(aList(sampledValueMock));
 
         // When

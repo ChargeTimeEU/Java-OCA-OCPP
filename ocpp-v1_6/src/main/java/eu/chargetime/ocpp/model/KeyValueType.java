@@ -3,7 +3,7 @@ package eu.chargetime.ocpp.model;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -29,15 +29,31 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Contains information about a specific configuration key.
+ * It is returned in {@link GetConfigurationConfirmation}.
+ */
 public class KeyValueType implements Validatable {
     private String key;
     private Boolean readonly;
     private String value;
 
+    /**
+     * Name of the key.
+     *
+     * @return key.
+     */
     public String getKey() {
         return key;
     }
 
+    /**
+     * Required. Name of the key.
+     *
+     * @param key String, max 50 characters, case insensitive.
+     * @throws PropertyConstraintException Value exceeds 50 charactesr.
+     */
     public void setKey(String key) throws PropertyConstraintException{
         if (!isValidKey(key))
             throw new PropertyConstraintException("key", key);
@@ -49,6 +65,21 @@ public class KeyValueType implements Validatable {
         return ModelUtil.validate(key, 50);
     }
 
+    /**
+     * False if the value can be set with a {@link ChangeConfigurationRequest}.
+     *
+     * @return Is configuration read only.
+     */
+    public Boolean getReadonly() {
+        return readonly;
+    }
+
+    /**
+     * Required. False if the value can be set with a {@link ChangeConfigurationRequest}.
+     *
+     * @param readonly Boolean, configuration is read only.
+     * @throws PropertyConstraintException Value was null.
+     */
     public void setReadonly(Boolean readonly) throws PropertyConstraintException {
         if (!isValidReadonly(readonly))
             throw new PropertyConstraintException("readonly", readonly);
@@ -60,14 +91,21 @@ public class KeyValueType implements Validatable {
         return readonly != null;
     }
 
-    public Boolean getReadonly() {
-        return readonly;
-    }
-
+    /**
+     * If key is known but not set, this field may be absent.
+     *
+     * @return Value associated to the key.
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * Optional. If key is known but not set, this field may be absent.
+     *
+     * @param value                         String, max 500 characters, case insensitive.
+     * @throws PropertyConstraintException  Value exceeds 500 characters.
+     */
     public void setValue(String value) throws PropertyConstraintException {
         if (!isValidValue(value))
             throw new PropertyConstraintException("value", value);

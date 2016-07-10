@@ -6,7 +6,7 @@ import eu.chargetime.ocpp.model.DataTransferConfirmation;
 import eu.chargetime.ocpp.model.DataTransferRequest;
 import eu.chargetime.ocpp.model.Request;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License

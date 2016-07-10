@@ -2,7 +2,7 @@ package eu.chargetime.ocpp.model;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -27,6 +27,12 @@ import eu.chargetime.ocpp.PropertyConstraintException;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Sent by the Charge Point to the Central System.
+ *
+ * @see MeterValue
+ */
 public class MeterValuesRequest implements Request {
 
     private int connectorId;
@@ -44,6 +50,23 @@ public class MeterValuesRequest implements Request {
         return valid;
     }
 
+    /**
+     * This contains a number (&gt;0) designating a connector of the Charge Point.
+     * ‘0’ (zero) is used to designate the main power meter.
+     *
+     * @return Connector
+     */
+    public int getConnectorId() {
+        return connectorId;
+    }
+
+    /**
+     * Required. This contains a number (&gt;0) designating a connector of the Charge Point.
+     * ‘0’ (zero) is used to designate the main power meter.
+     *
+     * @param connectorId                   integer, connector
+     * @throws PropertyConstraintException  Value is 0 or negative.
+     */
     public void setConnectorId(int connectorId) throws PropertyConstraintException {
         if (connectorId < 0)
             throw new PropertyConstraintException("connectorId", connectorId);
@@ -51,25 +74,38 @@ public class MeterValuesRequest implements Request {
         this.connectorId = connectorId;
     }
 
-    public int getConnectorId() {
-        return connectorId;
-    }
-
-    public void setTransactionId(int transactionId) {
-        this.transactionId = transactionId;
-    }
-
+    /**
+     * The transaction to which these meter samples are related.
+     *
+     * @return transaction id.
+     */
     public int getTransactionId() {
         return transactionId;
     }
 
-    public void setMeterValue(MeterValue[] meterValue) throws PropertyConstraintException {
-        if (meterValue == null)
-            throw new PropertyConstraintException("meterValue", meterValue);
+    /**
+     * Optional. The transaction to which these meter samples are related.
+     *
+     * @param transactionId integer, transaction id.
+     */
+    public void setTransactionId(int transactionId) {
+        this.transactionId = transactionId;
+    }
 
+    /**
+     * Required. The sampled meter values with timestamps.
+     *
+     * @param meterValue Array of {@link MeterValue}.
+     */
+    public void setMeterValue(MeterValue[] meterValue) {
         this.meterValue = meterValue;
     }
 
+    /**
+     * The sampled meter values with timestamps.
+     *
+     * @return Array of {@link MeterValue}.
+     */
     public MeterValue[] getMeterValue() {
         return meterValue;
     }

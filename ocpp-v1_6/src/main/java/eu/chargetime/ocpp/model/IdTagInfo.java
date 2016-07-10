@@ -1,10 +1,8 @@
 package eu.chargetime.ocpp.model;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-
 import java.util.Calendar;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -30,40 +28,80 @@ import java.util.Calendar;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Contains status information about an identifier.
+ * It is returned in {@link AuthorizeConfirmation}, {@link StartTransactionConfirmation}
+ * and {@link StopTransactionConfirmation} responses.
+ * <p>
+ * If expiryDate is not given, the status has no end date.
+ */
 public class IdTagInfo implements Validatable
 {
     private Calendar expiryDate;
-    private String parentIdTag;
+    private IdToken parentIdTag;
     private AuthorizationStatus status;
 
+    /**
+     * This contains the date at which idTag should be removed from the Authorization Cache.
+     *
+     * @return Expiry date.
+     */
     public Calendar getExpiryDate() {
         return expiryDate;
     }
 
+    /**
+     * Optional. This contains the date at which idTag should be removed from the Authorization Cache.
+     *
+     * @param expiryDate    Calendar, expire date.
+     */
     public void setExpiryDate(Calendar expiryDate) {
         this.expiryDate = expiryDate;
     }
 
-    public String getParentIdTag() {
+    /**
+     * This contains the parent-identifier.
+     *
+     * @return  the {@link IdToken} of the parent.
+     */
+    public IdToken getParentIdTag() {
         return parentIdTag;
     }
 
-    public void setParentIdTag(String parentIdTag) throws PropertyConstraintException {
-        if (!"".equals(parentIdTag) && parentIdTag.length() > 20)
-            throw new PropertyConstraintException("parentIdTag", parentIdTag, "Exceeded limit");
-
+    /**
+     * Optional. This contains the parent-identifier.
+     *
+     * @param parentIdTag   an {@link IdToken}.
+     */
+    public void setParentIdTag(IdToken parentIdTag) {
         this.parentIdTag = parentIdTag;
     }
 
+    /**
+     * This contains whether the idTag has been accepted or not by the Central System.
+     *
+     * @return String, the {@link AuthorizationStatus} for IdTag.
+     */
     public String getStatus() {
         return status.toString();
     }
 
+    /**
+     * This contains whether the idTag has been accepted or not by the Central System.
+     *
+     * @return the {@link AuthorizationStatus} for IdTag.
+     */
     public AuthorizationStatus objStatus() {
         return status;
     }
 
-    public void setStatus(AuthorizationStatus status) throws PropertyConstraintException {
+    /**
+     * Required. This contains whether the idTag has been accepted or not by the Central System.
+     *
+     * @param status    the {@link AuthorizationStatus} for IdTag.
+     */
+    public void setStatus(AuthorizationStatus status) {
         this.status = status;
     }
 

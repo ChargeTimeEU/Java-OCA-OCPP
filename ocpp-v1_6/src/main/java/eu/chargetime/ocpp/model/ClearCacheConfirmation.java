@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -26,18 +26,37 @@ package eu.chargetime.ocpp.model;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Sent by the Charge Point to the Central System in response to a {@link ClearCacheRequest}.
+ */
 public class ClearCacheConfirmation implements Confirmation{
 
     private ClearCacheStatus status;
 
+    /**
+     * Accepted if the Charge Point has executed the request, otherwise rejected.
+     *
+     * @return String, the {@link ClearCacheStatus}.
+     */
     public String getStatus() {
         return status.toString();
     }
 
+    /**
+     * Accepted if the Charge Point has executed the request, otherwise rejected.
+     *
+     * @return the {@link ClearCacheStatus}.
+     */
     public ClearCacheStatus objStatus() {
         return status;
     }
 
+    /**
+     * Required. Accepted if the Charge Point has executed the request, otherwise rejected.
+     *
+     * @param status the {@link ClearCacheStatus}.
+     */
     public void setStatus(ClearCacheStatus status) {
         this.status = status;
     }

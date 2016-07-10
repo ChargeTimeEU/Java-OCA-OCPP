@@ -3,7 +3,7 @@ package eu.chargetime.ocpp.model;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -29,22 +29,47 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Sent by Charge Point the to the Central System in response to a {@link GetConfigurationRequest}.
+ */
 public class GetConfigurationConfirmation implements Confirmation {
     private KeyValueType[] configurationKey;
     private String[] unknownKey;
 
+    /**
+     * List of requested or known keys.
+     *
+     * @return Array of {@link KeyValueType}.
+     */
     public KeyValueType[] getConfigurationKey() {
         return configurationKey;
     }
 
+    /**
+     * Optional. List of requested or known keys.
+     *
+     * @param configurationKey Array of {@link KeyValueType}.
+     */
     public void setConfigurationKey(KeyValueType[] configurationKey) {
         this.configurationKey = configurationKey;
     }
 
+    /**
+     * Requested keys that are unknown.
+     *
+     * @return Array of key names.
+     */
     public String[] getUnknownKey() {
         return unknownKey;
     }
 
+    /**
+     * Optional. Requested keys that are unknown.
+     *
+     * @param unknownKey Array of String, max 50 characters, case insensitive.
+     * @throws PropertyConstraintException At least one of the Strings exceeds 50 characters.
+     */
     public void setUnknownKey(String[] unknownKey) throws PropertyConstraintException {
         if (!isValidUnknownKey(unknownKey))
             throw new PropertyConstraintException("unknownKey", unknownKey);

@@ -102,6 +102,21 @@ public abstract class Client
                 Feature feature = findFeatureByRequest(request);
                 return feature.handleRequest(request);
             }
+
+            @Override
+            public void handleError(String uniqueId) {
+
+            }
+
+            @Override
+            public void handleConnectionClosed() {
+
+            }
+
+            @Override
+            public void handleConnectionOpened() {
+
+            }
         });
     }
 

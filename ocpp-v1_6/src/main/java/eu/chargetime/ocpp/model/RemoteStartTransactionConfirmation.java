@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -25,24 +25,48 @@ package eu.chargetime.ocpp.model;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Sent from Charge Point to Central System.
+ */
 public class RemoteStartTransactionConfirmation implements Confirmation {
     private RemoteStartStopStatus status;
 
     public RemoteStartTransactionConfirmation() {
     }
 
+    /**
+     * Set required fields.
+     *
+     * @param status status for request, see {@link #setStatus(RemoteStartStopStatus)}.
+     */
     public RemoteStartTransactionConfirmation(RemoteStartStopStatus status) {
             setStatus(status);
     }
 
+    /**
+     * Status indicating whether Charge Point accepts the request to start a transaction.
+     *
+     * @return String, the {@link RemoteStartStopStatus}.
+     */
     public String getStatus() {
         return status.toString();
     }
 
+    /**
+     * Status indicating whether Charge Point accepts the request to start a transaction.
+     *
+     * @return the {@link RemoteStartStopStatus}.
+     */
     public RemoteStartStopStatus objStatus() {
         return status;
     }
 
+    /**
+     * Required. Status indicating whether Charge Point accepts the request to start a transaction.
+     *
+     * @param status the {@link RemoteStartStopStatus}.
+     */
     public void setStatus(RemoteStartStopStatus status) {
         this.status = status;
     }

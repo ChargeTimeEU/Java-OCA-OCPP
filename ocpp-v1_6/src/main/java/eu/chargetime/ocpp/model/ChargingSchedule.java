@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -29,6 +29,10 @@ import java.util.TimeZone;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Class type used with {@link ChargingProfile}
+ */
 public class ChargingSchedule implements Validatable {
     private Integer duration;
     private Calendar startSchedule;
@@ -47,53 +51,121 @@ public class ChargingSchedule implements Validatable {
         return valid;
     }
 
-    public void setDuration(Integer duration) {
-        this.duration = duration;
-    }
-
+    /**
+     * Duration of the charging schedule in seconds.
+     *
+     * @return duration in seconds.
+     */
     public Integer getDuration() {
         return duration;
     }
 
-    public void setStartSchedule(Calendar startSchedule) {
-        this.startSchedule = startSchedule;
+    /**
+     * Optional. Duration of the charging schedule in seconds.
+     * If the duration is left empty, the last period will continue indefinitely or
+     * until end of the transaction in case startSchedule is absent.
+     *
+     * @param duration integer, duration in seconds.
+     */
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
+    /**
+     * Starting point of an absolute schedule.
+     *
+     * @return String, formatted start time.
+     */
     public String getStartSchedule() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
         return formatter.format(startSchedule.getTime());
     }
 
+    /**
+     * Starting point of an absolute schedule.
+     *
+     * @return start time.
+     */
     public Calendar objStartSchedule() {
         return startSchedule;
     }
 
-    public void setChargingRateUnit(ChargingRateUnitType chargingRateUnit) {
-        this.chargingRateUnit = chargingRateUnit;
+    /**
+     * Optional. Starting point of an absolute schedule.
+     * If absent the schedule will be relative to start of charging.
+     *
+     * @param startSchedule Calendar, start time.
+     */
+    public void setStartSchedule(Calendar startSchedule) {
+        this.startSchedule = startSchedule;
     }
 
+    /**
+     * The unit of measure Limit is expressed in.
+     *
+     * @return the {@link ChargingRateUnitType}.
+     */
     public String getChargingRateUnit() {
         return chargingRateUnit.toString();
     }
 
+    /**
+     * The unit of measure Limit is expressed in.
+     *
+     * @return the {@link ChargingRateUnitType}.
+     */
     public ChargingRateUnitType objChargingRateUnit() {
         return chargingRateUnit;
     }
 
-    public void setChargingSchedulePeriod(ChargingSchedulePeriod[] chargingSchedulePeriod) {
-        this.chargingSchedulePeriod = chargingSchedulePeriod;
+    /**
+     * Required. The unit of measure Limit is expressed in.
+     *
+     * @param chargingRateUnit    the {@link ChargingRateUnitType}.
+     */
+    public void setChargingRateUnit(ChargingRateUnitType chargingRateUnit) {
+        this.chargingRateUnit = chargingRateUnit;
     }
 
+    /**
+     * List of ChargingSchedulePeriod elements defining maximum power or current usage over time.
+     *
+     * @return array of {@link ChargingSchedulePeriod}.
+     */
     public ChargingSchedulePeriod[] getChargingSchedulePeriod() {
         return chargingSchedulePeriod;
     }
 
-    public void setMinChargingRate(Double minChargingRate) {
-        this.minChargingRate = minChargingRate;
+    /**
+     * Required. List of ChargingSchedulePeriod elements defining maximum power or current usage over time.
+     *
+     * @param chargingSchedulePeriod    array of {@link ChargingSchedulePeriod}.
+     */
+    public void setChargingSchedulePeriod(ChargingSchedulePeriod[] chargingSchedulePeriod) {
+        this.chargingSchedulePeriod = chargingSchedulePeriod;
     }
 
+    /**
+     * Minimum charging rate supported by the electric vehicle.
+     * The unit of measure is defined by {@link #getChargingRateUnit()}.
+     *
+     * @return min charge rate.
+     */
     public Double getMinChargingRate() {
         return minChargingRate;
+    }
+
+    /**
+     * Optional. Minimum charging rate supported by the electric vehicle.
+     * The unit of measure is defined by {@link #getChargingRateUnit()}.
+     * This parameter is intended to be used by a local smart charging algorithm to optimize the power allocation
+     * for in the case a charging process is inefficient at lower charging rates.
+     * Accepts at most one digit fraction (e.g. 8.1)
+     *
+     * @param minChargingRate decimal, min charge rate.
+     */
+    public void setMinChargingRate(Double minChargingRate) {
+        this.minChargingRate = minChargingRate;
     }
 }

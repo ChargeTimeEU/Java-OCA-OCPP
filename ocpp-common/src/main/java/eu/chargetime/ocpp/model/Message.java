@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -26,22 +26,46 @@ package eu.chargetime.ocpp.model;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Wrapper class for a message
+ */
 public class Message {
     private String id;
     private String payload;
 
+    /**
+     * Get unique id for message.
+     *
+     * @return message id.
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Set unique id for message.
+     *
+     * @param id String, message id.
+     */
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * Get attached payload.
+     *
+     * @return payload.
+     */
     public String getPayload() {
         return payload;
     }
 
+    /**
+     * Attach payload to message.
+     *
+     * @param payload String, payload.
+     */
     public void setPayload(String payload) {
         this.payload = payload;
     }

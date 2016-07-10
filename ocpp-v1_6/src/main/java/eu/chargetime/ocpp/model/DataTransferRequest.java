@@ -3,7 +3,7 @@ package eu.chargetime.ocpp.model;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -28,6 +28,10 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Sent either by the Central System to the Charge Point or vice versa.
+ */
 public class DataTransferRequest implements Request {
 
     private String vendorId;
@@ -36,6 +40,11 @@ public class DataTransferRequest implements Request {
 
     public DataTransferRequest() {}
 
+    /**
+     * Set required fields.
+     *
+     * @param vendorId Vendor identification, see {@link #setVendorId(String)}.
+     */
     public DataTransferRequest(String vendorId) {
         this.vendorId = vendorId;
     }
@@ -45,6 +54,21 @@ public class DataTransferRequest implements Request {
         return isValidVendorId(this.vendorId);
     }
 
+    /**
+     * This identifies the Vendor specific implementation.
+     *
+     * @return String, Vendor identification.
+     */
+    public String getVendorId() {
+        return vendorId;
+    }
+
+    /**
+     * Required. This identifies the Vendor specific implementation.
+     *
+     * @param vendorId String, max 255 characters, case insensitive.
+     * @throws PropertyConstraintException Value exceeds 255 characters.
+     */
     public void setVendorId(String vendorId) throws PropertyConstraintException {
         if (!isValidVendorId(vendorId))
             throw new PropertyConstraintException("vendorId", vendorId);
@@ -56,10 +80,21 @@ public class DataTransferRequest implements Request {
         return ModelUtil.validate(vendorId, 255);
     }
 
-    public String getVendorId() {
-        return vendorId;
+    /**
+     * Additional identification field.
+     *
+     * @return Additional identification.
+     */
+    public String getMessageId() {
+        return messageId;
     }
 
+    /**
+     * Optional. Additional identification field.
+     *
+     * @param messageId                     String, max 50 characters, case insensitive.
+     * @throws PropertyConstraintException  Value exceeds 50 characters.
+     */
     public void setMessageId(String messageId) throws PropertyConstraintException {
         if (!isValidMessageId(messageId))
             throw new PropertyConstraintException("messageId", messageId);
@@ -71,15 +106,21 @@ public class DataTransferRequest implements Request {
         return ModelUtil.validate(messageId, 50);
     }
 
-    public String getMessageId() {
-        return messageId;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
+    /**
+     * Data without specified length or format.
+     *
+     * @return data.
+     */
     public String getData() {
         return data;
+    }
+
+    /**
+     * Optional. Data without specified length or format.
+     *
+     * @param data  String, data.
+     */
+    public void setData(String data) {
+        this.data = data;
     }
 }

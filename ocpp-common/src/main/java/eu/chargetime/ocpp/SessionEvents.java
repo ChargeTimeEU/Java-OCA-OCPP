@@ -40,7 +40,7 @@ public interface SessionEvents {
      * If null is returned, a "NotImplemented" error will be send.
      *
      * @param action action name of the {@link Feature}
-     * @return {@Link Feature} found.
+     * @return {@link Feature} found.
      */
     Feature findFeatureByAction(String action);
 

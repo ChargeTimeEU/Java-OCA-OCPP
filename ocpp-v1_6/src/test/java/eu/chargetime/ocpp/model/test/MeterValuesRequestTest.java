@@ -13,7 +13,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
-/**
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -86,23 +86,6 @@ public class MeterValuesRequestTest extends TestUtilities{
 
         // Then
         assertThat(request.getTransactionId(), equalTo(anyValue));
-    }
-
-    @Test
-    public void setMeterValue_null_throwsPropertyConstraintException() {
-        // Given
-        MeterValue[] nullValue = null;
-
-        try {
-            // When
-            request.setMeterValue(nullValue);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("meterValue"));
-            assertThat(ex.getFieldValue(), equalTo(nullValue));
-        }
     }
 
     @Test

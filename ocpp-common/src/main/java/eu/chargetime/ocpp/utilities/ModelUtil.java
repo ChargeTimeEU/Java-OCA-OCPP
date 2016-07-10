@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.utilities;
 
-/**
+/*
  ChargeTime.eu - Java OCA OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -26,8 +26,19 @@ package eu.chargetime.ocpp.utilities;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Utilities for model classes. Used to validate values.
+ */
 public abstract class ModelUtil {
 
+    /**
+     * Check if a value is in a list of values.
+     *
+     * @param needle   value we want to search for.
+     * @param hayStack list of value that we search in.
+     * @return true if value was found in list.
+     */
     public static boolean isAmong(Object needle, Object... hayStack) {
         boolean found = false;
         if (hayStack != null) {
@@ -40,6 +51,12 @@ public abstract class ModelUtil {
         return found;
     }
 
+    /**
+     * Compares two values.
+     * @param object1   Right value to compare.
+     * @param object2   Left value to compare.
+     * @return Both values are null or equal.
+     */
     private static boolean isNullOrEqual(Object object1, Object object2) {
         boolean nullOrEqual = false;
         if (object1 == null && object2 == null) {
@@ -50,6 +67,13 @@ public abstract class ModelUtil {
         return nullOrEqual;
     }
 
+    /**
+     * Check if a string exceeds a given length.
+     *
+     * @param input         The string to check.
+     * @param maxLength     The largest length accepted.
+     * @return The string length does not exceed max length.
+     */
     public static boolean validate(String input, int maxLength) {
         return input != null && input.length() <= maxLength;
     }

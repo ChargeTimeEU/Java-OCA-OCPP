@@ -2,7 +2,7 @@ package eu.chargetime.ocpp.model;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 
-/**
+/*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
@@ -28,17 +28,37 @@ import eu.chargetime.ocpp.PropertyConstraintException;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+/**
+ * Returned from Charge Point to Central System
+ */
 public class ChangeConfigurationConfirmation implements Confirmation{
     private ConfigurationStatus status;
 
+    /**
+     * Returns whether configuration change has been accepted.
+     *
+     * @return String, the {@link ConfigurationStatus}.
+     */
     public String getStatus() {
         return status.toString();
     }
 
+    /**
+     * Returns whether configuration change has been accepted.
+     *
+     * @return the {@link ConfigurationStatus}.
+     */
     public ConfigurationStatus objStatus() {
         return status;
     }
 
+    /**
+     * Required. Returns whether configuration change has been accepted.
+     *
+     * @param status the {@link ConfigurationStatus}.
+     * @throws PropertyConstraintException
+     */
     public void setStatus(ConfigurationStatus status) throws PropertyConstraintException {
         this.status = status;
     }
