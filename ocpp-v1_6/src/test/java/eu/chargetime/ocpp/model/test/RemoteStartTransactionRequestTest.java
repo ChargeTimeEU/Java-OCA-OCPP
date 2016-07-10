@@ -76,23 +76,6 @@ public class RemoteStartTransactionRequestTest {
     }
 
     @Test
-    public void setIdTag_nullValue_throwsPropertyConstraintException() {
-        // Given
-        IdToken nullValue = null;
-
-        try {
-            // When
-            request.setIdTag(nullValue);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("idTag"));
-            assertThat(ex.getFieldValue(), equalTo(nullValue));
-        }
-    }
-
-    @Test
     public void setIdTag_someIdToken_idTagIsSet() throws Exception {
         // Given
         IdToken idToken = mock(IdToken.class);
