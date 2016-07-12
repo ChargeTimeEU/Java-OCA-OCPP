@@ -5,8 +5,10 @@ import eu.chargetime.ocpp.JSONClient;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.UnsupportedFeatureException;
 import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
-import eu.chargetime.ocpp.feature.profile.CoreProfile;
-import eu.chargetime.ocpp.model.*;
+import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.core.*;
 
 import java.util.Calendar;
 
@@ -41,10 +43,10 @@ public class FakeChargePoint
     private Client client;
     private Confirmation receivedConfirmation;
     private Request receivedRequest;
-    private CoreProfile core;
+    private ClientCoreProfile core;
 
     public FakeChargePoint() {
-        core = new CoreProfile(new ClientCoreEventHandler() {
+        core = new ClientCoreProfile(new ClientCoreEventHandler() {
             @Override
             public ChangeAvailabilityConfirmation handleChangeAvailabilityRequest(ChangeAvailabilityRequest request) {
                 receivedRequest = request;

@@ -2,9 +2,9 @@ package eu.chargetime.ocpp.feature;
 
 import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.DataTransferConfirmation;
-import eu.chargetime.ocpp.model.DataTransferRequest;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.core.DataTransferConfirmation;
+import eu.chargetime.ocpp.model.core.DataTransferRequest;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP

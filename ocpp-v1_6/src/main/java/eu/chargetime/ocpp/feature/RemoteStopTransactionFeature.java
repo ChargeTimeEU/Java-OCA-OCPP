@@ -2,9 +2,9 @@ package eu.chargetime.ocpp.feature;
 
 import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.RemoteStopTransactionConfirmation;
-import eu.chargetime.ocpp.model.RemoteStopTransactionRequest;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.core.RemoteStopTransactionConfirmation;
+import eu.chargetime.ocpp.model.core.RemoteStopTransactionRequest;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP

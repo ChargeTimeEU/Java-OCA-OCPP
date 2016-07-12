@@ -1,10 +1,10 @@
 package eu.chargetime.ocpp.feature;
 
 import eu.chargetime.ocpp.feature.profile.Profile;
-import eu.chargetime.ocpp.model.AuthorizeConfirmation;
-import eu.chargetime.ocpp.model.AuthorizeRequest;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.core.AuthorizeConfirmation;
+import eu.chargetime.ocpp.model.core.AuthorizeRequest;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP

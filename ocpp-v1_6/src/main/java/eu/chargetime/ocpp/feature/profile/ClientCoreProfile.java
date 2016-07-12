@@ -2,7 +2,9 @@ package eu.chargetime.ocpp.feature.profile;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.feature.*;
-import eu.chargetime.ocpp.model.*;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.core.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,7 +41,7 @@ import java.util.Calendar;
  * <p>
  * Contains methods to create outgoing client requests.
  */
-public class CoreProfile implements Profile
+public class ClientCoreProfile implements Profile
 {
     ClientCoreEventHandler eventHandler;
     ArrayList<Feature> features;
@@ -49,7 +51,7 @@ public class CoreProfile implements Profile
 
      * @param handler   call back methods for client events
      */
-    public CoreProfile(ClientCoreEventHandler handler) {
+    public ClientCoreProfile(ClientCoreEventHandler handler) {
         features = new ArrayList<>();
         eventHandler = handler;
 

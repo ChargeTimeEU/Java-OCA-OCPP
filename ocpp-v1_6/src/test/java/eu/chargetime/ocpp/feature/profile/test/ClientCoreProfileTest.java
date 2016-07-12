@@ -2,8 +2,10 @@ package eu.chargetime.ocpp.feature.profile.test;
 
 import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
-import eu.chargetime.ocpp.feature.profile.CoreProfile;
-import eu.chargetime.ocpp.model.*;
+import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.core.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -41,16 +43,16 @@ import static org.mockito.Mockito.*;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-public class CoreProfileTest
+public class ClientCoreProfileTest
 {
-    private CoreProfile core;
+    private ClientCoreProfile core;
 
     @Mock
     ClientCoreEventHandler handler = mock(ClientCoreEventHandler.class);
 
     @Before
     public void setup() {
-        core = new CoreProfile(handler);
+        core = new ClientCoreProfile(handler);
     }
 
     @Test

@@ -1,10 +1,10 @@
 package eu.chargetime.ocpp.feature;
 
 import eu.chargetime.ocpp.feature.profile.Profile;
-import eu.chargetime.ocpp.model.ClearCacheConfirmation;
-import eu.chargetime.ocpp.model.ClearCacheRequest;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.core.ClearCacheConfirmation;
+import eu.chargetime.ocpp.model.core.ClearCacheRequest;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP

@@ -2,10 +2,10 @@ package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.JSONCommunicator;
 import eu.chargetime.ocpp.Transmitter;
-import eu.chargetime.ocpp.model.BootNotificationConfirmation;
-import eu.chargetime.ocpp.model.BootNotificationRequest;
-import eu.chargetime.ocpp.model.RegistrationStatus;
 import eu.chargetime.ocpp.model.TestModel;
+import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
+import eu.chargetime.ocpp.model.core.BootNotificationRequest;
+import eu.chargetime.ocpp.model.core.RegistrationStatus;
 import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Before;
 import org.junit.Test;

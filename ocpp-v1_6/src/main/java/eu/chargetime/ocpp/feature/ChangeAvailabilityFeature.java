@@ -1,10 +1,10 @@
 package eu.chargetime.ocpp.feature;
 
 import eu.chargetime.ocpp.feature.profile.Profile;
-import eu.chargetime.ocpp.model.ChangeAvailabilityConfirmation;
-import eu.chargetime.ocpp.model.ChangeAvailabilityRequest;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.core.ChangeAvailabilityConfirmation;
+import eu.chargetime.ocpp.model.core.ChangeAvailabilityRequest;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
