@@ -1,0 +1,116 @@
+package eu.chargetime.ocpp.model.core;
+
+import eu.chargetime.ocpp.model.Validatable;
+
+import java.util.Calendar;
+
+/*
+ ChargeTime.eu - Java-OCA-OCPP
+ Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
+
+ MIT License
+
+ Copyright (c) 2016 Thomas Volden
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
+
+/**
+ * Contains status information about an identifier.
+ * It is returned in {@link AuthorizeConfirmation}, {@link StartTransactionConfirmation}
+ * and {@link StopTransactionConfirmation} responses.
+ * <p>
+ * If expiryDate is not given, the status has no end date.
+ */
+public class IdTagInfo implements Validatable
+{
+    private Calendar expiryDate;
+    private IdToken parentIdTag;
+    private AuthorizationStatus status;
+
+    /**
+     * This contains the date at which idTag should be removed from the Authorization Cache.
+     *
+     * @return Expiry date.
+     */
+    public Calendar getExpiryDate() {
+        return expiryDate;
+    }
+
+    /**
+     * Optional. This contains the date at which idTag should be removed from the Authorization Cache.
+     *
+     * @param expiryDate    Calendar, expire date.
+     */
+    public void setExpiryDate(Calendar expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    /**
+     * This contains the parent-identifier.
+     *
+     * @return  the {@link IdToken} of the parent.
+     */
+    public IdToken getParentIdTag() {
+        return parentIdTag;
+    }
+
+    /**
+     * Optional. This contains the parent-identifier.
+     *
+     * @param parentIdTag   an {@link IdToken}.
+     */
+    public void setParentIdTag(IdToken parentIdTag) {
+        this.parentIdTag = parentIdTag;
+    }
+
+    /**
+     * This contains whether the idTag has been accepted or not by the Central System.
+     *
+     * @return String, the {@link AuthorizationStatus} for IdTag.
+     */
+    public String getStatus() {
+        return status.toString();
+    }
+
+    /**
+     * This contains whether the idTag has been accepted or not by the Central System.
+     *
+     * @return the {@link AuthorizationStatus} for IdTag.
+     */
+    public AuthorizationStatus objStatus() {
+        return status;
+    }
+
+    /**
+     * Required. This contains whether the idTag has been accepted or not by the Central System.
+     *
+     * @param status    the {@link AuthorizationStatus} for IdTag.
+     */
+    public void setStatus(AuthorizationStatus status) {
+        this.status = status;
+    }
+
+    @Override
+    public boolean validate() {
+        boolean valid = true;
+        valid &= this.status != null;
+        return valid;
+    }
+}

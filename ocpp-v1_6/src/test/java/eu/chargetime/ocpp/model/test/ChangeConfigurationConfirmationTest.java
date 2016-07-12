@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.ChangeConfigurationConfirmation;
-import eu.chargetime.ocpp.model.ConfigurationStatus;
+import eu.chargetime.ocpp.model.core.ChangeConfigurationConfirmation;
+import eu.chargetime.ocpp.model.core.ConfigurationStatus;
 import org.junit.Before;
 import org.junit.Test;
 

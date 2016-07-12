@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.feature.profile;
 
-import eu.chargetime.ocpp.model.*;
+import eu.chargetime.ocpp.model.core.*;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP

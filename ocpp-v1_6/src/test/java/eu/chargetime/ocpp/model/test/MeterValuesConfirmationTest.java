@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.MeterValuesConfirmation;
+import eu.chargetime.ocpp.model.core.MeterValuesConfirmation;
 import org.junit.Before;
 import org.junit.Test;
 

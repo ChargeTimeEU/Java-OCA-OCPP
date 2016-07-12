@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.AvailabilityStatus;
-import eu.chargetime.ocpp.model.ChangeAvailabilityConfirmation;
+import eu.chargetime.ocpp.model.core.AvailabilityStatus;
+import eu.chargetime.ocpp.model.core.ChangeAvailabilityConfirmation;
 import org.junit.Before;
 import org.junit.Test;
 

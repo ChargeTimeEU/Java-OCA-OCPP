@@ -1,9 +1,9 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.IdToken;
-import eu.chargetime.ocpp.model.MeterValue;
-import eu.chargetime.ocpp.model.Reason;
-import eu.chargetime.ocpp.model.StopTransactionRequest;
+import eu.chargetime.ocpp.model.core.IdToken;
+import eu.chargetime.ocpp.model.core.MeterValue;
+import eu.chargetime.ocpp.model.core.Reason;
+import eu.chargetime.ocpp.model.core.StopTransactionRequest;
 import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Before;
 import org.junit.Test;

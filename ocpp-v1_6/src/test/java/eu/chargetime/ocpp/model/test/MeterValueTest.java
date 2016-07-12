@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.MeterValue;
-import eu.chargetime.ocpp.model.SampledValue;
+import eu.chargetime.ocpp.model.core.MeterValue;
+import eu.chargetime.ocpp.model.core.SampledValue;
 import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Before;
 import org.junit.Test;

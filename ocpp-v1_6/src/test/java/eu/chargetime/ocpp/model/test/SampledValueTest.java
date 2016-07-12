@@ -1,9 +1,9 @@
 package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Location;
-import eu.chargetime.ocpp.model.SampledValue;
-import eu.chargetime.ocpp.model.ValueFormat;
+import eu.chargetime.ocpp.model.core.Location;
+import eu.chargetime.ocpp.model.core.SampledValue;
+import eu.chargetime.ocpp.model.core.ValueFormat;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

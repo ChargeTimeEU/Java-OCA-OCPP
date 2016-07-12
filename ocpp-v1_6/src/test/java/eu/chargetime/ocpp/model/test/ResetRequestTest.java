@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.ResetRequest;
-import eu.chargetime.ocpp.model.ResetType;
+import eu.chargetime.ocpp.model.core.ResetRequest;
+import eu.chargetime.ocpp.model.core.ResetType;
 import org.junit.Before;
 import org.junit.Test;
 

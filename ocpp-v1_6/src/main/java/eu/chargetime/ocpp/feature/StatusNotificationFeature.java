@@ -3,8 +3,8 @@ package eu.chargetime.ocpp.feature;
 import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.StatusNotificationConfirmation;
-import eu.chargetime.ocpp.model.StatusNotificationRequest;
+import eu.chargetime.ocpp.model.core.StatusNotificationConfirmation;
+import eu.chargetime.ocpp.model.core.StatusNotificationRequest;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP

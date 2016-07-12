@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.test;
 
-import eu.chargetime.ocpp.model.AvailabilityType;
-import eu.chargetime.ocpp.model.RegistrationStatus;
+import eu.chargetime.ocpp.model.core.AvailabilityType;
+import eu.chargetime.ocpp.model.core.RegistrationStatus;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;

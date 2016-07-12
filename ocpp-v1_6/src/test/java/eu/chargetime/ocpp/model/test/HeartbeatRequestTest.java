@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.HeartbeatRequest;
+import eu.chargetime.ocpp.model.core.HeartbeatRequest;
 import org.junit.Before;
 import org.junit.Test;
 

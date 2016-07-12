@@ -3,8 +3,8 @@ package eu.chargetime.ocpp.feature;
 import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.StopTransactionConfirmation;
-import eu.chargetime.ocpp.model.StopTransactionRequest;
+import eu.chargetime.ocpp.model.core.StopTransactionConfirmation;
+import eu.chargetime.ocpp.model.core.StopTransactionRequest;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP

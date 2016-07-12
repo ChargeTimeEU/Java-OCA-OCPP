@@ -1,8 +1,8 @@
 package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.BootNotificationConfirmation;
-import eu.chargetime.ocpp.model.RegistrationStatus;
+import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
+import eu.chargetime.ocpp.model.core.RegistrationStatus;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

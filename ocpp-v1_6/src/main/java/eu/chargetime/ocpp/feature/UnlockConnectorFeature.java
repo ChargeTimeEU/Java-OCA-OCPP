@@ -3,8 +3,8 @@ package eu.chargetime.ocpp.feature;
 import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.UnlockConnectorConfirmation;
-import eu.chargetime.ocpp.model.UnlockConnectorRequest;
+import eu.chargetime.ocpp.model.core.UnlockConnectorConfirmation;
+import eu.chargetime.ocpp.model.core.UnlockConnectorRequest;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP

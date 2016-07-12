@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.IdTagInfo;
-import eu.chargetime.ocpp.model.StopTransactionConfirmation;
+import eu.chargetime.ocpp.model.core.IdTagInfo;
+import eu.chargetime.ocpp.model.core.StopTransactionConfirmation;
 import org.junit.Before;
 import org.junit.Test;
 

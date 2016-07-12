@@ -1,8 +1,8 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.ChargingRateUnitType;
-import eu.chargetime.ocpp.model.ChargingSchedule;
-import eu.chargetime.ocpp.model.ChargingSchedulePeriod;
+import eu.chargetime.ocpp.model.core.ChargingRateUnitType;
+import eu.chargetime.ocpp.model.core.ChargingSchedule;
+import eu.chargetime.ocpp.model.core.ChargingSchedulePeriod;
 import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Before;
 import org.junit.Test;

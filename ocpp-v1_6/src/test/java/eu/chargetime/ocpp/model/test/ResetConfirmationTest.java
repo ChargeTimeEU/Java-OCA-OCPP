@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.ResetConfirmation;
-import eu.chargetime.ocpp.model.ResetStatus;
+import eu.chargetime.ocpp.model.core.ResetConfirmation;
+import eu.chargetime.ocpp.model.core.ResetStatus;
 import org.junit.Before;
 import org.junit.Test;
 

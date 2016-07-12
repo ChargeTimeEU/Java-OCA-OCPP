@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.RemoteStartStopStatus;
-import eu.chargetime.ocpp.model.RemoteStopTransactionConfirmation;
+import eu.chargetime.ocpp.model.core.RemoteStartStopStatus;
+import eu.chargetime.ocpp.model.core.RemoteStopTransactionConfirmation;
 import org.junit.Before;
 import org.junit.Test;
 

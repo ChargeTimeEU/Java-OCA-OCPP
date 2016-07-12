@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.test.core
 
-import eu.chargetime.ocpp.model.AvailabilityType
+import eu.chargetime.ocpp.model.core.AvailabilityType
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
 import spock.lang.Shared

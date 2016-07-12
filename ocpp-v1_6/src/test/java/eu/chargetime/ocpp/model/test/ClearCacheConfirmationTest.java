@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.ClearCacheConfirmation;
-import eu.chargetime.ocpp.model.ClearCacheStatus;
+import eu.chargetime.ocpp.model.core.ClearCacheConfirmation;
+import eu.chargetime.ocpp.model.core.ClearCacheStatus;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp;
 
-import eu.chargetime.ocpp.feature.profile.CoreProfile;
+import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -38,7 +38,7 @@ public class JSONClient extends Client {
      *
      * @param coreProfile implementation of the core feature profile.
      */
-    public JSONClient(CoreProfile coreProfile) {
+    public JSONClient(ClientCoreProfile coreProfile) {
         super(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue()));
         addFeatureProfile(coreProfile);
     }

@@ -1,9 +1,9 @@
 package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.ChargePointErrorCode;
-import eu.chargetime.ocpp.model.ChargePointStatus;
-import eu.chargetime.ocpp.model.StatusNotificationRequest;
+import eu.chargetime.ocpp.model.core.ChargePointErrorCode;
+import eu.chargetime.ocpp.model.core.ChargePointStatus;
+import eu.chargetime.ocpp.model.core.StatusNotificationRequest;
 import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Assert;
 import org.junit.Before;

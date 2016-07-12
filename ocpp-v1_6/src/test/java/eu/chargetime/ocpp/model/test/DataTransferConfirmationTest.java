@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.DataTransferConfirmation;
-import eu.chargetime.ocpp.model.DataTransferStatus;
+import eu.chargetime.ocpp.model.core.DataTransferConfirmation;
+import eu.chargetime.ocpp.model.core.DataTransferStatus;
 import org.junit.Before;
 import org.junit.Test;
 

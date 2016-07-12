@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.StatusNotificationConfirmation;
+import eu.chargetime.ocpp.model.core.StatusNotificationConfirmation;
 import org.junit.Before;
 import org.junit.Test;
 

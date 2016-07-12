@@ -1,9 +1,9 @@
 package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.ChargingProfile;
-import eu.chargetime.ocpp.model.IdToken;
-import eu.chargetime.ocpp.model.RemoteStartTransactionRequest;
+import eu.chargetime.ocpp.model.core.ChargingProfile;
+import eu.chargetime.ocpp.model.core.IdToken;
+import eu.chargetime.ocpp.model.core.RemoteStartTransactionRequest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

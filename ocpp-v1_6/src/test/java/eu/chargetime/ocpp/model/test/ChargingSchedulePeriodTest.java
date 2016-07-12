@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.ChargingSchedulePeriod;
+import eu.chargetime.ocpp.model.core.ChargingSchedulePeriod;
 import org.junit.Before;
 import org.junit.Test;
 

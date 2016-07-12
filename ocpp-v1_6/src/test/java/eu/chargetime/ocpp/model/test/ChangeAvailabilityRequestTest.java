@@ -1,8 +1,8 @@
 package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.AvailabilityType;
-import eu.chargetime.ocpp.model.ChangeAvailabilityRequest;
+import eu.chargetime.ocpp.model.core.AvailabilityType;
+import eu.chargetime.ocpp.model.core.ChangeAvailabilityRequest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

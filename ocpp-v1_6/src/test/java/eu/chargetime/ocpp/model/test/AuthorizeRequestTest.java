@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.AuthorizeRequest;
+import eu.chargetime.ocpp.model.core.AuthorizeRequest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

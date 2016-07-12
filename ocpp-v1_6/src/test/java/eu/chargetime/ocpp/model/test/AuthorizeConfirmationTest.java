@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.AuthorizeConfirmation;
-import eu.chargetime.ocpp.model.IdTagInfo;
+import eu.chargetime.ocpp.model.core.AuthorizeConfirmation;
+import eu.chargetime.ocpp.model.core.IdTagInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

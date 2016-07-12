@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.UnlockConnectorConfirmation;
-import eu.chargetime.ocpp.model.UnlockStatus;
+import eu.chargetime.ocpp.model.core.UnlockConnectorConfirmation;
+import eu.chargetime.ocpp.model.core.UnlockStatus;
 import org.junit.Before;
 import org.junit.Test;
 
