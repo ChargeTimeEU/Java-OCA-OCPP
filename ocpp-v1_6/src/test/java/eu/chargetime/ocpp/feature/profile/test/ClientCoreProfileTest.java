@@ -232,7 +232,7 @@ public class ClientCoreProfileTest
         ChangeAvailabilityRequest request = new ChangeAvailabilityRequest();
 
         // When
-        core.handleRequest(request);
+        core.handleRequest(0, request);
 
         // Then
         verify(handler, times(1)).handleChangeAvailabilityRequest(eq(request));
@@ -244,7 +244,7 @@ public class ClientCoreProfileTest
         RemoteStartTransactionRequest request = new RemoteStartTransactionRequest();
 
         // When
-        core.handleRequest(request);
+        core.handleRequest(0, request);
 
         // Then
         verify(handler, times(1)).handleRemoteStartTransactionRequest(eq(request));
@@ -256,7 +256,7 @@ public class ClientCoreProfileTest
         RemoteStopTransactionRequest request = new RemoteStopTransactionRequest();
 
         // When
-        core.handleRequest(request);
+        core.handleRequest(0, request);
 
         // Then
         verify(handler, times(1)).handleRemoteStopTransactionRequest(eq(request));
@@ -268,7 +268,7 @@ public class ClientCoreProfileTest
         ResetRequest request = new ResetRequest();
 
         // When
-        core.handleRequest(request);
+        core.handleRequest(0, request);
 
         // Then
         verify(handler, times(1)).handleResetRequest(eq(request));
@@ -280,7 +280,7 @@ public class ClientCoreProfileTest
         UnlockConnectorRequest request = new UnlockConnectorRequest();
 
         // When
-        core.handleRequest(request);
+        core.handleRequest(0, request);
 
         // Then
         verify(handler, times(1)).handleUnlockConnectorRequest(eq(request));
@@ -293,7 +293,7 @@ public class ClientCoreProfileTest
         ChangeAvailabilityRequest request = new ChangeAvailabilityRequest();
 
         // When
-        Confirmation conf = core.handleRequest(request);
+        Confirmation conf = core.handleRequest(0, request);
 
         // Then
         assertThat(conf, instanceOf(ChangeAvailabilityConfirmation.class));
@@ -315,7 +315,7 @@ public class ClientCoreProfileTest
         GetConfigurationRequest request = new GetConfigurationRequest();
 
         // When
-        core.handleRequest(request);
+        core.handleRequest(0, request);
 
         // Then
         verify(handler, times(1)).handleGetConfigurationRequest(eq(request));
@@ -328,7 +328,7 @@ public class ClientCoreProfileTest
         GetConfigurationRequest request = new GetConfigurationRequest();
 
         // When
-        Confirmation conf = core.handleRequest(request);
+        Confirmation conf = core.handleRequest(0, request);
 
         // Then
         assertThat(conf, instanceOf(GetConfigurationConfirmation.class));
@@ -340,7 +340,7 @@ public class ClientCoreProfileTest
         DataTransferRequest request = new DataTransferRequest();
 
         // When
-        core.handleRequest(request);
+        core.handleRequest(0, request);
 
         // Then
         verify(handler, times(1)).handleDataTransferRequest(eq(request));
@@ -353,7 +353,7 @@ public class ClientCoreProfileTest
         DataTransferRequest request = new DataTransferRequest();
 
         // When
-        Confirmation conf = core.handleRequest(request);
+        Confirmation conf = core.handleRequest(0, request);
 
         // Then
         assertThat(conf, instanceOf(DataTransferConfirmation.class));
@@ -374,7 +374,7 @@ public class ClientCoreProfileTest
         ChangeConfigurationRequest request = new ChangeConfigurationRequest();
 
         // When
-        core.handleRequest(request);
+        core.handleRequest(0, request);
 
         // Then
         verify(handler, times(1)).handleChangeConfigurationRequest(eq(request));
@@ -387,7 +387,7 @@ public class ClientCoreProfileTest
         ChangeConfigurationRequest request = new ChangeConfigurationRequest();
 
         // When
-        Confirmation conf = core.handleRequest(request);
+        Confirmation conf = core.handleRequest(0, request);
 
         // Then
         assertThat(conf, instanceOf(ChangeConfigurationConfirmation.class));
@@ -408,7 +408,7 @@ public class ClientCoreProfileTest
         ClearCacheRequest request = new ClearCacheRequest();
 
         // When
-        core.handleRequest(request);
+        core.handleRequest(0, request);
 
         // Then
         verify(handler, times(1)).handleClearCacheRequest(request);
@@ -421,7 +421,7 @@ public class ClientCoreProfileTest
         ClearCacheRequest request = new ClearCacheRequest();
 
         // When
-        Confirmation conf = core.handleRequest(request);
+        Confirmation conf = core.handleRequest(0, request);
 
         // Then
         assertThat(conf, instanceOf(ClearCacheConfirmation.class));

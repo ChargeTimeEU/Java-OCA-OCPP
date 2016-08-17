@@ -38,7 +38,7 @@ import java.util.concurrent.CompletableFuture;
  * Keeps track of outgoing requests.
  * Calls back when a confirmation is received.
  */
-public class Server extends FeatureHandler {
+public abstract class Server extends FeatureHandler {
 
     private ArrayList<Session> sessions;
 

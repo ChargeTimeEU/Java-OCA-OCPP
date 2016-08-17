@@ -46,8 +46,9 @@ public interface Profile {
     /**
      * Handle {@link Request}
      *
+     * @param sessionIndex source of the request.
      * @param request the {@link Request} to be handled.
      * @return the {@link Confirmation} to be send.
      */
-    Confirmation handleRequest(Request request);
+    Confirmation handleRequest(int sessionIndex, Request request);
 }

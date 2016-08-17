@@ -238,7 +238,7 @@ public class ClientCoreProfile implements Profile
     }
 
     @Override
-    public Confirmation handleRequest(Request request) {
+    public Confirmation handleRequest(int sessionIndex, Request request) {
         Confirmation result = null;
 
         if (request instanceof ChangeAvailabilityRequest) {

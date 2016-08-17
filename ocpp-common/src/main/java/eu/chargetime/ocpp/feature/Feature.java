@@ -50,11 +50,12 @@ public abstract class Feature {
     /**
      * Calls {@link Profile} to handle a {@link Request}.
      *
+     * @param sessionIndex source of the request.
      * @param request the {@link Request} to be handled.
      * @return the {@link Confirmation} to be send back.
      */
-    public Confirmation handleRequest(Request request) {
-        return profile.handleRequest(request);
+    public Confirmation handleRequest(int sessionIndex, Request request) {
+        return profile.handleRequest(sessionIndex, request);
     }
 
     /**
