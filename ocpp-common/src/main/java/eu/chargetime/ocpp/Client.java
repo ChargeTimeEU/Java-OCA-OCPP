@@ -5,8 +5,6 @@ import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -38,16 +36,14 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Abstract class.
  * Handles basic client logic:
- * Hold s list of supported features.
+ * Holds a list of supported features.
  * Keeps track of outgoing request.
  * Calls back when a confirmation is received.
  * <p>
  * Must be overloaded in order to support specific protocols and formats.
  */
-public abstract class Client
+public abstract class Client extends FeatureHandler
 {
-    private HashMap<String, CompletableFuture<Confirmation>> promises;
-    private ArrayList<Feature> featureList;
     private Session session;
 
     /**
@@ -57,21 +53,7 @@ public abstract class Client
      * @see                 Session
      */
     public Client(Session session) {
-        this.promises = new HashMap<>();
-        this.featureList = new ArrayList<>();
         this.session = session;
-    }
-
-    /**
-     * Add {@link Profile} to support a group of features.
-     *
-     * @param   profile     supported feature {@link Profile}
-     * @see                 Profile
-     */
-    public void addFeatureProfile(Profile profile) {
-        Feature[] features = profile.getFeatureList();
-        for (Feature feature: features)
-            featureList.add(feature);
     }
 
     /**
@@ -94,7 +76,7 @@ public abstract class Client
 
             @Override
             public void handleConfirmation(String uniqueId, Confirmation confirmation) {
-                promises.get(uniqueId).complete(confirmation);
+                getPromise(uniqueId).complete(confirmation);
             }
 
             @Override
@@ -133,51 +115,6 @@ public abstract class Client
     }
 
     /**
-     * Search for supported features added with the addProfile.
-     * If no supported feature is found, null is returned
-     *
-     * Can take multiple inputs:
-     * {@link String}, search for the action name of the feature.
-     * {@link Request}/{@link Confirmation}, search for a feature that matches.
-     * Anything else will return null.
-     *
-     * @param   needle  Object supports {@link String}, {@link Request} or {@link Confirmation}
-     * @return Instance of the supported Feature
-     */
-    private Feature findFeature(Object needle) {
-        Feature output = null;
-
-        for(Feature feature: featureList) {
-            if (featureContains(feature, needle)) {
-                output = feature;
-                break;
-            }
-        }
-
-        return output;
-    }
-
-    /**
-     * Tries to match {@link Feature} with an {@link Object}.
-     * Different outcome based on the type:
-     * {@link String}, matches the action name of the feature.
-     * {@link Request}, matches the request type of the feature.
-     * {@link Confirmation}, matches the confirmation type of the feature.
-     * Other wise returns false.
-     *
-     * @param   feature to match
-     * @param   object  to match with, supports {@link String}, {@link Request} or {@link Confirmation}
-     * @return true if the {@link Feature} matches the {@link Object}
-     */
-    private boolean featureContains(Feature feature, Object object) {
-        boolean contains = false;
-        contains |= object instanceof String && feature.getAction().equals(object);
-        contains |= object instanceof Request && feature.getRequestType() == object.getClass();
-        contains |= object instanceof Confirmation && feature.getConfirmationType() == object.getClass();
-        return contains;
-    }
-
-    /**
      * Send a {@link Request} to the server.
      * Can only send {@link Request} that the client supports, see {@link #addFeatureProfile(Profile)}
      *
@@ -195,17 +132,4 @@ public abstract class Client
         CompletableFuture<Confirmation> promise = createPromise(id);
         return promise;
     }
-
-    /**
-     * Creates call back {@link CompletableFuture} for later use
-     *
-     * @param   uniqueId    identification for the {@link Request}
-     * @return call back {@link CompletableFuture}
-     */
-    private CompletableFuture<Confirmation> createPromise(String uniqueId) {
-        CompletableFuture<Confirmation> promise = new CompletableFuture<>();
-        promises.put(uniqueId, promise);
-        return promise;
-    }
-
 }
