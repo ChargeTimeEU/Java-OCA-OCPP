@@ -51,4 +51,11 @@ public interface Transmitter
      * @param message    test message to send.
      */
     void send(String message);
+
+    /**
+     * Accept an incoming connection request.
+     *
+     * @param events connection related events.
+     */
+    void accept(TransmitterEvents events);
 }

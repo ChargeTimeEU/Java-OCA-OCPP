@@ -61,13 +61,27 @@ public class ServerTest extends TestUtilities {
         request = () -> false;
         doReturn(request.getClass()).when(feature).getRequestType();
         doReturn(TestConfirmation.class).when(feature).getConfirmationType();
+        when(feature.getAction()).thenReturn(null);
         doAnswer(invocation -> listenerEvents = invocation.getArgumentAt(0, ListenerEvents.class)).when(listener).open(any());
+        doAnswer(invocation -> sessionEvents = invocation.getArgumentAt(0, SessionEvents.class)).when(session).accept(any());
 
         server = new Server() {
         };
 
         when(profile.getFeatureList()).thenReturn(aList(feature));
         server.addFeatureProfile(profile);
+    }
+
+    @Test
+    public void newSession_serverIsListening_sessionIsAccepted() {
+        // Given
+        server.open(listener, serverEvents);
+
+        // When
+        listenerEvents.newSession(session);
+
+        // Then
+        verify(session, times(1)).accept(any());
     }
 
     @Test
@@ -97,6 +111,19 @@ public class ServerTest extends TestUtilities {
 
         // Then
         verify(session, times(1)).sendRequest(anyString(), eq(request));
+    }
+
+    @Test
+    public void handleRequest_callsFeatureHandleRequest() {
+        // Given
+        server.open(listener, serverEvents);
+        listenerEvents.newSession(session);
+
+        // When
+        sessionEvents.handleRequest(request);
+
+        // Then
+        verify(feature, times(1)).handleRequest(eq(0), eq(request));
     }
 
 }

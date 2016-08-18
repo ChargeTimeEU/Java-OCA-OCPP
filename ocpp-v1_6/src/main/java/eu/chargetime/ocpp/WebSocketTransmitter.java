@@ -88,4 +88,9 @@ public class WebSocketTransmitter implements Transmitter
     public void send(String request) {
         client.send(request);
     }
+
+    @Override
+    public void accept(TransmitterEvents events) {
+
+    }
 }

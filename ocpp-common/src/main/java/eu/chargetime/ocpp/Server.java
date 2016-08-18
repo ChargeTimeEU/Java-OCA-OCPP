@@ -42,17 +42,71 @@ public abstract class Server extends FeatureHandler {
 
     private ArrayList<Session> sessions;
 
+    /**
+     *
+     */
     public Server() {
         this.sessions = new ArrayList<>();
     }
 
+    /**
+     * Start listening for clients.
+     *
+     * @param listener     Inject the listener.
+     * @param serverEvents Callback handler for server specific events.
+     */
     public void open(Listener listener, ServerEvents serverEvents) {
         listener.open(session -> {
+            session.accept(new SessionEvents() {
+                @Override
+                public Feature findFeatureByAction(String action) {
+                    return findFeature(action);
+                }
+
+                @Override
+                public Feature findFeatureByRequest(Request request) {
+                    return findFeature(request);
+                }
+
+                @Override
+                public void handleConfirmation(String uniqueId, Confirmation confirmation) {
+                    getPromise(uniqueId).complete(confirmation);
+                }
+
+                @Override
+                public Confirmation handleRequest(Request request) {
+                    Feature feature = findFeatureByRequest(request);
+                    return feature.handleRequest(sessions.indexOf(session), request);
+                }
+
+                @Override
+                public void handleError(String uniqueId) {
+
+                }
+
+                @Override
+                public void handleConnectionClosed() {
+
+                }
+
+                @Override
+                public void handleConnectionOpened() {
+
+                }
+            });
             sessions.add(session);
             serverEvents.newSession(sessions.indexOf(session));
         });
     }
 
+    /**
+     * Send a message to a client.
+     *
+     * @param sessionIndex Session index of the client.
+     * @param request      Request for the client.
+     * @return Callback handler for when the client responds.
+     * @throws UnsupportedFeatureException Thrown if the feature isn't amoung the list of supported featured.
+     */
     public CompletableFuture<Confirmation> send(int sessionIndex, Request request) throws UnsupportedFeatureException {
         Feature feature = findFeature(request);
         if (feature == null)

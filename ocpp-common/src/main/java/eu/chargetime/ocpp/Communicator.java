@@ -114,29 +114,16 @@ public abstract class Communicator {
      * @param   events  handler for call back events.
      */
     public void connect(String uri, CommunicatorEvents events) {
-        transmitter.connect(uri, new TransmitterEvents() {
-            @Override
-            public void connected() {
-                events.onConnected();
-            }
+        transmitter.connect(uri, new EventHandler(events));
+    }
 
-            @Override
-            public void receivedMessage(String input) {
-                System.out.println(input);
-                Message message = parse(input);
-                if(message instanceof CallResultMessage) {
-                    events.onCallResult(message.getId(), message.getPayload());
-                } else if (message instanceof CallMessage) {
-                    CallMessage call = (CallMessage)message;
-                    events.onCall(call.getId(), call.getAction(), call.getPayload());
-                }
-            }
-
-            @Override
-            public void disconnected() {
-                events.onDisconnected();
-            }
-        });
+    /**
+     * Use the injected {@link Transmitter} to accept a client.
+     *
+     * @param events handler for call back events.
+     */
+    public void accept(CommunicatorEvents events) {
+        transmitter.accept(new EventHandler(events));
     }
 
     /**
@@ -176,5 +163,35 @@ public abstract class Communicator {
      */
     public void disconnect() {
         transmitter.disconnect();
+    }
+
+    private class EventHandler implements TransmitterEvents {
+        private final CommunicatorEvents events;
+
+        public EventHandler(CommunicatorEvents events) {
+            this.events = events;
+        }
+
+        @Override
+        public void connected() {
+            events.onConnected();
+        }
+
+        @Override
+        public void receivedMessage(String input) {
+            System.out.println(input);
+            Message message = parse(input);
+            if (message instanceof CallResultMessage) {
+                events.onCallResult(message.getId(), message.getPayload());
+            } else if (message instanceof CallMessage) {
+                CallMessage call = (CallMessage) message;
+                events.onCall(call.getId(), call.getAction(), call.getPayload());
+            }
+        }
+
+        @Override
+        public void disconnected() {
+            events.onDisconnected();
+        }
     }
 }

@@ -204,7 +204,25 @@ public class SessionTest {
         // When
         eventHandler.onCall(someId, null, null);
 
-        // then
+        // Then
         verify(communicator, times(1)).sendCallError(eq(someId), anyString(), anyString());
+    }
+
+    @Test
+    public void onCall_sessionAccepted_callIsForwarded() throws Exception {
+        // Given
+        String someId = "Some id";
+        session.accept(sessionEvents);
+        when(communicator.unpackPayload(any(), any())).thenReturn(new TestRequest());
+
+        // When
+        eventHandler.onCall(someId, null, null);
+        try {
+            Thread.sleep(10);
+        } catch (Exception ex) {
+        } // TODO make async invoker injectable
+
+        // Then
+        verify(sessionEvents, times(1)).handleRequest(any());
     }
 }

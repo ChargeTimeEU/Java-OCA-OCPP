@@ -103,6 +103,11 @@ public class Session {
         communicator.disconnect();
     }
 
+    public void accept(SessionEvents eventHandler) {
+        this.events = eventHandler;
+        communicator.accept(new CommunicatorEventHandler());
+    }
+
     private class CommunicatorEventHandler implements CommunicatorEvents {
         @Override
         public void onCallResult(String id, String payload) {
