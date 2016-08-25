@@ -30,7 +30,7 @@ package eu.chargetime.ocpp;
 /**
  * Send and receive data. Maintain connection.
  */
-public interface Transmitter
+public interface Transmitter extends Radio
 {
     /**
      * Connect to a specific node.
@@ -38,24 +38,6 @@ public interface Transmitter
      * @param uri    url and port of the node.
      * @param events connection related events.
      */
-    void connect(String uri, TransmitterEvents events);
+    void connect(String uri, RadioEvents events);
 
-    /**
-     * Disconnect from a node.
-     */
-    void disconnect();
-
-    /**
-     * Send a message to a node.
-     *
-     * @param message    test message to send.
-     */
-    void send(String message);
-
-    /**
-     * Accept an incoming connection request.
-     *
-     * @param events connection related events.
-     */
-    void accept(TransmitterEvents events);
 }

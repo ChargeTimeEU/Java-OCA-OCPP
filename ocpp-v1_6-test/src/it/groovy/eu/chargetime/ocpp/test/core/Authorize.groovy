@@ -8,7 +8,8 @@ import spock.util.concurrent.PollingConditions;
 
 class Authorize extends Specification
 {
-    @Shared FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
+    @Shared
+    FakeCentralSystem centralSystem = new FakeCentralSystem();
     @Shared FakeChargePoint chargePoint = new FakeChargePoint();
 
     def setupSpec() {
@@ -22,11 +23,7 @@ class Authorize extends Specification
 
     def cleanup() {
         chargePoint.disconnect();
-    }
-
-    def "No initial request received"() {
-        expect:
-        ! centralSystem.hasReceivedAuthorizeRequest();
+        centralSystem.stopped();
     }
 
     def "Charge point sends Authorize request and receives a response"() {
@@ -36,24 +33,13 @@ class Authorize extends Specification
 
         then:
         conditions.eventually {
-            assert centralSystem.hasReceivedAuthorizeRequest();
+            assert centralSystem.hasHandledAuthorizeRequest();
         }
-
-        when:
-            centralSystem.sendAuthorizeConfirmation(FakeCentralSystem.AuthorizationStatus.Accepted);
 
         then:
         conditions.eventually {
             assert chargePoint.hasReceivedAuthorizeConfirmation("Accepted");
         }
-    }
-
-    def "A Authorize request isn't seen as a Boot Notification"() {
-        when:
-        chargePoint.sendAuthorizeRequest("token");
-
-        then:
-        centralSystem.receivedMessageIsNot("BootNotification");
     }
 
 }

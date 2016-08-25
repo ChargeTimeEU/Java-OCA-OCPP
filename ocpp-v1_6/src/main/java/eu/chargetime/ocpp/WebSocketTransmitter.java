@@ -40,7 +40,7 @@ public class WebSocketTransmitter implements Transmitter
     private WebSocketClient client;
 
     @Override
-    public void connect(String uri, TransmitterEvents events) {
+    public void connect(String uri, RadioEvents events) {
         client = new WebSocketClient(URI.create(uri))
         {
             @Override
@@ -87,10 +87,5 @@ public class WebSocketTransmitter implements Transmitter
     @Override
     public void send(String request) {
         client.send(request);
-    }
-
-    @Override
-    public void accept(TransmitterEvents events) {
-
     }
 }

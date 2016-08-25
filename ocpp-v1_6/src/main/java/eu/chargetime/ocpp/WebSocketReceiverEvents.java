@@ -1,5 +1,4 @@
-package eu.chargetime.ocpp;
-/*
+package eu.chargetime.ocpp;/*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
@@ -25,8 +24,6 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
-public interface Listener {
-    void open(String hostname, int port, ListenerEvents listenerEvents);
-
-    void close();
+public interface WebSocketReceiverEvents {
+    void relay(String message);
 }

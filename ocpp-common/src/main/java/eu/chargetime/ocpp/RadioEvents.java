@@ -30,7 +30,7 @@ package eu.chargetime.ocpp;
 /**
  * Transmitter related events.
  */
-public interface TransmitterEvents
+public interface RadioEvents
 {
     /**
      * Connection established.

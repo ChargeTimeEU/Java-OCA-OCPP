@@ -1,5 +1,4 @@
-package eu.chargetime.ocpp;
-/*
+package eu.chargetime.ocpp;/*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
@@ -25,8 +24,31 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
-public interface Listener {
-    void open(String hostname, int port, ListenerEvents listenerEvents);
+public class WebSocketReceiver implements Receiver {
 
-    void close();
+    private RadioEvents handler;
+    private WebSocketReceiverEvents receiverEvents;
+
+    public WebSocketReceiver(WebSocketReceiverEvents handler) {
+        receiverEvents = handler;
+    }
+
+    @Override
+    public void disconnect() {
+        handler.disconnected();
+    }
+
+    void relay(String message) {
+        handler.receivedMessage(message);
+    }
+
+    @Override
+    public void send(String message) {
+        receiverEvents.relay(message);
+    }
+
+    @Override
+    public void accept(RadioEvents events) {
+        handler = events;
+    }
 }

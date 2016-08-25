@@ -1,15 +1,16 @@
 package eu.chargetime.ocpp.test.core
 
 import eu.chargetime.ocpp.model.core.AvailabilityType
-import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
+import eu.chargetime.ocpp.test.OldFakeCentralSystem
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
 class ChangeAvailability extends Specification
 {
-    @Shared FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
+    @Shared
+    OldFakeCentralSystem centralSystem = OldFakeCentralSystem.getInstance();
     @Shared FakeChargePoint chargePoint = new FakeChargePoint();
 
     def setupSpec() {

@@ -1,5 +1,4 @@
-package eu.chargetime.ocpp;
-/*
+package eu.chargetime.ocpp.feature.profile;/*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
@@ -25,8 +24,35 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
-public interface Listener {
-    void open(String hostname, int port, ListenerEvents listenerEvents);
+import eu.chargetime.ocpp.feature.AuthorizeFeature;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.core.AuthorizeRequest;
 
-    void close();
+public class ServerCoreProfile implements Profile {
+
+    private ServerCoreEventHandler handler;
+
+    public ServerCoreProfile(ServerCoreEventHandler handler) {
+        this.handler = handler;
+    }
+
+    @Override
+    public Feature[] getFeatureList() {
+        Feature[] features = new Feature[1];
+        features[0] = new AuthorizeFeature(this);
+        return features;
+    }
+
+    @Override
+    public Confirmation handleRequest(int sessionIndex, Request request) {
+        Confirmation result = null;
+
+        if (request instanceof AuthorizeRequest) {
+            result = handler.handleAuthorizeRequest(sessionIndex, (AuthorizeRequest) request);
+        }
+
+        return result;
+    }
 }

@@ -1,5 +1,4 @@
-package eu.chargetime.ocpp;
-/*
+package eu.chargetime.ocpp;/*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
@@ -25,8 +24,18 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
-public interface Listener {
-    void open(String hostname, int port, ListenerEvents listenerEvents);
+public interface Radio {
 
-    void close();
+    /**
+     * Disconnect from a node.
+     */
+    void disconnect();
+
+    /**
+     * Send a message to a node.
+     *
+     * @param message test message to send.
+     */
+    void send(String message);
+
 }

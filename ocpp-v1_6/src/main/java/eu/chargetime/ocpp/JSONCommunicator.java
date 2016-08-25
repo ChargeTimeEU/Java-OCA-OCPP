@@ -59,10 +59,10 @@ public class JSONCommunicator extends Communicator {
     /**
      * Handle required injections.
      *
-     * @param transmitter instance of the {@link Transmitter}.
+     * @param radio instance of the {@link Radio}.
      */
-    public JSONCommunicator(Transmitter transmitter) {
-        super(transmitter);
+    public JSONCommunicator(Radio radio) {
+        super(radio);
     }
 
     @Override

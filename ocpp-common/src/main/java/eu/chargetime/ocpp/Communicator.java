@@ -39,7 +39,7 @@ import eu.chargetime.ocpp.model.*;
  * Must be overloaded to implement a specific format.
  */
 public abstract class Communicator {
-    protected Transmitter transmitter;
+    protected Radio radio;
 
     /**
      * Convert a formatted string into a {@link Request}/{@link Confirmation}.
@@ -104,8 +104,8 @@ public abstract class Communicator {
      *
      * @param   transmitter Injected {@link Transmitter}
      */
-    public Communicator(Transmitter transmitter) {
-        this.transmitter = transmitter;
+    public Communicator(Radio transmitter) {
+        this.radio = transmitter;
     }
 
     /**
@@ -114,7 +114,8 @@ public abstract class Communicator {
      * @param   events  handler for call back events.
      */
     public void connect(String uri, CommunicatorEvents events) {
-        transmitter.connect(uri, new EventHandler(events));
+        if (radio instanceof Transmitter)
+            ((Transmitter) radio).connect(uri, new EventHandler(events));
     }
 
     /**
@@ -123,7 +124,8 @@ public abstract class Communicator {
      * @param events handler for call back events.
      */
     public void accept(CommunicatorEvents events) {
-        transmitter.accept(new EventHandler(events));
+        if (radio instanceof Receiver)
+            ((Receiver) radio).accept(new EventHandler(events));
     }
 
     /**
@@ -134,7 +136,7 @@ public abstract class Communicator {
      * @param   request     the outgoing {@link Request}
      */
     public void sendCall(String uniqueId, String action, Request request) {
-        transmitter.send(makeCall(uniqueId, action, packPayload(request)));
+        radio.send(makeCall(uniqueId, action, packPayload(request)));
     }
 
     /**
@@ -144,7 +146,7 @@ public abstract class Communicator {
      * @param   confirmation    the outgoing {@link Confirmation}
      */
     public void sendCallResult(String uniqueId, Confirmation confirmation) {
-        transmitter.send(makeCallResult(uniqueId, packPayload(confirmation)));
+        radio.send(makeCallResult(uniqueId, packPayload(confirmation)));
     }
 
     /**
@@ -155,17 +157,17 @@ public abstract class Communicator {
      * @param   errorDescription    a associated error description.
      */
     public void sendCallError(String uniqueId, String errorCode, String errorDescription) {
-        transmitter.send(makeCallError(uniqueId, errorCode, errorDescription));
+        radio.send(makeCallError(uniqueId, errorCode, errorDescription));
     }
 
     /**
      * Close down the connection. Uses the {@link Transmitter}.
      */
     public void disconnect() {
-        transmitter.disconnect();
+        radio.disconnect();
     }
 
-    private class EventHandler implements TransmitterEvents {
+    private class EventHandler implements RadioEvents {
         private final CommunicatorEvents events;
 
         public EventHandler(CommunicatorEvents events) {

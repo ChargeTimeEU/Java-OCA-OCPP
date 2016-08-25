@@ -41,22 +41,23 @@ import java.util.concurrent.CompletableFuture;
 public abstract class Server extends FeatureHandler {
 
     private ArrayList<Session> sessions;
+    private Listener listener;
 
     /**
      *
      */
-    public Server() {
+    public Server(Listener listener) {
+        this.listener = listener;
         this.sessions = new ArrayList<>();
     }
 
     /**
      * Start listening for clients.
      *
-     * @param listener     Inject the listener.
      * @param serverEvents Callback handler for server specific events.
      */
-    public void open(Listener listener, ServerEvents serverEvents) {
-        listener.open(session -> {
+    public void open(String hostname, int port, ServerEvents serverEvents) {
+        listener.open(hostname, port, session -> {
             session.accept(new SessionEvents() {
                 @Override
                 public Feature findFeatureByAction(String action) {
@@ -97,6 +98,10 @@ public abstract class Server extends FeatureHandler {
             sessions.add(session);
             serverEvents.newSession(sessions.indexOf(session));
         });
+    }
+
+    public void close() {
+        listener.close();
     }
 
     /**

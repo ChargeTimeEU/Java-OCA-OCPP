@@ -1,5 +1,4 @@
-package eu.chargetime.ocpp;
-/*
+package eu.chargetime.ocpp;/*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
@@ -25,8 +24,17 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
-public interface Listener {
-    void open(String hostname, int port, ListenerEvents listenerEvents);
+import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 
-    void close();
+public class JSONServer extends Server {
+
+    /**
+     * The core feature profile is required as a minimum.
+     *
+     * @param coreProfile implementation of the core feature profile.
+     */
+    public JSONServer(ServerCoreProfile coreProfile) {
+        super(new WebSocketListener());
+        addFeatureProfile(coreProfile);
+    }
 }
