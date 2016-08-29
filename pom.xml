@@ -38,6 +38,7 @@
      <modules>
        <module>ocpp-common</module>
        <module>ocpp-v1_6</module>
+         <module>ocpp-v1_6-test</module>
      </modules>
 
     <build>

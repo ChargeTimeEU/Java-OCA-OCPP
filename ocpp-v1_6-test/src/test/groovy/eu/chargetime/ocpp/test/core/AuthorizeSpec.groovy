@@ -6,7 +6,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions;
 
-class Authorize extends Specification
+class AuthorizeSpec extends Specification
 {
     @Shared
     FakeCentralSystem centralSystem = new FakeCentralSystem();
