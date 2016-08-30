@@ -29,6 +29,7 @@ import eu.chargetime.ocpp.model.core.*;
 public interface ServerCoreEventHandler {
     AuthorizeConfirmation handleAuthorizeRequest(int sessionIndex, AuthorizeRequest request);
     BootNotificationConfirmation handleBootNotificationRequest(int sessionIndex, BootNotificationRequest request);
-
     DataTransferConfirmation handleDataTransferRequest(int sessionIndex, DataTransferRequest request);
+
+    HeartbeatConfirmation handleHeartbeatRequest(int sessionIndex, HeartbeatRequest request);
 }

@@ -30,6 +30,7 @@ import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.AuthorizeRequest;
 import eu.chargetime.ocpp.model.core.BootNotificationRequest;
 import eu.chargetime.ocpp.model.core.DataTransferRequest;
+import eu.chargetime.ocpp.model.core.HeartbeatRequest;
 
 import java.util.HashSet;
 
@@ -49,6 +50,7 @@ public class ServerCoreProfile implements Profile {
         features.add(new ClearCacheFeature(this));
         features.add(new DataTransferFeature(this));
         features.add(new GetConfigurationFeature(this));
+        features.add(new HeartbeatFeature(this));
     }
 
     @Override
@@ -66,6 +68,8 @@ public class ServerCoreProfile implements Profile {
             result = handler.handleBootNotificationRequest(sessionIndex, (BootNotificationRequest) request);
         } else if (request instanceof DataTransferRequest) {
             result = handler.handleDataTransferRequest(sessionIndex, (DataTransferRequest) request);
+        } else if (request instanceof HeartbeatRequest) {
+            result = handler.handleHeartbeatRequest(sessionIndex, (HeartbeatRequest) request);
         }
 
         return result;

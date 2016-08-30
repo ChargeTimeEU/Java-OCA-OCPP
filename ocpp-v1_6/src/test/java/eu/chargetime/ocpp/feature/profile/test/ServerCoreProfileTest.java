@@ -6,6 +6,7 @@ import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import eu.chargetime.ocpp.model.core.AuthorizeRequest;
 import eu.chargetime.ocpp.model.core.BootNotificationRequest;
 import eu.chargetime.ocpp.model.core.DataTransferRequest;
+import eu.chargetime.ocpp.model.core.HeartbeatRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -153,6 +154,28 @@ public class ServerCoreProfileTest {
 
         // Then
         assertThat(findFeature(features, "GetConfiguration"), is(instanceOf(GetConfigurationFeature.class)));
+    }
+
+    @Test
+    public void getFeatureList_containsHeartbeatFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "Heartbeat"), is(instanceOf(HeartbeatFeature.class)));
+    }
+
+    @Test
+    public void handleRequest_aHeartbeatRequest_callsHandleHeartbeatRequest() {
+        // Given
+        HeartbeatRequest request = new HeartbeatRequest();
+        int sessionId = 42;
+
+        // When
+        core.handleRequest(sessionId, request);
+
+        // Then
+        verify(handler, times(1)).handleHeartbeatRequest(eq(sessionId), eq(request));
     }
 
     private Feature findFeature(Feature[] features, String action) {

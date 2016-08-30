@@ -89,6 +89,14 @@ public class FakeCentralSystem
                 confirmation.setStatus(DataTransferStatus.Accepted);
                 return confirmation;
             }
+
+            @Override
+            public HeartbeatConfirmation handleHeartbeatRequest(int sessionIndex, HeartbeatRequest request) {
+                receivedRequest = request;
+                HeartbeatConfirmation confirmation = new HeartbeatConfirmation();
+                confirmation.setCurrentTime(Calendar.getInstance());
+                return confirmation;
+            }
         }));
         server.open("localhost", 8887, new ServerEvents() {
             @Override
@@ -180,5 +188,9 @@ public class FakeCentralSystem
 
     public boolean hasReceivedGetConfigurationConfirmation() {
         return receivedConfirmation instanceof GetConfigurationConfirmation;
+    }
+
+    public boolean hasHandledHeartbeat() {
+        return receivedRequest instanceof HeartbeatRequest;
     }
 }
