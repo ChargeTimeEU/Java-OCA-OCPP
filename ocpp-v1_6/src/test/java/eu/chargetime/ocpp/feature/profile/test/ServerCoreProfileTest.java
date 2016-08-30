@@ -146,6 +146,15 @@ public class ServerCoreProfileTest {
         verify(handler, times(1)).handleDataTransferRequest(eq(sessionId), eq(request));
     }
 
+    @Test
+    public void getFeatureList_containsGetConfigurationFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "GetConfiguration"), is(instanceOf(GetConfigurationFeature.class)));
+    }
+
     private Feature findFeature(Feature[] features, String action) {
         Feature output = null;
         for (Feature feature : features) {

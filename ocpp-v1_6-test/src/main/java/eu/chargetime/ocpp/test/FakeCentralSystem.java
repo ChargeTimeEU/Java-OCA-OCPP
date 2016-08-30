@@ -171,4 +171,14 @@ public class FakeCentralSystem
     public boolean hasHandledDataTransferRequest() {
         return receivedRequest instanceof DataTransferRequest;
     }
+
+    public void sendGetConfigurationRequest(String... key) throws Exception {
+        GetConfigurationRequest request = new GetConfigurationRequest();
+        request.setKey(key);
+        server.send(sessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+    }
+
+    public boolean hasReceivedGetConfigurationConfirmation() {
+        return receivedConfirmation instanceof GetConfigurationConfirmation;
+    }
 }

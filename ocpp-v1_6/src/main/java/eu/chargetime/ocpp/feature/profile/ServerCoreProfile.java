@@ -48,6 +48,7 @@ public class ServerCoreProfile implements Profile {
         features.add(new ChangeConfigurationFeature(this));
         features.add(new ClearCacheFeature(this));
         features.add(new DataTransferFeature(this));
+        features.add(new GetConfigurationFeature(this));
     }
 
     @Override
