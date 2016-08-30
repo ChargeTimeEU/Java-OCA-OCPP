@@ -203,4 +203,20 @@ public class FakeCentralSystem
     public boolean hasHandledMeterValuesRequest() {
         return receivedRequest instanceof MeterValuesRequest;
     }
+
+    public void sendRemoteStartTransactionRequest(int connectorId, String idTag) throws Exception {
+        RemoteStartTransactionRequest request = new RemoteStartTransactionRequest();
+        IdToken idToken = new IdToken();
+        idToken.setIdToken(idTag);
+        request.setIdTag(idToken);
+        request.setConnectorId(connectorId);
+        server.send(sessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+    }
+
+    public boolean hasReceivedRemoteStartTransactionConfirmation(String status) {
+        boolean result = receivedConfirmation instanceof RemoteStartTransactionConfirmation;
+        if (result)
+            result &= ((RemoteStartTransactionConfirmation) receivedConfirmation).getStatus().equals(status);
+        return result;
+    }
 }

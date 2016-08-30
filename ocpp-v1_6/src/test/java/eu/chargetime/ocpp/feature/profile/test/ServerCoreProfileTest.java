@@ -197,6 +197,15 @@ public class ServerCoreProfileTest {
         verify(handler, times(1)).handleMeterValuesRequest(eq(sessionId), eq(request));
     }
 
+    @Test
+    public void getFeatureList_containsRemoteStartTransactionFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "RemoteStartTransaction"), is(instanceOf(RemoteStartTransactionFeature.class)));
+    }
+
     private Feature findFeature(Feature[] features, String action) {
         Feature output = null;
         for (Feature feature : features) {
