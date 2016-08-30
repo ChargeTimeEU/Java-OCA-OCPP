@@ -27,10 +27,7 @@ package eu.chargetime.ocpp.feature.profile;/*
 import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.core.AuthorizeRequest;
-import eu.chargetime.ocpp.model.core.BootNotificationRequest;
-import eu.chargetime.ocpp.model.core.DataTransferRequest;
-import eu.chargetime.ocpp.model.core.HeartbeatRequest;
+import eu.chargetime.ocpp.model.core.*;
 
 import java.util.HashSet;
 
@@ -51,6 +48,7 @@ public class ServerCoreProfile implements Profile {
         features.add(new DataTransferFeature(this));
         features.add(new GetConfigurationFeature(this));
         features.add(new HeartbeatFeature(this));
+        features.add(new MeterValuesFeature(this));
     }
 
     @Override
@@ -70,6 +68,8 @@ public class ServerCoreProfile implements Profile {
             result = handler.handleDataTransferRequest(sessionIndex, (DataTransferRequest) request);
         } else if (request instanceof HeartbeatRequest) {
             result = handler.handleHeartbeatRequest(sessionIndex, (HeartbeatRequest) request);
+        } else if (request instanceof MeterValuesRequest) {
+            result = handler.handleMeterValuesRequest(sessionIndex, (MeterValuesRequest) request);
         }
 
         return result;

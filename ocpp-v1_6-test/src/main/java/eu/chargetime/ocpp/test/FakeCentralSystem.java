@@ -97,6 +97,12 @@ public class FakeCentralSystem
                 confirmation.setCurrentTime(Calendar.getInstance());
                 return confirmation;
             }
+
+            @Override
+            public MeterValuesConfirmation handleMeterValuesRequest(int sessionIndex, MeterValuesRequest request) {
+                receivedRequest = request;
+                return new MeterValuesConfirmation();
+            }
         }));
         server.open("localhost", 8887, new ServerEvents() {
             @Override
@@ -192,5 +198,9 @@ public class FakeCentralSystem
 
     public boolean hasHandledHeartbeat() {
         return receivedRequest instanceof HeartbeatRequest;
+    }
+
+    public boolean hasHandledMeterValuesRequest() {
+        return receivedRequest instanceof MeterValuesRequest;
     }
 }

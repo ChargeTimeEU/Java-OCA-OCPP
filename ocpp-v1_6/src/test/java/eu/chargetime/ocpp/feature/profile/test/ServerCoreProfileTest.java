@@ -3,10 +3,7 @@ package eu.chargetime.ocpp.feature.profile.test;
 import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
-import eu.chargetime.ocpp.model.core.AuthorizeRequest;
-import eu.chargetime.ocpp.model.core.BootNotificationRequest;
-import eu.chargetime.ocpp.model.core.DataTransferRequest;
-import eu.chargetime.ocpp.model.core.HeartbeatRequest;
+import eu.chargetime.ocpp.model.core.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -176,6 +173,28 @@ public class ServerCoreProfileTest {
 
         // Then
         verify(handler, times(1)).handleHeartbeatRequest(eq(sessionId), eq(request));
+    }
+
+    @Test
+    public void getFeatureList_containsMeterValuesFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "MeterValues"), is(instanceOf(MeterValuesFeature.class)));
+    }
+
+    @Test
+    public void handleRequest_aMeterValuesRequest_callsHandleMeterValuesRequest() {
+        // Given
+        MeterValuesRequest request = new MeterValuesRequest();
+        int sessionId = 42;
+
+        // When
+        core.handleRequest(sessionId, request);
+
+        // Then
+        verify(handler, times(1)).handleMeterValuesRequest(eq(sessionId), eq(request));
     }
 
     private Feature findFeature(Feature[] features, String action) {
