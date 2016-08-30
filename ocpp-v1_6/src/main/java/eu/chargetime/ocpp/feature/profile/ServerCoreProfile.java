@@ -45,6 +45,7 @@ public class ServerCoreProfile implements Profile {
         features.add(new BootNotificationFeature(this));
         features.add(new ChangeAvailabilityFeature(this));
         features.add(new ChangeConfigurationFeature(this));
+        features.add(new ClearCacheFeature(this));
     }
 
     @Override

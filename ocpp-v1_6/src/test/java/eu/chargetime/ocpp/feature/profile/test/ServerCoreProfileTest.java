@@ -114,6 +114,16 @@ public class ServerCoreProfileTest {
         assertThat(findFeature(features, "ChangeConfiguration"), is(instanceOf(ChangeConfigurationFeature.class)));
     }
 
+    @Test
+    public void getFeatureList_containsClearCacheFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "ClearCache"), is(instanceOf(ClearCacheFeature.class)));
+    }
+
+
     private Feature findFeature(Feature[] features, String action) {
         Feature output = null;
         for (Feature feature : features) {

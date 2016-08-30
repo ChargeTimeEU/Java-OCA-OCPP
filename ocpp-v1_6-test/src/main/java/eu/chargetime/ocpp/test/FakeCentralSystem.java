@@ -138,4 +138,13 @@ public class FakeCentralSystem
     public boolean hasReceivedChangeConfigurationConfirmation() {
         return receivedConfirmation instanceof ChangeConfigurationConfirmation;
     }
+
+    public void sendClearCacheRequest() throws Exception {
+        ClearCacheRequest request = new ClearCacheRequest();
+        server.send(sessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+    }
+
+    public boolean hasReceivedClearCacheConfirmation() {
+        return receivedConfirmation instanceof ClearCacheConfirmation;
+    }
 }

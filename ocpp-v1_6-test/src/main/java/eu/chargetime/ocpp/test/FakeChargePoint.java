@@ -70,7 +70,9 @@ public class FakeChargePoint
             @Override
             public ClearCacheConfirmation handleClearCacheRequest(ClearCacheRequest request) {
                 receivedRequest = request;
-                return new ClearCacheConfirmation();
+                ClearCacheConfirmation confirmation = new ClearCacheConfirmation();
+                confirmation.setStatus(ClearCacheStatus.Accepted);
+                return confirmation;
             }
 
             @Override

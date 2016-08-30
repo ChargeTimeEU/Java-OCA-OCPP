@@ -1,15 +1,15 @@
 package eu.chargetime.ocpp.test.core
 
+import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
-import eu.chargetime.ocpp.test.OldFakeCentralSystem
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class ClearCache extends Specification
+class ClearCacheSpec extends Specification
 {
     @Shared
-    OldFakeCentralSystem centralSystem = OldFakeCentralSystem.getInstance();
+    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
     @Shared FakeChargePoint chargePoint = new FakeChargePoint();
 
     def setupSpec() {
