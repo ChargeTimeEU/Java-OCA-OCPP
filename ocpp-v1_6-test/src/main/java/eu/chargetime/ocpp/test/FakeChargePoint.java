@@ -78,7 +78,9 @@ public class FakeChargePoint
             @Override
             public DataTransferConfirmation handleDataTransferRequest(DataTransferRequest request) {
                 receivedRequest = request;
-                return new DataTransferConfirmation();
+                DataTransferConfirmation confirmation = new DataTransferConfirmation();
+                confirmation.setStatus(DataTransferStatus.Accepted);
+                return confirmation;
             }
 
             @Override

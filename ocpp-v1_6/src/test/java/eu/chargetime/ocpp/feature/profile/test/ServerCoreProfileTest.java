@@ -5,6 +5,7 @@ import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import eu.chargetime.ocpp.model.core.AuthorizeRequest;
 import eu.chargetime.ocpp.model.core.BootNotificationRequest;
+import eu.chargetime.ocpp.model.core.DataTransferRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -123,6 +124,27 @@ public class ServerCoreProfileTest {
         assertThat(findFeature(features, "ClearCache"), is(instanceOf(ClearCacheFeature.class)));
     }
 
+    @Test
+    public void getFeatureList_containsDataTransferFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "DataTransfer"), is(instanceOf(DataTransferFeature.class)));
+    }
+
+    @Test
+    public void handleRequest_aDataTransferRequest_callsHandleDataTransferRequest() {
+        // Given
+        DataTransferRequest request = new DataTransferRequest();
+        int sessionId = 42;
+
+        // When
+        core.handleRequest(sessionId, request);
+
+        // Then
+        verify(handler, times(1)).handleDataTransferRequest(eq(sessionId), eq(request));
+    }
 
     private Feature findFeature(Feature[] features, String action) {
         Feature output = null;

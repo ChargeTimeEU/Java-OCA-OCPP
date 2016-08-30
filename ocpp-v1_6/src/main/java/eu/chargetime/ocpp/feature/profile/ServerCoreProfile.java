@@ -29,6 +29,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.AuthorizeRequest;
 import eu.chargetime.ocpp.model.core.BootNotificationRequest;
+import eu.chargetime.ocpp.model.core.DataTransferRequest;
 
 import java.util.HashSet;
 
@@ -46,6 +47,7 @@ public class ServerCoreProfile implements Profile {
         features.add(new ChangeAvailabilityFeature(this));
         features.add(new ChangeConfigurationFeature(this));
         features.add(new ClearCacheFeature(this));
+        features.add(new DataTransferFeature(this));
     }
 
     @Override
@@ -61,6 +63,8 @@ public class ServerCoreProfile implements Profile {
             result = handler.handleAuthorizeRequest(sessionIndex, (AuthorizeRequest) request);
         } else if (request instanceof BootNotificationRequest) {
             result = handler.handleBootNotificationRequest(sessionIndex, (BootNotificationRequest) request);
+        } else if (request instanceof DataTransferRequest) {
+            result = handler.handleDataTransferRequest(sessionIndex, (DataTransferRequest) request);
         }
 
         return result;

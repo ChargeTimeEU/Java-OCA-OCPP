@@ -81,6 +81,14 @@ public class FakeCentralSystem
                 confirmation.setStatus(RegistrationStatus.Accepted);
                 return confirmation;
             }
+
+            @Override
+            public DataTransferConfirmation handleDataTransferRequest(int sessionIndex, DataTransferRequest request) {
+                receivedRequest = request;
+                DataTransferConfirmation confirmation = new DataTransferConfirmation();
+                confirmation.setStatus(DataTransferStatus.Accepted);
+                return confirmation;
+            }
         }));
         server.open("localhost", 8887, new ServerEvents() {
             @Override
@@ -146,5 +154,21 @@ public class FakeCentralSystem
 
     public boolean hasReceivedClearCacheConfirmation() {
         return receivedConfirmation instanceof ClearCacheConfirmation;
+    }
+
+    public void sendDataTransferRequest(String vendorId, String messageId, String data) throws Exception {
+        DataTransferRequest request = new DataTransferRequest();
+        request.setVendorId(vendorId);
+        request.setMessageId(messageId);
+        request.setData(data);
+        server.send(sessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+    }
+
+    public boolean hasReceivedDataTransferConfirmation() {
+        return receivedConfirmation instanceof DataTransferConfirmation;
+    }
+
+    public boolean hasHandledDataTransferRequest() {
+        return receivedRequest instanceof DataTransferRequest;
     }
 }

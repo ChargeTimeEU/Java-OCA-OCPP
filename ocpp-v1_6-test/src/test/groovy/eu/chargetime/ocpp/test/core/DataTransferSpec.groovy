@@ -1,15 +1,15 @@
 package eu.chargetime.ocpp.test.core
 
+import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
-import eu.chargetime.ocpp.test.OldFakeCentralSystem
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class DataTransfer extends Specification
+class DataTransferSpec extends Specification
 {
     @Shared
-    OldFakeCentralSystem centralSystem = OldFakeCentralSystem.getInstance();
+    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
     @Shared FakeChargePoint chargePoint = new FakeChargePoint();
 
     def setupSpec() {
@@ -46,11 +46,8 @@ class DataTransfer extends Specification
 
         then:
         conditions.eventually {
-            assert centralSystem.hasReceivedDataTransferRequest();
+            assert centralSystem.hasHandledDataTransferRequest();
         }
-
-        when:
-            centralSystem.sendDataTransferConfirmation("Accepted");
 
         then:
         conditions.eventually {
