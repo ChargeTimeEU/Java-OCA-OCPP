@@ -4,12 +4,12 @@ import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
 import spock.lang.Shared
 import spock.lang.Specification
-import spock.util.concurrent.PollingConditions;
+import spock.util.concurrent.PollingConditions
 
 class AuthorizeSpec extends Specification
 {
     @Shared
-    FakeCentralSystem centralSystem = new FakeCentralSystem();
+    FakeCentralSystem centralSystem = FakeCentralSystem.instance;
     @Shared FakeChargePoint chargePoint = new FakeChargePoint();
 
     def setupSpec() {
@@ -23,7 +23,6 @@ class AuthorizeSpec extends Specification
 
     def cleanup() {
         chargePoint.disconnect();
-        centralSystem.stopped();
     }
 
     def "Charge point sends Authorize request and receives a response"() {

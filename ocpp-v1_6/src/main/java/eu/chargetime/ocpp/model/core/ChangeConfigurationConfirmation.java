@@ -1,6 +1,5 @@
 package eu.chargetime.ocpp.model.core;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Confirmation;
 
 /*
@@ -58,9 +57,8 @@ public class ChangeConfigurationConfirmation implements Confirmation {
      * Required. Returns whether configuration change has been accepted.
      *
      * @param status the {@link ConfigurationStatus}.
-     * @throws PropertyConstraintException
      */
-    public void setStatus(ConfigurationStatus status) throws PropertyConstraintException {
+    public void setStatus(ConfigurationStatus status) {
         this.status = status;
     }
 

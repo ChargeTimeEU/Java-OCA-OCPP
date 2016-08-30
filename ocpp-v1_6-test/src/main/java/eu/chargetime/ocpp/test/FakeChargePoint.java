@@ -62,7 +62,9 @@ public class FakeChargePoint
             @Override
             public ChangeConfigurationConfirmation handleChangeConfigurationRequest(ChangeConfigurationRequest request) {
                 receivedRequest = request;
-                return new ChangeConfigurationConfirmation();
+                ChangeConfigurationConfirmation confirmation = new ChangeConfigurationConfirmation();
+                confirmation.setStatus(ConfigurationStatus.Accepted);
+                return confirmation;
             }
 
             @Override
@@ -183,9 +185,9 @@ public class FakeChargePoint
         }
     }
 
-    public boolean hasReceivedBootConfirmation(RegistrationStatus status) {
+    public boolean hasReceivedBootConfirmation(String status) {
         if (receivedConfirmation instanceof BootNotificationConfirmation)
-            return ((BootNotificationConfirmation) receivedConfirmation).objStatus().equals(status);
+            return ((BootNotificationConfirmation) receivedConfirmation).getStatus().equals(status);
         return false;
     }
 

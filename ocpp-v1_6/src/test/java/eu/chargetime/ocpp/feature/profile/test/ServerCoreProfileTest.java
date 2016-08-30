@@ -1,10 +1,10 @@
 package eu.chargetime.ocpp.feature.profile.test;
 
-import eu.chargetime.ocpp.feature.AuthorizeFeature;
-import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import eu.chargetime.ocpp.model.core.AuthorizeRequest;
+import eu.chargetime.ocpp.model.core.BootNotificationRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -72,6 +72,46 @@ public class ServerCoreProfileTest {
 
         // Then
         verify(handler, times(1)).handleAuthorizeRequest(eq(sessionId), eq(request));
+    }
+
+    @Test
+    public void getFeatureList_containsBootNotificatonFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "BootNotification"), is(instanceOf(BootNotificationFeature.class)));
+    }
+
+    @Test
+    public void handleRequest_aBootNotificationRequest_callsHandleBootNotificationRequest() {
+        // Given
+        BootNotificationRequest request = new BootNotificationRequest();
+        int sessionId = 42;
+
+        // When
+        core.handleRequest(sessionId, request);
+
+        // Then
+        verify(handler, times(1)).handleBootNotificationRequest(eq(sessionId), eq(request));
+    }
+
+    @Test
+    public void getFeatureList_containsChangeAvailabilityFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "ChangeAvailability"), is(instanceOf(ChangeAvailabilityFeature.class)));
+    }
+
+    @Test
+    public void getFeatureList_containsChangeConfigurationFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "ChangeConfiguration"), is(instanceOf(ChangeConfigurationFeature.class)));
     }
 
     private Feature findFeature(Feature[] features, String action) {

@@ -24,25 +24,32 @@ package eu.chargetime.ocpp.feature.profile;/*
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.AuthorizeFeature;
-import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.AuthorizeRequest;
+import eu.chargetime.ocpp.model.core.BootNotificationRequest;
+
+import java.util.HashSet;
 
 public class ServerCoreProfile implements Profile {
 
     private ServerCoreEventHandler handler;
+    private HashSet<Feature> features;
 
     public ServerCoreProfile(ServerCoreEventHandler handler) {
         this.handler = handler;
+
+        features = new HashSet<>();
+        features.add(new AuthorizeFeature(this));
+        features.add(new BootNotificationFeature(this));
+        features.add(new ChangeAvailabilityFeature(this));
+        features.add(new ChangeConfigurationFeature(this));
     }
 
     @Override
     public Feature[] getFeatureList() {
-        Feature[] features = new Feature[1];
-        features[0] = new AuthorizeFeature(this);
-        return features;
+        return features.toArray(new Feature[0]);
     }
 
     @Override
@@ -51,6 +58,8 @@ public class ServerCoreProfile implements Profile {
 
         if (request instanceof AuthorizeRequest) {
             result = handler.handleAuthorizeRequest(sessionIndex, (AuthorizeRequest) request);
+        } else if (request instanceof BootNotificationRequest) {
+            result = handler.handleBootNotificationRequest(sessionIndex, (BootNotificationRequest) request);
         }
 
         return result;

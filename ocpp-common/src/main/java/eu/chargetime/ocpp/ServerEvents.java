@@ -26,4 +26,6 @@ package eu.chargetime.ocpp;/*
 
 public interface ServerEvents {
     void newSession(int identity);
+
+    void lostSession(int identity);
 }

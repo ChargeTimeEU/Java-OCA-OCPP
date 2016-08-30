@@ -1,16 +1,15 @@
 package eu.chargetime.ocpp.test.core
 
-import eu.chargetime.ocpp.model.core.RegistrationStatus
+import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
-import eu.chargetime.ocpp.test.OldFakeCentralSystem
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class BootNotification extends Specification
+class BootNotificationSpec extends Specification
 {
     @Shared
-    OldFakeCentralSystem centralSystem = OldFakeCentralSystem.getInstance();
+    FakeCentralSystem centralSystem = FakeCentralSystem.instance;
     @Shared FakeChargePoint chargePoint = new FakeChargePoint();
 
     def setupSpec() {
@@ -33,15 +32,12 @@ class BootNotification extends Specification
 
         then:
         conditions.eventually {
-            assert centralSystem.hasReceivedBootNotification("VendorX", "SingleSocketCharger");
+            assert centralSystem.hasHandledBootNotification("VendorX", "SingleSocketCharger");
         }
-
-        when:
-        centralSystem.sendBootConfirmation(RegistrationStatus.Accepted);
 
         then:
         conditions.eventually {
-            assert chargePoint.hasReceivedBootConfirmation(RegistrationStatus.Accepted);
+            assert chargePoint.hasReceivedBootConfirmation("Accepted");
         }
     }
 }

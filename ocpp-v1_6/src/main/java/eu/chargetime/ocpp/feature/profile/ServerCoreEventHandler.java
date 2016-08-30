@@ -26,7 +26,11 @@ package eu.chargetime.ocpp.feature.profile;/*
 
 import eu.chargetime.ocpp.model.core.AuthorizeConfirmation;
 import eu.chargetime.ocpp.model.core.AuthorizeRequest;
+import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
+import eu.chargetime.ocpp.model.core.BootNotificationRequest;
 
 public interface ServerCoreEventHandler {
     AuthorizeConfirmation handleAuthorizeRequest(int sessionIndex, AuthorizeRequest request);
+
+    BootNotificationConfirmation handleBootNotificationRequest(int sessionIndex, BootNotificationRequest request);
 }
