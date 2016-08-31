@@ -232,4 +232,18 @@ public class FakeCentralSystem
             result &= ((RemoteStopTransactionConfirmation) receivedConfirmation).getStatus().equals(status);
         return result;
     }
+
+    public void sendResetRequest(ResetType type) throws Exception {
+        ResetRequest request = new ResetRequest();
+        request.setType(type);
+        server.send(sessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+    }
+
+    public boolean hasReceivedResetConfirmation(String status) {
+        boolean result = receivedConfirmation instanceof ResetConfirmation;
+        if (result)
+            result &= ((ResetConfirmation) receivedConfirmation).getStatus().equals(status);
+        return result;
+    }
+
 }
