@@ -33,6 +33,7 @@ public interface ServerCoreEventHandler {
     HeartbeatConfirmation handleHeartbeatRequest(int sessionIndex, HeartbeatRequest request);
     MeterValuesConfirmation handleMeterValuesRequest(int sessionIndex, MeterValuesRequest request);
     StartTransactionConfirmation handleStartTransactionRequest(int sessionIndex, StartTransactionRequest request);
-
     StatusNotificationConfirmation handleStatusNotificationRequest(int sessionIndex, StatusNotificationRequest request);
+
+    StopTransactionConfirmation handleStopTransactionRequest(int sessionIndex, StopTransactionRequest request);
 }

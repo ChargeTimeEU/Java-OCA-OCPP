@@ -268,6 +268,28 @@ public class ServerCoreProfileTest {
         verify(handler, times(1)).handleStatusNotificationRequest(eq(sessionId), eq(request));
     }
 
+    @Test
+    public void getFeatureList_containsStopTransactionFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "StopTransaction"), is(instanceOf(StopTransactionFeature.class)));
+    }
+
+    @Test
+    public void handleRequest_aStopTransactionRequest_callsHandleStopTransactionRequest() {
+        // Given
+        StopTransactionRequest request = new StopTransactionRequest();
+        int sessionId = 42;
+
+        // When
+        core.handleRequest(sessionId, request);
+
+        // Then
+        verify(handler, times(1)).handleStopTransactionRequest(eq(sessionId), eq(request));
+    }
+
     private Feature findFeature(Feature[] features, String action) {
         Feature output = null;
         for (Feature feature : features) {

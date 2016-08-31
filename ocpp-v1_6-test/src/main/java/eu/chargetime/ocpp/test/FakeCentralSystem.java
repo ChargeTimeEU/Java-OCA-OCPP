@@ -121,6 +121,13 @@ public class FakeCentralSystem
                 StatusNotificationConfirmation confirmation = new StatusNotificationConfirmation();
                 return confirmation;
             }
+
+            @Override
+            public StopTransactionConfirmation handleStopTransactionRequest(int sessionIndex, StopTransactionRequest request) {
+                receivedRequest = request;
+                StopTransactionConfirmation confirmation = new StopTransactionConfirmation();
+                return confirmation;
+            }
         }));
         server.open("localhost", 8887, new ServerEvents() {
             @Override
@@ -270,5 +277,9 @@ public class FakeCentralSystem
 
     public boolean hasHandledStatusNotificationRequest() {
         return receivedRequest instanceof StatusNotificationRequest;
+    }
+
+    public boolean hasHandledStopTransactionRequest() {
+        return receivedRequest instanceof StopTransactionRequest;
     }
 }
