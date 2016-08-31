@@ -87,7 +87,8 @@ public abstract class Server extends FeatureHandler {
 
                 @Override
                 public void handleConnectionClosed() {
-
+                    serverEvents.lostSession(sessions.indexOf(session));
+                    sessions.remove(session);
                 }
 
                 @Override

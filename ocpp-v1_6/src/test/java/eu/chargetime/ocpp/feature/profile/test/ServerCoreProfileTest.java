@@ -105,12 +105,38 @@ public class ServerCoreProfileTest {
     }
 
     @Test
+    public void createChangeAvailabilityRequest_withTypeAndConnectorId_returnsValidChangeAvailabilityRequest() throws Exception {
+        // Given
+        AvailabilityType type = AvailabilityType.Operative;
+        int connectorId = 1;
+
+        // When
+        ChangeAvailabilityRequest result = core.createChangeAvailabilityRequest(type, connectorId);
+
+        // Then
+        assertThat(result.validate(), is(true));
+    }
+
+    @Test
     public void getFeatureList_containsChangeConfigurationFeature() {
         // When
         Feature[] features = core.getFeatureList();
 
         // Then
         assertThat(findFeature(features, "ChangeConfiguration"), is(instanceOf(ChangeConfigurationFeature.class)));
+    }
+
+    @Test
+    public void createChangeConfigurationRequest_withKeyAndValue_returnsValidChangeConfigurationRequest() throws Exception {
+        // Given
+        String key = "some key";
+        String value = "some value";
+
+        // When
+        ChangeConfigurationRequest result = core.createChangeConfigurationRequest(key, value);
+
+        // Then
+        assertThat(result.validate(), is(true));
     }
 
     @Test
@@ -123,12 +149,33 @@ public class ServerCoreProfileTest {
     }
 
     @Test
+    public void createClearCacheRequest_returnsValidClearCacheRequest() throws Exception {
+        // When
+        ClearCacheRequest result = core.createClearCacheRequest();
+
+        // Then
+        assertThat(result.validate(), is(true));
+    }
+
+    @Test
     public void getFeatureList_containsDataTransferFeature() {
         // When
         Feature[] features = core.getFeatureList();
 
         // Then
         assertThat(findFeature(features, "DataTransfer"), is(instanceOf(DataTransferFeature.class)));
+    }
+
+    @Test
+    public void createChangeConfigurationRequest_withVendorId_returnsValidDataTransferRequest() throws Exception {
+        // Given
+        String vendorId = "some vendorId";
+
+        // When
+        DataTransferRequest result = core.createDataTransferRequest(vendorId);
+
+        // Then
+        assertThat(result.validate(), is(true));
     }
 
     @Test
@@ -151,6 +198,16 @@ public class ServerCoreProfileTest {
 
         // Then
         assertThat(findFeature(features, "GetConfiguration"), is(instanceOf(GetConfigurationFeature.class)));
+    }
+
+    @Test
+    public void createGetConfigurationRequest_returnsValidGetConfigurationRequest() throws Exception {
+
+        // When
+        GetConfigurationRequest result = core.createGetConfigurationRequest();
+
+        // Then
+        assertThat(result.validate(), is(true));
     }
 
     @Test
@@ -207,6 +264,18 @@ public class ServerCoreProfileTest {
     }
 
     @Test
+    public void createRemoteStartTransactionRequest_withIdToken_returnsValidRemoteStartTransactionRequest() throws Exception {
+        // Given
+        String idToken = "Some IdToken";
+
+        // When
+        RemoteStartTransactionRequest result = core.createRemoteStartTransactionRequest(idToken);
+
+        // Then
+        assertThat(result.validate(), is(true));
+    }
+
+    @Test
     public void getFeatureList_containsRemoteStopTransactionFeature() {
         // When
         Feature[] features = core.getFeatureList();
@@ -216,12 +285,36 @@ public class ServerCoreProfileTest {
     }
 
     @Test
+    public void createRemoteStopTransactionRequest_withTransactionId_returnsValidRemoteStopTransactionRequest() throws Exception {
+        // Given
+        Integer transactionId = 42;
+
+        // When
+        RemoteStopTransactionRequest result = core.createRemoteStopTransactionRequest(transactionId);
+
+        // Then
+        assertThat(result.validate(), is(true));
+    }
+
+    @Test
     public void getFeatureList_containsResetFeature() {
         // When
         Feature[] features = core.getFeatureList();
 
         // Then
         assertThat(findFeature(features, "Reset"), is(instanceOf(ResetFeature.class)));
+    }
+
+    @Test
+    public void createResetRequest_withType_returnsValidResetRequest() throws Exception {
+        // Given
+        ResetType type = ResetType.Hard;
+
+        // When
+        ResetRequest result = core.createResetRequest(type);
+
+        // Then
+        assertThat(result.validate(), is(true));
     }
 
     @Test
@@ -297,6 +390,18 @@ public class ServerCoreProfileTest {
 
         // Then
         assertThat(findFeature(features, "UnlockConnector"), is(instanceOf(UnlockConnectorFeature.class)));
+    }
+
+    @Test
+    public void createUnlockConnectorRequest_withConnectorId_returnsValidUnlockConnectorRequest() throws Exception {
+        // Given
+        int connectorId = 42;
+
+        // When
+        UnlockConnectorRequest result = core.createUnlockConnectorRequest(connectorId);
+
+        // Then
+        assertThat(result.validate(), is(true));
     }
 
     private Feature findFeature(Feature[] features, String action) {

@@ -1,0 +1,151 @@
+package eu.chargetime.ocpp.test;
+
+import eu.chargetime.ocpp.JSONServer;
+import eu.chargetime.ocpp.ServerEvents;
+import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
+import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.core.*;
+
+import java.util.Calendar;
+
+/*
+ ChargeTime.eu - Java-OCA-OCPP
+ Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
+
+ MIT License
+
+ Copyright (c) 2016 Thomas Volden
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
+public class JSONServerSample
+{
+    private JSONServer server;
+
+    public void started() throws Exception
+    {
+        if (server != null)
+            return;
+
+        // The core profile is mandatory
+        ServerCoreProfile core = new ServerCoreProfile(new ServerCoreEventHandler() {
+            @Override
+            public AuthorizeConfirmation handleAuthorizeRequest(int sessionIndex, AuthorizeRequest request) {
+
+                System.out.println(request);
+                // ... handle event
+
+                return new AuthorizeConfirmation();
+            }
+
+            @Override
+            public BootNotificationConfirmation handleBootNotificationRequest(int sessionIndex, BootNotificationRequest request) {
+
+                System.out.println(request);
+                // ... handle event
+
+                return null; // returning null means unsupported feature
+            }
+
+            @Override
+            public DataTransferConfirmation handleDataTransferRequest(int sessionIndex, DataTransferRequest request) {
+
+                System.out.println(request);
+                // ... handle event
+
+                return null; // returning null means unsupported feature
+            }
+
+            @Override
+            public HeartbeatConfirmation handleHeartbeatRequest(int sessionIndex, HeartbeatRequest request) {
+
+                System.out.println(request);
+                // ... handle event
+
+                return null; // returning null means unsupported feature
+            }
+
+            @Override
+            public MeterValuesConfirmation handleMeterValuesRequest(int sessionIndex, MeterValuesRequest request) {
+
+                System.out.println(request);
+                // ... handle event
+
+                return null; // returning null means unsupported feature
+            }
+
+            @Override
+            public StartTransactionConfirmation handleStartTransactionRequest(int sessionIndex, StartTransactionRequest request) {
+
+                System.out.println(request);
+                // ... handle event
+
+                return null; // returning null means unsupported feature
+            }
+
+            @Override
+            public StatusNotificationConfirmation handleStatusNotificationRequest(int sessionIndex, StatusNotificationRequest request) {
+
+                System.out.println(request);
+                // ... handle event
+
+                return null; // returning null means unsupported feature
+            }
+
+            @Override
+            public StopTransactionConfirmation handleStopTransactionRequest(int sessionIndex, StopTransactionRequest request) {
+
+                System.out.println(request);
+                // ... handle event
+
+                return null; // returning null means unsupported feature
+            }
+        });
+
+        server = new JSONServer(core);
+        server.open("localhost", 8887, new ServerEvents() {
+
+            @Override
+            public void newSession(int sessionIndex) {
+
+                // sessionIndex is used to send messages.
+                System.out.println("New session " + sessionIndex);
+            }
+
+            @Override
+            public void lostSession(int sessionIndex) {
+
+                System.out.println("Session " + sessionIndex + " lost connection");
+            }
+        });
+    }
+
+    public void sendClearCacheRequest() throws Exception {
+
+        // Use the feature profile to help create event
+        ClearCacheRequest request = core.createClearCacheRequest();
+
+        // Server returns a promise which will be filled once it receives a confirmation.
+        // Select the distination client with the sessionIndex integer.
+        server.send(sessionIndex, request).whenComplete((confirmation, throwable) -> System.out.println(confirmation));
+    }
+
+}

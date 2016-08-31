@@ -24,6 +24,7 @@ package eu.chargetime.ocpp.feature.profile;/*
     SOFTWARE.
  */
 
+import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
@@ -86,5 +87,60 @@ public class ServerCoreProfile implements Profile {
         }
 
         return result;
+    }
+
+    public ChangeAvailabilityRequest createChangeAvailabilityRequest(AvailabilityType type, int connectorId) throws PropertyConstraintException {
+        ChangeAvailabilityRequest request = new ChangeAvailabilityRequest();
+        request.setType(type);
+        request.setConnectorId(connectorId);
+        return request;
+    }
+
+    public ChangeConfigurationRequest createChangeConfigurationRequest(String key, String value) throws PropertyConstraintException {
+        ChangeConfigurationRequest request = new ChangeConfigurationRequest();
+        request.setKey(key);
+        request.setValue(value);
+        return request;
+    }
+
+    public ClearCacheRequest createClearCacheRequest() {
+        return new ClearCacheRequest();
+    }
+
+    public DataTransferRequest createDataTransferRequest(String vendorId) throws PropertyConstraintException {
+        DataTransferRequest request = new DataTransferRequest();
+        request.setVendorId(vendorId);
+        return request;
+    }
+
+    public GetConfigurationRequest createGetConfigurationRequest() {
+        return new GetConfigurationRequest();
+    }
+
+    public RemoteStartTransactionRequest createRemoteStartTransactionRequest(String idToken) throws PropertyConstraintException {
+        IdToken idTag = new IdToken();
+        idTag.setIdToken(idToken);
+
+        RemoteStartTransactionRequest request = new RemoteStartTransactionRequest();
+        request.setIdTag(idTag);
+        return request;
+    }
+
+    public RemoteStopTransactionRequest createRemoteStopTransactionRequest(Integer transactionId) {
+        RemoteStopTransactionRequest request = new RemoteStopTransactionRequest();
+        request.setTransactionId(transactionId);
+        return request;
+    }
+
+    public ResetRequest createResetRequest(ResetType type) {
+        ResetRequest request = new ResetRequest();
+        request.setType(type);
+        return request;
+    }
+
+    public UnlockConnectorRequest createUnlockConnectorRequest(int connectorId) throws PropertyConstraintException {
+        UnlockConnectorRequest request = new UnlockConnectorRequest();
+        request.setConnectorId(connectorId);
+        return request;
     }
 }

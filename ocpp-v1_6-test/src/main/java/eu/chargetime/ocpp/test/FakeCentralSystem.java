@@ -131,8 +131,8 @@ public class FakeCentralSystem
         }));
         server.open("localhost", 8887, new ServerEvents() {
             @Override
-            public void newSession(int identity) {
-                sessionIndex = identity;
+            public void newSession(int sessionIndex) {
+                FakeCentralSystem.this.sessionIndex = sessionIndex;
             }
 
             @Override
