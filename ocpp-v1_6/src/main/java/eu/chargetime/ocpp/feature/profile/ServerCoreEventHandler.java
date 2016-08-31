@@ -31,6 +31,7 @@ public interface ServerCoreEventHandler {
     BootNotificationConfirmation handleBootNotificationRequest(int sessionIndex, BootNotificationRequest request);
     DataTransferConfirmation handleDataTransferRequest(int sessionIndex, DataTransferRequest request);
     HeartbeatConfirmation handleHeartbeatRequest(int sessionIndex, HeartbeatRequest request);
-
     MeterValuesConfirmation handleMeterValuesRequest(int sessionIndex, MeterValuesRequest request);
+
+    StartTransactionConfirmation handleStartTransactionRequest(int sessionIndex, StartTransactionRequest request);
 }

@@ -1,14 +1,14 @@
 package eu.chargetime.ocpp.test.core
 
+import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
-import eu.chargetime.ocpp.test.OldFakeCentralSystem
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class StartTransaction extends Specification {
+class StartTransactionSpec extends Specification {
     @Shared
-    OldFakeCentralSystem centralSystem = OldFakeCentralSystem.getInstance();
+    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
     @Shared
     FakeChargePoint chargePoint = new FakeChargePoint();
 
@@ -32,11 +32,8 @@ class StartTransaction extends Specification {
 
         then:
         conditions.eventually {
-            assert centralSystem.hasReceivedStartTransactionRequest();
+            assert centralSystem.hasHandledStartTransactionRequest();
         }
-
-        when:
-        centralSystem.sendStartTransactionConfirmation();
 
         then:
         conditions.eventually {

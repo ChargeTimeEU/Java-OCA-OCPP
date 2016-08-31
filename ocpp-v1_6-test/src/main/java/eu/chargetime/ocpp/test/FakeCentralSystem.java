@@ -103,6 +103,17 @@ public class FakeCentralSystem
                 receivedRequest = request;
                 return new MeterValuesConfirmation();
             }
+
+            @Override
+            public StartTransactionConfirmation handleStartTransactionRequest(int sessionIndex, StartTransactionRequest request) {
+                receivedRequest = request;
+                IdTagInfo tagInfo = new IdTagInfo();
+                tagInfo.setStatus(AuthorizationStatus.Accepted);
+
+                StartTransactionConfirmation confirmation = new StartTransactionConfirmation();
+                confirmation.setIdTagInfo(tagInfo);
+                return confirmation;
+            }
         }));
         server.open("localhost", 8887, new ServerEvents() {
             @Override
@@ -246,4 +257,7 @@ public class FakeCentralSystem
         return result;
     }
 
+    public boolean hasHandledStartTransactionRequest() {
+        return receivedRequest instanceof StartTransactionRequest;
+    }
 }

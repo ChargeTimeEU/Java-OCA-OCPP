@@ -224,6 +224,28 @@ public class ServerCoreProfileTest {
         assertThat(findFeature(features, "Reset"), is(instanceOf(ResetFeature.class)));
     }
 
+    @Test
+    public void getFeatureList_containsStartTransactionFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "StartTransaction"), is(instanceOf(StartTransactionFeature.class)));
+    }
+
+    @Test
+    public void handleRequest_aStartTransactionRequest_callsHandleStartTransactionRequest() {
+        // Given
+        StartTransactionRequest request = new StartTransactionRequest();
+        int sessionId = 42;
+
+        // When
+        core.handleRequest(sessionId, request);
+
+        // Then
+        verify(handler, times(1)).handleStartTransactionRequest(eq(sessionId), eq(request));
+    }
+
     private Feature findFeature(Feature[] features, String action) {
         Feature output = null;
         for (Feature feature : features) {
