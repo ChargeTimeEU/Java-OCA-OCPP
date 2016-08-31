@@ -206,6 +206,15 @@ public class ServerCoreProfileTest {
         assertThat(findFeature(features, "RemoteStartTransaction"), is(instanceOf(RemoteStartTransactionFeature.class)));
     }
 
+    @Test
+    public void getFeatureList_containsRemoteStopTransactionFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "RemoteStopTransaction"), is(instanceOf(RemoteStopTransactionFeature.class)));
+    }
+
     private Feature findFeature(Feature[] features, String action) {
         Feature output = null;
         for (Feature feature : features) {

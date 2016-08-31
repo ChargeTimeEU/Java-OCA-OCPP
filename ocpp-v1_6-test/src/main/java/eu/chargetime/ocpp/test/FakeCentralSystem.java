@@ -219,4 +219,17 @@ public class FakeCentralSystem
             result &= ((RemoteStartTransactionConfirmation) receivedConfirmation).getStatus().equals(status);
         return result;
     }
+
+    public void sendRemoteStopTransactionRequest(int transactionId) throws Exception {
+        RemoteStopTransactionRequest request = new RemoteStopTransactionRequest();
+        request.setTransactionId(transactionId);
+        server.send(sessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+    }
+
+    public boolean hasReceivedRemoteStopTransactionConfirmation(String status) {
+        boolean result = receivedConfirmation instanceof RemoteStopTransactionConfirmation;
+        if (result)
+            result &= ((RemoteStopTransactionConfirmation) receivedConfirmation).getStatus().equals(status);
+        return result;
+    }
 }

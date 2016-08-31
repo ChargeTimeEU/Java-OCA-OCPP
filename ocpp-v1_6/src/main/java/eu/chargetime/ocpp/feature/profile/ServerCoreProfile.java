@@ -50,6 +50,7 @@ public class ServerCoreProfile implements Profile {
         features.add(new HeartbeatFeature(this));
         features.add(new MeterValuesFeature(this));
         features.add(new RemoteStartTransactionFeature(this));
+        features.add(new RemoteStopTransactionFeature(this));
     }
 
     @Override
