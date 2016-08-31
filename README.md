@@ -14,6 +14,9 @@ However, the first release will aim to implement OCPP version 1.6 on Web Socket 
 Incoming request events are split into feature profiles as described in the OCPP specification.
 I recommend that you download and read the specification from openchargealliance.org
 
+See the project plan here:
+    https://tree.taiga.io/project/tvolden-java-oca-ocpp/
+
 Dependencies
 ============
 
