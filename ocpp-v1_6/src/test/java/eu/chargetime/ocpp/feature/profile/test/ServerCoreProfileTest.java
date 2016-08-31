@@ -290,6 +290,15 @@ public class ServerCoreProfileTest {
         verify(handler, times(1)).handleStopTransactionRequest(eq(sessionId), eq(request));
     }
 
+    @Test
+    public void getFeatureList_containsUnlockConnectorFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "UnlockConnector"), is(instanceOf(UnlockConnectorFeature.class)));
+    }
+
     private Feature findFeature(Feature[] features, String action) {
         Feature output = null;
         for (Feature feature : features) {

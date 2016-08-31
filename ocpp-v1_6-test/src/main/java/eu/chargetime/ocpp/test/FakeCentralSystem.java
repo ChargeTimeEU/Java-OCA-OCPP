@@ -282,4 +282,17 @@ public class FakeCentralSystem
     public boolean hasHandledStopTransactionRequest() {
         return receivedRequest instanceof StopTransactionRequest;
     }
+
+    public void sendUnlockConnectorRequest(int connectorId) throws Exception {
+        UnlockConnectorRequest request = new UnlockConnectorRequest();
+        request.setConnectorId(connectorId);
+        server.send(sessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+    }
+
+    public boolean hasReceivedUnlockConnectorConfirmation(String status) {
+        boolean result = receivedConfirmation instanceof UnlockConnectorConfirmation;
+        if (result)
+            result &= ((UnlockConnectorConfirmation) receivedConfirmation).getStatus().equals(status);
+        return result;
+    }
 }

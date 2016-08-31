@@ -181,7 +181,6 @@ public abstract class Communicator {
 
         @Override
         public void receivedMessage(String input) {
-            System.out.println(input);
             Message message = parse(input);
             if (message instanceof CallResultMessage) {
                 events.onCallResult(message.getId(), message.getPayload());

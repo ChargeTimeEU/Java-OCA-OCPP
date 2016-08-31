@@ -55,6 +55,7 @@ public class ServerCoreProfile implements Profile {
         features.add(new StartTransactionFeature(this));
         features.add(new StatusNotificationFeature(this));
         features.add(new StopTransactionFeature(this));
+        features.add(new UnlockConnectorFeature(this));
     }
 
     @Override
