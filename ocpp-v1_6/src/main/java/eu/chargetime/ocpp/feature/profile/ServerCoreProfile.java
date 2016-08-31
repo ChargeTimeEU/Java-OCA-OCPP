@@ -53,6 +53,7 @@ public class ServerCoreProfile implements Profile {
         features.add(new RemoteStopTransactionFeature(this));
         features.add(new ResetFeature(this));
         features.add(new StartTransactionFeature(this));
+        features.add(new StatusNotificationFeature(this));
     }
 
     @Override
@@ -76,6 +77,8 @@ public class ServerCoreProfile implements Profile {
             result = handler.handleMeterValuesRequest(sessionIndex, (MeterValuesRequest) request);
         } else if (request instanceof StartTransactionRequest) {
             result = handler.handleStartTransactionRequest(sessionIndex, (StartTransactionRequest) request);
+        } else if (request instanceof StatusNotificationRequest) {
+            result = handler.handleStatusNotificationRequest(sessionIndex, (StatusNotificationRequest) request);
         }
 
         return result;

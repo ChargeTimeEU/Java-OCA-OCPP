@@ -246,6 +246,28 @@ public class ServerCoreProfileTest {
         verify(handler, times(1)).handleStartTransactionRequest(eq(sessionId), eq(request));
     }
 
+    @Test
+    public void getFeatureList_containsStatusNotificationFeature() {
+        // When
+        Feature[] features = core.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "StatusNotification"), is(instanceOf(StatusNotificationFeature.class)));
+    }
+
+    @Test
+    public void handleRequest_aStatusNotificationRequest_callsHandleStatusNotificationRequest() {
+        // Given
+        StatusNotificationRequest request = new StatusNotificationRequest();
+        int sessionId = 42;
+
+        // When
+        core.handleRequest(sessionId, request);
+
+        // Then
+        verify(handler, times(1)).handleStatusNotificationRequest(eq(sessionId), eq(request));
+    }
+
     private Feature findFeature(Feature[] features, String action) {
         Feature output = null;
         for (Feature feature : features) {

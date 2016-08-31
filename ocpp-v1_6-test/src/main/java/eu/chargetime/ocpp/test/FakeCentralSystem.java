@@ -114,6 +114,13 @@ public class FakeCentralSystem
                 confirmation.setIdTagInfo(tagInfo);
                 return confirmation;
             }
+
+            @Override
+            public StatusNotificationConfirmation handleStatusNotificationRequest(int sessionIndex, StatusNotificationRequest request) {
+                receivedRequest = request;
+                StatusNotificationConfirmation confirmation = new StatusNotificationConfirmation();
+                return confirmation;
+            }
         }));
         server.open("localhost", 8887, new ServerEvents() {
             @Override
@@ -259,5 +266,9 @@ public class FakeCentralSystem
 
     public boolean hasHandledStartTransactionRequest() {
         return receivedRequest instanceof StartTransactionRequest;
+    }
+
+    public boolean hasHandledStatusNotificationRequest() {
+        return receivedRequest instanceof StatusNotificationRequest;
     }
 }
