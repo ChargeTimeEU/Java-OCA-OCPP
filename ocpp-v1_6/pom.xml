@@ -6,7 +6,7 @@
 
     <groupId>eu.chargetime.ocpp</groupId>
     <artifactId>v1_6</artifactId>
-    <version>0.2-alpha-SNAPSHOT</version>
+    <version>0.2</version>
 
     <name>Java-OCA-OCPP v1.6</name>
     <description>Implementation of Open Charge-Point Protocol version 1.6.</description>
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>eu.chargetime.ocpp</groupId>
             <artifactId>common</artifactId>
-            <version>0.2-alpha-SNAPSHOT</version>
+            <version>0.2</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>
@@ -108,7 +108,7 @@
                 </execution>
               </executions>
             </plugin>
-            <!--
+<!--
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-gpg-plugin</artifactId>
@@ -123,7 +123,7 @@
                 </execution>
               </executions>
             </plugin>
-          -->
+-->
         </plugins>
     </build>
 
