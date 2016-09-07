@@ -24,6 +24,9 @@ package eu.chargetime.ocpp;/*
     SOFTWARE.
  */
 
+/**
+ * Interface to handle connections by a server.
+ */
 public interface Receiver extends Radio {
 
     /**

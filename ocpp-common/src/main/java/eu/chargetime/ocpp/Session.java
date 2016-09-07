@@ -166,8 +166,8 @@ public class Session {
         }
 
         @Override
-        public void onError(String id, String payload) {
-            events.handleError(id);
+        public void onError(String id, String errorCode, String errorDescription, String payload) {
+            events.handleError(id, errorCode, errorDescription, payload);
         }
 
         @Override

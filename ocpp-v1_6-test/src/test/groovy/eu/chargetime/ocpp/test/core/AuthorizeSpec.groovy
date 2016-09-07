@@ -1,5 +1,6 @@
 package eu.chargetime.ocpp.test.core
 
+import eu.chargetime.ocpp.OccurenceConstraintException
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
 import spock.lang.Shared
@@ -41,4 +42,26 @@ class AuthorizeSpec extends Specification
         }
     }
 
+    def "Try to send incomplete Authorize request, get local exception"() {
+        when:
+        chargePoint.sendIncompleteAuthorizeRequest();
+
+        then:
+        thrown OccurenceConstraintException
+    }
+
+    def "Send Authorize request to a server that's rigged to fail"() {
+        def conditions = new PollingConditions(timeout: 1);
+
+        given:
+        centralSystem.isRiggedToFailOnNextRequest();
+
+        when:
+        chargePoint.sendAuthorizeRequest("")
+
+        then:
+        conditions.eventually {
+            chargePoint.hasReceivedError();
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package eu.chargetime.ocpp;
 
+import eu.chargetime.ocpp.model.CallErrorMessage;
 import eu.chargetime.ocpp.model.CallMessage;
 import eu.chargetime.ocpp.model.CallResultMessage;
 import eu.chargetime.ocpp.model.Message;
@@ -48,10 +49,16 @@ public class JSONCommunicator extends Communicator {
     private static final int TYPENUMBER_CALL = 2;
     private static final int INDEX_CALL_ACTION = 2;
     private static final int INDEX_CALL_PAYLOAD = 3;
+
     private static final int TYPENUMBER_CALLRESULT = 3;
     private static final int INDEX_CALLRESULT_PAYLOAD = 2;
-    private static final int INDEX_UNIQUEID = 1;
 
+    private static final int TYPENUMBER_CALLERROR = 4;
+    private static final int INDEX_CALLERROR_ERRORCODE = 2;
+    private static final int INDEX_CALLERROR_DESCRIPTION = 3;
+    private static final int INDEX_CALLERROR_PAYLOAD = 4;
+
+    private static final int INDEX_UNIQUEID = 1;
     private static final String CALL_FORMAT = "[2,\"%s\",\"%s\",%s]";
     private static final String CALLRESULT_FORMAT = "[3,\"%s\",%s]";
     private static final String CALLERROR_FORMAT = "[4,\"%s\",\"%s\",\"%s\",%s]";
@@ -103,6 +110,11 @@ public class JSONCommunicator extends Communicator {
         } else if (array.getInt(INDEX_MESSAGEID) == TYPENUMBER_CALLRESULT) {
             message = new CallResultMessage();
             message.setPayload(array.get(INDEX_CALLRESULT_PAYLOAD).toString());
+        } else if (array.getInt(INDEX_MESSAGEID) == TYPENUMBER_CALLERROR) {
+            message = new CallErrorMessage();
+            ((CallErrorMessage) message).setErrorCode(array.get(INDEX_CALLERROR_ERRORCODE).toString());
+            ((CallErrorMessage) message).setErrorDescription(array.get(INDEX_CALLERROR_DESCRIPTION).toString());
+            ((CallErrorMessage) message).setRawPayload(array.get(INDEX_CALLERROR_PAYLOAD).toString());
         }
         message.setId(array.getString(INDEX_UNIQUEID));
 

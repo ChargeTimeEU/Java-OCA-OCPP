@@ -43,7 +43,6 @@ public class ServerTest extends TestUtilities {
     private static final int PORT = 42;
 
     private Server server;
-    private Request request;
     private SessionEvents sessionEvents;
     private ListenerEvents listenerEvents;
 
@@ -57,11 +56,13 @@ public class ServerTest extends TestUtilities {
     private Listener listener = mock(Listener.class);
     @Mock
     private ServerEvents serverEvents = mock(ServerEvents.class);
+    @Mock
+    private Request request = mock(Request.class);
+
 
     @Before
     public void setup() {
-
-        request = () -> false;
+        when(request.validate()).thenReturn(true);
         doReturn(request.getClass()).when(feature).getRequestType();
         doReturn(TestConfirmation.class).when(feature).getConfirmationType();
         when(feature.getAction()).thenReturn(null);
@@ -129,4 +130,18 @@ public class ServerTest extends TestUtilities {
         verify(feature, times(1)).handleRequest(eq(0), eq(request));
     }
 
+    @Test
+    public void send_aMessage_validatesMessage() throws Exception {
+        // Given
+        int sessionIndex = 0;
+
+        server.open(LOCALHOST, PORT, serverEvents);
+        listenerEvents.newSession(session);
+
+        // When
+        server.send(sessionIndex, request);
+
+        // Then
+        verify(request, times(1)).validate();
+    }
 }

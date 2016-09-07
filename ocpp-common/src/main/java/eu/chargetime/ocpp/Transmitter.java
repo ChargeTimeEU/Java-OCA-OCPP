@@ -28,7 +28,7 @@ package eu.chargetime.ocpp;
  */
 
 /**
- * Send and receive data. Maintain connection.
+ * Interface to handle connections by a client.
  */
 public interface Transmitter extends Radio
 {

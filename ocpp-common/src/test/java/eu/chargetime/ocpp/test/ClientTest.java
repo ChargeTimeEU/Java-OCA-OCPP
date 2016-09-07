@@ -48,7 +48,6 @@ import static org.mockito.Mockito.*;
  */
 public class ClientTest extends TestUtilities {
     private Client client;
-    private Request request;
     private SessionEvents eventHandler;
 
     @Mock
@@ -57,10 +56,12 @@ public class ClientTest extends TestUtilities {
     private Profile profile = mock(Profile.class);
     @Mock
     private Feature feature = mock(Feature.class);
+    @Mock
+    private Request request = mock(Request.class);
 
     @Before
     public void setup() {
-        request = () -> false;
+        when(request.validate()).thenReturn(true);
         doReturn(request.getClass()).when(feature).getRequestType();
         doReturn(TestConfirmation.class).when(feature).getConfirmationType();
         when(feature.getAction()).thenReturn(null);
@@ -124,7 +125,7 @@ public class ClientTest extends TestUtilities {
 
     @Test
     public void handleRequest_callsFeatureHandleRequest() {
-        //Given
+        // Given
         client.connect(null);
 
         // When
@@ -132,6 +133,15 @@ public class ClientTest extends TestUtilities {
 
         // Then
         verify(feature, times(1)).handleRequest(eq(0), eq(request));
+    }
+
+    @Test
+    public void send_aMessage_validatesMessage() throws Exception {
+        // When
+        client.send(request);
+
+        // Then
+        verify(request, times(1)).validate();
     }
 
 }

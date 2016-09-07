@@ -45,13 +45,24 @@ public class FakeCentralSystem
     private int sessionIndex;
 
     private static FakeCentralSystem instance;
+    private boolean isRigged;
+
     public static FakeCentralSystem getInstance () {
         if (instance == null)
             instance = new FakeCentralSystem();
+
         return instance;
     }
 
     private FakeCentralSystem() { }
+
+    private <T extends Confirmation> T failurePoint(T confirmation) {
+        if (isRigged) {
+            isRigged = false;
+            return null;
+        }
+        return confirmation;
+    }
 
     public void started() throws Exception
     {
@@ -66,7 +77,7 @@ public class FakeCentralSystem
                 IdTagInfo tagInfo = new IdTagInfo();
                 tagInfo.setStatus(AuthorizationStatus.Accepted);
                 confirmation.setIdTagInfo(tagInfo);
-                return confirmation;
+                return failurePoint(confirmation);
             }
 
             @Override
@@ -79,7 +90,7 @@ public class FakeCentralSystem
                 }
                 confirmation.setCurrentTime(Calendar.getInstance());
                 confirmation.setStatus(RegistrationStatus.Accepted);
-                return confirmation;
+                return failurePoint(confirmation);
             }
 
             @Override
@@ -87,7 +98,7 @@ public class FakeCentralSystem
                 receivedRequest = request;
                 DataTransferConfirmation confirmation = new DataTransferConfirmation();
                 confirmation.setStatus(DataTransferStatus.Accepted);
-                return confirmation;
+                return failurePoint(confirmation);
             }
 
             @Override
@@ -95,13 +106,13 @@ public class FakeCentralSystem
                 receivedRequest = request;
                 HeartbeatConfirmation confirmation = new HeartbeatConfirmation();
                 confirmation.setCurrentTime(Calendar.getInstance());
-                return confirmation;
+                return failurePoint(confirmation);
             }
 
             @Override
             public MeterValuesConfirmation handleMeterValuesRequest(int sessionIndex, MeterValuesRequest request) {
                 receivedRequest = request;
-                return new MeterValuesConfirmation();
+                return failurePoint(new MeterValuesConfirmation());
             }
 
             @Override
@@ -112,21 +123,21 @@ public class FakeCentralSystem
 
                 StartTransactionConfirmation confirmation = new StartTransactionConfirmation();
                 confirmation.setIdTagInfo(tagInfo);
-                return confirmation;
+                return failurePoint(confirmation);
             }
 
             @Override
             public StatusNotificationConfirmation handleStatusNotificationRequest(int sessionIndex, StatusNotificationRequest request) {
                 receivedRequest = request;
                 StatusNotificationConfirmation confirmation = new StatusNotificationConfirmation();
-                return confirmation;
+                return failurePoint(confirmation);
             }
 
             @Override
             public StopTransactionConfirmation handleStopTransactionRequest(int sessionIndex, StopTransactionRequest request) {
                 receivedRequest = request;
                 StopTransactionConfirmation confirmation = new StopTransactionConfirmation();
-                return confirmation;
+                return failurePoint(confirmation);
             }
         }));
         server.open("localhost", 8887, new ServerEvents() {
@@ -294,5 +305,9 @@ public class FakeCentralSystem
         if (result)
             result &= ((UnlockConnectorConfirmation) receivedConfirmation).getStatus().equals(status);
         return result;
+    }
+
+    public void isRiggedToFailOnNextRequest() {
+        isRigged = true;
     }
 }

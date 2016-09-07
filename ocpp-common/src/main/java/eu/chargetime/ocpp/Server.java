@@ -44,7 +44,9 @@ public abstract class Server extends FeatureHandler {
     private Listener listener;
 
     /**
+     * Constructor. Handles the required injections.
      *
+     * @param listener injected listener.
      */
     public Server(Listener listener) {
         this.listener = listener;
@@ -81,8 +83,8 @@ public abstract class Server extends FeatureHandler {
                 }
 
                 @Override
-                public void handleError(String uniqueId) {
-
+                public void handleError(String uniqueId, String errorCode, String errorDescription, String payload) {
+                    getPromise(uniqueId).completeExceptionally(new CallErrorException(errorCode, errorCode, payload));
                 }
 
                 @Override
@@ -101,6 +103,9 @@ public abstract class Server extends FeatureHandler {
         });
     }
 
+    /**
+     * Close all connections and stop listening for clients.
+     */
     public void close() {
         listener.close();
     }
@@ -111,12 +116,15 @@ public abstract class Server extends FeatureHandler {
      * @param sessionIndex Session index of the client.
      * @param request      Request for the client.
      * @return Callback handler for when the client responds.
-     * @throws UnsupportedFeatureException Thrown if the feature isn't amoung the list of supported featured.
+     * @throws UnsupportedFeatureException Thrown if the feature isn't among the list of supported featured.
      */
-    public CompletableFuture<Confirmation> send(int sessionIndex, Request request) throws UnsupportedFeatureException {
+    public CompletableFuture<Confirmation> send(int sessionIndex, Request request) throws UnsupportedFeatureException, OccurenceConstraintException {
         Feature feature = findFeature(request);
         if (feature == null)
             throw new UnsupportedFeatureException();
+
+        if (!request.validate())
+            throw new OccurenceConstraintException();
 
         String id = sessions.get(sessionIndex).sendRequest(feature.getAction(), request);
         CompletableFuture<Confirmation> promise = createPromise(id);

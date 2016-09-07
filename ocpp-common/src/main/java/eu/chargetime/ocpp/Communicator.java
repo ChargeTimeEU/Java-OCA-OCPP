@@ -184,6 +184,9 @@ public abstract class Communicator {
             Message message = parse(input);
             if (message instanceof CallResultMessage) {
                 events.onCallResult(message.getId(), message.getPayload());
+            } else if (message instanceof CallErrorMessage) {
+                CallErrorMessage call = (CallErrorMessage) message;
+                events.onError(call.getId(), call.getErrorCode(), call.getErrorDescription(), call.getRawPayload());
             } else if (message instanceof CallMessage) {
                 CallMessage call = (CallMessage) message;
                 events.onCall(call.getId(), call.getAction(), call.getPayload());

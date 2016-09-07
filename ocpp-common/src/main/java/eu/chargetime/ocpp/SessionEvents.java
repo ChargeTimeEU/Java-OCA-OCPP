@@ -67,14 +67,17 @@ public interface SessionEvents {
      * @param request   the {@link Request}.
      * @return a {@link Confirmation} to send as a response.
      */
-    Confirmation    handleRequest(Request request);
+    Confirmation handleRequest(Request request);
 
     /**
      * Handle a error to a {@link Request}.
      *
-     * @param uniqueId  the unique identifier for the {@link Request}.
+     * @param uniqueId          the unique identifier for the {@link Request}.
+     * @param errorCode         string to indicate the error.
+     * @param errorDescription  description of the error.
+     * @param payload           a raw payload.
      */
-    void handleError(String uniqueId); // TODO: Cross protocol errors
+    void handleError(String uniqueId, String errorCode, String errorDescription, String payload);
 
     /**
      * Handle a closed connection.

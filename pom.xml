@@ -6,7 +6,7 @@
 
     <groupId>eu.chargetime.ocpp</groupId>
     <artifactId>all</artifactId>
-    <version>0.2</version>
+    <version>0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Java-OCA-OCPP</name>

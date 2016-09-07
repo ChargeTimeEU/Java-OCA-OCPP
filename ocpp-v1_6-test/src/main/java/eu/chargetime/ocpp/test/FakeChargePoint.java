@@ -44,6 +44,7 @@ public class FakeChargePoint
     private Confirmation receivedConfirmation;
     private Request receivedRequest;
     private ClientCoreProfile core;
+    private Throwable receivedException;
 
     public FakeChargePoint() {
         core = new ClientCoreProfile(new ClientCoreEventHandler() {
@@ -118,26 +119,27 @@ public class FakeChargePoint
         }
     }
 
-    public void sendBootNotification(String vendor, String model) {
+    public void sendBootNotification(String vendor, String model) throws Exception {
         Request request = core.createBootNotificationRequest(vendor, model);
         send(request);
     }
 
-    public void sendAuthorizeRequest(String idToken) {
-        try {
-            Request request = core.createAuthorizeRequest(idToken);
-            send(request);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    public void sendAuthorizeRequest(String idToken) throws Exception {
+        Request request = core.createAuthorizeRequest(idToken);
+        send(request);
     }
 
-    public void sendHeartbeatRequest() {
+    public void sendIncompleteAuthorizeRequest() throws Exception {
+        Request request = new AuthorizeRequest();
+        send(request);
+    }
+
+    public void sendHeartbeatRequest() throws Exception {
         Request request = core.createHeartbeatRequest();
         send(request);
     }
 
-    public void sendMeterValuesRequest() {
+    public void sendMeterValuesRequest() throws Exception {
         try {
             Request request = core.createMeterValuesRequest(42, Calendar.getInstance(), "42");
             send(request);
@@ -146,7 +148,7 @@ public class FakeChargePoint
         }
     }
 
-    public void sendStartTransactionRequest() {
+    public void sendStartTransactionRequest() throws Exception {
         try {
             Request request = core.createStartTransactionRequest(41, "some id", 42, Calendar.getInstance());
             send(request);
@@ -155,7 +157,7 @@ public class FakeChargePoint
         }
     }
 
-    public void sendStopTransactionRequest() {
+    public void sendStopTransactionRequest() throws Exception {
         StopTransactionRequest request = core.createStopTransactionRequest(42, Calendar.getInstance(), 42);
         send(request);
     }
@@ -181,9 +183,12 @@ public class FakeChargePoint
         }
     }
 
-    private void send(Request request) {
+    private void send(Request request) throws Exception {
         try {
-            client.send(request).whenComplete((s, ex) -> receivedConfirmation = s);
+            client.send(request).whenComplete((s, ex) -> {
+                receivedConfirmation = s;
+                receivedException = ex;
+            });
         } catch (UnsupportedFeatureException ex) {
             ex.printStackTrace();
         }
@@ -265,5 +270,9 @@ public class FakeChargePoint
 
     public boolean hasHandledUnlockConnectorRequest() {
         return receivedRequest instanceof UnlockConnectorRequest;
+    }
+
+    public boolean hasReceivedError() {
+        return receivedException != null;
     }
 }

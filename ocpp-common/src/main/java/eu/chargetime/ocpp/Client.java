@@ -86,8 +86,8 @@ public abstract class Client extends FeatureHandler
             }
 
             @Override
-            public void handleError(String uniqueId) {
-
+            public void handleError(String uniqueId, String errorCode, String errorDescription, String payload) {
+                getPromise(uniqueId).completeExceptionally(new CallErrorException(errorCode, errorCode, payload));
             }
 
             @Override
@@ -123,10 +123,13 @@ public abstract class Client extends FeatureHandler
      * @throws UnsupportedFeatureException     trying to send a request from an unsupported feature
      * @see                                     CompletableFuture
      */
-    public CompletableFuture<Confirmation> send(Request request) throws UnsupportedFeatureException {
+    public CompletableFuture<Confirmation> send(Request request) throws UnsupportedFeatureException, OccurenceConstraintException {
         Feature feature = findFeature(request);
         if (feature == null)
             throw new UnsupportedFeatureException();
+
+        if (!request.validate())
+            throw new OccurenceConstraintException();
 
         String id = session.sendRequest(feature.getAction(), request);
         CompletableFuture<Confirmation> promise = createPromise(id);

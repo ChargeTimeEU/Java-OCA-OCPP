@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp;/*
+package eu.chargetime.ocpp.model;/*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
@@ -24,20 +24,32 @@ package eu.chargetime.ocpp;/*
     SOFTWARE.
  */
 
-/**
- * Interface containing common methods used for both server and client communication.
- */
-public interface Radio {
+public class CallErrorMessage extends Message {
+    private String errorCode;
+    private String errorDescription;
+    private String rawPayload;
 
-    /**
-     * Disconnect from a node.
-     */
-    void disconnect();
+    public String getErrorCode() {
+        return errorCode;
+    }
 
-    /**
-     * Send a message to a node.
-     *
-     * @param message test message to send.
-     */
-    void send(String message);
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    public String getErrorDescription() {
+        return errorDescription;
+    }
+
+    public void setErrorDescription(String errorDescription) {
+        this.errorDescription = errorDescription;
+    }
+
+    public String getRawPayload() {
+        return rawPayload;
+    }
+
+    public void setRawPayload(String rawPayload) {
+        this.rawPayload = rawPayload;
+    }
 }

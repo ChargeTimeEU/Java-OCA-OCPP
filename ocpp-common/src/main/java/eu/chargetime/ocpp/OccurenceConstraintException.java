@@ -25,19 +25,7 @@ package eu.chargetime.ocpp;/*
  */
 
 /**
- * Interface containing common methods used for both server and client communication.
+ * Exception thrown when trying to send a request that isn't valid.
  */
-public interface Radio {
-
-    /**
-     * Disconnect from a node.
-     */
-    void disconnect();
-
-    /**
-     * Send a message to a node.
-     *
-     * @param message test message to send.
-     */
-    void send(String message);
+public class OccurenceConstraintException extends Exception {
 }
