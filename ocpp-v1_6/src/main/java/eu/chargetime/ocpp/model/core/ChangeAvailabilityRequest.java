@@ -97,4 +97,9 @@ public class ChangeAvailabilityRequest implements Request
         valid &= connectorId >= 0;
         return valid;
     }
+
+    @Override
+    public boolean transactionRelated() {
+        return false;
+    }
 }

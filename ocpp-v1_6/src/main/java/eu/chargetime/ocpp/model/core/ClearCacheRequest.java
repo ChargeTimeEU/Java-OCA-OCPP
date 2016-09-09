@@ -38,4 +38,9 @@ public class ClearCacheRequest implements Request {
     public boolean validate() {
         return true;
     }
+
+    @Override
+    public boolean transactionRelated() {
+        return false;
+    }
 }

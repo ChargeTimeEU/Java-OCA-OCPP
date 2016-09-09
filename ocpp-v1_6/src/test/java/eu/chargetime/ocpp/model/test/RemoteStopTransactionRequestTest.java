@@ -73,4 +73,13 @@ public class RemoteStopTransactionRequestTest {
         // Then
         assertThat(isValid, is(true));
     }
+
+    @Test
+    public void isTransactionRelated_returnsFalse() {
+        // When
+        boolean isTransactionRelated = request.transactionRelated();
+
+        // Then
+        assertThat(isTransactionRelated, is(false));
+    }
 }

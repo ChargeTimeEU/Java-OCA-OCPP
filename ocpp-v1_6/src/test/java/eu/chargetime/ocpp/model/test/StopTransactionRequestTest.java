@@ -5,6 +5,7 @@ import eu.chargetime.ocpp.model.core.MeterValue;
 import eu.chargetime.ocpp.model.core.Reason;
 import eu.chargetime.ocpp.model.core.StopTransactionRequest;
 import eu.chargetime.ocpp.utilities.TestUtilities;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -172,5 +173,14 @@ public class StopTransactionRequestTest extends TestUtilities {
 
         // Then
         assertThat(isValid, is(false));
+    }
+
+    @Test
+    public void isTransactionRelated_returnsFalse() {
+        // When
+        boolean isTransactionRelated = request.transactionRelated();
+
+        // Then
+        Assert.assertThat(isTransactionRelated, is(true));
     }
 }

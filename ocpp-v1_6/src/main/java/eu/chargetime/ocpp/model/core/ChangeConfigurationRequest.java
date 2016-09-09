@@ -99,4 +99,9 @@ public class ChangeConfigurationRequest implements Request {
         valid &= isValidValue(this.value);
         return valid;
     }
+
+    @Override
+    public boolean transactionRelated() {
+        return false;
+    }
 }

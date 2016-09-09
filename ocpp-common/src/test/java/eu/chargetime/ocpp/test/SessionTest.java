@@ -80,6 +80,11 @@ public class SessionTest {
         String  someAction      = "Test action";
         Request someRequest     = new Request() {
             @Override
+            public boolean transactionRelated() {
+                return false;
+            }
+
+            @Override
             public boolean validate() {
                 return false;
             }

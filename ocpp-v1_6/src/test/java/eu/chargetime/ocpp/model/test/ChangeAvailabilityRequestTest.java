@@ -144,4 +144,12 @@ public class ChangeAvailabilityRequestTest {
         assertThat(isValid, is(false));
     }
 
+    @Test
+    public void isTransactionRelated_returnsFalse() {
+        // When
+        boolean isTransactionRelated = request.transactionRelated();
+
+        // Then
+        assertThat(isTransactionRelated, is(false));
+    }
 }

@@ -110,4 +110,9 @@ public class MeterValuesRequest implements Request {
     public MeterValue[] getMeterValue() {
         return meterValue;
     }
+
+    @Override
+    public boolean transactionRelated() {
+        return true;
+    }
 }

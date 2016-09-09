@@ -37,7 +37,7 @@ import static org.junit.Assert.assertThat;
  SOFTWARE.
  */
 public class BootNotificationRequestTest {
-    private BootNotificationRequest bootNotificationRequest;
+    private BootNotificationRequest request;
 
     private String stringLength20 = "12345678901234567890";
     private String stringLength21 = "123456789012345678901";
@@ -47,23 +47,23 @@ public class BootNotificationRequestTest {
     @Before
     public void setUp() throws Exception {
 
-        bootNotificationRequest = new BootNotificationRequest();
+        request = new BootNotificationRequest();
     }
 
     @Test
     public void setChargeBoxSerialNumber_stringLength25_noExceptions() throws Exception {
         // When
-        bootNotificationRequest.setChargeBoxSerialNumber(stringLength25);
+        request.setChargeBoxSerialNumber(stringLength25);
 
         // Then
-        assertThat(bootNotificationRequest.getChargeBoxSerialNumber(), equalTo(stringLength25));
+        assertThat(request.getChargeBoxSerialNumber(), equalTo(stringLength25));
     }
 
     @Test
     public void setChargeBoxSerialNumber_stringLength26_throwsPropertyConstraintException() {
         // When
         try {
-            bootNotificationRequest.setChargeBoxSerialNumber(stringLength26);
+            request.setChargeBoxSerialNumber(stringLength26);
 
             Assert.fail("Expected PropertyConstraintException");
         } catch (PropertyConstraintException ex) {
@@ -76,17 +76,17 @@ public class BootNotificationRequestTest {
     @Test
     public void setChargePointModel_stringLength20_noExceptions() throws Exception {
         // When
-        bootNotificationRequest.setChargePointModel(stringLength20);
+        request.setChargePointModel(stringLength20);
 
         // Then
-        assertThat(bootNotificationRequest.getChargePointModel(), equalTo(stringLength20));
+        assertThat(request.getChargePointModel(), equalTo(stringLength20));
     }
 
     @Test
     public void setChargePointModel_stringLength21_throwsPropertyConstraintException() {
         // When
         try {
-            bootNotificationRequest.setChargePointModel(stringLength21);
+            request.setChargePointModel(stringLength21);
 
             Assert.fail("Expected PropertyConstraintException");
         } catch (PropertyConstraintException ex) {
@@ -99,17 +99,17 @@ public class BootNotificationRequestTest {
     @Test
     public void setChargePointSerialNumber_stringLength25_noExceptions() throws Exception {
         // When
-        bootNotificationRequest.setChargePointSerialNumber(stringLength25);
+        request.setChargePointSerialNumber(stringLength25);
 
         // Then
-        assertThat(bootNotificationRequest.getChargePointSerialNumber(), equalTo(stringLength25));
+        assertThat(request.getChargePointSerialNumber(), equalTo(stringLength25));
     }
 
     @Test
     public void setChargePointSerialNumber_stringLength26_throwsPropertyConstraintException() {
         // When
         try {
-            bootNotificationRequest.setChargePointSerialNumber(stringLength26);
+            request.setChargePointSerialNumber(stringLength26);
 
             Assert.fail("Expected PropertyConstraintException");
         } catch (PropertyConstraintException ex) {
@@ -122,17 +122,17 @@ public class BootNotificationRequestTest {
     @Test
     public void setChargePointVendor_stringLength20_noExceptions() throws Exception {
         // When
-        bootNotificationRequest.setChargePointVendor(stringLength20);
+        request.setChargePointVendor(stringLength20);
 
         // Then
-        assertThat(bootNotificationRequest.getChargePointVendor(), equalTo(stringLength20));
+        assertThat(request.getChargePointVendor(), equalTo(stringLength20));
     }
 
     @Test
     public void setChargePointVendor_stringLength21_throwsPropertyConstraintException() {
         // When
         try {
-            bootNotificationRequest.setChargePointVendor(stringLength21);
+            request.setChargePointVendor(stringLength21);
 
             Assert.fail("Expected PropertyConstraintException");
         } catch (PropertyConstraintException ex) {
@@ -148,10 +148,10 @@ public class BootNotificationRequestTest {
         String stringLength50 = "12345678901234567890123456789012345678901234567890";
 
         // When
-        bootNotificationRequest.setFirmwareVersion(stringLength50);
+        request.setFirmwareVersion(stringLength50);
 
         // Then
-        assertThat(bootNotificationRequest.getFirmwareVersion(), equalTo(stringLength50));
+        assertThat(request.getFirmwareVersion(), equalTo(stringLength50));
     }
 
     @Test
@@ -161,7 +161,7 @@ public class BootNotificationRequestTest {
 
         // When
         try {
-            bootNotificationRequest.setFirmwareVersion(stringLength51);
+            request.setFirmwareVersion(stringLength51);
 
             Assert.fail("Expected PropertyConstraintException");
         } catch (PropertyConstraintException ex) {
@@ -174,17 +174,17 @@ public class BootNotificationRequestTest {
     @Test
     public void setIccid_stringLength20_noExceptions() throws Exception {
         // When
-        bootNotificationRequest.setIccid(stringLength20);
+        request.setIccid(stringLength20);
 
         // Then
-        assertThat(bootNotificationRequest.getIccid(), equalTo(stringLength20));
+        assertThat(request.getIccid(), equalTo(stringLength20));
     }
 
     @Test
     public void setIccid_stringLength21_throwsPropertyConstraintException() {
         // When
         try {
-            bootNotificationRequest.setIccid(stringLength21);
+            request.setIccid(stringLength21);
 
             Assert.fail("Expected PropertyConstraintException");
         } catch (PropertyConstraintException ex) {
@@ -197,17 +197,17 @@ public class BootNotificationRequestTest {
     @Test
     public void setImsi_stringLength20_noExceptions() throws Exception {
         // When
-        bootNotificationRequest.setImsi(stringLength20);
+        request.setImsi(stringLength20);
 
         // Then
-        assertThat(bootNotificationRequest.getImsi(), equalTo(stringLength20));
+        assertThat(request.getImsi(), equalTo(stringLength20));
     }
 
     @Test
     public void setImsi_stringLength21_throwsPropertyConstraintException() {
         // When
         try {
-            bootNotificationRequest.setImsi(stringLength21);
+            request.setImsi(stringLength21);
 
             Assert.fail("Expected PropertyConstraintException");
         } catch (PropertyConstraintException ex) {
@@ -220,17 +220,17 @@ public class BootNotificationRequestTest {
     @Test
     public void setMeterSerialNumber_stringLength25_noExceptions() throws Exception {
         // When
-        bootNotificationRequest.setMeterSerialNumber(stringLength25);
+        request.setMeterSerialNumber(stringLength25);
 
         // Then
-        assertThat(bootNotificationRequest.getMeterSerialNumber(), equalTo(stringLength25));
+        assertThat(request.getMeterSerialNumber(), equalTo(stringLength25));
     }
 
     @Test
     public void setMeterSerialNumber_stringLength26_throwsPropertyConstraintException() {
         // When
         try {
-            bootNotificationRequest.setMeterSerialNumber(stringLength26);
+            request.setMeterSerialNumber(stringLength26);
 
             Assert.fail("Expected PropertyConstraintException");
         } catch (PropertyConstraintException ex) {
@@ -243,17 +243,17 @@ public class BootNotificationRequestTest {
     @Test
     public void setMeterType_stringLength25_noExceptions() throws Exception {
         // When
-        bootNotificationRequest.setMeterType(stringLength25);
+        request.setMeterType(stringLength25);
 
         // Then
-        assertThat(bootNotificationRequest.getMeterType(), equalTo(stringLength25));
+        assertThat(request.getMeterType(), equalTo(stringLength25));
     }
 
     @Test
     public void setMeterType_stringLength26_throwsPropertyConstraintException() {
         // When
         try {
-            bootNotificationRequest.setMeterType(stringLength26);
+            request.setMeterType(stringLength26);
 
             Assert.fail("Expected PropertyConstraintException");
         } catch (PropertyConstraintException ex) {
@@ -266,11 +266,11 @@ public class BootNotificationRequestTest {
     @Test
     public void validate_chargePointVendorAndChargePointModelIsSet_returnsTrue() throws Exception {
         // Given
-        bootNotificationRequest.setChargePointModel(stringLength20);
-        bootNotificationRequest.setChargePointVendor(stringLength20);
+        request.setChargePointModel(stringLength20);
+        request.setChargePointVendor(stringLength20);
 
         // When
-        boolean isValid = bootNotificationRequest.validate();
+        boolean isValid = request.validate();
 
         // Then
         assertThat(isValid, is(true));
@@ -279,9 +279,18 @@ public class BootNotificationRequestTest {
     @Test
     public void validate_nothingIsSet_returnsFalse() throws Exception {
         // When
-        boolean isValid = bootNotificationRequest.validate();
+        boolean isValid = request.validate();
 
         // Then
         assertThat(isValid, is(false));
+    }
+
+    @Test
+    public void isTransactionRelated_returnsFalse() {
+        // When
+        boolean isTransactionRelated = request.transactionRelated();
+
+        // Then
+        assertThat(isTransactionRelated, is(false));
     }
 }

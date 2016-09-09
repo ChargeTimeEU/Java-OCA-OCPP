@@ -111,4 +111,9 @@ public class RemoteStartTransactionRequest implements Request {
     public void setChargingProfile(ChargingProfile chargingProfile) {
         this.chargingProfile = chargingProfile;
     }
+
+    @Override
+    public boolean transactionRelated() {
+        return false;
+    }
 }

@@ -65,4 +65,9 @@ public class ResetRequest implements Request {
     public boolean validate() {
         return type != null;
     }
+
+    @Override
+    public boolean transactionRelated() {
+        return false;
+    }
 }

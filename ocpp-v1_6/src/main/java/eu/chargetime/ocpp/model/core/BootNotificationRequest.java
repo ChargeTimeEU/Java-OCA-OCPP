@@ -279,4 +279,9 @@ public class BootNotificationRequest implements Request
         valid &= ModelUtil.validate(chargePointVendor, 20);
         return valid;
     }
+
+    @Override
+    public boolean transactionRelated() {
+        return false;
+    }
 }

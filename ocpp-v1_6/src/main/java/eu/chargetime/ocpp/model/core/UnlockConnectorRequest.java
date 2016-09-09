@@ -61,4 +61,9 @@ public class UnlockConnectorRequest implements Request {
 
         this.connectorId = connectorId;
     }
+
+    @Override
+    public boolean transactionRelated() {
+        return false;
+    }
 }

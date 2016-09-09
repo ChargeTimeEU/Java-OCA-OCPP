@@ -80,4 +80,9 @@ public class AuthorizeRequest implements Request
         valid &= ModelUtil.validate(idTag, 20);
         return valid;
     }
+
+    @Override
+    public boolean transactionRelated() {
+        return false;
+    }
 }

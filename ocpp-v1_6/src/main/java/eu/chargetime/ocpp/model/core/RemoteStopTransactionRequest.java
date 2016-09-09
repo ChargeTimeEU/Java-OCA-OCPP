@@ -56,4 +56,9 @@ public class RemoteStopTransactionRequest implements Request {
     public void setTransactionId(Integer transactionId) {
         this.transactionId = transactionId;
     }
+
+    @Override
+    public boolean transactionRelated() {
+        return false;
+    }
 }

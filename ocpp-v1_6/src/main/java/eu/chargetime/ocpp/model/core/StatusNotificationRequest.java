@@ -234,4 +234,9 @@ public class StatusNotificationRequest implements Request {
 
         this.vendorErrorCode = vendorErrorCode;
     }
+
+    @Override
+    public boolean transactionRelated() {
+        return false;
+    }
 }

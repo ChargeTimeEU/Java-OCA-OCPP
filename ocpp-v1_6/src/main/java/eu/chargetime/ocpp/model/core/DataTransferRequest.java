@@ -124,4 +124,9 @@ public class DataTransferRequest implements Request {
     public void setData(String data) {
         this.data = data;
     }
+
+    @Override
+    public boolean transactionRelated() {
+        return false;
+    }
 }

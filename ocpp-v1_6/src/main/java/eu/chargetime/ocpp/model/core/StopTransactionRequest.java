@@ -187,4 +187,9 @@ public class StopTransactionRequest implements Request {
     public void setTransactionData(MeterValue[] transactionData) {
         this.transactionData = transactionData;
     }
+
+    @Override
+    public boolean transactionRelated() {
+        return true;
+    }
 }

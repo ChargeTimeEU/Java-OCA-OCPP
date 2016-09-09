@@ -158,4 +158,9 @@ public class StartTransactionRequest implements Request {
     public void setTimestamp(Calendar timestamp) {
         this.timestamp = timestamp;
     }
+
+    @Override
+    public boolean transactionRelated() {
+        return true;
+    }
 }
