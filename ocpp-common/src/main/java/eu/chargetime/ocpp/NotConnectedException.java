@@ -24,21 +24,5 @@ package eu.chargetime.ocpp;/*
     SOFTWARE.
  */
 
-/**
- * Interface containing common methods used for both server and client communication.
- */
-public interface Radio {
-
-    /**
-     * Disconnect from a node.
-     */
-    void disconnect();
-
-    /**
-     * Send a message to a node.
-     *
-     * @param message                   test message to send.
-     * @exception NotConnectedException Message couldn't be sent due to the lack of connection.
-     */
-    void send(String message) throws NotConnectedException;
+public class NotConnectedException extends Exception {
 }

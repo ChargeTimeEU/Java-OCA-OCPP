@@ -2,6 +2,8 @@ package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.model.*;
 
+import java.util.ArrayDeque;
+
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -40,6 +42,7 @@ import eu.chargetime.ocpp.model.*;
  */
 public abstract class Communicator {
     protected Radio radio;
+    private ArrayDeque<String> transactionQueue;
 
     /**
      * Convert a formatted string into a {@link Request}/{@link Confirmation}.
@@ -106,6 +109,7 @@ public abstract class Communicator {
      */
     public Communicator(Radio transmitter) {
         this.radio = transmitter;
+        this.transactionQueue = new ArrayDeque<>();
     }
 
     /**
@@ -129,23 +133,35 @@ public abstract class Communicator {
     }
 
     /**
-     * Send a new {@link Request}.
+     * Send a new {@link Request}. Stores transaction-related {@link Request}s if offline.
+     * New transaction-related {@link Request}s will be placed behind the queue of stored {@link Request}s.
      *
-     * @param   uniqueId    the id the receiver should use to reply.
-     * @param   action      action name of the {@link eu.chargetime.ocpp.feature.Feature}.
-     * @param   request     the outgoing {@link Request}
+     * @param   uniqueId                the id the receiver should use to reply.
+     * @param   action                  action name of the {@link eu.chargetime.ocpp.feature.Feature}.
+     * @param   request                 the outgoing {@link Request}
+     * @exception NotConnectedException The non transaction related request couldn't be send due to the lack of connection.
      */
-    public void sendCall(String uniqueId, String action, Request request) {
-        radio.send(makeCall(uniqueId, action, packPayload(request)));
+    public void sendCall(String uniqueId, String action, Request request) throws NotConnectedException {
+        String call = makeCall(uniqueId, action, packPayload(request));
+        try {
+            radio.send(call);
+        } catch (NotConnectedException ex) {
+            if (request.transactionRelated()) {
+                transactionQueue.add(call);
+            } else {
+                throw ex;
+            }
+        }
     }
 
     /**
      * Send a {@link Confirmation} reply to a {@link Request}.
      *
-     * @param   uniqueId        the id the receiver expects.
-     * @param   confirmation    the outgoing {@link Confirmation}
+     * @param   uniqueId                the id the receiver expects.
+     * @param   confirmation            the outgoing {@link Confirmation}
+     * @exception NotConnectedException Confirmation couldn't be sent due to the lack of connection.
      */
-    public void sendCallResult(String uniqueId, Confirmation confirmation) {
+    public void sendCallResult(String uniqueId, Confirmation confirmation) throws NotConnectedException {
         radio.send(makeCallResult(uniqueId, packPayload(confirmation)));
     }
 
@@ -157,7 +173,11 @@ public abstract class Communicator {
      * @param   errorDescription    a associated error description.
      */
     public void sendCallError(String uniqueId, String errorCode, String errorDescription) {
-        radio.send(makeCallError(uniqueId, errorCode, errorDescription));
+        try {
+            radio.send(makeCallError(uniqueId, errorCode, errorDescription));
+        } catch (NotConnectedException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
