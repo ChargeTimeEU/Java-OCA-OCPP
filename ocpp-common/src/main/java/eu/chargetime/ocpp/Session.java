@@ -62,11 +62,22 @@ public class Session {
      * @param payload   the {@link Request} payload to send
      * @return unique identification to identify the request.
      */
-    public String sendRequest(String action, Request payload) throws NotConnectedException {
+    public String sendRequest(String action, Request payload) {
         String uuid = queue.store(payload);
         communicator.sendCall(uuid, action, payload);
         return uuid;
     }
+
+    /**
+     * Send a {@link Confirmation} to a {@link Request}
+     *
+     * @param uniqueId     the unique identification the receiver expects.
+     * @param confirmation the {@link Confirmation} payload to send.
+     */
+    public void sendConfirmation(String uniqueId, Confirmation confirmation) {
+        communicator.sendCallResult(uniqueId, confirmation);
+    }
+
 
     private Class<? extends Confirmation> getConfirmationType(String uniqueId) throws UnsupportedFeatureException {
         Request request = queue.restoreRequest(uniqueId);
@@ -149,7 +160,7 @@ public class Session {
         }
 
         @Override
-        public void onError(String id, String errorCode, String errorDescription, String payload) {
+        public void onError(String id, String errorCode, String errorDescription, Object payload) {
             events.handleError(id, errorCode, errorDescription, payload);
         }
 
@@ -197,11 +208,7 @@ class ConfirmationHandler implements BiConsumer<Confirmation, Throwable> {
         } else if (confirmation == null) {
             communicator.sendCallError(id, "NotSupported", "Requested Action is recognized but not supported by the receiver");
         } else {
-            try {
-                communicator.sendCallResult(id, confirmation);
-            } catch (NotConnectedException e) {
-                e.printStackTrace();
-            }
+            communicator.sendCallResult(id, confirmation);
         }
     }
 }

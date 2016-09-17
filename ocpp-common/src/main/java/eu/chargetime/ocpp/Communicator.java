@@ -43,6 +43,7 @@ import java.util.ArrayDeque;
 public abstract class Communicator {
     protected Radio radio;
     private ArrayDeque<String> transactionQueue;
+    private CommunicatorEvents events;
 
     /**
      * Convert a formatted string into a {@link Request}/{@link Confirmation}.
@@ -118,6 +119,7 @@ public abstract class Communicator {
      * @param   events  handler for call back events.
      */
     public void connect(String uri, CommunicatorEvents events) {
+        this.events = events;
         if (radio instanceof Transmitter)
             ((Transmitter) radio).connect(uri, new EventHandler(events));
     }
@@ -128,6 +130,7 @@ public abstract class Communicator {
      * @param events handler for call back events.
      */
     public void accept(CommunicatorEvents events) {
+        this.events = events;
         if (radio instanceof Receiver)
             ((Receiver) radio).accept(new EventHandler(events));
     }
@@ -139,17 +142,17 @@ public abstract class Communicator {
      * @param   uniqueId                the id the receiver should use to reply.
      * @param   action                  action name of the {@link eu.chargetime.ocpp.feature.Feature}.
      * @param   request                 the outgoing {@link Request}
-     * @exception NotConnectedException The non transaction related request couldn't be send due to the lack of connection.
      */
-    public void sendCall(String uniqueId, String action, Request request) throws NotConnectedException {
+    public void sendCall(String uniqueId, String action, Request request) {
         String call = makeCall(uniqueId, action, packPayload(request));
         try {
             radio.send(call);
         } catch (NotConnectedException ex) {
+            ex.printStackTrace();
             if (request.transactionRelated()) {
                 transactionQueue.add(call);
             } else {
-                throw ex;
+                events.onError(uniqueId, "Not connected", "The request couldn't be send due to the lack of connection", request);
             }
         }
     }
@@ -161,8 +164,13 @@ public abstract class Communicator {
      * @param   confirmation            the outgoing {@link Confirmation}
      * @exception NotConnectedException Confirmation couldn't be sent due to the lack of connection.
      */
-    public void sendCallResult(String uniqueId, Confirmation confirmation) throws NotConnectedException {
-        radio.send(makeCallResult(uniqueId, packPayload(confirmation)));
+    public void sendCallResult(String uniqueId, Confirmation confirmation) {
+        try {
+            radio.send(makeCallResult(uniqueId, packPayload(confirmation)));
+        } catch (NotConnectedException e) {
+            e.printStackTrace();
+            events.onError(uniqueId, "Not connected", "The confirmation couldn't be send due to the lack of connection", confirmation);
+        }
     }
 
     /**
@@ -177,6 +185,7 @@ public abstract class Communicator {
             radio.send(makeCallError(uniqueId, errorCode, errorDescription));
         } catch (NotConnectedException ex) {
             ex.printStackTrace();
+            events.onError(uniqueId, "Not connected", "The error couldn't be send due to the lack of connection", errorCode);
         }
     }
 

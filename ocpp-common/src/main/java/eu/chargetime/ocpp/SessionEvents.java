@@ -77,7 +77,7 @@ public interface SessionEvents {
      * @param errorDescription  description of the error.
      * @param payload           a raw payload.
      */
-    void handleError(String uniqueId, String errorCode, String errorDescription, String payload);
+    void handleError(String uniqueId, String errorCode, String errorDescription, Object payload);
 
     /**
      * Handle a closed connection.

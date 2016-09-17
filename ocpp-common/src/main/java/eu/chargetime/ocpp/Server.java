@@ -83,7 +83,7 @@ public abstract class Server extends FeatureHandler {
                 }
 
                 @Override
-                public void handleError(String uniqueId, String errorCode, String errorDescription, String payload) {
+                public void handleError(String uniqueId, String errorCode, String errorDescription, Object payload) {
                     getPromise(uniqueId).completeExceptionally(new CallErrorException(errorCode, errorCode, payload));
                 }
 

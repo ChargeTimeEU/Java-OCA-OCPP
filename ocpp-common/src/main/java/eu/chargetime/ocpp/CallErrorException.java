@@ -30,7 +30,7 @@ package eu.chargetime.ocpp;/*
 public class CallErrorException extends Exception {
     private String errorCode;
     private String errorDescription;
-    private String payload;
+    private Object payload;
 
     /**
      * Constructor.
@@ -39,7 +39,7 @@ public class CallErrorException extends Exception {
      * @param errorDescription describing the error.
      * @param payload          raw payload send from the other end.
      */
-    public CallErrorException(String errorCode, String errorDescription, String payload) {
+    public CallErrorException(String errorCode, String errorDescription, Object payload) {
         this.errorCode = errorCode;
         this.errorDescription = errorDescription;
         this.payload = payload;
@@ -86,7 +86,7 @@ public class CallErrorException extends Exception {
      *
      * @return the raw payload.
      */
-    public String getPayload() {
+    public Object getPayload() {
         return payload;
     }
 
@@ -95,7 +95,7 @@ public class CallErrorException extends Exception {
      *
      * @param payload the raw payload.
      */
-    public void setPayload(String payload) {
+    public void setPayload(Object payload) {
         this.payload = payload;
     }
 }

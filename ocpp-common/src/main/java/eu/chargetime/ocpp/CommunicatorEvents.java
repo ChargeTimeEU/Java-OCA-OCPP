@@ -60,7 +60,7 @@ public interface CommunicatorEvents {
      * @param id        unique id used to identify the original request.
      * @param payload   raw error payload.
      */
-    void onError(String id, String errorCode, String errorDescription, String payload);
+    void onError(String id, String errorCode, String errorDescription, Object payload);
 
     /**
      * The connection was disconnected.
