@@ -118,7 +118,7 @@ public abstract class Server extends FeatureHandler {
      * @return Callback handler for when the client responds.
      * @throws UnsupportedFeatureException Thrown if the feature isn't among the list of supported featured.
      */
-    public CompletableFuture<Confirmation> send(int sessionIndex, Request request) throws UnsupportedFeatureException, OccurenceConstraintException {
+    public CompletableFuture<Confirmation> send(int sessionIndex, Request request) throws UnsupportedFeatureException, OccurenceConstraintException, NotConnectedException {
         Feature feature = findFeature(request);
         if (feature == null)
             throw new UnsupportedFeatureException();

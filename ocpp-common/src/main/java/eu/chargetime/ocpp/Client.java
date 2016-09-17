@@ -123,7 +123,7 @@ public abstract class Client extends FeatureHandler
      * @throws UnsupportedFeatureException     trying to send a request from an unsupported feature
      * @see                                     CompletableFuture
      */
-    public CompletableFuture<Confirmation> send(Request request) throws UnsupportedFeatureException, OccurenceConstraintException {
+    public CompletableFuture<Confirmation> send(Request request) throws UnsupportedFeatureException, OccurenceConstraintException, NotConnectedException {
         Feature feature = findFeature(request);
         if (feature == null)
             throw new UnsupportedFeatureException();

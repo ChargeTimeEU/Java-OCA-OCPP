@@ -62,7 +62,7 @@ public class SessionTest {
     }
 
     @Test
-    public void sendRequest_getUniqueIdReturnedFromQueue() {
+    public void sendRequest_getUniqueIdReturnedFromQueue() throws NotConnectedException {
         // Given
         String someId = "test id";
         when(queue.store(any())).thenReturn(someId);
@@ -75,7 +75,7 @@ public class SessionTest {
     }
 
     @Test
-    public void sendRequest_sendRequestToCommunicator() {
+    public void sendRequest_sendRequestToCommunicator() throws NotConnectedException {
         // Given
         String  someAction      = "Test action";
         Request someRequest     = new Request() {
@@ -98,7 +98,7 @@ public class SessionTest {
     }
 
     @Test
-    public void sendRequest_fixedUniqueId_sendsUniqueIdToCommunicator() {
+    public void sendRequest_fixedUniqueId_sendsUniqueIdToCommunicator() throws NotConnectedException {
         // Given
         String someUniqueId = "test id";
         when(queue.store(any())).thenReturn(someUniqueId);
@@ -108,24 +108,6 @@ public class SessionTest {
 
         // Then
         verify(communicator, times(1)).sendCall(eq(someUniqueId), anyString(), any());
-    }
-
-    @Test
-    public void sendConfirmation_sendsConfirmationToCommunicator(){
-        // Given
-        Confirmation conf = new Confirmation() {
-            @Override
-            public boolean validate() {
-                return false;
-            }
-        };
-        String someUniqueId = "Some id";
-
-        // When
-        session.sendConfirmation(someUniqueId, conf);
-
-        // Then
-        verify(communicator, times(1)).sendCallResult(eq(someUniqueId), eq(conf));
     }
 
     @Test

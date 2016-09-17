@@ -166,7 +166,7 @@ public abstract class Communicator {
     }
 
     /**
-     * Send an error.
+     * Send an error. If offline, the message is thrown away.
      *
      * @param   uniqueId            the id the receiver expects a response to.
      * @param   errorCode           an OCPP error Code

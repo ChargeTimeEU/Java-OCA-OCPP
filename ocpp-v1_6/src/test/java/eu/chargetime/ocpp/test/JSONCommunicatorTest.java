@@ -286,7 +286,7 @@ public class JSONCommunicatorTest extends TestUtilities
     }
 
     @Test
-    public void sendError_transmitsError() {
+    public void sendError_transmitsError() throws Exception {
         // Given
         String errorCode = "NotImplemented";
         String errorDescription = "Requested Action is not known by receiver";
