@@ -55,7 +55,8 @@ public abstract class Server extends FeatureHandler {
 
     /**
      * Start listening for clients.
-     *
+     * @param hostname Url or IP of the server as String.
+     * @param port the port number of the server.
      * @param serverEvents Callback handler for server specific events.
      */
     public void open(String hostname, int port, ServerEvents serverEvents) {
@@ -117,8 +118,9 @@ public abstract class Server extends FeatureHandler {
      * @param request      Request for the client.
      * @return Callback handler for when the client responds.
      * @throws UnsupportedFeatureException Thrown if the feature isn't among the list of supported featured.
+     * @throws OccurenceConstraintException Thrown if the request isn't valid.
      */
-    public CompletableFuture<Confirmation> send(int sessionIndex, Request request) throws UnsupportedFeatureException, OccurenceConstraintException, NotConnectedException {
+    public CompletableFuture<Confirmation> send(int sessionIndex, Request request) throws UnsupportedFeatureException, OccurenceConstraintException {
         Feature feature = findFeature(request);
         if (feature == null)
             throw new UnsupportedFeatureException();

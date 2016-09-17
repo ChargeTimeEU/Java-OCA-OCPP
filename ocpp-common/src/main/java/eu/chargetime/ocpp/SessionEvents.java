@@ -48,8 +48,8 @@ public interface SessionEvents {
      * Find a {@link Feature} by a {@link Request}.
      * If null is returned, a "InternalError" error will be send.
      *
-     * @param request
-     * @return
+     * @param request   The {@link Request} of the {@link Feature}.
+     * @return {@link Feature} found.
      */
     Feature findFeatureByRequest(Request request);
 

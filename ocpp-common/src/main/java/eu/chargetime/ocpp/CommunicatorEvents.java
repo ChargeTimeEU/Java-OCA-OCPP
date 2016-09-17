@@ -58,7 +58,9 @@ public interface CommunicatorEvents {
      * Hint: Use the id to identify the original call. You can use {@link Communicator}s unpackPayload method.
      *
      * @param id        unique id used to identify the original request.
-     * @param payload   raw error payload.
+     * @param errorCode short text to categorize the error.
+     * @param errorDescription a longer text to describe the error.
+     * @param payload   Object payload attached to the error.
      */
     void onError(String id, String errorCode, String errorDescription, Object payload);
 

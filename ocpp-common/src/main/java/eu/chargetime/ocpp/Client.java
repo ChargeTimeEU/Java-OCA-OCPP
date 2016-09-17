@@ -121,9 +121,10 @@ public abstract class Client extends FeatureHandler
      * @param   request                         outgoing request
      * @return call back object, will be fulfilled with confirmation when received
      * @throws UnsupportedFeatureException     trying to send a request from an unsupported feature
+     * @throws OccurenceConstraintException     Thrown if the request isn't valid.
      * @see                                     CompletableFuture
      */
-    public CompletableFuture<Confirmation> send(Request request) throws UnsupportedFeatureException, OccurenceConstraintException, NotConnectedException {
+    public CompletableFuture<Confirmation> send(Request request) throws UnsupportedFeatureException, OccurenceConstraintException {
         Feature feature = findFeature(request);
         if (feature == null)
             throw new UnsupportedFeatureException();

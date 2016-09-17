@@ -162,7 +162,6 @@ public abstract class Communicator {
      *
      * @param   uniqueId                the id the receiver expects.
      * @param   confirmation            the outgoing {@link Confirmation}
-     * @exception NotConnectedException Confirmation couldn't be sent due to the lack of connection.
      */
     public void sendCallResult(String uniqueId, Confirmation confirmation) {
         try {
