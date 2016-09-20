@@ -1,6 +1,7 @@
 package eu.chargetime.ocpp;
 
 import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.exceptions.WebsocketNotConnectedException;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
@@ -85,7 +86,11 @@ public class WebSocketTransmitter implements Transmitter
     }
 
     @Override
-    public void send(String request) {
-        client.send(request);
+    public void send(String request) throws NotConnectedException {
+        try {
+            client.send(request);
+        } catch (WebsocketNotConnectedException ex) {
+            throw new NotConnectedException();
+        }
     }
 }

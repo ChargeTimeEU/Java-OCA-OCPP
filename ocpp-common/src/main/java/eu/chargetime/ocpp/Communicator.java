@@ -41,6 +41,7 @@ import java.util.ArrayDeque;
  * Must be overloaded to implement a specific format.
  */
 public abstract class Communicator {
+    private final RetryRunner retryRunner;
     protected Radio radio;
     private ArrayDeque<String> transactionQueue;
     private CommunicatorEvents events;
@@ -111,6 +112,7 @@ public abstract class Communicator {
     public Communicator(Radio transmitter) {
         this.radio = transmitter;
         this.transactionQueue = new ArrayDeque<>();
+        this.retryRunner = new RetryRunner();
     }
 
     /**
@@ -206,6 +208,7 @@ public abstract class Communicator {
         @Override
         public void connected() {
             events.onConnected();
+            retryRunner.start();
         }
 
         @Override
@@ -225,6 +228,38 @@ public abstract class Communicator {
         @Override
         public void disconnected() {
             events.onDisconnected();
+        }
+    }
+
+    /**
+     * Get queued transaction related request.
+     *
+     * @return request or null if queue is empty.
+     */
+    private String nextTransactionCall() {
+        String result = null;
+        if (!transactionQueue.isEmpty())
+            result = transactionQueue.peek();
+        return result;
+    }
+
+    /**
+     * Will resend transaction related requests.
+     */
+    private class RetryRunner extends Thread {
+        private static final long DELAY_IN_MILLISECONDS = 1000;
+
+        @Override
+        public void run() {
+            String call;
+            try {
+                while ((call = nextTransactionCall()) != null) {
+                    radio.send(call);
+                    wait(DELAY_IN_MILLISECONDS);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }
