@@ -41,7 +41,7 @@ import java.util.ArrayDeque;
  * Must be overloaded to implement a specific format.
  */
 public abstract class Communicator {
-    private final RetryRunner retryRunner;
+    private RetryRunner retryRunner;
     protected Radio radio;
     private ArrayDeque<String> transactionQueue;
     private CommunicatorEvents events;
@@ -148,7 +148,13 @@ public abstract class Communicator {
     public void sendCall(String uniqueId, String action, Request request) {
         String call = makeCall(uniqueId, action, packPayload(request));
         try {
-            radio.send(call);
+
+            if (request.transactionRelated() && transactionQueue.size() > 0) {
+                transactionQueue.add(call);
+                emptyTransactionQueue();
+            } else {
+                radio.send(call);
+            }
         } catch (NotConnectedException ex) {
             ex.printStackTrace();
             if (request.transactionRelated()) {
@@ -198,6 +204,16 @@ public abstract class Communicator {
         radio.disconnect();
     }
 
+    private synchronized void emptyTransactionQueue()
+    {
+        if (!retryRunner.isAlive()) {
+            if (retryRunner.getState() != Thread.State.NEW) {
+                retryRunner = new RetryRunner();
+            }
+            retryRunner.start();
+        }
+    }
+
     private class EventHandler implements RadioEvents {
         private final CommunicatorEvents events;
 
@@ -208,7 +224,7 @@ public abstract class Communicator {
         @Override
         public void connected() {
             events.onConnected();
-            retryRunner.start();
+            emptyTransactionQueue();
         }
 
         @Override
@@ -239,7 +255,7 @@ public abstract class Communicator {
     private String nextTransactionCall() {
         String result = null;
         if (!transactionQueue.isEmpty())
-            result = transactionQueue.peek();
+            result = transactionQueue.pop();
         return result;
     }
 
@@ -255,7 +271,7 @@ public abstract class Communicator {
             try {
                 while ((call = nextTransactionCall()) != null) {
                     radio.send(call);
-                    wait(DELAY_IN_MILLISECONDS);
+                    Thread.sleep(DELAY_IN_MILLISECONDS);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
