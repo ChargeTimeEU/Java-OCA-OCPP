@@ -148,10 +148,9 @@ public abstract class Communicator {
     public void sendCall(String uniqueId, String action, Request request) {
         String call = makeCall(uniqueId, action, packPayload(request));
         try {
-
             if (request.transactionRelated() && transactionQueue.size() > 0) {
                 transactionQueue.add(call);
-                emptyTransactionQueue();
+                processTransactionQueue();
             } else {
                 radio.send(call);
             }
@@ -204,7 +203,7 @@ public abstract class Communicator {
         radio.disconnect();
     }
 
-    private synchronized void emptyTransactionQueue()
+    private synchronized void processTransactionQueue()
     {
         if (!retryRunner.isAlive()) {
             if (retryRunner.getState() != Thread.State.NEW) {
@@ -224,7 +223,7 @@ public abstract class Communicator {
         @Override
         public void connected() {
             events.onConnected();
-            emptyTransactionQueue();
+            processTransactionQueue();
         }
 
         @Override
