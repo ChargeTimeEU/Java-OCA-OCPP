@@ -45,6 +45,7 @@ public abstract class Communicator {
     protected Radio radio;
     private ArrayDeque<String> transactionQueue;
     private CommunicatorEvents events;
+    private boolean failedFlag;
 
     /**
      * Convert a formatted string into a {@link Request}/{@link Confirmation}.
@@ -113,6 +114,7 @@ public abstract class Communicator {
         this.radio = transmitter;
         this.transactionQueue = new ArrayDeque<>();
         this.retryRunner = new RetryRunner();
+        this.failedFlag = false;
     }
 
     /**
@@ -169,7 +171,6 @@ public abstract class Communicator {
      *
      * @param   uniqueId                the id the receiver expects.
      * @param   confirmation            the outgoing {@link Confirmation}
-     * @exception NotConnectedException Confirmation couldn't be sent due to the lack of connection.
      */
     public void sendCallResult(String uniqueId, Confirmation confirmation) {
         try {
@@ -232,6 +233,7 @@ public abstract class Communicator {
             if (message instanceof CallResultMessage) {
                 events.onCallResult(message.getId(), message.getPayload());
             } else if (message instanceof CallErrorMessage) {
+                failedFlag = true;
                 CallErrorMessage call = (CallErrorMessage) message;
                 events.onError(call.getId(), call.getErrorCode(), call.getErrorDescription(), call.getRawPayload());
             } else if (message instanceof CallMessage) {
@@ -251,11 +253,25 @@ public abstract class Communicator {
      *
      * @return request or null if queue is empty.
      */
-    private String nextTransactionCall() {
+    private String getRetryMessage() {
         String result = null;
         if (!transactionQueue.isEmpty())
-            result = transactionQueue.pop();
+            result = transactionQueue.peek();
         return result;
+    }
+
+    /**
+     * Check if a error message was received.
+     *
+     * @return whether a fail flag has been raised.
+     */
+    private boolean hasFailed() {
+        return failedFlag;
+    }
+
+    private void popRetryMessage() {
+        if (!transactionQueue.isEmpty())
+            transactionQueue.pop();
     }
 
     /**
@@ -268,9 +284,11 @@ public abstract class Communicator {
         public void run() {
             String call;
             try {
-                while ((call = nextTransactionCall()) != null) {
+                while ((call = getRetryMessage()) != null) {
                     radio.send(call);
                     Thread.sleep(DELAY_IN_MILLISECONDS);
+                    if (!hasFailed())
+                        popRetryMessage();
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();

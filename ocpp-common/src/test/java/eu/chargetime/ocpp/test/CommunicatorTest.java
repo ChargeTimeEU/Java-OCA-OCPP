@@ -137,7 +137,28 @@ public class CommunicatorTest {
     }
 
     @Test
-    public void connected_transactionRelatedRequestsQueued_callsSend() throws Exception {
+    public void sendCall_queueNotEmpty_messagesAreProcessInSequence() throws Exception {
+        // Given
+        String action = "some action";
+        String firstId = "first id";
+
+        doThrow(new NotConnectedException()).when(receiver).send(anyString());
+        communicator.sendCall(firstId, "previous action", transactionRelatedRequest);
+        doNothing().when(receiver).send(anyString());
+
+        String secondId = "second id";
+
+        // When
+        communicator.sendCall(secondId, action, transactionRelatedRequest);
+        Thread.sleep(1100);
+
+        // Then
+        verify(receiver, times(2)).send(eq(firstId));
+        verify(receiver, times(1)).send(eq(secondId));
+    }
+
+    @Test
+    public void connected_transactionRelatedRequestsQueued_sendIsCalled() throws Exception {
         // Given
         doThrow(new NotConnectedException()).when(receiver).send(anyString());
         String uniqueId = "some id";
@@ -146,9 +167,27 @@ public class CommunicatorTest {
 
         // When
         eventHandler.connected();
+        Thread.sleep(100);
 
         // Then
         verify(receiver, times(2)).send(eq(uniqueId));
     }
 
+    @Test
+    public void connected_failedOnceBefore_sameRequestIsRetried() throws Exception {
+        // Given
+        doThrow(new NotConnectedException()).when(receiver).send(anyString());
+        String uniqueId = "some id";
+        String action = "some action";
+        communicator.sendCall(uniqueId, action, transactionRelatedRequest);
+        eventHandler.connected();
+        Thread.sleep(100);
+
+        // When
+        eventHandler.connected();
+        Thread.sleep(100);
+
+        // Then
+        verify(receiver, times(3)).send(eq(uniqueId));
+    }
 }
