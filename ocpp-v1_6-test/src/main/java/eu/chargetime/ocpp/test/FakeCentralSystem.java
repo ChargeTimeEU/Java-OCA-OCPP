@@ -149,6 +149,9 @@ public class FakeCentralSystem
             @Override
             public void lostSession(int identity) {
                 sessionIndex = -1;
+                // clear
+                receivedConfirmation = null;
+                receivedRequest = null;
             }
         });
     }

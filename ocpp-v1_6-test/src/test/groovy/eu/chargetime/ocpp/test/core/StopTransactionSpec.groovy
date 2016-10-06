@@ -39,7 +39,30 @@ class StopTransactionSpec extends Specification {
         conditions.eventually {
             assert chargePoint.hasReceivedStopTransactionConfirmation();
         }
+    }
 
+    def "StopTransaction request is stored when offline"() {
+        def conditions = new PollingConditions(initialDelay: 0.5, timeout: 1);
+
+        given:
+        chargePoint.disconnect();
+
+        when:
+        chargePoint.sendStopTransactionRequest();
+
+        then:
+        conditions.within(1) {
+            assert !centralSystem.hasHandledStopTransactionRequest();
+        }
+
+        when:
+        chargePoint.connect();
+
+        then:
+        conditions.setInitialDelay(0);
+        conditions.eventually {
+            assert centralSystem.hasHandledStopTransactionRequest();
+        }
     }
 
 }

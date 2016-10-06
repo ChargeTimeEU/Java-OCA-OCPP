@@ -41,9 +41,11 @@ import java.util.ArrayDeque;
  * Must be overloaded to implement a specific format.
  */
 public abstract class Communicator {
+    private RetryRunner retryRunner;
     protected Radio radio;
     private ArrayDeque<String> transactionQueue;
     private CommunicatorEvents events;
+    private boolean failedFlag;
 
     /**
      * Convert a formatted string into a {@link Request}/{@link Confirmation}.
@@ -111,6 +113,8 @@ public abstract class Communicator {
     public Communicator(Radio transmitter) {
         this.radio = transmitter;
         this.transactionQueue = new ArrayDeque<>();
+        this.retryRunner = new RetryRunner();
+        this.failedFlag = false;
     }
 
     /**
@@ -146,7 +150,12 @@ public abstract class Communicator {
     public void sendCall(String uniqueId, String action, Request request) {
         String call = makeCall(uniqueId, action, packPayload(request));
         try {
-            radio.send(call);
+            if (request.transactionRelated() && transactionQueue.size() > 0) {
+                transactionQueue.add(call);
+                processTransactionQueue();
+            } else {
+                radio.send(call);
+            }
         } catch (NotConnectedException ex) {
             ex.printStackTrace();
             if (request.transactionRelated()) {
@@ -195,6 +204,16 @@ public abstract class Communicator {
         radio.disconnect();
     }
 
+    private synchronized void processTransactionQueue()
+    {
+        if (!retryRunner.isAlive()) {
+            if (retryRunner.getState() != Thread.State.NEW) {
+                retryRunner = new RetryRunner();
+            }
+            retryRunner.start();
+        }
+    }
+
     private class EventHandler implements RadioEvents {
         private final CommunicatorEvents events;
 
@@ -205,6 +224,7 @@ public abstract class Communicator {
         @Override
         public void connected() {
             events.onConnected();
+            processTransactionQueue();
         }
 
         @Override
@@ -213,6 +233,7 @@ public abstract class Communicator {
             if (message instanceof CallResultMessage) {
                 events.onCallResult(message.getId(), message.getPayload());
             } else if (message instanceof CallErrorMessage) {
+                failedFlag = true;
                 CallErrorMessage call = (CallErrorMessage) message;
                 events.onError(call.getId(), call.getErrorCode(), call.getErrorDescription(), call.getRawPayload());
             } else if (message instanceof CallMessage) {
@@ -224,6 +245,54 @@ public abstract class Communicator {
         @Override
         public void disconnected() {
             events.onDisconnected();
+        }
+    }
+
+    /**
+     * Get queued transaction related request.
+     *
+     * @return request or null if queue is empty.
+     */
+    private String getRetryMessage() {
+        String result = null;
+        if (!transactionQueue.isEmpty())
+            result = transactionQueue.peek();
+        return result;
+    }
+
+    /**
+     * Check if a error message was received.
+     *
+     * @return whether a fail flag has been raised.
+     */
+    private boolean hasFailed() {
+        return failedFlag;
+    }
+
+    private void popRetryMessage() {
+        if (!transactionQueue.isEmpty())
+            transactionQueue.pop();
+    }
+
+    /**
+     * Will resend transaction related requests.
+     */
+    private class RetryRunner extends Thread {
+        private static final long DELAY_IN_MILLISECONDS = 1000;
+
+        @Override
+        public void run() {
+            String call;
+            try {
+                while ((call = getRetryMessage()) != null) {
+                    radio.send(call);
+                    Thread.sleep(DELAY_IN_MILLISECONDS);
+                    if (!hasFailed())
+                        popRetryMessage();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }
