@@ -1,4 +1,11 @@
-package eu.chargetime.ocpp;/*
+package eu.chargetime.ocpp;
+
+import javax.xml.soap.SOAPConnection;
+import javax.xml.soap.SOAPConnectionFactory;
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPMessage;
+
+/*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
@@ -24,31 +31,40 @@ package eu.chargetime.ocpp;/*
     SOFTWARE.
  */
 
-public class WebSocketReceiver implements Receiver {
-
-    private RadioEvents handler;
-    private WebSocketReceiverEvents receiverEvents;
-
-    public WebSocketReceiver(WebSocketReceiverEvents handler) {
-        receiverEvents = handler;
-    }
+public class WebServiceTransmitter implements Transmitter {
+    SOAPConnection soapConnection;
+    private String url;
+    private RadioEvents events;
 
     @Override
     public void disconnect() {
-        handler.disconnected();
-    }
-
-    void relay(String message) {
-        handler.receivedMessage(message);
-    }
-
-    @Override
-    public void send(Object message) {
-        receiverEvents.relay(message.toString());
+        try {
+            soapConnection.close();
+        } catch (SOAPException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void accept(RadioEvents events) {
-        handler = events;
+    public void send(Object message) throws NotConnectedException {
+        SOAPMessage request = (SOAPMessage) message;
+        try {
+            events.receivedMessage(soapConnection.call(request, url));
+        } catch (SOAPException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void connect(String uri, RadioEvents events) {
+        url = uri;
+        this.events = events;
+
+        try {
+            SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+            soapConnection = soapConnectionFactory.createConnection();
+        } catch (SOAPException e) {
+            e.printStackTrace();
+        }
     }
 }

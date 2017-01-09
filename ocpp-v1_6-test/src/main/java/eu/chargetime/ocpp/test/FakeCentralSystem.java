@@ -64,12 +64,19 @@ public class FakeCentralSystem
         return confirmation;
     }
 
+    public enum serverType {JSON, SOAP}
+
     public void started() throws Exception
+    {
+        started(serverType.JSON);
+    }
+
+    public void started(serverType type) throws Exception
     {
         if (server != null)
             return;
 
-        server = new JSONServer(new ServerCoreProfile(new ServerCoreEventHandler() {
+        ServerCoreProfile serverCoreProfile = new ServerCoreProfile(new ServerCoreEventHandler() {
             @Override
             public AuthorizeConfirmation handleAuthorizeRequest(int sessionIndex, AuthorizeRequest request) {
                 receivedRequest = request;
@@ -139,7 +146,14 @@ public class FakeCentralSystem
                 StopTransactionConfirmation confirmation = new StopTransactionConfirmation();
                 return failurePoint(confirmation);
             }
-        }));
+        });
+
+        switch (type) {
+            case JSON:
+                server = new JSONServer(serverCoreProfile);
+                break;
+        }
+
         server.open("localhost", 8887, new ServerEvents() {
             @Override
             public void newSession(int sessionIndex) {

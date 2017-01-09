@@ -40,9 +40,9 @@ public interface RadioEvents
     /**
      * Incoming message from node.
      *
-     * @param message text message.
+     * @param message message object.
      */
-    void receivedMessage(String message);
+    void receivedMessage(Object message);
 
     /**
      * Disconnected from node.

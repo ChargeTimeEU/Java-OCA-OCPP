@@ -86,9 +86,9 @@ public class WebSocketTransmitter implements Transmitter
     }
 
     @Override
-    public void send(String request) throws NotConnectedException {
+    public void send(Object request) throws NotConnectedException {
         try {
-            client.send(request);
+            client.send(request.toString());
         } catch (WebsocketNotConnectedException ex) {
             throw new NotConnectedException();
         }

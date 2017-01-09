@@ -47,6 +47,14 @@ public class FakeChargePoint
     private Throwable receivedException;
 
     public FakeChargePoint() {
+        this(clientType.JSON);
+    }
+
+    public enum clientType {
+        JSON, SOAP
+    }
+
+    public FakeChargePoint(clientType type) {
         core = new ClientCoreProfile(new ClientCoreEventHandler() {
             @Override
             public ChangeAvailabilityConfirmation handleChangeAvailabilityRequest(ChangeAvailabilityRequest request) {
@@ -108,7 +116,12 @@ public class FakeChargePoint
                 return new UnlockConnectorConfirmation(UnlockStatus.Unlocked);
             }
         });
-        client = new JSONClient(core);
+
+        switch (type) {
+            case JSON:
+                client = new JSONClient(core);
+                break;
+        }
     }
 
     public void connect() {

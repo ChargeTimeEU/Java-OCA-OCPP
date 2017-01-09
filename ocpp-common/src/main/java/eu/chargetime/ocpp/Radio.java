@@ -40,5 +40,5 @@ public interface Radio {
      * @param message                   test message to send.
      * @exception NotConnectedException Message couldn't be sent due to the lack of connection.
      */
-    void send(String message) throws NotConnectedException;
+    void send(Object message) throws NotConnectedException;
 }

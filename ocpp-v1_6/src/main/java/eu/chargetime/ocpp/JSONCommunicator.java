@@ -99,9 +99,9 @@ public class JSONCommunicator extends Communicator {
     }
 
     @Override
-    protected Message parse(String json) {
+    protected Message parse(Object json) {
         Message message = null;
-        JSONArray array = new JSONArray(json);
+        JSONArray array = new JSONArray(json.toString());
 
         if (array.getInt(INDEX_MESSAGEID) == TYPENUMBER_CALL) {
             message = new CallMessage();

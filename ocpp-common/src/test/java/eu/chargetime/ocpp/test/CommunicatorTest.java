@@ -83,7 +83,7 @@ public class CommunicatorTest {
             }
 
             @Override
-            protected Message parse(String message) {
+            protected Message parse(Object message) {
                 return null;
             }
         };

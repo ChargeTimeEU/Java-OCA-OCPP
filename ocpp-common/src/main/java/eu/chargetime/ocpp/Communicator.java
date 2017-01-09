@@ -103,7 +103,7 @@ public abstract class Communicator {
      * @param   message     the raw message
      * @return CallMessage or {@link CallResultMessage}
      */
-    protected abstract Message parse(String message);
+    protected abstract Message parse(Object message);
 
     /**
      * Handle required injections.
@@ -228,7 +228,7 @@ public abstract class Communicator {
         }
 
         @Override
-        public void receivedMessage(String input) {
+        public void receivedMessage(Object input) {
             Message message = parse(input);
             if (message instanceof CallResultMessage) {
                 events.onCallResult(message.getId(), message.getPayload());
