@@ -58,27 +58,27 @@ public class CommunicatorTest {
 
         communicator = new Communicator(receiver) {
             @Override
-            public <T> T unpackPayload(String payload, Class<T> type) throws Exception {
+            public <T> T unpackPayload(Object payload, Class<T> type) throws Exception {
                 return null;
             }
 
             @Override
-            public String packPayload(Object payload) {
+            public Object packPayload(Object payload) {
                 return null;
             }
 
             @Override
-            protected String makeCallResult(String uniqueId, String payload) {
+            protected Object makeCallResult(String uniqueId, Object payload) {
                 return null;
             }
 
             @Override
-            protected String makeCall(String uniqueId, String action, String payload) {
+            protected Object makeCall(String uniqueId, String action, Object payload) {
                 return uniqueId;
             }
 
             @Override
-            protected String makeCallError(String uniqueId, String errorCode, String errorDescription) {
+            protected Object makeCallError(String uniqueId, String errorCode, String errorDescription) {
                 return null;
             }
 

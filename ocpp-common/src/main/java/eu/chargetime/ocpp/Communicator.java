@@ -43,7 +43,7 @@ import java.util.ArrayDeque;
 public abstract class Communicator {
     private RetryRunner retryRunner;
     protected Radio radio;
-    private ArrayDeque<String> transactionQueue;
+    private ArrayDeque<Object> transactionQueue;
     private CommunicatorEvents events;
     private boolean failedFlag;
 
@@ -56,7 +56,7 @@ public abstract class Communicator {
      * @return the unpacked payload.
      * @throws Exception    error occurred while converting.
      */
-    public abstract <T> T unpackPayload(String payload, Class<T> type) throws Exception;
+    public abstract <T> T unpackPayload(Object payload, Class<T> type) throws Exception;
 
     /**
      * Convert a {@link Request}/{@link Confirmation} into a formatted string.
@@ -64,7 +64,7 @@ public abstract class Communicator {
      * @param   payload     the payload model.
      * @return the payload in the form of a formatted string.
      */
-    public abstract String packPayload(Object payload);
+    public abstract Object packPayload(Object payload);
 
     /**
      * Create a call result envelope to transmit.
@@ -73,7 +73,7 @@ public abstract class Communicator {
      * @param   payload     packed payload.
      * @return a fully packed message ready to send.
      */
-    protected abstract String makeCallResult(String uniqueId, String payload);
+    protected abstract Object makeCallResult(String uniqueId, Object payload);
 
     /**
      * Create a call envelope to transmit to the server.
@@ -83,7 +83,7 @@ public abstract class Communicator {
      * @param   payload     packed payload.
      * @return a fully packed message ready to send.
      */
-    protected abstract String makeCall(String uniqueId, String action, String payload);
+    protected abstract Object makeCall(String uniqueId, String action, Object payload);
 
     /**
      * Create a call error envelope to transmit.
@@ -93,7 +93,7 @@ public abstract class Communicator {
      * @param   errorDescription    an associated error description.
      * @return a fully packed message ready to send.
      */
-    protected abstract String makeCallError(String uniqueId, String errorCode, String errorDescription);
+    protected abstract Object makeCallError(String uniqueId, String errorCode, String errorDescription);
 
     /**
      * Identify an incoming call and parse it into one of the following:
@@ -148,7 +148,7 @@ public abstract class Communicator {
      * @param   request                 the outgoing {@link Request}
      */
     public void sendCall(String uniqueId, String action, Request request) {
-        String call = makeCall(uniqueId, action, packPayload(request));
+        Object call = makeCall(uniqueId, action, packPayload(request));
         try {
             if (request.transactionRelated() && transactionQueue.size() > 0) {
                 transactionQueue.add(call);
@@ -253,8 +253,8 @@ public abstract class Communicator {
      *
      * @return request or null if queue is empty.
      */
-    private String getRetryMessage() {
-        String result = null;
+    private Object getRetryMessage() {
+        Object result = null;
         if (!transactionQueue.isEmpty())
             result = transactionQueue.peek();
         return result;
@@ -282,7 +282,7 @@ public abstract class Communicator {
 
         @Override
         public void run() {
-            String call;
+            Object call;
             try {
                 while ((call = getRetryMessage()) != null) {
                     radio.send(call);

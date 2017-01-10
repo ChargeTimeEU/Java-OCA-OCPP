@@ -254,7 +254,7 @@ public class JSONCommunicatorTest extends TestUtilities
         BootNotificationRequest request = new BootNotificationRequest("VendorX", "SingleSocketCharger");
 
         // When
-        String payload = communicator.packPayload(request);
+        Object payload = communicator.packPayload(request);
 
         // Then
         assertThat(payload, equalTo(expected));
@@ -270,7 +270,7 @@ public class JSONCommunicatorTest extends TestUtilities
         confirmation.setStatus(RegistrationStatus.Accepted);
 
         // When
-        String payload = communicator.packPayload(confirmation);
+        Object payload = communicator.packPayload(confirmation);
 
         // Then
         assertThat(payload, equalTo(expected));

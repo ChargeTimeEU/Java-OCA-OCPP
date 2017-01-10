@@ -73,28 +73,28 @@ public class JSONCommunicator extends Communicator {
     }
 
     @Override
-    public <T> T unpackPayload(String payload, Class<T> type) throws Exception {
-        JSONObject json = new JSONObject(payload);
+    public <T> T unpackPayload(Object payload, Class<T> type) throws Exception {
+        JSONObject json = new JSONObject(payload.toString());
         return parseJSON(json, type);
     }
 
     @Override
-    public String packPayload(Object payload) {
+    public Object packPayload(Object payload) {
         return new JSONObject(payload).toString();
     }
 
     @Override
-    protected String makeCallResult(String uniqueId, String payload) {
+    protected Object makeCallResult(String uniqueId, Object payload) {
         return String.format(CALLRESULT_FORMAT, uniqueId, payload);
     }
 
     @Override
-    protected String makeCall(String uniqueId, String action, String payload) {
+    protected Object makeCall(String uniqueId, String action, Object payload) {
         return String.format(CALL_FORMAT, uniqueId, action, payload);
     }
 
     @Override
-    protected String makeCallError(String uniqueId, String errorCode, String errorDescription) {
+    protected Object makeCallError(String uniqueId, String errorCode, String errorDescription) {
         return String.format(CALLERROR_FORMAT, uniqueId, errorCode, errorDescription, "{}");
     }
 
