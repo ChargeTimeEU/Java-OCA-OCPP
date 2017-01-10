@@ -26,10 +26,20 @@ package eu.chargetime.ocpp;/*
 
 import eu.chargetime.ocpp.model.Message;
 
+import javax.xml.soap.*;
+
 public class SOAPCommunicator extends Communicator {
 
-    public SOAPCommunicator(String chargeBoxIdentity, String FromUrl, WebServiceTransmitter webServiceTransmitter) {
-        super(webServiceTransmitter);
+
+    private final String chargeBoxIdentity;
+    private final String fromUrl;
+    private String toUrl;
+
+    public SOAPCommunicator(String chargeBoxIdentity, String fromUrl, Radio radio) {
+        super(radio);
+
+        this.chargeBoxIdentity = chargeBoxIdentity;
+        this.fromUrl = fromUrl;
     }
 
     @Override
@@ -49,7 +59,55 @@ public class SOAPCommunicator extends Communicator {
 
     @Override
     protected Object makeCall(String uniqueId, String action, Object payload) {
-        return null;
+        SOAPMessage message = null;
+        try {
+            MessageFactory messageFactory = MessageFactory.newInstance();
+            SOAPFactory soapFactory = SOAPFactory.newInstance();
+
+            message = messageFactory.createMessage();
+
+            SOAPHeader soapHeader = message.getSOAPHeader();
+
+            // Set chargeBoxIdentity
+            SOAPHeaderElement chargeBoxIdentityHeader = soapHeader.addHeaderElement(soapFactory.createName("chargeBoxIdentity", "cs", "urn://Ocpp/Cs/2015/10/"));
+            chargeBoxIdentityHeader.setMustUnderstand(true);
+            chargeBoxIdentityHeader.setValue(chargeBoxIdentity);
+
+            // Set Action
+            SOAPHeaderElement actionHeader = soapHeader.addHeaderElement(soapFactory.createName("Action", "wsa5", ""));
+            actionHeader.setMustUnderstand(true);
+            actionHeader.setValue(String.format("/%s", action));
+
+            // Set MessageID
+            SOAPHeaderElement messageIDHeader = soapHeader.addHeaderElement(soapFactory.createName("MessageID", "wsa5", ""));
+            messageIDHeader.setMustUnderstand(true);
+            messageIDHeader.setValue(uniqueId);
+
+            /*
+            // Set RelatesTo
+            SOAPHeaderElement relatesToHeader = soapHeader.addHeaderElement(soapFactory.createName("RelatesTo", "wsa5", ""));
+            relatesToHeader.setValue(uniqueId);
+            */
+
+            // Set From
+            SOAPHeaderElement fromHeader = soapHeader.addHeaderElement(soapFactory.createName("From", "wsa5", ""));
+            fromHeader.setValue(fromUrl);
+
+            // Set ReplyTo
+            SOAPHeaderElement replyToHeader = soapHeader.addHeaderElement(soapFactory.createName("ReplyTo", "wsa5", ""));
+            replyToHeader.setMustUnderstand(true);
+            SOAPElement addressElement = replyToHeader.addChildElement(soapFactory.createName("Address", "wsa5", ""));
+            addressElement.setValue("http://www.w3.org/2005/08/addressing/anonymous");
+
+            // Set To
+            SOAPHeaderElement toHeader = soapHeader.addHeaderElement(soapFactory.createName("To", "wsa5", ""));
+            toHeader.setMustUnderstand(true);
+            toHeader.setValue(toUrl);
+
+        } catch (SOAPException e) {
+            e.printStackTrace();
+        }
+        return message;
     }
 
     @Override
@@ -60,5 +118,13 @@ public class SOAPCommunicator extends Communicator {
     @Override
     protected Message parse(Object message) {
         return null;
+    }
+
+    public String getToUrl() {
+        return toUrl;
+    }
+
+    public void setToUrl(String toUrl) {
+        this.toUrl = toUrl;
     }
 }

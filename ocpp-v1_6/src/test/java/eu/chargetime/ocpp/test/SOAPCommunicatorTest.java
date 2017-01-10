@@ -1,4 +1,13 @@
-package eu.chargetime.ocpp;/*
+package eu.chargetime.ocpp.test;
+
+import eu.chargetime.ocpp.SOAPCommunicator;
+import eu.chargetime.ocpp.Transmitter;
+import org.junit.Before;
+import org.mockito.Mock;
+
+import static org.mockito.Mockito.mock;
+
+/*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
@@ -23,38 +32,19 @@ package eu.chargetime.ocpp;/*
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
-
-import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
-
-public class SOAPClient extends Client {
+public class SOAPCommunicatorTest {
 
     private SOAPCommunicator communicator;
-    /**
-     * The core feature profile is required.
-     *
-     * @param chargeBoxIdentity required identity used in message header.
-     * @param callbackUrl       url that the server can send requests to.
-     * @param coreProfile       implementation of the core feature profile.
-     */
-    public SOAPClient(String chargeBoxIdentity, String callbackUrl, ClientCoreProfile coreProfile) {
-        this(new SOAPCommunicator(chargeBoxIdentity, callbackUrl, new WebServiceTransmitter()));
+    private String chargeBoxIdentity = "testIdentity";
+    private String fromUrl = "http://localhost";
 
-        addFeatureProfile(coreProfile);
+    @Mock
+    Transmitter transmitter = mock(Transmitter.class);
+
+    @Before
+    public void setup() {
+        communicator = new SOAPCommunicator(chargeBoxIdentity, fromUrl, transmitter);
     }
 
-    private SOAPClient(SOAPCommunicator communicator) {
-        super(new Session(communicator, new Queue()));
-        this.communicator = communicator;
-    }
 
-    /**
-     * Connect to server and set To header.
-     *
-     * @param uri url and port of the server
-     */
-    @Override
-    public void connect(String uri) {
-        communicator.setToUrl(uri);
-        super.connect(uri);
-    }
 }
