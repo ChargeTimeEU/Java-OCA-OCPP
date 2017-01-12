@@ -25,7 +25,13 @@ package eu.chargetime.ocpp;/*
  */
 
 import eu.chargetime.ocpp.model.Message;
+import org.w3c.dom.Document;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.*;
 
 public class SOAPCommunicator extends Communicator {
@@ -49,7 +55,17 @@ public class SOAPCommunicator extends Communicator {
 
     @Override
     public Object packPayload(Object payload) {
-        return null;
+        Document document = null;
+        try {
+            Marshaller marshaller = JAXBContext.newInstance(payload.getClass()).createMarshaller();
+            document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            marshaller.marshal(payload, document);
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+        return document;
     }
 
     @Override
@@ -65,8 +81,12 @@ public class SOAPCommunicator extends Communicator {
             SOAPFactory soapFactory = SOAPFactory.newInstance();
 
             message = messageFactory.createMessage();
+            message.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
 
             SOAPHeader soapHeader = message.getSOAPHeader();
+
+            String prefix = "wsa";
+            String namespace = "http://schemas.xmlsoap.org/ws/2004/08/addressing";
 
             // Set chargeBoxIdentity
             SOAPHeaderElement chargeBoxIdentityHeader = soapHeader.addHeaderElement(soapFactory.createName("chargeBoxIdentity", "cs", "urn://Ocpp/Cs/2015/10/"));
@@ -74,39 +94,41 @@ public class SOAPCommunicator extends Communicator {
             chargeBoxIdentityHeader.setValue(chargeBoxIdentity);
 
             // Set Action
-            SOAPHeaderElement actionHeader = soapHeader.addHeaderElement(soapFactory.createName("Action", "wsa5", ""));
+            SOAPHeaderElement actionHeader = soapHeader.addHeaderElement(soapFactory.createName("Action", prefix, namespace));
             actionHeader.setMustUnderstand(true);
             actionHeader.setValue(String.format("/%s", action));
 
             // Set MessageID
-            SOAPHeaderElement messageIDHeader = soapHeader.addHeaderElement(soapFactory.createName("MessageID", "wsa5", ""));
+            SOAPHeaderElement messageIDHeader = soapHeader.addHeaderElement(soapFactory.createName("MessageID", prefix, namespace));
             messageIDHeader.setMustUnderstand(true);
             messageIDHeader.setValue(uniqueId);
 
             /*
             // Set RelatesTo
-            SOAPHeaderElement relatesToHeader = soapHeader.addHeaderElement(soapFactory.createName("RelatesTo", "wsa5", ""));
+            SOAPHeaderElement relatesToHeader = soapHeader.addHeaderElement(soapFactory.createName("RelatesTo", prefix, namespace));
             relatesToHeader.setValue(uniqueId);
             */
 
             // Set From
-            SOAPHeaderElement fromHeader = soapHeader.addHeaderElement(soapFactory.createName("From", "wsa5", ""));
+            SOAPHeaderElement fromHeader = soapHeader.addHeaderElement(soapFactory.createName("From", prefix, namespace));
             fromHeader.setValue(fromUrl);
 
             // Set ReplyTo
-            SOAPHeaderElement replyToHeader = soapHeader.addHeaderElement(soapFactory.createName("ReplyTo", "wsa5", ""));
+            SOAPHeaderElement replyToHeader = soapHeader.addHeaderElement(soapFactory.createName("ReplyTo", prefix, namespace));
             replyToHeader.setMustUnderstand(true);
-            SOAPElement addressElement = replyToHeader.addChildElement(soapFactory.createName("Address", "wsa5", ""));
+            SOAPElement addressElement = replyToHeader.addChildElement(soapFactory.createName("Address", prefix, namespace));
             addressElement.setValue("http://www.w3.org/2005/08/addressing/anonymous");
 
             // Set To
-            SOAPHeaderElement toHeader = soapHeader.addHeaderElement(soapFactory.createName("To", "wsa5", ""));
+            SOAPHeaderElement toHeader = soapHeader.addHeaderElement(soapFactory.createName("To", prefix, namespace));
             toHeader.setMustUnderstand(true);
             toHeader.setValue(toUrl);
 
-        } catch (SOAPException e) {
+            message.getSOAPBody().addDocument((Document) payload);
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
         return message;
     }
 

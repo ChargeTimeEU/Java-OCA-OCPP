@@ -2,9 +2,21 @@ package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.SOAPCommunicator;
 import eu.chargetime.ocpp.Transmitter;
+import eu.chargetime.ocpp.model.core.BootNotificationRequest;
+import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
+import org.w3c.dom.Document;
 
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.StringWriter;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 
 /*
@@ -32,7 +44,7 @@ import static org.mockito.Mockito.mock;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
-public class SOAPCommunicatorTest {
+public class SOAPCommunicatorTest extends TestUtilities {
 
     private SOAPCommunicator communicator;
     private String chargeBoxIdentity = "testIdentity";
@@ -44,6 +56,33 @@ public class SOAPCommunicatorTest {
     @Before
     public void setup() {
         communicator = new SOAPCommunicator(chargeBoxIdentity, fromUrl, transmitter);
+    }
+
+    @Test
+    public void pack_bootNotificationRequest_returnsBootNotificationRequestPayload() {
+        // Given
+        String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><bootNotificationRequest xmlns=\"urn://Ocpp/Cp/2015/10\"><chargePointModel>SingleSocketCharger</chargePointModel><chargePointVendor>VendorX</chargePointVendor></bootNotificationRequest>";
+
+        BootNotificationRequest request = new BootNotificationRequest("VendorX", "SingleSocketCharger");
+
+        // When
+        Document payload = (Document) communicator.packPayload(request);
+
+        // Then
+        assertThat(docToString(payload), equalTo(expected));
+    }
+
+
+    public static String docToString(Document doc) {
+        try {
+            StringWriter sw = new StringWriter();
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.transform(new DOMSource(doc), new StreamResult(sw));
+            return sw.toString();
+        } catch (Exception ex) {
+            throw new RuntimeException("Error converting to String", ex);
+        }
     }
 
 

@@ -1,9 +1,6 @@
 package eu.chargetime.ocpp.test;
 
-import eu.chargetime.ocpp.Client;
-import eu.chargetime.ocpp.JSONClient;
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.UnsupportedFeatureException;
+import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
 import eu.chargetime.ocpp.model.Confirmation;
@@ -120,6 +117,9 @@ public class FakeChargePoint
         switch (type) {
             case JSON:
                 client = new JSONClient(core);
+                break;
+            case SOAP:
+                client = new SOAPClient("me", "http://localhost:8889", core);
                 break;
         }
     }

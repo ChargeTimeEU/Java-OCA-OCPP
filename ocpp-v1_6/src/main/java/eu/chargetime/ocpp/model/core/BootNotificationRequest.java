@@ -4,6 +4,9 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -34,6 +37,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 /**
  * Sent by the Charge Point to the Central System.
  */
+@XmlRootElement
 public class BootNotificationRequest implements Request
 {
     private String chargePointVendor;
@@ -75,6 +79,7 @@ public class BootNotificationRequest implements Request
      * @param chargePointVendor             String, max 20 characters, case insensitive.
      * @throws PropertyConstraintException  Value exceeds 20 characters.
      */
+    @XmlElement
     public void setChargePointVendor(String chargePointVendor) throws PropertyConstraintException {
         if (!ModelUtil.validate(chargePointVendor, 20))
             throw new PropertyConstraintException("chargePointVendor", chargePointVendor);
@@ -98,6 +103,7 @@ public class BootNotificationRequest implements Request
      * @param chargePointModel              String, max 20 characters, case insensitive.
      * @throws PropertyConstraintException  Value exceeds 20 characters.
      */
+    @XmlElement
     public void setChargePointModel(String chargePointModel) throws PropertyConstraintException
     {
         if (!ModelUtil.validate(chargePointModel, 20))
@@ -150,6 +156,7 @@ public class BootNotificationRequest implements Request
      * @param chargePointSerialNumber       String, max 25 characters, case insensitive.
      * @throws PropertyConstraintException  Value exceeds 25 characters.
      */
+    @XmlElement
     public void setChargePointSerialNumber(String chargePointSerialNumber) throws PropertyConstraintException {
         if (!ModelUtil.validate(chargePointSerialNumber, 25))
             throw new PropertyConstraintException("chargePointSerialNumber", chargePointSerialNumber);
@@ -173,6 +180,7 @@ public class BootNotificationRequest implements Request
      * @param firmwareVersion               String, max 50 characters, case insensitive.
      * @throws PropertyConstraintException  Value exceeds 50 characters.
      */
+    @XmlElement
     public void setFirmwareVersion(String firmwareVersion) throws PropertyConstraintException {
         if (!ModelUtil.validate(firmwareVersion, 50))
             throw new PropertyConstraintException("firmwareVersion", firmwareVersion);
@@ -196,6 +204,7 @@ public class BootNotificationRequest implements Request
      * @param iccid                         String, max 20 characters, case insensitive.
      * @throws PropertyConstraintException  Value exceeds 20 characters.
      */
+    @XmlElement
     public void setIccid(String iccid) throws PropertyConstraintException {
         if (!ModelUtil.validate(iccid, 20))
             throw new PropertyConstraintException("iccid", iccid);
@@ -219,6 +228,7 @@ public class BootNotificationRequest implements Request
      * @param imsi                          String, max 20 characters, case insensitive.
      * @throws PropertyConstraintException Value exceeds 20 characters.
      */
+    @XmlElement
     public void setImsi(String imsi) throws PropertyConstraintException {
         if (!ModelUtil.validate(imsi, 20))
             throw new PropertyConstraintException("imsi", imsi);
@@ -242,6 +252,7 @@ public class BootNotificationRequest implements Request
      * @param meterSerialNumber             String, max 25 characters, case insensitive.
      * @throws PropertyConstraintException  Value exceeds 25 characters.
      */
+    @XmlElement
     public void setMeterSerialNumber(String meterSerialNumber) throws PropertyConstraintException {
         if (!ModelUtil.validate(meterSerialNumber, 25))
             throw new PropertyConstraintException("meterSerialNumber", meterSerialNumber);
@@ -265,6 +276,7 @@ public class BootNotificationRequest implements Request
      * @param meterType                     String, max 25 characters, case insensitive.
      * @throws PropertyConstraintException  Value exceeds 25 characters.
      */
+    @XmlElement
     public void setMeterType(String meterType) throws PropertyConstraintException {
         if (!ModelUtil.validate(meterType, 25))
             throw new PropertyConstraintException("meterType", meterType);
