@@ -3,6 +3,8 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -36,6 +38,7 @@ import java.util.TimeZone;
 /**
  * Sent by the Charge Point to the Central System.
  */
+@XmlRootElement
 public class StartTransactionRequest implements Request {
     private Integer connectorId;
     private IdToken idTag;
@@ -69,6 +72,7 @@ public class StartTransactionRequest implements Request {
      * @param connectorId integer. value &gt; 0
      * @throws PropertyConstraintException Value was 0 or negative.
      */
+    @XmlElement
     public void setConnectorId(Integer connectorId) throws PropertyConstraintException {
         if (connectorId <= 0)
             throw new PropertyConstraintException("connectorId", connectorId);
@@ -90,6 +94,7 @@ public class StartTransactionRequest implements Request {
      *
      * @param idTag the {@link IdToken}.
      */
+    @XmlElement
     public void setIdTag(IdToken idTag) {
         this.idTag = idTag;
     }
@@ -108,6 +113,7 @@ public class StartTransactionRequest implements Request {
      *
      * @param meterStart    integer, Wh at start.
      */
+    @XmlElement
     public void setMeterStart(Integer meterStart) {
         this.meterStart = meterStart;
     }
@@ -126,6 +132,7 @@ public class StartTransactionRequest implements Request {
      *
      * @param reservationId integer, reservation.
      */
+    @XmlElement
     public void setReservationId(Integer reservationId) {
         this.reservationId = reservationId;
     }
@@ -155,6 +162,7 @@ public class StartTransactionRequest implements Request {
      *
      * @param timestamp Calendar, start time.
      */
+    @XmlElement
     public void setTimestamp(Calendar timestamp) {
         this.timestamp = timestamp;
     }

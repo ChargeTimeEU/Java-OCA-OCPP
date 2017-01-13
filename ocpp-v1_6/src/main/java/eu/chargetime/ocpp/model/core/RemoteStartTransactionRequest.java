@@ -3,6 +3,9 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -32,6 +35,7 @@ import eu.chargetime.ocpp.model.Request;
 /**
  * Sent to Charge Point by Central System.
  */
+@XmlRootElement
 public class RemoteStartTransactionRequest implements Request {
 
     private Integer connectorId;
@@ -68,6 +72,7 @@ public class RemoteStartTransactionRequest implements Request {
      * @param connectorId integer, connector
      * @throws PropertyConstraintException Value is 0 or negative.
      */
+    @XmlElement
     public void setConnectorId(Integer connectorId) throws PropertyConstraintException {
         if (connectorId <= 0)
             throw new PropertyConstraintException("connectorId", connectorId);
@@ -89,6 +94,7 @@ public class RemoteStartTransactionRequest implements Request {
      *
      * @param idTag    an {@link IdToken}.
      */
+    @XmlElement
     public void setIdTag(IdToken idTag) {
         this.idTag = idTag;
     }
@@ -108,6 +114,7 @@ public class RemoteStartTransactionRequest implements Request {
      *
      * @param chargingProfile   the {@link ChargingProfile}.
      */
+    @XmlElement
     public void setChargingProfile(ChargingProfile chargingProfile) {
         this.chargingProfile = chargingProfile;
     }

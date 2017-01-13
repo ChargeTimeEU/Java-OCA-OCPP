@@ -2,6 +2,8 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Validatable;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -35,6 +37,7 @@ import java.util.TimeZone;
 /**
  * Class type used with {@link ChargingProfile}
  */
+@XmlRootElement
 public class ChargingSchedule implements Validatable {
     private Integer duration;
     private Calendar startSchedule;
@@ -69,6 +72,7 @@ public class ChargingSchedule implements Validatable {
      *
      * @param duration integer, duration in seconds.
      */
+    @XmlElement
     public void setDuration(Integer duration) {
         this.duration = duration;
     }
@@ -99,6 +103,7 @@ public class ChargingSchedule implements Validatable {
      *
      * @param startSchedule Calendar, start time.
      */
+    @XmlElement
     public void setStartSchedule(Calendar startSchedule) {
         this.startSchedule = startSchedule;
     }
@@ -126,6 +131,7 @@ public class ChargingSchedule implements Validatable {
      *
      * @param chargingRateUnit    the {@link ChargingRateUnitType}.
      */
+    @XmlElement
     public void setChargingRateUnit(ChargingRateUnitType chargingRateUnit) {
         this.chargingRateUnit = chargingRateUnit;
     }
@@ -144,6 +150,7 @@ public class ChargingSchedule implements Validatable {
      *
      * @param chargingSchedulePeriod    array of {@link ChargingSchedulePeriod}.
      */
+    @XmlElement
     public void setChargingSchedulePeriod(ChargingSchedulePeriod[] chargingSchedulePeriod) {
         this.chargingSchedulePeriod = chargingSchedulePeriod;
     }
@@ -167,6 +174,7 @@ public class ChargingSchedule implements Validatable {
      *
      * @param minChargingRate decimal, min charge rate.
      */
+    @XmlElement
     public void setMinChargingRate(Double minChargingRate) {
         this.minChargingRate = minChargingRate;
     }

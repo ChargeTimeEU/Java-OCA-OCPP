@@ -4,6 +4,9 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  ChargeTime.eu - Java-OCA-OCPP
 
@@ -36,6 +39,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  * It is RECOMMENDED that the content and meaning of the 'key' and 'value'
  * fields is agreed upon between Charge Point and Central System.
  */
+@XmlRootElement
 public class ChangeConfigurationRequest implements Request {
     private String key;
     private String value;
@@ -55,6 +59,7 @@ public class ChangeConfigurationRequest implements Request {
      * @param key                           String, max 50 characters, case insensitive.
      * @throws PropertyConstraintException  Value exceeds 50 characters.
      */
+    @XmlElement
     public void setKey(String key) throws PropertyConstraintException {
         if (!isValidKey(key))
             throw new PropertyConstraintException("key", key);
@@ -81,6 +86,7 @@ public class ChangeConfigurationRequest implements Request {
      * @param value                         String, max 500 characters, case insensitive.
      * @throws PropertyConstraintException  Value exceeds 500 characters.
      */
+    @XmlElement
     public void setValue(String value) throws PropertyConstraintException {
         if (!isValidValue(value))
             throw new PropertyConstraintException("value", value);

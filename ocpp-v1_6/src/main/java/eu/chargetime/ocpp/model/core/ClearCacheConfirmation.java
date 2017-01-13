@@ -29,9 +29,13 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Confirmation;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Sent by the Charge Point to the Central System in response to a {@link ClearCacheRequest}.
  */
+@XmlRootElement
 public class ClearCacheConfirmation implements Confirmation {
 
     private ClearCacheStatus status;
@@ -59,6 +63,7 @@ public class ClearCacheConfirmation implements Confirmation {
      *
      * @param status the {@link ClearCacheStatus}.
      */
+    @XmlElement
     public void setStatus(ClearCacheStatus status) {
         this.status = status;
     }

@@ -29,10 +29,13 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Request;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Sent by the Central System to the Charge Point.
  * Request holds no values and is always valid.
  */
+@XmlRootElement
 public class ClearCacheRequest implements Request {
     @Override
     public boolean validate() {

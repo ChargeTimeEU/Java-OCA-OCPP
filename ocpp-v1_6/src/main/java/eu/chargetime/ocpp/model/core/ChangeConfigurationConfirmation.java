@@ -2,6 +2,9 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Confirmation;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -32,6 +35,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 /**
  * Returned from Charge Point to Central System
  */
+@XmlRootElement
 public class ChangeConfigurationConfirmation implements Confirmation {
     private ConfigurationStatus status;
 
@@ -58,6 +62,7 @@ public class ChangeConfigurationConfirmation implements Confirmation {
      *
      * @param status the {@link ConfigurationStatus}.
      */
+    @XmlElement
     public void setStatus(ConfigurationStatus status) {
         this.status = status;
     }

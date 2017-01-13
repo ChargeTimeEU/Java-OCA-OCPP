@@ -28,9 +28,13 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Confirmation;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Sent by the Central System to the Charge Point in response to a {@link StopTransactionRequest}.
  */
+@XmlRootElement
 public class StopTransactionConfirmation implements Confirmation {
     private IdTagInfo idTagInfo;
 
@@ -58,6 +62,7 @@ public class StopTransactionConfirmation implements Confirmation {
      *
      * @param idTagInfo the {@link IdTagInfo}.
      */
+    @XmlElement
     public void setIdTagInfo(IdTagInfo idTagInfo) {
         this.idTagInfo = idTagInfo;
     }

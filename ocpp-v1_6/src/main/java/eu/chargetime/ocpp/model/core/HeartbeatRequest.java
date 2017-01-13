@@ -28,10 +28,13 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Request;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Sent by the Charge Point to the Central System.
  * Request holds no values and is always valid.
  */
+@XmlRootElement
 public class HeartbeatRequest implements Request {
     @Override
     public boolean validate() {

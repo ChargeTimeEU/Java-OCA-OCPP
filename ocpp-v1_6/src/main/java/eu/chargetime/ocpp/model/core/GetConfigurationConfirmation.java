@@ -4,6 +4,9 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -34,6 +37,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 /**
  * Sent by Charge Point the to the Central System in response to a {@link GetConfigurationRequest}.
  */
+@XmlRootElement
 public class GetConfigurationConfirmation implements Confirmation {
     private KeyValueType[] configurationKey;
     private String[] unknownKey;
@@ -52,6 +56,7 @@ public class GetConfigurationConfirmation implements Confirmation {
      *
      * @param configurationKey Array of {@link KeyValueType}.
      */
+    @XmlElement
     public void setConfigurationKey(KeyValueType[] configurationKey) {
         this.configurationKey = configurationKey;
     }
@@ -71,6 +76,7 @@ public class GetConfigurationConfirmation implements Confirmation {
      * @param unknownKey Array of String, max 50 characters, case insensitive.
      * @throws PropertyConstraintException At least one of the Strings exceeds 50 characters.
      */
+    @XmlElement
     public void setUnknownKey(String[] unknownKey) throws PropertyConstraintException {
         if (!isValidUnknownKey(unknownKey))
             throw new PropertyConstraintException("unknownKey", unknownKey);

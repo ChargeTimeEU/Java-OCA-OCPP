@@ -3,6 +3,8 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Confirmation;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -39,6 +41,7 @@ import java.util.TimeZone;
  *
  * @see BootNotificationRequest
  */
+@XmlRootElement
 public class BootNotificationConfirmation implements Confirmation
 {
     private Calendar currentTime;
@@ -72,6 +75,7 @@ public class BootNotificationConfirmation implements Confirmation
      *
      * @param currentTime Central System’s current time.
      */
+    @XmlElement
     public void setCurrentTime(Calendar currentTime)
     {
         this.currentTime = currentTime;
@@ -97,6 +101,7 @@ public class BootNotificationConfirmation implements Confirmation
      * @param interval heartbeat/delay interval in seconds. Min value 0.
      * @throws PropertyConstraintException field isn't filled out correct.
      */
+    @XmlElement
     public void setInterval(int interval) throws PropertyConstraintException {
         if (interval <= 0)
             throw new PropertyConstraintException("interval", interval, "Must be a positive value");
@@ -129,6 +134,7 @@ public class BootNotificationConfirmation implements Confirmation
      *
      * @param status                        Charge Points registration status.
      */
+    @XmlElement
     public void setStatus(RegistrationStatus status) {
         this.status = status;
     }

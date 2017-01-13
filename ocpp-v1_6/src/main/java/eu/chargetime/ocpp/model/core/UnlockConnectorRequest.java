@@ -3,6 +3,9 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -32,6 +35,7 @@ import eu.chargetime.ocpp.model.Request;
 /**
  * Sent by the Central System to the Charge Point.
  */
+@XmlRootElement
 public class UnlockConnectorRequest implements Request {
     private Integer connectorId;
 
@@ -55,6 +59,7 @@ public class UnlockConnectorRequest implements Request {
      * @param connectorId integer, value &gt; 0.
      * @throws PropertyConstraintException Value was zero or negative.
      */
+    @XmlElement
     public void setConnectorId(Integer connectorId) throws PropertyConstraintException {
         if (connectorId <= 0)
             throw new PropertyConstraintException("connectorId", connectorId);

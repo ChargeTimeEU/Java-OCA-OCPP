@@ -28,9 +28,13 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Validatable;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Class Type used with {@link ChargingSchedule}.
  */
+@XmlRootElement
 public class ChargingSchedulePeriod implements Validatable {
     private Integer startPeriod;
     private Double limit;
@@ -50,6 +54,7 @@ public class ChargingSchedulePeriod implements Validatable {
      *
      * @param startPeriod integer, seconds from start of schedule.
      */
+    @XmlElement
     public void setStartPeriod(Integer startPeriod) {
         this.startPeriod = startPeriod;
     }
@@ -70,6 +75,7 @@ public class ChargingSchedulePeriod implements Validatable {
      *
      * @param limit decimal, power limit.
      */
+    @XmlElement
     public void setLimit(Double limit) {
         this.limit = limit;
     }
@@ -90,6 +96,7 @@ public class ChargingSchedulePeriod implements Validatable {
      *
      * @param numberPhases integer, default is 3.
      */
+    @XmlElement
     public void setNumberPhases(Integer numberPhases) {
         this.numberPhases = numberPhases;
     }

@@ -28,9 +28,13 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Confirmation;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Sent by the Charge Point to the Central System in response to an {@link UnlockConnectorRequest}.
  */
+@XmlRootElement
 public class UnlockConnectorConfirmation implements Confirmation {
     private UnlockStatus status;
 
@@ -74,6 +78,7 @@ public class UnlockConnectorConfirmation implements Confirmation {
      *
      * @param status the {@link UnlockStatus}.
      */
+    @XmlElement
     public void setStatus(UnlockStatus status) {
         this.status = status;
     }

@@ -4,6 +4,9 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -36,6 +39,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  * <p>
  * In future releases this may become a complex type to support multiple forms of identifiers.
  */
+@XmlRootElement
 public class IdToken implements Validatable {
     private String idToken;
 
@@ -59,6 +63,7 @@ public class IdToken implements Validatable {
      * @param idToken                       String, max 20 characters.
      * @throws PropertyConstraintException  Value exceeds 20 characters.
      */
+    @XmlElement
     public void setIdToken(String idToken) throws PropertyConstraintException {
         if (!isValidIdToken(idToken))
             throw new PropertyConstraintException("idToken", idToken);

@@ -4,6 +4,9 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -34,6 +37,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 /**
  * Sent by the the Central System to the Charge Point.
  */
+@XmlRootElement
 public class GetConfigurationRequest implements Request {
     private String[] key;
 
@@ -52,6 +56,7 @@ public class GetConfigurationRequest implements Request {
      * @param key Array of Strings, max 50 characters each, case insensitive.
      * @throws PropertyConstraintException At least one of the Strings exceeds 50 characters.
      */
+    @XmlElement
     public void setKey(String[] key) throws PropertyConstraintException {
         if (!isValidKey(key))
             throw new PropertyConstraintException("key", key);

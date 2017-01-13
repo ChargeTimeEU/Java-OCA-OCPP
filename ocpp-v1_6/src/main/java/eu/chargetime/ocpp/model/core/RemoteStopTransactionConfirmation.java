@@ -28,9 +28,13 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Confirmation;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * sent from Charge Point to Central System.
  */
+@XmlRootElement
 public class RemoteStopTransactionConfirmation implements Confirmation {
     private RemoteStartStopStatus status;
 
@@ -74,6 +78,7 @@ public class RemoteStopTransactionConfirmation implements Confirmation {
      *
      * @param status the {@link RemoteStartStopStatus}.
      */
+    @XmlElement
     public void setStatus(RemoteStartStopStatus status) {
         this.status = status;
     }

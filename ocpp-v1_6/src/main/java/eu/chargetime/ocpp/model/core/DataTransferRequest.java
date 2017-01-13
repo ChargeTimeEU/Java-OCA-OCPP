@@ -4,6 +4,9 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -33,6 +36,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 /**
  * Sent either by the Central System to the Charge Point or vice versa.
  */
+@XmlRootElement
 public class DataTransferRequest implements Request {
 
     private String vendorId;
@@ -70,6 +74,7 @@ public class DataTransferRequest implements Request {
      * @param vendorId String, max 255 characters, case insensitive.
      * @throws PropertyConstraintException Value exceeds 255 characters.
      */
+    @XmlElement
     public void setVendorId(String vendorId) throws PropertyConstraintException {
         if (!isValidVendorId(vendorId))
             throw new PropertyConstraintException("vendorId", vendorId);
@@ -96,6 +101,7 @@ public class DataTransferRequest implements Request {
      * @param messageId                     String, max 50 characters, case insensitive.
      * @throws PropertyConstraintException  Value exceeds 50 characters.
      */
+    @XmlElement
     public void setMessageId(String messageId) throws PropertyConstraintException {
         if (!isValidMessageId(messageId))
             throw new PropertyConstraintException("messageId", messageId);
@@ -121,6 +127,7 @@ public class DataTransferRequest implements Request {
      *
      * @param data  String, data.
      */
+    @XmlElement
     public void setData(String data) {
         this.data = data;
     }

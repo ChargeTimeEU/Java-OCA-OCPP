@@ -2,6 +2,8 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Validatable;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -36,6 +38,7 @@ import java.util.TimeZone;
  * Collection of one or more sampled values in {@link MeterValuesRequest}.
  * All {@link SampledValue} in a {@link MeterValue} are sampled at the same point in time.
  */
+@XmlRootElement
 public class MeterValue implements Validatable {
 
     private Calendar timestamp;
@@ -77,6 +80,7 @@ public class MeterValue implements Validatable {
      *
      * @param timestamp {@link Calendar} timestamp
      */
+    @XmlElement
     public void setTimestamp(Calendar timestamp) {
         this.timestamp = timestamp;
     }
@@ -95,6 +99,7 @@ public class MeterValue implements Validatable {
      *
      * @param sampledValue Array of {@link SampledValue}.
      */
+    @XmlElement
     public void setSampledValue(SampledValue[] sampledValue) {
         this.sampledValue = sampledValue;
     }

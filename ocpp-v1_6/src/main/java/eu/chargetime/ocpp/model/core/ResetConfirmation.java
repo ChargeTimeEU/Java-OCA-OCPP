@@ -28,9 +28,13 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Confirmation;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Sent by the Charge Point to the Central System in response to a {@link ResetRequest}.
  */
+@XmlRootElement
 public class ResetConfirmation implements Confirmation {
     private ResetStatus status;
 
@@ -74,6 +78,7 @@ public class ResetConfirmation implements Confirmation {
      *
      * @param status the {@link ResetStatus}.
      */
+    @XmlElement
     public void setStatus(ResetStatus status) {
         this.status = status;
     }

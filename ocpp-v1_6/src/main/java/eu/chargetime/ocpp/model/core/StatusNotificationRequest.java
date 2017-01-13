@@ -4,6 +4,8 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -37,6 +39,7 @@ import java.util.TimeZone;
 /**
  * Sent by the Charge Point to the Central System.
  */
+@XmlRootElement
 public class StatusNotificationRequest implements Request {
     private Integer connectorId;
     private ChargePointErrorCode errorCode;
@@ -72,6 +75,7 @@ public class StatusNotificationRequest implements Request {
      * @param connectorId integer, connector id. 0 = main controller.
      * @throws PropertyConstraintException Value was negative.
      */
+    @XmlElement
     public void setConnectorId(Integer connectorId) throws PropertyConstraintException {
         if (!isValidConnectorId(connectorId))
             throw new PropertyConstraintException("connectorId", connectorId);
@@ -106,6 +110,7 @@ public class StatusNotificationRequest implements Request {
      *
      * @param errorCode the {@link ChargePointErrorCode}.
      */
+    @XmlElement
     public void setErrorCode(ChargePointErrorCode errorCode) {
         this.errorCode = errorCode;
     }
@@ -125,6 +130,7 @@ public class StatusNotificationRequest implements Request {
      * @param info                          String, max 50 characters, case insensitive.
      * @throws PropertyConstraintException  Value exceeds 50 characters.
      */
+    @XmlElement
     public void setInfo(String info) throws PropertyConstraintException {
         if (!ModelUtil.validate(info, 50))
             throw new PropertyConstraintException("info", info);
@@ -155,6 +161,7 @@ public class StatusNotificationRequest implements Request {
      *
      * @param status the {@link ChargePointStatus}.
      */
+    @XmlElement
     public void setStatus(ChargePointStatus status) {
         this.status = status;
     }
@@ -187,6 +194,7 @@ public class StatusNotificationRequest implements Request {
      *
      * @param timestamp    Calendar, status time.
      */
+    @XmlElement
     public void setTimestamp(Calendar timestamp) {
         this.timestamp = timestamp;
     }
@@ -206,6 +214,7 @@ public class StatusNotificationRequest implements Request {
      * @param vendorId String, max 255 characters, case insensitive.
      * @throws PropertyConstraintException Value exceeds 255 characters.
      */
+    @XmlElement
     public void setVendorId(String vendorId) throws PropertyConstraintException {
         if (!ModelUtil.validate(vendorId, 255))
             throw new PropertyConstraintException("vendorId", vendorId);
@@ -228,6 +237,7 @@ public class StatusNotificationRequest implements Request {
      * @param vendorErrorCode               String, max 50 characters, case insensitive.
      * @throws PropertyConstraintException  Value excceds 50 characters.
      */
+    @XmlElement
     public void setVendorErrorCode(String vendorErrorCode) throws PropertyConstraintException {
         if (!ModelUtil.validate(vendorErrorCode, 50))
             throw new PropertyConstraintException("vendorErrorCode", vendorErrorCode);

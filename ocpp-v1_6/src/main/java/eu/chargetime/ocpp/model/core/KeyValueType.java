@@ -4,6 +4,9 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -35,6 +38,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
  * Contains information about a specific configuration key.
  * It is returned in {@link GetConfigurationConfirmation}.
  */
+@XmlRootElement
 public class KeyValueType implements Validatable {
     private String key;
     private Boolean readonly;
@@ -55,6 +59,7 @@ public class KeyValueType implements Validatable {
      * @param key String, max 50 characters, case insensitive.
      * @throws PropertyConstraintException Value exceeds 50 charactesr.
      */
+    @XmlElement
     public void setKey(String key) throws PropertyConstraintException{
         if (!isValidKey(key))
             throw new PropertyConstraintException("key", key);
@@ -81,6 +86,7 @@ public class KeyValueType implements Validatable {
      * @param readonly Boolean, configuration is read only.
      * @throws PropertyConstraintException Value was null.
      */
+    @XmlElement
     public void setReadonly(Boolean readonly) throws PropertyConstraintException {
         if (!isValidReadonly(readonly))
             throw new PropertyConstraintException("readonly", readonly);
@@ -107,6 +113,7 @@ public class KeyValueType implements Validatable {
      * @param value                         String, max 500 characters, case insensitive.
      * @throws PropertyConstraintException  Value exceeds 500 characters.
      */
+    @XmlElement
     public void setValue(String value) throws PropertyConstraintException {
         if (!isValidValue(value))
             throw new PropertyConstraintException("value", value);

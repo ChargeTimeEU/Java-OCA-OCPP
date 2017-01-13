@@ -2,6 +2,8 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Request;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -35,6 +37,7 @@ import java.util.TimeZone;
 /**
  * Sent by the Charge Point to the Central System.
  */
+@XmlRootElement
 public class StopTransactionRequest implements Request {
     private IdToken idTag;
     private Integer meterStop;
@@ -73,6 +76,7 @@ public class StopTransactionRequest implements Request {
      *
      * @param idTag the {@link IdToken}.
      */
+    @XmlElement
     public void setIdTag(IdToken idTag) {
         this.idTag = idTag;
     }
@@ -91,6 +95,7 @@ public class StopTransactionRequest implements Request {
      *
      * @param meterStop integer, meter value in Wh.
      */
+    @XmlElement
     public void setMeterStop(Integer meterStop) {
         this.meterStop = meterStop;
     }
@@ -120,6 +125,7 @@ public class StopTransactionRequest implements Request {
      *
      * @param timestamp Calendar, stop time.
      */
+    @XmlElement
     public void setTimestamp(Calendar timestamp) {
         this.timestamp = timestamp;
     }
@@ -138,6 +144,7 @@ public class StopTransactionRequest implements Request {
      *
      * @param transactionId    integer, transaction id.
      */
+    @XmlElement
     public void setTransactionId(Integer transactionId) {
         this.transactionId = transactionId;
     }
@@ -166,6 +173,7 @@ public class StopTransactionRequest implements Request {
      *
      * @param reason    the {@link Reason}.
      */
+    @XmlElement
     public void setReason(Reason reason) {
         this.reason = reason;
     }
@@ -184,6 +192,7 @@ public class StopTransactionRequest implements Request {
      *
      * @param transactionData the {@link MeterValue}.
      */
+    @XmlElement
     public void setTransactionData(MeterValue[] transactionData) {
         this.transactionData = transactionData;
     }

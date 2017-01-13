@@ -3,6 +3,9 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -34,6 +37,7 @@ import eu.chargetime.ocpp.model.Request;
  *
  * @see MeterValue
  */
+@XmlRootElement
 public class MeterValuesRequest implements Request {
 
     private int connectorId;
@@ -68,6 +72,7 @@ public class MeterValuesRequest implements Request {
      * @param connectorId                   integer, connector
      * @throws PropertyConstraintException  Value is 0 or negative.
      */
+    @XmlElement
     public void setConnectorId(int connectorId) throws PropertyConstraintException {
         if (connectorId < 0)
             throw new PropertyConstraintException("connectorId", connectorId);
@@ -89,6 +94,7 @@ public class MeterValuesRequest implements Request {
      *
      * @param transactionId integer, transaction id.
      */
+    @XmlElement
     public void setTransactionId(int transactionId) {
         this.transactionId = transactionId;
     }
@@ -98,6 +104,7 @@ public class MeterValuesRequest implements Request {
      *
      * @param meterValue Array of {@link MeterValue}.
      */
+    @XmlElement
     public void setMeterValue(MeterValue[] meterValue) {
         this.meterValue = meterValue;
     }

@@ -4,6 +4,9 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -33,6 +36,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 /**
  * Single sampled value in {@link MeterValue}. Each value can be accompanied by optional fields.
  */
+@XmlRootElement
 public class SampledValue implements Validatable {
     private String value;
     private String context;
@@ -77,6 +81,7 @@ public class SampledValue implements Validatable {
      *
      * @param value String, the value.
      */
+    @XmlElement
     public void setValue(String value) {
         this.value = value;
     }
@@ -108,6 +113,7 @@ public class SampledValue implements Validatable {
      * @throws PropertyConstraintException Value wasn't accepted.
      */
     // TODO: Change to enum, solve format issue.
+    @XmlElement
     public void setContext(String context) throws PropertyConstraintException {
         if (!isValidContext(context))
             throw new PropertyConstraintException("context", context);
@@ -144,6 +150,7 @@ public class SampledValue implements Validatable {
      *
      * @param format the {@link ValueFormat}.
      */
+    @XmlElement
     public void setFormat(ValueFormat format) {
         this.format = format;
     }
@@ -189,6 +196,7 @@ public class SampledValue implements Validatable {
      * @throws PropertyConstraintException Value wasn't accepted.
      */
     // TODO: Change to enum, solve format issue.
+    @XmlElement
     public void setMeasurand(String measurand) throws PropertyConstraintException {
         if (!isValidMeasurand(measurand))
             throw new PropertyConstraintException("measurand", measurand);
@@ -233,6 +241,7 @@ public class SampledValue implements Validatable {
      * @throws PropertyConstraintException  Value wasn't accepted.
      */
     // TODO: Change to enum, solve format issue.
+    @XmlElement
     public void setPhase(String phase) throws PropertyConstraintException {
         if (!isValidPhase(phase))
             throw new PropertyConstraintException("phase", phase);
@@ -268,6 +277,7 @@ public class SampledValue implements Validatable {
      *
      * @param location the {@link Location}.
      */
+    @XmlElement
     public void setLocation(Location location) {
         this.location = location;
     }
@@ -307,6 +317,7 @@ public class SampledValue implements Validatable {
      * @throws PropertyConstraintException Value wasn't accepted.
      */
     // TODO: Change to enum, solve format issue.
+    @XmlElement
     public void setUnit(String unit) throws PropertyConstraintException {
         if (!isValidUnit(unit))
             throw new PropertyConstraintException("unit", unit);

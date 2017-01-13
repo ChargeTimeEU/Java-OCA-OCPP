@@ -2,6 +2,8 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Confirmation;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -35,6 +37,7 @@ import java.util.TimeZone;
 /**
  * Sent by the Central System to the Charge Point in response to a {@link HeartbeatRequest}.
  */
+@XmlRootElement
 public class HeartbeatConfirmation implements Confirmation {
     private Calendar currentTime;
 
@@ -63,6 +66,7 @@ public class HeartbeatConfirmation implements Confirmation {
      *
      * @param currentTime Calendar, current time.
      */
+    @XmlElement
     public void setCurrentTime(Calendar currentTime) {
         this.currentTime = currentTime;
     }

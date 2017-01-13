@@ -4,6 +4,9 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -34,6 +37,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 /**
  * Sent by the Charge Point to the Central System.
  */
+@XmlRootElement
 public class AuthorizeRequest implements Request
 {
     private String idTag;
@@ -67,6 +71,7 @@ public class AuthorizeRequest implements Request
      * @param idTag                         String, max 20 characters. Case insensitive.
      * @throws PropertyConstraintException  field isn't filled out correct.
      */
+    @XmlElement
     public void setIdTag(String idTag) throws PropertyConstraintException {
         if (!ModelUtil.validate(idTag, 20))
             throw new PropertyConstraintException("idTag", idTag, "Exceeded limit");

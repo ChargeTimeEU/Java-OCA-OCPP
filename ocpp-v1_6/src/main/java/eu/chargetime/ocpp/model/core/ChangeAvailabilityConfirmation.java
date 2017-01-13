@@ -29,9 +29,13 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Confirmation;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * return by Charge Point to Central System.
  */
+@XmlRootElement
 public class ChangeAvailabilityConfirmation implements Confirmation {
 
     private AvailabilityStatus status;
@@ -59,6 +63,7 @@ public class ChangeAvailabilityConfirmation implements Confirmation {
      *
      * @param status the {@link AvailabilityStatus} of connector.
      */
+    @XmlElement
     public void setStatus(AvailabilityStatus status) {
         this.status = status;
     }

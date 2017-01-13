@@ -28,6 +28,9 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Confirmation;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class StatusNotificationConfirmation implements Confirmation {
     @Override
     public boolean validate() {

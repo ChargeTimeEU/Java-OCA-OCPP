@@ -3,6 +3,8 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Validatable;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -32,6 +34,7 @@ import java.util.TimeZone;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@XmlRootElement
 public class ChargingProfile implements Validatable {
     private Integer chargingProfileId;
     private Integer transactionId;
@@ -55,6 +58,7 @@ public class ChargingProfile implements Validatable {
         return valid;
     }
 
+    @XmlElement
     public void setChargingProfileId(Integer chargingProfileId) throws PropertyConstraintException {
         if (chargingProfileId == null)
             throw new PropertyConstraintException("chargingProfileId", chargingProfileId);
@@ -66,6 +70,7 @@ public class ChargingProfile implements Validatable {
         return chargingProfileId;
     }
 
+    @XmlElement
     public void setTransactionId(Integer transactionId) {
         this.transactionId = transactionId;
     }
@@ -74,6 +79,7 @@ public class ChargingProfile implements Validatable {
         return transactionId;
     }
 
+    @XmlElement
     public void setStackLevel(Integer stackLevel) throws PropertyConstraintException {
         if (stackLevel < 0)
             throw new PropertyConstraintException("stackLevel", stackLevel);
@@ -85,6 +91,7 @@ public class ChargingProfile implements Validatable {
         return stackLevel;
     }
 
+    @XmlElement
     public void setChargingProfilePurpose(ChargingProfilePurposeType chargingProfilePurpose) throws PropertyConstraintException {
         this.chargingProfilePurpose = chargingProfilePurpose;
     }
@@ -97,6 +104,7 @@ public class ChargingProfile implements Validatable {
         return chargingProfilePurpose;
     }
 
+    @XmlElement
     public void setChargingProfileKind(ChargingProfileKindType chargingProfileKind) throws PropertyConstraintException {
         this.chargingProfileKind = chargingProfileKind;
     }
@@ -109,6 +117,7 @@ public class ChargingProfile implements Validatable {
         return chargingProfileKind;
     }
 
+    @XmlElement
     public void setRecurrencyKind(RecurrencyKindType recurrencyKind) throws PropertyConstraintException {
         this.recurrencyKind = recurrencyKind;
     }
@@ -121,6 +130,7 @@ public class ChargingProfile implements Validatable {
         return recurrencyKind;
     }
 
+    @XmlElement
     public void setValidFrom(Calendar validFrom) {
         this.validFrom = validFrom;
     }
@@ -135,6 +145,7 @@ public class ChargingProfile implements Validatable {
         return this.validFrom;
     }
 
+    @XmlElement
     public void setValidTo(Calendar validTo) {
         this.validTo = validTo;
     }
@@ -149,6 +160,7 @@ public class ChargingProfile implements Validatable {
         return validTo;
     }
 
+    @XmlElement
     public void setChargingSchedule(ChargingSchedule chargingSchedule) {
         this.chargingSchedule = chargingSchedule;
     }

@@ -28,9 +28,12 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Confirmation;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  */
+@XmlRootElement
 public class MeterValuesConfirmation implements Confirmation {
     @Override
     public boolean validate() {

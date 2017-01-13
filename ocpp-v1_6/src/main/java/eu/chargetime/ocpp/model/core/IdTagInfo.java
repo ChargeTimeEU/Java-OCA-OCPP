@@ -2,6 +2,8 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Validatable;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -40,6 +42,7 @@ import java.util.TimeZone;
  * <p>
  * If expiryDate is not given, the status has no end date.
  */
+@XmlRootElement
 public class IdTagInfo implements Validatable
 {
     private Calendar expiryDate;
@@ -71,6 +74,7 @@ public class IdTagInfo implements Validatable
      *
      * @param expiryDate    Calendar, expire date.
      */
+    @XmlElement
     public void setExpiryDate(Calendar expiryDate) {
         this.expiryDate = expiryDate;
     }
@@ -89,6 +93,7 @@ public class IdTagInfo implements Validatable
      *
      * @param parentIdTag   an {@link IdToken}.
      */
+    @XmlElement
     public void setParentIdTag(IdToken parentIdTag) {
         this.parentIdTag = parentIdTag;
     }
@@ -116,6 +121,7 @@ public class IdTagInfo implements Validatable
      *
      * @param status    the {@link AuthorizationStatus} for IdTag.
      */
+    @XmlElement
     public void setStatus(AuthorizationStatus status) {
         this.status = status;
     }

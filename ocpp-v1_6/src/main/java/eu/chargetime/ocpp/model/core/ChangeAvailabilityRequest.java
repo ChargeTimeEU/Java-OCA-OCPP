@@ -3,6 +3,9 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -33,6 +36,7 @@ import eu.chargetime.ocpp.model.Request;
 /**
  * Sent by the Central System to the Charge Point.
  */
+@XmlRootElement
 public class ChangeAvailabilityRequest implements Request
 {
     private int connectorId = -1;
@@ -55,6 +59,7 @@ public class ChangeAvailabilityRequest implements Request
      * @param connectorId integer, must be a positive number.
      * @throws PropertyConstraintException Value was a negative number.
      */
+    @XmlElement
     public void setConnectorId(int connectorId) throws PropertyConstraintException {
         if (connectorId < 0)
             throw new PropertyConstraintException("connectorId", connectorId, "Must be >= 0");
@@ -85,6 +90,7 @@ public class ChangeAvailabilityRequest implements Request
      *
      * @param type    {@link AvailabilityType} of the connector
      */
+    @XmlElement
     public void setType(AvailabilityType type) {
         this.type = type;
     }
