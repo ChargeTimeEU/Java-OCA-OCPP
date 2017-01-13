@@ -76,6 +76,9 @@ public class FakeCentralSystem
                 AuthorizeConfirmation confirmation = new AuthorizeConfirmation();
                 IdTagInfo tagInfo = new IdTagInfo();
                 tagInfo.setStatus(AuthorizationStatus.Accepted);
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(2018, 1, 1, 1, 1, 1);
+                tagInfo.setExpiryDate(calendar);
                 confirmation.setIdTagInfo(tagInfo);
                 return failurePoint(confirmation);
             }
