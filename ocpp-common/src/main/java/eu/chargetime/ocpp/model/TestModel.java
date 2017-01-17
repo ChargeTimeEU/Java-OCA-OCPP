@@ -1,5 +1,7 @@
 package eu.chargetime.ocpp.model;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Calendar;
 
 /*
@@ -33,6 +35,7 @@ import java.util.Calendar;
  * Test model used to check conversion of different field types.
  * Used for tests.
  */
+@XmlRootElement
 public class TestModel {
     private String stringTest;
     private Calendar calendarTest;
@@ -51,6 +54,7 @@ public class TestModel {
         return arrayTest;
     }
 
+    @XmlElement
     public void setArrayTest(Integer[] arrayTest) {
         this.arrayTest = arrayTest;
     }
@@ -59,6 +63,7 @@ public class TestModel {
         return objectTest;
     }
 
+    @XmlElement
     public void setObjectTest(TestModel objectTest) {
         this.objectTest = objectTest;
     }
@@ -67,6 +72,7 @@ public class TestModel {
         return genericBoleanTest;
     }
 
+    @XmlElement
     public void setGenericBoleanTest(boolean genericBoleanTest) {
         this.genericBoleanTest = genericBoleanTest;
     }
@@ -75,6 +81,7 @@ public class TestModel {
         return booleanTest;
     }
 
+    @XmlElement
     public void setBooleanTest(Boolean booleanTest) {
         this.booleanTest = booleanTest;
     }
@@ -83,6 +90,7 @@ public class TestModel {
         return genericDoubleTest;
     }
 
+    @XmlElement
     public void setGenericDoubleTest(double genericDoubleTest) {
         this.genericDoubleTest = genericDoubleTest;
     }
@@ -91,6 +99,7 @@ public class TestModel {
         return doubleTest;
     }
 
+    @XmlElement
     public void setDoubleTest(Double doubleTest) {
         this.doubleTest = doubleTest;
     }
@@ -99,6 +108,7 @@ public class TestModel {
         return genericLongTest;
     }
 
+    @XmlElement
     public void setGenericLongTest(long genericLongTest) {
         this.genericLongTest = genericLongTest;
     }
@@ -107,6 +117,7 @@ public class TestModel {
         return longTest;
     }
 
+    @XmlElement
     public void setLongTest(Long longTest) {
         this.longTest = longTest;
     }
@@ -115,6 +126,7 @@ public class TestModel {
         return intTest;
     }
 
+    @XmlElement
     public void setIntTest(int intTest) {
         this.intTest = intTest;
     }
@@ -123,6 +135,7 @@ public class TestModel {
         return integerTest;
     }
 
+    @XmlElement
     public void setIntegerTest(Integer integerTest) {
         this.integerTest = integerTest;
     }
@@ -131,6 +144,7 @@ public class TestModel {
         return calendarTest;
     }
 
+    @XmlElement
     public void setCalendarTest(Calendar calendarTest) {
         this.calendarTest = calendarTest;
     }
@@ -139,6 +153,7 @@ public class TestModel {
         return stringTest;
     }
 
+    @XmlElement
     public void setStringTest(String stringTest) {
         this.stringTest = stringTest;
     }

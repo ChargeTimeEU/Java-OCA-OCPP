@@ -30,6 +30,7 @@ import org.w3c.dom.Document;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.*;
@@ -49,8 +50,17 @@ public class SOAPCommunicator extends Communicator {
     }
 
     @Override
-    public <T> T unpackPayload(Object payload, Class<T> type) throws Exception {
-        return null;
+    public <T> T unpackPayload(Object payload, Class<T> type) {
+        Document input = (Document) payload;
+        T output = null;
+        Unmarshaller unmarshaller = null;
+        try {
+            unmarshaller = JAXBContext.newInstance(type).createUnmarshaller();
+            output = (T) unmarshaller.unmarshal(input);
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return output;
     }
 
     @Override
