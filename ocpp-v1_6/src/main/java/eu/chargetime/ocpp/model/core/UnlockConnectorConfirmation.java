@@ -58,10 +58,10 @@ public class UnlockConnectorConfirmation implements Confirmation {
     /**
      * This indicates whether the Charge Point has unlocked the connector.
      *
-     * @return String, the {@link UnlockStatus}
+     * @return the {@link UnlockStatus}
      */
-    public String getStatus() {
-        return status.toString();
+    public UnlockStatus getStatus() {
+        return status;
     }
 
     /**
@@ -69,6 +69,7 @@ public class UnlockConnectorConfirmation implements Confirmation {
      *
      * @return the {@link UnlockStatus}
      */
+    @Deprecated
     public UnlockStatus objStatus() {
         return status;
     }

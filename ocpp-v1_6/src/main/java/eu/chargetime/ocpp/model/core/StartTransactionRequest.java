@@ -5,9 +5,7 @@ import eu.chargetime.ocpp.model.Request;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -140,12 +138,10 @@ public class StartTransactionRequest implements Request {
     /**
      * This contains the date and time on which the transaction is started.
      *
-     * @return String, start time formattet.
+     * @return start time.
      */
-    public String getTimestamp() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
-        return formatter.format(timestamp.getTime());
+    public Calendar getTimestamp() {
+        return timestamp;
     }
 
     /**
@@ -153,6 +149,7 @@ public class StartTransactionRequest implements Request {
      *
      * @return start time.
      */
+    @Deprecated
     public Calendar objTimestamp() {
         return timestamp;
     }

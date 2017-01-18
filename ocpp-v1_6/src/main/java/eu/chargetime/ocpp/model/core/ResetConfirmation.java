@@ -60,8 +60,8 @@ public class ResetConfirmation implements Confirmation {
      *
      * @return the {@link ResetStatus}.
      */
-    public String getStatus() {
-        return status.toString();
+    public ResetStatus getStatus() {
+        return status;
     }
 
     /**
@@ -69,6 +69,7 @@ public class ResetConfirmation implements Confirmation {
      *
      * @return the {@link ResetStatus}.
      */
+    @Deprecated
     public ResetStatus objStatus() {
         return status;
     }

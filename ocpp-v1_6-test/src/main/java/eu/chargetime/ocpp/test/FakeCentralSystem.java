@@ -202,7 +202,7 @@ public class FakeCentralSystem
     public boolean hasReceivedChangeAvailabilityConfirmation(String status) {
         boolean result = receivedConfirmation instanceof ChangeAvailabilityConfirmation;
         if (result)
-            result &= ((ChangeAvailabilityConfirmation) receivedConfirmation).getStatus().equals(status);
+            result &= ((ChangeAvailabilityConfirmation) receivedConfirmation).getStatus().toString().equals(status);
         return result;
     }
 
@@ -272,7 +272,7 @@ public class FakeCentralSystem
     public boolean hasReceivedRemoteStartTransactionConfirmation(String status) {
         boolean result = receivedConfirmation instanceof RemoteStartTransactionConfirmation;
         if (result)
-            result &= ((RemoteStartTransactionConfirmation) receivedConfirmation).getStatus().equals(status);
+            result &= ((RemoteStartTransactionConfirmation) receivedConfirmation).getStatus().toString().equals(status);
         return result;
     }
 
@@ -285,7 +285,7 @@ public class FakeCentralSystem
     public boolean hasReceivedRemoteStopTransactionConfirmation(String status) {
         boolean result = receivedConfirmation instanceof RemoteStopTransactionConfirmation;
         if (result)
-            result &= ((RemoteStopTransactionConfirmation) receivedConfirmation).getStatus().equals(status);
+            result &= ((RemoteStopTransactionConfirmation) receivedConfirmation).getStatus().toString().equals(status);
         return result;
     }
 
@@ -298,7 +298,7 @@ public class FakeCentralSystem
     public boolean hasReceivedResetConfirmation(String status) {
         boolean result = receivedConfirmation instanceof ResetConfirmation;
         if (result)
-            result &= ((ResetConfirmation) receivedConfirmation).getStatus().equals(status);
+            result &= ((ResetConfirmation) receivedConfirmation).getStatus().toString().equals(status);
         return result;
     }
 
@@ -323,7 +323,7 @@ public class FakeCentralSystem
     public boolean hasReceivedUnlockConnectorConfirmation(String status) {
         boolean result = receivedConfirmation instanceof UnlockConnectorConfirmation;
         if (result)
-            result &= ((UnlockConnectorConfirmation) receivedConfirmation).getStatus().equals(status);
+            result &= ((UnlockConnectorConfirmation) receivedConfirmation).getStatus().toString().equals(status);
         return result;
     }
 

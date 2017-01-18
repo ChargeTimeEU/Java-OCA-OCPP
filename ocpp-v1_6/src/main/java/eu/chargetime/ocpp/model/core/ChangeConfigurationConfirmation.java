@@ -44,8 +44,8 @@ public class ChangeConfigurationConfirmation implements Confirmation {
      *
      * @return String, the {@link ConfigurationStatus}.
      */
-    public String getStatus() {
-        return status.toString();
+    public ConfigurationStatus getStatus() {
+        return status;
     }
 
     /**
@@ -53,6 +53,7 @@ public class ChangeConfigurationConfirmation implements Confirmation {
      *
      * @return the {@link ConfigurationStatus}.
      */
+    @Deprecated
     public ConfigurationStatus objStatus() {
         return status;
     }

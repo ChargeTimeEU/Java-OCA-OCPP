@@ -231,26 +231,28 @@ public class JSONCommunicatorTest extends TestUtilities
     @Test
     public void unpackPayload_bootNotificationCallResultPayload_returnBootNotificationConfirmation() throws Exception {
         // Given
-        String currentType = "2016-04-28T07:16:11.988Z";
+        String currentTime = "2016-04-28T07:16:11.988Z";
+        Calendar someDate = new Calendar.Builder().setDate(2016, 03, 28).setTimeOfDay(07, 16, 11, 988).setTimeZone(TimeZone.getTimeZone("GMT+00:00")).build();
+
         int interval = 300;
         RegistrationStatus status = RegistrationStatus.Accepted;
         String payload = "{\"currentTime\": \"%s\", \"interval\": %d, \"status\": \"%s\"}";
         Class<?> type = BootNotificationConfirmation.class;
 
         // When
-        Object result = communicator.unpackPayload(String.format(payload, currentType, interval, status), type);
+        Object result = communicator.unpackPayload(String.format(payload, currentTime, interval, status), type);
 
         // Then
         assertThat(result, instanceOf(type));
-        assertThat(((BootNotificationConfirmation)result).getCurrentTime(), equalTo(currentType));
+        assertThat(((BootNotificationConfirmation) result).getCurrentTime().compareTo(someDate), is(0));
         assertThat(((BootNotificationConfirmation)result).getInterval(), is(interval));
-        assertThat(((BootNotificationConfirmation) result).objStatus(), is(status));
+        assertThat(((BootNotificationConfirmation) result).getStatus(), is(status));
     }
 
     @Test
     public void pack_bootNotificationRequest_returnsBootNotificationRequestPayload() {
         // Given
-        String expected = "{\"chargePointModel\":\"SingleSocketCharger\",\"chargePointVendor\":\"VendorX\"}";
+        String expected = "{\"chargePointVendor\":\"VendorX\",\"chargePointModel\":\"SingleSocketCharger\"}";
         BootNotificationRequest request = new BootNotificationRequest("VendorX", "SingleSocketCharger");
 
         // When

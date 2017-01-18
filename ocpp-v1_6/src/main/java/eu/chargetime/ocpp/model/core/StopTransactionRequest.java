@@ -4,9 +4,7 @@ import eu.chargetime.ocpp.model.Request;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -103,12 +101,10 @@ public class StopTransactionRequest implements Request {
     /**
      * This contains the date and time on which the transaction is stopped.
      *
-     * @return String, formatted stop time.
+     * @return stop time.
      */
-    public String getTimestamp() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
-        return formatter.format(timestamp.getTime());
+    public Calendar getTimestamp() {
+        return timestamp;
     }
 
     /**
@@ -116,6 +112,7 @@ public class StopTransactionRequest implements Request {
      *
      * @return stop time.
      */
+    @Deprecated
     public Calendar objTimestamp() {
         return timestamp;
     }
@@ -152,10 +149,10 @@ public class StopTransactionRequest implements Request {
     /**
      * This contains the reason why the transaction was stopped.
      *
-     * @return String, the {@link Reason}.
+     * @return the {@link Reason}.
      */
-    public String getReason() {
-        return reason.toString();
+    public Reason getReason() {
+        return reason;
     }
 
     /**
@@ -163,6 +160,7 @@ public class StopTransactionRequest implements Request {
      *
      * @return the {@link Reason}.
      */
+    @Deprecated
     public Reason objReason() {
         return reason;
     }

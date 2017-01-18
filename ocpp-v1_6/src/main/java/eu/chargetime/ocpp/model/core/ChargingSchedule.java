@@ -4,9 +4,7 @@ import eu.chargetime.ocpp.model.Validatable;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -80,12 +78,10 @@ public class ChargingSchedule implements Validatable {
     /**
      * Starting point of an absolute schedule.
      *
-     * @return String, formatted start time.
+     * @return start time.
      */
-    public String getStartSchedule() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
-        return formatter.format(startSchedule.getTime());
+    public Calendar getStartSchedule() {
+        return startSchedule;
     }
 
     /**
@@ -93,6 +89,7 @@ public class ChargingSchedule implements Validatable {
      *
      * @return start time.
      */
+    @Deprecated
     public Calendar objStartSchedule() {
         return startSchedule;
     }
@@ -113,8 +110,8 @@ public class ChargingSchedule implements Validatable {
      *
      * @return the {@link ChargingRateUnitType}.
      */
-    public String getChargingRateUnit() {
-        return chargingRateUnit.toString();
+    public ChargingRateUnitType getChargingRateUnit() {
+        return chargingRateUnit;
     }
 
     /**
@@ -122,6 +119,7 @@ public class ChargingSchedule implements Validatable {
      *
      * @return the {@link ChargingRateUnitType}.
      */
+    @Deprecated
     public ChargingRateUnitType objChargingRateUnit() {
         return chargingRateUnit;
     }

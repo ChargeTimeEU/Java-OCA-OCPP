@@ -5,9 +5,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -49,16 +47,13 @@ public class BootNotificationConfirmation implements Confirmation
     private RegistrationStatus status;
 
     /**
-     * Formattet Central System's current time.
-     * Pattern: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+     * Central System's current time.
      *
-     * @return Formattet time.
+     * @return an instance of Calendar.
      */
-    public String getCurrentTime()
+    public Calendar getCurrentTime()
     {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
-        return formatter.format(currentTime.getTime());
+        return currentTime;
     }
 
     /**
@@ -66,6 +61,7 @@ public class BootNotificationConfirmation implements Confirmation
      *
      * @return an instance of Calendar.
      */
+    @Deprecated
     public Calendar objCurrentTime() {
         return currentTime;
     }
@@ -114,6 +110,7 @@ public class BootNotificationConfirmation implements Confirmation
      *
      * @return Charge Points registration status as {@link RegistrationStatus}.
      */
+    @Deprecated
     public RegistrationStatus objStatus()
     {
         return status;
@@ -122,11 +119,11 @@ public class BootNotificationConfirmation implements Confirmation
     /**
      * This contains whether the Charge Point has been registered within the System Central.
      *
-     * @return Charge Points registration status as String.
+     * @return Charge Points registration status as {@link RegistrationStatus}.
      */
-    public String getStatus()
+    public RegistrationStatus getStatus()
     {
-        return status.toString();
+        return status;
     }
 
     /**

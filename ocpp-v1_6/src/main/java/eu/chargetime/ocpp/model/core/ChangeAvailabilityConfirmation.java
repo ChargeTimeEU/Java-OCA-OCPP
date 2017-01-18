@@ -43,10 +43,10 @@ public class ChangeAvailabilityConfirmation implements Confirmation {
     /**
      * This indicates whether the Charge Point is able to perform the availability change.
      *
-     * @return String, the {@link AvailabilityStatus} of the connector
+     * @return The {@link AvailabilityStatus} of the connector.
      */
-    public String getStatus() {
-        return status.toString();
+    public AvailabilityStatus getStatus() {
+        return status;
     }
 
     /**
@@ -54,6 +54,7 @@ public class ChangeAvailabilityConfirmation implements Confirmation {
      *
      * @return The {@link AvailabilityStatus} of the connector.
      */
+    @Deprecated
     public AvailabilityStatus objStatus() {
         return status;
     }

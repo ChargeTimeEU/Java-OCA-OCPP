@@ -3,7 +3,9 @@ package eu.chargetime.ocpp.test;
 import eu.chargetime.ocpp.SOAPCommunicator;
 import eu.chargetime.ocpp.Transmitter;
 import eu.chargetime.ocpp.model.TestModel;
+import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
 import eu.chargetime.ocpp.model.core.BootNotificationRequest;
+import eu.chargetime.ocpp.model.core.RegistrationStatus;
 import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Before;
 import org.junit.Test;
@@ -246,6 +248,26 @@ public class SOAPCommunicatorTest extends TestUtilities {
 
         // Then
         assertThat(model.getArrayTest(), equalTo(anArray));
+    }
+
+    @Test
+    public void unpackPayload_bootNotificationCallResultPayload_returnBootNotificationConfirmation() throws Exception {
+        // Given
+        String currentType = "2016-04-28T07:16:11.988Z";
+        int interval = 300;
+        RegistrationStatus status = RegistrationStatus.Accepted;
+        String xml = "<bootNotificationConfirmation xmlns=\"urn://Ocpp/Cp/2015/10\"><currentTime>%s</currentTime><interval>%d</interval><status>%s</status></bootNotificationConfirmation>";
+        Document payload = stringToDocument(String.format(xml, currentType, interval, status));
+        Class<?> type = BootNotificationConfirmation.class;
+
+        // When
+        Object result = communicator.unpackPayload(payload, type);
+
+        // Then
+        assertThat(result, instanceOf(type));
+        assertThat(((BootNotificationConfirmation) result).objStatus(), is(status));
+        assertThat(((BootNotificationConfirmation) result).objCurrentTime(), equalTo(currentType));
+        assertThat(((BootNotificationConfirmation) result).getInterval(), is(interval));
     }
 
     @Test

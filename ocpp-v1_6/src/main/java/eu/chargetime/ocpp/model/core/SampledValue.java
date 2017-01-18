@@ -127,12 +127,12 @@ public class SampledValue implements Validatable {
     }
 
     /**
-     * Raw or signed data.
+     *Raw or signed data.
      *
      * @return the {@link ValueFormat}.
      */
-    public String getFormat() {
-        return format.toString();
+    public ValueFormat getFormat() {
+        return format;
     }
 
     /**
@@ -140,6 +140,7 @@ public class SampledValue implements Validatable {
      *
      * @return the {@link ValueFormat}.
      */
+    @Deprecated
     public ValueFormat objFormat() {
         return format;
     }
@@ -256,10 +257,10 @@ public class SampledValue implements Validatable {
     /**
      * Location of measurement.
      *
-     * @return String, the {@link Location}.
+     * @return the {@link Location}.
      */
-    public String getLocation() {
-        return location.toString();
+    public Location getLocation() {
+        return location;
     }
 
     /**
@@ -267,6 +268,7 @@ public class SampledValue implements Validatable {
      *
      * @return the {@link Location}.
      */
+    @Deprecated
     public Location objLocation() {
         return location;
     }

@@ -5,9 +5,7 @@ import eu.chargetime.ocpp.model.Validatable;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -96,10 +94,11 @@ public class ChargingProfile implements Validatable {
         this.chargingProfilePurpose = chargingProfilePurpose;
     }
 
-    public String getChargingProfilePurpose() {
-        return chargingProfilePurpose.toString();
+    public ChargingProfilePurposeType getChargingProfilePurpose() {
+        return chargingProfilePurpose;
     }
 
+    @Deprecated
     public ChargingProfilePurposeType objChargingProfilePurpose() {
         return chargingProfilePurpose;
     }
@@ -109,10 +108,11 @@ public class ChargingProfile implements Validatable {
         this.chargingProfileKind = chargingProfileKind;
     }
 
-    public String getChargingProfileKind() {
-        return chargingProfileKind.toString();
+    public ChargingProfileKindType getChargingProfileKind() {
+        return chargingProfileKind;
     }
 
+    @Deprecated
     public ChargingProfileKindType objChargingProfileKind() {
         return chargingProfileKind;
     }
@@ -122,10 +122,11 @@ public class ChargingProfile implements Validatable {
         this.recurrencyKind = recurrencyKind;
     }
 
-    public String getRecurrencyKind() {
-        return recurrencyKind.toString();
+    public RecurrencyKindType getRecurrencyKind() {
+        return recurrencyKind;
     }
 
+    @Deprecated
     public RecurrencyKindType objRecurrencyKind() {
         return recurrencyKind;
     }
@@ -135,12 +136,11 @@ public class ChargingProfile implements Validatable {
         this.validFrom = validFrom;
     }
 
-    public String getValidFrom() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
-        return formatter.format(validFrom.getTime());
+    public Calendar getValidFrom() {
+        return validFrom;
     }
 
+    @Deprecated
     public Calendar objValidFrom() {
         return this.validFrom;
     }
@@ -150,12 +150,11 @@ public class ChargingProfile implements Validatable {
         this.validTo = validTo;
     }
 
-    public String getValidTo() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
-        return formatter.format(validTo.getTime());
+    public Calendar getValidTo() {
+        return validTo;
     }
 
+    @Deprecated
     public Calendar objValidTo() {
         return validTo;
     }

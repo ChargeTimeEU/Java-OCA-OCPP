@@ -4,9 +4,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -46,6 +44,7 @@ public class HeartbeatConfirmation implements Confirmation {
      *
      * @return The current time.
      */
+    @Deprecated
     public Calendar objCurrentTime() {
         return currentTime;
     }
@@ -53,12 +52,10 @@ public class HeartbeatConfirmation implements Confirmation {
     /**
      * This contains the current time of the Central System.
      *
-     * @return String, current time.
+     * @return The current time.
      */
-    public String getCurrentTime() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
-        return formatter.format(currentTime.getTime());
+    public Calendar getCurrentTime() {
+        return currentTime;
     }
 
     /**

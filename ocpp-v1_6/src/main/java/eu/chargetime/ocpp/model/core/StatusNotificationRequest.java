@@ -6,9 +6,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -90,10 +88,10 @@ public class StatusNotificationRequest implements Request {
     /**
      * This contains the error code reported by the Charge Point.
      *
-     * @return String, the {@link ChargePointErrorCode}.
+     * @return the {@link ChargePointErrorCode}.
      */
-    public String getErrorCode() {
-        return errorCode.toString();
+    public ChargePointErrorCode getErrorCode() {
+        return errorCode;
     }
 
     /**
@@ -101,6 +99,7 @@ public class StatusNotificationRequest implements Request {
      *
      * @return the {@link ChargePointErrorCode}.
      */
+    @Deprecated
     public ChargePointErrorCode objErrorCode() {
         return errorCode;
     }
@@ -141,10 +140,10 @@ public class StatusNotificationRequest implements Request {
     /**
      * This contains the current status of the Charge Point.
      *
-     * @return String, the {@link ChargePointStatus}.
+     * @return the {@link ChargePointStatus}.
      */
-    public String getStatus() {
-        return status.toString();
+    public ChargePointStatus getStatus() {
+        return status;
     }
 
     /**
@@ -152,6 +151,7 @@ public class StatusNotificationRequest implements Request {
      *
      * @return the {@link ChargePointStatus}.
      */
+    @Deprecated
     public ChargePointStatus objStatus() {
         return status;
     }
@@ -170,12 +170,10 @@ public class StatusNotificationRequest implements Request {
      * The time for which the status is reported.
      * If absent time of receipt of the message will be assumed.
      *
-     * @return String, formatted status time.
+     * @return status time.
      */
-    public String getTimestamp() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
-        return formatter.format(timestamp.getTime());
+    public Calendar getTimestamp() {
+        return timestamp;
     }
 
     /**
@@ -184,6 +182,7 @@ public class StatusNotificationRequest implements Request {
      *
      * @return status time.
      */
+    @Deprecated
     public Calendar objTimestamp() {
         return timestamp;
     }

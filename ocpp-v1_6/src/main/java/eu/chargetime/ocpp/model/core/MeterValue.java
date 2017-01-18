@@ -4,9 +4,7 @@ import eu.chargetime.ocpp.model.Validatable;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -58,12 +56,10 @@ public class MeterValue implements Validatable {
     /**
      * Timestamp for measured value(s).
      *
-     * @return String, formatted timestamp.
+     * @return original timestamp.
      */
-    public String getTimestamp() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
-        return formatter.format(timestamp.getTime());
+    public Calendar getTimestamp() {
+        return timestamp;
     }
 
     /**
@@ -71,6 +67,7 @@ public class MeterValue implements Validatable {
      *
      * @return original timestamp.
      */
+    @Deprecated
     public Calendar objTimestamp() {
         return timestamp;
     }

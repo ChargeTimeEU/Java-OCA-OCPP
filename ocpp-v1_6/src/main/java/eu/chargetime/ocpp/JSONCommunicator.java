@@ -1,17 +1,18 @@
 package eu.chargetime.ocpp;
 
+import com.google.gson.*;
 import eu.chargetime.ocpp.model.CallErrorMessage;
 import eu.chargetime.ocpp.model.CallMessage;
 import eu.chargetime.ocpp.model.CallResultMessage;
 import eu.chargetime.ocpp.model.Message;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
-import javax.xml.bind.DatatypeConverter;
-import java.lang.reflect.Array;
-import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -74,13 +75,41 @@ public class JSONCommunicator extends Communicator {
 
     @Override
     public <T> T unpackPayload(Object payload, Class<T> type) throws Exception {
-        JSONObject json = new JSONObject(payload.toString());
-        return parseJSON(json, type);
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Calendar.class, new CalendarDeserializer());
+        Gson gson = builder.create();
+        return gson.fromJson(payload.toString(), type);
     }
 
     @Override
     public Object packPayload(Object payload) {
-        return new JSONObject(payload).toString();
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(GregorianCalendar.class, new CalendarSerializer());
+        Gson gson = builder.create();
+        return gson.toJson(payload);
+    }
+
+    private class CalendarSerializer implements JsonSerializer<Calendar> {
+        public JsonElement serialize(Calendar src, Type typeOfSrc, JsonSerializationContext context) {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
+            return new JsonPrimitive(formatter.format(src.getTime()));
+        }
+    }
+
+    private class CalendarDeserializer implements JsonDeserializer<Calendar> {
+        public Calendar deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            try {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
+                Calendar calendar = Calendar.getInstance();
+                Date date = formatter.parse(json.getAsJsonPrimitive().getAsString());
+                calendar.setTime(date);
+                return calendar;
+            } catch (ParseException e) {
+                throw new JsonParseException(e);
+            }
+        }
     }
 
     @Override
@@ -101,26 +130,28 @@ public class JSONCommunicator extends Communicator {
     @Override
     protected Message parse(Object json) {
         Message message = null;
-        JSONArray array = new JSONArray(json.toString());
+        JsonParser parser = new JsonParser();
+        JsonArray array = parser.parse(json.toString()).getAsJsonArray();
 
-        if (array.getInt(INDEX_MESSAGEID) == TYPENUMBER_CALL) {
+        if (array.get(INDEX_MESSAGEID).getAsInt() == TYPENUMBER_CALL) {
             message = new CallMessage();
-            ((CallMessage)message).setAction(array.getString(INDEX_CALL_ACTION));
+            ((CallMessage) message).setAction(array.get(INDEX_CALL_ACTION).getAsString());
             message.setPayload(array.get(INDEX_CALL_PAYLOAD).toString());
-        } else if (array.getInt(INDEX_MESSAGEID) == TYPENUMBER_CALLRESULT) {
+        } else if (array.get(INDEX_MESSAGEID).getAsInt() == TYPENUMBER_CALLRESULT) {
             message = new CallResultMessage();
             message.setPayload(array.get(INDEX_CALLRESULT_PAYLOAD).toString());
-        } else if (array.getInt(INDEX_MESSAGEID) == TYPENUMBER_CALLERROR) {
+        } else if (array.get(INDEX_MESSAGEID).getAsInt() == TYPENUMBER_CALLERROR) {
             message = new CallErrorMessage();
-            ((CallErrorMessage) message).setErrorCode(array.get(INDEX_CALLERROR_ERRORCODE).toString());
-            ((CallErrorMessage) message).setErrorDescription(array.get(INDEX_CALLERROR_DESCRIPTION).toString());
+            ((CallErrorMessage) message).setErrorCode(array.get(INDEX_CALLERROR_ERRORCODE).getAsString());
+            ((CallErrorMessage) message).setErrorDescription(array.get(INDEX_CALLERROR_DESCRIPTION).getAsString());
             ((CallErrorMessage) message).setRawPayload(array.get(INDEX_CALLERROR_PAYLOAD).toString());
         }
-        message.setId(array.getString(INDEX_UNIQUEID));
+        message.setId(array.get(INDEX_UNIQUEID).getAsString());
 
         return message;
     }
 
+    /*
     private <T> T parseJSON(JSONObject json, Class<T> type) throws Exception {
         T object = type.newInstance();
 
@@ -246,4 +277,5 @@ public class JSONCommunicator extends Communicator {
 
         return isSetter;
     }
+    */
 }

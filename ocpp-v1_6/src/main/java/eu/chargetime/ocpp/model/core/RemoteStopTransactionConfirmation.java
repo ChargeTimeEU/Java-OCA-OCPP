@@ -58,10 +58,10 @@ public class RemoteStopTransactionConfirmation implements Confirmation {
     /**
      * Status indicating whether Charge Point accepts the request to stop a transaction.
      *
-     * @return String, the {@link RemoteStartStopStatus}.
+     * @return the {@link RemoteStartStopStatus}.
      */
-    public String getStatus() {
-        return status.toString();
+    public RemoteStartStopStatus getStatus() {
+        return status;
     }
 
     /**
@@ -69,6 +69,7 @@ public class RemoteStopTransactionConfirmation implements Confirmation {
      *
      * @return the {@link RemoteStartStopStatus}.
      */
+    @Deprecated
     public RemoteStartStopStatus objStatus() {
         return status;
     }

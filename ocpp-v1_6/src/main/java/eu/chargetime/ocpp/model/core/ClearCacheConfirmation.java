@@ -43,10 +43,10 @@ public class ClearCacheConfirmation implements Confirmation {
     /**
      * Accepted if the Charge Point has executed the request, otherwise rejected.
      *
-     * @return String, the {@link ClearCacheStatus}.
+     * @return the {@link ClearCacheStatus}.
      */
-    public String getStatus() {
-        return status.toString();
+    public ClearCacheStatus getStatus() {
+        return status;
     }
 
     /**
@@ -54,6 +54,7 @@ public class ClearCacheConfirmation implements Confirmation {
      *
      * @return the {@link ClearCacheStatus}.
      */
+    @Deprecated
     public ClearCacheStatus objStatus() {
         return status;
     }

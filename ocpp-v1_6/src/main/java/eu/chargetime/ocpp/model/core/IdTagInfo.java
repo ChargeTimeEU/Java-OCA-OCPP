@@ -4,9 +4,7 @@ import eu.chargetime.ocpp.model.Validatable;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -52,12 +50,10 @@ public class IdTagInfo implements Validatable
     /**
      * This contains the date at which idTag should be removed from the Authorization Cache.
      *
-     * @return String, formatted stop time.
+     * @return Expiry date.
      */
-    public String getExpiryDate() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
-        return formatter.format(expiryDate.getTime());
+    public Calendar getExpiryDate() {
+        return expiryDate;
     }
 
     /**
@@ -65,6 +61,7 @@ public class IdTagInfo implements Validatable
      *
      * @return Expiry date.
      */
+    @Deprecated
     public Calendar objExpiryDate() {
         return expiryDate;
     }
@@ -101,10 +98,10 @@ public class IdTagInfo implements Validatable
     /**
      * This contains whether the idTag has been accepted or not by the Central System.
      *
-     * @return String, the {@link AuthorizationStatus} for IdTag.
+     * @return the {@link AuthorizationStatus} for IdTag.
      */
-    public String getStatus() {
-        return status.toString();
+    public AuthorizationStatus getStatus() {
+        return status;
     }
 
     /**
@@ -112,6 +109,7 @@ public class IdTagInfo implements Validatable
      *
      * @return the {@link AuthorizationStatus} for IdTag.
      */
+    @Deprecated
     public AuthorizationStatus objStatus() {
         return status;
     }

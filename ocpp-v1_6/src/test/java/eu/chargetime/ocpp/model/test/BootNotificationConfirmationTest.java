@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Calendar;
-import java.util.TimeZone;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -58,21 +57,6 @@ public class BootNotificationConfirmationTest {
 
         // Then
         assertThat(confirmation.objCurrentTime(), equalTo(now));
-    }
-
-    @Test
-    public void getCurrentTime_currentTimeIsSet_returnsFormattetString() {
-        // Given
-        String expected = "2016-01-01T01:01:01.001Z";
-        Calendar someDate = new Calendar.Builder().setDate(2016,00,01)
-                .setTimeOfDay(01,01,01,001).setTimeZone(TimeZone.getTimeZone("GMT+00:00")).build();
-        confirmation.setCurrentTime(someDate);
-
-        // When
-        String result = confirmation.getCurrentTime();
-
-        // Then
-        assertThat(result, equalTo(expected));
     }
 
     @Test

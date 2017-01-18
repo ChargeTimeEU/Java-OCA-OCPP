@@ -208,10 +208,10 @@ public class SampledValueTest {
     @Test
     public void getFormat_returnRaw() {
         // Given
-        String expected = "Raw";
+        ValueFormat expected = ValueFormat.Raw;
 
         // When
-        String format = sampledValue.getFormat();
+        ValueFormat format = sampledValue.getFormat();
 
         // Then
         assertThat(format, equalTo(expected));
@@ -660,10 +660,10 @@ public class SampledValueTest {
     @Test
     public void getLocation_returnOutlet() {
         // Given
-        String expected = "Outlet";
+        Location expected = Location.Outlet;
 
         // When
-        String location = sampledValue.getLocation();
+        Location location = sampledValue.getLocation();
 
         // Then
         assertThat(location, equalTo(expected));

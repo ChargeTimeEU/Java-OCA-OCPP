@@ -43,16 +43,17 @@ public class DataTransferConfirmation implements Confirmation {
     /**
      * This indicates the success or failure of the data transfer.
      *
-     * @return String, the {@link DataTransferStatus}.
+     * @return the {@link DataTransferStatus}.
      */
-    public String getStatus() {
-        return status.toString();
+    public DataTransferStatus getStatus() {
+        return status;
     }
 
     /**
      * This indicates the success or failure of the data transfer.
      * @return the {@link DataTransferStatus}.
      */
+    @Deprecated
     public DataTransferStatus objStatus() {
         return status;
     }

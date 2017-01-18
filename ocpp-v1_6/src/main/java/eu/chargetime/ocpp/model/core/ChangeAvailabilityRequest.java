@@ -70,10 +70,10 @@ public class ChangeAvailabilityRequest implements Request
     /**
      * This contains the type of availability change that the Charge Point should perform.
      *
-     * @return Stirng version of {@link AvailabilityType}.
+     * @return  {@link AvailabilityType} of the connector.
      */
-    public String getType() {
-        return type.toString();
+    public AvailabilityType getType() {
+        return type;
     }
 
     /**
@@ -81,6 +81,7 @@ public class ChangeAvailabilityRequest implements Request
      *
      * @return  {@link AvailabilityType} of the connector.
      */
+    @Deprecated
     public AvailabilityType objType() {
         return type;
     }

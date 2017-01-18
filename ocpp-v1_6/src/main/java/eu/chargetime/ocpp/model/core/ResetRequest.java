@@ -41,10 +41,10 @@ public class ResetRequest implements Request {
     /**
      * This contains the type of reset that the Charge Point should perform.
      *
-     * @return String, the {@link ResetType}.
+     * @return the {@link ResetType}.
      */
-    public String getType() {
-        return type.toString();
+    public ResetType getType() {
+        return type;
     }
 
     /**
@@ -52,6 +52,7 @@ public class ResetRequest implements Request {
      *
      * @return the {@link ResetType}.
      */
+    @Deprecated
     public ResetType objType() {
         return type;
     }

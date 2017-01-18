@@ -209,19 +209,19 @@ public class FakeChargePoint
 
     public boolean hasReceivedBootConfirmation(String status) {
         if (receivedConfirmation instanceof BootNotificationConfirmation)
-            return ((BootNotificationConfirmation) receivedConfirmation).getStatus().equals(status);
+            return ((BootNotificationConfirmation) receivedConfirmation).getStatus().toString().equals(status);
         return false;
     }
 
     public boolean hasReceivedAuthorizeConfirmation(String status) {
         if (receivedConfirmation instanceof AuthorizeConfirmation)
-            return ((AuthorizeConfirmation) receivedConfirmation).getIdTagInfo().getStatus().equals(status);
+            return ((AuthorizeConfirmation) receivedConfirmation).getIdTagInfo().getStatus().toString().equals(status);
         return false;
     }
 
     public boolean hasReceivedDataTransferConfirmation(String status) {
         if (receivedConfirmation instanceof DataTransferConfirmation)
-            return ((DataTransferConfirmation) receivedConfirmation).getStatus().equals(status);
+            return ((DataTransferConfirmation) receivedConfirmation).getStatus().toString().equals(status);
         return false;
     }
 
