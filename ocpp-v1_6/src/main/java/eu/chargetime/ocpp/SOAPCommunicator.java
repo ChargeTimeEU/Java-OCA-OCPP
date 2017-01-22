@@ -49,13 +49,13 @@ public class SOAPCommunicator extends Communicator {
         this.fromUrl = fromUrl;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T unpackPayload(Object payload, Class<T> type) {
-        Document input = (Document) payload;
         T output = null;
-        Unmarshaller unmarshaller = null;
         try {
-            unmarshaller = JAXBContext.newInstance(type).createUnmarshaller();
+            Document input = (Document) payload;
+            Unmarshaller unmarshaller = JAXBContext.newInstance(type).createUnmarshaller();
             output = (T) unmarshaller.unmarshal(input);
         } catch (JAXBException e) {
             e.printStackTrace();
@@ -79,13 +79,18 @@ public class SOAPCommunicator extends Communicator {
     }
 
     @Override
-    protected Object makeCallResult(String uniqueId, Object payload) {
-        return null;
+    protected Object makeCallResult(String uniqueId, String action, Object payload) {
+        return createMessage(uniqueId, action, (Document) payload, true);
     }
 
     @Override
     protected Object makeCall(String uniqueId, String action, Object payload) {
+        return createMessage(uniqueId, action, (Document) payload, false);
+    }
+
+    private Object createMessage(String uniqueId, String action, Document payload, boolean isResponse) {
         SOAPMessage message = null;
+
         try {
             MessageFactory messageFactory = MessageFactory.newInstance();
             SOAPFactory soapFactory = SOAPFactory.newInstance();
@@ -113,11 +118,11 @@ public class SOAPCommunicator extends Communicator {
             messageIDHeader.setMustUnderstand(true);
             messageIDHeader.setValue(uniqueId);
 
-            /*
             // Set RelatesTo
-            SOAPHeaderElement relatesToHeader = soapHeader.addHeaderElement(soapFactory.createName("RelatesTo", prefix, namespace));
-            relatesToHeader.setValue(uniqueId);
-            */
+            if (isResponse) {
+                SOAPHeaderElement relatesToHeader = soapHeader.addHeaderElement(soapFactory.createName("RelatesTo", prefix, namespace));
+                relatesToHeader.setValue(uniqueId);
+            }
 
             // Set From
             SOAPHeaderElement fromHeader = soapHeader.addHeaderElement(soapFactory.createName("From", prefix, namespace));
@@ -134,7 +139,7 @@ public class SOAPCommunicator extends Communicator {
             toHeader.setMustUnderstand(true);
             toHeader.setValue(toUrl);
 
-            message.getSOAPBody().addDocument((Document) payload);
+            message.getSOAPBody().addDocument(payload);
         } catch (Exception e) {
             e.printStackTrace();
         }

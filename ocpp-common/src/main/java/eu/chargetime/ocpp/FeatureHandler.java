@@ -30,6 +30,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
@@ -51,8 +52,7 @@ public abstract class FeatureHandler {
      */
     public void addFeatureProfile(Profile profile) {
         Feature[] features = profile.getFeatureList();
-        for (Feature feature : features)
-            featureList.add(feature);
+        Collections.addAll(featureList, features);
     }
 
     /**

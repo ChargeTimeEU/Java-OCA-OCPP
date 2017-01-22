@@ -70,10 +70,11 @@ public abstract class Communicator {
      * Create a call result envelope to transmit.
      *
      * @param   uniqueId    the id the receiver expects.
+     * @param   action      action name of the feature.
      * @param   payload     packed payload.
      * @return a fully packed message ready to send.
      */
-    protected abstract Object makeCallResult(String uniqueId, Object payload);
+    protected abstract Object makeCallResult(String uniqueId, String action, Object payload);
 
     /**
      * Create a call envelope to transmit to the server.
@@ -172,9 +173,9 @@ public abstract class Communicator {
      * @param   uniqueId                the id the receiver expects.
      * @param   confirmation            the outgoing {@link Confirmation}
      */
-    public void sendCallResult(String uniqueId, Confirmation confirmation) {
+    public void sendCallResult(String uniqueId, String action, Confirmation confirmation) {
         try {
-            radio.send(makeCallResult(uniqueId, packPayload(confirmation)));
+            radio.send(makeCallResult(uniqueId, action, packPayload(confirmation)));
         } catch (NotConnectedException e) {
             e.printStackTrace();
             events.onError(uniqueId, "Not connected", "The confirmation couldn't be send due to the lack of connection", confirmation);

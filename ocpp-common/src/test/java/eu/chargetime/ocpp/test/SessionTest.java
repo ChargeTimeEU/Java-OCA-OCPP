@@ -115,12 +115,13 @@ public class SessionTest {
         // Given
         Confirmation conf = () -> false;
         String someUniqueId = "Some id";
+        String action = "Some action";
 
         // When
-        session.sendConfirmation(someUniqueId, conf);
+        session.sendConfirmation(someUniqueId, action, conf);
 
         // Then
-        verify(communicator, times(1)).sendCallResult(eq(someUniqueId), eq(conf));
+        verify(communicator, times(1)).sendCallResult(eq(someUniqueId), eq(action), eq(conf));
     }
 
     @Test
@@ -168,7 +169,7 @@ public class SessionTest {
         try { Thread.sleep(10); } catch (Exception ex) {} // TODO make async invoker injectable
 
         // then
-        verify(communicator, times(1)).sendCallResult(anyString(), eq(aConfirmation));
+        verify(communicator, times(1)).sendCallResult(anyString(), anyString(), eq(aConfirmation));
     }
 
     @Test

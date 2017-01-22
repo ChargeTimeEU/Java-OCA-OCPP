@@ -26,19 +26,21 @@ package eu.chargetime.ocpp;/*
 
 import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
 
+import java.net.URL;
+
 public class SOAPClient extends Client {
 
     private SOAPCommunicator communicator;
     /**
      * The core feature profile is required.
+     * The client will use the information taken from the callback parameter to open a HTTP based Web Service.
      *
      * @param chargeBoxIdentity required identity used in message header.
-     * @param callbackUrl       url that the server can send requests to.
+     * @param callback          call back info that the server can send requests to.
      * @param coreProfile       implementation of the core feature profile.
      */
-    public SOAPClient(String chargeBoxIdentity, String callbackUrl, ClientCoreProfile coreProfile) {
-        this(new SOAPCommunicator(chargeBoxIdentity, callbackUrl, new WebServiceTransmitter()));
-
+    public SOAPClient(String chargeBoxIdentity, URL callback, ClientCoreProfile coreProfile) {
+        this(new SOAPCommunicator(chargeBoxIdentity, callback.toString(), new WebServiceTransmitter()));
         addFeatureProfile(coreProfile);
     }
 

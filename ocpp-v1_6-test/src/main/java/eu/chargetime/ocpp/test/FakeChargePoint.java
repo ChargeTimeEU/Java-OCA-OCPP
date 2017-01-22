@@ -7,6 +7,8 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Calendar;
 
 /*
@@ -43,7 +45,7 @@ public class FakeChargePoint
     private ClientCoreProfile core;
     private Throwable receivedException;
 
-    public FakeChargePoint() {
+    public FakeChargePoint() throws MalformedURLException {
         this(clientType.JSON);
     }
 
@@ -51,7 +53,7 @@ public class FakeChargePoint
         JSON, SOAP
     }
 
-    public FakeChargePoint(clientType type) {
+    public FakeChargePoint(clientType type) throws MalformedURLException {
         core = new ClientCoreProfile(new ClientCoreEventHandler() {
             @Override
             public ChangeAvailabilityConfirmation handleChangeAvailabilityRequest(ChangeAvailabilityRequest request) {
@@ -119,7 +121,7 @@ public class FakeChargePoint
                 client = new JSONClient(core);
                 break;
             case SOAP:
-                client = new SOAPClient("me", "http://localhost:8889", core);
+                client = new SOAPClient("me", new URL("http://localhost:8889"), core);
                 break;
         }
     }

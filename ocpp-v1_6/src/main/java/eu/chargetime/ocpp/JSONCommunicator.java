@@ -113,7 +113,7 @@ public class JSONCommunicator extends Communicator {
     }
 
     @Override
-    protected Object makeCallResult(String uniqueId, Object payload) {
+    protected Object makeCallResult(String uniqueId, String action, Object payload) {
         return String.format(CALLRESULT_FORMAT, uniqueId, payload);
     }
 

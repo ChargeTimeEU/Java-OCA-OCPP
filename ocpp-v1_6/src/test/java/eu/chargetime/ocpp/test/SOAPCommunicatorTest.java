@@ -254,6 +254,7 @@ public class SOAPCommunicatorTest extends TestUtilities {
     public void unpackPayload_bootNotificationCallResultPayload_returnBootNotificationConfirmation() throws Exception {
         // Given
         String currentType = "2016-04-28T07:16:11.988Z";
+        Calendar someDate = new Calendar.Builder().setDate(2016, 03, 28).setTimeOfDay(07, 16, 11, 988).setTimeZone(TimeZone.getTimeZone("GMT+00:00")).build();
         int interval = 300;
         RegistrationStatus status = RegistrationStatus.Accepted;
         String xml = "<bootNotificationConfirmation xmlns=\"urn://Ocpp/Cp/2015/10\"><currentTime>%s</currentTime><interval>%d</interval><status>%s</status></bootNotificationConfirmation>";
@@ -265,8 +266,8 @@ public class SOAPCommunicatorTest extends TestUtilities {
 
         // Then
         assertThat(result, instanceOf(type));
-        assertThat(((BootNotificationConfirmation) result).objStatus(), is(status));
-        assertThat(((BootNotificationConfirmation) result).objCurrentTime(), equalTo(currentType));
+        assertThat(((BootNotificationConfirmation) result).getCurrentTime().compareTo(someDate), is(0));
+        assertThat(((BootNotificationConfirmation) result).getStatus(), is(status));
         assertThat(((BootNotificationConfirmation) result).getInterval(), is(interval));
     }
 

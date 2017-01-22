@@ -60,7 +60,8 @@ public abstract class Server extends FeatureHandler {
      * @param serverEvents Callback handler for server specific events.
      */
     public void open(String hostname, int port, ServerEvents serverEvents) {
-        listener.open(hostname, port, session -> {
+
+        listener.open(hostname, port, null, session -> {
             session.accept(new SessionEvents() {
                 @Override
                 public Feature findFeatureByAction(String action) {

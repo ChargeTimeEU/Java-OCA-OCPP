@@ -1,4 +1,5 @@
-package eu.chargetime.ocpp;/*
+package eu.chargetime.ocpp;
+/*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
@@ -38,11 +39,11 @@ public class WebSocketListener implements Listener {
     private HashMap<WebSocket, WebSocketReceiver> sockets;
 
     public WebSocketListener() {
-        sockets = new HashMap();
+        sockets = new HashMap<>();
     }
 
     @Override
-    public void open(String hostname, int port, ListenerEvents handler) {
+    public void open(String hostname, int port, String path, ListenerEvents handler) {
         server = new WebSocketServer(new InetSocketAddress(hostname, port)) {
             @Override
             public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {

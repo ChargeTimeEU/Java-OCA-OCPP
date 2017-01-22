@@ -97,6 +97,7 @@ public class FakeCentralSystem
                 try {
                     confirmation.setInterval(1);
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 confirmation.setCurrentTime(Calendar.getInstance());
                 confirmation.setStatus(RegistrationStatus.Accepted);

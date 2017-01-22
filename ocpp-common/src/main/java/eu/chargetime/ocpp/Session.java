@@ -74,8 +74,8 @@ public class Session {
      * @param uniqueId     the unique identification the receiver expects.
      * @param confirmation the {@link Confirmation} payload to send.
      */
-    public void sendConfirmation(String uniqueId, Confirmation confirmation) {
-        communicator.sendCallResult(uniqueId, confirmation);
+    public void sendConfirmation(String uniqueId, String action, Confirmation confirmation) {
+        communicator.sendCallResult(uniqueId, action, confirmation);
     }
 
 
@@ -144,7 +144,7 @@ public class Session {
                     Request request = communicator.unpackPayload(payload, feature.getRequestType());
                     if (request.validate()) {
                         CompletableFuture<Confirmation> promise = handleIncomingRequest(request);
-                        promise.whenComplete(new ConfirmationHandler(id, communicator));
+                        promise.whenComplete(new ConfirmationHandler(id, action, communicator));
                     } else {
                         communicator.sendCallError(id, "OccurenceConstraintViolation", "Payload for Action is syntactically correct but at least one of the fields violates occurence constraints");
                     }
@@ -193,11 +193,13 @@ public class Session {
 class ConfirmationHandler implements BiConsumer<Confirmation, Throwable> {
 
     private String id;
+    private String action;
     private Communicator communicator;
 
-    public ConfirmationHandler(String id, Communicator communicator) {
+    public ConfirmationHandler(String id, String action, Communicator communicator) {
 
         this.id = id;
+        this.action = action;
         this.communicator = communicator;
     }
 
@@ -208,7 +210,7 @@ class ConfirmationHandler implements BiConsumer<Confirmation, Throwable> {
         } else if (confirmation == null) {
             communicator.sendCallError(id, "NotSupported", "Requested Action is recognized but not supported by the receiver");
         } else {
-            communicator.sendCallResult(id, confirmation);
+            communicator.sendCallResult(id, action, confirmation);
         }
     }
 }

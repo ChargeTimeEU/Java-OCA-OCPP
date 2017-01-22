@@ -68,7 +68,7 @@ public class CommunicatorTest {
             }
 
             @Override
-            protected Object makeCallResult(String uniqueId, Object payload) {
+            protected Object makeCallResult(String uniqueId, String action, Object payload) {
                 return null;
             }
 

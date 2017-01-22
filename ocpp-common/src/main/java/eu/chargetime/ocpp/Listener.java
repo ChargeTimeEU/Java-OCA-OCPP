@@ -26,7 +26,7 @@ package eu.chargetime.ocpp;
  */
 
 public interface Listener {
-    void open(String hostname, int port, ListenerEvents listenerEvents);
+    void open(String hostname, int port, String path, ListenerEvents listenerEvents);
 
     void close();
 }
