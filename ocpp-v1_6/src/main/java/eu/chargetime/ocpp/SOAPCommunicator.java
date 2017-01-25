@@ -24,8 +24,11 @@ package eu.chargetime.ocpp;/*
     SOFTWARE.
  */
 
+import eu.chargetime.ocpp.model.CallMessage;
+import eu.chargetime.ocpp.model.CallResultMessage;
 import eu.chargetime.ocpp.model.Message;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -36,6 +39,16 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.*;
 
 public class SOAPCommunicator extends Communicator {
+
+
+    private static final String HEADER_ACTION = "Action";
+    private static final String HEADER_MESSAGEID = "MessageID";
+    private static final String HEADER_RELATESTO = "RelatesTo";
+    private static final String HEADER_FROM = "From";
+    private static final String HEADER_REPLYTO = "ReplyTo";
+    private static final String HEADER_REPLYTO_ADDRESS = "Address";
+    private static final String HEADER_TO = "To";
+    private static final String HEADER_CHARGEBOXIDENTITY = "chargeBoxIdentity";
 
 
     private final String chargeBoxIdentity;
@@ -104,38 +117,38 @@ public class SOAPCommunicator extends Communicator {
             String namespace = "http://schemas.xmlsoap.org/ws/2004/08/addressing";
 
             // Set chargeBoxIdentity
-            SOAPHeaderElement chargeBoxIdentityHeader = soapHeader.addHeaderElement(soapFactory.createName("chargeBoxIdentity", "cs", "urn://Ocpp/Cs/2015/10/"));
+            SOAPHeaderElement chargeBoxIdentityHeader = soapHeader.addHeaderElement(soapFactory.createName(HEADER_CHARGEBOXIDENTITY, "cs", "urn://Ocpp/Cs/2015/10/"));
             chargeBoxIdentityHeader.setMustUnderstand(true);
             chargeBoxIdentityHeader.setValue(chargeBoxIdentity);
 
             // Set Action
-            SOAPHeaderElement actionHeader = soapHeader.addHeaderElement(soapFactory.createName("Action", prefix, namespace));
+            SOAPHeaderElement actionHeader = soapHeader.addHeaderElement(soapFactory.createName(HEADER_ACTION, prefix, namespace));
             actionHeader.setMustUnderstand(true);
             actionHeader.setValue(String.format("/%s", action));
 
             // Set MessageID
-            SOAPHeaderElement messageIDHeader = soapHeader.addHeaderElement(soapFactory.createName("MessageID", prefix, namespace));
+            SOAPHeaderElement messageIDHeader = soapHeader.addHeaderElement(soapFactory.createName(HEADER_MESSAGEID, prefix, namespace));
             messageIDHeader.setMustUnderstand(true);
             messageIDHeader.setValue(uniqueId);
 
             // Set RelatesTo
             if (isResponse) {
-                SOAPHeaderElement relatesToHeader = soapHeader.addHeaderElement(soapFactory.createName("RelatesTo", prefix, namespace));
+                SOAPHeaderElement relatesToHeader = soapHeader.addHeaderElement(soapFactory.createName(HEADER_RELATESTO, prefix, namespace));
                 relatesToHeader.setValue(uniqueId);
             }
 
             // Set From
-            SOAPHeaderElement fromHeader = soapHeader.addHeaderElement(soapFactory.createName("From", prefix, namespace));
+            SOAPHeaderElement fromHeader = soapHeader.addHeaderElement(soapFactory.createName(HEADER_FROM, prefix, namespace));
             fromHeader.setValue(fromUrl);
 
             // Set ReplyTo
-            SOAPHeaderElement replyToHeader = soapHeader.addHeaderElement(soapFactory.createName("ReplyTo", prefix, namespace));
+            SOAPHeaderElement replyToHeader = soapHeader.addHeaderElement(soapFactory.createName(HEADER_REPLYTO, prefix, namespace));
             replyToHeader.setMustUnderstand(true);
-            SOAPElement addressElement = replyToHeader.addChildElement(soapFactory.createName("Address", prefix, namespace));
+            SOAPElement addressElement = replyToHeader.addChildElement(soapFactory.createName(HEADER_REPLYTO_ADDRESS, prefix, namespace));
             addressElement.setValue("http://www.w3.org/2005/08/addressing/anonymous");
 
             // Set To
-            SOAPHeaderElement toHeader = soapHeader.addHeaderElement(soapFactory.createName("To", prefix, namespace));
+            SOAPHeaderElement toHeader = soapHeader.addHeaderElement(soapFactory.createName(HEADER_TO, prefix, namespace));
             toHeader.setMustUnderstand(true);
             toHeader.setValue(toUrl);
 
@@ -154,7 +167,84 @@ public class SOAPCommunicator extends Communicator {
 
     @Override
     protected Message parse(Object message) {
-        return null;
+        Message output = null;
+        SOAPParser soapParser = new SOAPParser((SOAPMessage) message);
+
+        if (soapParser.isAddressedToMe())
+            output = soapParser.parseMessage();
+
+        return output;
+    }
+
+    private class SOAPParser {
+
+        private SOAPHeader soapHeader;
+        private SOAPMessage soapMessage;
+
+        public SOAPParser(SOAPMessage message) {
+            try {
+                soapMessage = message;
+                soapHeader = message.getSOAPHeader();
+            } catch (SOAPException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public Message parseMessage() {
+            Message output = null;
+            try {
+
+                String relatesTo = getElementValue(HEADER_REPLYTO);
+                if (relatesTo != null && "".equals(relatesTo)) {
+                    output = parseResult();
+                } else {
+                    output = parseCall();
+                }
+                output.setPayload(soapMessage.getSOAPBody().extractContentAsDocument());
+
+            } catch (SOAPException e) {
+                e.printStackTrace();
+            }
+            return output;
+        }
+
+        public boolean isAddressedToMe() {
+            String to = getElementValue(HEADER_TO);
+            String cbIdentity = getElementValue(HEADER_CHARGEBOXIDENTITY);
+            return fromUrl.equals(to) && chargeBoxIdentity.equals(cbIdentity);
+        }
+
+        private CallResultMessage parseResult() {
+            CallResultMessage message = new CallResultMessage();
+
+            String id = getElementValue(HEADER_REPLYTO);
+            message.setId(id);
+
+            return message;
+        }
+
+        private CallMessage parseCall() {
+            CallMessage message = new CallMessage();
+
+            String action = getElementValue(HEADER_ACTION);
+            if (action != null && "".equals(action))
+                message.setAction(action.substring(1));
+
+            String id = getElementValue(HEADER_MESSAGEID);
+            message.setId(id);
+
+            return message;
+        }
+
+        private String getElementValue(String tagName) {
+            String value = null;
+            NodeList elements = soapHeader.getElementsByTagName(tagName);
+
+            if (elements.getLength() > 0)
+                value = elements.item(0).getNodeValue();
+
+            return value;
+        }
     }
 
     public String getToUrl() {

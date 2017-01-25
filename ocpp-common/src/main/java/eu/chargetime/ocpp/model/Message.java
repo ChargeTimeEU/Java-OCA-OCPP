@@ -32,7 +32,7 @@ package eu.chargetime.ocpp.model;
  */
 public class Message {
     private String id;
-    private String payload;
+    private Object payload;
 
     /**
      * Get unique id for message.
@@ -57,16 +57,16 @@ public class Message {
      *
      * @return payload.
      */
-    public String getPayload() {
+    public Object getPayload() {
         return payload;
     }
 
     /**
      * Attach payload to message.
      *
-     * @param payload String, payload.
+     * @param payload payload object.
      */
-    public void setPayload(String payload) {
+    public void setPayload(Object payload) {
         this.payload = payload;
     }
 }

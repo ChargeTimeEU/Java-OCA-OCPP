@@ -39,7 +39,7 @@ public interface CommunicatorEvents {
      * @param id      unique id used to identify the original request.
      * @param payload raw payload.
      */
-    void onCallResult(String id, String payload);
+    void onCallResult(String id, Object payload);
 
     /**
      * Handle call.
@@ -50,7 +50,7 @@ public interface CommunicatorEvents {
      * @param action  action name used to identify the feature.
      * @param payload raw payload.
      */
-    void onCall(String id, String action, String payload);
+    void onCall(String id, String action, Object payload);
 
     /**
      * Handle call error.

@@ -61,7 +61,7 @@ public abstract class Server extends FeatureHandler {
      */
     public void open(String hostname, int port, ServerEvents serverEvents) {
 
-        listener.open(hostname, port, null, session -> {
+        listener.open(hostname, port, session -> {
             session.accept(new SessionEvents() {
                 @Override
                 public Feature findFeatureByAction(String action) {

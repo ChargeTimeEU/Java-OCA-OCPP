@@ -122,4 +122,13 @@ public abstract class FeatureHandler {
         return promises.get(uniqueId);
     }
 
+    /**
+     * Remove stored call back {@link CompletableFuture}.
+     *
+     * @param uniqueId identification for the {@link Request}
+     */
+    protected void removePromise(String uniqueId) {
+        promises.remove(uniqueId);
+    }
+
 }

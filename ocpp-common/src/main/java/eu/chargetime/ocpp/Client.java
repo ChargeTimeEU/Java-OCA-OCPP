@@ -77,6 +77,7 @@ public abstract class Client extends FeatureHandler
             @Override
             public void handleConfirmation(String uniqueId, Confirmation confirmation) {
                 getPromise(uniqueId).complete(confirmation);
+                removePromise(uniqueId);
             }
 
             @Override
@@ -88,6 +89,7 @@ public abstract class Client extends FeatureHandler
             @Override
             public void handleError(String uniqueId, String errorCode, String errorDescription, Object payload) {
                 getPromise(uniqueId).completeExceptionally(new CallErrorException(errorCode, errorCode, payload));
+                removePromise(uniqueId);
             }
 
             @Override

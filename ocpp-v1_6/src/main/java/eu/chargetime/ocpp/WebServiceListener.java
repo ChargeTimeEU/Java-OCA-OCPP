@@ -25,38 +25,21 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.InetSocketAddress;
 
 public class WebServiceListener implements Listener {
 
-    class WSHandler implements HttpHandler {
-
-        @Override
-        public void handle(HttpExchange httpExchange) throws IOException {
-            String response = "This is the reponse.";
-            httpExchange.sendResponseHeaders(200, response.length());
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-        }
-    }
-
+    final private String WSDL_CENTRAL_SYSTEM = "eu/chargetime/ocpp/OCPP_CentralSystemService_1.6.wsdl";
 
     @Override
-    public void open(String hostname, int port, String path, ListenerEvents listenerEvents) {
+    public void open(String hostname, int port, ListenerEvents listenerEvents) {
         try {
             HttpServer server = HttpServer.create(new InetSocketAddress(hostname, port), 0);
-            if (path.startsWith("/"))
-                server.createContext(path, new WSHandler());
-            else
-                server.createContext("/", new WSHandler());
-            server.setExecutor(null);
+            server.createContext("/", new WSHttpHandler(WSDL_CENTRAL_SYSTEM, message -> null));
+            server.setExecutor(java.util.concurrent.Executors.newCachedThreadPool());
             server.start();
         } catch (IOException e) {
             e.printStackTrace();

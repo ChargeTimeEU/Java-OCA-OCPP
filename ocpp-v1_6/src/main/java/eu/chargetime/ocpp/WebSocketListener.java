@@ -43,7 +43,7 @@ public class WebSocketListener implements Listener {
     }
 
     @Override
-    public void open(String hostname, int port, String path, ListenerEvents handler) {
+    public void open(String hostname, int port, ListenerEvents handler) {
         server = new WebSocketServer(new InetSocketAddress(hostname, port)) {
             @Override
             public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {

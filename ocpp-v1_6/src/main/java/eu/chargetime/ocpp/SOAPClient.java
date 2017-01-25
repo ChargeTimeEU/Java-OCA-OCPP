@@ -24,13 +24,23 @@ package eu.chargetime.ocpp;/*
     SOFTWARE.
  */
 
+import com.sun.net.httpserver.HttpServer;
 import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
 
+import javax.xml.soap.SOAPMessage;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 public class SOAPClient extends Client {
 
+    final private String WSDL_CHARGE_POINT = "eu/chargetime/ocpp/OCPP_ChargePointService_1.6.wsdl";
+
     private SOAPCommunicator communicator;
+    private WebServiceTransmitter transmitter;
+    private URL callback;
+
     /**
      * The core feature profile is required.
      * The client will use the information taken from the callback parameter to open a HTTP based Web Service.
@@ -40,8 +50,14 @@ public class SOAPClient extends Client {
      * @param coreProfile       implementation of the core feature profile.
      */
     public SOAPClient(String chargeBoxIdentity, URL callback, ClientCoreProfile coreProfile) {
-        this(new SOAPCommunicator(chargeBoxIdentity, callback.toString(), new WebServiceTransmitter()));
+        this(chargeBoxIdentity, callback, new WebServiceTransmitter());
+        this.callback = callback;
         addFeatureProfile(coreProfile);
+    }
+
+    private SOAPClient(String chargeBoxIdentity, URL callback, WebServiceTransmitter transmitter) {
+        this(new SOAPCommunicator(chargeBoxIdentity, callback.toString(), transmitter));
+        this.transmitter = transmitter;
     }
 
     private SOAPClient(SOAPCommunicator communicator) {
@@ -51,6 +67,7 @@ public class SOAPClient extends Client {
 
     /**
      * Connect to server and set To header.
+     * Client opens a WebService for incoming requests.
      *
      * @param uri url and port of the server
      */
@@ -58,5 +75,33 @@ public class SOAPClient extends Client {
     public void connect(String uri) {
         communicator.setToUrl(uri);
         super.connect(uri);
+        openWS();
     }
+
+    private int getPort() {
+        return callback.getPort() == -1 ? 8000 : callback.getPort();
+    }
+
+    private void openWS() {
+        try {
+            HttpServer server = HttpServer.create(new InetSocketAddress(callback.getHost(), getPort()), 0);
+            server.createContext("/", new WSHttpHandler(WSDL_CHARGE_POINT, message -> {
+                SOAPMessage soapMessage = null;
+                try {
+                    soapMessage = transmitter.relay(message).get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+                return soapMessage;
+            }));
+            server.setExecutor(java.util.concurrent.Executors.newCachedThreadPool());
+            server.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

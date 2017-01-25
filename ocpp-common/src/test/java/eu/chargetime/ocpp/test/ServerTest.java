@@ -66,7 +66,7 @@ public class ServerTest extends TestUtilities {
         doReturn(request.getClass()).when(feature).getRequestType();
         doReturn(TestConfirmation.class).when(feature).getConfirmationType();
         when(feature.getAction()).thenReturn(null);
-        doAnswer(invocation -> listenerEvents = invocation.getArgumentAt(3, ListenerEvents.class)).when(listener).open(anyString(), anyInt(), any(), any());
+        doAnswer(invocation -> listenerEvents = invocation.getArgumentAt(2, ListenerEvents.class)).when(listener).open(anyString(), anyInt(), any());
         doAnswer(invocation -> sessionEvents = invocation.getArgumentAt(0, SessionEvents.class)).when(session).accept(any());
 
         server = new Server(listener) {

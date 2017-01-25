@@ -1,9 +1,10 @@
 package eu.chargetime.ocpp;
 
-import javax.xml.soap.SOAPConnection;
-import javax.xml.soap.SOAPConnectionFactory;
-import javax.xml.soap.SOAPException;
-import javax.xml.soap.SOAPMessage;
+import org.w3c.dom.NodeList;
+
+import javax.xml.soap.*;
+import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
 /*
     ChargeTime.eu - Java-OCA-OCPP
@@ -35,6 +36,11 @@ public class WebServiceTransmitter implements Transmitter {
     SOAPConnection soapConnection;
     private String url;
     private RadioEvents events;
+    private HashMap<String, CompletableFuture<SOAPMessage>> promises;
+
+    public WebServiceTransmitter() {
+        promises = new HashMap<>();
+    }
 
     @Override
     public void disconnect() {
@@ -46,20 +52,9 @@ public class WebServiceTransmitter implements Transmitter {
     }
 
     @Override
-    public void send(Object message) throws NotConnectedException {
-        SOAPMessage request = (SOAPMessage) message;
-        try {
-            events.receivedMessage(soapConnection.call(request, url));
-        } catch (SOAPException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public void connect(String uri, RadioEvents events) {
         url = uri;
         this.events = events;
-
         try {
             SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
             soapConnection = soapConnectionFactory.createConnection();
@@ -67,4 +62,52 @@ public class WebServiceTransmitter implements Transmitter {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void send(Object message) throws NotConnectedException {
+        SOAPMessage soapMessage = (SOAPMessage) message;
+
+        String relatesTo = getHeaderValue(soapMessage, "RelatesTo");
+        if (relatesTo != null && promises.containsKey(relatesTo)) {
+            promises.get(relatesTo).complete(soapMessage);
+        } else {
+            sendRequest(soapMessage);
+        }
+    }
+
+    private void sendRequest(SOAPMessage request) {
+        try {
+            events.receivedMessage(soapConnection.call(request, url));
+        } catch (SOAPException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public CompletableFuture<SOAPMessage> relay(SOAPMessage message) {
+        events.receivedMessage(message);
+
+        CompletableFuture<SOAPMessage> promise = null;
+        String uniqueID = getHeaderValue(message, "MessageID");
+        if (uniqueID != null) {
+            promise = new CompletableFuture<>();
+            promises.put(uniqueID, promise);
+        }
+
+        return promise;
+    }
+
+    private String getHeaderValue(SOAPMessage message, String tagName) {
+        String value = null;
+        try {
+            SOAPHeader header = message.getSOAPHeader();
+            NodeList elements = header.getElementsByTagName(tagName);
+            if (elements.getLength() > 0)
+                value = elements.item(0).getNodeValue();
+        } catch (SOAPException e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
+
 }
