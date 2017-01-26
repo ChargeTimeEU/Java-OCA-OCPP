@@ -53,8 +53,9 @@ public class WSHttpHandler implements HttpHandler {
             SOAPMessage confirmation = events.incomingRequest(request);
             OutputStream responseStream = httpExchange.getResponseBody();
             try {
-                confirmation.writeTo(responseStream);
+                httpExchange.getResponseHeaders().add("Content-Type", "text/xml; charset=utf-8");
                 httpExchange.sendResponseHeaders(200, 0);
+                confirmation.writeTo(responseStream);
             } catch (SOAPException e) {
                 httpExchange.sendResponseHeaders(500, 0);
                 e.printStackTrace();

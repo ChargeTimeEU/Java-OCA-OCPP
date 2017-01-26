@@ -1,12 +1,4 @@
 package eu.chargetime.ocpp;
-
-import javax.xml.soap.SOAPConnection;
-import javax.xml.soap.SOAPConnectionFactory;
-import javax.xml.soap.SOAPException;
-import javax.xml.soap.SOAPMessage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -33,12 +25,18 @@ import java.io.IOException;
     SOFTWARE.
  */
 
-public class WebServiceTransmitter extends SOAPSyncHelper implements Transmitter {
+import javax.xml.soap.SOAPConnection;
+import javax.xml.soap.SOAPConnectionFactory;
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPMessage;
+
+public class SOAPReceiver extends SOAPSyncHelper implements Receiver {
+    private RadioEvents events;
     SOAPConnection soapConnection;
     private String url;
-    private RadioEvents events;
 
-    public WebServiceTransmitter() {
+    public SOAPReceiver(String url) {
+        this.url = url;
     }
 
     @Override
@@ -51,8 +49,7 @@ public class WebServiceTransmitter extends SOAPSyncHelper implements Transmitter
     }
 
     @Override
-    public void connect(String uri, RadioEvents events) {
-        url = uri;
+    public void accept(RadioEvents events) {
         this.events = events;
         try {
             SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
@@ -63,27 +60,16 @@ public class WebServiceTransmitter extends SOAPSyncHelper implements Transmitter
     }
 
     @Override
-    protected void sendRequest(SOAPMessage message) {
-        try {
-            SOAPMessage soapMessage = soapConnection.call(message, url);
-            events.receivedMessage(soapMessage);
-            try {
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                soapMessage.writeTo(out);
-                String strMsg = new String(out.toByteArray());
-                System.out.print(strMsg);
-            } catch (SOAPException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (SOAPException e) {
-            e.printStackTrace();
-        }
+    void forwardMessage(SOAPMessage message) {
+        events.receivedMessage(message);
     }
 
     @Override
-    protected void forwardMessage(SOAPMessage message) {
-        events.receivedMessage(message);
+    void sendRequest(SOAPMessage message) {
+        try {
+            events.receivedMessage(soapConnection.call(message, url));
+        } catch (SOAPException e) {
+            e.printStackTrace();
+        }
     }
 }

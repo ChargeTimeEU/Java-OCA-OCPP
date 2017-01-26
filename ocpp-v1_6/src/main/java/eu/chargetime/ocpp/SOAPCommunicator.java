@@ -184,7 +184,7 @@ public class SOAPCommunicator extends Communicator {
         public SOAPParser(SOAPMessage message) {
             try {
                 soapMessage = message;
-                soapHeader = message.getSOAPHeader();
+                soapHeader = message.getSOAPPart().getEnvelope().getHeader();
             } catch (SOAPException e) {
                 e.printStackTrace();
             }
@@ -227,7 +227,7 @@ public class SOAPCommunicator extends Communicator {
             CallMessage message = new CallMessage();
 
             String action = getElementValue(HEADER_ACTION);
-            if (action != null && "".equals(action))
+            if (action != null && !"".equals(action))
                 message.setAction(action.substring(1));
 
             String id = getElementValue(HEADER_MESSAGEID);
@@ -238,10 +238,10 @@ public class SOAPCommunicator extends Communicator {
 
         private String getElementValue(String tagName) {
             String value = null;
-            NodeList elements = soapHeader.getElementsByTagName(tagName);
+            NodeList elements = soapHeader.getElementsByTagNameNS("*", tagName);
 
             if (elements.getLength() > 0)
-                value = elements.item(0).getNodeValue();
+                value = elements.item(0).getChildNodes().item(0).getNodeValue();
 
             return value;
         }

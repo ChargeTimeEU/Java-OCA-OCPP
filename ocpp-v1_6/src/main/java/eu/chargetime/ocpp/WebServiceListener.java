@@ -27,18 +27,29 @@ package eu.chargetime.ocpp;
 
 import com.sun.net.httpserver.HttpServer;
 
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPMessage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 public class WebServiceListener implements Listener {
 
     final private String WSDL_CENTRAL_SYSTEM = "eu/chargetime/ocpp/OCPP_CentralSystemService_1.6.wsdl";
 
+    private ListenerEvents events;
+    private String fromUrl = null;
+
     @Override
     public void open(String hostname, int port, ListenerEvents listenerEvents) {
+        events = listenerEvents;
+        fromUrl = String.format("http://%s:%d", hostname, port);
         try {
             HttpServer server = HttpServer.create(new InetSocketAddress(hostname, port), 0);
-            server.createContext("/", new WSHttpHandler(WSDL_CENTRAL_SYSTEM, message -> null));
+            server.createContext("/", new WSHttpHandler(WSDL_CENTRAL_SYSTEM, new WSHttpEventHandler()));
+
             server.setExecutor(java.util.concurrent.Executors.newCachedThreadPool());
             server.start();
         } catch (IOException e) {
@@ -50,4 +61,49 @@ public class WebServiceListener implements Listener {
     public void close() {
 
     }
+
+    private class WSHttpEventHandler implements WSHttpHandlerEvents {
+
+        HashMap<String, SOAPReceiver> chargeboxes;
+
+        public WSHttpEventHandler() {
+            chargeboxes = new HashMap<>();
+        }
+
+        @Override
+        public SOAPMessage incomingRequest(SOAPMessage message) {
+            String identity = SOAPSyncHelper.getHeaderValue(message, "chargeBoxIdentity");
+            if (!chargeboxes.containsKey(identity)) {
+                String toUrl = SOAPSyncHelper.getHeaderValue(message, "From");
+                SOAPReceiver soapReceiver = new SOAPReceiver(toUrl);
+                SOAPCommunicator communicator = new SOAPCommunicator(identity, fromUrl, soapReceiver);
+                communicator.setToUrl(toUrl);
+                events.newSession(new Session(communicator, new Queue()));
+                chargeboxes.put(identity, soapReceiver);
+            }
+
+            SOAPMessage confirmation = null;
+            try {
+                confirmation = chargeboxes.get(identity).relay(message).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                message.writeTo(out);
+                String strMsg = new String(out.toByteArray());
+                System.out.print(strMsg);
+            } catch (SOAPException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return confirmation;
+        }
+    }
+
 }

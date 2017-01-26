@@ -128,7 +128,7 @@ public class FakeChargePoint
 
     public void connect() {
         try {
-            client.connect("ws://localhost:8887");
+            client.connect("http://localhost:8887");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

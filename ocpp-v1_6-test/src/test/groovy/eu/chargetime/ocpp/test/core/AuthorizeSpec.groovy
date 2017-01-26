@@ -11,11 +11,12 @@ class AuthorizeSpec extends Specification
 {
     @Shared
     FakeCentralSystem centralSystem = FakeCentralSystem.instance;
-    @Shared FakeChargePoint chargePoint = new FakeChargePoint();
+    @Shared
+    FakeChargePoint chargePoint = new FakeChargePoint(FakeChargePoint.clientType.SOAP);
 
     def setupSpec() {
         // When a Central System is running
-        centralSystem.started();
+        centralSystem.started(FakeCentralSystem.serverType.SOAP);
     }
 
     def setup() {

@@ -1,6 +1,8 @@
 package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.JSONServer;
+import eu.chargetime.ocpp.SOAPServer;
+import eu.chargetime.ocpp.Server;
 import eu.chargetime.ocpp.ServerEvents;
 import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
@@ -40,7 +42,7 @@ public class FakeCentralSystem
 {
     private Request receivedRequest;
     private Confirmation receivedConfirmation;
-    private JSONServer server;
+    private Server server;
 
     private int sessionIndex;
 
@@ -155,6 +157,9 @@ public class FakeCentralSystem
         switch (type) {
             case JSON:
                 server = new JSONServer(serverCoreProfile);
+                break;
+            case SOAP:
+                server = new SOAPServer(serverCoreProfile);
                 break;
         }
 
