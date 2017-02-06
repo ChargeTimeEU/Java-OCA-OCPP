@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.core
+package eu.chargetime.ocpp.test.core.json
 
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
@@ -6,38 +6,39 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class BootNotificationSpec extends Specification
+class JSONBootNotificationSpec extends Specification
 {
     @Shared
-    FakeCentralSystem centralSystem = FakeCentralSystem.instance;
-    @Shared FakeChargePoint chargePoint = new FakeChargePoint();
+    FakeCentralSystem centralSystem = FakeCentralSystem.instance
+    @Shared
+    FakeChargePoint chargePoint = new FakeChargePoint()
 
     def setupSpec() {
         // When a Central System is running
-        centralSystem.started();
+        centralSystem.started()
     }
 
     def setup() {
-        chargePoint.connect();
+        chargePoint.connect()
     }
 
     def cleanup() {
-        chargePoint.disconnect();
+        chargePoint.disconnect()
     }
     
     def "Charge point sends Boot Notification and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
         when:
-        chargePoint.sendBootNotification("VendorX", "SingleSocketCharger");
+        chargePoint.sendBootNotification("VendorX", "SingleSocketCharger")
 
         then:
         conditions.eventually {
-            assert centralSystem.hasHandledBootNotification("VendorX", "SingleSocketCharger");
+            assert centralSystem.hasHandledBootNotification("VendorX", "SingleSocketCharger")
         }
 
         then:
         conditions.eventually {
-            assert chargePoint.hasReceivedBootConfirmation("Accepted");
+            assert chargePoint.hasReceivedBootConfirmation("Accepted")
         }
     }
 }

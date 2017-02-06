@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SOAPClient extends Client {
 
@@ -41,6 +43,8 @@ public class SOAPClient extends Client {
     private SOAPCommunicator communicator;
     private WebServiceTransmitter transmitter;
     private URL callback;
+    private HttpServer server;
+    private ExecutorService threadPool;
 
     /**
      * The core feature profile is required.
@@ -79,13 +83,26 @@ public class SOAPClient extends Client {
         openWS();
     }
 
+    /**
+     * Disconnect from server
+     * Closes down local callback service.
+     */
+    @Override
+    public void disconnect() {
+        super.disconnect();
+        if (server != null) {
+            server.stop(1);
+            threadPool.shutdownNow();
+        }
+    }
+
     private int getPort() {
         return callback.getPort() == -1 ? 8000 : callback.getPort();
     }
 
     private void openWS() {
         try {
-            HttpServer server = HttpServer.create(new InetSocketAddress(callback.getHost(), getPort()), 0);
+            server = HttpServer.create(new InetSocketAddress(callback.getHost(), getPort()), 0);
             server.createContext("/", new WSHttpHandler(WSDL_CHARGE_POINT, message -> {
                 SOAPMessage soapMessage = null;
                 try {
@@ -97,7 +114,8 @@ public class SOAPClient extends Client {
                 }
                 return soapMessage;
             }));
-            server.setExecutor(java.util.concurrent.Executors.newCachedThreadPool());
+            threadPool = Executors.newCachedThreadPool();
+            server.setExecutor(threadPool);
             server.start();
         } catch (IOException e) {
             e.printStackTrace();

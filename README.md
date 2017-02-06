@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/ChargeTimeEU/Java-OCA-OCPP.svg?branch=master)](https://travis-ci.org/ChargeTimeEU/Java-OCA-OCPP)
+[![codecov](https://codecov.io/gh/ChargeTimeEU/Java-OCA-OCPP/branch/master/graph/badge.svg)](https://codecov.io/gh/ChargeTimeEU/Java-OCA-OCPP)
 
 Java-OCA-OCPP
 =============
@@ -30,7 +31,7 @@ Java-OCA-OCPP uses the following libraries:
 
 To use version 1.6 you need the following libraries:
 
-* [org.json:json:20160212](https://github.com/stleary/JSON-java)
+* [com.google.code.gson](https://github.com/google/gson)
 * [org.java_websocket](https://github.com/TooTallNate/Java-WebSocket)
 
 License

@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.core
+package eu.chargetime.ocpp.test.core.json
 
 import eu.chargetime.ocpp.OccurenceConstraintException
 import eu.chargetime.ocpp.test.FakeCentralSystem
@@ -7,62 +7,61 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class AuthorizeSpec extends Specification
-{
+class JSONAuthorizeSpec extends Specification {
     @Shared
-    FakeCentralSystem centralSystem = FakeCentralSystem.instance;
+    FakeCentralSystem centralSystem = FakeCentralSystem.instance
     @Shared
-    FakeChargePoint chargePoint = new FakeChargePoint(FakeChargePoint.clientType.SOAP);
+    FakeChargePoint chargePoint = new FakeChargePoint()
 
     def setupSpec() {
         // When a Central System is running
-        centralSystem.started(FakeCentralSystem.serverType.SOAP);
+        centralSystem.started()
     }
 
     def setup() {
-        chargePoint.connect();
+        chargePoint.connect()
     }
 
     def cleanup() {
-        chargePoint.disconnect();
+        chargePoint.disconnect()
     }
 
     def "Charge point sends Authorize request and receives a response"() {
-        def conditions = new PollingConditions(timeout: 1);
+        def conditions = new PollingConditions(timeout: 1)
         when:
-        chargePoint.sendAuthorizeRequest("test123");
+        chargePoint.sendAuthorizeRequest("test123")
 
         then:
         conditions.eventually {
-            assert centralSystem.hasHandledAuthorizeRequest();
+            assert centralSystem.hasHandledAuthorizeRequest()
         }
 
         then:
         conditions.eventually {
-            assert chargePoint.hasReceivedAuthorizeConfirmation("Accepted");
+            assert chargePoint.hasReceivedAuthorizeConfirmation("Accepted")
         }
     }
 
     def "Try to send incomplete Authorize request, get local exception"() {
         when:
-        chargePoint.sendIncompleteAuthorizeRequest();
+        chargePoint.sendIncompleteAuthorizeRequest()
 
         then:
         thrown OccurenceConstraintException
     }
 
     def "Send Authorize request to a server that's rigged to fail"() {
-        def conditions = new PollingConditions(timeout: 1);
+        def conditions = new PollingConditions(timeout: 1)
 
         given:
-        centralSystem.isRiggedToFailOnNextRequest();
+        centralSystem.isRiggedToFailOnNextRequest()
 
         when:
         chargePoint.sendAuthorizeRequest("")
 
         then:
         conditions.eventually {
-            chargePoint.hasReceivedError();
+            chargePoint.hasReceivedError()
         }
     }
 }

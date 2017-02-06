@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.core
+package eu.chargetime.ocpp.test.core.json
 
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
@@ -6,35 +6,36 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class GetConfigurationSpec extends Specification
+class JSONGetConfigurationSpec extends Specification
 {
     @Shared
-    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
-    @Shared FakeChargePoint chargePoint = new FakeChargePoint();
+    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance()
+    @Shared
+    FakeChargePoint chargePoint = new FakeChargePoint()
 
     def setupSpec() {
         // When a Central System is running
-        centralSystem.started();
+        centralSystem.started()
     }
 
     def setup() {
-        chargePoint.connect();
+        chargePoint.connect()
     }
 
     def cleanup() {
-        chargePoint.disconnect();
+        chargePoint.disconnect()
     }
 
     def "Central System sends a GetConfiguration request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
 
         when:
-        centralSystem.sendGetConfigurationRequest("key1");
+        centralSystem.sendGetConfigurationRequest("key1")
 
         then:
         conditions.eventually {
-            assert chargePoint.hasHandledGetConfigurationRequest();
-            assert centralSystem.hasReceivedGetConfigurationConfirmation();
+            assert chargePoint.hasHandledGetConfigurationRequest()
+            assert centralSystem.hasReceivedGetConfigurationConfirmation()
         }
     }
 }

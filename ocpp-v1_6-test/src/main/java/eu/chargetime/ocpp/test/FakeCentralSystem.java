@@ -73,10 +73,28 @@ public class FakeCentralSystem
         started(serverType.JSON);
     }
 
+    private boolean matchServerType(serverType type)
+    {
+        boolean result = false;
+        switch (type) {
+            case JSON:
+                result = server instanceof JSONServer;
+                break;
+            case SOAP:
+                result = server instanceof SOAPServer;
+        }
+        return result;
+    }
+
     public void started(serverType type) throws Exception
     {
-        if (server != null)
-            return;
+        if (server != null) {
+            if (matchServerType(type)) {
+                return;
+            } else {
+                server.close();
+            }
+        }
 
         ServerCoreProfile serverCoreProfile = new ServerCoreProfile(new ServerCoreEventHandler() {
             @Override

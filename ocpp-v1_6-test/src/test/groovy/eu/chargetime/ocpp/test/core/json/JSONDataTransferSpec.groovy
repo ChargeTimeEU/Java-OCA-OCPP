@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.core
+package eu.chargetime.ocpp.test.core.json
 
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
@@ -6,35 +6,36 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class DataTransferSpec extends Specification
+class JSONDataTransferSpec extends Specification
 {
     @Shared
-    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
-    @Shared FakeChargePoint chargePoint = new FakeChargePoint();
+    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance()
+    @Shared
+    FakeChargePoint chargePoint = new FakeChargePoint()
 
     def setupSpec() {
         // When a Central System is running
-        centralSystem.started();
+        centralSystem.started()
     }
 
     def setup() {
-        chargePoint.connect();
+        chargePoint.connect()
     }
 
     def cleanup() {
-        chargePoint.disconnect();
+        chargePoint.disconnect()
     }
 
     def "Central System sends a DataTransfer request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
 
         when:
-        centralSystem.sendDataTransferRequest("VendorId", "messageId", "data");
+        centralSystem.sendDataTransferRequest("VendorId", "messageId", "data")
 
         then:
         conditions.eventually {
-            assert chargePoint.hasHandledDataTransferRequest();
-            assert centralSystem.hasReceivedDataTransferConfirmation();
+            assert chargePoint.hasHandledDataTransferRequest()
+            assert centralSystem.hasReceivedDataTransferConfirmation()
         }
     }
 
@@ -42,16 +43,16 @@ class DataTransferSpec extends Specification
         def conditions = new PollingConditions(timeout: 1)
 
         when:
-        chargePoint.sendDataTransferRequest("VendorId", "messageId", "data");
+        chargePoint.sendDataTransferRequest("VendorId", "messageId", "data")
 
         then:
         conditions.eventually {
-            assert centralSystem.hasHandledDataTransferRequest();
+            assert centralSystem.hasHandledDataTransferRequest()
         }
 
         then:
         conditions.eventually {
-            assert chargePoint.hasReceivedDataTransferConfirmation("Accepted");
+            assert chargePoint.hasReceivedDataTransferConfirmation("Accepted")
         }
     }
 }

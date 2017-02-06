@@ -93,7 +93,7 @@ public class SOAPCommunicator extends Communicator {
 
     @Override
     protected Object makeCallResult(String uniqueId, String action, Object payload) {
-        return createMessage(uniqueId, action, (Document) payload, true);
+        return createMessage(uniqueId, String.format("%sResponse", action), (Document) payload, true);
     }
 
     @Override
@@ -194,8 +194,9 @@ public class SOAPCommunicator extends Communicator {
             Message output = null;
             try {
 
-                String relatesTo = getElementValue(HEADER_REPLYTO);
-                if (relatesTo != null && "".equals(relatesTo)) {
+                String relatesTo = getElementValue(HEADER_RELATESTO);
+                String action = getElementValue(HEADER_ACTION);
+                if (relatesTo != null && !"".equals(relatesTo) && action.endsWith("Response")) {
                     output = parseResult();
                 } else {
                     output = parseCall();
@@ -217,7 +218,7 @@ public class SOAPCommunicator extends Communicator {
         private CallResultMessage parseResult() {
             CallResultMessage message = new CallResultMessage();
 
-            String id = getElementValue(HEADER_REPLYTO);
+            String id = getElementValue(HEADER_RELATESTO);
             message.setId(id);
 
             return message;

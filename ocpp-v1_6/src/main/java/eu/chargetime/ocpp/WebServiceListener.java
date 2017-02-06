@@ -41,13 +41,14 @@ public class WebServiceListener implements Listener {
 
     private ListenerEvents events;
     private String fromUrl = null;
+    private HttpServer server;
 
     @Override
     public void open(String hostname, int port, ListenerEvents listenerEvents) {
         events = listenerEvents;
         fromUrl = String.format("http://%s:%d", hostname, port);
         try {
-            HttpServer server = HttpServer.create(new InetSocketAddress(hostname, port), 0);
+            server = HttpServer.create(new InetSocketAddress(hostname, port), 0);
             server.createContext("/", new WSHttpHandler(WSDL_CENTRAL_SYSTEM, new WSHttpEventHandler()));
 
             server.setExecutor(java.util.concurrent.Executors.newCachedThreadPool());
@@ -59,32 +60,33 @@ public class WebServiceListener implements Listener {
 
     @Override
     public void close() {
-
+        if (server != null)
+            server.stop(1);
     }
 
     private class WSHttpEventHandler implements WSHttpHandlerEvents {
 
-        HashMap<String, SOAPReceiver> chargeboxes;
+        HashMap<String, WebServiceReceiver> chargeBoxes;
 
         public WSHttpEventHandler() {
-            chargeboxes = new HashMap<>();
+            chargeBoxes = new HashMap<>();
         }
 
         @Override
         public SOAPMessage incomingRequest(SOAPMessage message) {
             String identity = SOAPSyncHelper.getHeaderValue(message, "chargeBoxIdentity");
-            if (!chargeboxes.containsKey(identity)) {
+            if (!chargeBoxes.containsKey(identity)) {
                 String toUrl = SOAPSyncHelper.getHeaderValue(message, "From");
-                SOAPReceiver soapReceiver = new SOAPReceiver(toUrl);
-                SOAPCommunicator communicator = new SOAPCommunicator(identity, fromUrl, soapReceiver);
+                WebServiceReceiver webServiceReceiver = new WebServiceReceiver(toUrl);
+                SOAPCommunicator communicator = new SOAPCommunicator(identity, fromUrl, webServiceReceiver);
                 communicator.setToUrl(toUrl);
                 events.newSession(new Session(communicator, new Queue()));
-                chargeboxes.put(identity, soapReceiver);
+                chargeBoxes.put(identity, webServiceReceiver);
             }
 
             SOAPMessage confirmation = null;
             try {
-                confirmation = chargeboxes.get(identity).relay(message).get();
+                confirmation = chargeBoxes.get(identity).relay(message).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {

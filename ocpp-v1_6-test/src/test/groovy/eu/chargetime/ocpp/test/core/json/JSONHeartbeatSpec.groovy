@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.core
+package eu.chargetime.ocpp.test.core.json
 
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
@@ -6,39 +6,40 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class HeartbeatSpec extends Specification
+class JSONHeartbeatSpec extends Specification
 {
     @Shared
-    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
-    @Shared FakeChargePoint chargePoint = new FakeChargePoint();
+    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance()
+    @Shared
+    FakeChargePoint chargePoint = new FakeChargePoint()
 
     def setupSpec() {
         // When a Central System is running
-        centralSystem.started();
+        centralSystem.started()
     }
 
     def setup() {
-        chargePoint.connect();
+        chargePoint.connect()
     }
 
     def cleanup() {
-        chargePoint.disconnect();
+        chargePoint.disconnect()
     }
 
     def "Charge point sends Heartbeat and receives a response"() {
-        def conditions = new PollingConditions(timeout: 1);
+        def conditions = new PollingConditions(timeout: 1)
         when:
-        chargePoint.sendHeartbeatRequest();
+        chargePoint.sendHeartbeatRequest()
 
 
         then:
         conditions.eventually {
-            assert centralSystem.hasHandledHeartbeat();
+            assert centralSystem.hasHandledHeartbeat()
         }
 
         then:
         conditions.eventually {
-            assert chargePoint.hasReceivedHeartbeatConfirmation();
+            assert chargePoint.hasReceivedHeartbeatConfirmation()
         }
 
     }

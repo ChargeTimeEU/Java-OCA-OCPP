@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.core
+package eu.chargetime.ocpp.test.core.json
 
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
@@ -6,34 +6,34 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class UnlockConnectorSpec extends Specification {
+class JSONUnlockConnectorSpec extends Specification {
     @Shared
-    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
+    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance()
     @Shared
-    FakeChargePoint chargePoint = new FakeChargePoint();
+    FakeChargePoint chargePoint = new FakeChargePoint()
 
     def setupSpec() {
         // When a Central System is running
-        centralSystem.started();
+        centralSystem.started()
     }
 
     def setup() {
-        chargePoint.connect();
+        chargePoint.connect()
     }
 
     def cleanup() {
-        chargePoint.disconnect();
+        chargePoint.disconnect()
     }
 
     def "Central System sends a UnlockConnector request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
         when:
-        centralSystem.sendUnlockConnectorRequest(1);
+        centralSystem.sendUnlockConnectorRequest(1)
 
         then:
         conditions.eventually {
-            assert chargePoint.hasHandledUnlockConnectorRequest();
-            assert centralSystem.hasReceivedUnlockConnectorConfirmation("Unlocked");
+            assert chargePoint.hasHandledUnlockConnectorRequest()
+            assert centralSystem.hasReceivedUnlockConnectorConfirmation("Unlocked")
         }
     }
 }

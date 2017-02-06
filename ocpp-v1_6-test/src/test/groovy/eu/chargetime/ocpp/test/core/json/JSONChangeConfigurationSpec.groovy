@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.core
+package eu.chargetime.ocpp.test.core.json
 
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
@@ -6,35 +6,36 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class ChangeConfigurationSpec extends Specification
+class JSONChangeConfigurationSpec extends Specification
 {
     @Shared
-    FakeCentralSystem centralSystem = FakeCentralSystem.instance;
-    @Shared FakeChargePoint chargePoint = new FakeChargePoint();
+    FakeCentralSystem centralSystem = FakeCentralSystem.instance
+    @Shared
+    FakeChargePoint chargePoint = new FakeChargePoint()
 
     def setupSpec() {
         // When a Central System is running
-        centralSystem.started();
+        centralSystem.started()
     }
 
     def setup() {
-        chargePoint.connect();
+        chargePoint.connect()
     }
 
     def cleanup() {
-        chargePoint.disconnect();
+        chargePoint.disconnect()
     }
 
     def "Central System sends a ChangeConfiguration request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
 
         when:
-        centralSystem.sendChangeConfigurationRequest("key", "value");
+        centralSystem.sendChangeConfigurationRequest("key", "value")
 
         then:
         conditions.eventually {
-            assert chargePoint.hasHandledChangeConfigurationRequest();
-            assert centralSystem.hasReceivedChangeConfigurationConfirmation();
+            assert chargePoint.hasHandledChangeConfigurationRequest()
+            assert centralSystem.hasReceivedChangeConfigurationConfirmation()
         }
     }
 }

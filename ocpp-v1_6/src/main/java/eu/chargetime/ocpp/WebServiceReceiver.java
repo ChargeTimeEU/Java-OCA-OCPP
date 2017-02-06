@@ -30,12 +30,12 @@ import javax.xml.soap.SOAPConnectionFactory;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 
-public class SOAPReceiver extends SOAPSyncHelper implements Receiver {
+public class WebServiceReceiver extends SOAPSyncHelper implements Receiver {
     private RadioEvents events;
     SOAPConnection soapConnection;
     private String url;
 
-    public SOAPReceiver(String url) {
+    public WebServiceReceiver(String url) {
         this.url = url;
     }
 

@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.core
+package eu.chargetime.ocpp.test.core.json
 
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
@@ -6,38 +6,38 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class StartTransactionSpec extends Specification {
+class JSONStartTransactionSpec extends Specification {
     @Shared
-    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance();
+    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance()
     @Shared
-    FakeChargePoint chargePoint = new FakeChargePoint();
+    FakeChargePoint chargePoint = new FakeChargePoint()
 
     def setupSpec() {
         // When a Central System is running
-        centralSystem.started();
+        centralSystem.started()
     }
 
     def setup() {
-        chargePoint.connect();
+        chargePoint.connect()
     }
 
     def cleanup() {
-        chargePoint.disconnect();
+        chargePoint.disconnect()
     }
 
     def "Charge point sends StartTransaction request and receives a response"() {
-        def conditions = new PollingConditions(timeout: 1);
+        def conditions = new PollingConditions(timeout: 1)
         when:
-        chargePoint.sendStartTransactionRequest();
+        chargePoint.sendStartTransactionRequest()
 
         then:
         conditions.eventually {
-            assert centralSystem.hasHandledStartTransactionRequest();
+            assert centralSystem.hasHandledStartTransactionRequest()
         }
 
         then:
         conditions.eventually {
-            assert chargePoint.hasReceivedStartTransactionConfirmation();
+            assert chargePoint.hasReceivedStartTransactionConfirmation()
         }
 
     }

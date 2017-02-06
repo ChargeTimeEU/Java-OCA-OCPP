@@ -4,8 +4,6 @@ import javax.xml.soap.SOAPConnection;
 import javax.xml.soap.SOAPConnectionFactory;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 /*
     ChargeTime.eu - Java-OCA-OCPP
@@ -64,22 +62,13 @@ public class WebServiceTransmitter extends SOAPSyncHelper implements Transmitter
 
     @Override
     protected void sendRequest(SOAPMessage message) {
-        try {
-            SOAPMessage soapMessage = soapConnection.call(message, url);
-            events.receivedMessage(soapMessage);
+        new Thread(() -> {
             try {
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                soapMessage.writeTo(out);
-                String strMsg = new String(out.toByteArray());
-                System.out.print(strMsg);
+                events.receivedMessage(soapConnection.call(message, url));
             } catch (SOAPException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-        } catch (SOAPException e) {
-            e.printStackTrace();
-        }
+        }).start();
     }
 
     @Override
