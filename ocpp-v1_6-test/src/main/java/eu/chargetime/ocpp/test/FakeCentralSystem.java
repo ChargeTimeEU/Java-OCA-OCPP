@@ -44,7 +44,7 @@ public class FakeCentralSystem
     private Confirmation receivedConfirmation;
     private Server server;
 
-    private int sessionIndex;
+    private int currentSessionIndex;
 
     private static FakeCentralSystem instance;
     private boolean isRigged;
@@ -172,24 +172,27 @@ public class FakeCentralSystem
             }
         });
 
+        int port = 0;
         switch (type) {
             case JSON:
                 server = new JSONServer(serverCoreProfile);
+                port = 8887;
                 break;
             case SOAP:
                 server = new SOAPServer(serverCoreProfile);
+                port = 8890;
                 break;
         }
 
-        server.open("localhost", 8887, new ServerEvents() {
+        server.open("localhost", port, new ServerEvents() {
             @Override
             public void newSession(int sessionIndex) {
-                FakeCentralSystem.this.sessionIndex = sessionIndex;
+                currentSessionIndex = sessionIndex;
             }
 
             @Override
             public void lostSession(int identity) {
-                sessionIndex = -1;
+                currentSessionIndex = -1;
                 // clear
                 receivedConfirmation = null;
                 receivedRequest = null;
@@ -219,7 +222,7 @@ public class FakeCentralSystem
         ChangeAvailabilityRequest request = new ChangeAvailabilityRequest();
         request.setType(type);
         request.setConnectorId(connectorId);
-        server.send(sessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
 
     }
 
@@ -234,7 +237,7 @@ public class FakeCentralSystem
         ChangeConfigurationRequest request = new ChangeConfigurationRequest();
         request.setKey(key);
         request.setValue(value);
-        server.send(sessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
     }
 
     public boolean hasReceivedChangeConfigurationConfirmation() {
@@ -243,7 +246,7 @@ public class FakeCentralSystem
 
     public void sendClearCacheRequest() throws Exception {
         ClearCacheRequest request = new ClearCacheRequest();
-        server.send(sessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
     }
 
     public boolean hasReceivedClearCacheConfirmation() {
@@ -255,7 +258,7 @@ public class FakeCentralSystem
         request.setVendorId(vendorId);
         request.setMessageId(messageId);
         request.setData(data);
-        server.send(sessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
     }
 
     public boolean hasReceivedDataTransferConfirmation() {
@@ -269,7 +272,7 @@ public class FakeCentralSystem
     public void sendGetConfigurationRequest(String... key) throws Exception {
         GetConfigurationRequest request = new GetConfigurationRequest();
         request.setKey(key);
-        server.send(sessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
     }
 
     public boolean hasReceivedGetConfigurationConfirmation() {
@@ -290,7 +293,7 @@ public class FakeCentralSystem
         idToken.setIdToken(idTag);
         request.setIdTag(idToken);
         request.setConnectorId(connectorId);
-        server.send(sessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
     }
 
     public boolean hasReceivedRemoteStartTransactionConfirmation(String status) {
@@ -303,7 +306,7 @@ public class FakeCentralSystem
     public void sendRemoteStopTransactionRequest(int transactionId) throws Exception {
         RemoteStopTransactionRequest request = new RemoteStopTransactionRequest();
         request.setTransactionId(transactionId);
-        server.send(sessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
     }
 
     public boolean hasReceivedRemoteStopTransactionConfirmation(String status) {
@@ -316,7 +319,7 @@ public class FakeCentralSystem
     public void sendResetRequest(ResetType type) throws Exception {
         ResetRequest request = new ResetRequest();
         request.setType(type);
-        server.send(sessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
     }
 
     public boolean hasReceivedResetConfirmation(String status) {
@@ -341,7 +344,7 @@ public class FakeCentralSystem
     public void sendUnlockConnectorRequest(int connectorId) throws Exception {
         UnlockConnectorRequest request = new UnlockConnectorRequest();
         request.setConnectorId(connectorId);
-        server.send(sessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
     }
 
     public boolean hasReceivedUnlockConnectorConfirmation(String status) {

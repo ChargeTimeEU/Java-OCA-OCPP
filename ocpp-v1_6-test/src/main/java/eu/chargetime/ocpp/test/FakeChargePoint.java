@@ -44,6 +44,7 @@ public class FakeChargePoint
     private Request receivedRequest;
     private ClientCoreProfile core;
     private Throwable receivedException;
+    private String url;
 
     public FakeChargePoint() throws MalformedURLException {
         this(clientType.JSON);
@@ -119,16 +120,18 @@ public class FakeChargePoint
         switch (type) {
             case JSON:
                 client = new JSONClient(core);
+                url = "ws://localhost:8887";
                 break;
             case SOAP:
                 client = new SOAPClient("me", new URL("http://localhost:8889"), core);
+                url = "http://localhost:8890";
                 break;
         }
     }
 
     public void connect() {
         try {
-            client.connect("http://localhost:8887");
+            client.connect(url);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -27,9 +27,7 @@ package eu.chargetime.ocpp;
 
 import com.sun.net.httpserver.HttpServer;
 
-import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
@@ -90,17 +88,6 @@ public class WebServiceListener implements Listener {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                message.writeTo(out);
-                String strMsg = new String(out.toByteArray());
-                System.out.print(strMsg);
-            } catch (SOAPException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
                 e.printStackTrace();
             }
 

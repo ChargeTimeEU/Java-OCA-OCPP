@@ -55,6 +55,7 @@ public class WebSocketListener implements Listener {
             @Override
             public void onClose(WebSocket webSocket, int i, String s, boolean b) {
                 sockets.get(webSocket).disconnect();
+                sockets.remove(webSocket);
             }
 
             @Override
@@ -73,7 +74,14 @@ public class WebSocketListener implements Listener {
     @Override
     public void close() {
         try {
-            server.stop();
+
+            for (WebSocket ws : sockets.keySet())
+                ws.close();
+
+            sockets.clear();
+
+            server.stop(1);
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

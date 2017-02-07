@@ -66,10 +66,12 @@ public class WebServiceReceiver extends SOAPSyncHelper implements Receiver {
 
     @Override
     void sendRequest(SOAPMessage message) {
-        try {
-            events.receivedMessage(soapConnection.call(message, url));
-        } catch (SOAPException e) {
-            e.printStackTrace();
-        }
+        new Thread(() -> {
+            try {
+                events.receivedMessage(soapConnection.call(message, url));
+            } catch (SOAPException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 }
