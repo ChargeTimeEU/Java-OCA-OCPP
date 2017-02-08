@@ -26,14 +26,22 @@ package eu.chargetime.ocpp.feature.profile;/*
 
 import eu.chargetime.ocpp.model.core.*;
 
-public interface ServerCoreEventHandler {
-    AuthorizeConfirmation handleAuthorizeRequest(int sessionIndex, AuthorizeRequest request);
-    BootNotificationConfirmation handleBootNotificationRequest(int sessionIndex, BootNotificationRequest request);
-    DataTransferConfirmation handleDataTransferRequest(int sessionIndex, DataTransferRequest request);
-    HeartbeatConfirmation handleHeartbeatRequest(int sessionIndex, HeartbeatRequest request);
-    MeterValuesConfirmation handleMeterValuesRequest(int sessionIndex, MeterValuesRequest request);
-    StartTransactionConfirmation handleStartTransactionRequest(int sessionIndex, StartTransactionRequest request);
-    StatusNotificationConfirmation handleStatusNotificationRequest(int sessionIndex, StatusNotificationRequest request);
+import java.util.UUID;
 
-    StopTransactionConfirmation handleStopTransactionRequest(int sessionIndex, StopTransactionRequest request);
+public interface ServerCoreEventHandler {
+    AuthorizeConfirmation handleAuthorizeRequest(UUID sessionIndex, AuthorizeRequest request);
+
+    BootNotificationConfirmation handleBootNotificationRequest(UUID sessionIndex, BootNotificationRequest request);
+
+    DataTransferConfirmation handleDataTransferRequest(UUID sessionIndex, DataTransferRequest request);
+
+    HeartbeatConfirmation handleHeartbeatRequest(UUID sessionIndex, HeartbeatRequest request);
+
+    MeterValuesConfirmation handleMeterValuesRequest(UUID sessionIndex, MeterValuesRequest request);
+
+    StartTransactionConfirmation handleStartTransactionRequest(UUID sessionIndex, StartTransactionRequest request);
+
+    StatusNotificationConfirmation handleStatusNotificationRequest(UUID sessionIndex, StatusNotificationRequest request);
+
+    StopTransactionConfirmation handleStopTransactionRequest(UUID sessionIndex, StopTransactionRequest request);
 }

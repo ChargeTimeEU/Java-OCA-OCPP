@@ -28,6 +28,7 @@ Java-OCA-OCPP uses the following libraries:
 * [org.hamcrest:hamcrest-all:1.3](http://hamcrest.org)
 * [org.mockito:mockito-core:1.10.19](http://mockito.org)
 * [spock-core-0.7-groovy-2.0](http://spockframework.org)
+* [com.google.guava](https://github.com/google/guava)
 
 To use version 1.6 you need the following libraries:
 

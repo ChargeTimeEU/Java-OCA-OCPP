@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.UUID;
+
 import static org.mockito.Mockito.*;
 
 /*
@@ -45,6 +47,7 @@ public class ServerTest extends TestUtilities {
     private Server server;
     private SessionEvents sessionEvents;
     private ListenerEvents listenerEvents;
+    private UUID sessionIndex;
 
     @Mock
     private Session session = mock(Session.class);
@@ -68,6 +71,7 @@ public class ServerTest extends TestUtilities {
         when(feature.getAction()).thenReturn(null);
         doAnswer(invocation -> listenerEvents = invocation.getArgumentAt(2, ListenerEvents.class)).when(listener).open(anyString(), anyInt(), any());
         doAnswer(invocation -> sessionEvents = invocation.getArgumentAt(0, SessionEvents.class)).when(session).accept(any());
+        doAnswer(invocation -> sessionIndex = invocation.getArgumentAt(0, UUID.class)).when(serverEvents).newSession(any());
 
         server = new Server(listener) {
         };
@@ -97,14 +101,13 @@ public class ServerTest extends TestUtilities {
         listenerEvents.newSession(session);
 
         // Then
-        verify(serverEvents, times(1)).newSession(eq(0));
+        verify(serverEvents, times(1)).newSession(any(UUID.class));
     }
 
     @Test
     public void send_aMessage_isCommunicated() throws Exception {
         // Given
         String someUniqueId = "some id";
-        int sessionIndex = 0;
 
         when(session.sendRequest(any(), any())).thenReturn(someUniqueId);
         server.open(LOCALHOST, PORT, serverEvents);
@@ -127,14 +130,12 @@ public class ServerTest extends TestUtilities {
         sessionEvents.handleRequest(request);
 
         // Then
-        verify(feature, times(1)).handleRequest(eq(0), eq(request));
+        verify(feature, times(1)).handleRequest(any(UUID.class), eq(request));
     }
 
     @Test
     public void send_aMessage_validatesMessage() throws Exception {
         // Given
-        int sessionIndex = 0;
-
         server.open(LOCALHOST, PORT, serverEvents);
         listenerEvents.newSession(session);
 

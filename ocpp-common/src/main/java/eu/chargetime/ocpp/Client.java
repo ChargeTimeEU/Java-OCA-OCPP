@@ -83,7 +83,7 @@ public abstract class Client extends FeatureHandler
             @Override
             public Confirmation handleRequest(Request request) {
                 Feature feature = findFeatureByRequest(request);
-                return feature.handleRequest(0, request);
+                return feature.handleRequest(null, request);
             }
 
             @Override

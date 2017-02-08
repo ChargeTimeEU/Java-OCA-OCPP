@@ -4,6 +4,8 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 
+import java.util.UUID;
+
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -50,5 +52,5 @@ public interface Profile {
      * @param request the {@link Request} to be handled.
      * @return the {@link Confirmation} to be send.
      */
-    Confirmation handleRequest(int sessionIndex, Request request);
+    Confirmation handleRequest(UUID sessionIndex, Request request);
 }

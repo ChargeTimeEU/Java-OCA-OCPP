@@ -114,7 +114,7 @@ public class ClientTest extends TestUtilities {
     public void handleRequest_returnsConfirmation() {
         // Given
         client.connect(null);
-        when(feature.handleRequest(0, request)).thenReturn(new TestConfirmation());
+        when(feature.handleRequest(null, request)).thenReturn(new TestConfirmation());
 
         // When
         Confirmation conf = eventHandler.handleRequest(request);
@@ -132,7 +132,7 @@ public class ClientTest extends TestUtilities {
         eventHandler.handleRequest(request);
 
         // Then
-        verify(feature, times(1)).handleRequest(eq(0), eq(request));
+        verify(feature, times(1)).handleRequest(any(), eq(request));
     }
 
     @Test

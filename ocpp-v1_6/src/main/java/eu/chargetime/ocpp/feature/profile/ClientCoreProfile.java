@@ -8,6 +8,7 @@ import eu.chargetime.ocpp.model.core.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.UUID;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -238,7 +239,7 @@ public class ClientCoreProfile implements Profile
     }
 
     @Override
-    public Confirmation handleRequest(int sessionIndex, Request request) {
+    public Confirmation handleRequest(UUID sessionIndex, Request request) {
         Confirmation result = null;
 
         if (request instanceof ChangeAvailabilityRequest) {
