@@ -42,6 +42,7 @@ import static org.mockito.Mockito.*;
 public class ServerTest extends TestUtilities {
 
     private static final String LOCALHOST = "localhost";
+    private static final String IDENTIFIER = "test";
     private static final int PORT = 42;
 
     private Server server;
@@ -71,7 +72,7 @@ public class ServerTest extends TestUtilities {
         when(feature.getAction()).thenReturn(null);
         doAnswer(invocation -> listenerEvents = invocation.getArgumentAt(2, ListenerEvents.class)).when(listener).open(anyString(), anyInt(), any());
         doAnswer(invocation -> sessionEvents = invocation.getArgumentAt(0, SessionEvents.class)).when(session).accept(any());
-        doAnswer(invocation -> sessionIndex = invocation.getArgumentAt(0, UUID.class)).when(serverEvents).newSession(any());
+        doAnswer(invocation -> sessionIndex = invocation.getArgumentAt(0, UUID.class)).when(serverEvents).newSession(any(), anyString());
 
         server = new Server(listener) {
         };
@@ -86,7 +87,7 @@ public class ServerTest extends TestUtilities {
         server.open(LOCALHOST, PORT, serverEvents);
 
         // When
-        listenerEvents.newSession(session);
+        listenerEvents.newSession(session, IDENTIFIER);
 
         // Then
         verify(session, times(1)).accept(any());
@@ -98,10 +99,10 @@ public class ServerTest extends TestUtilities {
         server.open(LOCALHOST, PORT, serverEvents);
 
         // When
-        listenerEvents.newSession(session);
+        listenerEvents.newSession(session, IDENTIFIER);
 
         // Then
-        verify(serverEvents, times(1)).newSession(any(UUID.class));
+        verify(serverEvents, times(1)).newSession(any(UUID.class), eq(IDENTIFIER));
     }
 
     @Test
@@ -111,7 +112,7 @@ public class ServerTest extends TestUtilities {
 
         when(session.sendRequest(any(), any())).thenReturn(someUniqueId);
         server.open(LOCALHOST, PORT, serverEvents);
-        listenerEvents.newSession(session);
+        listenerEvents.newSession(session, IDENTIFIER);
 
         // When
         server.send(sessionIndex, request);
@@ -124,7 +125,7 @@ public class ServerTest extends TestUtilities {
     public void handleRequest_callsFeatureHandleRequest() {
         // Given
         server.open(LOCALHOST, PORT, serverEvents);
-        listenerEvents.newSession(session);
+        listenerEvents.newSession(session, IDENTIFIER);
 
         // When
         sessionEvents.handleRequest(request);
@@ -137,7 +138,7 @@ public class ServerTest extends TestUtilities {
     public void send_aMessage_validatesMessage() throws Exception {
         // Given
         server.open(LOCALHOST, PORT, serverEvents);
-        listenerEvents.newSession(session);
+        listenerEvents.newSession(session, IDENTIFIER);
 
         // When
         server.send(sessionIndex, request);

@@ -49,6 +49,7 @@ public class FakeCentralSystem
 
     private static FakeCentralSystem instance;
     private boolean isRigged;
+    private String currentIdentifier;
 
     public static FakeCentralSystem getInstance () {
         if (instance == null)
@@ -187,13 +188,15 @@ public class FakeCentralSystem
 
         server.open("localhost", port, new ServerEvents() {
             @Override
-            public void newSession(UUID sessionIndex) {
+            public void newSession(UUID sessionIndex, String identifier) {
                 currentSessionIndex = sessionIndex;
+                currentIdentifier = identifier;
             }
 
             @Override
             public void lostSession(UUID identity) {
                 currentSessionIndex = null;
+                currentIdentifier = null;
                 // clear
                 receivedConfirmation = null;
                 receivedRequest = null;

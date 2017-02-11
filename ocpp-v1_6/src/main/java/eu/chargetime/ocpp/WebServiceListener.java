@@ -78,7 +78,7 @@ public class WebServiceListener implements Listener {
                 WebServiceReceiver webServiceReceiver = new WebServiceReceiver(toUrl);
                 SOAPCommunicator communicator = new SOAPCommunicator(identity, fromUrl, webServiceReceiver);
                 communicator.setToUrl(toUrl);
-                events.newSession(new Session(communicator, new Queue()));
+                events.newSession(new Session(communicator, new Queue()), identity);
                 chargeBoxes.put(identity, webServiceReceiver);
             }
 

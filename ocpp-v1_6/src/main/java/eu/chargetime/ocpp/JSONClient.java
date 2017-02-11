@@ -38,7 +38,7 @@ public class JSONClient extends Client {
      *
      * @param coreProfile implementation of the core feature profile.
      */
-    public JSONClient(ClientCoreProfile coreProfile) {
+    public JSONClient(ClientCoreProfile coreProfile, String identity) {
         super(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue()));
         addFeatureProfile(coreProfile);
     }
