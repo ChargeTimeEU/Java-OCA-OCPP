@@ -49,6 +49,7 @@ import static org.mockito.Mockito.*;
 public class ClientTest extends TestUtilities {
     private Client client;
     private SessionEvents eventHandler;
+    private static final String IDENTIFIER = "test";
 
     @Mock
     private Session session = mock(Session.class);

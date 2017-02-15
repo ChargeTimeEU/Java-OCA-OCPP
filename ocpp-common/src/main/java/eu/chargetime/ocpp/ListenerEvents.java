@@ -25,5 +25,5 @@ package eu.chargetime.ocpp;/*
  */
 
 public interface ListenerEvents {
-    void newSession(Session session);
+    void newSession(Session session, String identifier);
 }

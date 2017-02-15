@@ -27,7 +27,7 @@ package eu.chargetime.ocpp;/*
 import java.util.UUID;
 
 public interface ServerEvents {
-    void newSession(UUID sessionIndex);
+    void newSession(UUID sessionIndex, String identifier);
 
     void lostSession(UUID sessionIndex);
 }
