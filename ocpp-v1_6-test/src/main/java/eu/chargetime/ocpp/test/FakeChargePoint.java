@@ -131,7 +131,17 @@ public class FakeChargePoint
 
     public void connect() {
         try {
-            client.connect(url);
+            client.connect(url, new ClientEvents() {
+                @Override
+                public void connectionOpened() {
+                    
+                }
+
+                @Override
+                public void connectionClosed() {
+
+                }
+            });
         } catch (Exception ex) {
             ex.printStackTrace();
         }

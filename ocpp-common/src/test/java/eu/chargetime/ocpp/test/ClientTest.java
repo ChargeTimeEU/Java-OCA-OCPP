@@ -1,6 +1,7 @@
 package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.Client;
+import eu.chargetime.ocpp.ClientEvents;
 import eu.chargetime.ocpp.Session;
 import eu.chargetime.ocpp.SessionEvents;
 import eu.chargetime.ocpp.feature.Feature;
@@ -85,6 +86,34 @@ public class ClientTest extends TestUtilities {
 
         // Then
         verify(session, times(1)).open(eq(someUrl), anyObject());
+    }
+
+    @Test
+    public void connect_connectionOpenedEvent() {
+        // Given
+        ClientEvents events = mock(ClientEvents.class);
+        client.connect(null, events);
+
+        // When
+        this.eventHandler.handleConnectionOpened();
+
+        // Then
+        verify(events, times(1)).connectionOpened();
+        verify(events, never()).connectionClosed();
+    }
+
+    @Test
+    public void connect_connectionClosedEvent() {
+        // Given
+        ClientEvents events = mock(ClientEvents.class);
+        client.connect(null, events);
+
+        // When
+        this.eventHandler.handleConnectionClosed();
+
+        // Then
+        verify(events, times(1)).connectionClosed();
+        verify(events, never()).connectionOpened();
     }
 
     @Test
