@@ -4,7 +4,7 @@ jdk:
   
 sudo: false # faster builds
 
-script: "mvn cobertura:cobertura"
+script: "mvn clean jacoco:prepare-agent install jacoco:report coveralls:report"
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
