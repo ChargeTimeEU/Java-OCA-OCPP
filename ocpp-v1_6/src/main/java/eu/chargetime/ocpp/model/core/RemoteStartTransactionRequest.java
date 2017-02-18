@@ -50,7 +50,7 @@ public class RemoteStartTransactionRequest implements Request {
 
         if (chargingProfile != null) {
             valid &= chargingProfile.validate();
-            valid &= "TxProfile".equals(chargingProfile.getChargingProfilePurpose());
+            valid &= chargingProfile.getChargingProfilePurpose() == ChargingProfilePurposeType.TxProfile;
         }
         return valid;
     }
