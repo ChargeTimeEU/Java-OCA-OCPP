@@ -6,9 +6,13 @@ import eu.chargetime.ocpp.Server;
 import eu.chargetime.ocpp.ServerEvents;
 import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
+import eu.chargetime.ocpp.feature.profile.ServerSmartChargingHandler;
+import eu.chargetime.ocpp.feature.profile.ServerSmartChargingProfile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
+import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
+import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 
 import java.util.Calendar;
 import java.util.UUID;
@@ -174,6 +178,10 @@ public class FakeCentralSystem
             }
         });
 
+        ServerSmartChargingProfile smartChargingProfile = new ServerSmartChargingProfile(new ServerSmartChargingHandler() {
+
+        });
+
         int port = 0;
         switch (type) {
             case JSON:
@@ -185,6 +193,8 @@ public class FakeCentralSystem
                 port = 8890;
                 break;
         }
+
+        server.addFeatureProfile(smartChargingProfile);
 
         server.open("localhost", port, new ServerEvents() {
             @Override
