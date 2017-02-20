@@ -60,15 +60,6 @@ public abstract class Client extends FeatureHandler
      * Connect to server
      *
      * @param   uri     url and port of the server
-     */
-    public void connect(String uri) {
-        this.connect(uri, null);
-    }
-
-    /**
-     * Connect to server
-     *
-     * @param   uri     url and port of the server
      * @param   events  client events for connect/disconnect
      */
     public void connect(String uri, ClientEvents events)

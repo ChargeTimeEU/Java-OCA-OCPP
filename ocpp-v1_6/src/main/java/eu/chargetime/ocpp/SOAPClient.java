@@ -77,9 +77,9 @@ public class SOAPClient extends Client {
      * @param uri url and port of the server
      */
     @Override
-    public void connect(String uri) {
+    public void connect(String uri, ClientEvents events) {
         communicator.setToUrl(uri);
-        super.connect(uri);
+        super.connect(uri, events);
         openWS();
     }
 

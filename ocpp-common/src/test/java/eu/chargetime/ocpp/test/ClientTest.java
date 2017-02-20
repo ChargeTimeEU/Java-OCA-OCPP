@@ -60,6 +60,8 @@ public class ClientTest extends TestUtilities {
     private Feature feature = mock(Feature.class);
     @Mock
     private Request request = mock(Request.class);
+    @Mock
+    ClientEvents events = mock(ClientEvents.class);
 
     @Before
     public void setup() {
@@ -82,7 +84,7 @@ public class ClientTest extends TestUtilities {
         String someUrl = "localhost";
 
         // When
-        client.connect(someUrl);
+        client.connect(someUrl, events);
 
         // Then
         verify(session, times(1)).open(eq(someUrl), anyObject());
@@ -91,7 +93,6 @@ public class ClientTest extends TestUtilities {
     @Test
     public void connect_connectionOpenedEvent() {
         // Given
-        ClientEvents events = mock(ClientEvents.class);
         client.connect(null, events);
 
         // When
@@ -105,7 +106,6 @@ public class ClientTest extends TestUtilities {
     @Test
     public void connect_connectionClosedEvent() {
         // Given
-        ClientEvents events = mock(ClientEvents.class);
         client.connect(null, events);
 
         // When
@@ -132,7 +132,7 @@ public class ClientTest extends TestUtilities {
         when(session.sendRequest(any(), any())).thenReturn(someUniqueId);
 
         // When
-        client.connect(null);
+        client.connect(null, null);
         CompletableFuture<Confirmation> promise = client.send(request);
         eventHandler.handleConfirmation(someUniqueId, null);
 
@@ -143,7 +143,7 @@ public class ClientTest extends TestUtilities {
     @Test
     public void handleRequest_returnsConfirmation() {
         // Given
-        client.connect(null);
+        client.connect(null, null);
         when(feature.handleRequest(null, request)).thenReturn(new TestConfirmation());
 
         // When
@@ -156,7 +156,7 @@ public class ClientTest extends TestUtilities {
     @Test
     public void handleRequest_callsFeatureHandleRequest() {
         // Given
-        client.connect(null);
+        client.connect(null, null);
 
         // When
         eventHandler.handleRequest(request);
