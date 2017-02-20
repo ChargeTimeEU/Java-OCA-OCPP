@@ -11,8 +11,6 @@ import eu.chargetime.ocpp.feature.profile.ServerSmartChargingProfile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
-import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
-import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 
 import java.util.Calendar;
 import java.util.UUID;
@@ -70,6 +68,10 @@ public class FakeCentralSystem
             return null;
         }
         return confirmation;
+    }
+
+    public boolean connected() {
+        return currentIdentifier != null;
     }
 
     public enum serverType {JSON, SOAP}

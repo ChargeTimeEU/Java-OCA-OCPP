@@ -27,6 +27,11 @@ class JSONRemoteStopTransactionSpec extends Specification {
 
     def "Central System sends a RemoteStopTransaction request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
+        given:
+        conditions.eventually {
+            assert centralSystem.connected()
+        }
+
         when:
         centralSystem.sendRemoteStopTransactionRequest(0)
 
