@@ -94,7 +94,7 @@ public abstract class Communicator {
      * @param   errorDescription    an associated error description.
      * @return a fully packed message ready to send.
      */
-    protected abstract Object makeCallError(String uniqueId, String errorCode, String errorDescription);
+    protected abstract Object makeCallError(String uniqueId, String action, String errorCode, String errorDescription);
 
     /**
      * Identify an incoming call and parse it into one of the following:
@@ -189,9 +189,9 @@ public abstract class Communicator {
      * @param   errorCode           an OCPP error Code
      * @param   errorDescription    a associated error description.
      */
-    public void sendCallError(String uniqueId, String errorCode, String errorDescription) {
+    public void sendCallError(String uniqueId, String action, String errorCode, String errorDescription) {
         try {
-            radio.send(makeCallError(uniqueId, errorCode, errorDescription));
+            radio.send(makeCallError(uniqueId, action, errorCode, errorDescription));
         } catch (NotConnectedException ex) {
             ex.printStackTrace();
             events.onError(uniqueId, "Not connected", "The error couldn't be send due to the lack of connection", errorCode);
@@ -232,7 +232,7 @@ public abstract class Communicator {
         public void receivedMessage(Object input) {
             Message message = parse(input);
             if (message instanceof CallResultMessage) {
-                events.onCallResult(message.getId(), message.getPayload());
+                events.onCallResult(message.getId(), message.getAction(), message.getPayload());
             } else if (message instanceof CallErrorMessage) {
                 failedFlag = true;
                 CallErrorMessage call = (CallErrorMessage) message;

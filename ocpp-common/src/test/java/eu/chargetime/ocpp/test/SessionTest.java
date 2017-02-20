@@ -148,7 +148,7 @@ public class SessionTest {
         try { Thread.sleep(10); } catch (Exception ex) {} // TODO make async invoker injectable
 
         // then
-        verify(communicator, times(1)).sendCallError(eq(someId), anyString(), anyString());
+        verify(communicator, times(1)).sendCallError(eq(someId), anyString(), anyString(), anyString());
     }
 
     @Test
@@ -184,7 +184,7 @@ public class SessionTest {
         try { Thread.sleep(10); } catch (Exception ex) {} // TODO make async invoker injectable
 
         // then
-        verify(communicator, times(1)).sendCallError(eq(someId), anyString(), anyString());
+        verify(communicator, times(1)).sendCallError(eq(someId), anyString(), anyString(), anyString());
     }
 
     @Test
@@ -206,7 +206,7 @@ public class SessionTest {
         eventHandler.onCall(someId, null, null);
 
         // Then
-        verify(communicator, times(1)).sendCallError(eq(someId), anyString(), anyString());
+        verify(communicator, times(1)).sendCallError(eq(someId), anyString(), anyString(), anyString());
     }
 
     @Test

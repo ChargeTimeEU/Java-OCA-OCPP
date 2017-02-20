@@ -78,7 +78,7 @@ public class CommunicatorTest {
             }
 
             @Override
-            protected Object makeCallError(String uniqueId, String errorCode, String errorDescription) {
+            protected Object makeCallError(String uniqueId, String action, String errorCode, String errorDescription) {
                 return null;
             }
 

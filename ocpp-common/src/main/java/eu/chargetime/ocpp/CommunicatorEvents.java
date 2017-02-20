@@ -37,9 +37,10 @@ public interface CommunicatorEvents {
      * Hint: Use the id to identify the confirmation type, you can then choose to use the {@link Communicator}s unpackPayload method.
      *
      * @param id      unique id used to identify the original request.
+     * @param action  Optional. The action.
      * @param payload raw payload.
      */
-    void onCallResult(String id, Object payload);
+    void onCallResult(String id, String action, Object payload);
 
     /**
      * Handle call.

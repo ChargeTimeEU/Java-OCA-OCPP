@@ -294,7 +294,7 @@ public class JSONCommunicatorTest extends TestUtilities
         String errorDescription = "Requested Action is not known by receiver";
 
         // When
-        communicator.sendCallError(null, errorCode, errorDescription);
+        communicator.sendCallError(null, null, errorCode, errorDescription);
 
         // Then
         verify(transmitter, times(1)).send(anyString());

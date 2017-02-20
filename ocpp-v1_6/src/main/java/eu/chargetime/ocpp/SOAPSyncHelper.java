@@ -67,7 +67,7 @@ public abstract class SOAPSyncHelper {
         return promise;
     }
 
-    abstract void sendRequest(SOAPMessage message);
+    abstract void sendRequest(SOAPMessage message) throws NotConnectedException;
 
     public void send(Object message) throws NotConnectedException {
         SOAPMessage soapMessage = (SOAPMessage) message;

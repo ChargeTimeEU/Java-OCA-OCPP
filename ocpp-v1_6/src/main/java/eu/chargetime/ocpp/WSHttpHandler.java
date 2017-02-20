@@ -28,10 +28,7 @@ package eu.chargetime.ocpp;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import javax.xml.soap.MessageFactory;
-import javax.xml.soap.MimeHeaders;
-import javax.xml.soap.SOAPException;
-import javax.xml.soap.SOAPMessage;
+import javax.xml.soap.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -54,7 +51,7 @@ public class WSHttpHandler implements HttpHandler {
             SOAPMessage confirmation = events.incomingRequest(request);
             OutputStream responseStream = httpExchange.getResponseBody();
             try {
-                httpExchange.getResponseHeaders().add("Content-Type", "text/xml; charset=utf-8");
+                httpExchange.getResponseHeaders().add("Content-Type", "application/soap+xml; charset=utf-8");
                 httpExchange.sendResponseHeaders(200, 0);
                 confirmation.writeTo(responseStream);
             } catch (SOAPException e) {
@@ -68,7 +65,7 @@ public class WSHttpHandler implements HttpHandler {
     private SOAPMessage parse(InputStream request) throws IOException {
         SOAPMessage message = null;
         try {
-            MessageFactory messageFactory = MessageFactory.newInstance();
+            MessageFactory messageFactory = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
             message = messageFactory.createMessage(new MimeHeaders(), request);
         } catch (SOAPException e) {
             e.printStackTrace();

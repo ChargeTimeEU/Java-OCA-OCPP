@@ -35,17 +35,23 @@ public class WebServiceTransmitter extends SOAPSyncHelper implements Transmitter
     SOAPConnection soapConnection;
     private String url;
     private RadioEvents events;
+    boolean connected;
 
     public WebServiceTransmitter() {
+        connected = false;
     }
 
     @Override
     public void disconnect() {
-        try {
-            soapConnection.close();
-        } catch (SOAPException e) {
-            e.printStackTrace();
+        if (connected) {
+            try {
+                soapConnection.close();
+                connected = false;
+            } catch (SOAPException e) {
+                e.printStackTrace();
+            }
         }
+        events.disconnected();
     }
 
     @Override
@@ -55,20 +61,27 @@ public class WebServiceTransmitter extends SOAPSyncHelper implements Transmitter
         try {
             SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
             soapConnection = soapConnectionFactory.createConnection();
+            connected = true;
+            events.connected();
         } catch (SOAPException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    protected void sendRequest(SOAPMessage message) {
-        new Thread(() -> {
+    protected void sendRequest(SOAPMessage message) throws NotConnectedException {
+        if (!connected)
+            throw new NotConnectedException();
+
+        Thread thread = new Thread(() -> {
             try {
                 events.receivedMessage(soapConnection.call(message, url));
             } catch (SOAPException e) {
                 e.printStackTrace();
+                disconnect();
             }
-        }).start();
+        });
+        thread.start();
     }
 
     @Override

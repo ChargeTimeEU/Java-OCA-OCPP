@@ -112,24 +112,24 @@ public class Session {
 
     private class CommunicatorEventHandler implements CommunicatorEvents {
         @Override
-        public void onCallResult(String id, Object payload) {
+        public void onCallResult(String id, String action, Object payload) {
             try {
                 Confirmation confirmation = communicator.unpackPayload(payload, getConfirmationType(id));
                 if (confirmation.validate()) {
                     events.handleConfirmation(id, confirmation);
                 } else {
-                    communicator.sendCallError(id, "OccurenceConstraintViolation", "Payload for Action is syntactically correct but at least one of the fields violates occurence constraints");
+                    communicator.sendCallError(id, action, "OccurenceConstraintViolation", "Payload for Action is syntactically correct but at least one of the fields violates occurence constraints");
                 }
             }
             catch (PropertyConstraintException ex) {
                 String message = "Field %s violates constraints with value: \"%s\". %s";
-                communicator.sendCallError(id, "TypeConstraintViolation", String.format(message, ex.getFieldKey(), ex.getFieldValue(), ex.getMessage()));
+                communicator.sendCallError(id, action, "TypeConstraintViolation", String.format(message, ex.getFieldKey(), ex.getFieldValue(), ex.getMessage()));
                 ex.printStackTrace();
             } catch (UnsupportedFeatureException ex) {
-                communicator.sendCallError(id, "InternalError", "An internal error occurred and the receiver was not able to process the requested Action successfully");
+                communicator.sendCallError(id, action, "InternalError", "An internal error occurred and the receiver was not able to process the requested Action successfully");
                 ex.printStackTrace();
             } catch (Exception ex) {
-                communicator.sendCallError(id, "FormationViolation", "Unable to process action");
+                communicator.sendCallError(id, action, "FormationViolation", "Unable to process action");
                 ex.printStackTrace();
             }
         }
@@ -138,7 +138,7 @@ public class Session {
         public void onCall(String id, String action, Object payload) {
             Feature feature = events.findFeatureByAction(action);
             if (feature == null) {
-                communicator.sendCallError(id, "NotImplemented", "Requested Action is not known by receiver");
+                communicator.sendCallError(id, action, "NotImplemented", "Requested Action is not known by receiver");
             } else {
                 try {
                     Request request = communicator.unpackPayload(payload, feature.getRequestType());
@@ -146,15 +146,15 @@ public class Session {
                         CompletableFuture<Confirmation> promise = handleIncomingRequest(request);
                         promise.whenComplete(new ConfirmationHandler(id, action, communicator));
                     } else {
-                        communicator.sendCallError(id, "OccurenceConstraintViolation", "Payload for Action is syntactically correct but at least one of the fields violates occurence constraints");
+                        communicator.sendCallError(id, action, "OccurenceConstraintViolation", "Payload for Action is syntactically correct but at least one of the fields violates occurence constraints");
                     }
                 } catch (PropertyConstraintException ex) {
                     ex.printStackTrace();
                     String message = "Field %s violates constraints with value: \"%s\". %s";
-                    communicator.sendCallError(id, "TypeConstraintViolation", String.format(message, ex.getFieldKey(), ex.getFieldValue(), ex.getMessage()));
+                    communicator.sendCallError(id, action, "TypeConstraintViolation", String.format(message, ex.getFieldKey(), ex.getFieldValue(), ex.getMessage()));
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    communicator.sendCallError(id, "FormationViolation", "Unable to process action");
+                    communicator.sendCallError(id, action, "FormationViolation", "Unable to process action");
                 }
             }
         }
@@ -206,9 +206,9 @@ class ConfirmationHandler implements BiConsumer<Confirmation, Throwable> {
     @Override
     public void accept(Confirmation confirmation, Throwable throwable) {
         if (throwable != null) {
-            communicator.sendCallError(id, "InternalError", "An internal error occurred and the receiver was not able to process the requested Action successfully");
+            communicator.sendCallError(id, action, "InternalError", "An internal error occurred and the receiver was not able to process the requested Action successfully");
         } else if (confirmation == null) {
-            communicator.sendCallError(id, "NotSupported", "Requested Action is recognized but not supported by the receiver");
+            communicator.sendCallError(id, action, "NotSupported", "Requested Action is recognized but not supported by the receiver");
         } else {
             communicator.sendCallResult(id, action, confirmation);
         }

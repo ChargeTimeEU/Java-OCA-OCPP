@@ -31,13 +31,5 @@ package eu.chargetime.ocpp.model;
  * Model class. Used to wrap a call.
  */
 public class CallMessage extends Message {
-    private String action;
 
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
 }

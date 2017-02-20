@@ -33,6 +33,7 @@ package eu.chargetime.ocpp.model;
 public class Message {
     private String id;
     private Object payload;
+    private String action;
 
     /**
      * Get unique id for message.
@@ -68,5 +69,23 @@ public class Message {
      */
     public void setPayload(Object payload) {
         this.payload = payload;
+    }
+
+    /**
+     * Get the action.
+     *
+     * @return String, action.
+     */
+    public String getAction() {
+        return action;
+    }
+
+    /**
+     * Set the action.
+     *
+     * @param action String, action.
+     */
+    public void setAction(String action) {
+        this.action = action;
     }
 }

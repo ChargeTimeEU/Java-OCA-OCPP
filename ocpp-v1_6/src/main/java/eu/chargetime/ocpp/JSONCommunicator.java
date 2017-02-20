@@ -123,7 +123,7 @@ public class JSONCommunicator extends Communicator {
     }
 
     @Override
-    protected Object makeCallError(String uniqueId, String errorCode, String errorDescription) {
+    protected Object makeCallError(String uniqueId, String action, String errorCode, String errorDescription) {
         return String.format(CALLERROR_FORMAT, uniqueId, errorCode, errorDescription, "{}");
     }
 
