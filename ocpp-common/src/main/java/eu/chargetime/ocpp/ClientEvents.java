@@ -1,18 +1,12 @@
-package eu.chargetime.ocpp.feature.profile;
-
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-
-import java.util.UUID;
+package eu.chargetime.ocpp;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
- Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
+ Copyright (C) 2017 Emil Christopher Solli Melar <emil@iconsultable.no>
 
  MIT License
 
- Copyright (c) 2016 Thomas Volden
+ Copyright (C) 2017 Emil Christopher Solli Melar
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -33,24 +27,7 @@ import java.util.UUID;
  SOFTWARE.
  */
 
-/**
- * Interface used for Feature Profiles.
- */
-public interface Profile {
-
-    /**
-     * Get a list of supported Feature for this Feature Profile.
-     *
-     * @return supported {@link Feature}s
-     */
-    Feature[] getFeatureList();
-
-    /**
-     * Handle {@link Request}
-     *
-     * @param sessionIndex source of the request.
-     * @param request the {@link Request} to be handled.
-     * @return the {@link Confirmation} to be send.
-     */
-    Confirmation handleRequest(UUID sessionIndex, Request request);
+public interface ClientEvents {
+    void connectionOpened();
+    void connectionClosed();
 }

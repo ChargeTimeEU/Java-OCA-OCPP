@@ -1,10 +1,11 @@
 package eu.chargetime.ocpp;
 
+import com.google.common.collect.HashBiMap;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 
-import java.util.ArrayList;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 /*
     ChargeTime.eu - Java-OCA-OCPP
@@ -40,7 +41,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public abstract class Server extends FeatureHandler {
 
-    private ArrayList<Session> sessions;
+    private HashBiMap<UUID, Session> sessions;
     private Listener listener;
 
     /**
@@ -50,7 +51,7 @@ public abstract class Server extends FeatureHandler {
      */
     public Server(Listener listener) {
         this.listener = listener;
-        this.sessions = new ArrayList<>();
+        this.sessions = HashBiMap.create();
     }
 
     /**
@@ -61,7 +62,7 @@ public abstract class Server extends FeatureHandler {
      */
     public void open(String hostname, int port, ServerEvents serverEvents) {
 
-        listener.open(hostname, port, session -> {
+        listener.open(hostname, port, (session, identifier) -> {
             session.accept(new SessionEvents() {
                 @Override
                 public Feature findFeatureByAction(String action) {
@@ -82,7 +83,7 @@ public abstract class Server extends FeatureHandler {
                 @Override
                 public Confirmation handleRequest(Request request) {
                     Feature feature = findFeatureByRequest(request);
-                    return feature.handleRequest(sessions.indexOf(session), request);
+                    return feature.handleRequest(sessions.inverse().get(session), request);
                 }
 
                 @Override
@@ -93,7 +94,7 @@ public abstract class Server extends FeatureHandler {
 
                 @Override
                 public void handleConnectionClosed() {
-                    serverEvents.lostSession(sessions.indexOf(session));
+                    serverEvents.lostSession(sessions.inverse().get(session));
                     sessions.remove(session);
                 }
 
@@ -102,8 +103,8 @@ public abstract class Server extends FeatureHandler {
 
                 }
             });
-            sessions.add(session);
-            serverEvents.newSession(sessions.indexOf(session));
+            sessions.put(UUID.randomUUID(), session);
+            serverEvents.newSession(sessions.inverse().get(session), identifier);
         });
     }
 
@@ -123,7 +124,7 @@ public abstract class Server extends FeatureHandler {
      * @throws UnsupportedFeatureException Thrown if the feature isn't among the list of supported featured.
      * @throws OccurenceConstraintException Thrown if the request isn't valid.
      */
-    public CompletableFuture<Confirmation> send(int sessionIndex, Request request) throws UnsupportedFeatureException, OccurenceConstraintException {
+    public CompletableFuture<Confirmation> send(UUID sessionIndex, Request request) throws UnsupportedFeatureException, OccurenceConstraintException {
         Feature feature = findFeature(request);
         if (feature == null)
             throw new UnsupportedFeatureException();

@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.UUID;
+
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -64,7 +66,7 @@ public class ServerCoreProfileTest {
     public void handleRequest_anAuthorizeRequest_callsHandleAuthorizeRequest() {
         // Given
         AuthorizeRequest request = new AuthorizeRequest();
-        int sessionId = 42;
+        UUID sessionId = UUID.randomUUID();
 
         // When
         core.handleRequest(sessionId, request);
@@ -86,7 +88,7 @@ public class ServerCoreProfileTest {
     public void handleRequest_aBootNotificationRequest_callsHandleBootNotificationRequest() {
         // Given
         BootNotificationRequest request = new BootNotificationRequest();
-        int sessionId = 42;
+        UUID sessionId = UUID.randomUUID();
 
         // When
         core.handleRequest(sessionId, request);
@@ -182,7 +184,7 @@ public class ServerCoreProfileTest {
     public void handleRequest_aDataTransferRequest_callsHandleDataTransferRequest() {
         // Given
         DataTransferRequest request = new DataTransferRequest();
-        int sessionId = 42;
+        UUID sessionId = UUID.randomUUID();
 
         // When
         core.handleRequest(sessionId, request);
@@ -223,7 +225,7 @@ public class ServerCoreProfileTest {
     public void handleRequest_aHeartbeatRequest_callsHandleHeartbeatRequest() {
         // Given
         HeartbeatRequest request = new HeartbeatRequest();
-        int sessionId = 42;
+        UUID sessionId = UUID.randomUUID();
 
         // When
         core.handleRequest(sessionId, request);
@@ -245,7 +247,7 @@ public class ServerCoreProfileTest {
     public void handleRequest_aMeterValuesRequest_callsHandleMeterValuesRequest() {
         // Given
         MeterValuesRequest request = new MeterValuesRequest();
-        int sessionId = 42;
+        UUID sessionId = UUID.randomUUID();
 
         // When
         core.handleRequest(sessionId, request);
@@ -330,7 +332,7 @@ public class ServerCoreProfileTest {
     public void handleRequest_aStartTransactionRequest_callsHandleStartTransactionRequest() {
         // Given
         StartTransactionRequest request = new StartTransactionRequest();
-        int sessionId = 42;
+        UUID sessionId = UUID.randomUUID();
 
         // When
         core.handleRequest(sessionId, request);
@@ -352,7 +354,7 @@ public class ServerCoreProfileTest {
     public void handleRequest_aStatusNotificationRequest_callsHandleStatusNotificationRequest() {
         // Given
         StatusNotificationRequest request = new StatusNotificationRequest();
-        int sessionId = 42;
+        UUID sessionId = UUID.randomUUID();
 
         // When
         core.handleRequest(sessionId, request);
@@ -374,7 +376,7 @@ public class ServerCoreProfileTest {
     public void handleRequest_aStopTransactionRequest_callsHandleStopTransactionRequest() {
         // Given
         StopTransactionRequest request = new StopTransactionRequest();
-        int sessionId = 42;
+        UUID sessionId = UUID.randomUUID();
 
         // When
         core.handleRequest(sessionId, request);

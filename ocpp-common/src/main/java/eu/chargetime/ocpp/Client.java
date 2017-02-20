@@ -60,8 +60,9 @@ public abstract class Client extends FeatureHandler
      * Connect to server
      *
      * @param   uri     url and port of the server
+     * @param   events  client events for connect/disconnect
      */
-    public void connect(String uri)
+    public void connect(String uri, ClientEvents events)
     {
         session.open(uri, new SessionEvents() {
             @Override
@@ -83,7 +84,7 @@ public abstract class Client extends FeatureHandler
             @Override
             public Confirmation handleRequest(Request request) {
                 Feature feature = findFeatureByRequest(request);
-                return feature.handleRequest(0, request);
+                return feature.handleRequest(null, request);
             }
 
             @Override
@@ -94,12 +95,14 @@ public abstract class Client extends FeatureHandler
 
             @Override
             public void handleConnectionClosed() {
-
+                if (events != null)
+                    events.connectionClosed();
             }
 
             @Override
             public void handleConnectionOpened() {
-
+                if (events != null)
+                    events.connectionOpened();
             }
         });
     }

@@ -1,6 +1,7 @@
 package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.Client;
+import eu.chargetime.ocpp.ClientEvents;
 import eu.chargetime.ocpp.Session;
 import eu.chargetime.ocpp.SessionEvents;
 import eu.chargetime.ocpp.feature.Feature;
@@ -49,6 +50,7 @@ import static org.mockito.Mockito.*;
 public class ClientTest extends TestUtilities {
     private Client client;
     private SessionEvents eventHandler;
+    private static final String IDENTIFIER = "test";
 
     @Mock
     private Session session = mock(Session.class);
@@ -58,6 +60,8 @@ public class ClientTest extends TestUtilities {
     private Feature feature = mock(Feature.class);
     @Mock
     private Request request = mock(Request.class);
+    @Mock
+    ClientEvents events = mock(ClientEvents.class);
 
     @Before
     public void setup() {
@@ -80,10 +84,36 @@ public class ClientTest extends TestUtilities {
         String someUrl = "localhost";
 
         // When
-        client.connect(someUrl);
+        client.connect(someUrl, events);
 
         // Then
         verify(session, times(1)).open(eq(someUrl), anyObject());
+    }
+
+    @Test
+    public void connect_connectionOpenedEvent() {
+        // Given
+        client.connect(null, events);
+
+        // When
+        this.eventHandler.handleConnectionOpened();
+
+        // Then
+        verify(events, times(1)).connectionOpened();
+        verify(events, never()).connectionClosed();
+    }
+
+    @Test
+    public void connect_connectionClosedEvent() {
+        // Given
+        client.connect(null, events);
+
+        // When
+        this.eventHandler.handleConnectionClosed();
+
+        // Then
+        verify(events, times(1)).connectionClosed();
+        verify(events, never()).connectionOpened();
     }
 
     @Test
@@ -102,7 +132,7 @@ public class ClientTest extends TestUtilities {
         when(session.sendRequest(any(), any())).thenReturn(someUniqueId);
 
         // When
-        client.connect(null);
+        client.connect(null, null);
         CompletableFuture<Confirmation> promise = client.send(request);
         eventHandler.handleConfirmation(someUniqueId, null);
 
@@ -113,8 +143,8 @@ public class ClientTest extends TestUtilities {
     @Test
     public void handleRequest_returnsConfirmation() {
         // Given
-        client.connect(null);
-        when(feature.handleRequest(0, request)).thenReturn(new TestConfirmation());
+        client.connect(null, null);
+        when(feature.handleRequest(null, request)).thenReturn(new TestConfirmation());
 
         // When
         Confirmation conf = eventHandler.handleRequest(request);
@@ -126,13 +156,13 @@ public class ClientTest extends TestUtilities {
     @Test
     public void handleRequest_callsFeatureHandleRequest() {
         // Given
-        client.connect(null);
+        client.connect(null, null);
 
         // When
         eventHandler.handleRequest(request);
 
         // Then
-        verify(feature, times(1)).handleRequest(eq(0), eq(request));
+        verify(feature, times(1)).handleRequest(any(), eq(request));
     }
 
     @Test

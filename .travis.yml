@@ -4,7 +4,7 @@ jdk:
   
 sudo: false # faster builds
 
-script: "mvn cobertura:cobertura"
+script: "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report"
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)

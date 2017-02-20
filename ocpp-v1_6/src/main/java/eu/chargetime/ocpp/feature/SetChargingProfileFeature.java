@@ -1,13 +1,17 @@
-package eu.chargetime.ocpp;
+package eu.chargetime.ocpp.feature;
 
-import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
+import eu.chargetime.ocpp.feature.profile.Profile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
+import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
  *
- * Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
+ * Copyright (C) 2017 Emil Christopher Solli Melar <emil@iconsultable.no>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,18 +32,19 @@ import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
  * SOFTWARE.
  */
 
-/**
- * OCA OCPP version 1.6 JSON Web Socket implementation of the client.
- */
-public class JSONClient extends Client {
+public class SetChargingProfileFeature extends Feature {
+    public SetChargingProfileFeature(Profile ownerProfile) {
+        super(ownerProfile);
+    }
 
-    /**
-     * The core feature profile is required as a minimum.
-     *
-     * @param coreProfile implementation of the core feature profile.
-     */
-    public JSONClient(ClientCoreProfile coreProfile, String identity) {
-        super(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue()));
-        addFeatureProfile(coreProfile);
+    @Override
+    public Class<? extends Request> getRequestType() { return SetChargingProfileRequest.class; }
+
+    @Override
+    public Class<? extends Confirmation> getConfirmationType() { return SetChargingProfileConfirmation.class; }
+
+    @Override
+    public String getAction() {
+        return "SetChargingProfile";
     }
 }

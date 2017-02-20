@@ -1,7 +1,9 @@
-package eu.chargetime.ocpp.model.core;
+package eu.chargetime.ocpp.model.smartcharging;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.core.ChargingProfile;
+import eu.chargetime.ocpp.model.core.ChargingProfilePurposeType;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -11,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * MIT License
  *
- * Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
+ * Copyright (C) 2017 Emil Christopher Solli Melar <emil@iconsultable.no>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,45 +34,25 @@ import javax.xml.bind.annotation.XmlRootElement;
  * SOFTWARE.
  */
 
-/**
- * Sent to Charge Point by Central System.
- */
 @XmlRootElement
-public class RemoteStartTransactionRequest implements Request {
-
+public class SetChargingProfileRequest implements Request {
     private Integer connectorId;
-    private IdToken idTag;
     private ChargingProfile chargingProfile;
 
-    @Override
-    public boolean validate() {
-        boolean valid = true;
-        if (valid &= idTag != null)
-            valid &= idTag.validate();
-
-        if (chargingProfile != null) {
-            valid &= chargingProfile.validate();
-            valid &= chargingProfile.getChargingProfilePurpose() == ChargingProfilePurposeType.TxProfile;
-        }
-        return valid;
-    }
-
     /**
-     * Number of the connector on which to start the transaction.
-     * connectorId SHALL be &gt; 0.
+     * This identifies which connector of the Charge Point is used.
      *
-     * @return Connector.
+     * @return connector.
      */
     public Integer getConnectorId() {
         return connectorId;
     }
 
     /**
-     * Optional. Number of the connector on which to start the transaction.
-     * connectorId SHALL be &gt; 0.
+     * Required. This identifies which connector of the Charge Point is used.
      *
-     * @param connectorId integer, connector
-     * @throws PropertyConstraintException Value is 0 or negative.
+     * @param connectorId integer. value &gt; 0
+     * @throws PropertyConstraintException Value was 0 or negative.
      */
     @XmlElement
     public void setConnectorId(Integer connectorId) throws PropertyConstraintException {
@@ -78,25 +60,6 @@ public class RemoteStartTransactionRequest implements Request {
             throw new PropertyConstraintException("connectorId", connectorId);
 
         this.connectorId = connectorId;
-    }
-
-    /**
-     * The identifier that Charge Point must use to start a transaction.
-     *
-     * @return an {@link IdToken}.
-     */
-    public IdToken getIdTag() {
-        return idTag;
-    }
-
-    /**
-     * Required. The identifier that Charge Point must use to start a transaction.
-     *
-     * @param idTag    an {@link IdToken}.
-     */
-    @XmlElement
-    public void setIdTag(IdToken idTag) {
-        this.idTag = idTag;
     }
 
     /**
@@ -122,5 +85,16 @@ public class RemoteStartTransactionRequest implements Request {
     @Override
     public boolean transactionRelated() {
         return false;
+    }
+
+    @Override
+    public boolean validate() {
+        boolean valid = true;
+        valid &= connectorId != null && connectorId > 0;
+
+        if (chargingProfile != null) {
+            valid &= chargingProfile.validate();
+        }
+        return valid;
     }
 }

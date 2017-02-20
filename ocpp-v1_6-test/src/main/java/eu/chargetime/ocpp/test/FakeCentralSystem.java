@@ -6,11 +6,14 @@ import eu.chargetime.ocpp.Server;
 import eu.chargetime.ocpp.ServerEvents;
 import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
+import eu.chargetime.ocpp.feature.profile.ServerSmartChargingHandler;
+import eu.chargetime.ocpp.feature.profile.ServerSmartChargingProfile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -44,10 +47,11 @@ public class FakeCentralSystem
     private Confirmation receivedConfirmation;
     private Server server;
 
-    private int currentSessionIndex;
+    private UUID currentSessionIndex;
 
     private static FakeCentralSystem instance;
     private boolean isRigged;
+    private String currentIdentifier;
 
     public static FakeCentralSystem getInstance () {
         if (instance == null)
@@ -64,6 +68,10 @@ public class FakeCentralSystem
             return null;
         }
         return confirmation;
+    }
+
+    public boolean connected() {
+        return currentIdentifier != null;
     }
 
     public enum serverType {JSON, SOAP}
@@ -98,7 +106,7 @@ public class FakeCentralSystem
 
         ServerCoreProfile serverCoreProfile = new ServerCoreProfile(new ServerCoreEventHandler() {
             @Override
-            public AuthorizeConfirmation handleAuthorizeRequest(int sessionIndex, AuthorizeRequest request) {
+            public AuthorizeConfirmation handleAuthorizeRequest(UUID sessionIndex, AuthorizeRequest request) {
                 receivedRequest = request;
                 AuthorizeConfirmation confirmation = new AuthorizeConfirmation();
                 IdTagInfo tagInfo = new IdTagInfo();
@@ -111,7 +119,7 @@ public class FakeCentralSystem
             }
 
             @Override
-            public BootNotificationConfirmation handleBootNotificationRequest(int sessionIndex, BootNotificationRequest request) {
+            public BootNotificationConfirmation handleBootNotificationRequest(UUID sessionIndex, BootNotificationRequest request) {
                 receivedRequest = request;
                 BootNotificationConfirmation confirmation = new BootNotificationConfirmation();
                 try {
@@ -125,7 +133,7 @@ public class FakeCentralSystem
             }
 
             @Override
-            public DataTransferConfirmation handleDataTransferRequest(int sessionIndex, DataTransferRequest request) {
+            public DataTransferConfirmation handleDataTransferRequest(UUID sessionIndex, DataTransferRequest request) {
                 receivedRequest = request;
                 DataTransferConfirmation confirmation = new DataTransferConfirmation();
                 confirmation.setStatus(DataTransferStatus.Accepted);
@@ -133,7 +141,7 @@ public class FakeCentralSystem
             }
 
             @Override
-            public HeartbeatConfirmation handleHeartbeatRequest(int sessionIndex, HeartbeatRequest request) {
+            public HeartbeatConfirmation handleHeartbeatRequest(UUID sessionIndex, HeartbeatRequest request) {
                 receivedRequest = request;
                 HeartbeatConfirmation confirmation = new HeartbeatConfirmation();
                 confirmation.setCurrentTime(Calendar.getInstance());
@@ -141,13 +149,13 @@ public class FakeCentralSystem
             }
 
             @Override
-            public MeterValuesConfirmation handleMeterValuesRequest(int sessionIndex, MeterValuesRequest request) {
+            public MeterValuesConfirmation handleMeterValuesRequest(UUID sessionIndex, MeterValuesRequest request) {
                 receivedRequest = request;
                 return failurePoint(new MeterValuesConfirmation());
             }
 
             @Override
-            public StartTransactionConfirmation handleStartTransactionRequest(int sessionIndex, StartTransactionRequest request) {
+            public StartTransactionConfirmation handleStartTransactionRequest(UUID sessionIndex, StartTransactionRequest request) {
                 receivedRequest = request;
                 IdTagInfo tagInfo = new IdTagInfo();
                 tagInfo.setStatus(AuthorizationStatus.Accepted);
@@ -158,18 +166,22 @@ public class FakeCentralSystem
             }
 
             @Override
-            public StatusNotificationConfirmation handleStatusNotificationRequest(int sessionIndex, StatusNotificationRequest request) {
+            public StatusNotificationConfirmation handleStatusNotificationRequest(UUID sessionIndex, StatusNotificationRequest request) {
                 receivedRequest = request;
                 StatusNotificationConfirmation confirmation = new StatusNotificationConfirmation();
                 return failurePoint(confirmation);
             }
 
             @Override
-            public StopTransactionConfirmation handleStopTransactionRequest(int sessionIndex, StopTransactionRequest request) {
+            public StopTransactionConfirmation handleStopTransactionRequest(UUID sessionIndex, StopTransactionRequest request) {
                 receivedRequest = request;
                 StopTransactionConfirmation confirmation = new StopTransactionConfirmation();
                 return failurePoint(confirmation);
             }
+        });
+
+        ServerSmartChargingProfile smartChargingProfile = new ServerSmartChargingProfile(new ServerSmartChargingHandler() {
+
         });
 
         int port = 0;
@@ -184,15 +196,19 @@ public class FakeCentralSystem
                 break;
         }
 
+        server.addFeatureProfile(smartChargingProfile);
+
         server.open("localhost", port, new ServerEvents() {
             @Override
-            public void newSession(int sessionIndex) {
+            public void newSession(UUID sessionIndex, String identifier) {
                 currentSessionIndex = sessionIndex;
+                currentIdentifier = identifier;
             }
 
             @Override
-            public void lostSession(int identity) {
-                currentSessionIndex = -1;
+            public void lostSession(UUID identity) {
+                currentSessionIndex = null;
+                currentIdentifier = null;
                 // clear
                 receivedConfirmation = null;
                 receivedRequest = null;

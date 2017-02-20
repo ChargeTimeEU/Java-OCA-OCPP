@@ -24,8 +24,10 @@ package eu.chargetime.ocpp;/*
     SOFTWARE.
  */
 
-public interface ServerEvents {
-    void newSession(int sessionIndex);
+import java.util.UUID;
 
-    void lostSession(int sessionIndex);
+public interface ServerEvents {
+    void newSession(UUID sessionIndex, String identifier);
+
+    void lostSession(UUID sessionIndex);
 }

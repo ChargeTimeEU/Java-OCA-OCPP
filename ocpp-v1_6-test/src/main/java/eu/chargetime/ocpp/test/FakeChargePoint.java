@@ -3,9 +3,14 @@ package eu.chargetime.ocpp.test;
 import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
+import eu.chargetime.ocpp.feature.profile.ClientSmartChargingEventHandler;
+import eu.chargetime.ocpp.feature.profile.ClientSmartChargingProfile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
+import eu.chargetime.ocpp.model.smartcharging.ChargingProfileStatus;
+import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
+import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -43,6 +48,7 @@ public class FakeChargePoint
     private Confirmation receivedConfirmation;
     private Request receivedRequest;
     private ClientCoreProfile core;
+    private ClientSmartChargingProfile smartCharging;
     private Throwable receivedException;
     private String url;
 
@@ -117,9 +123,17 @@ public class FakeChargePoint
             }
         });
 
+        smartCharging = new ClientSmartChargingProfile(new ClientSmartChargingEventHandler() {
+            @Override
+            public SetChargingProfileConfirmation handleSetChargingProfileRequest(SetChargingProfileRequest request) {
+                receivedRequest = request;
+                return new SetChargingProfileConfirmation(ChargingProfileStatus.Accepted);
+            }
+        });
+
         switch (type) {
             case JSON:
-                client = new JSONClient(core);
+                client = new JSONClient(core, "test");
                 url = "ws://localhost:8887";
                 break;
             case SOAP:
@@ -127,11 +141,23 @@ public class FakeChargePoint
                 url = "http://localhost:8890";
                 break;
         }
+
+        client.addFeatureProfile(smartCharging);
     }
 
     public void connect() {
         try {
-            client.connect(url);
+            client.connect(url, new ClientEvents() {
+                @Override
+                public void connectionOpened() {
+                    
+                }
+
+                @Override
+                public void connectionClosed() {
+
+                }
+            });
         } catch (Exception ex) {
             ex.printStackTrace();
         }

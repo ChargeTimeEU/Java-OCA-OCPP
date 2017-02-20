@@ -1,13 +1,11 @@
-package eu.chargetime.ocpp;
-
-import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
+package eu.chargetime.ocpp.model.smartcharging;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
  *
- * Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
+ * Copyright (C) 2017 Emil Christopher Solli Melar <emil@iconsultable.no>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,17 +27,8 @@ import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
  */
 
 /**
- * OCA OCPP version 1.6 JSON Web Socket implementation of the client.
+ * Accepted values used with {@link SetChargingProfileConfirmation}.
  */
-public class JSONClient extends Client {
-
-    /**
-     * The core feature profile is required as a minimum.
-     *
-     * @param coreProfile implementation of the core feature profile.
-     */
-    public JSONClient(ClientCoreProfile coreProfile, String identity) {
-        super(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue()));
-        addFeatureProfile(coreProfile);
-    }
+public enum ChargingProfileStatus {
+    Accepted, Rejected, NotSupported
 }
