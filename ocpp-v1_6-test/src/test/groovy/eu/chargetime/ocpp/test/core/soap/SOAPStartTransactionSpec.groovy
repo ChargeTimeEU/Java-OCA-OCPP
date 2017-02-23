@@ -27,7 +27,7 @@ class SOAPStartTransactionSpec extends Specification {
     }
 
     def "Charge point sends StartTransaction request and receives a response"() {
-        def conditions = new PollingConditions(timeout: 1)
+        def conditions = new PollingConditions(timeout: 2)
         when:
         chargePoint.sendStartTransactionRequest()
 

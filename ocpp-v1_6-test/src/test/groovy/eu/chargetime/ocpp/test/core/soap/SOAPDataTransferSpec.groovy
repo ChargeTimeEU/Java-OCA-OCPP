@@ -27,7 +27,7 @@ class SOAPDataTransferSpec extends Specification {
     }
 
     def "Central System sends a DataTransfer request and receives a response"() {
-        def conditions = new PollingConditions(timeout: 1)
+        def conditions = new PollingConditions(timeout: 2)
         given:
         conditions.eventually {
             assert centralSystem.connected()
