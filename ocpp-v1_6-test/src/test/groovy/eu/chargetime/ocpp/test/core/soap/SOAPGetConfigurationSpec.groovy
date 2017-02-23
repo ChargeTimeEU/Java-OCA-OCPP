@@ -19,6 +19,7 @@ class SOAPGetConfigurationSpec extends Specification {
 
     def setup() {
         chargePoint.connect()
+        chargePoint.sendBootNotification("VendorX", "SingleSocketCharger")
     }
 
     def cleanup() {
@@ -27,6 +28,10 @@ class SOAPGetConfigurationSpec extends Specification {
 
     def "Central System sends a GetConfiguration request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
+        given:
+        conditions.eventually {
+            assert centralSystem.connected()
+        }
 
         when:
         centralSystem.sendGetConfigurationRequest("key1")

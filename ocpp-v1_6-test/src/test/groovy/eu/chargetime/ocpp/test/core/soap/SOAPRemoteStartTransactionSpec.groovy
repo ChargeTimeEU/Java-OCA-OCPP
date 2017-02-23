@@ -19,6 +19,7 @@ class SOAPRemoteStartTransactionSpec extends Specification {
 
     def setup() {
         chargePoint.connect()
+        chargePoint.sendBootNotification("VendorX", "SingleSocketCharger")
     }
 
     def cleanup() {
@@ -27,6 +28,11 @@ class SOAPRemoteStartTransactionSpec extends Specification {
 
     def "Central System sends a RemoteStartTransaction request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
+        given:
+        conditions.eventually {
+            assert centralSystem.connected()
+        }
+
         when:
         centralSystem.sendRemoteStartTransactionRequest(1, "some id")
 
