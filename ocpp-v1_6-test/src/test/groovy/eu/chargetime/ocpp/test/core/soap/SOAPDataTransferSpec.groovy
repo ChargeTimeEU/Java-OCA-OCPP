@@ -19,6 +19,7 @@ class SOAPDataTransferSpec extends Specification {
 
     def setup() {
         chargePoint.connect()
+        chargePoint.sendBootNotification("VendorX", "SingleSocketCharger")
     }
 
     def cleanup() {
@@ -27,6 +28,10 @@ class SOAPDataTransferSpec extends Specification {
 
     def "Central System sends a DataTransfer request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
+        given:
+        conditions.eventually {
+            assert centralSystem.connected()
+        }
 
         when:
         centralSystem.sendDataTransferRequest("VendorId", "messageId", "data")
