@@ -1,13 +1,13 @@
 package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.*;
-import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
-import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
-import eu.chargetime.ocpp.feature.profile.ClientSmartChargingEventHandler;
-import eu.chargetime.ocpp.feature.profile.ClientSmartChargingProfile;
+import eu.chargetime.ocpp.feature.profile.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
+import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageConfirmation;
+import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
+import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageStatus;
 import eu.chargetime.ocpp.model.smartcharging.ChargingProfileStatus;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
@@ -47,8 +47,9 @@ public class FakeChargePoint
     private Client client;
     private Confirmation receivedConfirmation;
     private Request receivedRequest;
-    private ClientCoreProfile core;
-    private ClientSmartChargingProfile smartCharging;
+    private final ClientCoreProfile core;
+    private final ClientSmartChargingProfile smartCharging;
+    private final ClientRemoteTriggerProfile remoteTrigger;
     private Throwable receivedException;
     private String url;
 
@@ -131,6 +132,14 @@ public class FakeChargePoint
             }
         });
 
+        remoteTrigger = new ClientRemoteTriggerProfile(new ClientRemoteTriggerHandler() {
+            @Override
+            public TriggerMessageConfirmation handleTriggerMessageRequest(TriggerMessageRequest request) {
+                receivedRequest = request;
+                return new TriggerMessageConfirmation(TriggerMessageStatus.Accepted);
+            }
+        });
+
         switch (type) {
             case JSON:
                 client = new JSONClient(core, "test");
@@ -143,6 +152,7 @@ public class FakeChargePoint
         }
 
         client.addFeatureProfile(smartCharging);
+        client.addFeatureProfile(remoteTrigger);
     }
 
     public void connect() {

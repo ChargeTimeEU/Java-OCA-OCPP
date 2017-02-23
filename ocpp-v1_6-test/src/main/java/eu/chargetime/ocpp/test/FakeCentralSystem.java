@@ -1,16 +1,12 @@
 package eu.chargetime.ocpp.test;
 
-import eu.chargetime.ocpp.JSONServer;
-import eu.chargetime.ocpp.SOAPServer;
-import eu.chargetime.ocpp.Server;
-import eu.chargetime.ocpp.ServerEvents;
-import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
-import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
-import eu.chargetime.ocpp.feature.profile.ServerSmartChargingHandler;
-import eu.chargetime.ocpp.feature.profile.ServerSmartChargingProfile;
+import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.feature.profile.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
+import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
+import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
 
 import java.util.Calendar;
 import java.util.UUID;
@@ -184,6 +180,10 @@ public class FakeCentralSystem
 
         });
 
+        ServerRemoteTriggerProfile remoteTriggerProfile = new ServerRemoteTriggerProfile(new ServerRemoteTriggerHandler() {
+
+        });
+
         int port = 0;
         switch (type) {
             case JSON:
@@ -197,6 +197,7 @@ public class FakeCentralSystem
         }
 
         server.addFeatureProfile(smartChargingProfile);
+        server.addFeatureProfile(remoteTriggerProfile);
 
         server.open("localhost", port, new ServerEvents() {
             @Override
@@ -372,5 +373,16 @@ public class FakeCentralSystem
 
     public void isRiggedToFailOnNextRequest() {
         isRigged = true;
+    }
+
+    public void sendTriggerMessage(TriggerMessageRequestType type, Integer connectorId) throws Exception {
+        TriggerMessageRequest request = new TriggerMessageRequest(type);
+        try {
+            request.setConnectorId(connectorId);
+        } catch (PropertyConstraintException e) {
+            e.printStackTrace();
+        }
+
+        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
     }
 }
