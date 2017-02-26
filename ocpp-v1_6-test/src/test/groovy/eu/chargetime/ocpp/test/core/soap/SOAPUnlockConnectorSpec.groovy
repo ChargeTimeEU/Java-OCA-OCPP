@@ -27,7 +27,7 @@ class SOAPUnlockConnectorSpec extends Specification {
     }
 
     def "Central System sends a UnlockConnector request and receives a response"() {
-        def conditions = new PollingConditions(timeout: 1)
+        def conditions = new PollingConditions(timeout: 2)
         given:
         conditions.eventually {
             assert centralSystem.connected()

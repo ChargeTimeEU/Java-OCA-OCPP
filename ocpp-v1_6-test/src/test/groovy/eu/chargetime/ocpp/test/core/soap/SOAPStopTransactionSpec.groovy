@@ -46,6 +46,7 @@ class SOAPStopTransactionSpec extends Specification {
 
         given:
         chargePoint.disconnect()
+        centralSystem.clientLost()
 
         when:
         chargePoint.sendStopTransactionRequest()

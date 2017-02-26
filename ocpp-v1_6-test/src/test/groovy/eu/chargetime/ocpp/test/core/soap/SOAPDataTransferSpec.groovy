@@ -52,10 +52,6 @@ class SOAPDataTransferSpec extends Specification {
         then:
         conditions.eventually {
             assert centralSystem.hasHandledDataTransferRequest()
-        }
-
-        then:
-        conditions.eventually {
             assert chargePoint.hasReceivedDataTransferConfirmation("Accepted")
         }
     }

@@ -70,6 +70,14 @@ public class FakeCentralSystem
         return currentIdentifier != null;
     }
 
+    public void clientLost() {
+        currentSessionIndex = null;
+        currentIdentifier = null;
+        // clear
+        receivedConfirmation = null;
+        receivedRequest = null;
+    }
+
     public enum serverType {JSON, SOAP}
 
     public void started() throws Exception
@@ -208,11 +216,7 @@ public class FakeCentralSystem
 
             @Override
             public void lostSession(UUID identity) {
-                currentSessionIndex = null;
-                currentIdentifier = null;
-                // clear
-                receivedConfirmation = null;
-                receivedRequest = null;
+                clientLost();
             }
         });
     }
