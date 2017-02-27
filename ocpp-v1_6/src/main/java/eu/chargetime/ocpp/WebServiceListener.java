@@ -70,15 +70,20 @@ public class WebServiceListener implements Listener {
             chargeBoxes = new HashMap<>();
         }
 
+        private void removeChargebox(String identity) {
+            if (chargeBoxes.containsKey(identity))
+                chargeBoxes.remove(identity);
+        }
+
         @Override
         public SOAPMessage incomingRequest(SOAPMessage message) {
             String identity = SOAPSyncHelper.getHeaderValue(message, "chargeBoxIdentity");
             if (!chargeBoxes.containsKey(identity)) {
                 String toUrl = SOAPSyncHelper.getHeaderValue(message, "From");
-                WebServiceReceiver webServiceReceiver = new WebServiceReceiver(toUrl);
+                WebServiceReceiver webServiceReceiver = new WebServiceReceiver(toUrl, () -> removeChargebox(identity));
                 SOAPCommunicator communicator = new SOAPCommunicator(identity, fromUrl, webServiceReceiver);
                 communicator.setToUrl(toUrl);
-                events.newSession(new Session(communicator, new Queue()), identity);
+                events.newSession(new TimeoutSession(communicator, new Queue()), identity);
                 chargeBoxes.put(identity, webServiceReceiver);
             }
 

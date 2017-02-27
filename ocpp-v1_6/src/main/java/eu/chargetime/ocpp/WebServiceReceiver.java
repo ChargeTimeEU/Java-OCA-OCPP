@@ -34,10 +34,12 @@ public class WebServiceReceiver extends SOAPSyncHelper implements Receiver {
     private RadioEvents events;
     SOAPConnection soapConnection;
     private String url;
+    private WebServiceReceiverEvents receiverEvents;
     private boolean connected;
 
-    public WebServiceReceiver(String url) {
+    public WebServiceReceiver(String url, WebServiceReceiverEvents receiverEvents) {
         this.url = url;
+        this.receiverEvents = receiverEvents;
         connected = false;
     }
 
@@ -52,6 +54,7 @@ public class WebServiceReceiver extends SOAPSyncHelper implements Receiver {
             }
         }
         events.disconnected();
+        receiverEvents.disconnect();
     }
 
     @Override

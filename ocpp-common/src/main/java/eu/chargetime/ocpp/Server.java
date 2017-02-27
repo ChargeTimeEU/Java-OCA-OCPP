@@ -136,4 +136,13 @@ public abstract class Server extends FeatureHandler {
         CompletableFuture<Confirmation> promise = createPromise(id);
         return promise;
     }
+
+    /**
+     * Close connection to a client
+     *
+     * @param sessionIndex Session index of the client.
+     */
+    public void closeSession(UUID sessionIndex) {
+        sessions.get(sessionIndex).close();
+    }
 }

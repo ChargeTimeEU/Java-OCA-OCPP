@@ -24,32 +24,31 @@ package eu.chargetime.ocpp;/*
     SOFTWARE.
  */
 
-public class WebSocketReceiver implements Receiver {
+import eu.chargetime.ocpp.model.Confirmation;
 
-    private RadioEvents handler;
-    private WebSocketReceiverEvents receiverEvents;
+import java.util.function.BiConsumer;
 
-    public WebSocketReceiver(WebSocketReceiverEvents handler) {
-        receiverEvents = handler;
+class ConfirmationHandler implements BiConsumer<Confirmation, Throwable> {
+
+    private String id;
+    private String action;
+    private Communicator communicator;
+
+    public ConfirmationHandler(String id, String action, Communicator communicator) {
+
+        this.id = id;
+        this.action = action;
+        this.communicator = communicator;
     }
 
     @Override
-    public void disconnect() {
-        handler.disconnected();
-
-    }
-
-    void relay(String message) {
-        handler.receivedMessage(message);
-    }
-
-    @Override
-    public void send(Object message) {
-        receiverEvents.relay(message.toString());
-    }
-
-    @Override
-    public void accept(RadioEvents events) {
-        handler = events;
+    public void accept(Confirmation confirmation, Throwable throwable) {
+        if (throwable != null) {
+            communicator.sendCallError(id, action, "InternalError", "An internal error occurred and the receiver was not able to process the requested Action successfully");
+        } else if (confirmation == null) {
+            communicator.sendCallError(id, action, "NotSupported", "Requested Action is recognized but not supported by the receiver");
+        } else {
+            communicator.sendCallResult(id, action, confirmation);
+        }
     }
 }

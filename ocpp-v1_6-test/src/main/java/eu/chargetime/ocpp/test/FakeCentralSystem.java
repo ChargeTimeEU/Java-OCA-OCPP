@@ -71,11 +71,7 @@ public class FakeCentralSystem
     }
 
     public void clientLost() {
-        currentSessionIndex = null;
-        currentIdentifier = null;
-        // clear
-        receivedConfirmation = null;
-        receivedRequest = null;
+        server.closeSession(currentSessionIndex);
     }
 
     public enum serverType {JSON, SOAP}
@@ -216,7 +212,11 @@ public class FakeCentralSystem
 
             @Override
             public void lostSession(UUID identity) {
-                clientLost();
+                currentSessionIndex = null;
+                currentIdentifier = null;
+                // clear
+                receivedConfirmation = null;
+                receivedRequest = null;
             }
         });
     }
