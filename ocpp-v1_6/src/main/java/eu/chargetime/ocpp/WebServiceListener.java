@@ -63,7 +63,7 @@ public class WebServiceListener implements Listener {
     }
 
     private class WSHttpEventHandler implements WSHttpHandlerEvents {
-
+        private static final long INITIAL_TIMEOUT = 1000 * 60 * 5;
         HashMap<String, WebServiceReceiver> chargeBoxes;
 
         public WSHttpEventHandler() {
@@ -83,7 +83,7 @@ public class WebServiceListener implements Listener {
                 WebServiceReceiver webServiceReceiver = new WebServiceReceiver(toUrl, () -> removeChargebox(identity));
                 SOAPCommunicator communicator = new SOAPCommunicator(identity, fromUrl, webServiceReceiver);
                 communicator.setToUrl(toUrl);
-                events.newSession(new TimeoutSession(communicator, new Queue()), identity);
+                events.newSession(new TimeoutSession(communicator, new Queue(), INITIAL_TIMEOUT), identity);
                 chargeBoxes.put(identity, webServiceReceiver);
             }
 

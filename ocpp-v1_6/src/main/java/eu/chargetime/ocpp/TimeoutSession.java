@@ -36,7 +36,6 @@ import java.util.TimerTask;
 
 public class TimeoutSession extends Session {
 
-    private static final long INITIAL_TIMEOUT = 1000 * 60 * 5;
     private SessionEvents eventHandler;
     private TimeoutTimer timeoutTimer;
     private Communicator communicator;
@@ -47,10 +46,10 @@ public class TimeoutSession extends Session {
      * @param communicator send and receive messages.
      * @param queue        store and restore requests based on unique ids.
      */
-    public TimeoutSession(Communicator communicator, Queue queue) {
+    public TimeoutSession(Communicator communicator, Queue queue, long timeout) {
         super(communicator, queue);
         this.communicator = communicator;
-        timeoutTimer = new TimeoutTimer(INITIAL_TIMEOUT);
+        timeoutTimer = new TimeoutTimer(timeout);
     }
 
     @Override

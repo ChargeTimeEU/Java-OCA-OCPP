@@ -53,7 +53,7 @@ public class TimeoutSessionTest {
     @Before
     public void setup() throws Exception {
         when(sessionEvents.findFeatureByAction(any())).thenReturn(feature);
-        session = new TimeoutSession(communicator, queue);
+        session = new TimeoutSession(communicator, queue, TIMEOUT);
         doAnswer(invocation -> eventHandler = invocation.getArgumentAt(1, CommunicatorEvents.class)).when(communicator).connect(any(), any());
         doAnswer(invocation -> eventHandler = invocation.getArgumentAt(0, CommunicatorEvents.class)).when(communicator).accept(any());
     }
@@ -65,7 +65,7 @@ public class TimeoutSessionTest {
         eventHandler.onConnected();
 
         // When
-        Thread.sleep(TIMEOUT + 1);
+        Thread.sleep(TIMEOUT + 2);
 
         // Then
         verify(sessionEvents, times(1)).handleConnectionClosed();
@@ -78,7 +78,7 @@ public class TimeoutSessionTest {
         eventHandler.onConnected();
 
         // When
-        Thread.sleep(TIMEOUT + 1);
+        Thread.sleep(TIMEOUT + 2);
 
         // Then
         verify(sessionEvents, times(1)).handleConnectionClosed();
@@ -91,7 +91,7 @@ public class TimeoutSessionTest {
         eventHandler.onConnected();
 
         // When
-        Thread.sleep(TIMEOUT + 1);
+        Thread.sleep(TIMEOUT + 2);
 
         // Then
         verify(communicator, times(1)).disconnect();
@@ -104,7 +104,7 @@ public class TimeoutSessionTest {
         eventHandler.onConnected();
 
         // When
-        Thread.sleep(TIMEOUT + 1);
+        Thread.sleep(TIMEOUT + 2);
 
         // Then
         verify(communicator, times(1)).disconnect();
@@ -123,7 +123,7 @@ public class TimeoutSessionTest {
         Thread.sleep(TIMEOUT / 2);
 
         // Then
-        verify(communicator, times(0)).disconnect();
+        verify(communicator, never()).disconnect();
     }
 
     @Test
@@ -139,6 +139,6 @@ public class TimeoutSessionTest {
         Thread.sleep(TIMEOUT / 2);
 
         // Then
-        verify(communicator, times(0)).disconnect();
+        verify(sessionEvents, never()).handleConnectionClosed();
     }
 }
