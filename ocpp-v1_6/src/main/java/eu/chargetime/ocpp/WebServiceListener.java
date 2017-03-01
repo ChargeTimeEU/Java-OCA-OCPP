@@ -26,6 +26,7 @@ package eu.chargetime.ocpp;
  */
 
 import com.sun.net.httpserver.HttpServer;
+import eu.chargetime.ocpp.utilities.TimeoutTimer;
 
 import javax.xml.soap.SOAPMessage;
 import java.io.IOException;
@@ -81,9 +82,17 @@ public class WebServiceListener implements Listener {
             if (!chargeBoxes.containsKey(identity)) {
                 String toUrl = SOAPSyncHelper.getHeaderValue(message, "From");
                 WebServiceReceiver webServiceReceiver = new WebServiceReceiver(toUrl, () -> removeChargebox(identity));
+
                 SOAPCommunicator communicator = new SOAPCommunicator(identity, fromUrl, webServiceReceiver);
                 communicator.setToUrl(toUrl);
-                events.newSession(new TimeoutSession(communicator, new Queue(), INITIAL_TIMEOUT), identity);
+
+                TimeoutSession session = new TimeoutSession(communicator, new Queue());
+                session.setTimeoutTimer(new TimeoutTimer(INITIAL_TIMEOUT, () -> {
+                    session.close();
+                    chargeBoxes.remove(identity);
+                }));
+
+                events.newSession(session, identity);
                 chargeBoxes.put(identity, webServiceReceiver);
             }
 

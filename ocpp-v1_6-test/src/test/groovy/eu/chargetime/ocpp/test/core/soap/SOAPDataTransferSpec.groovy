@@ -44,7 +44,7 @@ class SOAPDataTransferSpec extends Specification {
     }
 
     def "Charge point sends a DataTransfer request and receives a response"() {
-        def conditions = new PollingConditions(timeout: 5)
+        def conditions = new PollingConditions(timeout: 10)
 
         when:
         chargePoint.sendDataTransferRequest("VendorId", "messageId", "data")

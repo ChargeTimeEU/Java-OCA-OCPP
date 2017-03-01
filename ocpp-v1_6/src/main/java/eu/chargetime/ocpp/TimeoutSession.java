@@ -30,15 +30,11 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
 import eu.chargetime.ocpp.model.core.RegistrationStatus;
-
-import java.util.Timer;
-import java.util.TimerTask;
+import eu.chargetime.ocpp.utilities.TimeoutTimer;
 
 public class TimeoutSession extends Session {
 
-    private SessionEvents eventHandler;
     private TimeoutTimer timeoutTimer;
-    private Communicator communicator;
 
     /**
      * Handles required injections.
@@ -46,22 +42,43 @@ public class TimeoutSession extends Session {
      * @param communicator send and receive messages.
      * @param queue        store and restore requests based on unique ids.
      */
-    public TimeoutSession(Communicator communicator, Queue queue, long timeout) {
+    public TimeoutSession(Communicator communicator, Queue queue) {
         super(communicator, queue);
-        this.communicator = communicator;
-        timeoutTimer = new TimeoutTimer(timeout);
+    }
+
+    public void setTimeoutTimer(TimeoutTimer timeoutTimer) {
+        this.timeoutTimer = timeoutTimer;
+    }
+
+    private void resetTimer(int timeoutInSec) {
+        if (timeoutTimer != null)
+            timeoutTimer.setTimeout(timeoutInSec * 1000);
+        resetTimer();
+    }
+
+    private void resetTimer() {
+        if (timeoutTimer != null)
+            timeoutTimer.reset();
+    }
+
+    private void stopTimer() {
+        if (timeoutTimer != null)
+            timeoutTimer.end();
+    }
+
+    private void startTimer() {
+        if (timeoutTimer != null)
+            timeoutTimer.begin();
     }
 
     @Override
     public void open(String uri, SessionEvents eventHandler) {
-        this.eventHandler = eventHandler;
         SessionEvents events = createEventHandler(eventHandler);
         super.open(uri, events);
     }
 
     @Override
     public void accept(SessionEvents eventHandler) {
-        this.eventHandler = eventHandler;
         SessionEvents events = createEventHandler(eventHandler);
         super.accept(events);
     }
@@ -80,20 +97,19 @@ public class TimeoutSession extends Session {
 
             @Override
             public void handleConfirmation(String uniqueId, Confirmation confirmation) {
-                timeoutTimer.reset();
+                resetTimer();
                 eventHandler.handleConfirmation(uniqueId, confirmation);
             }
 
             @Override
             public Confirmation handleRequest(Request request) {
-                timeoutTimer.reset();
+                resetTimer();
                 Confirmation confirmation = eventHandler.handleRequest(request);
 
                 if (confirmation instanceof BootNotificationConfirmation) {
-                    BootNotificationConfirmation bootNotificationConfirmation = (BootNotificationConfirmation) confirmation;
-                    if (bootNotificationConfirmation.getStatus() == RegistrationStatus.Accepted) {
-                        timeoutTimer.setTimeout(bootNotificationConfirmation.getInterval() * 1000);
-                        timeoutTimer.reset();
+                    BootNotificationConfirmation bootNotification = (BootNotificationConfirmation) confirmation;
+                    if (bootNotification.getStatus() == RegistrationStatus.Accepted) {
+                        resetTimer(bootNotification.getInterval());
                     }
                 }
                 return confirmation;
@@ -107,53 +123,15 @@ public class TimeoutSession extends Session {
             @Override
             public void handleConnectionClosed() {
                 eventHandler.handleConnectionClosed();
-                timeoutTimer.end();
+                stopTimer();
             }
 
             @Override
             public void handleConnectionOpened() {
                 eventHandler.handleConnectionOpened();
-                timeoutTimer.begin();
+                startTimer();
             }
         };
     }
-
-    private void timeout() {
-        communicator.disconnect();
-        eventHandler.handleConnectionClosed();
-    }
-
-    private class TimeoutTimer extends Timer {
-
-        private TimerTask timerTask;
-        private long timeout;
-
-        public TimeoutTimer(long timeout) {
-            this.timeout = timeout;
-        }
-
-        public void setTimeout(long timeout) {
-            this.timeout = timeout;
-        }
-
-        public void begin() {
-            timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    timeout();
-                }
-            };
-            this.schedule(timerTask, timeout);
-        }
-
-        public void end()
-        {
-            timerTask.cancel();
-        }
-
-        public void reset() {
-            end();
-            begin();
-        }
-    }
 }
+

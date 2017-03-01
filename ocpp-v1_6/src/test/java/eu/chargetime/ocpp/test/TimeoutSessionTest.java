@@ -2,7 +2,9 @@ package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.model.TestConfirmation;
 import eu.chargetime.ocpp.model.TestRequest;
+import eu.chargetime.ocpp.utilities.TimeoutTimer;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -37,7 +39,6 @@ import static org.mockito.Mockito.*;
  */
 public class TimeoutSessionTest {
 
-    private final long TIMEOUT = 10;
     private TimeoutSession session;
     private CommunicatorEvents eventHandler;
 
@@ -49,96 +50,91 @@ public class TimeoutSessionTest {
     SessionEvents sessionEvents = mock(SessionEvents.class);
     @Mock
     Feature feature = mock(Feature.class);
+    @Mock
+    TimeoutTimer timeoutTimer = mock(TimeoutTimer.class);
 
     @Before
     public void setup() throws Exception {
         when(sessionEvents.findFeatureByAction(any())).thenReturn(feature);
-        session = new TimeoutSession(communicator, queue, TIMEOUT);
+        when(sessionEvents.findFeatureByRequest(any())).thenReturn(feature);
+        session = new TimeoutSession(communicator, queue);
         doAnswer(invocation -> eventHandler = invocation.getArgumentAt(1, CommunicatorEvents.class)).when(communicator).connect(any(), any());
         doAnswer(invocation -> eventHandler = invocation.getArgumentAt(0, CommunicatorEvents.class)).when(communicator).accept(any());
+
+        session.setTimeoutTimer(timeoutTimer);
     }
 
     @Test
-    public void timeoutExceeded_openAndConnected_handleConnectionClosed() throws Exception {
+    public void onConnected_opened_beginTimeout() throws Exception {
         // Given
         session.open(null, sessionEvents);
-        eventHandler.onConnected();
 
         // When
-        Thread.sleep(TIMEOUT + 2);
+        eventHandler.onConnected();
 
         // Then
-        verify(sessionEvents, times(1)).handleConnectionClosed();
+        verify(timeoutTimer, times(1)).begin();
     }
 
     @Test
-    public void timeoutExceeded_acceptAndConnected_handleConnectionClosed() throws Exception {
-        // Given
-        session.accept(sessionEvents);
-        eventHandler.onConnected();
-
-        // When
-        Thread.sleep(TIMEOUT + 2);
-
-        // Then
-        verify(sessionEvents, times(1)).handleConnectionClosed();
-    }
-
-    @Test
-    public void timeoutExceeded_openAndConnected_communicatorDisconnect() throws Exception {
+    public void onDisconnected_opened_endTimeout() throws Exception {
         // Given
         session.open(null, sessionEvents);
-        eventHandler.onConnected();
 
         // When
-        Thread.sleep(TIMEOUT + 2);
+        eventHandler.onDisconnected();
 
         // Then
-        verify(communicator, times(1)).disconnect();
+        verify(timeoutTimer, times(1)).end();
     }
 
     @Test
-    public void timeoutExceeded_acceptAndConnected_communicatorDisconnect() throws Exception {
+    public void onConnected_accepted_beginTimeout() throws Exception {
         // Given
         session.accept(sessionEvents);
-        eventHandler.onConnected();
 
         // When
-        Thread.sleep(TIMEOUT + 2);
+        eventHandler.onConnected();
 
         // Then
-        verify(communicator, times(1)).disconnect();
+        verify(timeoutTimer, times(1)).begin();
     }
 
     @Test
-    public void handleRequest_openAndConnected_disconnectNotCalled() throws Exception {
+    public void onDisconnected_accepted_endTimeout() throws Exception {
         // Given
+        session.accept(sessionEvents);
+
+        // When
+        eventHandler.onDisconnected();
+
+        // Then
+        verify(timeoutTimer, times(1)).end();
+    }
+
+    @Test
+    public void onCall_request_resetTimeout() throws Exception {
+        // Given
+        session.open(null, sessionEvents);
         when(communicator.unpackPayload(any(), any())).thenReturn(new TestRequest());
-        session.open(null, sessionEvents);
-        eventHandler.onConnected();
-        Thread.sleep(TIMEOUT / 2);
 
         // When
         eventHandler.onCall("", null, null);
-        Thread.sleep(TIMEOUT / 2);
 
         // Then
-        verify(communicator, never()).disconnect();
+        verify(timeoutTimer, times(1)).reset();
     }
 
     @Test
-    public void handleRequest_openAndConnected_handleConnectionClosedNotCalled() throws Exception {
+    public void onCall_confirmation_resetTimeout() throws Exception {
         // Given
-        when(communicator.unpackPayload(any(), any())).thenReturn(new TestRequest());
         session.open(null, sessionEvents);
-        eventHandler.onConnected();
-        Thread.sleep(TIMEOUT / 2);
+        when(communicator.unpackPayload(any(), any())).thenReturn(new TestConfirmation());
 
         // When
-        eventHandler.onCall("", null, null);
-        Thread.sleep(TIMEOUT / 2);
+        eventHandler.onCallResult("", null, null);
 
         // Then
-        verify(sessionEvents, never()).handleConnectionClosed();
+        verify(timeoutTimer, times(1)).reset();
     }
 }
