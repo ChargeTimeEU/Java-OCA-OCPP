@@ -106,12 +106,11 @@ public class SOAPCommunicator extends Communicator {
         SOAPFault fault = null;
         try {
             MessageFactory messageFactory = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
-            SOAPFactory soapFactory = SOAPFactory.newInstance();
             SOAPMessage message = messageFactory.createMessage();
             createMessageHeader(uniqueId, String.format("%sResponse", action), true, message);
 
             SOAPFault soapFault = message.getSOAPBody().addFault();
-            //soapFault.setFaultCode();
+            soapFault.setFaultCode(errorCode);
             soapFault.setFaultString(errorDescription);
 
         } catch (SOAPException e) {
