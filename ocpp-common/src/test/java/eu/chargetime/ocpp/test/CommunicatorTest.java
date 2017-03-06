@@ -5,7 +5,9 @@ import eu.chargetime.ocpp.model.Message;
 import eu.chargetime.ocpp.model.Request;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
@@ -35,19 +37,21 @@ import static org.mockito.Mockito.*;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+
+@RunWith(MockitoJUnitRunner.class)
 public class CommunicatorTest {
 
     private Communicator communicator;
     private RadioEvents eventHandler;
 
     @Mock
-    private Receiver receiver = mock(Receiver.class);
+    private Receiver receiver;
     @Mock
-    private Request transactionRelatedRequest = mock(Request.class);
+    private Request transactionRelatedRequest;
     @Mock
-    private Request normalRequest = mock(Request.class);
+    private Request normalRequest;
     @Mock
-    private CommunicatorEvents events = mock(CommunicatorEvents.class);
+    private CommunicatorEvents events;
 
     @Before
     public void setup() throws Exception {

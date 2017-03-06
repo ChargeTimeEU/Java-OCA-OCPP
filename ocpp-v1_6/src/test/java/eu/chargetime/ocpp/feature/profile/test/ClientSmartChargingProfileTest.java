@@ -9,7 +9,9 @@ import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.smartcharging.*;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Calendar;
 import java.util.UUID;
@@ -45,13 +47,14 @@ import static org.mockito.Mockito.*;
  * SOFTWARE.
  */
 
+@RunWith(MockitoJUnitRunner.class)
 public class ClientSmartChargingProfileTest {
 
     private static final UUID SESSION_NULL = null;
     private ClientSmartChargingProfile smartCharging;
 
     @Mock
-    ClientSmartChargingEventHandler handler = mock(ClientSmartChargingEventHandler.class);
+    private ClientSmartChargingEventHandler handler;
 
     @Before
     public void setup() {

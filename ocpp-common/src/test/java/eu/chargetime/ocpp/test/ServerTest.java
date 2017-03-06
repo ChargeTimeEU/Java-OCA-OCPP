@@ -8,7 +8,9 @@ import eu.chargetime.ocpp.model.TestConfirmation;
 import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.UUID;
 
@@ -39,6 +41,8 @@ import static org.mockito.Mockito.*;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+
+@RunWith(MockitoJUnitRunner.class)
 public class ServerTest extends TestUtilities {
 
     private static final String LOCALHOST = "localhost";
@@ -51,17 +55,17 @@ public class ServerTest extends TestUtilities {
     private UUID sessionIndex;
 
     @Mock
-    private Session session = mock(Session.class);
+    private Session session;
     @Mock
-    private Profile profile = mock(Profile.class);
+    private Profile profile;
     @Mock
-    private Feature feature = mock(Feature.class);
+    private Feature feature;
     @Mock
-    private Listener listener = mock(Listener.class);
+    private Listener listener;
     @Mock
-    private ServerEvents serverEvents = mock(ServerEvents.class);
+    private ServerEvents serverEvents;
     @Mock
-    private Request request = mock(Request.class);
+    private Request request;
 
 
     @Before

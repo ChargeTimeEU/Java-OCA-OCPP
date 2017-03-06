@@ -7,7 +7,9 @@ import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.TestRequest;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -39,19 +41,21 @@ import static org.mockito.Mockito.*;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+@RunWith(MockitoJUnitRunner.class)
 public class SessionTest {
     private Session session;
 
     private CommunicatorEvents eventHandler;
 
     @Mock
-    Communicator communicator = mock(Communicator.class);
+    private Communicator communicator;
     @Mock
-    Queue queue = mock(Queue.class);
+    private Queue queue;
     @Mock
-    SessionEvents sessionEvents = mock(SessionEvents.class);
+    private SessionEvents sessionEvents;
     @Mock
-    Feature feature = mock(Feature.class);
+    private Feature feature;
 
     @Before
     public void setup() throws Exception {

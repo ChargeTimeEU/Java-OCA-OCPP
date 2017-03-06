@@ -7,7 +7,11 @@ import eu.chargetime.ocpp.model.TestRequest;
 import eu.chargetime.ocpp.utilities.TimeoutTimer;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -37,21 +41,22 @@ import static org.mockito.Mockito.*;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+@RunWith(MockitoJUnitRunner.class)
 public class TimeoutSessionTest {
 
     private TimeoutSession session;
     private CommunicatorEvents eventHandler;
 
     @Mock
-    Communicator communicator = mock(Communicator.class);
+    private Communicator communicator;
     @Mock
-    Queue queue = mock(Queue.class);
+    private Queue queue;
     @Mock
-    SessionEvents sessionEvents = mock(SessionEvents.class);
+    private SessionEvents sessionEvents;
     @Mock
-    Feature feature = mock(Feature.class);
+    private Feature feature;
     @Mock
-    TimeoutTimer timeoutTimer = mock(TimeoutTimer.class);
+    private TimeoutTimer timeoutTimer;
 
     @Before
     public void setup() throws Exception {

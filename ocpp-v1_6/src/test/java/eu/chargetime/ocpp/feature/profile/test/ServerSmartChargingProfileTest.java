@@ -8,7 +8,9 @@ import eu.chargetime.ocpp.model.core.*;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -42,12 +44,13 @@ import static org.mockito.Mockito.mock;
  * SOFTWARE.
  */
 
+@RunWith(MockitoJUnitRunner.class)
 public class ServerSmartChargingProfileTest {
 
     private ServerSmartChargingProfile smartCharging;
 
     @Mock
-    ServerSmartChargingHandler handler = mock(ServerSmartChargingHandler.class);
+    private ServerSmartChargingHandler handler;
 
     @Before
     public void setup() {

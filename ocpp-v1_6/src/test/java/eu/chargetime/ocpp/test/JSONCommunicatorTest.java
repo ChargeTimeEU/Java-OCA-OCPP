@@ -9,7 +9,9 @@ import eu.chargetime.ocpp.model.core.RegistrationStatus;
 import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -45,12 +47,13 @@ import static org.mockito.Mockito.*;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+@RunWith(MockitoJUnitRunner.class)
 public class JSONCommunicatorTest extends TestUtilities
 {
     private JSONCommunicator communicator;
 
     @Mock
-    Transmitter transmitter = mock(Transmitter.class);
+    private Transmitter transmitter;
 
     @Before
     public void setup() {

@@ -6,7 +6,9 @@ import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import eu.chargetime.ocpp.model.core.*;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.UUID;
 
@@ -41,12 +43,14 @@ import static org.mockito.Mockito.*;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+
+@RunWith(MockitoJUnitRunner.class)
 public class ServerCoreProfileTest {
 
     private ServerCoreProfile core;
 
     @Mock
-    ServerCoreEventHandler handler = mock(ServerCoreEventHandler.class);
+    private ServerCoreEventHandler handler;
 
     @Before
     public void setup() {
