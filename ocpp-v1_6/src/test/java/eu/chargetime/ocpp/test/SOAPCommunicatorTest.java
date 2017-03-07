@@ -9,7 +9,9 @@ import eu.chargetime.ocpp.model.core.RegistrationStatus;
 import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -26,7 +28,6 @@ import java.util.TimeZone;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.mock;
 
 /*
     ChargeTime.eu - Java-OCA-OCPP
@@ -53,6 +54,7 @@ import static org.mockito.Mockito.mock;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+@RunWith(MockitoJUnitRunner.class)
 public class SOAPCommunicatorTest extends TestUtilities {
 
     private SOAPCommunicator communicator;
@@ -60,7 +62,7 @@ public class SOAPCommunicatorTest extends TestUtilities {
     private String fromUrl = "http://localhost";
 
     @Mock
-    Transmitter transmitter = mock(Transmitter.class);
+    private Transmitter transmitter;
 
     @Before
     public void setup() {

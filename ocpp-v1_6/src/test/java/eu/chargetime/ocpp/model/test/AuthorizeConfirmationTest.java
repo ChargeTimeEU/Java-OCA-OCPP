@@ -4,7 +4,9 @@ import eu.chargetime.ocpp.model.core.AuthorizeConfirmation;
 import eu.chargetime.ocpp.model.core.IdTagInfo;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -36,11 +38,12 @@ import static org.mockito.Mockito.*;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+@RunWith(MockitoJUnitRunner.class)
 public class AuthorizeConfirmationTest {
     AuthorizeConfirmation confirmation;
 
     @Mock
-    IdTagInfo infoTag = mock(IdTagInfo.class);
+    private IdTagInfo infoTag;
 
     @Before
     public void setup() throws Exception {

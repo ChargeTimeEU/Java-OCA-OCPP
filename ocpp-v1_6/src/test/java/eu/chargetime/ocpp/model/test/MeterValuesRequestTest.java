@@ -7,6 +7,9 @@ import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -38,9 +41,11 @@ import static org.mockito.Mockito.*;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@RunWith(MockitoJUnitRunner.class)
 public class MeterValuesRequestTest extends TestUtilities{
     MeterValuesRequest request;
-    MeterValue meterValueMock = mock(MeterValue.class);
+    @Mock
+    private MeterValue meterValueMock;
 
     @Before
     public void setUp() throws Exception {

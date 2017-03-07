@@ -8,7 +8,9 @@ import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Calendar;
 import java.util.UUID;
@@ -44,6 +46,7 @@ import static org.mockito.Mockito.*;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+@RunWith(MockitoJUnitRunner.class)
 public class ClientCoreProfileTest
 {
     private static final UUID SESSION_NULL = null;
@@ -51,7 +54,7 @@ public class ClientCoreProfileTest
     private ClientCoreProfile core;
 
     @Mock
-    ClientCoreEventHandler handler = mock(ClientCoreEventHandler.class);
+    ClientCoreEventHandler handler;
 
     @Before
     public void setup() {

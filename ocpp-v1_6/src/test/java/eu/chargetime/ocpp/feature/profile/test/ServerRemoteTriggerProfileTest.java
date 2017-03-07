@@ -8,7 +8,9 @@ import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -41,12 +43,13 @@ import static org.mockito.Mockito.mock;
  * SOFTWARE.
  */
 
+@RunWith(MockitoJUnitRunner.class)
 public class ServerRemoteTriggerProfileTest {
 
     private ServerRemoteTriggerProfile profile;
 
     @Mock
-    ServerRemoteTriggerHandler handler = mock(ServerRemoteTriggerHandler.class);
+    private ServerRemoteTriggerHandler handler;
 
     @Before
     public void setup() {

@@ -7,7 +7,9 @@ import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageConfirmation;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.UUID;
 
@@ -41,13 +43,14 @@ import static org.mockito.Mockito.*;
  * SOFTWARE.
  */
 
+@RunWith(MockitoJUnitRunner.class)
 public class ClientRemoteTriggerProfileTest {
 
     private static final UUID SESSION_NULL = null;
     private ClientRemoteTriggerProfile profile;
 
     @Mock
-    ClientRemoteTriggerHandler handler = mock(ClientRemoteTriggerHandler.class);
+    private ClientRemoteTriggerHandler handler;
 
     @Before
     public void setup() {
