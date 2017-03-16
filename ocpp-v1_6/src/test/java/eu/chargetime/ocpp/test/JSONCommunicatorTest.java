@@ -268,7 +268,7 @@ public class JSONCommunicatorTest extends TestUtilities
     @Test
     public void pack_bootNotificationConfirmation_returnsBootNotificationConfirmationPayload() throws Exception {
         // Given
-        String expected = "{\"currentTime\":\"2016-04-28T06:41:13.720Z\",\"interval\":300,\"status\":\"Accepted\"}";
+        String expected = "{\"currentTime\":\"2016-04-28T06:41:13Z\",\"interval\":300,\"status\":\"Accepted\"}";
         BootNotificationConfirmation confirmation = new BootNotificationConfirmation();
         confirmation.setCurrentTime(createDateTimeInMillis(1461825673720L));
         confirmation.setInterval(300);
