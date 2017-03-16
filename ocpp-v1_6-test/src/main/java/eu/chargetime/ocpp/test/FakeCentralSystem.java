@@ -306,9 +306,7 @@ public class FakeCentralSystem
 
     public void sendRemoteStartTransactionRequest(int connectorId, String idTag) throws Exception {
         RemoteStartTransactionRequest request = new RemoteStartTransactionRequest();
-        IdToken idToken = new IdToken();
-        idToken.setIdToken(idTag);
-        request.setIdTag(idToken);
+        request.setIdTag(idTag);
         request.setConnectorId(connectorId);
         server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
     }

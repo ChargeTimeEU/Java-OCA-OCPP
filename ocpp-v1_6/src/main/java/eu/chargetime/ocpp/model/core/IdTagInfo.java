@@ -44,7 +44,7 @@ import java.util.Calendar;
 public class IdTagInfo implements Validatable
 {
     private Calendar expiryDate;
-    private IdToken parentIdTag;
+    private String parentIdTag;
     private AuthorizationStatus status;
 
     /**
@@ -79,19 +79,19 @@ public class IdTagInfo implements Validatable
     /**
      * This contains the parent-identifier.
      *
-     * @return  the {@link IdToken} of the parent.
+     * @return  the IdToken of the parent.
      */
-    public IdToken getParentIdTag() {
+    public String getParentIdTag() {
         return parentIdTag;
     }
 
     /**
      * Optional. This contains the parent-identifier.
      *
-     * @param parentIdTag   an {@link IdToken}.
+     * @param parentIdTag   an IdToken.
      */
     @XmlElement
-    public void setParentIdTag(IdToken parentIdTag) {
+    public void setParentIdTag(String parentIdTag) {
         this.parentIdTag = parentIdTag;
     }
 

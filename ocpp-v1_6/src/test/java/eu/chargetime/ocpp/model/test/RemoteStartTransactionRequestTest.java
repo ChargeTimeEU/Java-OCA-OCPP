@@ -2,7 +2,6 @@ package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.ChargingProfile;
-import eu.chargetime.ocpp.model.core.IdToken;
 import eu.chargetime.ocpp.model.core.RemoteStartTransactionRequest;
 import org.junit.Assert;
 import org.junit.Before;
@@ -78,13 +77,13 @@ public class RemoteStartTransactionRequestTest {
     @Test
     public void setIdTag_someIdToken_idTagIsSet() throws Exception {
         // Given
-        IdToken idToken = mock(IdToken.class);
+        String idTag = "xxx";
 
         // When
-        request.setIdTag(idToken);
+        request.setIdTag(idTag);
 
         // Then
-        assertThat(request.getIdTag(), equalTo(idToken));
+        assertThat(request.getIdTag(), equalTo(idTag));
     }
 
     @Test
@@ -106,33 +105,6 @@ public class RemoteStartTransactionRequestTest {
 
         // Then
         assertThat(isValid, is(false));
-    }
-
-    @Test
-    public void validate_idTagIsSet_returnTrue() throws Exception {
-        // Given
-        IdToken idToken = mock(IdToken.class);
-        request.setIdTag(idToken);
-        when(idToken.validate()).thenReturn(true);
-
-        // When
-        boolean isValid = request.validate();
-
-        // Then
-        assertThat(isValid, is(true));
-    }
-
-    @Test
-    public void validate_idTagIsSet_idTagIsValidated() throws Exception {
-        // Given
-        IdToken idToken = mock(IdToken.class);
-        request.setIdTag(idToken);
-
-        // When
-        request.validate();
-
-        // Then
-        verify(idToken, times(1)).validate();
     }
 
     @Test
