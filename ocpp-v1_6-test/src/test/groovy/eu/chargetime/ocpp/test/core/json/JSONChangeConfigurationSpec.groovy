@@ -27,7 +27,7 @@ class JSONChangeConfigurationSpec extends Specification
     }
 
     def "Central System sends a ChangeConfiguration request and receives a response"() {
-        def conditions = new PollingConditions(timeout: 1)
+        def conditions = new PollingConditions(timeout: 10)
         given:
         conditions.eventually {
             assert centralSystem.connected()
