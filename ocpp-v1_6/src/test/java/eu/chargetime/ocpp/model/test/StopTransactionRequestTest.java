@@ -1,6 +1,5 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.core.IdToken;
 import eu.chargetime.ocpp.model.core.MeterValue;
 import eu.chargetime.ocpp.model.core.Reason;
 import eu.chargetime.ocpp.model.core.StopTransactionRequest;
@@ -52,13 +51,13 @@ public class StopTransactionRequestTest extends TestUtilities {
     @Test
     public void setIdTag_anIdToken_idTagIsSet() {
         // Given
-        IdToken idToken = mock(IdToken.class);
+        String idTag = "xxx";
 
         // When
-        request.setIdTag(idToken);
+        request.setIdTag(idTag);
 
         // Then
-        assertThat(request.getIdTag(), equalTo(idToken));
+        assertThat(request.getIdTag(), equalTo(idTag));
     }
 
     @Test

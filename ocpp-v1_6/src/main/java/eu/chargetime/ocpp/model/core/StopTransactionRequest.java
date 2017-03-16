@@ -37,7 +37,7 @@ import java.util.Calendar;
  */
 @XmlRootElement
 public class StopTransactionRequest implements Request {
-    private IdToken idTag;
+    private String idTag;
     private Integer meterStop;
     private Calendar timestamp;
     private Integer transactionId;
@@ -61,9 +61,9 @@ public class StopTransactionRequest implements Request {
     /**
      * This contains the identifier which requested to stop the charging.
      *
-     * @return the {@link IdToken}.
+     * @return the IdToken.
      */
-    public IdToken getIdTag() {
+    public String getIdTag() {
         return idTag;
     }
 
@@ -72,10 +72,10 @@ public class StopTransactionRequest implements Request {
      * It is optional because a Charge Point may terminate charging without the presence of an idTag, e.g. in case of a reset.
      * A Charge Point SHALL send the idTag if known.
      *
-     * @param idTag the {@link IdToken}.
+     * @param idTag the IdToken.
      */
     @XmlElement
-    public void setIdTag(IdToken idTag) {
+    public void setIdTag(String idTag) {
         this.idTag = idTag;
     }
 

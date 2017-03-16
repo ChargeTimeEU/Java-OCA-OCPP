@@ -2,6 +2,7 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.ModelUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -39,14 +40,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class RemoteStartTransactionRequest implements Request {
 
     private Integer connectorId;
-    private IdToken idTag;
+    private String idTag;
     private ChargingProfile chargingProfile;
 
     @Override
     public boolean validate() {
         boolean valid = true;
         if (valid &= idTag != null)
-            valid &= idTag.validate();
+            valid &= ModelUtil.validate(idTag, 20);
 
         if (chargingProfile != null) {
             valid &= chargingProfile.validate();
@@ -83,19 +84,19 @@ public class RemoteStartTransactionRequest implements Request {
     /**
      * The identifier that Charge Point must use to start a transaction.
      *
-     * @return an {@link IdToken}.
+     * @return an IdToken.
      */
-    public IdToken getIdTag() {
+    public String getIdTag() {
         return idTag;
     }
 
     /**
      * Required. The identifier that Charge Point must use to start a transaction.
      *
-     * @param idTag    an {@link IdToken}.
+     * @param idTag an IdToken
      */
     @XmlElement
-    public void setIdTag(IdToken idTag) {
+    public void setIdTag(String idTag) {
         this.idTag = idTag;
     }
 
