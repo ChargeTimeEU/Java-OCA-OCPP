@@ -63,6 +63,11 @@ public class JSONCommunicator extends Communicator {
     private static final String CALL_FORMAT = "[2,\"%s\",\"%s\",%s]";
     private static final String CALLRESULT_FORMAT = "[3,\"%s\",%s]";
     private static final String CALLERROR_FORMAT = "[4,\"%s\",\"%s\",\"%s\",%s]";
+    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    private static final String DATE_FORMAT_WITH_MS = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    private static final int DATE_FORMAT_WITH_MS_LENGTH = 24;
+
+    private boolean hasLongDateFormat = false;
 
     /**
      * Handle required injections.
@@ -91,7 +96,7 @@ public class JSONCommunicator extends Communicator {
 
     private class CalendarSerializer implements JsonSerializer<Calendar> {
         public JsonElement serialize(Calendar src, Type typeOfSrc, JsonSerializationContext context) {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            SimpleDateFormat formatter = new SimpleDateFormat(hasLongDateFormat ? DATE_FORMAT_WITH_MS : DATE_FORMAT);
             formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
             return new JsonPrimitive(formatter.format(src.getTime()));
         }
@@ -100,10 +105,14 @@ public class JSONCommunicator extends Communicator {
     private class CalendarDeserializer implements JsonDeserializer<Calendar> {
         public Calendar deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             try {
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                String dateString = json.getAsJsonPrimitive().getAsString();
+
+                hasLongDateFormat = dateString.length() == DATE_FORMAT_WITH_MS_LENGTH;
+                SimpleDateFormat formatter = new SimpleDateFormat(hasLongDateFormat ? DATE_FORMAT_WITH_MS : DATE_FORMAT);
+
                 formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
                 Calendar calendar = Calendar.getInstance();
-                Date date = formatter.parse(json.getAsJsonPrimitive().getAsString());
+                Date date = formatter.parse(dateString);
                 calendar.setTime(date);
                 return calendar;
             } catch (ParseException e) {
