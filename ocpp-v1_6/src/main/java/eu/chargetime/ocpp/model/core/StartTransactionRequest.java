@@ -2,6 +2,7 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.ModelUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -39,7 +40,7 @@ import java.util.Calendar;
 @XmlRootElement
 public class StartTransactionRequest implements Request {
     private Integer connectorId;
-    private IdToken idTag;
+    private String idTag;
     private Integer meterStart;
     private Integer reservationId;
     private Calendar timestamp;
@@ -49,7 +50,7 @@ public class StartTransactionRequest implements Request {
         boolean valid = true;
         valid &= connectorId != null && connectorId > 0;
         if (valid &= idTag != null)
-            valid &= idTag.validate();
+            valid &= ModelUtil.validate(idTag, 20);
         valid &= meterStart != null;
         valid &= timestamp != null;
         return valid;
@@ -81,19 +82,19 @@ public class StartTransactionRequest implements Request {
     /**
      * This contains the identifier for which a transaction has to be started.
      *
-     * @return the {@link IdToken}.
+     * @return the IdToken.
      */
-    public IdToken getIdTag() {
+    public String getIdTag() {
         return idTag;
     }
 
     /**
      * Required. This contains the identifier for which a transaction has to be started.
      *
-     * @param idTag the {@link IdToken}.
+     * @param idTag the IdToken.
      */
     @XmlElement
-    public void setIdTag(IdToken idTag) {
+    public void setIdTag(String idTag) {
         this.idTag = idTag;
     }
 

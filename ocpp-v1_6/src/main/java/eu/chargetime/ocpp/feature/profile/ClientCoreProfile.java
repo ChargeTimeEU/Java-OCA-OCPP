@@ -190,9 +190,7 @@ public class ClientCoreProfile implements Profile
     public StartTransactionRequest createStartTransactionRequest(Integer connectorId, String idTag, Integer meterStart, Calendar timestamp) throws PropertyConstraintException {
         StartTransactionRequest request = new StartTransactionRequest();
         request.setConnectorId(connectorId);
-        IdToken idToken = new IdToken();
-        idToken.setIdToken(idTag);
-        request.setIdTag(idToken);
+        request.setIdTag(idTag);
         request.setMeterStart(meterStart);
         request.setTimestamp(timestamp);
         return request;

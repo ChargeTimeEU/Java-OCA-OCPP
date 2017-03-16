@@ -1,7 +1,6 @@
 package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.core.IdToken;
 import eu.chargetime.ocpp.model.core.StartTransactionRequest;
 import org.junit.Assert;
 import org.junit.Before;
@@ -79,13 +78,13 @@ public class StartTransactionRequestTest {
     @Test
     public void setIdTag_aIdToken_idTagIsSet() {
         // Given
-        IdToken idToken = mock(IdToken.class);
+        String idTag = "xxx";
 
         // When
-        request.setIdTag(idToken);
+        request.setIdTag(idTag);
 
         // Then
-        assertThat(request.getIdTag(), equalTo(idToken));
+        assertThat(request.getIdTag(), equalTo(idTag));
     }
 
     @Test
@@ -134,28 +133,10 @@ public class StartTransactionRequestTest {
     }
 
     @Test
-    public void validate_requiredFieldsAreSet_idTagIsValidated() throws Exception {
-        // Given
-        request.setConnectorId(42);
-        IdToken idToken = mock(IdToken.class);
-        request.setIdTag(idToken);
-        request.setMeterStart(42);
-        request.setTimestamp(Calendar.getInstance());
-
-        // When
-        request.validate();
-
-        // Then
-        verify(idToken, times(1)).validate();
-    }
-
-    @Test
     public void validate_requiredFieldsAreSet_returnTrue() throws Exception {
         // Given
         request.setConnectorId(42);
-        IdToken idToken = mock(IdToken.class);
-        when(idToken.validate()).thenReturn(true);
-        request.setIdTag(idToken);
+        request.setIdTag("xxx");
         request.setMeterStart(42);
         request.setTimestamp(Calendar.getInstance());
 
