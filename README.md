@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/ChargeTimeEU/Java-OCA-OCPP.svg?branch=master)](https://travis-ci.org/ChargeTimeEU/Java-OCA-OCPP)
 [![codecov](https://codecov.io/gh/ChargeTimeEU/Java-OCA-OCPP/branch/master/graph/badge.svg)](https://codecov.io/gh/ChargeTimeEU/Java-OCA-OCPP)
+[![Gitter](https://badges.gitter.im/ChargeTimeEU/Java-OCA-OCPP.svg)](https://gitter.im/ChargeTimeEU/Java-OCA-OCPP?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Java-OCA-OCPP
 =============
