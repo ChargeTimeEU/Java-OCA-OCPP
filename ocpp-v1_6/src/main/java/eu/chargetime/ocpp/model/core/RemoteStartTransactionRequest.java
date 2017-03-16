@@ -46,8 +46,7 @@ public class RemoteStartTransactionRequest implements Request {
     @Override
     public boolean validate() {
         boolean valid = true;
-        if (valid &= idTag != null)
-            valid &= ModelUtil.validate(idTag, 20);
+        valid &= ModelUtil.validate(idTag, 20);
 
         if (chargingProfile != null) {
             valid &= chargingProfile.validate();
@@ -93,10 +92,14 @@ public class RemoteStartTransactionRequest implements Request {
     /**
      * Required. The identifier that Charge Point must use to start a transaction.
      *
-     * @param idTag an IdToken
+     * @param idTag a String with max length 20
+     * @throws PropertyConstraintException  field isn't filled out correct.
      */
     @XmlElement
-    public void setIdTag(String idTag) {
+    public void setIdTag(String idTag) throws PropertyConstraintException {
+        if (!ModelUtil.validate(idTag, 20))
+            throw new PropertyConstraintException("idTag", idTag, "Exceeded limit");
+
         this.idTag = idTag;
     }
 

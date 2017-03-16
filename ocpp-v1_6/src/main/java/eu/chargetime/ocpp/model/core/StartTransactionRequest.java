@@ -49,8 +49,7 @@ public class StartTransactionRequest implements Request {
     public boolean validate() {
         boolean valid = true;
         valid &= connectorId != null && connectorId > 0;
-        if (valid &= idTag != null)
-            valid &= ModelUtil.validate(idTag, 20);
+        valid &= ModelUtil.validate(idTag, 20);
         valid &= meterStart != null;
         valid &= timestamp != null;
         return valid;
@@ -91,10 +90,14 @@ public class StartTransactionRequest implements Request {
     /**
      * Required. This contains the identifier for which a transaction has to be started.
      *
-     * @param idTag the IdToken.
+     * @param idTag a String with max length 20
+     * @throws PropertyConstraintException  field isn't filled out correct.
      */
     @XmlElement
-    public void setIdTag(String idTag) {
+    public void setIdTag(String idTag) throws PropertyConstraintException {
+        if (!ModelUtil.validate(idTag, 20))
+            throw new PropertyConstraintException("idTag", idTag, "Exceeded limit");
+
         this.idTag = idTag;
     }
 

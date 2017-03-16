@@ -3,6 +3,7 @@ package eu.chargetime.ocpp.model.test;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.ChargingProfile;
 import eu.chargetime.ocpp.model.core.RemoteStartTransactionRequest;
+import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +38,7 @@ import static org.mockito.Mockito.*;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class RemoteStartTransactionRequestTest {
+public class RemoteStartTransactionRequestTest extends TestUtilities {
     RemoteStartTransactionRequest request;
 
     @Before
@@ -75,15 +76,49 @@ public class RemoteStartTransactionRequestTest {
     }
 
     @Test
-    public void setIdTag_someIdToken_idTagIsSet() throws Exception {
+    public void setIdTag_string20_idTagIsSet() throws Exception {
         // Given
-        String idTag = "xxx";
+        String idTag = aString(20);
 
         // When
         request.setIdTag(idTag);
 
         // Then
         assertThat(request.getIdTag(), equalTo(idTag));
+    }
+
+    @Test
+    public void setIdTag_nullValue_throwsPropertyConstraintException() {
+        // Given
+        String nullValue = null;
+
+        try {
+            // When
+            request.setIdTag(nullValue);
+
+            Assert.fail("Expected PropertyConstraintException");
+        } catch (PropertyConstraintException ex) {
+            // Then
+            assertThat(ex.getFieldKey(), equalTo("idTag"));
+            assertThat(ex.getFieldValue(), equalTo(nullValue));
+        }
+    }
+
+    @Test
+    public void setIdTag_exceeds20Chars_throwsPropertyConstraintException() {
+        // Given
+        String longString = aString(21);
+
+        try {
+            // When
+            request.setIdTag(longString);
+
+            Assert.fail("Expected PropertyConstraintException");
+        } catch (PropertyConstraintException ex) {
+            // Then
+            assertThat(ex.getFieldKey(), equalTo("idTag"));
+            assertThat(ex.getFieldValue(), equalTo(longString));
+        }
     }
 
     @Test

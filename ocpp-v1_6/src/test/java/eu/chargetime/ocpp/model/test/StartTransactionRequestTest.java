@@ -2,6 +2,7 @@ package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.StartTransactionRequest;
+import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +12,6 @@ import java.util.Calendar;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -38,7 +38,7 @@ import static org.mockito.Mockito.*;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class StartTransactionRequestTest {
+public class StartTransactionRequestTest extends TestUtilities {
     StartTransactionRequest request;
 
     @Before
@@ -64,6 +64,52 @@ public class StartTransactionRequestTest {
     }
 
     @Test
+    public void setIdTag_nullValue_throwsPropertyConstraintException() {
+        // Given
+        String nullValue = null;
+
+        try {
+            // When
+            request.setIdTag(nullValue);
+
+            Assert.fail("Expected PropertyConstraintException");
+        } catch (PropertyConstraintException ex) {
+            // Then
+            assertThat(ex.getFieldKey(), equalTo("idTag"));
+            assertThat(ex.getFieldValue(), equalTo(nullValue));
+        }
+    }
+
+    @Test
+    public void setIdTag_exceeds20Chars_throwsPropertyConstraintException() {
+        // Given
+        String longString = aString(21);
+
+        try {
+            // When
+            request.setIdTag(longString);
+
+            Assert.fail("Expected PropertyConstraintException");
+        } catch (PropertyConstraintException ex) {
+            // Then
+            assertThat(ex.getFieldKey(), equalTo("idTag"));
+            assertThat(ex.getFieldValue(), equalTo(longString));
+        }
+    }
+
+    @Test
+    public void setIdTag_string20_isSet() throws Exception {
+        // Given
+        String validString = aString(20);
+
+        // When
+        request.setIdTag(validString);
+
+        // Then
+        assertThat(request.getIdTag(), equalTo(validString));
+    }
+
+    @Test
     public void setConnectorId_positiveInteger_connectorIdIsSet() throws Exception {
         // Given
         Integer positive = 42;
@@ -73,18 +119,6 @@ public class StartTransactionRequestTest {
 
         // Then
         assertThat(request.getConnectorId(), equalTo(positive));
-    }
-
-    @Test
-    public void setIdTag_aIdToken_idTagIsSet() {
-        // Given
-        String idTag = "xxx";
-
-        // When
-        request.setIdTag(idTag);
-
-        // Then
-        assertThat(request.getIdTag(), equalTo(idTag));
     }
 
     @Test

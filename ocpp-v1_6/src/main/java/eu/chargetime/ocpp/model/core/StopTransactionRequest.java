@@ -1,6 +1,8 @@
 package eu.chargetime.ocpp.model.core;
 
+import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.ModelUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -72,10 +74,14 @@ public class StopTransactionRequest implements Request {
      * It is optional because a Charge Point may terminate charging without the presence of an idTag, e.g. in case of a reset.
      * A Charge Point SHALL send the idTag if known.
      *
-     * @param idTag the IdToken.
+     * @param idTag a String with max length 20
+     * @throws PropertyConstraintException  field isn't filled out correct.
      */
     @XmlElement
-    public void setIdTag(String idTag) {
+    public void setIdTag(String idTag) throws PropertyConstraintException {
+        if (idTag != null && !ModelUtil.validate(idTag, 20))
+            throw new PropertyConstraintException("idTag", idTag, "Exceeded limit");
+
         this.idTag = idTag;
     }
 

@@ -49,7 +49,7 @@ public class StopTransactionRequestTest extends TestUtilities {
     }
 
     @Test
-    public void setIdTag_anIdToken_idTagIsSet() {
+    public void setIdTag_anIdToken_idTagIsSet() throws Exception {
         // Given
         String idTag = "xxx";
 

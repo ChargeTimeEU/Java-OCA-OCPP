@@ -19,7 +19,6 @@ class SOAPStartTransactionSpec extends Specification {
 
     def setup() {
         chargePoint.connect()
-        chargePoint.sendBootNotification("VendorX", "SingleSocketCharger")
     }
 
     def cleanup() {
@@ -27,7 +26,7 @@ class SOAPStartTransactionSpec extends Specification {
     }
 
     def "Charge point sends StartTransaction request and receives a response"() {
-        def conditions = new PollingConditions(timeout: 2)
+        def conditions = new PollingConditions(timeout: 10)
         when:
         chargePoint.sendStartTransactionRequest()
 
