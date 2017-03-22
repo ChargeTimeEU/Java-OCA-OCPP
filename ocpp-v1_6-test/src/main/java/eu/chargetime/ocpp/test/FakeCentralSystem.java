@@ -1,13 +1,12 @@
 package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.*;
-import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
-import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
-import eu.chargetime.ocpp.feature.profile.ServerRemoteTriggerProfile;
-import eu.chargetime.ocpp.feature.profile.ServerSmartChargingProfile;
+import eu.chargetime.ocpp.feature.profile.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
+import eu.chargetime.ocpp.model.firmware.GetDiagnosticsConfirmation;
+import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
 
@@ -184,6 +183,8 @@ public class FakeCentralSystem {
 
         ServerRemoteTriggerProfile remoteTriggerProfile = new ServerRemoteTriggerProfile();
 
+        ServerFirmwareManagementProfile firmwareManagementProfile = new ServerFirmwareManagementProfile();
+
         int port = 0;
         switch (type) {
             case JSON:
@@ -198,6 +199,7 @@ public class FakeCentralSystem {
 
         server.addFeatureProfile(smartChargingProfile);
         server.addFeatureProfile(remoteTriggerProfile);
+        server.addFeatureProfile(firmwareManagementProfile);
 
         server.open("localhost", port, new ServerEvents() {
             @Override
@@ -215,10 +217,6 @@ public class FakeCentralSystem {
                 receivedRequest = null;
             }
         });
-    }
-
-    public boolean hasReceivedGetDiagnosticsConfirmation() {
-        return false;
     }
 
     public boolean hasHandledAuthorizeRequest() {
@@ -245,6 +243,10 @@ public class FakeCentralSystem {
         request.setConnectorId(connectorId);
         server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
 
+    }
+
+    public boolean hasReceivedGetDiagnosticsConfirmation() {
+        return receivedConfirmation instanceof GetDiagnosticsConfirmation;
     }
 
     public boolean hasReceivedChangeAvailabilityConfirmation(String status) {
@@ -338,6 +340,12 @@ public class FakeCentralSystem {
     public void sendResetRequest(ResetType type) throws Exception {
         ResetRequest request = new ResetRequest();
         request.setType(type);
+        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+    }
+
+    public void sendGetDiagnosticsRequest(String location) throws Exception {
+        GetDiagnosticsRequest request = new GetDiagnosticsRequest();
+        request.setLocation(location);
         server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
     }
 

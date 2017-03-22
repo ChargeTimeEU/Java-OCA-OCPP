@@ -5,6 +5,8 @@ import eu.chargetime.ocpp.feature.profile.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
+import eu.chargetime.ocpp.model.firmware.GetDiagnosticsConfirmation;
+import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageConfirmation;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageStatus;
@@ -50,6 +52,7 @@ public class FakeChargePoint
     private final ClientCoreProfile core;
     private final ClientSmartChargingProfile smartCharging;
     private final ClientRemoteTriggerProfile remoteTrigger;
+    private final ClientFirmwareManagementProfile firmware;
     private Throwable receivedException;
     private String url;
 
@@ -140,6 +143,14 @@ public class FakeChargePoint
             }
         });
 
+        firmware = new ClientFirmwareManagementProfile(new ClientFirmwareManagementEventHandler() {
+            @Override
+            public GetDiagnosticsConfirmation handleGetDiagnosticsRequest(GetDiagnosticsRequest request) {
+                receivedRequest = request;
+                return new GetDiagnosticsConfirmation();
+            }
+        });
+
         switch (type) {
             case JSON:
                 client = new JSONClient(core, "test");
@@ -153,6 +164,7 @@ public class FakeChargePoint
 
         client.addFeatureProfile(smartCharging);
         client.addFeatureProfile(remoteTrigger);
+        client.addFeatureProfile(firmware);
     }
 
     public void connect() {
@@ -288,6 +300,10 @@ public class FakeChargePoint
 
     public void disconnect() {
         client.disconnect();
+    }
+
+    public boolean hasHandledGetDiagnosticsRequest() {
+        return receivedRequest instanceof GetDiagnosticsRequest;
     }
 
     public boolean hasHandledChangeAvailabilityRequest() {

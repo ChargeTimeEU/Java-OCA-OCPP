@@ -41,7 +41,7 @@ import static org.junit.Assert.assertThat;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class ServerSmartChargingProfileTest {
+public class ServerSmartChargingProfileTest extends ProfileTest {
 
     private ServerSmartChargingProfile smartCharging;
 
@@ -93,14 +93,4 @@ public class ServerSmartChargingProfileTest {
 
     }
 
-    private Feature findFeature(Feature[] features, String action) {
-        Feature output = null;
-        for (Feature feature : features) {
-            if (action.equals(feature.getAction())) {
-                output = feature;
-                break;
-            }
-        }
-        return output;
-    }
 }

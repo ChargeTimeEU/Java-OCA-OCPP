@@ -97,7 +97,7 @@ public class BootNotificationConfirmationTest {
         confirmation.setStatus(status);
 
         // Then
-        assertThat(confirmation.objStatus(), equalTo(status));
+        assertThat(confirmation.getStatus(), equalTo(status));
     }
 
     @Test

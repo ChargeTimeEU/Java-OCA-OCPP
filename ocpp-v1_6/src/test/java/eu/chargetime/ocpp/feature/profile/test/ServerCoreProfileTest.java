@@ -16,7 +16,8 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /*
     ChargeTime.eu - Java-OCA-OCPP
@@ -45,7 +46,7 @@ import static org.mockito.Mockito.*;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class ServerCoreProfileTest {
+public class ServerCoreProfileTest extends ProfileTest {
 
     private ServerCoreProfile core;
 
@@ -410,14 +411,4 @@ public class ServerCoreProfileTest {
         assertThat(result.validate(), is(true));
     }
 
-    private Feature findFeature(Feature[] features, String action) {
-        Feature output = null;
-        for (Feature feature : features) {
-            if (action.equals(feature.getAction())) {
-                output = feature;
-                break;
-            }
-        }
-        return output;
-    }
 }

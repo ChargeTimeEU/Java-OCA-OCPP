@@ -41,7 +41,7 @@ import static org.junit.Assert.assertThat;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class ServerRemoteTriggerProfileTest {
+public class ServerRemoteTriggerProfileTest extends ProfileTest {
 
     private ServerRemoteTriggerProfile profile;
 
@@ -86,18 +86,5 @@ public class ServerRemoteTriggerProfileTest {
 
         // Then
         assertThat(result.validate(), is(true));
-    }
-
-
-
-    private Feature findFeature(Feature[] features, String action) {
-        Feature output = null;
-        for (Feature feature : features) {
-            if (action.equals(feature.getAction())) {
-                output = feature;
-                break;
-            }
-        }
-        return output;
     }
 }

@@ -47,8 +47,7 @@ import static org.mockito.Mockito.*;
  SOFTWARE.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ClientCoreProfileTest
-{
+public class ClientCoreProfileTest extends ProfileTest {
     private static final UUID SESSION_NULL = null;
 
     private ClientCoreProfile core;
@@ -451,14 +450,4 @@ public class ClientCoreProfileTest
         assertThat(findFeature(features, "DataTransfer"), is(instanceOf(DataTransferFeature.class)));
     }
 
-    private Feature findFeature(Feature[] features, String action) {
-        Feature output = null;
-        for (Feature feature: features) {
-            if (action.equals(feature.getAction())) {
-                output = feature;
-                break;
-            }
-        }
-        return output;
-    }
 }
