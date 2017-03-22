@@ -1,7 +1,8 @@
 package eu.chargetime.ocpp.feature.profile;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.SetChargingProfileFeature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.ChargingProfile;
@@ -38,12 +39,9 @@ import java.util.UUID;
 
 public class ServerSmartChargingProfile implements Profile {
 
-    private final ServerSmartChargingHandler handler;
     private HashSet<Feature> features;
 
-    public ServerSmartChargingProfile(ServerSmartChargingHandler handler) {
-        this.handler = handler;
-
+    public ServerSmartChargingProfile() {
         features = new HashSet<>();
         features.add(new SetChargingProfileFeature(this));
     }

@@ -2,21 +2,17 @@ package eu.chargetime.ocpp.feature.profile.test;
 
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.SetChargingProfileFeature;
-import eu.chargetime.ocpp.feature.profile.ServerSmartChargingHandler;
 import eu.chargetime.ocpp.feature.profile.ServerSmartChargingProfile;
 import eu.chargetime.ocpp.model.core.*;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -49,12 +45,9 @@ public class ServerSmartChargingProfileTest {
 
     private ServerSmartChargingProfile smartCharging;
 
-    @Mock
-    private ServerSmartChargingHandler handler;
-
     @Before
     public void setup() {
-        smartCharging = new ServerSmartChargingProfile(handler);
+        smartCharging = new ServerSmartChargingProfile();
     }
 
     @Test

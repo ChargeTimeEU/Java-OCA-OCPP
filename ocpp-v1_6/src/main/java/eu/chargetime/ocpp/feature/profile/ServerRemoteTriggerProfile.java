@@ -40,11 +40,9 @@ import java.util.UUID;
 
 public class ServerRemoteTriggerProfile implements Profile {
 
-    private final ServerRemoteTriggerHandler handler;
     private HashSet<Feature> features;
 
-    public ServerRemoteTriggerProfile(ServerRemoteTriggerHandler handler) {
-        this.handler = handler;
+    public ServerRemoteTriggerProfile() {
 
         features = new HashSet<>();
         features.add(new TriggerMessageFeature(this));

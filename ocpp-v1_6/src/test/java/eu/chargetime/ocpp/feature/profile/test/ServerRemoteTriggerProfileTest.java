@@ -2,20 +2,17 @@ package eu.chargetime.ocpp.feature.profile.test;
 
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.TriggerMessageFeature;
-import eu.chargetime.ocpp.feature.profile.ServerRemoteTriggerHandler;
 import eu.chargetime.ocpp.feature.profile.ServerRemoteTriggerProfile;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -48,12 +45,9 @@ public class ServerRemoteTriggerProfileTest {
 
     private ServerRemoteTriggerProfile profile;
 
-    @Mock
-    private ServerRemoteTriggerHandler handler;
-
     @Before
     public void setup() {
-        profile = new ServerRemoteTriggerProfile(handler);
+        profile = new ServerRemoteTriggerProfile();
     }
 
     @Test

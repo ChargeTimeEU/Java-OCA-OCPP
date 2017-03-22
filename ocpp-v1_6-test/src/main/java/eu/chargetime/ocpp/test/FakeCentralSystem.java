@@ -1,7 +1,10 @@
 package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.*;
-import eu.chargetime.ocpp.feature.profile.*;
+import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
+import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
+import eu.chargetime.ocpp.feature.profile.ServerRemoteTriggerProfile;
+import eu.chargetime.ocpp.feature.profile.ServerSmartChargingProfile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
@@ -37,8 +40,7 @@ import java.util.UUID;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-public class FakeCentralSystem
-{
+public class FakeCentralSystem {
     private Request receivedRequest;
     private Confirmation receivedConfirmation;
     private Server server;
@@ -49,14 +51,15 @@ public class FakeCentralSystem
     private boolean isRigged;
     private String currentIdentifier;
 
-    public static FakeCentralSystem getInstance () {
+    public static FakeCentralSystem getInstance() {
         if (instance == null)
             instance = new FakeCentralSystem();
 
         return instance;
     }
 
-    private FakeCentralSystem() { }
+    private FakeCentralSystem() {
+    }
 
     private <T extends Confirmation> T failurePoint(T confirmation) {
         if (isRigged) {
@@ -74,15 +77,13 @@ public class FakeCentralSystem
         server.closeSession(currentSessionIndex);
     }
 
-    public enum serverType {JSON, SOAP}
+    public enum serverType {JSON, SOAP;}
 
-    public void started() throws Exception
-    {
+    public void started() throws Exception {
         started(serverType.JSON);
     }
 
-    private boolean matchServerType(serverType type)
-    {
+    private boolean matchServerType(serverType type) {
         boolean result = false;
         switch (type) {
             case JSON:
@@ -94,8 +95,7 @@ public class FakeCentralSystem
         return result;
     }
 
-    public void started(serverType type) throws Exception
-    {
+    public void started(serverType type) throws Exception {
         if (server != null) {
             if (matchServerType(type)) {
                 return;
@@ -180,13 +180,9 @@ public class FakeCentralSystem
             }
         });
 
-        ServerSmartChargingProfile smartChargingProfile = new ServerSmartChargingProfile(new ServerSmartChargingHandler() {
+        ServerSmartChargingProfile smartChargingProfile = new ServerSmartChargingProfile();
 
-        });
-
-        ServerRemoteTriggerProfile remoteTriggerProfile = new ServerRemoteTriggerProfile(new ServerRemoteTriggerHandler() {
-
-        });
+        ServerRemoteTriggerProfile remoteTriggerProfile = new ServerRemoteTriggerProfile();
 
         int port = 0;
         switch (type) {
@@ -219,6 +215,10 @@ public class FakeCentralSystem
                 receivedRequest = null;
             }
         });
+    }
+
+    public boolean hasReceivedGetDiagnosticsConfirmation() {
+        return false;
     }
 
     public boolean hasHandledAuthorizeRequest() {
