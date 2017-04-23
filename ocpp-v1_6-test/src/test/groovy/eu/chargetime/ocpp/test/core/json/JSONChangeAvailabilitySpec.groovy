@@ -1,6 +1,7 @@
 package eu.chargetime.ocpp.test.core.json
 
 import eu.chargetime.ocpp.model.core.AvailabilityType
+import eu.chargetime.ocpp.test.FakeCentral
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
 import spock.lang.Shared
@@ -10,7 +11,7 @@ import spock.util.concurrent.PollingConditions
 class JSONChangeAvailabilitySpec extends Specification
 {
     @Shared
-    FakeCentralSystem centralSystem = FakeCentralSystem.instance
+    FakeCentralSystem centralSystem = FakeCentral.getSystem(FakeCentral.serverType.JSON)
     @Shared
     FakeChargePoint chargePoint = new FakeChargePoint()
 

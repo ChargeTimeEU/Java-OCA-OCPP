@@ -1,9 +1,11 @@
 package eu.chargetime.ocpp.test.firmware.json
 
+import eu.chargetime.ocpp.test.FakeCentral
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.util.concurrent.PollingConditions
 
 /*
     ChargeTime.eu - Java-OCA-OCPP
@@ -30,11 +32,10 @@ import spock.lang.Specification
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
-import spock.util.concurrent.PollingConditions
 
 class JSONGetDiagnosticsSpec extends Specification {
     @Shared
-    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance()
+    FakeCentralSystem centralSystem = FakeCentral.getSystem(FakeCentral.serverType.JSON)
     @Shared
     FakeChargePoint chargePoint = new FakeChargePoint()
 

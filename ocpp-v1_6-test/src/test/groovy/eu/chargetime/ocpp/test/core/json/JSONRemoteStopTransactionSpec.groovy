@@ -1,5 +1,6 @@
 package eu.chargetime.ocpp.test.core.json
 
+import eu.chargetime.ocpp.test.FakeCentral
 import eu.chargetime.ocpp.test.FakeCentralSystem
 import eu.chargetime.ocpp.test.FakeChargePoint
 import spock.lang.Shared
@@ -8,7 +9,7 @@ import spock.util.concurrent.PollingConditions
 
 class JSONRemoteStopTransactionSpec extends Specification {
     @Shared
-    FakeCentralSystem centralSystem = FakeCentralSystem.getInstance()
+    FakeCentralSystem centralSystem = FakeCentral.getSystem(FakeCentral.serverType.JSON)
     @Shared
     FakeChargePoint chargePoint = new FakeChargePoint()
 

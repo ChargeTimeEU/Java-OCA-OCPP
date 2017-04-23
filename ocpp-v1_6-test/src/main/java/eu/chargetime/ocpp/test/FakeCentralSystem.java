@@ -40,24 +40,38 @@ import eu.chargetime.ocpp.model.firmware.GetDiagnosticsConfirmation;
 import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
-
+import eu.chargetime.ocpp.test.FakeCentral.serverType;
 
 public class FakeCentralSystem {
     private Server server;
 
     DummyHandlers dummyHandlers;
+    private boolean isStarted;
 
-    private static FakeCentralSystem instance;
+    FakeCentralSystem(serverType type) {
+        dummyHandlers = new DummyHandlers();
 
-    public static FakeCentralSystem getInstance() {
-        if (instance == null)
-            instance = new FakeCentralSystem();
+        ServerCoreProfile serverCoreProfile = new ServerCoreProfile(dummyHandlers.createServerCoreEventHandler());
 
-        return instance;
+        if (type == serverType.JSON) {
+            server = new JSONServer(serverCoreProfile);
+        } else {
+            server = new SOAPServer(serverCoreProfile);
+        }
+
+        initializeServer();
+        isStarted = false;
     }
 
-    private FakeCentralSystem() {
-        dummyHandlers = new DummyHandlers();
+    private void initializeServer() {
+        ServerSmartChargingProfile smartChargingProfile = new ServerSmartChargingProfile();
+        server.addFeatureProfile(smartChargingProfile);
+
+        ServerRemoteTriggerProfile remoteTriggerProfile = new ServerRemoteTriggerProfile();
+        server.addFeatureProfile(remoteTriggerProfile);
+
+        ServerFirmwareManagementProfile firmwareManagementProfile = new ServerFirmwareManagementProfile();
+        server.addFeatureProfile(firmwareManagementProfile);
     }
 
     public boolean connected() {
@@ -68,59 +82,16 @@ public class FakeCentralSystem {
         server.closeSession(dummyHandlers.getCurrentSessionIndex());
     }
 
-    public enum serverType {JSON, SOAP}
-
     public void started() throws Exception {
-        started(serverType.JSON);
-    }
 
-    private boolean matchServerType(serverType type) {
-        boolean result = false;
-        switch (type) {
-            case JSON:
-                result = server instanceof JSONServer;
-                break;
-            case SOAP:
-                result = server instanceof SOAPServer;
-        }
-        return result;
-    }
-
-    public void started(serverType type) throws Exception {
-        if (server != null) {
-            if (matchServerType(type)) {
-                return;
-            } else {
-                server.close();
-            }
-        }
-
-
-        ServerCoreProfile serverCoreProfile = new ServerCoreProfile(dummyHandlers.createServerCoreEventHandler());
-
-        ServerSmartChargingProfile smartChargingProfile = new ServerSmartChargingProfile();
-
-        ServerRemoteTriggerProfile remoteTriggerProfile = new ServerRemoteTriggerProfile();
-
-        ServerFirmwareManagementProfile firmwareManagementProfile = new ServerFirmwareManagementProfile();
-
-        int port = 0;
-        switch (type) {
-            case JSON:
-                server = new JSONServer(serverCoreProfile);
+        if (!isStarted) {
+            int port = 8890;
+            if (server instanceof JSONServer)
                 port = 8887;
-                break;
-            case SOAP:
-                server = new SOAPServer(serverCoreProfile);
-                port = 8890;
-                break;
+
+            server.open("localhost", port, dummyHandlers.generateServerEventsHandler());
+            isStarted = true;
         }
-
-        server.addFeatureProfile(smartChargingProfile);
-        server.addFeatureProfile(remoteTriggerProfile);
-        server.addFeatureProfile(firmwareManagementProfile);
-
-        server.open("localhost", port, dummyHandlers.generateServerEventsHandler());
     }
 
     public void stopped() {
@@ -285,7 +256,7 @@ public class FakeCentralSystem {
         boolean result = false;
         UnlockConnectorConfirmation confirmation = dummyHandlers.getReceivedConfirmation(new UnlockConnectorConfirmation());
         if (confirmation != null)
-            result &= confirmation.getStatus().toString().equals(status);
+            result = confirmation.getStatus().toString().equals(status);
         return result;
     }
 
