@@ -1,18 +1,4 @@
 package eu.chargetime.ocpp.test;
-
-import eu.chargetime.ocpp.*;
-import eu.chargetime.ocpp.feature.profile.*;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.core.*;
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsConfirmation;
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
-import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
-import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
-
-import java.util.Calendar;
-import java.util.UUID;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -39,16 +25,29 @@ import java.util.UUID;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+import eu.chargetime.ocpp.JSONServer;
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.SOAPServer;
+import eu.chargetime.ocpp.Server;
+import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
+import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementProfile;
+import eu.chargetime.ocpp.feature.profile.ServerRemoteTriggerProfile;
+import eu.chargetime.ocpp.feature.profile.ServerSmartChargingProfile;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.core.*;
+import eu.chargetime.ocpp.model.firmware.GetDiagnosticsConfirmation;
+import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
+import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
+import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
+
+
 public class FakeCentralSystem {
-    private Request receivedRequest;
-    private Confirmation receivedConfirmation;
     private Server server;
 
-    private UUID currentSessionIndex;
+    DummyHandlers dummyHandlers;
 
     private static FakeCentralSystem instance;
-    private boolean isRigged;
-    private String currentIdentifier;
 
     public static FakeCentralSystem getInstance() {
         if (instance == null)
@@ -58,25 +57,18 @@ public class FakeCentralSystem {
     }
 
     private FakeCentralSystem() {
-    }
-
-    private <T extends Confirmation> T failurePoint(T confirmation) {
-        if (isRigged) {
-            isRigged = false;
-            return null;
-        }
-        return confirmation;
+        dummyHandlers = new DummyHandlers();
     }
 
     public boolean connected() {
-        return currentIdentifier != null;
+        return dummyHandlers.getCurrentIdentifier() != null;
     }
 
     public void clientLost() {
-        server.closeSession(currentSessionIndex);
+        server.closeSession(dummyHandlers.getCurrentSessionIndex());
     }
 
-    public enum serverType {JSON, SOAP;}
+    public enum serverType {JSON, SOAP}
 
     public void started() throws Exception {
         started(serverType.JSON);
@@ -103,81 +95,8 @@ public class FakeCentralSystem {
             }
         }
 
-        ServerCoreProfile serverCoreProfile = new ServerCoreProfile(new ServerCoreEventHandler() {
-            @Override
-            public AuthorizeConfirmation handleAuthorizeRequest(UUID sessionIndex, AuthorizeRequest request) {
-                receivedRequest = request;
-                AuthorizeConfirmation confirmation = new AuthorizeConfirmation();
-                IdTagInfo tagInfo = new IdTagInfo();
-                tagInfo.setStatus(AuthorizationStatus.Accepted);
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(2018, 1, 1, 1, 1, 1);
-                tagInfo.setExpiryDate(calendar);
-                confirmation.setIdTagInfo(tagInfo);
-                return failurePoint(confirmation);
-            }
 
-            @Override
-            public BootNotificationConfirmation handleBootNotificationRequest(UUID sessionIndex, BootNotificationRequest request) {
-                receivedRequest = request;
-                BootNotificationConfirmation confirmation = new BootNotificationConfirmation();
-                try {
-                    confirmation.setInterval(1);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                confirmation.setCurrentTime(Calendar.getInstance());
-                confirmation.setStatus(RegistrationStatus.Accepted);
-                return failurePoint(confirmation);
-            }
-
-            @Override
-            public DataTransferConfirmation handleDataTransferRequest(UUID sessionIndex, DataTransferRequest request) {
-                receivedRequest = request;
-                DataTransferConfirmation confirmation = new DataTransferConfirmation();
-                confirmation.setStatus(DataTransferStatus.Accepted);
-                return failurePoint(confirmation);
-            }
-
-            @Override
-            public HeartbeatConfirmation handleHeartbeatRequest(UUID sessionIndex, HeartbeatRequest request) {
-                receivedRequest = request;
-                HeartbeatConfirmation confirmation = new HeartbeatConfirmation();
-                confirmation.setCurrentTime(Calendar.getInstance());
-                return failurePoint(confirmation);
-            }
-
-            @Override
-            public MeterValuesConfirmation handleMeterValuesRequest(UUID sessionIndex, MeterValuesRequest request) {
-                receivedRequest = request;
-                return failurePoint(new MeterValuesConfirmation());
-            }
-
-            @Override
-            public StartTransactionConfirmation handleStartTransactionRequest(UUID sessionIndex, StartTransactionRequest request) {
-                receivedRequest = request;
-                IdTagInfo tagInfo = new IdTagInfo();
-                tagInfo.setStatus(AuthorizationStatus.Accepted);
-
-                StartTransactionConfirmation confirmation = new StartTransactionConfirmation();
-                confirmation.setIdTagInfo(tagInfo);
-                return failurePoint(confirmation);
-            }
-
-            @Override
-            public StatusNotificationConfirmation handleStatusNotificationRequest(UUID sessionIndex, StatusNotificationRequest request) {
-                receivedRequest = request;
-                StatusNotificationConfirmation confirmation = new StatusNotificationConfirmation();
-                return failurePoint(confirmation);
-            }
-
-            @Override
-            public StopTransactionConfirmation handleStopTransactionRequest(UUID sessionIndex, StopTransactionRequest request) {
-                receivedRequest = request;
-                StopTransactionConfirmation confirmation = new StopTransactionConfirmation();
-                return failurePoint(confirmation);
-            }
-        });
+        ServerCoreProfile serverCoreProfile = new ServerCoreProfile(dummyHandlers.createServerCoreEventHandler());
 
         ServerSmartChargingProfile smartChargingProfile = new ServerSmartChargingProfile();
 
@@ -201,37 +120,22 @@ public class FakeCentralSystem {
         server.addFeatureProfile(remoteTriggerProfile);
         server.addFeatureProfile(firmwareManagementProfile);
 
-        server.open("localhost", port, new ServerEvents() {
-            @Override
-            public void newSession(UUID sessionIndex, String identifier) {
-                currentSessionIndex = sessionIndex;
-                currentIdentifier = identifier;
-            }
-
-            @Override
-            public void lostSession(UUID identity) {
-                currentSessionIndex = null;
-                currentIdentifier = null;
-                // clear
-                receivedConfirmation = null;
-                receivedRequest = null;
-            }
-        });
-    }
-
-    public boolean hasHandledAuthorizeRequest() {
-        return receivedRequest instanceof AuthorizeRequest;
+        server.open("localhost", port, dummyHandlers.generateServerEventsHandler());
     }
 
     public void stopped() {
         server.close();
     }
 
+    public boolean hasHandledAuthorizeRequest() {
+        return dummyHandlers.wasLatestRequest(AuthorizeRequest.class);
+    }
+
     public boolean hasHandledBootNotification(String vendor, String model) {
-        boolean result = receivedRequest instanceof BootNotificationRequest;
-        if (result) {
-            BootNotificationRequest request = (BootNotificationRequest) this.receivedRequest;
-            result &= request.getChargePointVendor().equals(vendor);
+        boolean result = false;
+        BootNotificationRequest request = dummyHandlers.getReceivedRequest(new BootNotificationRequest());
+        if (request != null) {
+            result = request.getChargePointVendor().equals(vendor);
             result &= request.getChargePointModel().equals(model);
         }
         return result;
@@ -241,18 +145,18 @@ public class FakeCentralSystem {
         ChangeAvailabilityRequest request = new ChangeAvailabilityRequest();
         request.setType(type);
         request.setConnectorId(connectorId);
-        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
-
+        send(request);
     }
 
     public boolean hasReceivedGetDiagnosticsConfirmation() {
-        return receivedConfirmation instanceof GetDiagnosticsConfirmation;
+        return dummyHandlers.wasLatestConfirmation(GetDiagnosticsConfirmation.class);
     }
 
     public boolean hasReceivedChangeAvailabilityConfirmation(String status) {
-        boolean result = receivedConfirmation instanceof ChangeAvailabilityConfirmation;
-        if (result)
-            result &= ((ChangeAvailabilityConfirmation) receivedConfirmation).getStatus().toString().equals(status);
+        boolean result = false;
+        ChangeAvailabilityConfirmation confirmation = dummyHandlers.getReceivedConfirmation(new ChangeAvailabilityConfirmation());
+        if (confirmation != null)
+            result = confirmation.getStatus().toString().equals(status);
         return result;
     }
 
@@ -260,20 +164,20 @@ public class FakeCentralSystem {
         ChangeConfigurationRequest request = new ChangeConfigurationRequest();
         request.setKey(key);
         request.setValue(value);
-        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        send(request);
     }
 
     public boolean hasReceivedChangeConfigurationConfirmation() {
-        return receivedConfirmation instanceof ChangeConfigurationConfirmation;
+        return dummyHandlers.wasLatestConfirmation(ChangeConfigurationConfirmation.class);
     }
 
     public void sendClearCacheRequest() throws Exception {
         ClearCacheRequest request = new ClearCacheRequest();
-        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        send(request);
     }
 
     public boolean hasReceivedClearCacheConfirmation() {
-        return receivedConfirmation instanceof ClearCacheConfirmation;
+        return dummyHandlers.wasLatestConfirmation(ClearCacheConfirmation.class);
     }
 
     public void sendDataTransferRequest(String vendorId, String messageId, String data) throws Exception {
@@ -281,108 +185,112 @@ public class FakeCentralSystem {
         request.setVendorId(vendorId);
         request.setMessageId(messageId);
         request.setData(data);
-        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        send(request);
     }
 
     public boolean hasReceivedDataTransferConfirmation() {
-        return receivedConfirmation instanceof DataTransferConfirmation;
+        return dummyHandlers.wasLatestConfirmation(DataTransferConfirmation.class);
     }
 
     public boolean hasHandledDataTransferRequest() {
-        return receivedRequest instanceof DataTransferRequest;
+        return dummyHandlers.wasLatestRequest(DataTransferRequest.class);
     }
 
     public void sendGetConfigurationRequest(String... key) throws Exception {
         GetConfigurationRequest request = new GetConfigurationRequest();
         request.setKey(key);
-        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        send(request);
     }
 
     public boolean hasReceivedGetConfigurationConfirmation() {
-        return receivedConfirmation instanceof GetConfigurationConfirmation;
+        return dummyHandlers.wasLatestConfirmation(GetConfigurationConfirmation.class);
     }
 
     public boolean hasHandledHeartbeat() {
-        return receivedRequest instanceof HeartbeatRequest;
+        return dummyHandlers.wasLatestRequest(HeartbeatRequest.class);
     }
 
     public boolean hasHandledMeterValuesRequest() {
-        return receivedRequest instanceof MeterValuesRequest;
+        return dummyHandlers.wasLatestRequest(MeterValuesRequest.class);
     }
 
     public void sendRemoteStartTransactionRequest(int connectorId, String idTag) throws Exception {
         RemoteStartTransactionRequest request = new RemoteStartTransactionRequest();
         request.setIdTag(idTag);
         request.setConnectorId(connectorId);
-        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        send(request);
     }
 
     public boolean hasReceivedRemoteStartTransactionConfirmation(String status) {
-        boolean result = receivedConfirmation instanceof RemoteStartTransactionConfirmation;
-        if (result)
-            result &= ((RemoteStartTransactionConfirmation) receivedConfirmation).getStatus().toString().equals(status);
+        boolean result = false;
+        RemoteStartTransactionConfirmation confirmation = dummyHandlers.getReceivedConfirmation(new RemoteStartTransactionConfirmation());
+        if (confirmation != null)
+            result = confirmation.getStatus().toString().equals(status);
         return result;
     }
 
     public void sendRemoteStopTransactionRequest(int transactionId) throws Exception {
         RemoteStopTransactionRequest request = new RemoteStopTransactionRequest();
         request.setTransactionId(transactionId);
-        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        send(request);
     }
 
     public boolean hasReceivedRemoteStopTransactionConfirmation(String status) {
-        boolean result = receivedConfirmation instanceof RemoteStopTransactionConfirmation;
-        if (result)
-            result &= ((RemoteStopTransactionConfirmation) receivedConfirmation).getStatus().toString().equals(status);
+        boolean result = false;
+        RemoteStopTransactionConfirmation confirmation = dummyHandlers.getReceivedConfirmation(new RemoteStopTransactionConfirmation());
+        if (confirmation != null)
+            result = confirmation.getStatus().toString().equals(status);
         return result;
     }
 
     public void sendResetRequest(ResetType type) throws Exception {
         ResetRequest request = new ResetRequest();
         request.setType(type);
-        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        send(request);
     }
 
     public void sendGetDiagnosticsRequest(String location) throws Exception {
         GetDiagnosticsRequest request = new GetDiagnosticsRequest();
         request.setLocation(location);
-        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        send(request);
     }
 
     public boolean hasReceivedResetConfirmation(String status) {
-        boolean result = receivedConfirmation instanceof ResetConfirmation;
-        if (result)
-            result &= ((ResetConfirmation) receivedConfirmation).getStatus().toString().equals(status);
+        boolean result = false;
+        ResetConfirmation confirmation = dummyHandlers.getReceivedConfirmation(new ResetConfirmation());
+        if (confirmation != null)
+            result = confirmation.getStatus().toString().equals(status);
         return result;
     }
 
     public boolean hasHandledStartTransactionRequest() {
-        return receivedRequest instanceof StartTransactionRequest;
+        return dummyHandlers.wasLatestRequest(StartTransactionRequest.class);
     }
 
     public boolean hasHandledStatusNotificationRequest() {
-        return receivedRequest instanceof StatusNotificationRequest;
+        return dummyHandlers.wasLatestRequest(StatusNotificationRequest.class);
     }
 
     public boolean hasHandledStopTransactionRequest() {
-        return receivedRequest instanceof StopTransactionRequest;
+        return dummyHandlers.wasLatestRequest(StopTransactionRequest.class);
     }
 
     public void sendUnlockConnectorRequest(int connectorId) throws Exception {
         UnlockConnectorRequest request = new UnlockConnectorRequest();
         request.setConnectorId(connectorId);
-        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        send(request);
     }
 
     public boolean hasReceivedUnlockConnectorConfirmation(String status) {
-        boolean result = receivedConfirmation instanceof UnlockConnectorConfirmation;
-        if (result)
-            result &= ((UnlockConnectorConfirmation) receivedConfirmation).getStatus().toString().equals(status);
+        boolean result = false;
+        UnlockConnectorConfirmation confirmation = dummyHandlers.getReceivedConfirmation(new UnlockConnectorConfirmation());
+        if (confirmation != null)
+            result &= confirmation.getStatus().toString().equals(status);
         return result;
     }
 
     public void isRiggedToFailOnNextRequest() {
-        isRigged = true;
+        dummyHandlers.setRiggedToFail(true);
     }
 
     public void sendTriggerMessage(TriggerMessageRequestType type, Integer connectorId) throws Exception {
@@ -393,6 +301,10 @@ public class FakeCentralSystem {
             e.printStackTrace();
         }
 
-        server.send(currentSessionIndex, request).whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+        send(request);
+    }
+
+    private void send(Request request) throws Exception {
+        server.send(dummyHandlers.getCurrentSessionIndex(), request).whenComplete(dummyHandlers.generateWhenCompleteHandler());
     }
 }
