@@ -102,7 +102,7 @@ public class TimeoutSession extends Session {
             }
 
             @Override
-            public Confirmation handleRequest(Request request) {
+            synchronized public Confirmation handleRequest(Request request) {
                 resetTimer();
                 Confirmation confirmation = eventHandler.handleRequest(request);
 

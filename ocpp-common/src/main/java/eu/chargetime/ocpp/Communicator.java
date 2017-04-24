@@ -148,7 +148,7 @@ public abstract class Communicator {
      * @param   action                  action name of the {@link eu.chargetime.ocpp.feature.Feature}.
      * @param   request                 the outgoing {@link Request}
      */
-    public void sendCall(String uniqueId, String action, Request request) {
+    synchronized public void sendCall(String uniqueId, String action, Request request) {
         Object call = makeCall(uniqueId, action, packPayload(request));
         try {
             if (request.transactionRelated() && transactionQueue.size() > 0) {

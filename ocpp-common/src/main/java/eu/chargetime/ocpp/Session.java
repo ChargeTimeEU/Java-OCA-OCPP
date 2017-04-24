@@ -134,7 +134,7 @@ public class Session {
         }
 
         @Override
-        public void onCall(String id, String action, Object payload) {
+        synchronized public void onCall(String id, String action, Object payload) {
             Feature feature = events.findFeatureByAction(action);
             if (feature == null) {
                 communicator.sendCallError(id, action, "NotImplemented", "Requested Action is not known by receiver");
