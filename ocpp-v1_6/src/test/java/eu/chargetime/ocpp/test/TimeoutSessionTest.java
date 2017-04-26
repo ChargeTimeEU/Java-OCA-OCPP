@@ -60,10 +60,11 @@ public class TimeoutSessionTest {
     public void setup() throws Exception {
         when(sessionEvents.findFeatureByAction(any())).thenReturn(feature);
         when(sessionEvents.findFeatureByRequest(any())).thenReturn(feature);
+
+        session = new TimeoutSession(communicator, queue, false);
         doAnswer(invocation -> eventHandler = invocation.getArgumentAt(1, CommunicatorEvents.class)).when(communicator).connect(any(), any());
         doAnswer(invocation -> eventHandler = invocation.getArgumentAt(0, CommunicatorEvents.class)).when(communicator).accept(any());
 
-        session = new TimeoutSession(communicator, queue);
         session.setTimeoutTimer(timeoutTimer);
     }
 
@@ -118,8 +119,8 @@ public class TimeoutSessionTest {
     @Test
     public void onCall_request_resetTimeout() throws Exception {
         // Given
-        when(communicator.unpackPayload(any(), any())).thenReturn(new TestRequest());
         session.open(null, sessionEvents);
+        when(communicator.unpackPayload(any(), any())).thenReturn(new TestRequest());
 
         // When
         eventHandler.onCall("", null, null);
@@ -131,8 +132,8 @@ public class TimeoutSessionTest {
     @Test
     public void onCall_confirmation_resetTimeout() throws Exception {
         // Given
-        when(communicator.unpackPayload(any(), any())).thenReturn(new TestConfirmation());
         session.open(null, sessionEvents);
+        when(communicator.unpackPayload(any(), any())).thenReturn(new TestConfirmation());
 
         // When
         eventHandler.onCallResult("", null, null);

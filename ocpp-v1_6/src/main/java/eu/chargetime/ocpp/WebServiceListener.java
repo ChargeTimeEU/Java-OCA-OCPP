@@ -41,6 +41,7 @@ public class WebServiceListener implements Listener {
     private ListenerEvents events;
     private String fromUrl = null;
     private HttpServer server;
+    private boolean handleRequestAsync;
 
     @Override
     public void open(String hostname, int port, ListenerEvents listenerEvents) {
@@ -61,6 +62,11 @@ public class WebServiceListener implements Listener {
     public void close() {
         if (server != null)
             server.stop(1);
+    }
+
+    @Override
+    public void setAsyncRequestHandler(boolean async) {
+        handleRequestAsync = async;
     }
 
     private class WSHttpEventHandler implements WSHttpHandlerEvents {
@@ -86,7 +92,7 @@ public class WebServiceListener implements Listener {
                 SOAPCommunicator communicator = new SOAPCommunicator(identity, fromUrl, webServiceReceiver);
                 communicator.setToUrl(toUrl);
 
-                TimeoutSession session = new TimeoutSession(communicator, new Queue());
+                TimeoutSession session = new TimeoutSession(communicator, new Queue(), handleRequestAsync);
                 session.setTimeoutTimer(new TimeoutTimer(INITIAL_TIMEOUT, () -> {
                     session.close();
                     chargeBoxes.remove(identity);

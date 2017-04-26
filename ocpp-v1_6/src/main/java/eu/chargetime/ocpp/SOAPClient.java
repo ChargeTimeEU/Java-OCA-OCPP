@@ -55,18 +55,31 @@ public class SOAPClient extends Client {
      * @param coreProfile       implementation of the core feature profile.
      */
     public SOAPClient(String chargeBoxIdentity, URL callback, ClientCoreProfile coreProfile) {
-        this(chargeBoxIdentity, callback, new WebServiceTransmitter());
+        this(chargeBoxIdentity, callback, coreProfile, true);
+    }
+
+    /**
+     * The core feature profile is required.
+     * The client will use the information taken from the callback parameter to open a HTTP based Web Service.
+     *
+     * @param chargeBoxIdentity  required identity used in message header.
+     * @param callback           call back info that the server can send requests to.
+     * @param coreProfile        implementation of the core feature profile.
+     * @param handleRequestAsync sets the session request handler in async or blocking mode.
+     */
+    public SOAPClient(String chargeBoxIdentity, URL callback, ClientCoreProfile coreProfile, boolean handleRequestAsync) {
+        this(chargeBoxIdentity, callback, new WebServiceTransmitter(), handleRequestAsync);
         this.callback = callback;
         addFeatureProfile(coreProfile);
     }
 
-    private SOAPClient(String chargeBoxIdentity, URL callback, WebServiceTransmitter transmitter) {
-        this(new SOAPCommunicator(chargeBoxIdentity, callback.toString(), transmitter));
+    private SOAPClient(String chargeBoxIdentity, URL callback, WebServiceTransmitter transmitter, boolean handleRequestAsync) {
+        this(new SOAPCommunicator(chargeBoxIdentity, callback.toString(), transmitter), handleRequestAsync);
         this.transmitter = transmitter;
     }
 
-    private SOAPClient(SOAPCommunicator communicator) {
-        super(new Session(communicator, new Queue()));
+    private SOAPClient(SOAPCommunicator communicator, boolean handleRequestAsync) {
+        super(new Session(communicator, new Queue(), handleRequestAsync));
         this.communicator = communicator;
     }
 

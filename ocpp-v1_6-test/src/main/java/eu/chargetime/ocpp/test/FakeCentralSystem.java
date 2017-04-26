@@ -58,6 +58,7 @@ public class FakeCentralSystem {
         } else {
             server = new SOAPServer(serverCoreProfile);
         }
+        server.setAsyncRequestHandler(false);
 
         initializeServer();
         isStarted = false;

@@ -153,11 +153,11 @@ public class FakeChargePoint
 
         switch (type) {
             case JSON:
-                client = new JSONClient(core, "test");
+                client = new JSONClient(core, "test", false);
                 url = "ws://localhost:8887";
                 break;
             case SOAP:
-                client = new SOAPClient("me", new URL("http://localhost:8889"), core);
+                client = new SOAPClient("me", new URL("http://localhost:8889"), core, false);
                 url = "http://localhost:8890";
                 break;
         }

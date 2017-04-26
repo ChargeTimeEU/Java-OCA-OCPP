@@ -37,6 +37,7 @@ public class WebSocketListener implements Listener {
 
     private WebSocketServer server;
     private HashMap<WebSocket, WebSocketReceiver> sockets;
+    private boolean handleRequestAsync;
 
     public WebSocketListener() {
         sockets = new HashMap<>();
@@ -49,7 +50,7 @@ public class WebSocketListener implements Listener {
             public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
                 WebSocketReceiver receiver = new WebSocketReceiver(message -> webSocket.send(message));
                 sockets.put(webSocket, receiver);
-                handler.newSession(new Session(new JSONCommunicator(receiver), new Queue()), clientHandshake.getResourceDescriptor());
+                handler.newSession(new Session(new JSONCommunicator(receiver), new Queue(), handleRequestAsync), clientHandshake.getResourceDescriptor());
             }
 
             @Override
@@ -87,5 +88,10 @@ public class WebSocketListener implements Listener {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void setAsyncRequestHandler(boolean async) {
+        this.handleRequestAsync = async;
     }
 }
