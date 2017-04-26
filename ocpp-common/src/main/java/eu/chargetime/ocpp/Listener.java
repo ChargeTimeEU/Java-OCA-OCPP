@@ -27,6 +27,7 @@ package eu.chargetime.ocpp;
 
 public interface Listener {
     void open(String hostname, int port, ListenerEvents listenerEvents);
-
     void close();
+
+    void setAsyncRequestHandler(boolean async);
 }

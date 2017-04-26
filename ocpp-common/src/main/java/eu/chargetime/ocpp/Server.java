@@ -143,6 +143,12 @@ public abstract class Server extends FeatureHandler {
      * @param sessionIndex Session index of the client.
      */
     public void closeSession(UUID sessionIndex) {
-        sessions.get(sessionIndex).close();
+        Session session = sessions.get(sessionIndex);
+        if (session != null)
+            session.close();
+    }
+
+    public void setAsyncRequestHandler(boolean asyncRequestHandler) {
+        listener.setAsyncRequestHandler(asyncRequestHandler);
     }
 }

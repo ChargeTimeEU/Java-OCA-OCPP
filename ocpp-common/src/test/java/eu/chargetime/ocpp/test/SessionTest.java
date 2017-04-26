@@ -60,7 +60,7 @@ public class SessionTest {
     @Before
     public void setup() throws Exception {
         when(sessionEvents.findFeatureByAction(any())).thenReturn(feature);
-        session = new Session(communicator, queue);
+        session = new Session(communicator, queue, false);
         doAnswer(invocation -> eventHandler = invocation.getArgumentAt(1, CommunicatorEvents.class)).when(communicator).connect(any(), any());
         session.open(null, sessionEvents);
     }
@@ -149,7 +149,6 @@ public class SessionTest {
 
         // When
         eventHandler.onCall(someId, null, null);
-        try { Thread.sleep(10); } catch (Exception ex) {} // TODO make async invoker injectable
 
         // then
         verify(communicator, times(1)).sendCallError(eq(someId), anyString(), anyString(), anyString());
@@ -159,18 +158,12 @@ public class SessionTest {
     public void onCall_handledCallback_callSendCallResult() throws Exception {
         // Given
         String someId = "Some id";
-        Confirmation aConfirmation = new Confirmation() {
-            @Override
-            public boolean validate() {
-                return true;
-            }
-        };
+        Confirmation aConfirmation = () -> true;
         when(sessionEvents.handleRequest(any())).thenReturn(aConfirmation);
         when(communicator.unpackPayload(any(), any())).thenReturn(new TestRequest());
 
         // When
         eventHandler.onCall(someId, null, null);
-        try { Thread.sleep(10); } catch (Exception ex) {} // TODO make async invoker injectable
 
         // then
         verify(communicator, times(1)).sendCallResult(anyString(), anyString(), eq(aConfirmation));
@@ -185,7 +178,6 @@ public class SessionTest {
 
         // When
         eventHandler.onCall(someId, null, null);
-        try { Thread.sleep(10); } catch (Exception ex) {} // TODO make async invoker injectable
 
         // then
         verify(communicator, times(1)).sendCallError(eq(someId), anyString(), anyString(), anyString());
@@ -222,10 +214,6 @@ public class SessionTest {
 
         // When
         eventHandler.onCall(someId, null, null);
-        try {
-            Thread.sleep(10);
-        } catch (Exception ex) {
-        } // TODO make async invoker injectable
 
         // Then
         verify(sessionEvents, times(1)).handleRequest(any());

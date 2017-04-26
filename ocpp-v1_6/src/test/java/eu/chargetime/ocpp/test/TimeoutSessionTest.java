@@ -60,7 +60,8 @@ public class TimeoutSessionTest {
     public void setup() throws Exception {
         when(sessionEvents.findFeatureByAction(any())).thenReturn(feature);
         when(sessionEvents.findFeatureByRequest(any())).thenReturn(feature);
-        session = new TimeoutSession(communicator, queue);
+
+        session = new TimeoutSession(communicator, queue, false);
         doAnswer(invocation -> eventHandler = invocation.getArgumentAt(1, CommunicatorEvents.class)).when(communicator).connect(any(), any());
         doAnswer(invocation -> eventHandler = invocation.getArgumentAt(0, CommunicatorEvents.class)).when(communicator).accept(any());
 

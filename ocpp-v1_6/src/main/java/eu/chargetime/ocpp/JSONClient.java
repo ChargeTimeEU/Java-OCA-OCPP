@@ -36,10 +36,22 @@ public class JSONClient extends Client {
     /**
      * The core feature profile is required as a minimum.
      *
-     * @param coreProfile implementation of the core feature profile.
+     * @param coreProfile   implementation of the core feature profile.
+     * @param identity      identity of the charge point.
      */
     public JSONClient(ClientCoreProfile coreProfile, String identity) {
-        super(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue()));
+        this(coreProfile, identity, true);
+    }
+
+    /**
+     * The core feature profile is required as a minimum.
+     *
+     * @param coreProfile        implementation of the core feature profile.
+     * @param identity           identity of the charge point. Not used for JSON protocol.
+     * @param handleRequestAsync sets the session request handler in async or blocking mode.
+     */
+    public JSONClient(ClientCoreProfile coreProfile, String identity, boolean handleRequestAsync) {
+        super(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue(), handleRequestAsync));
         addFeatureProfile(coreProfile);
     }
 }

@@ -41,17 +41,24 @@ public class Session {
 
     private Communicator communicator;
     private Queue queue;
+    private RequestDispatcher dispatcher;
     private SessionEvents events;
 
     /**
      * Handles required injections.
      *
-     * @param communicator send and receive messages.
-     * @param queue        store and restore requests based on unique ids.
+     * @param communicator          send and receive messages.
+     * @param queue                 store and restore requests based on unique ids.
+     * @param handleRequestAsync    toggle if requests are handled async or not.
      */
-    public Session(Communicator communicator, Queue queue) {
+    public Session(Communicator communicator, Queue queue, boolean handleRequestAsync) {
         this.communicator = communicator;
         this.queue = queue;
+
+        if (handleRequestAsync)
+            dispatcher = new AsyncRequestDispatcher();
+        else
+            dispatcher = new SimpleRequestDispatcher();
     }
 
     /**
@@ -94,6 +101,7 @@ public class Session {
      */
     public void open(String uri, SessionEvents eventHandler) {
         this.events = eventHandler;
+        dispatcher.setEventHandler(eventHandler);
         communicator.connect(uri, new CommunicatorEventHandler());
     }
 
@@ -106,6 +114,7 @@ public class Session {
 
     public void accept(SessionEvents eventHandler) {
         this.events = eventHandler;
+        dispatcher.setEventHandler(eventHandler);
         communicator.accept(new CommunicatorEventHandler());
     }
 
@@ -142,7 +151,7 @@ public class Session {
                 try {
                     Request request = communicator.unpackPayload(payload, feature.getRequestType());
                     if (request.validate()) {
-                        CompletableFuture<Confirmation> promise = handleIncomingRequest(request);
+                        CompletableFuture<Confirmation> promise = dispatcher.handleRequest(request);
                         promise.whenComplete(new ConfirmationHandler(id, action, communicator));
                     } else {
                         communicator.sendCallError(id, action, "OccurenceConstraintViolation", "Payload for Action is syntactically correct but at least one of the fields violates occurence constraints");
@@ -173,18 +182,5 @@ public class Session {
             events.handleConnectionOpened();
         }
 
-        private CompletableFuture<Confirmation> handleIncomingRequest(Request request) {
-            CompletableFuture<Confirmation> promise = new CompletableFuture<>();
-            new Thread(() -> {
-                try {
-                    Confirmation conf = events.handleRequest(request);
-                    promise.complete(conf);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    promise.completeExceptionally(ex);
-                }
-            }).start();
-            return promise;
-        }
     }
 }

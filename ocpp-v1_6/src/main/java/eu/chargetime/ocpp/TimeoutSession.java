@@ -39,11 +39,12 @@ public class TimeoutSession extends Session {
     /**
      * Handles required injections.
      *
-     * @param communicator send and receive messages.
-     * @param queue        store and restore requests based on unique ids.
+     * @param communicator  send and receive messages.
+     * @param queue         store and restore requests based on unique ids.
+     * @param handleRequestAsync    toggle if requests are handled async or not.
      */
-    public TimeoutSession(Communicator communicator, Queue queue) {
-        super(communicator, queue);
+    public TimeoutSession(Communicator communicator, Queue queue, boolean handleRequestAsync) {
+        super(communicator, queue, handleRequestAsync);
     }
 
     public void setTimeoutTimer(TimeoutTimer timeoutTimer) {
