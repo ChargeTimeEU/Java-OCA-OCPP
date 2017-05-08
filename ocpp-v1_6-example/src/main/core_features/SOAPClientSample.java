@@ -1,11 +1,13 @@
 package core_features;
 
 import eu.chargetime.ocpp.Client;
-import eu.chargetime.ocpp.JSONClient;
+import eu.chargetime.ocpp.SOAPClient;
 import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
+
+import java.net.URL;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -33,7 +35,7 @@ import eu.chargetime.ocpp.model.core.*;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class JSONClientSample {
+public class SOAPClientSample {
     private Client client;
     private ClientCoreProfile core;
 
@@ -122,7 +124,7 @@ public class JSONClientSample {
                 return null; // returning null means unsupported feature
             }
         });
-        client = new JSONClient(core, "chargeboxIdentity");
+        client = new SOAPClient("chargeboxIdentity", new URL("http://localhost:8889"), core);
         client.connect("ws://hostname:8887", null);
     }
 

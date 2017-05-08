@@ -1,6 +1,7 @@
 package core_features;
 
-import eu.chargetime.ocpp.JSONServer;
+import eu.chargetime.ocpp.SOAPServer;
+import eu.chargetime.ocpp.Server;
 import eu.chargetime.ocpp.ServerEvents;
 import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
@@ -34,9 +35,8 @@ import java.util.UUID;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-public class JSONServerSample
-{
-    private JSONServer server;
+public class SOAPServerSample {
+    private Server server;
     private ServerCoreProfile core;
 
     public void started() throws Exception
@@ -119,7 +119,7 @@ public class JSONServerSample
             }
         });
 
-        server = new JSONServer(core);
+        server = new SOAPServer(core);
         server.open("localhost", 8887, new ServerEvents() {
 
             @Override
