@@ -56,7 +56,7 @@ class SOAPAuthorizeSpec extends Specification
         def conditions = new PollingConditions(timeout: 1)
 
         given:
-        centralSystem.isRiggedToFailOnNextRequest()
+        centralSystem.rigNextRequestToFail()
 
         when:
         chargePoint.sendAuthorizeRequest("")
