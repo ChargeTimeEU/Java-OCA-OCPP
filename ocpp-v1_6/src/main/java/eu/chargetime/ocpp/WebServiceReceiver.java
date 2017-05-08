@@ -84,7 +84,6 @@ public class WebServiceReceiver extends SOAPSyncHelper implements Receiver {
             try {
                 events.receivedMessage(soapConnection.call(message, url));
             } catch (SOAPException e) {
-                e.printStackTrace();
                 disconnect();
             }
         }).start();

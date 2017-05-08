@@ -121,7 +121,7 @@ public class SOAPClient extends Client {
                 try {
                     soapMessage = transmitter.relay(message).get();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }

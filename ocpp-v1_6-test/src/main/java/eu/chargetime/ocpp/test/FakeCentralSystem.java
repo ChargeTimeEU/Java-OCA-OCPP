@@ -261,7 +261,7 @@ public class FakeCentralSystem {
         return result;
     }
 
-    public void isRiggedToFailOnNextRequest() {
+    public void rigNextRequestToFail() {
         dummyHandlers.setRiggedToFail(true);
     }
 

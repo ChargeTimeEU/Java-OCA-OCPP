@@ -34,6 +34,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.*;
@@ -101,6 +102,15 @@ public class SOAPCommunicator extends Communicator {
         return createMessage(uniqueId, action, (Document) payload, false);
     }
 
+    private QName blameSomeone(String errorCode) {
+        QName result = SOAPConstants.SOAP_RECEIVER_FAULT;
+        if ("SecurityError".equals(errorCode) || "IdentityMismatch".equals(errorCode) || "ProtocolError".equals(errorCode)) {
+            return SOAPConstants.SOAP_SENDER_FAULT;
+        }
+
+        return result;
+    }
+
     @Override
     protected Object makeCallError(String uniqueId, String action, String errorCode, String errorDescription) {
         SOAPFault fault = null;
@@ -110,8 +120,10 @@ public class SOAPCommunicator extends Communicator {
             createMessageHeader(uniqueId, String.format("%sResponse", action), true, message);
 
             SOAPFault soapFault = message.getSOAPBody().addFault();
-            soapFault.setFaultCode(errorCode);
+            soapFault.setFaultCode(blameSomeone(errorCode));
             soapFault.setFaultString(errorDescription);
+
+            soapFault.appendFaultSubcode(new QName("urn://Ocpp/Cs/2015/10/", errorCode));
 
         } catch (SOAPException e) {
             e.printStackTrace();
