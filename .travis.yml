@@ -20,7 +20,5 @@ notifications:
 
 jobs:
   include:
-    - stage: test
-      script: mvn test -B
     - stage: integration-test
       script: mvn integration-test -B
