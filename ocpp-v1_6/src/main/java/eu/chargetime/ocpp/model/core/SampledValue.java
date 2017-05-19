@@ -6,6 +6,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -37,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Single sampled value in {@link MeterValue}. Each value can be accompanied by optional fields.
  */
 @XmlRootElement
+@XmlType(propOrder = {"value", "context", "format", "measurand", "phase", "location", "unit"})
 public class SampledValue implements Validatable {
     private String value;
     private String context;

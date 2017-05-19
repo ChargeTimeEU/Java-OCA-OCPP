@@ -6,6 +6,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Calendar;
 
 /*
@@ -38,6 +39,7 @@ import java.util.Calendar;
  * Sent by the Charge Point to the Central System.
  */
 @XmlRootElement
+@XmlType(propOrder = {"transactionId", "idTag", "timestamp", "meterStop", "reason", "transactionData"})
 public class StopTransactionRequest implements Request {
     private String idTag;
     private Integer meterStop;

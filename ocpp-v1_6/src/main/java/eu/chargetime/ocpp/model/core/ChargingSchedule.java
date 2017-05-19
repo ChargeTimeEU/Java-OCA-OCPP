@@ -4,6 +4,7 @@ import eu.chargetime.ocpp.model.Validatable;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Calendar;
 
 /*
@@ -36,6 +37,7 @@ import java.util.Calendar;
  * Class type used with {@link ChargingProfile}
  */
 @XmlRootElement
+@XmlType(propOrder = {"duration", "startSchedule", "chargingRateUnit", "chargingSchedulePeriod", "minChargingRate"})
 public class ChargingSchedule implements Validatable {
     private Integer duration;
     private Calendar startSchedule;

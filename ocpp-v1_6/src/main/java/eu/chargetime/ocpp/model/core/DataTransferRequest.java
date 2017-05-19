@@ -6,6 +6,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -37,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Sent either by the Central System to the Charge Point or vice versa.
  */
 @XmlRootElement
+@XmlType(propOrder = {"vendorId", "messageId", "data"})
 public class DataTransferRequest implements Request {
 
     private String vendorId;

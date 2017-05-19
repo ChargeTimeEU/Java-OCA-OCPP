@@ -6,6 +6,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -37,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Sent to Charge Point by Central System.
  */
 @XmlRootElement
+@XmlType(propOrder = {"connectorId", "idTag", "chargingProfile"})
 public class RemoteStartTransactionRequest implements Request {
 
     private Integer connectorId;

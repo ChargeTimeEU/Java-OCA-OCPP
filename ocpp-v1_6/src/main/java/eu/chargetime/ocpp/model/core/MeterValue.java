@@ -4,6 +4,7 @@ import eu.chargetime.ocpp.model.Validatable;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Calendar;
 
 /*
@@ -37,6 +38,7 @@ import java.util.Calendar;
  * All {@link SampledValue} in a {@link MeterValue} are sampled at the same point in time.
  */
 @XmlRootElement
+@XmlType(propOrder = {"timestamp", "sampledValue"})
 public class MeterValue implements Validatable {
 
     private Calendar timestamp;

@@ -26,8 +26,13 @@ package eu.chargetime.ocpp.model.firmware;/*
 
 import eu.chargetime.ocpp.model.Request;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Calendar;
 
+@XmlRootElement
+@XmlType(propOrder = {"location", "startTime", "stopTime", "retries", "retryInterval"})
 public class GetDiagnosticsRequest implements Request {
 
     private String location;
@@ -60,6 +65,7 @@ public class GetDiagnosticsRequest implements Request {
      *
      * @param location String, the destination folder.
      */
+    @XmlElement
     public void setLocation(String location) {
         this.location = location;
     }
@@ -80,6 +86,7 @@ public class GetDiagnosticsRequest implements Request {
      *
      * @param retries int, minimum number of tries.
      */
+    @XmlElement
     public void setRetries(int retries) {
         this.retries = retries;
     }
@@ -100,6 +107,7 @@ public class GetDiagnosticsRequest implements Request {
      *
      * @param retryInterval int, seconds
      */
+    @XmlElement
     public void setRetryInterval(int retryInterval) {
         this.retryInterval = retryInterval;
     }
@@ -118,6 +126,7 @@ public class GetDiagnosticsRequest implements Request {
      *
      * @param startTime Calendar, oldest log entry
      */
+    @XmlElement
     public void setStartTime(Calendar startTime) {
         this.startTime = startTime;
     }
@@ -136,6 +145,7 @@ public class GetDiagnosticsRequest implements Request {
      *
      * @param stopTime Calendar, latest log entry
      */
+    @XmlElement
     public void setStopTime(Calendar stopTime) {
         this.stopTime = stopTime;
     }

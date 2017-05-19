@@ -276,7 +276,7 @@ public class SOAPCommunicatorTest extends TestUtilities {
     @Test
     public void pack_bootNotificationRequest_returnsBootNotificationRequestPayload() {
         // Given
-        String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><bootNotificationRequest xmlns=\"urn://Ocpp/Cp/2015/10\"><chargePointModel>SingleSocketCharger</chargePointModel><chargePointVendor>VendorX</chargePointVendor></bootNotificationRequest>";
+        String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><bootNotificationRequest xmlns=\"urn://Ocpp/Cp/2015/10\"><chargePointVendor>VendorX</chargePointVendor><chargePointModel>SingleSocketCharger</chargePointModel></bootNotificationRequest>";
 
         BootNotificationRequest request = new BootNotificationRequest("VendorX", "SingleSocketCharger");
 

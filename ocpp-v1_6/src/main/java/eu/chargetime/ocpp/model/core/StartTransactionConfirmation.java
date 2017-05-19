@@ -30,11 +30,13 @@ import eu.chargetime.ocpp.model.Confirmation;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * Sent by the Central System to the Charge Point in response to a {@link StartTransactionRequest}.
  */
 @XmlRootElement
+@XmlType(propOrder = {"transactionId", "idTagInfo"})
 public class StartTransactionConfirmation implements Confirmation {
     private IdTagInfo idTagInfo;
     private Integer transactionId;

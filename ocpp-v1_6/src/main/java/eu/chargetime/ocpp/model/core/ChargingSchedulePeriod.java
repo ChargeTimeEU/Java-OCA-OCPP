@@ -30,11 +30,13 @@ import eu.chargetime.ocpp.model.Validatable;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * Class Type used with {@link ChargingSchedule}.
  */
 @XmlRootElement
+@XmlType(propOrder = {"startPeriod", "limit", "numberPhases"})
 public class ChargingSchedulePeriod implements Validatable {
     private Integer startPeriod;
     private Double limit;

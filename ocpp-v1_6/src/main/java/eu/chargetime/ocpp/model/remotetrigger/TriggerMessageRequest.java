@@ -5,6 +5,7 @@ import eu.chargetime.ocpp.model.Request;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -34,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 @XmlRootElement
+@XmlType(propOrder = {"requestedMessage", "connectorId"})
 public class TriggerMessageRequest implements Request {
     private Integer connectorId;
     private TriggerMessageRequestType requestedMessage;

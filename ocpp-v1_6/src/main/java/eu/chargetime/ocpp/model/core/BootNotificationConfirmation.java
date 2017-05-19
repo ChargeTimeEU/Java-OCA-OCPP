@@ -5,6 +5,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Calendar;
 
 /*
@@ -40,6 +41,7 @@ import java.util.Calendar;
  * @see BootNotificationRequest
  */
 @XmlRootElement
+@XmlType(propOrder = {"status", "currentTime", "interval"})
 public class BootNotificationConfirmation implements Confirmation
 {
     private Calendar currentTime;

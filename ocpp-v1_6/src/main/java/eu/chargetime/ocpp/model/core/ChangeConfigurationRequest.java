@@ -6,6 +6,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -40,6 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * fields is agreed upon between Charge Point and Central System.
  */
 @XmlRootElement
+@XmlType(propOrder = {"key", "value"})
 public class ChangeConfigurationRequest implements Request {
     private String key;
     private String value;

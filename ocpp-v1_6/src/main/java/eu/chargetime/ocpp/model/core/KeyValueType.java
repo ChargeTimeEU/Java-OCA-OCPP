@@ -6,6 +6,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -39,6 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * It is returned in {@link GetConfigurationConfirmation}.
  */
 @XmlRootElement
+@XmlType(propOrder = {"key", "readonly", "value"})
 public class KeyValueType implements Validatable {
     private String key;
     private Boolean readonly;

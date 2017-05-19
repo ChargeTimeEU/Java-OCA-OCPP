@@ -5,6 +5,7 @@ import eu.chargetime.ocpp.model.Validatable;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Calendar;
 
 /*
@@ -33,6 +34,7 @@ import java.util.Calendar;
  * SOFTWARE.
  */
 @XmlRootElement
+@XmlType(propOrder = {"chargingProfileId", "transactionId", "stackLevel", "chargingProfilePurpose", "chargingProfileKind", "recurrencyKind", "validFrom", "validTo", "chargingSchedule"})
 public class ChargingProfile implements Validatable {
     private Integer chargingProfileId;
     private Integer transactionId;

@@ -6,6 +6,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -38,6 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Sent by the Charge Point to the Central System.
  */
 @XmlRootElement
+@XmlType(propOrder = {"chargePointVendor", "chargePointModel", "chargePointSerialNumber", "chargeBoxSerialNumber", "firmwareVersion", "iccid", "imsi", "meterType", "meterSerialNumber"})
 public class BootNotificationRequest implements Request
 {
     private String chargePointVendor;

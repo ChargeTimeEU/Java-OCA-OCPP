@@ -30,11 +30,13 @@ import eu.chargetime.ocpp.model.Confirmation;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * Sent by the Charge Point to the Central System or vice versa in response to a {@link DataTransferRequest}.
  */
 @XmlRootElement
+@XmlType(propOrder = {"status", "data"})
 public class DataTransferConfirmation implements Confirmation {
 
     private DataTransferStatus status;

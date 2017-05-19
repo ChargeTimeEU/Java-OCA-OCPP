@@ -6,6 +6,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -38,6 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Sent by Charge Point the to the Central System in response to a {@link GetConfigurationRequest}.
  */
 @XmlRootElement
+@XmlType(propOrder = {"configurationKey", "unknownKey"})
 public class GetConfigurationConfirmation implements Confirmation {
     private KeyValueType[] configurationKey;
     private String[] unknownKey;

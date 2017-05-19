@@ -4,6 +4,7 @@ import eu.chargetime.ocpp.model.Validatable;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Calendar;
 
 /*
@@ -41,6 +42,7 @@ import java.util.Calendar;
  * If expiryDate is not given, the status has no end date.
  */
 @XmlRootElement
+@XmlType(propOrder = {"status", "expiryDate", "parentIdTag"})
 public class IdTagInfo implements Validatable
 {
     private Calendar expiryDate;

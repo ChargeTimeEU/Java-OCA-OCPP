@@ -5,6 +5,7 @@ import eu.chargetime.ocpp.model.Request;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -38,6 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @see MeterValue
  */
 @XmlRootElement
+@XmlType(propOrder = {"connectorId", "transactionId", "meterValue"})
 public class MeterValuesRequest implements Request {
 
     private int connectorId;
