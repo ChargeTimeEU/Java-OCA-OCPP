@@ -62,7 +62,7 @@ public abstract class Server extends FeatureHandler {
      */
     public void open(String hostname, int port, ServerEvents serverEvents) {
 
-        listener.open(hostname, port, (session, identifier) -> {
+        listener.open(hostname, port, (session, information) -> {
             session.accept(new SessionEvents() {
                 @Override
                 public Feature findFeatureByAction(String action) {
@@ -104,7 +104,7 @@ public abstract class Server extends FeatureHandler {
                 }
             });
             sessions.put(UUID.randomUUID(), session);
-            serverEvents.newSession(sessions.inverse().get(session), identifier);
+            serverEvents.newSession(sessions.inverse().get(session), information);
         });
     }
 

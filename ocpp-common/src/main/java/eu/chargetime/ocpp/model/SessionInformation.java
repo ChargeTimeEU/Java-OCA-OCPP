@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp;/*
+package eu.chargetime.ocpp.model;/*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
@@ -24,11 +24,27 @@ package eu.chargetime.ocpp;/*
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.SessionInformation;
+public class SessionInformation {
 
-import java.util.UUID;
+    private String identifier;
 
-public interface ServerEvents {
-    void newSession(UUID sessionIndex, SessionInformation information);
-    void lostSession(UUID sessionIndex);
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public static class Builder {
+
+        private String identifier;
+
+        public Builder Identifier(String identifier) {
+            this.identifier = identifier;
+            return this;
+        }
+
+        public SessionInformation build() {
+            SessionInformation sessionInformation = new SessionInformation();
+            sessionInformation.identifier = this.identifier;
+            return sessionInformation;
+        }
+    }
 }

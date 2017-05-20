@@ -26,6 +26,7 @@ package eu.chargetime.ocpp;
  */
 
 import com.sun.net.httpserver.HttpServer;
+import eu.chargetime.ocpp.model.SessionInformation;
 import eu.chargetime.ocpp.utilities.TimeoutTimer;
 
 import javax.xml.soap.SOAPMessage;
@@ -98,7 +99,8 @@ public class WebServiceListener implements Listener {
                     chargeBoxes.remove(identity);
                 }));
 
-                events.newSession(session, identity);
+                SessionInformation information = new SessionInformation.Builder().Identifier(identity).build();
+                events.newSession(session, information);
                 chargeBoxes.put(identity, webServiceReceiver);
             }
 

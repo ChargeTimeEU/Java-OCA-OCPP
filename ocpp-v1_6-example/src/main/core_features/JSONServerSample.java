@@ -4,6 +4,7 @@ import eu.chargetime.ocpp.JSONServer;
 import eu.chargetime.ocpp.ServerEvents;
 import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
+import eu.chargetime.ocpp.model.SessionInformation;
 import eu.chargetime.ocpp.model.core.*;
 
 import java.util.UUID;
@@ -123,10 +124,10 @@ public class JSONServerSample
         server.open("localhost", 8887, new ServerEvents() {
 
             @Override
-            public void newSession(UUID sessionIndex, String identifier) {
+            public void newSession(UUID sessionIndex, SessionInformation information) {
 
                 // sessionIndex is used to send messages.
-                System.out.println("New session " + sessionIndex + ": " + identifier);
+                System.out.println("New session " + sessionIndex + ": " + information.getIdentifier());
             }
 
             @Override

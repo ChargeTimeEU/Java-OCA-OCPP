@@ -4,6 +4,7 @@ import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.SessionInformation;
 import eu.chargetime.ocpp.model.TestConfirmation;
 import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Before;
@@ -46,7 +47,6 @@ import static org.mockito.Mockito.*;
 public class ServerTest extends TestUtilities {
 
     private static final String LOCALHOST = "localhost";
-    private static final String IDENTIFIER = "test";
     private static final int PORT = 42;
 
     private Server server;
@@ -66,6 +66,8 @@ public class ServerTest extends TestUtilities {
     private ServerEvents serverEvents;
     @Mock
     private Request request;
+    @Mock
+    private SessionInformation information;
 
 
     @Before
@@ -76,7 +78,7 @@ public class ServerTest extends TestUtilities {
         when(feature.getAction()).thenReturn(null);
         doAnswer(invocation -> listenerEvents = invocation.getArgumentAt(2, ListenerEvents.class)).when(listener).open(anyString(), anyInt(), any());
         doAnswer(invocation -> sessionEvents = invocation.getArgumentAt(0, SessionEvents.class)).when(session).accept(any());
-        doAnswer(invocation -> sessionIndex = invocation.getArgumentAt(0, UUID.class)).when(serverEvents).newSession(any(), anyString());
+        doAnswer(invocation -> sessionIndex = invocation.getArgumentAt(0, UUID.class)).when(serverEvents).newSession(any(), any());
 
         server = new Server(listener) {
         };
@@ -91,7 +93,7 @@ public class ServerTest extends TestUtilities {
         server.open(LOCALHOST, PORT, serverEvents);
 
         // When
-        listenerEvents.newSession(session, IDENTIFIER);
+        listenerEvents.newSession(session, information);
 
         // Then
         verify(session, times(1)).accept(any());
@@ -103,10 +105,10 @@ public class ServerTest extends TestUtilities {
         server.open(LOCALHOST, PORT, serverEvents);
 
         // When
-        listenerEvents.newSession(session, IDENTIFIER);
+        listenerEvents.newSession(session, information);
 
         // Then
-        verify(serverEvents, times(1)).newSession(any(UUID.class), eq(IDENTIFIER));
+        verify(serverEvents, times(1)).newSession(any(UUID.class), eq(information));
     }
 
     @Test
@@ -116,7 +118,7 @@ public class ServerTest extends TestUtilities {
 
         when(session.sendRequest(any(), any())).thenReturn(someUniqueId);
         server.open(LOCALHOST, PORT, serverEvents);
-        listenerEvents.newSession(session, IDENTIFIER);
+        listenerEvents.newSession(session, information);
 
         // When
         server.send(sessionIndex, request);
@@ -129,7 +131,7 @@ public class ServerTest extends TestUtilities {
     public void handleRequest_callsFeatureHandleRequest() {
         // Given
         server.open(LOCALHOST, PORT, serverEvents);
-        listenerEvents.newSession(session, IDENTIFIER);
+        listenerEvents.newSession(session, information);
 
         // When
         sessionEvents.handleRequest(request);
@@ -142,7 +144,7 @@ public class ServerTest extends TestUtilities {
     public void send_aMessage_validatesMessage() throws Exception {
         // Given
         server.open(LOCALHOST, PORT, serverEvents);
-        listenerEvents.newSession(session, IDENTIFIER);
+        listenerEvents.newSession(session, information);
 
         // When
         server.send(sessionIndex, request);

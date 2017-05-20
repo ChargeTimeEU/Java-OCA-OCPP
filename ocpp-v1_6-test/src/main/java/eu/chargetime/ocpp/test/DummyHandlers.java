@@ -29,6 +29,7 @@ import eu.chargetime.ocpp.ServerEvents;
 import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.SessionInformation;
 import eu.chargetime.ocpp.model.core.*;
 
 import java.lang.reflect.Type;
@@ -127,9 +128,9 @@ public class DummyHandlers {
     public ServerEvents generateServerEventsHandler() {
         return new ServerEvents() {
             @Override
-            public void newSession(UUID sessionIndex, String identifier) {
+            public void newSession(UUID sessionIndex, SessionInformation information) {
                 currentSessionIndex = sessionIndex;
-                currentIdentifier = identifier;
+                currentIdentifier = information.getIdentifier();
             }
 
             @Override

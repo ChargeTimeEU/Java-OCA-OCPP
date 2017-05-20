@@ -25,6 +25,7 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
+import eu.chargetime.ocpp.model.SessionInformation;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -50,7 +51,8 @@ public class WebSocketListener implements Listener {
             public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
                 WebSocketReceiver receiver = new WebSocketReceiver(message -> webSocket.send(message));
                 sockets.put(webSocket, receiver);
-                handler.newSession(new Session(new JSONCommunicator(receiver), new Queue(), handleRequestAsync), clientHandshake.getResourceDescriptor());
+                SessionInformation information = new SessionInformation.Builder().Identifier(clientHandshake.getResourceDescriptor()).build();
+                handler.newSession(new Session(new JSONCommunicator(receiver), new Queue(), handleRequestAsync), information);
             }
 
             @Override
