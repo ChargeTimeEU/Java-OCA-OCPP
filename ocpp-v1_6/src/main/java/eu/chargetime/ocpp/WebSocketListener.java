@@ -51,7 +51,10 @@ public class WebSocketListener implements Listener {
             public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
                 WebSocketReceiver receiver = new WebSocketReceiver(message -> webSocket.send(message));
                 sockets.put(webSocket, receiver);
-                SessionInformation information = new SessionInformation.Builder().Identifier(clientHandshake.getResourceDescriptor()).build();
+                SessionInformation information = new SessionInformation.Builder()
+                        .Identifier(clientHandshake.getResourceDescriptor())
+                        .InternetAddress(webSocket.getRemoteSocketAddress()).build();
+
                 handler.newSession(new Session(new JSONCommunicator(receiver), new Queue(), handleRequestAsync), information);
             }
 

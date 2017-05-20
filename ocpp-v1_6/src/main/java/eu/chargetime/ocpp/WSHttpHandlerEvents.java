@@ -27,5 +27,5 @@ package eu.chargetime.ocpp;/*
 import javax.xml.soap.SOAPMessage;
 
 public interface WSHttpHandlerEvents {
-    SOAPMessage incomingRequest(SOAPMessage message);
+    SOAPMessage incomingRequest(SOAPMessageInfo messageInfo);
 }

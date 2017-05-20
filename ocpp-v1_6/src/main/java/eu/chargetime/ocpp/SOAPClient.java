@@ -119,7 +119,7 @@ public class SOAPClient extends Client {
             server.createContext("/", new WSHttpHandler(WSDL_CHARGE_POINT, message -> {
                 SOAPMessage soapMessage = null;
                 try {
-                    soapMessage = transmitter.relay(message).get();
+                    soapMessage = transmitter.relay(message.getMessage()).get();
                 } catch (InterruptedException e) {
                     //e.printStackTrace();
                 } catch (ExecutionException e) {
