@@ -40,7 +40,7 @@ import java.util.Calendar;
  *
  * @see BootNotificationRequest
  */
-@XmlRootElement
+@XmlRootElement(name = "bootNotificationResponse")
 @XmlType(propOrder = {"status", "currentTime", "interval"})
 public class BootNotificationConfirmation implements Confirmation
 {

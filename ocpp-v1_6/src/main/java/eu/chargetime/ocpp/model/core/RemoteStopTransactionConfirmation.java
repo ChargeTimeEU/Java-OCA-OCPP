@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * sent from Charge Point to Central System.
  */
-@XmlRootElement
+@XmlRootElement(name = "remoteStopTransactionResponse")
 public class RemoteStopTransactionConfirmation implements Confirmation {
     private RemoteStartStopStatus status;
 

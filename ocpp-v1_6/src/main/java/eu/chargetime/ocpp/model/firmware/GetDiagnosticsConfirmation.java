@@ -29,6 +29,10 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "getDiagnosticsResponse")
 public class GetDiagnosticsConfirmation implements Confirmation {
     private String fileName;
 
@@ -53,6 +57,7 @@ public class GetDiagnosticsConfirmation implements Confirmation {
      *
      * @param fileName String, file name
      */
+    @XmlElement
     public void setFileName(String fileName) throws PropertyConstraintException {
         if (!ModelUtil.validate(fileName, 255))
             throw new PropertyConstraintException("fileName", fileName);

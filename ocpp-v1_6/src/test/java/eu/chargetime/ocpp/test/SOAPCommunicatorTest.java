@@ -72,7 +72,7 @@ public class SOAPCommunicatorTest extends TestUtilities {
     @Test
     public void unpackPayload_emptyPayload_returnRequestedType() throws Exception {
         // Given
-        Document payload = stringToDocument("<bootNotificationRequest xmlns=\"urn://Ocpp/Cp/2015/10\"></bootNotificationRequest>");
+        Document payload = stringToDocument("<bootNotificationRequest xmlns=\"urn://Ocpp/Cs/2015/10\"></bootNotificationRequest>");
         Class<?> type = BootNotificationRequest.class;
 
         // When
@@ -259,7 +259,7 @@ public class SOAPCommunicatorTest extends TestUtilities {
         Calendar someDate = new Calendar.Builder().setDate(2016, 03, 28).setTimeOfDay(07, 16, 11, 988).setTimeZone(TimeZone.getTimeZone("GMT+00:00")).build();
         int interval = 300;
         RegistrationStatus status = RegistrationStatus.Accepted;
-        String xml = "<bootNotificationConfirmation xmlns=\"urn://Ocpp/Cp/2015/10\"><currentTime>%s</currentTime><interval>%d</interval><status>%s</status></bootNotificationConfirmation>";
+        String xml = "<bootNotificationResponse xmlns=\"urn://Ocpp/Cs/2015/10\"><currentTime>%s</currentTime><interval>%d</interval><status>%s</status></bootNotificationResponse>";
         Document payload = stringToDocument(String.format(xml, currentType, interval, status));
         Class<?> type = BootNotificationConfirmation.class;
 
@@ -276,7 +276,7 @@ public class SOAPCommunicatorTest extends TestUtilities {
     @Test
     public void pack_bootNotificationRequest_returnsBootNotificationRequestPayload() {
         // Given
-        String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><bootNotificationRequest xmlns=\"urn://Ocpp/Cp/2015/10\"><chargePointVendor>VendorX</chargePointVendor><chargePointModel>SingleSocketCharger</chargePointModel></bootNotificationRequest>";
+        String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><bootNotificationRequest xmlns=\"urn://Ocpp/Cs/2015/10\"><chargePointVendor>VendorX</chargePointVendor><chargePointModel>SingleSocketCharger</chargePointModel></bootNotificationRequest>";
 
         BootNotificationRequest request = new BootNotificationRequest("VendorX", "SingleSocketCharger");
 

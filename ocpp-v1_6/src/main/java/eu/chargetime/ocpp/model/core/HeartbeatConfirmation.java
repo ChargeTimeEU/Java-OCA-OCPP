@@ -35,7 +35,7 @@ import java.util.Calendar;
 /**
  * Sent by the Central System to the Charge Point in response to a {@link HeartbeatRequest}.
  */
-@XmlRootElement
+@XmlRootElement(name = "heartbeatResponse")
 public class HeartbeatConfirmation implements Confirmation {
     private Calendar currentTime;
 

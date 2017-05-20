@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * Sent by the Central System to the Charge Point in response to a {@link StartTransactionRequest}.
  */
-@XmlRootElement
+@XmlRootElement(name = "startTransactionResponse")
 @XmlType(propOrder = {"transactionId", "idTagInfo"})
 public class StartTransactionConfirmation implements Confirmation {
     private IdTagInfo idTagInfo;

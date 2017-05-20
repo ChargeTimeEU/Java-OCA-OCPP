@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * Sent by the Charge Point to the Central System or vice versa in response to a {@link DataTransferRequest}.
  */
-@XmlRootElement
+@XmlRootElement(name = "dataTransferResponse")
 @XmlType(propOrder = {"status", "data"})
 public class DataTransferConfirmation implements Confirmation {
 

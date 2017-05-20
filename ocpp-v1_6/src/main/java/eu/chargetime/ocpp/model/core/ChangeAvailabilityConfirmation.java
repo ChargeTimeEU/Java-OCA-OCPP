@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * return by Charge Point to Central System.
  */
-@XmlRootElement
+@XmlRootElement(name = "changeAvailabilityResponse")
 public class ChangeAvailabilityConfirmation implements Confirmation {
 
     private AvailabilityStatus status;

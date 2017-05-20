@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Sent by the Central System to the Charge Point in response to a {@link StopTransactionRequest}.
  */
-@XmlRootElement
+@XmlRootElement(name = "stopTransactionResponse")
 public class StopTransactionConfirmation implements Confirmation {
     private IdTagInfo idTagInfo;
 

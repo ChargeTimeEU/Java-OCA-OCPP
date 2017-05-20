@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  SOFTWARE.
  */
 
-@XmlRootElement
+@XmlRootElement(name = "triggerMessageResponse")
 public class TriggerMessageConfirmation implements Confirmation {
     private TriggerMessageStatus status;
 

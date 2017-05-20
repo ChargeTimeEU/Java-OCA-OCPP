@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * Sent by Charge Point the to the Central System in response to a {@link GetConfigurationRequest}.
  */
-@XmlRootElement
+@XmlRootElement(name = "getConfigurationResponse")
 @XmlType(propOrder = {"configurationKey", "unknownKey"})
 public class GetConfigurationConfirmation implements Confirmation {
     private KeyValueType[] configurationKey;
