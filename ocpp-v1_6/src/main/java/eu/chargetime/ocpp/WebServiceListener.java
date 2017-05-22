@@ -84,7 +84,8 @@ public class WebServiceListener implements Listener {
         }
 
         @Override
-        public SOAPMessage incomingRequest(SOAPMessage message) {
+        public SOAPMessage incomingRequest(SOAPMessageInfo messageInfo) {
+            SOAPMessage message = messageInfo.getMessage();
             String identity = SOAPSyncHelper.getHeaderValue(message, "chargeBoxIdentity");
             if (!chargeBoxes.containsKey(identity)) {
                 String toUrl = SOAPSyncHelper.getHeaderValue(message, "From");
@@ -99,7 +100,7 @@ public class WebServiceListener implements Listener {
                     chargeBoxes.remove(identity);
                 }));
 
-                SessionInformation information = new SessionInformation.Builder().Identifier(identity).build();
+                SessionInformation information = new SessionInformation.Builder().Identifier(identity).InternetAddress(messageInfo.getAddress()).build();
                 events.newSession(session, information);
                 chargeBoxes.put(identity, webServiceReceiver);
             }

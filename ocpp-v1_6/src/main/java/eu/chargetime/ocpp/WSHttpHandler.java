@@ -48,7 +48,7 @@ public class WSHttpHandler implements HttpHandler {
             sendWSDL(httpExchange);
         } else {
             SOAPMessage request = parse(httpExchange.getRequestBody());
-            SOAPMessage confirmation = events.incomingRequest(request);
+            SOAPMessage confirmation = events.incomingRequest(new SOAPMessageInfo(httpExchange.getRemoteAddress(), request));
             OutputStream responseStream = httpExchange.getResponseBody();
             try {
                 httpExchange.getResponseHeaders().add("Content-Type", "application/soap+xml; charset=utf-8");
