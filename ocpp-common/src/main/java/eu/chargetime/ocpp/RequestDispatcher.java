@@ -52,7 +52,7 @@ class AsyncRequestDispatcher extends SimpleRequestDispatcher {
     @Override
     protected void fulfillPromis(CompletableFuture<Confirmation> promise, Request request) {
         new Thread(() -> {
-            this.fulfillPromis(promise, request);
+            super.fulfillPromis(promise, request);
         }).start();
     }
 }
