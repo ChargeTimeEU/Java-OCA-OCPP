@@ -1,13 +1,6 @@
 language: java
-jdk: oraclejdk8
-  
+
 sudo: false # faster builds
-
-#FIXME
-#script: "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report"
-
-#after_success:
-#- bash <(curl -s https://codecov.io/bash)
 
 notifications:
   webhooks:
@@ -19,5 +12,11 @@ notifications:
 
 jobs:
   include:
-    - stage: integration-test
+    - stage: test
+      jdk: oraclejdk8
+      script: "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report -B"
+      after_success:
+      - bash <(curl -s https://codecov.io/bash)
+    - stage: integration-
+      jdk: oraclejdk8
       script: mvn integration-test -B
