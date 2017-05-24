@@ -56,7 +56,6 @@ public abstract class SOAPSyncHelper {
     abstract void forwardMessage(SOAPMessage message);
 
     public CompletableFuture<SOAPMessage> relay(SOAPMessage message) {
-        forwardMessage(message);
         CompletableFuture<SOAPMessage> promise = null;
         String uniqueID = getHeaderValue(message, "MessageID");
         if (uniqueID != null) {
@@ -64,6 +63,7 @@ public abstract class SOAPSyncHelper {
             promises.put(uniqueID, promise);
         }
 
+        forwardMessage(message);
         return promise;
     }
 
