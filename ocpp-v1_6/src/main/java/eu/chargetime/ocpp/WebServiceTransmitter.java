@@ -69,7 +69,7 @@ public class WebServiceTransmitter extends SOAPSyncHelper implements Transmitter
     }
 
     @Override
-    protected void sendRequest(SOAPMessage message) throws NotConnectedException {
+    protected void sendRequest(final SOAPMessage message) throws NotConnectedException {
         if (!connected)
             throw new NotConnectedException();
 

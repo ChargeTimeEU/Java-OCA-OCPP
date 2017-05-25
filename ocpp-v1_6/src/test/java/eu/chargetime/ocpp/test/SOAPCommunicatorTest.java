@@ -2,6 +2,7 @@ package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.SOAPCommunicator;
 import eu.chargetime.ocpp.Transmitter;
+import eu.chargetime.ocpp.model.SOAPHostInfo;
 import eu.chargetime.ocpp.model.TestModel;
 import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
 import eu.chargetime.ocpp.model.core.BootNotificationRequest;
@@ -60,13 +61,15 @@ public class SOAPCommunicatorTest extends TestUtilities {
     private SOAPCommunicator communicator;
     private String chargeBoxIdentity = "testIdentity";
     private String fromUrl = "http://localhost";
+    private String namespace = "urn://Ocpp/Cs/2015/10";
 
     @Mock
     private Transmitter transmitter;
 
     @Before
     public void setup() {
-        communicator = new SOAPCommunicator(chargeBoxIdentity, fromUrl, transmitter);
+        SOAPHostInfo hostInfo = new SOAPHostInfo.Builder().chargeBoxIdentity(chargeBoxIdentity).fromUrl(fromUrl).namespace(namespace).build();
+        communicator = new SOAPCommunicator(hostInfo, transmitter);
     }
 
     @Test

@@ -27,6 +27,7 @@ package eu.chargetime.ocpp;
 
 import com.sun.net.httpserver.HttpServer;
 import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
+import eu.chargetime.ocpp.model.SOAPHostInfo;
 
 import javax.xml.soap.SOAPMessage;
 import java.io.IOException;
@@ -68,13 +69,13 @@ public class SOAPClient extends Client {
      * @param handleRequestAsync sets the session request handler in async or blocking mode.
      */
     public SOAPClient(String chargeBoxIdentity, URL callback, ClientCoreProfile coreProfile, boolean handleRequestAsync) {
-        this(chargeBoxIdentity, callback, new WebServiceTransmitter(), handleRequestAsync);
+        this(new SOAPHostInfo.Builder().chargeBoxIdentity(chargeBoxIdentity).fromUrl(callback.toString()).namespace("urn://Ocpp/Cp/2015/10").build(), new WebServiceTransmitter(), handleRequestAsync);
         this.callback = callback;
         addFeatureProfile(coreProfile);
     }
 
-    private SOAPClient(String chargeBoxIdentity, URL callback, WebServiceTransmitter transmitter, boolean handleRequestAsync) {
-        this(new SOAPCommunicator(chargeBoxIdentity, callback.toString(), transmitter), handleRequestAsync);
+    private SOAPClient(SOAPHostInfo hostInfo, WebServiceTransmitter transmitter, boolean handleRequestAsync) {
+        this(new SOAPCommunicator(hostInfo, transmitter), handleRequestAsync);
         this.transmitter = transmitter;
     }
 

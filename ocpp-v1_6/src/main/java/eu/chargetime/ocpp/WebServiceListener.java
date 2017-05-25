@@ -26,6 +26,7 @@ package eu.chargetime.ocpp;
  */
 
 import com.sun.net.httpserver.HttpServer;
+import eu.chargetime.ocpp.model.SOAPHostInfo;
 import eu.chargetime.ocpp.model.SessionInformation;
 import eu.chargetime.ocpp.utilities.TimeoutTimer;
 
@@ -38,6 +39,7 @@ import java.util.concurrent.ExecutionException;
 public class WebServiceListener implements Listener {
 
     final private String WSDL_CENTRAL_SYSTEM = "eu/chargetime/ocpp/OCPP_CentralSystemService_1.6.wsdl";
+    final private String NAMESPACE = "urn://Ocpp/Cs/2015/10";
 
     private ListenerEvents events;
     private String fromUrl = null;
@@ -91,7 +93,8 @@ public class WebServiceListener implements Listener {
                 String toUrl = SOAPSyncHelper.getHeaderValue(message, "From");
                 WebServiceReceiver webServiceReceiver = new WebServiceReceiver(toUrl, () -> removeChargebox(identity));
 
-                SOAPCommunicator communicator = new SOAPCommunicator(identity, fromUrl, webServiceReceiver);
+                SOAPHostInfo hostInfo = new SOAPHostInfo.Builder().chargeBoxIdentity(identity).fromUrl(fromUrl).namespace(NAMESPACE).build();
+                SOAPCommunicator communicator = new SOAPCommunicator(hostInfo, webServiceReceiver);
                 communicator.setToUrl(toUrl);
 
                 TimeoutSession session = new TimeoutSession(communicator, new Queue(), handleRequestAsync);

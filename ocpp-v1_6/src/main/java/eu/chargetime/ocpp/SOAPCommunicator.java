@@ -19,21 +19,21 @@ package eu.chargetime.ocpp;/*
     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
+    SOFTWARE.    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+
  */
 
 import eu.chargetime.ocpp.model.CallMessage;
 import eu.chargetime.ocpp.model.CallResultMessage;
 import eu.chargetime.ocpp.model.Message;
+import eu.chargetime.ocpp.model.SOAPHostInfo;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.*;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -51,16 +51,12 @@ public class SOAPCommunicator extends Communicator {
     private static final String HEADER_TO = "To";
     private static final String HEADER_CHARGEBOXIDENTITY = "chargeBoxIdentity";
 
-
-    private final String chargeBoxIdentity;
-    private final String fromUrl;
+    private final SOAPHostInfo hostInfo;
     private String toUrl;
 
-    public SOAPCommunicator(String chargeBoxIdentity, String fromUrl, Radio radio) {
+    public SOAPCommunicator(SOAPHostInfo hostInfo, Radio radio) {
         super(radio);
-
-        this.chargeBoxIdentity = chargeBoxIdentity;
-        this.fromUrl = fromUrl;
+        this.hostInfo = hostInfo;
     }
 
     @SuppressWarnings("unchecked")
@@ -70,7 +66,8 @@ public class SOAPCommunicator extends Communicator {
         try {
             Document input = (Document) payload;
             Unmarshaller unmarshaller = JAXBContext.newInstance(type).createUnmarshaller();
-            output = (T) unmarshaller.unmarshal(input);
+            JAXBElement<T> jaxbElement = (JAXBElement<T>) unmarshaller.unmarshal(input, type);
+            output = jaxbElement.getValue();
         } catch (JAXBException e) {
             e.printStackTrace();
         }
@@ -82,14 +79,48 @@ public class SOAPCommunicator extends Communicator {
         Document document = null;
         try {
             Marshaller marshaller = JAXBContext.newInstance(payload.getClass()).createMarshaller();
-            document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setNamespaceAware(false);
+            document = factory.newDocumentBuilder().newDocument();
             marshaller.marshal(payload, document);
+            document = setNamespace(document, hostInfo.getNamespace());
         } catch (JAXBException e) {
             e.printStackTrace();
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
         return document;
+    }
+
+    private Document setNamespace(Document document, String namespace) {
+        Document output = document;
+        Element orgElement = document.getDocumentElement();
+        Element newElement = document.createElementNS(namespace, orgElement.getNodeName());
+
+        NodeList childNodes = orgElement.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            appendChildNS(document, newElement, childNodes.item(i), namespace);
+            //newElement.appendChild(childNodes.item(0));
+        }
+
+        output.replaceChild(newElement, orgElement);
+        return output;
+    }
+
+    private void appendChildNS(Document doc, Node destination, Node child, String namespace) {
+        Node newChild;
+        if (child.getNodeType() == Node.ELEMENT_NODE) {
+            newChild = doc.createElementNS(namespace, child.getNodeName());
+
+            NodeList childNodes = child.getChildNodes();
+            for (int i = 0; i < childNodes.getLength(); i++) {
+                appendChildNS(doc, newChild, childNodes.item(i), namespace);
+            }
+        } else {
+            newChild = child;
+        }
+
+        destination.appendChild(newChild);
     }
 
     @Override
@@ -123,7 +154,7 @@ public class SOAPCommunicator extends Communicator {
             soapFault.setFaultCode(blameSomeone(errorCode));
             soapFault.setFaultString(errorDescription);
 
-            soapFault.appendFaultSubcode(new QName("urn://Ocpp/Cs/2015/10/", errorCode));
+            soapFault.appendFaultSubcode(new QName(hostInfo.getNamespace(), errorCode));
 
         } catch (SOAPException e) {
             e.printStackTrace();
@@ -158,9 +189,9 @@ public class SOAPCommunicator extends Communicator {
         String namespace = "http://schemas.xmlsoap.org/ws/2004/08/addressing";
 
         // Set chargeBoxIdentity
-        SOAPHeaderElement chargeBoxIdentityHeader = soapHeader.addHeaderElement(soapFactory.createName(HEADER_CHARGEBOXIDENTITY, "cs", "urn://Ocpp/Cs/2015/10/"));
+        SOAPHeaderElement chargeBoxIdentityHeader = soapHeader.addHeaderElement(soapFactory.createName(HEADER_CHARGEBOXIDENTITY, "cs", hostInfo.getNamespace()));
         chargeBoxIdentityHeader.setMustUnderstand(true);
-        chargeBoxIdentityHeader.setValue(chargeBoxIdentity);
+        chargeBoxIdentityHeader.setValue(hostInfo.getChargeBoxIdentity());
 
         // Set Action
         SOAPHeaderElement actionHeader = soapHeader.addHeaderElement(soapFactory.createName(HEADER_ACTION, prefix, namespace));
@@ -180,7 +211,7 @@ public class SOAPCommunicator extends Communicator {
 
         // Set From
         SOAPHeaderElement fromHeader = soapHeader.addHeaderElement(soapFactory.createName(HEADER_FROM, prefix, namespace));
-        fromHeader.setValue(fromUrl);
+        fromHeader.setValue(hostInfo.getFromUrl());
 
         // Set ReplyTo
         SOAPHeaderElement replyToHeader = soapHeader.addHeaderElement(soapFactory.createName(HEADER_REPLYTO, prefix, namespace));
@@ -246,7 +277,7 @@ public class SOAPCommunicator extends Communicator {
         public boolean isAddressedToMe() {
             String to = getElementValue(HEADER_TO);
             String cbIdentity = getElementValue(HEADER_CHARGEBOXIDENTITY);
-            return fromUrl.equals(to) && chargeBoxIdentity.equals(cbIdentity);
+            return hostInfo.getFromUrl().equals(to) && hostInfo.getChargeBoxIdentity().equals(cbIdentity);
         }
 
         private CallResultMessage parseResult() {

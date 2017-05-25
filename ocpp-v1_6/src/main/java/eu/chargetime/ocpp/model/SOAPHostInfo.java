@@ -1,0 +1,108 @@
+package eu.chargetime.ocpp.model;/*
+    ChargeTime.eu - Java-OCA-OCPP
+    
+    MIT License
+
+    Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+ */
+
+public class SOAPHostInfo {
+    private String chargeBoxIdentity;
+    private String fromUrl;
+    private String toUrl;
+    private String namespace;
+
+    public String getChargeBoxIdentity() {
+        return chargeBoxIdentity;
+    }
+
+    public String getFromUrl() {
+        return fromUrl;
+    }
+
+    public String getToUrl() {
+        return toUrl;
+    }
+
+    public void setToUrl(String toUrl) {
+        this.toUrl = toUrl;
+    }
+
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public static class Builder {
+        private String chargeBoxIdentity;
+        private String fromUrl;
+        private String toUrl;
+        private String namespace;
+
+        public Builder chargeBoxIdentity(String chargeBoxIdentity) {
+            if (chargeBoxIdentity == null) {
+                throw new IllegalArgumentException("The object 'chargeBoxIdentity' cannot be null");
+            }
+            this.chargeBoxIdentity = chargeBoxIdentity;
+            return this;
+        }
+
+        public Builder fromUrl(String fromUrl) {
+            if (fromUrl == null) {
+                throw new IllegalArgumentException("The object 'fromUrl' cannot be null");
+            }
+            this.fromUrl = fromUrl;
+            return this;
+        }
+
+        public Builder toUrl(String toUrl) {
+            if (toUrl == null) {
+                throw new IllegalArgumentException("The object 'toUrl' cannot be null");
+            }
+            this.toUrl = toUrl;
+            return this;
+        }
+
+        public Builder namespace(String namespace) {
+            if (namespace == null) {
+                throw new IllegalArgumentException("The object 'namespace' cannot be null");
+            }
+            this.namespace = namespace;
+            return this;
+        }
+
+        public SOAPHostInfo build()
+        {
+            SOAPHostInfo res = new SOAPHostInfo();
+            res.fromUrl = this.fromUrl;
+            res.chargeBoxIdentity = this.chargeBoxIdentity;
+            res.namespace = this.namespace;
+            res.toUrl = this.toUrl;
+            validate(res);
+            return res;
+        }
+
+        private void validate(SOAPHostInfo hostInfo) {
+            if (hostInfo.fromUrl == null || hostInfo.chargeBoxIdentity == null || hostInfo.namespace == null) {
+                throw new IllegalStateException("Some required fields where not set.");
+            }
+        }
+    }
+}
