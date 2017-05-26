@@ -69,7 +69,7 @@ public class SOAPClient extends Client {
      * @param handleRequestAsync sets the session request handler in async or blocking mode.
      */
     public SOAPClient(String chargeBoxIdentity, URL callback, ClientCoreProfile coreProfile, boolean handleRequestAsync) {
-        this(new SOAPHostInfo.Builder().chargeBoxIdentity(chargeBoxIdentity).fromUrl(callback.toString()).namespace("urn://Ocpp/Cp/2015/10").build(), new WebServiceTransmitter(), handleRequestAsync);
+        this(new SOAPHostInfo.Builder().chargeBoxIdentity(chargeBoxIdentity).fromUrl(callback.toString()).namespace("urn://Ocpp/Cs/2015/10").build(), new WebServiceTransmitter(), handleRequestAsync);
         this.callback = callback;
         addFeatureProfile(coreProfile);
     }

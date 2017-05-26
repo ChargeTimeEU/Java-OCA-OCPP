@@ -39,7 +39,7 @@ import java.util.concurrent.ExecutionException;
 public class WebServiceListener implements Listener {
 
     final private String WSDL_CENTRAL_SYSTEM = "eu/chargetime/ocpp/OCPP_CentralSystemService_1.6.wsdl";
-    final private String NAMESPACE = "urn://Ocpp/Cs/2015/10";
+    final private String NAMESPACE = "urn://Ocpp/Cp/2015/10";
 
     private ListenerEvents events;
     private String fromUrl = null;

@@ -100,7 +100,6 @@ public class SOAPCommunicator extends Communicator {
         NodeList childNodes = orgElement.getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
             appendChildNS(document, newElement, childNodes.item(i), namespace);
-            //newElement.appendChild(childNodes.item(0));
         }
 
         output.replaceChild(newElement, orgElement);
