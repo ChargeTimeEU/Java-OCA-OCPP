@@ -39,7 +39,6 @@ import java.util.concurrent.ExecutionException;
 public class WebServiceListener implements Listener {
 
     final private String WSDL_CENTRAL_SYSTEM = "eu/chargetime/ocpp/OCPP_CentralSystemService_1.6.wsdl";
-    final private String NAMESPACE = "urn://Ocpp/Cs/2015/10";
 
     private ListenerEvents events;
     private String fromUrl = null;
@@ -93,7 +92,7 @@ public class WebServiceListener implements Listener {
                 String toUrl = SOAPSyncHelper.getHeaderValue(message, "From");
                 WebServiceReceiver webServiceReceiver = new WebServiceReceiver(toUrl, () -> removeChargebox(identity));
 
-                SOAPHostInfo hostInfo = new SOAPHostInfo.Builder().chargeBoxIdentity(identity).fromUrl(fromUrl).namespace(NAMESPACE).build();
+                SOAPHostInfo hostInfo = new SOAPHostInfo.Builder().isClient(false).chargeBoxIdentity(identity).fromUrl(fromUrl).namespace(SOAPHostInfo.NAMESPACE_CENTRALSYSTEM).build();
                 SOAPCommunicator communicator = new SOAPCommunicator(hostInfo, webServiceReceiver);
                 communicator.setToUrl(toUrl);
 
