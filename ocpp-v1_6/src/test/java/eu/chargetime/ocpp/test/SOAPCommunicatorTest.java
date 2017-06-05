@@ -305,7 +305,6 @@ public class SOAPCommunicatorTest extends TestUtilities {
 
     public static Document stringToDocument(String xml) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setNamespaceAware(true);
         DocumentBuilder db = factory.newDocumentBuilder();
 
         InputSource is = new InputSource();
