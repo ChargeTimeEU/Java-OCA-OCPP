@@ -5,6 +5,9 @@ import eu.chargetime.ocpp.model.Request;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -37,7 +40,9 @@ import java.util.UUID;
  */
 public class Queue
 {
-    private HashMap<String, Request> requestQueue;
+	private static final Logger logger = LoggerFactory.getLogger(Queue.class);
+
+	private HashMap<String, Request> requestQueue;
 
     public Queue () {
         requestQueue = new HashMap<>();
@@ -59,6 +64,8 @@ public class Queue
      * Restore a {@link Request} using a unique identifier.
      * The identifier can only be used once.
      * If no Request was found, null is returned.
+     * 
+     * FIXME: use optional instead
      *
      * @param ticket    unique identifier returned when {@link Request} was initially stored.
      * @return the stored {@link Request}
@@ -69,7 +76,7 @@ public class Queue
             request = requestQueue.get(ticket);
             requestQueue.remove(ticket);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.warn("restoreRequest({}) failed", ticket, ex);
         }
         return request;
     }

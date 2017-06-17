@@ -29,13 +29,16 @@ import eu.chargetime.ocpp.model.SessionInformation;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 
 public class WebSocketListener implements Listener {
-
+	private static final Logger logger = LoggerFactory.getLogger(WebSocketListener.class);
+	
     private WebSocketServer server;
     private HashMap<WebSocket, WebSocketReceiver> sockets;
     private boolean handleRequestAsync;
@@ -89,9 +92,9 @@ public class WebSocketListener implements Listener {
             server.stop(1);
 
         } catch (IOException e) {
-            e.printStackTrace();
+        	logger.info("close() failed", e);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+        	logger.info("close() failed", e);
         }
     }
 

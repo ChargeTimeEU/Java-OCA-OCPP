@@ -6,6 +6,9 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 
 import java.util.concurrent.CompletableFuture;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -44,6 +47,8 @@ import java.util.concurrent.CompletableFuture;
  */
 public abstract class Client extends FeatureHandler
 {
+	private static final Logger logger = LoggerFactory.getLogger(Client.class);
+	
     private Session session;
 
     /**
@@ -115,7 +120,7 @@ public abstract class Client extends FeatureHandler
         try {
             session.close();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.info("session.close() failed", ex);
         }
     }
 

@@ -4,6 +4,9 @@ import eu.chargetime.ocpp.model.*;
 
 import java.util.ArrayDeque;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -41,7 +44,9 @@ import java.util.ArrayDeque;
  * Must be overloaded to implement a specific format.
  */
 public abstract class Communicator {
-    private RetryRunner retryRunner;
+	private static final Logger logger = LoggerFactory.getLogger(Communicator.class);
+
+	private RetryRunner retryRunner;
     protected Radio radio;
     private ArrayDeque<Object> transactionQueue;
     private CommunicatorEvents events;
@@ -158,7 +163,7 @@ public abstract class Communicator {
                 radio.send(call);
             }
         } catch (NotConnectedException ex) {
-            ex.printStackTrace();
+        	logger.warn("sendCall() failed", ex);
             if (request.transactionRelated()) {
                 transactionQueue.add(call);
             } else {
@@ -176,8 +181,8 @@ public abstract class Communicator {
     public void sendCallResult(String uniqueId, String action, Confirmation confirmation) {
         try {
             radio.send(makeCallResult(uniqueId, action, packPayload(confirmation)));
-        } catch (NotConnectedException e) {
-            e.printStackTrace();
+        } catch (NotConnectedException ex) {
+        	logger.warn("sendCallResult() failed", ex);
             events.onError(uniqueId, "Not connected", "The confirmation couldn't be send due to the lack of connection", confirmation);
         }
     }
@@ -193,7 +198,7 @@ public abstract class Communicator {
         try {
             radio.send(makeCallError(uniqueId, action, errorCode, errorDescription));
         } catch (NotConnectedException ex) {
-            ex.printStackTrace();
+        	logger.warn("sendCallError() failed", ex);
             events.onError(uniqueId, "Not connected", "The error couldn't be send due to the lack of connection", errorCode);
         }
     }
@@ -292,7 +297,7 @@ public abstract class Communicator {
                         popRetryMessage();
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+            	logger.warn("RetryRunner::run() failed", ex);
             }
         }
     }
