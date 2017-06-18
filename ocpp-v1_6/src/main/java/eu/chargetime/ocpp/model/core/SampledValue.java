@@ -8,6 +8,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -40,7 +43,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlType(propOrder = {"value", "context", "format", "measurand", "phase", "location", "unit"})
 public class SampledValue implements Validatable {
-    private String value;
+	private static final Logger logger = LoggerFactory.getLogger(SampledValue.class);
+
+	private String value;
     private String context;
     private ValueFormat format;
     private String measurand;
@@ -56,7 +61,7 @@ public class SampledValue implements Validatable {
             setLocation(Location.Outlet);
             setUnit("Wh");
         } catch (PropertyConstraintException ex) {
-            ex.printStackTrace();
+        	logger.error("constructor of SampledValue failed", ex);
         }
     }
 

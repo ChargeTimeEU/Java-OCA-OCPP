@@ -39,10 +39,10 @@ public abstract class ModelUtil {
      * @param hayStack list of value that we search in.
      * @return true if value was found in list.
      */
-    public static boolean isAmong(Object needle, Object... hayStack) {
+    public static boolean isAmong(String needle, String... hayStack) {
         boolean found = false;
         if (hayStack != null) {
-            for (Object straw : hayStack) {
+            for (String straw : hayStack) {
                 if (found = isNullOrEqual(straw, needle)) {
                     break;
                 }

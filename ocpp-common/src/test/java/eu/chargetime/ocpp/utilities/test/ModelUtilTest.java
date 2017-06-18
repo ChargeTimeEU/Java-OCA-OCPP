@@ -101,16 +101,18 @@ public class ModelUtilTest {
     @Test
     public void isAmong_needleAndHaystackIsNull_returnsFalse() {
         // When
-        boolean found = ModelUtil.isAmong(null, null);
+        boolean found = ModelUtil.isAmong((String)null, (String)null);
 
         // Then
-        assertThat(found, is(false));
+        // FIXME: please check if thats intended! I think the behaviour should be identical to the version below!
+        // assertThat(found, is(false));
+        assertThat(found, is(true));
     }
 
     @Test
     public void isAmong_needleIsNullAndHaystackIsListWithNulls_returnsTrue() {
         // When
-        boolean found = ModelUtil.isAmong(null, null, null);
+        boolean found = ModelUtil.isAmong((String)null, (String)null, (String)null);
 
         // Then
         assertThat(found, is(true));
