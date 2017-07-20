@@ -1,10 +1,11 @@
 package eu.chargetime.ocpp;
 
-import com.google.common.collect.HashBiMap;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 /*
@@ -41,7 +42,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public abstract class Server extends FeatureHandler {
 
-    private HashBiMap<UUID, Session> sessions;
+    private HashMap<UUID, Session> sessions;
     private Listener listener;
 
     /**
@@ -51,7 +52,7 @@ public abstract class Server extends FeatureHandler {
      */
     public Server(Listener listener) {
         this.listener = listener;
-        this.sessions = HashBiMap.create();
+        this.sessions = new HashMap();
     }
 
     /**
@@ -83,7 +84,7 @@ public abstract class Server extends FeatureHandler {
                 @Override
                 public Confirmation handleRequest(Request request) {
                     Feature feature = findFeatureByRequest(request);
-                    return feature.handleRequest(sessions.inverse().get(session), request);
+                    return feature.handleRequest(getSessionID(session), request);
                 }
 
                 @Override
@@ -94,7 +95,7 @@ public abstract class Server extends FeatureHandler {
 
                 @Override
                 public void handleConnectionClosed() {
-                    serverEvents.lostSession(sessions.inverse().get(session));
+                    serverEvents.lostSession(getSessionID(session));
                     sessions.remove(session);
                 }
 
@@ -104,8 +105,21 @@ public abstract class Server extends FeatureHandler {
                 }
             });
             sessions.put(UUID.randomUUID(), session);
-            serverEvents.newSession(sessions.inverse().get(session), information);
+            serverEvents.newSession(getSessionID(session), information);
         });
+    }
+
+    private UUID getSessionID(Session session) {
+
+        if (!sessions.containsValue(session))
+            return null;
+
+        for (Map.Entry<UUID, Session> entry : sessions.entrySet()) {
+            if (entry.getValue() == session)
+                return entry.getKey();
+        }
+
+        return null;
     }
 
     /**
