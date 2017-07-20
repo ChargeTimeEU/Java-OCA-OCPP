@@ -28,6 +28,9 @@ import eu.chargetime.ocpp.model.CallMessage;
 import eu.chargetime.ocpp.model.CallResultMessage;
 import eu.chargetime.ocpp.model.Message;
 import eu.chargetime.ocpp.model.SOAPHostInfo;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -40,8 +43,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.*;
 
 public class SOAPCommunicator extends Communicator {
-
-
+	private static final Logger logger = LoggerFactory.getLogger(SOAPCommunicator.class);
+	
     private static final String HEADER_ACTION = "Action";
     private static final String HEADER_MESSAGEID = "MessageID";
     private static final String HEADER_RELATESTO = "RelatesTo";
@@ -59,7 +62,6 @@ public class SOAPCommunicator extends Communicator {
         this.hostInfo = hostInfo;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> T unpackPayload(Object payload, Class<T> type) {
         T output = null;
@@ -69,7 +71,7 @@ public class SOAPCommunicator extends Communicator {
             JAXBElement<T> jaxbElement = (JAXBElement<T>) unmarshaller.unmarshal(input, type);
             output = jaxbElement.getValue();
         } catch (JAXBException e) {
-            e.printStackTrace();
+        	 logger.warn("unpackPayload() failed", e);
         }
         return output;
     }
@@ -85,9 +87,9 @@ public class SOAPCommunicator extends Communicator {
             marshaller.marshal(payload, document);
             document = setNamespace(document, hostInfo.getNamespace());
         } catch (JAXBException e) {
-            e.printStackTrace();
+        	logger.warn("packPayload() failed", e);
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+       	 	logger.warn("packPayload() failed", e);
         }
         return document;
     }
@@ -156,7 +158,7 @@ public class SOAPCommunicator extends Communicator {
             soapFault.appendFaultSubcode(new QName(hostInfo.getNamespace(), errorCode));
 
         } catch (SOAPException e) {
-            e.printStackTrace();
+	       	 logger.warn("makeCallError() failed", e);
         }
         return fault;
     }
@@ -172,9 +174,12 @@ public class SOAPCommunicator extends Communicator {
 
             createMessageHeader(uniqueId, action, isResponse, message);
 
+            if (isResponse)
+                payload = setNamespace(payload, hostInfo.isClient() ? SOAPHostInfo.NAMESPACE_CENTRALSYSTEM: SOAPHostInfo.NAMESPACE_CHARGEBOX);
+
             message.getSOAPBody().addDocument(payload);
         } catch (Exception e) {
-            e.printStackTrace();
+	       	 logger.warn("createMessage() failed", e);
         }
 
         return message;
@@ -246,7 +251,7 @@ public class SOAPCommunicator extends Communicator {
                 soapMessage = message;
                 soapHeader = message.getSOAPPart().getEnvelope().getHeader();
             } catch (SOAPException e) {
-                e.printStackTrace();
+                logger.error("SOAPParser() failed", e);
             }
         }
 
@@ -268,7 +273,7 @@ public class SOAPCommunicator extends Communicator {
                 output.setPayload(soapMessage.getSOAPBody().extractContentAsDocument());
 
             } catch (SOAPException e) {
-                e.printStackTrace();
+                logger.warn("parseMessage() failed", e);
             }
             return output;
         }

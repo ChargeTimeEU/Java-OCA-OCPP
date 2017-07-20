@@ -30,7 +30,12 @@ import javax.xml.soap.SOAPConnectionFactory;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class WebServiceReceiver extends SOAPSyncHelper implements Receiver {
+	private static final Logger logger = LoggerFactory.getLogger(WebServiceReceiver.class);
+	
     private RadioEvents events;
     SOAPConnection soapConnection;
     private String url;
@@ -50,7 +55,7 @@ public class WebServiceReceiver extends SOAPSyncHelper implements Receiver {
                 soapConnection.close();
                 connected = false;
             } catch (SOAPException e) {
-                e.printStackTrace();
+                logger.info("disconnect() failed", e);
             }
         }
         events.disconnected();
@@ -66,7 +71,7 @@ public class WebServiceReceiver extends SOAPSyncHelper implements Receiver {
             connected = true;
             events.connected();
         } catch (SOAPException e) {
-            e.printStackTrace();
+            logger.warn("accept() failed", e);
         }
     }
 

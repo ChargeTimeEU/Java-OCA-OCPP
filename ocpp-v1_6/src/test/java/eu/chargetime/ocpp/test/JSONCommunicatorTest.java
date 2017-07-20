@@ -15,6 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -161,7 +162,7 @@ public class JSONCommunicatorTest extends TestUtilities
         String payload = "{\"doubleTest\":%f}";
 
         // When
-        TestModel model = communicator.unpackPayload(String.format(payload, aDouble), TestModel.class);
+        TestModel model = communicator.unpackPayload(String.format(Locale.US, payload, aDouble), TestModel.class);
 
         // Then
         assertThat(model.getDoubleTest(), equalTo(aDouble));
@@ -174,7 +175,7 @@ public class JSONCommunicatorTest extends TestUtilities
         String payload = "{\"genericDoubleTest\":%f}";
 
         // When
-        TestModel model = communicator.unpackPayload(String.format(payload, aDouble), TestModel.class);
+        TestModel model = communicator.unpackPayload(String.format(Locale.US, payload, aDouble), TestModel.class);
 
         // Then
         assertThat(model.getGenericDoubleTest(), equalTo(aDouble));

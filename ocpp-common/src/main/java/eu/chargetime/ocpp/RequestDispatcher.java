@@ -29,9 +29,12 @@ import eu.chargetime.ocpp.model.Request;
 
 import java.util.concurrent.CompletableFuture;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 abstract class RequestDispatcher {
 
-    protected SessionEvents eventHandler;
+	protected SessionEvents eventHandler;
 
     public CompletableFuture<Confirmation> handleRequest(Request request)
     {
@@ -40,6 +43,7 @@ abstract class RequestDispatcher {
         return promise;
     }
 
+	// FIXME: fix typo fulfillPromis -> fulfillPromise
     protected abstract void fulfillPromis(CompletableFuture<Confirmation> promise, Request request);
 
     public void setEventHandler(SessionEvents eventHandler) {
@@ -58,6 +62,7 @@ class AsyncRequestDispatcher extends SimpleRequestDispatcher {
 }
 
 class SimpleRequestDispatcher extends RequestDispatcher {
+	private static final Logger logger = LoggerFactory.getLogger(SimpleRequestDispatcher.class);
 
     @Override
     protected void fulfillPromis(CompletableFuture<Confirmation> promise, Request request) {
@@ -65,7 +70,7 @@ class SimpleRequestDispatcher extends RequestDispatcher {
             Confirmation conf = eventHandler.handleRequest(request);
             promise.complete(conf);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.warn("fulfillPromis() failed", ex);
             promise.completeExceptionally(ex);
         }
     }

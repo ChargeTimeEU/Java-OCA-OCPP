@@ -25,10 +25,14 @@ package eu.chargetime.ocpp.model;/*
  */
 
 public class SOAPHostInfo {
+    public static final String NAMESPACE_CHARGEBOX = "urn://Ocpp/Cs/2015/10";
+    public static final String NAMESPACE_CENTRALSYSTEM = "urn://Ocpp/Cp/2015/10";
+
     private String chargeBoxIdentity;
     private String fromUrl;
     private String toUrl;
     private String namespace;
+    private boolean isClient;
 
     public String getChargeBoxIdentity() {
         return chargeBoxIdentity;
@@ -50,11 +54,16 @@ public class SOAPHostInfo {
         return namespace;
     }
 
+    public boolean isClient() {
+        return isClient;
+    }
+
     public static class Builder {
         private String chargeBoxIdentity;
         private String fromUrl;
         private String toUrl;
         private String namespace;
+        private boolean isClient;
 
         public Builder chargeBoxIdentity(String chargeBoxIdentity) {
             if (chargeBoxIdentity == null) {
@@ -88,6 +97,11 @@ public class SOAPHostInfo {
             return this;
         }
 
+        public Builder isClient(boolean value) {
+            this.isClient = value;
+            return this;
+        }
+
         public SOAPHostInfo build()
         {
             SOAPHostInfo res = new SOAPHostInfo();
@@ -95,6 +109,7 @@ public class SOAPHostInfo {
             res.chargeBoxIdentity = this.chargeBoxIdentity;
             res.namespace = this.namespace;
             res.toUrl = this.toUrl;
+            res.isClient = this.isClient;
             validate(res);
             return res;
         }

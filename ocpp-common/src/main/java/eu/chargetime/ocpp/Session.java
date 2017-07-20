@@ -6,6 +6,9 @@ import eu.chargetime.ocpp.model.Request;
 
 import java.util.concurrent.CompletableFuture;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -39,6 +42,8 @@ import java.util.concurrent.CompletableFuture;
  */
 public class Session {
 
+	private static final Logger logger = LoggerFactory.getLogger(Session.class);
+	
     private Communicator communicator;
     private Queue queue;
     private RequestDispatcher dispatcher;
@@ -119,6 +124,11 @@ public class Session {
     }
 
     private class CommunicatorEventHandler implements CommunicatorEvents {
+        private static final String OCCURENCE_CONSTRAINT_VIOLATION = "Payload for Action is syntactically correct but at least one of the fields violates occurence constraints";
+        private static final String FIELD_CONSTRAINT_VIOLATION = "Field %s violates constraints with value: \"%s\". %s";
+        private static final String INTERNAL_ERROR = "An internal error occurred and the receiver was not able to process the requested Action successfully";
+        private static final String UNABLE_TO_PROCESS = "Unable to process action";
+        
         @Override
         public void onCallResult(String id, String action, Object payload) {
             try {
@@ -126,19 +136,19 @@ public class Session {
                 if (confirmation.validate()) {
                     events.handleConfirmation(id, confirmation);
                 } else {
-                    communicator.sendCallError(id, action, "OccurenceConstraintViolation", "Payload for Action is syntactically correct but at least one of the fields violates occurence constraints");
+                    communicator.sendCallError(id, action, "OccurenceConstraintViolation", OCCURENCE_CONSTRAINT_VIOLATION);
                 }
             }
             catch (PropertyConstraintException ex) {
-                String message = "Field %s violates constraints with value: \"%s\". %s";
-                communicator.sendCallError(id, action, "TypeConstraintViolation", String.format(message, ex.getFieldKey(), ex.getFieldValue(), ex.getMessage()));
-                ex.printStackTrace();
+                String message = String.format(FIELD_CONSTRAINT_VIOLATION, ex.getFieldKey(), ex.getFieldValue(), ex.getMessage());
+                logger.warn(message, ex);
+                communicator.sendCallError(id, action, "TypeConstraintViolation", message);
             } catch (UnsupportedFeatureException ex) {
-                communicator.sendCallError(id, action, "InternalError", "An internal error occurred and the receiver was not able to process the requested Action successfully");
-                ex.printStackTrace();
+                logger.warn(INTERNAL_ERROR, ex);
+                communicator.sendCallError(id, action, "InternalError", INTERNAL_ERROR);
             } catch (Exception ex) {
-                communicator.sendCallError(id, action, "FormationViolation", "Unable to process action");
-                ex.printStackTrace();
+                logger.warn(UNABLE_TO_PROCESS, ex);
+                communicator.sendCallError(id, action, "FormationViolation", UNABLE_TO_PROCESS);
             }
         }
 
@@ -154,15 +164,15 @@ public class Session {
                         CompletableFuture<Confirmation> promise = dispatcher.handleRequest(request);
                         promise.whenComplete(new ConfirmationHandler(id, action, communicator));
                     } else {
-                        communicator.sendCallError(id, action, "OccurenceConstraintViolation", "Payload for Action is syntactically correct but at least one of the fields violates occurence constraints");
+                        communicator.sendCallError(id, action, "OccurenceConstraintViolation", OCCURENCE_CONSTRAINT_VIOLATION);
                     }
                 } catch (PropertyConstraintException ex) {
-                    ex.printStackTrace();
-                    String message = "Field %s violates constraints with value: \"%s\". %s";
-                    communicator.sendCallError(id, action, "TypeConstraintViolation", String.format(message, ex.getFieldKey(), ex.getFieldValue(), ex.getMessage()));
+                    String message = String.format(FIELD_CONSTRAINT_VIOLATION, ex.getFieldKey(), ex.getFieldValue(), ex.getMessage());
+                    logger.warn(message, ex);
+                    communicator.sendCallError(id, action, "TypeConstraintViolation", message);
                 } catch (Exception ex) {
-                    ex.printStackTrace();
-                    communicator.sendCallError(id, action, "FormationViolation", "Unable to process action");
+                    logger.warn(UNABLE_TO_PROCESS, ex);
+                    communicator.sendCallError(id, action, "FormationViolation", UNABLE_TO_PROCESS);
                 }
             }
         }

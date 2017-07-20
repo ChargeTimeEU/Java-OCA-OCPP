@@ -3,6 +3,8 @@ package eu.chargetime.ocpp;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
 import org.java_websocket.handshake.ServerHandshake;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 
@@ -38,6 +40,8 @@ import java.net.URI;
  */
 public class WebSocketTransmitter implements Transmitter
 {
+	private static final Logger logger = LoggerFactory.getLogger(WebSocketTransmitter.class);
+	
     private WebSocketClient client;
 
     @Override
@@ -65,13 +69,13 @@ public class WebSocketTransmitter implements Transmitter
             @Override
             public void onError(Exception ex)
             {
-                ex.printStackTrace();
+            	logger.warn("onError() triggered", ex);
             }
         };
         try {
             client.connectBlocking();
         } catch (Exception ex) {
-            ex.printStackTrace();
+        	logger.warn("client.connectBlocking() failed", ex);
         }
     }
 
@@ -81,7 +85,7 @@ public class WebSocketTransmitter implements Transmitter
         try {
             client.closeBlocking();
         } catch (Exception ex) {
-            ex.printStackTrace();
+        	logger.info("client.closeBlocking() failed", ex);
         }
     }
 

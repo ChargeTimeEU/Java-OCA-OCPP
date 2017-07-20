@@ -25,6 +25,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -177,7 +178,7 @@ public class SOAPCommunicatorTest extends TestUtilities {
         // Given
         Double aDouble = 13.37D;
         String xml = "<testModel><doubleTest>%f</doubleTest></testModel>";
-        Document payload = stringToDocument(String.format(xml, aDouble));
+        Document payload = stringToDocument(String.format(Locale.US, xml, aDouble));
 
         // When
         TestModel model = communicator.unpackPayload(payload, TestModel.class);
@@ -191,7 +192,7 @@ public class SOAPCommunicatorTest extends TestUtilities {
         // Given
         double aDouble = 13.37;
         String xml = "<testModel><genericDoubleTest>%f</genericDoubleTest></testModel>";
-        Document payload = stringToDocument(String.format(xml, aDouble));
+        Document payload = stringToDocument(String.format(Locale.US, xml, aDouble));
 
         // When
         TestModel model = communicator.unpackPayload(payload, TestModel.class);
@@ -304,12 +305,10 @@ public class SOAPCommunicatorTest extends TestUtilities {
 
     public static Document stringToDocument(String xml) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setNamespaceAware(true);
         DocumentBuilder db = factory.newDocumentBuilder();
 
         InputSource is = new InputSource();
         is.setCharacterStream(new StringReader(xml));
-        db.isNamespaceAware();
         return db.parse(is);
     }
 

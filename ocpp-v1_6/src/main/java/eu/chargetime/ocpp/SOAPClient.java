@@ -30,6 +30,10 @@ import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
 import eu.chargetime.ocpp.model.SOAPHostInfo;
 
 import javax.xml.soap.SOAPMessage;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URL;
@@ -38,8 +42,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class SOAPClient extends Client {
-
-    final private String WSDL_CHARGE_POINT = "eu/chargetime/ocpp/OCPP_ChargePointService_1.6.wsdl";
+	private static final Logger logger = LoggerFactory.getLogger(SOAPClient.class);
+	private static final String WSDL_CHARGE_POINT = "eu/chargetime/ocpp/OCPP_ChargePointService_1.6.wsdl";
 
     private SOAPCommunicator communicator;
     private WebServiceTransmitter transmitter;
@@ -69,7 +73,7 @@ public class SOAPClient extends Client {
      * @param handleRequestAsync sets the session request handler in async or blocking mode.
      */
     public SOAPClient(String chargeBoxIdentity, URL callback, ClientCoreProfile coreProfile, boolean handleRequestAsync) {
-        this(new SOAPHostInfo.Builder().chargeBoxIdentity(chargeBoxIdentity).fromUrl(callback.toString()).namespace("urn://Ocpp/Cs/2015/10").build(), new WebServiceTransmitter(), handleRequestAsync);
+        this(new SOAPHostInfo.Builder().isClient(true).chargeBoxIdentity(chargeBoxIdentity).fromUrl(callback.toString()).namespace(SOAPHostInfo.NAMESPACE_CHARGEBOX).build(), new WebServiceTransmitter(), handleRequestAsync);
         this.callback = callback;
         addFeatureProfile(coreProfile);
     }
@@ -122,9 +126,9 @@ public class SOAPClient extends Client {
                 try {
                     soapMessage = transmitter.relay(message.getMessage()).get();
                 } catch (InterruptedException e) {
-                    //e.printStackTrace();
+                    logger.warn("openWS() transmitter.relay failed", e);
                 } catch (ExecutionException e) {
-                    e.printStackTrace();
+                    logger.warn("openWS() transmitter.relay failed", e);
                 }
                 return soapMessage;
             }));
@@ -132,7 +136,7 @@ public class SOAPClient extends Client {
             server.setExecutor(threadPool);
             server.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warn("openWS() failed", e);
         }
     }
 
