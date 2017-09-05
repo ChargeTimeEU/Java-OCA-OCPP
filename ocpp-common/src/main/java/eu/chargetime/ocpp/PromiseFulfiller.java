@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -30,25 +30,6 @@ import eu.chargetime.ocpp.model.Request;
 
 import java.util.concurrent.CompletableFuture;
 
-public class RequestDispatcher {
-
-    private final PromiseFulfiller fulfiller;
-    protected SessionEvents eventHandler;
-
-    public RequestDispatcher(PromiseFulfiller fulfiller) {
-
-        this.fulfiller = fulfiller;
-    }
-
-    public CompletableFuture<Confirmation> handleRequest(Request request)
-    {
-        CompletableFuture<Confirmation> promise = new CompletableFuture<>();
-        fulfiller.fulfill(promise, eventHandler, request);
-        return promise;
-    }
-
-    public void setEventHandler(SessionEvents eventHandler) {
-        this.eventHandler = eventHandler;
-    }
+public interface PromiseFulfiller {
+    void fulfill(CompletableFuture<Confirmation> promise, SessionEvents eventHandler, Request request);
 }
-

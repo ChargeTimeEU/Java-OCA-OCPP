@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp;
+package eu.chargetime.ocpp.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -25,30 +25,48 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
+import eu.chargetime.ocpp.SessionEvents;
+import eu.chargetime.ocpp.SimplePromiseFulfiller;
 import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.concurrent.CompletableFuture;
 
-public class RequestDispatcher {
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
-    private final PromiseFulfiller fulfiller;
-    protected SessionEvents eventHandler;
+@RunWith(MockitoJUnitRunner.class)
+public class SimpleRequestDispatcherTest {
 
-    public RequestDispatcher(PromiseFulfiller fulfiller) {
+    private SimplePromiseFulfiller sut;
 
-        this.fulfiller = fulfiller;
+    @Mock
+    private SessionEvents eventsMock;
+
+    public SimpleRequestDispatcherTest() {
+        sut = new SimplePromiseFulfiller();
     }
 
-    public CompletableFuture<Confirmation> handleRequest(Request request)
-    {
+    @Test
+    public void fulfill_throwsException_completesWithException() {
+        // Given
+        RuntimeException expectedException = new RuntimeException();
+        when(eventsMock.handleRequest(any())).thenThrow(expectedException);
         CompletableFuture<Confirmation> promise = new CompletableFuture<>();
-        fulfiller.fulfill(promise, eventHandler, request);
-        return promise;
+
+        final Throwable[] result = new Throwable[1];
+        promise.whenComplete((confirmation, throwable) -> result[0] = throwable);
+
+        // When
+        sut.fulfill(promise, eventsMock, null);
+
+        // Then
+        assertThat(result[0], is(expectedException));
     }
 
-    public void setEventHandler(SessionEvents eventHandler) {
-        this.eventHandler = eventHandler;
-    }
 }
-

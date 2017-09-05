@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
@@ -27,28 +27,22 @@ package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
 
-public class RequestDispatcher {
+public class SimplePromiseFulfiller implements PromiseFulfiller {
+    private static final Logger logger = LoggerFactory.getLogger(SimplePromiseFulfiller.class);
 
-    private final PromiseFulfiller fulfiller;
-    protected SessionEvents eventHandler;
-
-    public RequestDispatcher(PromiseFulfiller fulfiller) {
-
-        this.fulfiller = fulfiller;
-    }
-
-    public CompletableFuture<Confirmation> handleRequest(Request request)
-    {
-        CompletableFuture<Confirmation> promise = new CompletableFuture<>();
-        fulfiller.fulfill(promise, eventHandler, request);
-        return promise;
-    }
-
-    public void setEventHandler(SessionEvents eventHandler) {
-        this.eventHandler = eventHandler;
+    @Override
+    public void fulfill(CompletableFuture<Confirmation> promise, SessionEvents eventHandler, Request request) {
+        try {
+            Confirmation conf = eventHandler.handleRequest(request);
+            promise.complete(conf);
+        } catch (Exception ex) {
+            logger.warn("fulfillPromis() failed", ex);
+            promise.completeExceptionally(ex);
+        }
     }
 }
-

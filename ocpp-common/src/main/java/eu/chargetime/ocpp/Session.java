@@ -3,11 +3,10 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-
-import java.util.concurrent.CompletableFuture;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.CompletableFuture;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -43,7 +42,7 @@ import org.slf4j.LoggerFactory;
 public class Session {
 
 	private static final Logger logger = LoggerFactory.getLogger(Session.class);
-	
+
     private Communicator communicator;
     private Queue queue;
     private RequestDispatcher dispatcher;
@@ -60,10 +59,12 @@ public class Session {
         this.communicator = communicator;
         this.queue = queue;
 
+        PromiseFulfiller fulfiller = new SimplePromiseFulfiller();
+
         if (handleRequestAsync)
-            dispatcher = new AsyncRequestDispatcher();
-        else
-            dispatcher = new SimpleRequestDispatcher();
+            fulfiller = new AsyncPromiseFulfilerDecorator(fulfiller);
+
+        dispatcher = new RequestDispatcher(fulfiller);
     }
 
     /**
@@ -128,7 +129,7 @@ public class Session {
         private static final String FIELD_CONSTRAINT_VIOLATION = "Field %s violates constraints with value: \"%s\". %s";
         private static final String INTERNAL_ERROR = "An internal error occurred and the receiver was not able to process the requested Action successfully";
         private static final String UNABLE_TO_PROCESS = "Unable to process action";
-        
+
         @Override
         public void onCallResult(String id, String action, Object payload) {
             try {
