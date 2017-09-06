@@ -24,11 +24,7 @@ package eu.chargetime.ocpp;/*
 
  */
 
-import eu.chargetime.ocpp.model.CallMessage;
-import eu.chargetime.ocpp.model.CallResultMessage;
-import eu.chargetime.ocpp.model.Message;
-import eu.chargetime.ocpp.model.SOAPHostInfo;
-
+import eu.chargetime.ocpp.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -145,10 +141,11 @@ public class SOAPCommunicator extends Communicator {
 
     @Override
     protected Object makeCallError(String uniqueId, String action, String errorCode, String errorDescription) {
-        SOAPFault fault = null;
+        SOAPMessage message = null;
         try {
             MessageFactory messageFactory = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
-            SOAPMessage message = messageFactory.createMessage();
+            message = messageFactory.createMessage();
+            message.setProperty(SOAPMessage.WRITE_XML_DECLARATION, "true");
             createMessageHeader(uniqueId, String.format("%sResponse", action), true, message);
 
             SOAPFault soapFault = message.getSOAPBody().addFault();
@@ -160,7 +157,7 @@ public class SOAPCommunicator extends Communicator {
         } catch (SOAPException e) {
 	       	 logger.warn("makeCallError() failed", e);
         }
-        return fault;
+        return message;
     }
 
     private Object createMessage(String uniqueId, String action, Document payload, boolean isResponse) {
@@ -262,7 +259,10 @@ public class SOAPCommunicator extends Communicator {
                 String relatesTo = getElementValue(HEADER_RELATESTO);
                 String action = getElementValue(HEADER_ACTION);
                 if (relatesTo != null && !"".equals(relatesTo) && action.endsWith("Response")) {
-                    output = parseResult();
+                    if (soapMessage.getSOAPBody().hasFault())
+                        output = parseError();
+                    else
+                        output = parseResult();
                 } else {
                     output = parseCall();
                 }
@@ -270,7 +270,8 @@ public class SOAPCommunicator extends Communicator {
                 if (action != null && !"".equals(action))
                     output.setAction(action.substring(1));
 
-                output.setPayload(soapMessage.getSOAPBody().extractContentAsDocument());
+                if (!soapMessage.getSOAPBody().hasFault())
+                    output.setPayload(soapMessage.getSOAPBody().extractContentAsDocument());
 
             } catch (SOAPException e) {
                 logger.warn("parseMessage() failed", e);
@@ -282,6 +283,10 @@ public class SOAPCommunicator extends Communicator {
             String to = getElementValue(HEADER_TO);
             String cbIdentity = getElementValue(HEADER_CHARGEBOXIDENTITY);
             return hostInfo.getFromUrl().equals(to) && hostInfo.getChargeBoxIdentity().equals(cbIdentity);
+        }
+
+        private CallErrorMessage parseError() {
+            return new CallErrorMessage();
         }
 
         private CallResultMessage parseResult() {

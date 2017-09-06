@@ -151,7 +151,7 @@ public class DummyHandlers {
     private <T extends Confirmation> T failurePoint(T confirmation) {
         if (riggedToFail) {
             riggedToFail = false;
-            return null;
+            throw new RuntimeException();
         }
         return confirmation;
     }

@@ -1,12 +1,12 @@
 package eu.chargetime.ocpp;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.xml.soap.SOAPConnection;
 import javax.xml.soap.SOAPConnectionFactory;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /*
     ChargeTime.eu - Java-OCA-OCPP
@@ -77,10 +77,11 @@ public class WebServiceTransmitter extends SOAPSyncHelper implements Transmitter
     protected void sendRequest(final SOAPMessage message) throws NotConnectedException {
         if (!connected)
             throw new NotConnectedException();
-
         Thread thread = new Thread(() -> {
             try {
-                events.receivedMessage(soapConnection.call(message, url));
+                SOAPMessage soapMessage = message;
+                SOAPMessage response = soapConnection.call(soapMessage, url);
+                events.receivedMessage(response);
             } catch (SOAPException e) {
             	logger.warn("sendRequest() failed", e);
                 disconnect();

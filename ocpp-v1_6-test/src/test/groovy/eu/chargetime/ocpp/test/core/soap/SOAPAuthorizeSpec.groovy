@@ -63,7 +63,7 @@ class SOAPAuthorizeSpec extends Specification
 
         then:
         conditions.eventually {
-            chargePoint.hasReceivedError()
+            assert chargePoint.hasReceivedError()
         }
     }
 }
