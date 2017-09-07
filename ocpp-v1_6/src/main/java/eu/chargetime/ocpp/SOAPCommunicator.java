@@ -286,7 +286,24 @@ public class SOAPCommunicator extends Communicator {
         }
 
         private CallErrorMessage parseError() {
-            return new CallErrorMessage();
+            CallErrorMessage message = new CallErrorMessage();
+
+            String id = getElementValue(HEADER_RELATESTO);
+            message.setId(id);
+
+            try {
+                SOAPFault fault = soapMessage.getSOAPBody().getFault();
+
+                if (fault.getFaultSubcodes().hasNext())
+                    message.setErrorCode(((QName) fault.getFaultSubcodes().next()).getLocalPart());
+                if (fault.getFaultReasonTexts().hasNext())
+                    message.setErrorDescription(fault.getFaultReasonTexts().next().toString());
+
+            } catch (SOAPException e) {
+                e.printStackTrace();
+            }
+
+            return message;
         }
 
         private CallResultMessage parseResult() {
