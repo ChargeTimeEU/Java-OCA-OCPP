@@ -28,10 +28,12 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.model.SessionInformation;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.server.DefaultSSLWebSocketServerFactory;
 import org.java_websocket.server.WebSocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
@@ -78,6 +80,10 @@ public class WebSocketListener implements Listener {
             }
         };
         server.start();
+    }
+
+    public void enableWSS(SSLContext sslContext) {
+        server.setWebSocketFactory(new DefaultSSLWebSocketServerFactory(sslContext));
     }
 
     @Override

@@ -26,15 +26,27 @@ package eu.chargetime.ocpp;/*
 
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 
+import javax.net.ssl.SSLContext;
+
 public class JSONServer extends Server {
 
+    private WebSocketListener listener;
     /**
      * The core feature profile is required as a minimum.
      *
      * @param coreProfile implementation of the core feature profile.
      */
     public JSONServer(ServerCoreProfile coreProfile) {
-        super(new WebSocketListener());
+        this(new WebSocketListener());
         addFeatureProfile(coreProfile);
+    }
+
+    private JSONServer(WebSocketListener listener) {
+        super(listener);
+        this.listener = listener;
+    }
+
+    public void enableWSS(SSLContext sslContext) {
+        listener.enableWSS(sslContext);
     }
 }
