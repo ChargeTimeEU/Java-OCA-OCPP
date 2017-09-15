@@ -11,7 +11,7 @@ import spock.util.concurrent.PollingConditions
 class SOAPAuthorizeSpec extends Specification
 {
     @Shared
-    FakeCentralSystem centralSystem = FakeCentral.getSystem(FakeCentral.serverType.SOAP)
+    FakeCentralSystem centralSystem = new FakeCentralSystem(FakeCentral.serverType.SOAP)
     @Shared
     FakeChargePoint chargePoint = new FakeChargePoint(FakeChargePoint.clientType.SOAP)
 
@@ -26,6 +26,10 @@ class SOAPAuthorizeSpec extends Specification
 
     def cleanup() {
         chargePoint.disconnect()
+    }
+
+    def cleanupSpec() {
+        centralSystem.stopped()
     }
 
     def "Charge point sends Authorize request and receives a response"() {

@@ -10,7 +10,7 @@ import spock.util.concurrent.PollingConditions
 
 class SOAPResetSpec extends Specification {
     @Shared
-    FakeCentralSystem centralSystem = FakeCentral.getSystem(FakeCentral.serverType.SOAP)
+    FakeCentralSystem centralSystem = new FakeCentralSystem(FakeCentral.serverType.SOAP)
     @Shared
     FakeChargePoint chargePoint = new FakeChargePoint(FakeChargePoint.clientType.SOAP)
 
@@ -26,6 +26,10 @@ class SOAPResetSpec extends Specification {
 
     def cleanup() {
         chargePoint.disconnect()
+    }
+
+    def cleanupSpec() {
+        centralSystem.stopped()
     }
 
     def "Central System sends a Reset request and receives a response"() {
