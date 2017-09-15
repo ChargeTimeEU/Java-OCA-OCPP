@@ -34,7 +34,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 
@@ -78,6 +77,11 @@ public class WebSocketListener implements Listener {
             public void onError(WebSocket webSocket, Exception e) {
 
             }
+
+            @Override
+            public void onStart() {
+
+            }
         };
         server.start();
     }
@@ -97,8 +101,6 @@ public class WebSocketListener implements Listener {
 
             server.stop(1);
 
-        } catch (IOException e) {
-        	logger.info("close() failed", e);
         } catch (InterruptedException e) {
         	logger.info("close() failed", e);
         }

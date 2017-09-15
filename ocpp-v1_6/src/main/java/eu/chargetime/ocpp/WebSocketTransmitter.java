@@ -6,6 +6,9 @@ import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import java.io.IOException;
 import java.net.URI;
 
 /*
@@ -77,6 +80,11 @@ public class WebSocketTransmitter implements Transmitter
         } catch (Exception ex) {
         	logger.warn("client.connectBlocking() failed", ex);
         }
+    }
+
+    public void enableWSS(SSLContext sslContext) throws IOException {
+        SSLSocketFactory factory = sslContext.getSocketFactory();
+        client.setSocket(factory.createSocket());
     }
 
     @Override

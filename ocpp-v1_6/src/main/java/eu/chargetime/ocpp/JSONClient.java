@@ -2,6 +2,9 @@ package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
 
+import javax.net.ssl.SSLContext;
+import java.io.IOException;
+
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -33,6 +36,8 @@ import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
  */
 public class JSONClient extends Client {
 
+    private final WebSocketTransmitter transmitter;
+
     /**
      * The core feature profile is required as a minimum.
      *
@@ -51,7 +56,17 @@ public class JSONClient extends Client {
      * @param handleRequestAsync sets the session request handler in async or blocking mode.
      */
     public JSONClient(ClientCoreProfile coreProfile, String identity, boolean handleRequestAsync) {
-        super(new Session(new JSONCommunicator(new WebSocketTransmitter()), new Queue(), handleRequestAsync));
+        this(new WebSocketTransmitter(), handleRequestAsync);
         addFeatureProfile(coreProfile);
     }
+
+    private JSONClient(WebSocketTransmitter transmitter, boolean handleRequestAsync) {
+        super(new Session(new JSONCommunicator(transmitter), new Queue(), handleRequestAsync));
+        this.transmitter = transmitter;
+    }
+
+    public void enableWSS(SSLContext sslContext) throws IOException {
+        transmitter.enableWSS(sslContext);
+    }
+
 }
