@@ -4,11 +4,10 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-
-import java.util.concurrent.CompletableFuture;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.CompletableFuture;
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -142,8 +141,9 @@ public abstract class Client extends FeatureHandler
         if (!request.validate())
             throw new OccurenceConstraintException();
 
-        String id = session.sendRequest(feature.getAction(), request);
+        String id = session.storeRequest(request);
         CompletableFuture<Confirmation> promise = createPromise(id);
+        session.sendRequest(feature.getAction(), request, id);
         return promise;
     }
 }

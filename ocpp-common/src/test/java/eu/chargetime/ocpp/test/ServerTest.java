@@ -114,9 +114,6 @@ public class ServerTest extends TestUtilities {
     @Test
     public void send_aMessage_isCommunicated() throws Exception {
         // Given
-        String someUniqueId = "some id";
-
-        when(session.sendRequest(any(), any())).thenReturn(someUniqueId);
         server.open(LOCALHOST, PORT, serverEvents);
         listenerEvents.newSession(session, information);
 
@@ -124,7 +121,7 @@ public class ServerTest extends TestUtilities {
         server.send(sessionIndex, request);
 
         // Then
-        verify(session, times(1)).sendRequest(anyString(), eq(request));
+        verify(session, times(1)).sendRequest(anyString(), eq(request), anyString());
     }
 
     @Test

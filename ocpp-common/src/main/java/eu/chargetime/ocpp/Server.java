@@ -146,8 +146,10 @@ public abstract class Server extends FeatureHandler {
         if (!request.validate())
             throw new OccurenceConstraintException();
 
-        String id = sessions.get(sessionIndex).sendRequest(feature.getAction(), request);
+        Session session = sessions.get(sessionIndex);
+        String id = session.storeRequest(request);
         CompletableFuture<Confirmation> promise = createPromise(id);
+        session.sendRequest(feature.getAction(), request, id);
         return promise;
     }
 

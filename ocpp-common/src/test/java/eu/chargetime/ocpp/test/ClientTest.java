@@ -125,14 +125,14 @@ public class ClientTest extends TestUtilities {
         client.send(request);
 
         // Then
-        verify(session, times(1)).sendRequest(anyString(), eq(request));
+        verify(session, times(1)).sendRequest(anyString(), eq(request), anyString());
     }
 
     @Test
     public void responseReceived_aMessageWasSend_PromiseIsCompleted() throws Exception {
         // Given
         String someUniqueId = "Some id";
-        when(session.sendRequest(any(), any())).thenReturn(someUniqueId);
+        when(session.storeRequest(any())).thenReturn(someUniqueId);
 
         // When
         client.connect(null, null);

@@ -66,13 +66,13 @@ public class SessionTest {
     }
 
     @Test
-    public void sendRequest_getUniqueIdReturnedFromQueue() {
+    public void storeRequest_getUniqueIdReturnedFromQueue() {
         // Given
         String someId = "test id";
         when(queue.store(any())).thenReturn(someId);
 
         // When
-        String id = session.sendRequest(null, null);
+        String id = session.storeRequest(null);
 
         // Then
         assertThat(id, equalTo(someId));
@@ -95,20 +95,19 @@ public class SessionTest {
         };
 
         // When
-        session.sendRequest(someAction, someRequest);
+        session.sendRequest(someAction, someRequest, null);
 
         // Then
         verify(communicator, times(1)).sendCall(anyString(), eq(someAction), eq(someRequest));
     }
 
     @Test
-    public void sendRequest_fixedUniqueId_sendsUniqueIdToCommunicator() {
+    public void sendRequest_someUniqueId_sendsUniqueIdToCommunicator() {
         // Given
         String someUniqueId = "test id";
-        when(queue.store(any())).thenReturn(someUniqueId);
 
         // When
-        session.sendRequest(null, null);
+        session.sendRequest(null, null, someUniqueId);
 
         // Then
         verify(communicator, times(1)).sendCall(eq(someUniqueId), anyString(), any());

@@ -72,12 +72,20 @@ public class Session {
      *
      * @param action    action name to identify the feature.
      * @param payload   the {@link Request} payload to send
+     * @param uuid      unique identification to identify the request
+     */
+    public void sendRequest(String action, Request payload, String uuid) {
+        communicator.sendCall(uuid, action, payload);
+    }
+
+    /**
+     * Store a {@Link Request} and get the unique id.
+     *
+     * @param payload the {@link Request} payload to send
      * @return unique identification to identify the request.
      */
-    public String sendRequest(String action, Request payload) {
-        String uuid = queue.store(payload);
-        communicator.sendCall(uuid, action, payload);
-        return uuid;
+    public String storeRequest(Request payload) {
+        return queue.store(payload);
     }
 
     /**
