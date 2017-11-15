@@ -1,6 +1,7 @@
 package eu.chargetime.ocpp;
 
 import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
 import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -49,7 +51,11 @@ public class WebSocketTransmitter implements Transmitter
 
     @Override
     public void connect(String uri, RadioEvents events) {
-        client = new WebSocketClient(URI.create(uri))
+
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Sec-WebSocket-Protocol", "ocpp1.6");
+        //headers.put("Authorization", YablProperties.basicAuth);
+        client = new WebSocketClient(URI.create(uri), new Draft_6455(), headers, 0)
         {
             @Override
             public void onOpen(ServerHandshake serverHandshake)
