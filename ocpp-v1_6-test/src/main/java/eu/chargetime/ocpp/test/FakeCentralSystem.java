@@ -42,6 +42,8 @@ import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
 import eu.chargetime.ocpp.test.FakeCentral.serverType;
 
+import java.util.ArrayList;
+
 public class FakeCentralSystem {
     private Server server;
 
@@ -54,7 +56,7 @@ public class FakeCentralSystem {
         ServerCoreProfile serverCoreProfile = new ServerCoreProfile(dummyHandlers.createServerCoreEventHandler());
 
         if (type == serverType.JSON) {
-            server = new JSONServer(serverCoreProfile);
+            server = new JSONServer(serverCoreProfile, new ArrayList<>());
         } else {
             server = new SOAPServer(serverCoreProfile);
         }

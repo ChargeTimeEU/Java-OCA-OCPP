@@ -25,8 +25,10 @@ package eu.chargetime.ocpp;/*
  */
 
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
+import org.java_websocket.drafts.Draft;
 
 import javax.net.ssl.SSLContext;
+import java.util.List;
 
 public class JSONServer extends Server {
 
@@ -36,8 +38,8 @@ public class JSONServer extends Server {
      *
      * @param coreProfile implementation of the core feature profile.
      */
-    public JSONServer(ServerCoreProfile coreProfile) {
-        this(new WebSocketListener());
+    public JSONServer(ServerCoreProfile coreProfile, List<Draft> drafts) {
+        this(new WebSocketListener(drafts));
         addFeatureProfile(coreProfile);
     }
 

@@ -1,12 +1,16 @@
 package core_features;
 
 import eu.chargetime.ocpp.JSONServer;
+import eu.chargetime.ocpp.OcppDraft;
 import eu.chargetime.ocpp.ServerEvents;
 import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import eu.chargetime.ocpp.model.SessionInformation;
 import eu.chargetime.ocpp.model.core.*;
+import org.java_websocket.drafts.Draft;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /*
@@ -120,7 +124,9 @@ public class JSONServerSample
             }
         });
 
-        server = new JSONServer(core);
+        final List<Draft> drafts = new ArrayList<>();
+        drafts.add(new OcppDraft());
+        server = new JSONServer(core, drafts);
         server.open("localhost", 8887, new ServerEvents() {
 
             @Override

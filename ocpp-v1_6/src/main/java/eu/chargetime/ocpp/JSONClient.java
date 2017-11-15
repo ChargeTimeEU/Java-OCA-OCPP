@@ -1,6 +1,7 @@
 package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
+import org.java_websocket.drafts.Draft;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -44,8 +45,8 @@ public class JSONClient extends Client {
      * @param coreProfile   implementation of the core feature profile.
      * @param identity      identity of the charge point.
      */
-    public JSONClient(ClientCoreProfile coreProfile, String identity) {
-        this(coreProfile, identity, true);
+    public JSONClient(ClientCoreProfile coreProfile, String identity, Draft draft) {
+        this(coreProfile, identity, true, draft);
     }
 
     /**
@@ -55,8 +56,8 @@ public class JSONClient extends Client {
      * @param identity           identity of the charge point. Not used for JSON protocol.
      * @param handleRequestAsync sets the session request handler in async or blocking mode.
      */
-    public JSONClient(ClientCoreProfile coreProfile, String identity, boolean handleRequestAsync) {
-        this(new WebSocketTransmitter(), handleRequestAsync);
+    public JSONClient(ClientCoreProfile coreProfile, String identity, boolean handleRequestAsync, Draft draft) {
+        this(new WebSocketTransmitter(draft), handleRequestAsync);
         addFeatureProfile(coreProfile);
     }
 

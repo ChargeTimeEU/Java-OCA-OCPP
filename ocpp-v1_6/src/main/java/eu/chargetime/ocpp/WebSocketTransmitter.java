@@ -1,6 +1,7 @@
 package eu.chargetime.ocpp;
 
 import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.drafts.Draft;
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
 import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
@@ -43,13 +44,18 @@ import java.net.URI;
  */
 public class WebSocketTransmitter implements Transmitter
 {
-	private static final Logger logger = LoggerFactory.getLogger(WebSocketTransmitter.class);
-	
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketTransmitter.class);
+
     private WebSocketClient client;
+    private final Draft draft;
+
+    public WebSocketTransmitter(Draft draft) {
+        this.draft = draft;
+    }
 
     @Override
     public void connect(String uri, RadioEvents events) {
-        client = new WebSocketClient(URI.create(uri))
+        client = new WebSocketClient(URI.create(uri), draft)
         {
             @Override
             public void onOpen(ServerHandshake serverHandshake)
@@ -72,13 +78,13 @@ public class WebSocketTransmitter implements Transmitter
             @Override
             public void onError(Exception ex)
             {
-            	logger.warn("onError() triggered", ex);
+                logger.warn("onError() triggered", ex);
             }
         };
         try {
             client.connectBlocking();
         } catch (Exception ex) {
-        	logger.warn("client.connectBlocking() failed", ex);
+            logger.warn("client.connectBlocking() failed", ex);
         }
     }
 
@@ -93,7 +99,7 @@ public class WebSocketTransmitter implements Transmitter
         try {
             client.closeBlocking();
         } catch (Exception ex) {
-        	logger.info("client.closeBlocking() failed", ex);
+            logger.info("client.closeBlocking() failed", ex);
         }
     }
 
