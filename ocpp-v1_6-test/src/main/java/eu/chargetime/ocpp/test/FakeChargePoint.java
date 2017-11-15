@@ -153,7 +153,7 @@ public class FakeChargePoint
 
         switch (type) {
             case JSON:
-                client = new JSONClient(core, "test", false);
+                client = new JSONClient(core, "test", false, new OcppDraft());
                 url = "ws://localhost:8887";
                 break;
             case SOAP:

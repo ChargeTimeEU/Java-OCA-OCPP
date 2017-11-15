@@ -27,6 +27,7 @@ package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.model.SessionInformation;
 import org.java_websocket.WebSocket;
+import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.DefaultSSLWebSocketServerFactory;
 import org.java_websocket.server.WebSocketServer;
@@ -35,22 +36,26 @@ import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class WebSocketListener implements Listener {
-	private static final Logger logger = LoggerFactory.getLogger(WebSocketListener.class);
-	
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketListener.class);
+
     private WebSocketServer server;
     private HashMap<WebSocket, WebSocketReceiver> sockets;
     private boolean handleRequestAsync;
+    private final List<Draft> drafts;
 
-    public WebSocketListener() {
+    public WebSocketListener(List<Draft> drafts) {
         sockets = new HashMap<>();
+        this.drafts = drafts;
     }
 
     @Override
     public void open(String hostname, int port, ListenerEvents handler) {
-        server = new WebSocketServer(new InetSocketAddress(hostname, port)) {
+        server = new WebSocketServer(new InetSocketAddress(hostname, port), drafts) {
             @Override
             public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
                 WebSocketReceiver receiver = new WebSocketReceiver(message -> webSocket.send(message));
@@ -102,7 +107,7 @@ public class WebSocketListener implements Listener {
             server.stop(1);
 
         } catch (InterruptedException e) {
-        	logger.info("close() failed", e);
+            logger.info("close() failed", e);
         }
     }
 

@@ -2,6 +2,7 @@ package core_features;
 
 import eu.chargetime.ocpp.Client;
 import eu.chargetime.ocpp.JSONClient;
+import eu.chargetime.ocpp.OcppDraft;
 import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
 import eu.chargetime.ocpp.model.Request;
@@ -122,7 +123,7 @@ public class JSONClientSample {
                 return null; // returning null means unsupported feature
             }
         });
-        client = new JSONClient(core, "chargeboxIdentity");
+        client = new JSONClient(core, "chargeboxIdentity", new OcppDraft());
         client.connect("ws://hostname:8887", null);
     }
 
