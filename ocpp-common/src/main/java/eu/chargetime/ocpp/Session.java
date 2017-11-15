@@ -79,7 +79,7 @@ public class Session {
     }
 
     /**
-     * Store a {@Link Request} and get the unique id.
+     * Store a {@link Request} and get the unique id.
      *
      * @param payload the {@link Request} payload to send
      * @return unique identification to identify the request.
