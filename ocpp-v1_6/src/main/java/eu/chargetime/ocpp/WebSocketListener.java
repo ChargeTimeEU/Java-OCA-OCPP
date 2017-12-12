@@ -26,19 +26,19 @@ package eu.chargetime.ocpp;
  */
 
 import eu.chargetime.ocpp.model.SessionInformation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.DefaultSSLWebSocketServerFactory;
 import org.java_websocket.server.WebSocketServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 
 public class WebSocketListener implements Listener {
-	private static final Logger logger = LoggerFactory.getLogger(WebSocketListener.class);
+    private static final Logger logger = LogManager.getLogger(WebSocketListener.class);
 	
     private WebSocketServer server;
     private HashMap<WebSocket, WebSocketReceiver> sockets;

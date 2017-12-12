@@ -3,8 +3,7 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -41,7 +40,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public class Session {
 
-	private static final Logger logger = LoggerFactory.getLogger(Session.class);
+    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(Session.class);
 
     private Communicator communicator;
     private Queue queue;

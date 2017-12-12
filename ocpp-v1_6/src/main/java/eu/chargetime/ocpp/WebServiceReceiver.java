@@ -25,17 +25,17 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.xml.soap.SOAPConnection;
 import javax.xml.soap.SOAPConnectionFactory;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class WebServiceReceiver extends SOAPSyncHelper implements Receiver {
-	private static final Logger logger = LoggerFactory.getLogger(WebServiceReceiver.class);
-	
+    private static final Logger logger = LogManager.getLogger(WebServiceReceiver.class);
+
     private RadioEvents events;
     SOAPConnection soapConnection;
     private String url;
