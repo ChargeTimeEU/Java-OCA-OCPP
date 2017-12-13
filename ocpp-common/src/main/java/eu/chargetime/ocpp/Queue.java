@@ -1,12 +1,10 @@
 package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.model.Request;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.HashMap;
 import java.util.UUID;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -40,7 +38,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Queue
 {
-	private static final Logger logger = LoggerFactory.getLogger(Queue.class);
+	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(Queue.class);
 
 	private HashMap<String, Request> requestQueue;
 

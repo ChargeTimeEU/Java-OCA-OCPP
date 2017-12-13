@@ -1,10 +1,10 @@
 package eu.chargetime.ocpp;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
 import org.java_websocket.handshake.ServerHandshake;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
@@ -43,7 +43,7 @@ import java.net.URI;
  */
 public class WebSocketTransmitter implements Transmitter
 {
-	private static final Logger logger = LoggerFactory.getLogger(WebSocketTransmitter.class);
+    private static final Logger logger = LogManager.getLogger(WebSocketTransmitter.class);
 	
     private WebSocketClient client;
 
