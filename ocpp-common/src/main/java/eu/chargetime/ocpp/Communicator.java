@@ -1,11 +1,10 @@
 package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.model.*;
-
-import java.util.ArrayDeque;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayDeque;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -13,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
  MIT License
 
- Copyright (c) 2016 Thomas Volden
+ Copyright (C) 2016-2018 Thomas Volden
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal

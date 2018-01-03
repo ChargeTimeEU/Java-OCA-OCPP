@@ -11,7 +11,7 @@ import eu.chargetime.ocpp.model.core.StopTransactionRequest;
  *
  * MIT License
  *
- * Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
+ * Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

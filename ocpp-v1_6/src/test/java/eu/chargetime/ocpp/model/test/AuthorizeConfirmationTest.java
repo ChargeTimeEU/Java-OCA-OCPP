@@ -10,7 +10,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.*;
 
  MIT License
 
- Copyright (c) 2016 Thomas Volden
+ Copyright (C) 2016-2018 Thomas Volden
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal

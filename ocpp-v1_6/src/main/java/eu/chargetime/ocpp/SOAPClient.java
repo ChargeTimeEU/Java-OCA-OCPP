@@ -4,7 +4,7 @@ package eu.chargetime.ocpp;
     
     MIT License
 
-    Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -28,12 +28,10 @@ package eu.chargetime.ocpp;
 import com.sun.net.httpserver.HttpServer;
 import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
 import eu.chargetime.ocpp.model.SOAPHostInfo;
-
-import javax.xml.soap.SOAPMessage;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.xml.soap.SOAPMessage;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URL;

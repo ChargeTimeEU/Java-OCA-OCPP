@@ -12,7 +12,7 @@ import eu.chargetime.ocpp.model.core.ClearCacheRequest;
 
  MIT License
 
- Copyright (c) 2016 Thomas Volden
+ Copyright (C) 2016-2018 Thomas Volden
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal

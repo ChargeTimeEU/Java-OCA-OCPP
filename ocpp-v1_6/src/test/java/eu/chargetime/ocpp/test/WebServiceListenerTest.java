@@ -1,3 +1,8 @@
+package eu.chargetime.ocpp.test;
+
+import eu.chargetime.ocpp.WebServiceListener;
+import org.junit.Test;
+
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -23,7 +28,13 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
-@XmlSchema(elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
-package eu.chargetime.ocpp.model.firmware;
+public class WebServiceListenerTest {
 
-import javax.xml.bind.annotation.XmlSchema;
+    @Test
+    public void open() throws Exception {
+        WebServiceListener listener = new WebServiceListener();
+        listener.open("localhost", 8000, null);
+        System.out.print("Too late");
+    }
+
+}
