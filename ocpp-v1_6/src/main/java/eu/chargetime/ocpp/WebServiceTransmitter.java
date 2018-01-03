@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.soap.SOAPConnection;
 import javax.xml.soap.SOAPConnectionFactory;
@@ -35,7 +35,7 @@ import javax.xml.soap.SOAPMessage;
  */
 
 public class WebServiceTransmitter extends SOAPSyncHelper implements Transmitter {
-	private static final Logger logger = LoggerFactory.getLogger(WebServiceTransmitter.class);
+    private static final Logger logger = LogManager.getLogger(WebServiceTransmitter.class);
 	
     SOAPConnection soapConnection;
     private String url;

@@ -4,7 +4,7 @@ package eu.chargetime.ocpp;
     
     MIT License
 
-    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,11 @@ package eu.chargetime.ocpp;
 import com.sun.net.httpserver.HttpServer;
 import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
 import eu.chargetime.ocpp.model.SOAPHostInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.soap.SOAPMessage;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URL;
@@ -40,7 +41,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class SOAPClient extends Client {
-	private static final Logger logger = LoggerFactory.getLogger(SOAPClient.class);
+    private static final Logger logger = LogManager.getLogger(SOAPClient.class);
 	private static final String WSDL_CHARGE_POINT = "eu/chargetime/ocpp/OCPP_ChargePointService_1.6.wsdl";
 
     private SOAPCommunicator communicator;

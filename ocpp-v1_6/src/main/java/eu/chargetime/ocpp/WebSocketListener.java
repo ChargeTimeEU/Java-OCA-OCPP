@@ -4,7 +4,7 @@ package eu.chargetime.ocpp;
     
     MIT License
 
-    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -26,13 +26,13 @@ package eu.chargetime.ocpp;
  */
 
 import eu.chargetime.ocpp.model.SessionInformation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.DefaultSSLWebSocketServerFactory;
 import org.java_websocket.server.WebSocketServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import java.net.InetSocketAddress;
@@ -41,9 +41,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class WebSocketListener implements Listener {
-	private static final Logger logger = LoggerFactory.getLogger(WebSocketListener.class);
-    private final List<Draft> drafts;
-
+    private static final Logger logger = LogManager.getLogger(WebSocketListener.class);
+	
     private WebSocketServer server;
     private HashMap<WebSocket, WebSocketReceiver> sockets;
     private boolean handleRequestAsync;

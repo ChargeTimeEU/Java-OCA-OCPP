@@ -1,4 +1,5 @@
 package eu.chargetime.ocpp;
+
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -26,23 +27,22 @@ package eu.chargetime.ocpp;
  SOFTWARE.
  */
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.drafts.Draft;
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
 import org.java_websocket.handshake.ServerHandshake;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.net.URI;
-
 /**
  * Web Socket implementation of the Transmitter.
  */
-public class WebSocketTransmitter implements Transmitter {
-    private static final Logger logger = LoggerFactory.getLogger(WebSocketTransmitter.class);
+public class WebSocketTransmitter implements Transmitter
+{
+    private static final Logger logger = LogManager.getLogger(WebSocketTransmitter.class);
     private final Draft draft;
 
     private WebSocketClient client;
@@ -76,13 +76,13 @@ public class WebSocketTransmitter implements Transmitter {
             @Override
             public void onError(Exception ex)
             {
-                logger.warn("onError() triggered", ex);
+            	logger.warn("onError() triggered", ex);
             }
         };
         try {
             client.connectBlocking();
         } catch (Exception ex) {
-            logger.warn("client.connectBlocking() failed", ex);
+        	logger.warn("client.connectBlocking() failed", ex);
         }
     }
 
@@ -97,7 +97,7 @@ public class WebSocketTransmitter implements Transmitter {
         try {
             client.closeBlocking();
         } catch (Exception ex) {
-            logger.info("client.closeBlocking() failed", ex);
+        	logger.info("client.closeBlocking() failed", ex);
         }
     }
 
