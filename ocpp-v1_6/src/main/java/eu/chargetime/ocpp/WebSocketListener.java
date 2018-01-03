@@ -42,7 +42,8 @@ import java.util.List;
 
 public class WebSocketListener implements Listener {
     private static final Logger logger = LogManager.getLogger(WebSocketListener.class);
-	
+    private final List<Draft> drafts;
+
     private WebSocketServer server;
     private HashMap<WebSocket, WebSocketReceiver> sockets;
     private boolean handleRequestAsync;
