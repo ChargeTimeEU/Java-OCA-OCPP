@@ -1,18 +1,4 @@
 package eu.chargetime.ocpp;
-
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.drafts.Draft_6455;
-import org.java_websocket.exceptions.WebsocketNotConnectedException;
-import org.java_websocket.handshake.ServerHandshake;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import java.io.IOException;
-import java.net.URI;
-import java.util.HashMap;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -40,23 +26,35 @@ import java.util.HashMap;
  SOFTWARE.
  */
 
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.drafts.Draft;
+import org.java_websocket.exceptions.WebsocketNotConnectedException;
+import org.java_websocket.handshake.ServerHandshake;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import java.io.IOException;
+import java.net.URI;
+
 /**
  * Web Socket implementation of the Transmitter.
  */
-public class WebSocketTransmitter implements Transmitter
-{
-	private static final Logger logger = LoggerFactory.getLogger(WebSocketTransmitter.class);
-	
+public class WebSocketTransmitter implements Transmitter {
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketTransmitter.class);
+    private final Draft draft;
+
     private WebSocketClient client;
+
+    public WebSocketTransmitter(Draft draft) {
+        this.draft = draft;
+    }
 
     @Override
     public void connect(String uri, RadioEvents events) {
 
-        HashMap<String, String> headers = new HashMap<>();
-        headers.put("Sec-WebSocket-Protocol", "ocpp1.6");
-        //headers.put("Authorization", YablProperties.basicAuth);
-        client = new WebSocketClient(URI.create(uri), new Draft_6455(), headers, 0)
-        {
+        client = new WebSocketClient(URI.create(uri), draft) {
             @Override
             public void onOpen(ServerHandshake serverHandshake)
             {
@@ -78,13 +76,13 @@ public class WebSocketTransmitter implements Transmitter
             @Override
             public void onError(Exception ex)
             {
-            	logger.warn("onError() triggered", ex);
+                logger.warn("onError() triggered", ex);
             }
         };
         try {
             client.connectBlocking();
         } catch (Exception ex) {
-        	logger.warn("client.connectBlocking() failed", ex);
+            logger.warn("client.connectBlocking() failed", ex);
         }
     }
 
@@ -99,7 +97,7 @@ public class WebSocketTransmitter implements Transmitter
         try {
             client.closeBlocking();
         } catch (Exception ex) {
-        	logger.info("client.closeBlocking() failed", ex);
+            logger.info("client.closeBlocking() failed", ex);
         }
     }
 

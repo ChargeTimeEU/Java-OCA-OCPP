@@ -56,7 +56,7 @@ public class JSONClient extends Client {
      * @param handleRequestAsync sets the session request handler in async or blocking mode.
      */
     public JSONClient(ClientCoreProfile coreProfile, String identity, boolean handleRequestAsync) {
-        this(new WebSocketTransmitter(), handleRequestAsync);
+        this(new WebSocketTransmitter(new OcppDraft()), handleRequestAsync);
         addFeatureProfile(coreProfile);
     }
 

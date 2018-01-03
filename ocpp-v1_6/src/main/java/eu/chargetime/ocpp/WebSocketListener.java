@@ -27,6 +27,7 @@ package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.model.SessionInformation;
 import org.java_websocket.WebSocket;
+import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.DefaultSSLWebSocketServerFactory;
 import org.java_websocket.server.WebSocketServer;
@@ -35,22 +36,26 @@ import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import java.net.InetSocketAddress;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class WebSocketListener implements Listener {
 	private static final Logger logger = LoggerFactory.getLogger(WebSocketListener.class);
-	
+    private final List<Draft> drafts;
+
     private WebSocketServer server;
     private HashMap<WebSocket, WebSocketReceiver> sockets;
     private boolean handleRequestAsync;
 
-    public WebSocketListener() {
+    public WebSocketListener(Draft... drafts) {
+        this.drafts = Arrays.asList(drafts);
         sockets = new HashMap<>();
     }
 
     @Override
     public void open(String hostname, int port, ListenerEvents handler) {
-        server = new WebSocketServer(new InetSocketAddress(hostname, port)) {
+        server = new WebSocketServer(new InetSocketAddress(hostname, port), drafts) {
             @Override
             public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
                 WebSocketReceiver receiver = new WebSocketReceiver(message -> webSocket.send(message));
