@@ -1,4 +1,5 @@
-package eu.chargetime.ocpp;/*
+package eu.chargetime.ocpp;
+/*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
@@ -31,16 +32,12 @@ import eu.chargetime.ocpp.model.Request;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.concurrent.CompletableFuture;
 
-public abstract class FeatureHandler {
+public class FeatureRepository implements IFeatureRepository {
 
-    private HashMap<String, CompletableFuture<Confirmation>> promises;
     private ArrayList<Feature> featureList;
 
-    FeatureHandler() {
-        this.promises = new HashMap<>();
+    FeatureRepository() {
         this.featureList = new ArrayList<>();
     }
 
@@ -67,7 +64,7 @@ public abstract class FeatureHandler {
      * @param needle Object supports {@link String}, {@link Request} or {@link Confirmation}
      * @return Instance of the supported Feature
      */
-    protected Feature findFeature(Object needle) {
+    public Feature findFeature(Object needle) {
         Feature output = null;
 
         for (Feature feature : featureList) {
@@ -92,43 +89,11 @@ public abstract class FeatureHandler {
      * @param object  to match with, supports {@link String}, {@link Request} or {@link Confirmation}
      * @return true if the {@link Feature} matches the {@link Object}
      */
-    protected boolean featureContains(Feature feature, Object object) {
+    private boolean featureContains(Feature feature, Object object) {
         boolean contains = false;
         contains |= object instanceof String && feature.getAction().equals(object);
         contains |= object instanceof Request && feature.getRequestType() == object.getClass();
         contains |= object instanceof Confirmation && feature.getConfirmationType() == object.getClass();
         return contains;
     }
-
-    /**
-     * Creates call back {@link CompletableFuture} for later use
-     *
-     * @param uniqueId identification for the {@link Request}
-     * @return call back {@link CompletableFuture}
-     */
-    protected CompletableFuture<Confirmation> createPromise(String uniqueId) {
-        CompletableFuture<Confirmation> promise = new CompletableFuture<>();
-        promises.put(uniqueId, promise);
-        return promise;
-    }
-
-    /**
-     * Get stored call back {@link CompletableFuture}.
-     *
-     * @param uniqueId identification for the {@link Request}
-     * @return call back {@link CompletableFuture}
-     */
-    protected CompletableFuture<Confirmation> getPromise(String uniqueId) {
-        return promises.get(uniqueId);
-    }
-
-    /**
-     * Remove stored call back {@link CompletableFuture}.
-     *
-     * @param uniqueId identification for the {@link Request}
-     */
-    protected void removePromise(String uniqueId) {
-        promises.remove(uniqueId);
-    }
-
 }

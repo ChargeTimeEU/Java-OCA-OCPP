@@ -46,7 +46,7 @@ import java.util.Calendar;
  */
 public class FakeChargePoint
 {
-    private Client client;
+    private IClientAPI client;
     private Confirmation receivedConfirmation;
     private Request receivedRequest;
     private final ClientCoreProfile core;
@@ -153,11 +153,11 @@ public class FakeChargePoint
 
         switch (type) {
             case JSON:
-                client = new JSONClient(core, "test", false);
+                client = new JSONClient(core);
                 url = "ws://localhost:8887";
                 break;
             case SOAP:
-                client = new SOAPClient("me", new URL("http://localhost:8889"), core, false);
+                client = new SOAPClient("me", new URL("http://localhost:8889"), core);
                 url = "http://localhost:8890";
                 break;
         }

@@ -1,12 +1,4 @@
 package eu.chargetime.ocpp;
-
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.feature.profile.Profile;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-import org.apache.logging.log4j.LogManager;
-
-import java.util.concurrent.CompletableFuture;
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -34,20 +26,28 @@ import java.util.concurrent.CompletableFuture;
  SOFTWARE.
  */
 
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import org.apache.logging.log4j.LogManager;
+
+import java.util.concurrent.CompletableFuture;
+
 /**
- * Abstract class.
  * Handles basic client logic:
  * Holds a list of supported features.
  * Keeps track of outgoing request.
  * Calls back when a confirmation is received.
- * <p>
+ *
  * Must be overloaded in order to support specific protocols and formats.
  */
-public abstract class Client extends FeatureHandler
+public class Client
 {
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(Client.class);
 	
     private Session session;
+    private final IFeatureRepository featureRepository;
+    private final IPromiseRepository promiseRepository;
 
     /**
      * Handle required injections.
@@ -55,8 +55,10 @@ public abstract class Client extends FeatureHandler
      * @param   session     Inject session object
      * @see                 Session
      */
-    public Client(Session session) {
+    public Client(Session session, IFeatureRepository featureRepository, IPromiseRepository promiseRepository) {
         this.session = session;
+        this.featureRepository = featureRepository;
+        this.promiseRepository = promiseRepository;
     }
 
     /**
@@ -68,32 +70,23 @@ public abstract class Client extends FeatureHandler
     public void connect(String uri, ClientEvents events)
     {
         session.open(uri, new SessionEvents() {
-            @Override
-            public Feature findFeatureByAction(String action) {
-                return findFeature(action);
-            }
-
-            @Override
-            public Feature findFeatureByRequest(Request request) {
-                return findFeature(request);
-            }
 
             @Override
             public void handleConfirmation(String uniqueId, Confirmation confirmation) {
-                getPromise(uniqueId).complete(confirmation);
-                removePromise(uniqueId);
+                promiseRepository.getPromise(uniqueId).complete(confirmation);
+                promiseRepository.removePromise(uniqueId);
             }
 
             @Override
             public Confirmation handleRequest(Request request) {
-                Feature feature = findFeatureByRequest(request);
+                Feature feature = featureRepository.findFeature(request);
                 return feature.handleRequest(null, request);
             }
 
             @Override
             public void handleError(String uniqueId, String errorCode, String errorDescription, Object payload) {
-                getPromise(uniqueId).completeExceptionally(new CallErrorException(errorCode, errorCode, payload));
-                removePromise(uniqueId);
+                promiseRepository.getPromise(uniqueId).completeExceptionally(new CallErrorException(errorCode, errorCode, payload));
+                promiseRepository.removePromise(uniqueId);
             }
 
             @Override
@@ -124,7 +117,7 @@ public abstract class Client extends FeatureHandler
 
     /**
      * Send a {@link Request} to the server.
-     * Can only send {@link Request} that the client supports, see {@link #addFeatureProfile(Profile)}
+     * Can only send {@link Request} that the client supports.
      *
      * @param   request                         outgoing request
      * @return call back object, will be fulfilled with confirmation when received
@@ -133,7 +126,7 @@ public abstract class Client extends FeatureHandler
      * @see                                     CompletableFuture
      */
     public CompletableFuture<Confirmation> send(Request request) throws UnsupportedFeatureException, OccurenceConstraintException {
-        Feature feature = findFeature(request);
+        Feature feature = featureRepository.findFeature(request);
         if (feature == null)
             throw new UnsupportedFeatureException();
 
@@ -141,7 +134,7 @@ public abstract class Client extends FeatureHandler
             throw new OccurenceConstraintException();
 
         String id = session.storeRequest(request);
-        CompletableFuture<Confirmation> promise = createPromise(id);
+        CompletableFuture<Confirmation> promise = promiseRepository.createPromise(id);
         session.sendRequest(feature.getAction(), request, id);
         return promise;
     }

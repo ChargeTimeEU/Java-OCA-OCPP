@@ -56,11 +56,13 @@ public class SessionTest {
     private SessionEvents sessionEvents;
     @Mock
     private Feature feature;
+    @Mock
+    private FeatureRepository featureRepository;
 
     @Before
     public void setup() throws Exception {
-        when(sessionEvents.findFeatureByAction(any())).thenReturn(feature);
-        session = new Session(communicator, queue, false);
+        when(featureRepository.findFeature(any())).thenReturn(feature);
+        session = new Session(communicator, queue, null, featureRepository);
         doAnswer(invocation -> eventHandler = invocation.getArgumentAt(1, CommunicatorEvents.class)).when(communicator).connect(any(), any());
         session.open(null, sessionEvents);
     }
@@ -195,7 +197,7 @@ public class SessionTest {
     public void onCall_unknownAction_callSendCallError() {
         // Given
         String someId = "Some id";
-        when(sessionEvents.findFeatureByAction(any())).thenReturn(null);
+        when(featureRepository.findFeature(any())).thenReturn(null);
 
         // When
         eventHandler.onCall(someId, null, null);

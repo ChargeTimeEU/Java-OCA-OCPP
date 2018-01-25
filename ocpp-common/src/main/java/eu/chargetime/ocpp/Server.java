@@ -40,18 +40,22 @@ import java.util.concurrent.CompletableFuture;
  * Keeps track of outgoing requests.
  * Calls back when a confirmation is received.
  */
-public abstract class Server extends FeatureHandler {
+public class Server {
 
-    private HashMap<UUID, Session> sessions;
+    private HashMap<UUID, ISession> sessions;
     private Listener listener;
+    private final IFeatureRepository featureRepository;
+    private final IPromiseRepository promiseRepository;
 
     /**
      * Constructor. Handles the required injections.
      *
      * @param listener injected listener.
      */
-    public Server(Listener listener) {
+    public Server(Listener listener, IFeatureRepository featureRepository, IPromiseRepository promiseRepository) {
         this.listener = listener;
+        this.featureRepository = featureRepository;
+        this.promiseRepository = promiseRepository;
         this.sessions = new HashMap();
     }
 
@@ -66,31 +70,21 @@ public abstract class Server extends FeatureHandler {
         listener.open(hostname, port, (session, information) -> {
             session.accept(new SessionEvents() {
                 @Override
-                public Feature findFeatureByAction(String action) {
-                    return findFeature(action);
-                }
-
-                @Override
-                public Feature findFeatureByRequest(Request request) {
-                    return findFeature(request);
-                }
-
-                @Override
                 public void handleConfirmation(String uniqueId, Confirmation confirmation) {
-                    getPromise(uniqueId).complete(confirmation);
-                    removePromise(uniqueId);
+                    promiseRepository.getPromise(uniqueId).complete(confirmation);
+                    promiseRepository.removePromise(uniqueId);
                 }
 
                 @Override
                 public Confirmation handleRequest(Request request) {
-                    Feature feature = findFeatureByRequest(request);
+                    Feature feature = featureRepository.findFeature(request);
                     return feature.handleRequest(getSessionID(session), request);
                 }
 
                 @Override
                 public void handleError(String uniqueId, String errorCode, String errorDescription, Object payload) {
-                    getPromise(uniqueId).completeExceptionally(new CallErrorException(errorCode, errorCode, payload));
-                    removePromise(uniqueId);
+                    promiseRepository.getPromise(uniqueId).completeExceptionally(new CallErrorException(errorCode, errorCode, payload));
+                    promiseRepository.removePromise(uniqueId);
                 }
 
                 @Override
@@ -109,12 +103,12 @@ public abstract class Server extends FeatureHandler {
         });
     }
 
-    private UUID getSessionID(Session session) {
+    private UUID getSessionID(ISession session) {
 
         if (!sessions.containsValue(session))
             return null;
 
-        for (Map.Entry<UUID, Session> entry : sessions.entrySet()) {
+        for (Map.Entry<UUID, ISession> entry : sessions.entrySet()) {
             if (entry.getValue() == session)
                 return entry.getKey();
         }
@@ -139,16 +133,16 @@ public abstract class Server extends FeatureHandler {
      * @throws OccurenceConstraintException Thrown if the request isn't valid.
      */
     public CompletableFuture<Confirmation> send(UUID sessionIndex, Request request) throws UnsupportedFeatureException, OccurenceConstraintException {
-        Feature feature = findFeature(request);
+        Feature feature = featureRepository.findFeature(request);
         if (feature == null)
             throw new UnsupportedFeatureException();
 
         if (!request.validate())
             throw new OccurenceConstraintException();
 
-        Session session = sessions.get(sessionIndex);
+        ISession session = sessions.get(sessionIndex);
         String id = session.storeRequest(request);
-        CompletableFuture<Confirmation> promise = createPromise(id);
+        CompletableFuture<Confirmation> promise = promiseRepository.createPromise(id);
         session.sendRequest(feature.getAction(), request, id);
         return promise;
     }
@@ -159,7 +153,7 @@ public abstract class Server extends FeatureHandler {
      * @param sessionIndex Session index of the client.
      */
     public void closeSession(UUID sessionIndex) {
-        Session session = sessions.get(sessionIndex);
+        ISession session = sessions.get(sessionIndex);
         if (session != null)
             session.close();
     }

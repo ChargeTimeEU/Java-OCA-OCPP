@@ -2,7 +2,6 @@ package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.SessionInformation;
 import eu.chargetime.ocpp.model.TestConfirmation;
@@ -57,8 +56,6 @@ public class ServerTest extends TestUtilities {
     @Mock
     private Session session;
     @Mock
-    private Profile profile;
-    @Mock
     private Feature feature;
     @Mock
     private Listener listener;
@@ -68,7 +65,10 @@ public class ServerTest extends TestUtilities {
     private Request request;
     @Mock
     private SessionInformation information;
-
+    @Mock
+    private IFeatureRepository featureRepository;
+    @Mock
+    private IPromiseRepository promiseRepository;
 
     @Before
     public void setup() {
@@ -80,11 +80,7 @@ public class ServerTest extends TestUtilities {
         doAnswer(invocation -> sessionEvents = invocation.getArgumentAt(0, SessionEvents.class)).when(session).accept(any());
         doAnswer(invocation -> sessionIndex = invocation.getArgumentAt(0, UUID.class)).when(serverEvents).newSession(any(), any());
 
-        server = new Server(listener) {
-        };
-
-        when(profile.getFeatureList()).thenReturn(aList(feature));
-        server.addFeatureProfile(profile);
+        server = new Server(listener, featureRepository, promiseRepository);
     }
 
     @Test

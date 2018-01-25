@@ -1,10 +1,13 @@
 package eu.chargetime.ocpp;
+
+import eu.chargetime.ocpp.model.Request;
+
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
 
-    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -24,30 +27,14 @@ package eu.chargetime.ocpp;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+public interface ISession {
+    void open(String uri, SessionEvents eventHandler);
 
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
+    void accept(SessionEvents eventHandler);
 
-import java.util.concurrent.CompletableFuture;
+    String storeRequest(Request payload);
 
-public class RequestDispatcher implements IRequestDispactcher {
+    void sendRequest(String action, Request payload, String uuid);
 
-    private final PromiseFulfiller fulfiller;
-    protected SessionEvents eventHandler;
-
-    public RequestDispatcher(PromiseFulfiller fulfiller) {
-        this.fulfiller = fulfiller;
-    }
-
-    public CompletableFuture<Confirmation> handleRequest(Request request)
-    {
-        CompletableFuture<Confirmation> promise = new CompletableFuture<>();
-        fulfiller.fulfill(promise, eventHandler, request);
-        return promise;
-    }
-
-    public void setEventHandler(SessionEvents eventHandler) {
-        this.eventHandler = eventHandler;
-    }
+    void close();
 }
-

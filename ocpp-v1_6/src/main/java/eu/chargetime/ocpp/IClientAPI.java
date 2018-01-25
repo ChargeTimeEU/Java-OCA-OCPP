@@ -1,14 +1,10 @@
-package eu.chargetime.ocpp.test;
-
-import eu.chargetime.ocpp.WebServiceListener;
-import org.junit.Test;
-
+package eu.chargetime.ocpp;
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
 
-    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -28,13 +24,19 @@ import org.junit.Test;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
-public class WebServiceListenerTest {
 
-    @Test
-    public void open() throws Exception {
-        WebServiceListener listener = new WebServiceListener();
-        listener.open("localhost", 8000, null);
-        System.out.print("Too late");
-    }
+import eu.chargetime.ocpp.feature.profile.Profile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
 
+import java.util.concurrent.CompletionStage;
+
+public interface IClientAPI {
+    void addFeatureProfile(Profile profile);
+
+    void connect(String url, ClientEvents clientEvents);
+
+    CompletionStage<Confirmation> send(Request request) throws OccurenceConstraintException, UnsupportedFeatureException;
+
+    void disconnect();
 }

@@ -25,13 +25,50 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
+import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
 
-public class SOAPServer extends Server {
+import java.util.UUID;
+import java.util.concurrent.CompletionStage;
+
+public class SOAPServer implements IServerAPI {
+
+    private FeatureRepository featureRepository;
+    private Server server;
 
     public SOAPServer(ServerCoreProfile coreProfile) {
-        super(new WebServiceListener());
-        addFeatureProfile(coreProfile);
+
+        featureRepository = new FeatureRepository();
+        ServerSessionFactory sessionFactory = new ServerSessionFactory(featureRepository);
+        Listener listener = new WebServiceListener(sessionFactory);
+        server = new Server(listener, featureRepository, new PromiseRepository());
+        featureRepository.addFeatureProfile(coreProfile);
     }
 
+    @Override
+    public void addFeatureProfile(Profile profile) {
+        featureRepository.addFeatureProfile(profile);
+    }
+
+    @Override
+    public void closeSession(UUID session) {
+        server.closeSession(session);
+    }
+
+    @Override
+    public void open(String host, int port, ServerEvents serverEvents) {
+        server.open(host, port, serverEvents);
+    }
+
+    @Override
+    public void close() {
+        server.close();
+    }
+
+    @Override
+    public CompletionStage<Confirmation> send(UUID session, Request request) throws OccurenceConstraintException, UnsupportedFeatureException {
+        return server.send(session, request);
+    }
 }

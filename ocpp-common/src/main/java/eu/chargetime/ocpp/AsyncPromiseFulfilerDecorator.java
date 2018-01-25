@@ -34,13 +34,13 @@ public class AsyncPromiseFulfilerDecorator implements PromiseFulfiller {
 
     private final PromiseFulfiller promiseFulfiller;
 
-    public AsyncPromiseFulfilerDecorator(PromiseFulfiller promiseFulfiller) {
-
-        this.promiseFulfiller = promiseFulfiller;
-    }
-
     @Override
     public void fulfill(CompletableFuture<Confirmation> promise, SessionEvents eventHandler, Request request) {
         new Thread(() -> promiseFulfiller.fulfill(promise, eventHandler, request)).start();
+    }
+
+    public AsyncPromiseFulfilerDecorator(PromiseFulfiller promiseFulfiller) {
+
+        this.promiseFulfiller = promiseFulfiller;
     }
 }

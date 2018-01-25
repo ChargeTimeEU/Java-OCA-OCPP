@@ -4,7 +4,7 @@ package eu.chargetime.ocpp;
     
     MIT License
 
-    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,29 +25,11 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.profile.Profile;
 
-import java.util.concurrent.CompletableFuture;
+public interface IFeatureRepository {
+    void addFeatureProfile(Profile profile);
 
-public class RequestDispatcher implements IRequestDispactcher {
-
-    private final PromiseFulfiller fulfiller;
-    protected SessionEvents eventHandler;
-
-    public RequestDispatcher(PromiseFulfiller fulfiller) {
-        this.fulfiller = fulfiller;
-    }
-
-    public CompletableFuture<Confirmation> handleRequest(Request request)
-    {
-        CompletableFuture<Confirmation> promise = new CompletableFuture<>();
-        fulfiller.fulfill(promise, eventHandler, request);
-        return promise;
-    }
-
-    public void setEventHandler(SessionEvents eventHandler) {
-        this.eventHandler = eventHandler;
-    }
+    Feature findFeature(Object needle);
 }
-

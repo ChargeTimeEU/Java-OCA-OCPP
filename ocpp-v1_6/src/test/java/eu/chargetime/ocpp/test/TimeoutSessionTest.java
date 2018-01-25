@@ -1,9 +1,9 @@
 package eu.chargetime.ocpp.test;
 
-import eu.chargetime.ocpp.*;
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.model.TestConfirmation;
-import eu.chargetime.ocpp.model.TestRequest;
+import eu.chargetime.ocpp.CommunicatorEvents;
+import eu.chargetime.ocpp.ISession;
+import eu.chargetime.ocpp.SessionEvents;
+import eu.chargetime.ocpp.TimeoutSessionDecorator;
 import eu.chargetime.ocpp.utilities.TimeoutTimer;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,8 +11,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /*
     ChargeTime.eu - Java-OCA-OCPP
@@ -42,30 +42,19 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class TimeoutSessionTest {
 
-    private TimeoutSession session;
+    private TimeoutSessionDecorator session;
     private CommunicatorEvents eventHandler;
 
     @Mock
-    private Communicator communicator;
-    @Mock
-    private Queue queue;
-    @Mock
     private SessionEvents sessionEvents;
     @Mock
-    private Feature feature;
-    @Mock
     private TimeoutTimer timeoutTimer;
+    @Mock
+    private ISession sessionMock;
 
     @Before
     public void setup() throws Exception {
-        when(sessionEvents.findFeatureByAction(any())).thenReturn(feature);
-        when(sessionEvents.findFeatureByRequest(any())).thenReturn(feature);
-
-        session = new TimeoutSession(communicator, queue, false);
-        doAnswer(invocation -> eventHandler = invocation.getArgumentAt(1, CommunicatorEvents.class)).when(communicator).connect(any(), any());
-        doAnswer(invocation -> eventHandler = invocation.getArgumentAt(0, CommunicatorEvents.class)).when(communicator).accept(any());
-
-        session.setTimeoutTimer(timeoutTimer);
+        session = new TimeoutSessionDecorator(timeoutTimer, sessionMock);
     }
 
     @Test
@@ -120,7 +109,6 @@ public class TimeoutSessionTest {
     public void onCall_request_resetTimeout() throws Exception {
         // Given
         session.open(null, sessionEvents);
-        when(communicator.unpackPayload(any(), any())).thenReturn(new TestRequest());
 
         // When
         eventHandler.onCall("", null, null);
@@ -133,7 +121,6 @@ public class TimeoutSessionTest {
     public void onCall_confirmation_resetTimeout() throws Exception {
         // Given
         session.open(null, sessionEvents);
-        when(communicator.unpackPayload(any(), any())).thenReturn(new TestConfirmation());
 
         // When
         eventHandler.onCallResult("", null, null);

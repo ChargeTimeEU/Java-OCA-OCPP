@@ -42,15 +42,17 @@ import java.util.List;
 
 public class WebSocketListener implements Listener {
     private static final Logger logger = LogManager.getLogger(WebSocketListener.class);
+    private final IServerSessionFactory sessionFactory;
     private final List<Draft> drafts;
 
     private WebSocketServer server;
     private HashMap<WebSocket, WebSocketReceiver> sockets;
     private boolean handleRequestAsync;
 
-    public WebSocketListener(Draft... drafts) {
+    public WebSocketListener(IServerSessionFactory sessionFactory, Draft... drafts) {
+        this.sessionFactory = sessionFactory;
         this.drafts = Arrays.asList(drafts);
-        sockets = new HashMap<>();
+        this.sockets = new HashMap<>();
     }
 
     @Override
@@ -64,7 +66,7 @@ public class WebSocketListener implements Listener {
                         .Identifier(clientHandshake.getResourceDescriptor())
                         .InternetAddress(webSocket.getRemoteSocketAddress()).build();
 
-                handler.newSession(new Session(new JSONCommunicator(receiver), new Queue(), handleRequestAsync), information);
+                handler.newSession(sessionFactory.createSession(new JSONCommunicator(receiver)), information);
             }
 
             @Override

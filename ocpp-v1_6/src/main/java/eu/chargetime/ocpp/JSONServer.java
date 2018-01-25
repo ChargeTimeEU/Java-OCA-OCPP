@@ -25,29 +25,60 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
+import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
 
 import javax.net.ssl.SSLContext;
+import java.util.UUID;
+import java.util.concurrent.CompletionStage;
 
-public class JSONServer extends Server {
+public class JSONServer implements IServerAPI {
 
     private WebSocketListener listener;
+    private Server server;
+    private FeatureRepository featureRepository;
+
     /**
      * The core feature profile is required as a minimum.
      *
      * @param coreProfile implementation of the core feature profile.
      */
     public JSONServer(ServerCoreProfile coreProfile) {
-        this(new WebSocketListener());
-        addFeatureProfile(coreProfile);
-    }
-
-    private JSONServer(WebSocketListener listener) {
-        super(listener);
-        this.listener = listener;
+        featureRepository = new FeatureRepository();
+        ServerSessionFactory sessionFactory = new ServerSessionFactory(featureRepository);
+        this.listener = new WebSocketListener(sessionFactory);
+        server = new Server(this.listener, featureRepository, new PromiseRepository());
+        featureRepository.addFeatureProfile(coreProfile);
     }
 
     public void enableWSS(SSLContext sslContext) {
         listener.enableWSS(sslContext);
+    }
+
+    @Override
+    public void addFeatureProfile(Profile profile) {
+        featureRepository.addFeatureProfile(profile);
+    }
+
+    @Override
+    public void closeSession(UUID session) {
+        server.closeSession(session);
+    }
+
+    @Override
+    public void open(String host, int port, ServerEvents serverEvents) {
+        server.open(host, port, serverEvents);
+    }
+
+    @Override
+    public void close() {
+        server.close();
+    }
+
+    @Override
+    public CompletionStage<Confirmation> send(UUID session, Request request) throws OccurenceConstraintException, UnsupportedFeatureException {
+        return server.send(session, request);
     }
 }

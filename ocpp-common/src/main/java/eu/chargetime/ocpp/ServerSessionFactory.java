@@ -4,7 +4,7 @@ package eu.chargetime.ocpp;
     
     MIT License
 
-    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,29 +25,18 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
+public class ServerSessionFactory implements IServerSessionFactory {
 
-import java.util.concurrent.CompletableFuture;
+    private final IFeatureRepository featureRepository;
 
-public class RequestDispatcher implements IRequestDispactcher {
+    public ServerSessionFactory(IFeatureRepository featureRepository) {
 
-    private final PromiseFulfiller fulfiller;
-    protected SessionEvents eventHandler;
-
-    public RequestDispatcher(PromiseFulfiller fulfiller) {
-        this.fulfiller = fulfiller;
+        this.featureRepository = featureRepository;
     }
 
-    public CompletableFuture<Confirmation> handleRequest(Request request)
-    {
-        CompletableFuture<Confirmation> promise = new CompletableFuture<>();
-        fulfiller.fulfill(promise, eventHandler, request);
-        return promise;
-    }
-
-    public void setEventHandler(SessionEvents eventHandler) {
-        this.eventHandler = eventHandler;
+    @Override
+    public ISession createSession(Communicator communicator) {
+        AsyncPromiseFulfilerDecorator promiseFulfiler = new AsyncPromiseFulfilerDecorator(new SimplePromiseFulfiller());
+        return new Session(communicator, new Queue(), promiseFulfiler, this.featureRepository);
     }
 }
-

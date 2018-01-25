@@ -33,7 +33,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.xml.soap.SOAPMessage;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
@@ -43,11 +42,16 @@ public class WebServiceListener implements Listener {
     private static final Logger logger = LogManager.getLogger(WebServiceListener.class);
 	private static final String WSDL_CENTRAL_SYSTEM = "eu/chargetime/ocpp/OCPP_CentralSystemService_1.6.wsdl";
     private static final String NAMESPACE = "urn://Ocpp/Cp/2015/10";
+    private final IServerSessionFactory sessionFactory;
 
     private ListenerEvents events;
     private String fromUrl = null;
     private HttpServer server;
     private boolean handleRequestAsync;
+
+    public WebServiceListener(IServerSessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public void open(String hostname, int port, ListenerEvents listenerEvents) {
@@ -100,11 +104,12 @@ public class WebServiceListener implements Listener {
                 SOAPCommunicator communicator = new SOAPCommunicator(hostInfo, webServiceReceiver);
                 communicator.setToUrl(toUrl);
 
-                TimeoutSession session = new TimeoutSession(communicator, new Queue(), handleRequestAsync);
-                session.setTimeoutTimer(new TimeoutTimer(INITIAL_TIMEOUT, () -> {
+                ISession session = sessionFactory.createSession(communicator);
+                TimeoutTimer timeoutTimer = new TimeoutTimer(INITIAL_TIMEOUT, () -> {
                     session.close();
                     chargeBoxes.remove(identity);
-                }));
+                });
+                ISession sessionDecorator = new TimeoutSessionDecorator(timeoutTimer, session);
 
                 SessionInformation information = new SessionInformation.Builder().Identifier(identity).InternetAddress(messageInfo.getAddress()).build();
                 events.newSession(session, information);

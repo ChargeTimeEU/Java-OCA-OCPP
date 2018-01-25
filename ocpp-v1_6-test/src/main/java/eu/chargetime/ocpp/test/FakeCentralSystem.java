@@ -26,10 +26,10 @@ package eu.chargetime.ocpp.test;
  SOFTWARE.
  */
 
+import eu.chargetime.ocpp.IServerAPI;
 import eu.chargetime.ocpp.JSONServer;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.SOAPServer;
-import eu.chargetime.ocpp.Server;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementProfile;
 import eu.chargetime.ocpp.feature.profile.ServerRemoteTriggerProfile;
@@ -43,7 +43,7 @@ import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
 import eu.chargetime.ocpp.test.FakeCentral.serverType;
 
 public class FakeCentralSystem {
-    private Server server;
+    private IServerAPI server;
 
     DummyHandlers dummyHandlers;
     private boolean isStarted;
@@ -58,7 +58,6 @@ public class FakeCentralSystem {
         } else {
             server = new SOAPServer(serverCoreProfile);
         }
-        server.setAsyncRequestHandler(false);
 
         initializeServer();
         isStarted = false;

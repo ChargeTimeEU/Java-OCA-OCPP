@@ -1,28 +1,4 @@
 package eu.chargetime.ocpp.test;
-
-import eu.chargetime.ocpp.Client;
-import eu.chargetime.ocpp.ClientEvents;
-import eu.chargetime.ocpp.Session;
-import eu.chargetime.ocpp.SessionEvents;
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.feature.profile.Profile;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.TestConfirmation;
-import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.concurrent.CompletableFuture;
-
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -50,6 +26,26 @@ import static org.mockito.Mockito.*;
  SOFTWARE.
  */
 
+import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.profile.Profile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.TestConfirmation;
+import eu.chargetime.ocpp.utilities.TestUtilities;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.concurrent.CompletableFuture;
+
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
+
 @RunWith(MockitoJUnitRunner.class)
 public class ClientTest extends TestUtilities {
     private Client client;
@@ -65,6 +61,10 @@ public class ClientTest extends TestUtilities {
     private Request request;
     @Mock
     private ClientEvents events;
+    @Mock
+    private IFeatureRepository featureRepository;
+    @Mock
+    private IPromiseRepository promiseRepository;
 
     @Before
     public void setup() {
@@ -74,11 +74,9 @@ public class ClientTest extends TestUtilities {
         when(feature.getAction()).thenReturn(null);
         doAnswer(invocation -> eventHandler = invocation.getArgumentAt(1, SessionEvents.class)).when(session).open(any(), any());
 
-        client = new Client(session) {
-        };
+        client = new Client(session, featureRepository, promiseRepository);
 
         when(profile.getFeatureList()).thenReturn(aList(feature));
-        client.addFeatureProfile(profile);
     }
 
     @Test

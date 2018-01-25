@@ -1,6 +1,6 @@
 package core_features;
 
-import eu.chargetime.ocpp.Client;
+import eu.chargetime.ocpp.IClientAPI;
 import eu.chargetime.ocpp.SOAPClient;
 import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
@@ -36,7 +36,7 @@ import java.net.URL;
  * SOFTWARE.
  */
 public class SOAPClientSample {
-    private Client client;
+    private IClientAPI client;
     private ClientCoreProfile core;
 
     public void connect() throws Exception {

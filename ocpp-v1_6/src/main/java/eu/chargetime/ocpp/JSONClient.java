@@ -1,11 +1,15 @@
 package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
+import eu.chargetime.ocpp.feature.profile.Profile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
+import java.util.concurrent.CompletionStage;
 
-/*
+        /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -34,39 +38,50 @@ import java.io.IOException;
 /**
  * OCA OCPP version 1.6 JSON Web Socket implementation of the client.
  */
-public class JSONClient extends Client {
+public class JSONClient implements IClientAPI {
 
     private final WebSocketTransmitter transmitter;
+    private final FeatureRepository featureRepository;
+    private final Client client;
+
 
     /**
+     * Application composite root for a json client.
      * The core feature profile is required as a minimum.
      *
      * @param coreProfile   implementation of the core feature profile.
-     * @param identity      identity of the charge point.
      */
-    public JSONClient(ClientCoreProfile coreProfile, String identity) {
-        this(coreProfile, identity, true);
-    }
-
-    /**
-     * The core feature profile is required as a minimum.
-     *
-     * @param coreProfile        implementation of the core feature profile.
-     * @param identity           identity of the charge point. Not used for JSON protocol.
-     * @param handleRequestAsync sets the session request handler in async or blocking mode.
-     */
-    public JSONClient(ClientCoreProfile coreProfile, String identity, boolean handleRequestAsync) {
-        this(new WebSocketTransmitter(new OcppDraft()), handleRequestAsync);
-        addFeatureProfile(coreProfile);
-    }
-
-    private JSONClient(WebSocketTransmitter transmitter, boolean handleRequestAsync) {
-        super(new Session(new JSONCommunicator(transmitter), new Queue(), handleRequestAsync));
-        this.transmitter = transmitter;
+    public JSONClient(ClientCoreProfile coreProfile) {
+        transmitter = new WebSocketTransmitter(new OcppDraft());
+        JSONCommunicator communicator = new JSONCommunicator(transmitter);
+        AsyncPromiseFulfilerDecorator promiseFulfiler = new AsyncPromiseFulfilerDecorator(new SimplePromiseFulfiller());
+        featureRepository = new FeatureRepository();
+        Session session = new Session(communicator, new Queue(), promiseFulfiler, featureRepository);
+        client = new Client(session, featureRepository, new PromiseRepository());
+        featureRepository.addFeatureProfile(coreProfile);
     }
 
     public void enableWSS(SSLContext sslContext) throws IOException {
         transmitter.enableWSS(sslContext);
     }
 
+    @Override
+    public void addFeatureProfile(Profile profile) {
+        featureRepository.addFeatureProfile(profile);
+    }
+
+    @Override
+    public void connect(String url, ClientEvents clientEvents) {
+        client.connect(url, clientEvents);
+    }
+
+    @Override
+    public CompletionStage<Confirmation> send(Request request) throws OccurenceConstraintException, UnsupportedFeatureException {
+        return client.send(request);
+    }
+
+    @Override
+    public void disconnect() {
+        client.disconnect();
+    }
 }

@@ -38,13 +38,14 @@ import java.util.concurrent.CompletableFuture;
  * Unites outgoing {@link Request} with incoming {@link Confirmation}s or errors.
  * Catches errors and responds with error messages.
  */
-public class Session {
+public class Session implements ISession {
 
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(Session.class);
 
-    private Communicator communicator;
-    private Queue queue;
-    private RequestDispatcher dispatcher;
+    private final Communicator communicator;
+    private final Queue queue;
+    private final RequestDispatcher dispatcher;
+    private final IFeatureRepository featureRepository;
     private SessionEvents events;
 
     /**
@@ -52,18 +53,12 @@ public class Session {
      *
      * @param communicator          send and receive messages.
      * @param queue                 store and restore requests based on unique ids.
-     * @param handleRequestAsync    toggle if requests are handled async or not.
      */
-    public Session(Communicator communicator, Queue queue, boolean handleRequestAsync) {
+    public Session(Communicator communicator, Queue queue, PromiseFulfiller fulfiller, IFeatureRepository featureRepository) {
         this.communicator = communicator;
         this.queue = queue;
-
-        PromiseFulfiller fulfiller = new SimplePromiseFulfiller();
-
-        if (handleRequestAsync)
-            fulfiller = new AsyncPromiseFulfilerDecorator(fulfiller);
-
-        dispatcher = new RequestDispatcher(fulfiller);
+        this.dispatcher = new RequestDispatcher(fulfiller);
+        this.featureRepository = featureRepository;
     }
 
     /**
@@ -100,7 +95,7 @@ public class Session {
 
     private Class<? extends Confirmation> getConfirmationType(String uniqueId) throws UnsupportedFeatureException {
         Request request = queue.restoreRequest(uniqueId);
-        Feature feature = events.findFeatureByRequest(request);
+        Feature feature = featureRepository.findFeature(request);
         if (feature == null)
             throw new UnsupportedFeatureException();
         return feature.getConfirmationType();
@@ -162,7 +157,7 @@ public class Session {
 
         @Override
         synchronized public void onCall(String id, String action, Object payload) {
-            Feature feature = events.findFeatureByAction(action);
+            Feature feature = featureRepository.findFeature(action);
             if (feature == null) {
                 communicator.sendCallError(id, action, "NotImplemented", "Requested Action is not known by receiver");
             } else {

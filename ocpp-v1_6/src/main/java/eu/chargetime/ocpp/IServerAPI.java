@@ -4,7 +4,7 @@ package eu.chargetime.ocpp;
     
     MIT License
 
-    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,29 +25,21 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
+import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 
-import java.util.concurrent.CompletableFuture;
+import java.util.UUID;
+import java.util.concurrent.CompletionStage;
 
-public class RequestDispatcher implements IRequestDispactcher {
+public interface IServerAPI {
+    void addFeatureProfile(Profile profile);
 
-    private final PromiseFulfiller fulfiller;
-    protected SessionEvents eventHandler;
+    void closeSession(UUID session);
 
-    public RequestDispatcher(PromiseFulfiller fulfiller) {
-        this.fulfiller = fulfiller;
-    }
+    void open(String host, int port, ServerEvents serverEvents);
 
-    public CompletableFuture<Confirmation> handleRequest(Request request)
-    {
-        CompletableFuture<Confirmation> promise = new CompletableFuture<>();
-        fulfiller.fulfill(promise, eventHandler, request);
-        return promise;
-    }
+    void close();
 
-    public void setEventHandler(SessionEvents eventHandler) {
-        this.eventHandler = eventHandler;
-    }
+    CompletionStage<Confirmation> send(UUID session, Request request) throws OccurenceConstraintException, UnsupportedFeatureException;
 }
-

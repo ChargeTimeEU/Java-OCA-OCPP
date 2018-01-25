@@ -25,30 +25,24 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
 import eu.chargetime.ocpp.model.core.RegistrationStatus;
 import eu.chargetime.ocpp.utilities.TimeoutTimer;
 
-public class TimeoutSession extends Session {
+public class TimeoutSessionDecorator implements ISession {
 
     private TimeoutTimer timeoutTimer;
+    private final ISession session;
 
     /**
      * Handles required injections.
      *
-     * @param communicator  send and receive messages.
-     * @param queue         store and restore requests based on unique ids.
-     * @param handleRequestAsync    toggle if requests are handled async or not.
      */
-    public TimeoutSession(Communicator communicator, Queue queue, boolean handleRequestAsync) {
-        super(communicator, queue, handleRequestAsync);
-    }
-
-    public void setTimeoutTimer(TimeoutTimer timeoutTimer) {
+    public TimeoutSessionDecorator(TimeoutTimer timeoutTimer, ISession session) {
         this.timeoutTimer = timeoutTimer;
+        this.session = session;
     }
 
     private void resetTimer(int timeoutInSec) {
@@ -75,27 +69,33 @@ public class TimeoutSession extends Session {
     @Override
     public void open(String uri, SessionEvents eventHandler) {
         SessionEvents events = createEventHandler(eventHandler);
-        super.open(uri, events);
+        this.session.open(uri, events);
     }
 
     @Override
     public void accept(SessionEvents eventHandler) {
         SessionEvents events = createEventHandler(eventHandler);
-        super.accept(events);
+        this.session.accept(events);
+    }
+
+    @Override
+    public String storeRequest(Request payload) {
+        return this.session.storeRequest(payload);
+    }
+
+    @Override
+    public void sendRequest(String action, Request payload, String uuid) {
+        this.session.sendRequest(action, payload, uuid);
+
+    }
+
+    @Override
+    public void close() {
+        this.session.close();
     }
 
     private SessionEvents createEventHandler(SessionEvents eventHandler) {
         return new SessionEvents() {
-            @Override
-            public Feature findFeatureByAction(String action) {
-                return eventHandler.findFeatureByAction(action);
-            }
-
-            @Override
-            public Feature findFeatureByRequest(Request request) {
-                return eventHandler.findFeatureByRequest(request);
-            }
-
             @Override
             public void handleConfirmation(String uniqueId, Confirmation confirmation) {
                 resetTimer();

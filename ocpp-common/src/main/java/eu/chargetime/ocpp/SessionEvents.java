@@ -1,6 +1,5 @@
 package eu.chargetime.ocpp;
 
-import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 
@@ -35,23 +34,6 @@ import eu.chargetime.ocpp.model.Request;
  * Call back handler for {@link Session} events.
  */
 public interface SessionEvents {
-    /**
-     * Find a {@link Feature} by it's related action name.
-     * If null is returned, a "NotImplemented" error will be send.
-     *
-     * @param action action name of the {@link Feature}
-     * @return {@link Feature} found.
-     */
-    Feature findFeatureByAction(String action);
-
-    /**
-     * Find a {@link Feature} by a {@link Request}.
-     * If null is returned, a "InternalError" error will be send.
-     *
-     * @param request   The {@link Request} of the {@link Feature}.
-     * @return {@link Feature} found.
-     */
-    Feature findFeatureByRequest(Request request);
 
     /**
      * Handle a {@link Confirmation} to a {@link Request}.

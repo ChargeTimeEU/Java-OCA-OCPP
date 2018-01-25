@@ -1,10 +1,17 @@
 package eu.chargetime.ocpp;
+
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+
+import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
+
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
 
-    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -24,30 +31,43 @@ package eu.chargetime.ocpp;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+public class PromiseRepository implements IPromiseRepository {
 
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
+    private HashMap<String, CompletableFuture<Confirmation>> promises;
 
-import java.util.concurrent.CompletableFuture;
-
-public class RequestDispatcher implements IRequestDispactcher {
-
-    private final PromiseFulfiller fulfiller;
-    protected SessionEvents eventHandler;
-
-    public RequestDispatcher(PromiseFulfiller fulfiller) {
-        this.fulfiller = fulfiller;
+    public PromiseRepository() {
+        this.promises = new HashMap<>();
     }
 
-    public CompletableFuture<Confirmation> handleRequest(Request request)
-    {
+    /**
+     * Creates call back {@link CompletableFuture} for later use
+     *
+     * @param uniqueId identification for the {@link Request}
+     * @return call back {@link CompletableFuture}
+     */
+    public CompletableFuture<Confirmation> createPromise(String uniqueId) {
         CompletableFuture<Confirmation> promise = new CompletableFuture<>();
-        fulfiller.fulfill(promise, eventHandler, request);
+        promises.put(uniqueId, promise);
         return promise;
     }
 
-    public void setEventHandler(SessionEvents eventHandler) {
-        this.eventHandler = eventHandler;
+    /**
+     * Get stored call back {@link CompletableFuture}.
+     *
+     * @param uniqueId identification for the {@link Request}
+     * @return call back {@link CompletableFuture}
+     */
+    public CompletableFuture<Confirmation> getPromise(String uniqueId) {
+        return promises.get(uniqueId);
     }
-}
 
+    /**
+     * Remove stored call back {@link CompletableFuture}.
+     *
+     * @param uniqueId identification for the {@link Request}
+     */
+    public void removePromise(String uniqueId) {
+        promises.remove(uniqueId);
+    }
+
+}
