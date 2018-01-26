@@ -1,6 +1,5 @@
 package eu.chargetime.ocpp.test;
 
-import eu.chargetime.ocpp.CommunicatorEvents;
 import eu.chargetime.ocpp.ISession;
 import eu.chargetime.ocpp.SessionEvents;
 import eu.chargetime.ocpp.TimeoutSessionDecorator;
@@ -11,8 +10,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 /*
     ChargeTime.eu - Java-OCA-OCPP
@@ -43,7 +42,6 @@ import static org.mockito.Mockito.verify;
 public class TimeoutSessionTest {
 
     private TimeoutSessionDecorator session;
-    private CommunicatorEvents eventHandler;
 
     @Mock
     private SessionEvents sessionEvents;
@@ -55,75 +53,77 @@ public class TimeoutSessionTest {
     @Before
     public void setup() throws Exception {
         session = new TimeoutSessionDecorator(timeoutTimer, sessionMock);
+        doAnswer(invocation -> sessionEvents = invocation.getArgumentAt(0, SessionEvents.class)).when(sessionMock).accept(any());
+        doAnswer(invocation -> sessionEvents = invocation.getArgumentAt(1, SessionEvents.class)).when(sessionMock).open(any(), any());
     }
 
     @Test
-    public void onConnected_opened_beginTimeout() throws Exception {
+    public void handleConnectionOpened_opened_beginTimeout() throws Exception {
         // Given
         session.open(null, sessionEvents);
 
         // When
-        eventHandler.onConnected();
+        sessionEvents.handleConnectionOpened();
 
         // Then
         verify(timeoutTimer, times(1)).begin();
     }
 
     @Test
-    public void onDisconnected_opened_endTimeout() throws Exception {
+    public void handleConnectionClosed_opened_endTimeout() throws Exception {
         // Given
         session.open(null, sessionEvents);
 
         // When
-        eventHandler.onDisconnected();
+        sessionEvents.handleConnectionClosed();
 
         // Then
         verify(timeoutTimer, times(1)).end();
     }
 
     @Test
-    public void onConnected_accepted_beginTimeout() throws Exception {
+    public void handleConnectionOpened_accepted_beginTimeout() throws Exception {
         // Given
         session.accept(sessionEvents);
 
         // When
-        eventHandler.onConnected();
+        sessionEvents.handleConnectionOpened();
 
         // Then
         verify(timeoutTimer, times(1)).begin();
     }
 
     @Test
-    public void onDisconnected_accepted_endTimeout() throws Exception {
+    public void handleConnectionClosed_accepted_endTimeout() throws Exception {
         // Given
         session.accept(sessionEvents);
 
         // When
-        eventHandler.onDisconnected();
+        sessionEvents.handleConnectionClosed();
 
         // Then
         verify(timeoutTimer, times(1)).end();
     }
 
     @Test
-    public void onCall_request_resetTimeout() throws Exception {
+    public void handleRequest_any_resetTimeout() throws Exception {
         // Given
         session.open(null, sessionEvents);
 
         // When
-        eventHandler.onCall("", null, null);
+        sessionEvents.handleRequest(null);
 
         // Then
         verify(timeoutTimer, times(1)).reset();
     }
 
     @Test
-    public void onCall_confirmation_resetTimeout() throws Exception {
+    public void handleConfirmation_any_resetTimeout() throws Exception {
         // Given
         session.open(null, sessionEvents);
 
         // When
-        eventHandler.onCallResult("", null, null);
+        sessionEvents.handleConfirmation(null, null);
 
         // Then
         verify(timeoutTimer, times(1)).reset();

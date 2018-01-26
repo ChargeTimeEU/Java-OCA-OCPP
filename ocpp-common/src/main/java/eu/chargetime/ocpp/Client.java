@@ -73,8 +73,11 @@ public class Client
 
             @Override
             public void handleConfirmation(String uniqueId, Confirmation confirmation) {
-                promiseRepository.getPromise(uniqueId).complete(confirmation);
-                promiseRepository.removePromise(uniqueId);
+                CompletableFuture<Confirmation> promise = promiseRepository.getPromise(uniqueId);
+                if (promise != null) {
+                    promise.complete(confirmation);
+                    promiseRepository.removePromise(uniqueId);
+                }
             }
 
             @Override
@@ -85,8 +88,11 @@ public class Client
 
             @Override
             public void handleError(String uniqueId, String errorCode, String errorDescription, Object payload) {
-                promiseRepository.getPromise(uniqueId).completeExceptionally(new CallErrorException(errorCode, errorCode, payload));
-                promiseRepository.removePromise(uniqueId);
+                CompletableFuture<Confirmation> promise = promiseRepository.getPromise(uniqueId);
+                if (promise != null) {
+                    promise.completeExceptionally(new CallErrorException(errorCode, errorCode, payload));
+                    promiseRepository.removePromise(uniqueId);
+                }
             }
 
             @Override

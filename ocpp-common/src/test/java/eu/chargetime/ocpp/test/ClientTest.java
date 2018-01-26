@@ -28,7 +28,6 @@ package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.TestConfirmation;
@@ -39,10 +38,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.concurrent.CompletableFuture;
-
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -53,8 +49,6 @@ public class ClientTest extends TestUtilities {
 
     @Mock
     private Session session;
-    @Mock
-    private Profile profile;
     @Mock
     private Feature feature;
     @Mock
@@ -69,14 +63,10 @@ public class ClientTest extends TestUtilities {
     @Before
     public void setup() {
         when(request.validate()).thenReturn(true);
-        doReturn(request.getClass()).when(feature).getRequestType();
-        doReturn(TestConfirmation.class).when(feature).getConfirmationType();
-        when(feature.getAction()).thenReturn(null);
         doAnswer(invocation -> eventHandler = invocation.getArgumentAt(1, SessionEvents.class)).when(session).open(any(), any());
 
         client = new Client(session, featureRepository, promiseRepository);
-
-        when(profile.getFeatureList()).thenReturn(aList(feature));
+        when(featureRepository.findFeature(any())).thenReturn(feature);
     }
 
     @Test
@@ -134,11 +124,10 @@ public class ClientTest extends TestUtilities {
 
         // When
         client.connect(null, null);
-        CompletableFuture<Confirmation> promise = client.send(request);
         eventHandler.handleConfirmation(someUniqueId, null);
 
         // Then
-        assertThat(promise.isDone(), is(true));
+        verify(promiseRepository).getPromise(someUniqueId);
     }
 
     @Test

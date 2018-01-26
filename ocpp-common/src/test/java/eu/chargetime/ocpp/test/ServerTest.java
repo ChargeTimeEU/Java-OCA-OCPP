@@ -4,7 +4,6 @@ import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.SessionInformation;
-import eu.chargetime.ocpp.model.TestConfirmation;
 import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,13 +72,11 @@ public class ServerTest extends TestUtilities {
     @Before
     public void setup() {
         when(request.validate()).thenReturn(true);
-        doReturn(request.getClass()).when(feature).getRequestType();
-        doReturn(TestConfirmation.class).when(feature).getConfirmationType();
-        when(feature.getAction()).thenReturn(null);
         doAnswer(invocation -> listenerEvents = invocation.getArgumentAt(2, ListenerEvents.class)).when(listener).open(anyString(), anyInt(), any());
         doAnswer(invocation -> sessionEvents = invocation.getArgumentAt(0, SessionEvents.class)).when(session).accept(any());
         doAnswer(invocation -> sessionIndex = invocation.getArgumentAt(0, UUID.class)).when(serverEvents).newSession(any(), any());
 
+        when(featureRepository.findFeature(any())).thenReturn(feature);
         server = new Server(listener, featureRepository, promiseRepository);
     }
 

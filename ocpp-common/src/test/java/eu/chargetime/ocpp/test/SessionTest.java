@@ -11,6 +11,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.concurrent.CompletableFuture;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
@@ -58,11 +60,13 @@ public class SessionTest {
     private Feature feature;
     @Mock
     private FeatureRepository featureRepository;
+    @Mock
+    private PromiseFulfiller fulfiller;
 
     @Before
     public void setup() throws Exception {
         when(featureRepository.findFeature(any())).thenReturn(feature);
-        session = new Session(communicator, queue, null, featureRepository);
+        session = new Session(communicator, queue, fulfiller, featureRepository);
         doAnswer(invocation -> eventHandler = invocation.getArgumentAt(1, CommunicatorEvents.class)).when(communicator).connect(any(), any());
         session.open(null, sessionEvents);
     }
@@ -145,7 +149,7 @@ public class SessionTest {
     public void onCall_unhandledCallback_callSendCallError() throws Exception {
         // Given
         String someId = "Some id";
-        when(sessionEvents.handleRequest(any())).thenReturn(null);
+        doAnswer(invocation -> invocation.getArgumentAt(0, CompletableFuture.class).complete(null)).when(fulfiller).fulfill(any(), any(), any());
         when(communicator.unpackPayload(any(), any())).thenReturn(new TestRequest());
 
         // When
@@ -160,7 +164,7 @@ public class SessionTest {
         // Given
         String someId = "Some id";
         Confirmation aConfirmation = () -> true;
-        when(sessionEvents.handleRequest(any())).thenReturn(aConfirmation);
+        doAnswer(invocation -> invocation.getArgumentAt(0, CompletableFuture.class).complete(aConfirmation)).when(fulfiller).fulfill(any(), any(), any());
         when(communicator.unpackPayload(any(), any())).thenReturn(new TestRequest());
 
         // When
@@ -174,7 +178,7 @@ public class SessionTest {
     public void onCall_callbackThrowsException_callSendCallResult() throws Exception {
         // Given
         String someId = "Some id";
-        when(sessionEvents.handleRequest(any())).thenThrow(Exception.class);
+        doAnswer(invocation -> invocation.getArgumentAt(0, CompletableFuture.class).completeExceptionally(new Exception())).when(fulfiller).fulfill(any(), any(), any());
         when(communicator.unpackPayload(any(), any())).thenReturn(new TestRequest());
 
         // When
@@ -204,19 +208,5 @@ public class SessionTest {
 
         // Then
         verify(communicator, times(1)).sendCallError(eq(someId), anyString(), anyString(), anyString());
-    }
-
-    @Test
-    public void onCall_sessionAccepted_callIsForwarded() throws Exception {
-        // Given
-        String someId = "Some id";
-        session.accept(sessionEvents);
-        when(communicator.unpackPayload(any(), any())).thenReturn(new TestRequest());
-
-        // When
-        eventHandler.onCall(someId, null, null);
-
-        // Then
-        verify(sessionEvents, times(1)).handleRequest(any());
     }
 }
