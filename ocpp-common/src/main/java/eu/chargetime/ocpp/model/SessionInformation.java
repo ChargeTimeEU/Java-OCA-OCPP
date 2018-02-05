@@ -30,16 +30,22 @@ public class SessionInformation {
 
     private String identifier;
     private InetSocketAddress address;
+    private String SOAPtoURL;
 
     public String getIdentifier() {
         return identifier;
     }
     public InetSocketAddress getAddress() { return address; }
 
+    public String getSOAPtoURL() {
+        return SOAPtoURL;
+    }
+
     public static class Builder {
 
         private String identifier;
         private InetSocketAddress address;
+        private String SOAPtoURL;
 
         public Builder Identifier(String identifier) {
             this.identifier = identifier;
@@ -55,9 +61,13 @@ public class SessionInformation {
             SessionInformation sessionInformation = new SessionInformation();
             sessionInformation.identifier = this.identifier;
             sessionInformation.address = this.address;
+            sessionInformation.SOAPtoURL = this.SOAPtoURL;
             return sessionInformation;
         }
 
-
+        public Builder SOAPtoURL(String toUrl) {
+            this.SOAPtoURL = toUrl;
+            return this;
+        }
     }
 }
