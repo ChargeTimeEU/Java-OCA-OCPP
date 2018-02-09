@@ -107,7 +107,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     @Test
     public void createStartTransactionRequest_returnsStartTransactionRequest() throws Exception {
         // When
-        Request result = core.createStartTransactionRequest(42, "some token", 42, Calendar.getInstance());
+        Request result = core.createStartTransactionRequest(42, "some token", 42, 42, Calendar.getInstance());
 
         // Then
         assertThat(result, instanceOf(StartTransactionRequest.class));
@@ -125,7 +125,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     @Test
     public void createStopTransactionRequest_returnsStopTransactionRequest() throws Exception {
         // When
-        Request result = core.createStopTransactionRequest(42, Calendar.getInstance(), 42);
+        Request result = core.createStopTransactionRequest(42, Calendar.getInstance(), Reason.Local, 42);
 
         // Then
         assertThat(result, instanceOf(StopTransactionRequest.class));

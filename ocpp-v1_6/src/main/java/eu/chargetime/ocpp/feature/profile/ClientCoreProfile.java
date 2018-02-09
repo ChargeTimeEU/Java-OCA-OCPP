@@ -187,11 +187,12 @@ public class ClientCoreProfile implements Profile
      * @see StartTransactionRequest
      * @see StartTransactionFeature
      */
-    public StartTransactionRequest createStartTransactionRequest(Integer connectorId, String idTag, Integer meterStart, Calendar timestamp) throws PropertyConstraintException {
+    public StartTransactionRequest createStartTransactionRequest(Integer connectorId, String idTag, Integer meterStart, int reservationId, Calendar timestamp) throws PropertyConstraintException {
         StartTransactionRequest request = new StartTransactionRequest();
         request.setConnectorId(connectorId);
         request.setIdTag(idTag);
         request.setMeterStart(meterStart);
+        request.setReservationId(reservationId);
         request.setTimestamp(timestamp);
         return request;
     }
@@ -223,10 +224,11 @@ public class ClientCoreProfile implements Profile
      * @param transactionId    required. The identification of the transaction.
      * @return an instance of {@link StopTransactionRequest}.
      */
-    public StopTransactionRequest createStopTransactionRequest(int meterStop, Calendar timestamp, int transactionId) {
+    public StopTransactionRequest createStopTransactionRequest(int meterStop, Calendar timestamp, Reason reason, int transactionId) {
         StopTransactionRequest request = new StopTransactionRequest();
         request.setMeterStop(meterStop);
         request.setTimestamp(timestamp);
+        request.setReason(reason);
         request.setTransactionId(transactionId);
         return request;
     }
@@ -242,17 +244,13 @@ public class ClientCoreProfile implements Profile
 
         if (request instanceof ChangeAvailabilityRequest) {
             result = eventHandler.handleChangeAvailabilityRequest((ChangeAvailabilityRequest) request);
-        }
-        else if (request instanceof GetConfigurationRequest) {
+        } else if (request instanceof GetConfigurationRequest) {
             result = eventHandler.handleGetConfigurationRequest((GetConfigurationRequest) request);
-        }
-        else if (request instanceof ChangeConfigurationRequest) {
+        } else if (request instanceof ChangeConfigurationRequest) {
             result = eventHandler.handleChangeConfigurationRequest((ChangeConfigurationRequest) request);
-        }
-        else if (request instanceof ClearCacheRequest) {
+        } else if (request instanceof ClearCacheRequest) {
             result = eventHandler.handleClearCacheRequest((ClearCacheRequest) request);
-        }
-        else if (request instanceof DataTransferRequest) {
+        } else if (request instanceof DataTransferRequest) {
             result = eventHandler.handleDataTransferRequest((DataTransferRequest)request);
         } else if (request instanceof RemoteStartTransactionRequest) {
             result = eventHandler.handleRemoteStartTransactionRequest((RemoteStartTransactionRequest) request);
