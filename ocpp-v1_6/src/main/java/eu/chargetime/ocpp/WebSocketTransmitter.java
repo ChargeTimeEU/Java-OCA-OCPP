@@ -77,7 +77,7 @@ public class WebSocketTransmitter implements Transmitter
             @Override
             public void onError(Exception ex)
             {
-            	logger.warn("onError() triggered", ex);
+            	logger.warn("onError() triggered caused by: " +  ex);
             }
         };
         try {
