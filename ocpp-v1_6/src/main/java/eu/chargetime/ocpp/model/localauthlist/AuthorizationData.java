@@ -23,6 +23,10 @@ public class AuthorizationData implements Validatable {
 		this.idTagInfo = idTagInfo;
 	}
 	
+	public IdTagInfo getIdTagInfo() {
+		return idTagInfo;
+	}
+	
 	@Override
 	public boolean validate() {
 		return ModelUtil.validate(idTag, 20) && idTagInfo.validate();
