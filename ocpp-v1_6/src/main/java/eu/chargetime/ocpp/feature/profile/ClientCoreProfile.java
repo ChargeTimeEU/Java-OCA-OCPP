@@ -242,17 +242,13 @@ public class ClientCoreProfile implements Profile
 
         if (request instanceof ChangeAvailabilityRequest) {
             result = eventHandler.handleChangeAvailabilityRequest((ChangeAvailabilityRequest) request);
-        }
-        else if (request instanceof GetConfigurationRequest) {
+        } else if (request instanceof GetConfigurationRequest) {
             result = eventHandler.handleGetConfigurationRequest((GetConfigurationRequest) request);
-        }
-        else if (request instanceof ChangeConfigurationRequest) {
+        } else if (request instanceof ChangeConfigurationRequest) {
             result = eventHandler.handleChangeConfigurationRequest((ChangeConfigurationRequest) request);
-        }
-        else if (request instanceof ClearCacheRequest) {
+        } else if (request instanceof ClearCacheRequest) {
             result = eventHandler.handleClearCacheRequest((ClearCacheRequest) request);
-        }
-        else if (request instanceof DataTransferRequest) {
+        } else if (request instanceof DataTransferRequest) {
             result = eventHandler.handleDataTransferRequest((DataTransferRequest)request);
         } else if (request instanceof RemoteStartTransactionRequest) {
             result = eventHandler.handleRemoteStartTransactionRequest((RemoteStartTransactionRequest) request);

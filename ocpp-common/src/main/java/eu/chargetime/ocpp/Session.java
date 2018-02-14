@@ -97,7 +97,7 @@ public class Session implements ISession {
         Request request = queue.restoreRequest(uniqueId);
         Feature feature = featureRepository.findFeature(request);
         if (feature == null)
-            throw new UnsupportedFeatureException();
+            throw new UnsupportedFeatureException("Error with getting confirmation type: request = " + request.toString() + ", feature = " + feature);
         return feature.getConfirmationType();
     }
 
@@ -141,8 +141,7 @@ public class Session implements ISession {
                 } else {
                     communicator.sendCallError(id, action, "OccurenceConstraintViolation", OCCURENCE_CONSTRAINT_VIOLATION);
                 }
-            }
-            catch (PropertyConstraintException ex) {
+            } catch (PropertyConstraintException ex) {
                 String message = String.format(FIELD_CONSTRAINT_VIOLATION, ex.getFieldKey(), ex.getFieldValue(), ex.getMessage());
                 logger.warn(message, ex);
                 communicator.sendCallError(id, action, "TypeConstraintViolation", message);

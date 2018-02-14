@@ -37,6 +37,7 @@ import org.java_websocket.handshake.ServerHandshake;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URI;
 /**
  * Web Socket implementation of the Transmitter.
@@ -77,7 +78,11 @@ public class WebSocketTransmitter implements Transmitter
             @Override
             public void onError(Exception ex)
             {
-            	logger.warn("onError() triggered", ex);
+            	if(ex instanceof ConnectException) {
+                	logger.warn("onError() triggered caused by: " +  ex);
+            	} else {
+            		logger.warn("onError() triggered", ex);
+            	}
             }
         };
         try {
