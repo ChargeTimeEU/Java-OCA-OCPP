@@ -48,8 +48,9 @@ public abstract class SOAPSyncHelper {
         try {
             SOAPHeader header = message.getSOAPPart().getEnvelope().getHeader();
             NodeList elements = header.getElementsByTagNameNS("*", tagName);
-            if (elements.getLength() > 0)
-                value = elements.item(0).getChildNodes().item(0).getNodeValue();
+            if (elements.getLength() > 0) {
+                value = elements.item(0).getChildNodes().item(0).getTextContent();
+            }
         } catch (SOAPException e) {
             logger.warn("getHeaderValue() failed", e);
         }
