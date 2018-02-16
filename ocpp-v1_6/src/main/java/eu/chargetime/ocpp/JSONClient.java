@@ -40,7 +40,7 @@ import java.util.concurrent.CompletionStage;
  */
 public class JSONClient implements IClientAPI {
 
-    private final WebSocketTransmitter transmitter;
+	protected final WebSocketTransmitter transmitter;
     private final FeatureRepository featureRepository;
     private final Client client;
 
@@ -63,6 +63,10 @@ public class JSONClient implements IClientAPI {
 
     public void enableWSS(SSLContext sslContext) throws IOException {
         transmitter.enableWSS(sslContext);
+    }
+    
+    public void setPingInterval(int interval) {
+        transmitter.setPingInterval(interval);
     }
 
     @Override

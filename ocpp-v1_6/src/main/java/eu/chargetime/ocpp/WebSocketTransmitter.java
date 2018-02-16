@@ -96,6 +96,10 @@ public class WebSocketTransmitter implements Transmitter
         SSLSocketFactory factory = sslContext.getSocketFactory();
         client.setSocket(factory.createSocket());
     }
+    
+    public void setPingInterval(int interval) {
+        client.setConnectionLostTimeout(interval);
+    }
 
     @Override
     public void disconnect()
