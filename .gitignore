@@ -4,3 +4,7 @@ java-docs
 *.project
 *.settings/
 *.classpath
+
+# Should be ignored when using IDE-independent build system such as Maven or Gradle
+.idea/
+*.iml
