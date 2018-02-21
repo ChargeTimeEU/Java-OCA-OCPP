@@ -171,8 +171,9 @@ public class SOAPCommunicator extends Communicator {
 
             createMessageHeader(uniqueId, action, isResponse, message);
 
-            if (isResponse)
-                payload = setNamespace(payload, hostInfo.isClient() ? SOAPHostInfo.NAMESPACE_CENTRALSYSTEM: SOAPHostInfo.NAMESPACE_CHARGEBOX);
+            if (isResponse) {
+                payload = setNamespace(payload, hostInfo.isClient() ? SOAPHostInfo.NAMESPACE_CHARGEBOX : SOAPHostInfo.NAMESPACE_CENTRALSYSTEM);
+            }
 
             message.getSOAPBody().addDocument(payload);
         } catch (Exception e) {
