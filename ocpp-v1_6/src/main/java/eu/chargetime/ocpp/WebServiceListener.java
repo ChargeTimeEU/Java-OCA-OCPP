@@ -40,8 +40,7 @@ import java.util.concurrent.ExecutionException;
 
 public class WebServiceListener implements Listener {
     private static final Logger logger = LogManager.getLogger(WebServiceListener.class);
-	private static final String WSDL_CENTRAL_SYSTEM = "eu/chargetime/ocpp/OCPP_CentralSystemService_1.6.wsdl";
-    private static final String NAMESPACE = "urn://Ocpp/Cp/2015/10";
+    private static final String WSDL_CENTRAL_SYSTEM = "eu/chargetime/ocpp/OCPP_CentralSystemService_1.6.wsdl";
     private final IServerSessionFactory sessionFactory;
 
     private ListenerEvents events;
@@ -111,7 +110,7 @@ public class WebServiceListener implements Listener {
                 });
                 ISession sessionDecorator = new TimeoutSessionDecorator(timeoutTimer, session);
 
-                SessionInformation information = new SessionInformation.Builder().Identifier(identity).InternetAddress(messageInfo.getAddress()).build();
+                SessionInformation information = new SessionInformation.Builder().Identifier(identity).InternetAddress(messageInfo.getAddress()).SOAPtoURL(toUrl).build();
                 events.newSession(session, information);
                 chargeBoxes.put(identity, webServiceReceiver);
             }

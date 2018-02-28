@@ -25,8 +25,8 @@ package eu.chargetime.ocpp.model;/*
  */
 
 public class SOAPHostInfo {
-    public static final String NAMESPACE_CHARGEBOX = "urn://Ocpp/Cs/2015/10";
-    public static final String NAMESPACE_CENTRALSYSTEM = "urn://Ocpp/Cp/2015/10";
+    public static final String NAMESPACE_CHARGEBOX = "urn://Ocpp/Cp/2015/10/";
+    public static final String NAMESPACE_CENTRALSYSTEM =  "urn://Ocpp/Cs/2015/10/";
 
     private String chargeBoxIdentity;
     private String fromUrl;

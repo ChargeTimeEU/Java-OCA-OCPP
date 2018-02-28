@@ -16,12 +16,19 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Calendar;
@@ -263,7 +270,7 @@ public class SOAPCommunicatorTest extends TestUtilities {
         Calendar someDate = new Calendar.Builder().setDate(2016, 03, 28).setTimeOfDay(07, 16, 11, 988).setTimeZone(TimeZone.getTimeZone("GMT+00:00")).build();
         int interval = 300;
         RegistrationStatus status = RegistrationStatus.Accepted;
-        String xml = "<bootNotificationResponse xmlns=\"urn://Ocpp/Cs/2015/10\"><currentTime>%s</currentTime><interval>%d</interval><status>%s</status></bootNotificationResponse>";
+        String xml = "<bootNotificationResponse xmlns=\"urn://Ocpp/Cs/2015/10/\"><currentTime>%s</currentTime><interval>%d</interval><status>%s</status></bootNotificationResponse>";
         Document payload = stringToDocument(String.format(xml, currentType, interval, status));
         Class<?> type = BootNotificationConfirmation.class;
 
@@ -305,6 +312,7 @@ public class SOAPCommunicatorTest extends TestUtilities {
 
     public static Document stringToDocument(String xml) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
         DocumentBuilder db = factory.newDocumentBuilder();
 
         InputSource is = new InputSource();
