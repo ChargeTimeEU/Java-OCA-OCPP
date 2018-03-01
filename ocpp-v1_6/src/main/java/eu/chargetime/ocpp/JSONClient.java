@@ -6,7 +6,6 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 
 import javax.net.ssl.SSLContext;
-import java.io.IOException;
 import java.util.concurrent.CompletionStage;
 
         /*
@@ -40,19 +39,12 @@ import java.util.concurrent.CompletionStage;
  */
 public class JSONClient implements IClientAPI {
 
-    private final WebSocketTransmitter transmitter;
+	protected final WebSocketTransmitter transmitter;
     private final FeatureRepository featureRepository;
     private final Client client;
 
-
-    /**
-     * Application composite root for a json client.
-     * The core feature profile is required as a minimum.
-     *
-     * @param coreProfile   implementation of the core feature profile.
-     */
-    public JSONClient(ClientCoreProfile coreProfile) {
-        transmitter = new WebSocketTransmitter(new OcppDraft());
+    public JSONClient(SSLContext sslContext, ClientCoreProfile coreProfile) {
+        transmitter = new WebSocketTransmitter(sslContext);
         JSONCommunicator communicator = new JSONCommunicator(transmitter);
         AsyncPromiseFulfilerDecorator promiseFulfiler = new AsyncPromiseFulfilerDecorator(new SimplePromiseFulfiller());
         featureRepository = new FeatureRepository();
@@ -60,9 +52,19 @@ public class JSONClient implements IClientAPI {
         client = new Client(session, featureRepository, new PromiseRepository());
         featureRepository.addFeatureProfile(coreProfile);
     }
-
-    public void enableWSS(SSLContext sslContext) throws IOException {
-        transmitter.enableWSS(sslContext);
+    
+    /**
+     * Application composite root for a json client.
+     * The core feature profile is required as a minimum.
+     *
+     * @param coreProfile   implementation of the core feature profile.
+     */
+    public JSONClient(ClientCoreProfile coreProfile) {
+    	this(null, coreProfile);
+    }
+    
+    public void setPingInterval(int interval) {
+        transmitter.setPingInterval(interval);
     }
 
     @Override
