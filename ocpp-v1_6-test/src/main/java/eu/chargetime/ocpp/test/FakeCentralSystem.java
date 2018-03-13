@@ -89,7 +89,7 @@ public class FakeCentralSystem {
             if (server instanceof JSONServer)
                 port = 8887;
 
-            server.open("localhost", port, dummyHandlers.generateServerEventsHandler());
+            server.open("127.0.0.1", port, dummyHandlers.generateServerEventsHandler());
             isStarted = true;
         }
     }
