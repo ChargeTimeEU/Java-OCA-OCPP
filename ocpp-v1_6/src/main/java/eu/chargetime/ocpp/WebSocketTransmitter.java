@@ -30,40 +30,32 @@ package eu.chargetime.ocpp;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.drafts.Draft_6455;
+import org.java_websocket.drafts.Draft;
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
-import org.java_websocket.extensions.IExtension;
 import org.java_websocket.handshake.ServerHandshake;
-import org.java_websocket.protocols.IProtocol;
-import org.java_websocket.protocols.Protocol;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.URI;
-import java.util.Collections;
 /**
  * Web Socket implementation of the Transmitter.
  */
 public class WebSocketTransmitter implements Transmitter
 {
     private static final Logger logger = LogManager.getLogger(WebSocketTransmitter.class);
-    private SSLContext sslContext;
+    private final Draft draft;
 
     private WebSocketClient client;
-    
-    public WebSocketTransmitter(SSLContext sslContext) {
-        this.sslContext = sslContext;
-    }
 
-    public WebSocketTransmitter() {
-        this(null);
+    public WebSocketTransmitter(Draft draft) {
+        this.draft = draft;
     }
 
     @Override
     public void connect(String uri, RadioEvents events) {
-    	Draft_6455 draft =  new Draft_6455(Collections.<IExtension>emptyList(), Collections.<IProtocol>singletonList(new Protocol("ocpp1.6")));
+
         client = new WebSocketClient(URI.create(uri), draft) {
             @Override
             public void onOpen(ServerHandshake serverHandshake)
@@ -76,11 +68,10 @@ public class WebSocketTransmitter implements Transmitter
             {
                 events.receivedMessage(s);
             }
-            
+
             @Override
             public void onClose(int i, String s, boolean b)
             {
-            	logger.debug("WebSocketClient.onClose: code = " + i + ", message = " + s + ", host closed = " + b);
                 events.disconnected();
             }
 
@@ -94,25 +85,16 @@ public class WebSocketTransmitter implements Transmitter
             	}
             }
         };
-        
-        if(sslContext != null) {
-            try {
-                SSLSocketFactory factory = sslContext.getSocketFactory();
-    			client.setSocket(factory.createSocket());
-    		} catch (IOException ex) {
-    			logger.error("client.setSocket() failed", ex);
-    		}
-        }
-        
         try {
             client.connectBlocking();
         } catch (Exception ex) {
         	logger.warn("client.connectBlocking() failed", ex);
         }
     }
-    
-    public void setPingInterval(int interval) {
-        client.setConnectionLostTimeout(interval);
+
+    public void enableWSS(SSLContext sslContext) throws IOException {
+        SSLSocketFactory factory = sslContext.getSocketFactory();
+        client.setSocket(factory.createSocket());
     }
 
     @Override
@@ -127,7 +109,6 @@ public class WebSocketTransmitter implements Transmitter
 
     @Override
     public void send(Object request) throws NotConnectedException {
-    	logger.debug("Sending: " + request);
         try {
             client.send(request.toString());
         } catch (WebsocketNotConnectedException ex) {
