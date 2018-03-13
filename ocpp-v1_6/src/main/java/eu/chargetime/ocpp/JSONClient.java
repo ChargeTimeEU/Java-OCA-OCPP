@@ -43,15 +43,21 @@ public class JSONClient implements IClientAPI {
     private final WebSocketTransmitter transmitter;
     private final FeatureRepository featureRepository;
     private final Client client;
+    private final String identity;
 
+    public JSONClient(ClientCoreProfile coreProfile) {
+        this(coreProfile, null);
+    }
 
     /**
      * Application composite root for a json client.
      * The core feature profile is required as a minimum.
      *
      * @param coreProfile   implementation of the core feature profile.
+     * @param identity      if set, will append identity to url.
      */
-    public JSONClient(ClientCoreProfile coreProfile) {
+    public JSONClient(ClientCoreProfile coreProfile, String identity) {
+        this.identity = identity;
         transmitter = new WebSocketTransmitter(new OcppDraft());
         JSONCommunicator communicator = new JSONCommunicator(transmitter);
         AsyncPromiseFulfilerDecorator promiseFulfiler = new AsyncPromiseFulfilerDecorator(new SimplePromiseFulfiller());
@@ -72,7 +78,8 @@ public class JSONClient implements IClientAPI {
 
     @Override
     public void connect(String url, ClientEvents clientEvents) {
-        client.connect(url, clientEvents);
+        String identityUrl = (identity != null) ? String.format("%s/%s", url, identity) : url;
+        client.connect(identityUrl, clientEvents);
     }
 
     @Override
