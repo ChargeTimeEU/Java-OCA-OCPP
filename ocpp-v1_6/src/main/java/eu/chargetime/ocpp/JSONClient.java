@@ -6,6 +6,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 
 import javax.net.ssl.SSLContext;
+import java.io.IOException;
 import java.util.concurrent.CompletionStage;
 
         /*
@@ -39,20 +40,11 @@ import java.util.concurrent.CompletionStage;
  */
 public class JSONClient implements IClientAPI {
 
-	protected final WebSocketTransmitter transmitter;
+    private final WebSocketTransmitter transmitter;
     private final FeatureRepository featureRepository;
     private final Client client;
 
-    public JSONClient(SSLContext sslContext, ClientCoreProfile coreProfile) {
-        transmitter = new WebSocketTransmitter(sslContext);
-        JSONCommunicator communicator = new JSONCommunicator(transmitter);
-        AsyncPromiseFulfilerDecorator promiseFulfiler = new AsyncPromiseFulfilerDecorator(new SimplePromiseFulfiller());
-        featureRepository = new FeatureRepository();
-        Session session = new Session(communicator, new Queue(), promiseFulfiler, featureRepository);
-        client = new Client(session, featureRepository, new PromiseRepository());
-        featureRepository.addFeatureProfile(coreProfile);
-    }
-    
+
     /**
      * Application composite root for a json client.
      * The core feature profile is required as a minimum.
@@ -60,11 +52,17 @@ public class JSONClient implements IClientAPI {
      * @param coreProfile   implementation of the core feature profile.
      */
     public JSONClient(ClientCoreProfile coreProfile) {
-    	this(null, coreProfile);
+        transmitter = new WebSocketTransmitter(new OcppDraft());
+        JSONCommunicator communicator = new JSONCommunicator(transmitter);
+        AsyncPromiseFulfilerDecorator promiseFulfiler = new AsyncPromiseFulfilerDecorator(new SimplePromiseFulfiller());
+        featureRepository = new FeatureRepository();
+        Session session = new Session(communicator, new Queue(), promiseFulfiler, featureRepository);
+        client = new Client(session, featureRepository, new PromiseRepository());
+        featureRepository.addFeatureProfile(coreProfile);
     }
-    
-    public void setPingInterval(int interval) {
-        transmitter.setPingInterval(interval);
+
+    public void enableWSS(SSLContext sslContext) throws IOException {
+        transmitter.enableWSS(sslContext);
     }
 
     @Override

@@ -162,7 +162,7 @@ public abstract class Communicator {
                 radio.send(call);
             }
         } catch (NotConnectedException ex) {
-        	logger.warn("sendCall() failed: not connected");
+        	logger.warn("sendCall() failed", ex);
             if (request.transactionRelated()) {
                 transactionQueue.add(call);
             } else {
@@ -234,7 +234,6 @@ public abstract class Communicator {
 
         @Override
         public void receivedMessage(Object input) {
-        	logger.debug("Recieved: " + input);
             Message message = parse(input);
             if (message instanceof CallResultMessage) {
                 events.onCallResult(message.getId(), message.getAction(), message.getPayload());
