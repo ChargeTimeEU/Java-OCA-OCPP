@@ -88,12 +88,11 @@
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
-                <version>1.5</version>
+                <version>1.6</version>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>addTestSources</goal>
-                            <goal>testCompile</goal>
+                            <goal>execute</goal>
                         </goals>
                     </execution>
                 </executions>
