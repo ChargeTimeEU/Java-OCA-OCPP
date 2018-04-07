@@ -58,7 +58,7 @@ public class JSONClient implements IClientAPI {
      */
     public JSONClient(ClientCoreProfile coreProfile, String identity) {
         this.identity = identity;
-        transmitter = new WebSocketTransmitter(new OcppDraft());
+        transmitter = new WebSocketTransmitter();
         JSONCommunicator communicator = new JSONCommunicator(transmitter);
         AsyncPromiseFulfilerDecorator promiseFulfiler = new AsyncPromiseFulfilerDecorator(new SimplePromiseFulfiller());
         featureRepository = new FeatureRepository();

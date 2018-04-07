@@ -30,34 +30,36 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
+import org.java_websocket.drafts.Draft_6455;
+import org.java_websocket.extensions.IExtension;
 import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.protocols.IProtocol;
+import org.java_websocket.protocols.Protocol;
 import org.java_websocket.server.DefaultSSLWebSocketServerFactory;
 import org.java_websocket.server.WebSocketServer;
 
 import javax.net.ssl.SSLContext;
 import java.net.InetSocketAddress;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 public class WebSocketListener implements Listener {
     private static final Logger logger = LogManager.getLogger(WebSocketListener.class);
     private final IServerSessionFactory sessionFactory;
-    private final List<Draft> drafts;
 
     private WebSocketServer server;
     private HashMap<WebSocket, WebSocketReceiver> sockets;
     private boolean handleRequestAsync;
 
-    public WebSocketListener(IServerSessionFactory sessionFactory, Draft... drafts) {
+    public WebSocketListener(IServerSessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-        this.drafts = Arrays.asList(drafts);
         this.sockets = new HashMap<>();
     }
 
     @Override
     public void open(String hostname, int port, ListenerEvents handler) {
-        server = new WebSocketServer(new InetSocketAddress(hostname, port), drafts) {
+        Draft_6455 draft = new Draft_6455(Collections.<IExtension>emptyList(), Collections.<IProtocol>singletonList(new Protocol("ocpp1.6")));
+        server = new WebSocketServer(new InetSocketAddress(hostname, port), Collections.<Draft>singletonList(draft)) {
             @Override
             public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
                 WebSocketReceiver receiver = new WebSocketReceiver(message -> webSocket.send(message));
