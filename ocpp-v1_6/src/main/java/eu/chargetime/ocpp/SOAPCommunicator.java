@@ -63,6 +63,7 @@ public class SOAPCommunicator extends Communicator {
         T output = null;
         try {
             Document input = (Document) payload;
+            input = setNamespace(input, "urn://Ocpp/Cs/2015/10/");
             Unmarshaller unmarshaller = JAXBContext.newInstance(type).createUnmarshaller();
             JAXBElement<T> jaxbElement = (JAXBElement<T>) unmarshaller.unmarshal(input, type);
             output = jaxbElement.getValue();

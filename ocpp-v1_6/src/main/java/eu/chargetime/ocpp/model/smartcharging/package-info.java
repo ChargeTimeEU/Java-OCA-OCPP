@@ -23,7 +23,7 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
-@XmlSchema(elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@XmlSchema(elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED, namespace = "urn://Ocpp/Cs/2015/10/")
 package eu.chargetime.ocpp.model.smartcharging;
 
 import javax.xml.bind.annotation.XmlSchema;

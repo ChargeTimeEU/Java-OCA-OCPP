@@ -24,6 +24,6 @@
     SOFTWARE.
  */
 @XmlSchema(elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED, namespace = "urn://Ocpp/Cs/2015/10/")
-package eu.chargetime.ocpp.model.firmware;
+package eu.chargetime.ocpp.model.localauthlist;
 
 import javax.xml.bind.annotation.XmlSchema;
