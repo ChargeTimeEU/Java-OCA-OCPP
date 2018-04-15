@@ -1,7 +1,8 @@
 package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.model.*;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayDeque;
 
@@ -43,7 +44,7 @@ import java.util.ArrayDeque;
  * Must be overloaded to implement a specific format.
  */
 public abstract class Communicator {
-    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(Communicator.class);
+    private static final Logger logger = LoggerFactory.getLogger(Communicator.class);
 
 	private RetryRunner retryRunner;
     protected Radio radio;

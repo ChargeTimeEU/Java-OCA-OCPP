@@ -1,4 +1,5 @@
-package eu.chargetime.ocpp.model;/*
+package eu.chargetime.ocpp.model;
+/*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License

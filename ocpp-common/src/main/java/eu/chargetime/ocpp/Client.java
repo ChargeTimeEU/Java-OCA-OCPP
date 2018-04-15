@@ -29,7 +29,8 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -43,7 +44,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public class Client
 {
-    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(Client.class);
+    private static final Logger logger = LoggerFactory.getLogger(Client.class);
 	
     private Session session;
     private final IFeatureRepository featureRepository;

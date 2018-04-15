@@ -3,7 +3,8 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -42,6 +43,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public class Server {
 
+    private static final Logger logger = LoggerFactory.getLogger(Server.class);
     private HashMap<UUID, ISession> sessions;
     private Listener listener;
     private final IFeatureRepository featureRepository;

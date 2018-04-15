@@ -26,8 +26,7 @@ package eu.chargetime.ocpp;
  */
 
 import eu.chargetime.ocpp.model.SessionInformation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
@@ -37,6 +36,8 @@ import org.java_websocket.protocols.IProtocol;
 import org.java_websocket.protocols.Protocol;
 import org.java_websocket.server.DefaultSSLWebSocketServerFactory;
 import org.java_websocket.server.WebSocketServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import java.net.InetSocketAddress;
@@ -44,7 +45,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 public class WebSocketListener implements Listener {
-    private static final Logger logger = LogManager.getLogger(WebSocketListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketListener.class);
     private final IServerSessionFactory sessionFactory;
 
     private WebSocketServer server;

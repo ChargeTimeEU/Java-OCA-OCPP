@@ -24,8 +24,8 @@ package eu.chargetime.ocpp;/*
     SOFTWARE.
  */
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.NodeList;
 
 import javax.xml.soap.SOAPException;
@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class SOAPSyncHelper {
-    private static final Logger logger = LogManager.getLogger(SOAPSyncHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(SOAPSyncHelper.class);
 	
     private HashMap<String, CompletableFuture<SOAPMessage>> promises;
 

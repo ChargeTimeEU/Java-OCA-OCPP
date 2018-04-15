@@ -29,8 +29,8 @@ import com.sun.net.httpserver.HttpServer;
 import eu.chargetime.ocpp.model.SOAPHostInfo;
 import eu.chargetime.ocpp.model.SessionInformation;
 import eu.chargetime.ocpp.utilities.TimeoutTimer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.soap.SOAPMessage;
 import java.io.IOException;
@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 public class WebServiceListener implements Listener {
-    private static final Logger logger = LogManager.getLogger(WebServiceListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(WebServiceListener.class);
     private static final String WSDL_CENTRAL_SYSTEM = "eu/chargetime/ocpp/OCPP_CentralSystemService_1.6.wsdl";
     private final IServerSessionFactory sessionFactory;
 
