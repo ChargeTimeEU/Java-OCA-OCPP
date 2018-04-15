@@ -2,6 +2,8 @@ package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.model.Request;
 
+import java.util.UUID;
+
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -28,6 +30,8 @@ import eu.chargetime.ocpp.model.Request;
     SOFTWARE.
  */
 public interface ISession {
+    UUID getSessionId();
+
     void open(String uri, SessionEvents eventHandler);
 
     void accept(SessionEvents eventHandler);
