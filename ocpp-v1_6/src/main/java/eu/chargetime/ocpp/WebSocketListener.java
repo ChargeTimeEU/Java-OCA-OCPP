@@ -48,6 +48,9 @@ public class WebSocketListener implements Listener {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketListener.class);
     private final IServerSessionFactory sessionFactory;
 
+    // In seconds
+    private int pingInterval = 60;
+
     private WebSocketServer server;
     private WssFactoryBuilder wssFactoryBuilder;
     private HashMap<WebSocket, WebSocketReceiver> sockets;
@@ -113,6 +116,8 @@ public class WebSocketListener implements Listener {
             server.setWebSocketFactory(wssFactoryBuilder.build());
         }
 
+        server.setConnectionLostTimeout(pingInterval);
+
         server.start();
         closed = false;
     }
@@ -123,6 +128,14 @@ public class WebSocketListener implements Listener {
         }
 
         this.wssFactoryBuilder = wssFactoryBuilder;
+    }
+
+    public void setPingInterval(int interval) {
+        this.pingInterval = pingInterval;
+
+        if(server != null) {
+            server.setConnectionLostTimeout(interval);
+        }
     }
 
     @Override
@@ -137,7 +150,9 @@ public class WebSocketListener implements Listener {
             server.stop(1);
 
         } catch (InterruptedException e) {
-        	logger.info("close() failed", e);
+        	logger.error("Failed to close listener", e);
+        } finally {
+            server = null;
         }
     }
 

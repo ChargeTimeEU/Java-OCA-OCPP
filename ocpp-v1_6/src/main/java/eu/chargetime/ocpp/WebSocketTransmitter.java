@@ -55,6 +55,8 @@ public class WebSocketTransmitter implements Transmitter
     private static final Logger logger = LoggerFactory.getLogger(WebSocketTransmitter.class);
 
     public static final String WSS_SCHEME = "wss";
+    // In seconds
+    private int pingInterval = 60;
     private volatile boolean closed = true;
     private WebSocketClient client;
     private WssSocketBuilder wssSocketBuilder;
@@ -108,6 +110,9 @@ public class WebSocketTransmitter implements Transmitter
                 logger.error("SSL socket creation failed", ex);
             }
         }
+
+        client.setConnectionLostTimeout(pingInterval);
+
         try {
             client.connectBlocking();
             closed = false;
@@ -125,14 +130,26 @@ public class WebSocketTransmitter implements Transmitter
         this.wssSocketBuilder = wssSocketBuilder;
     }
 
+    public void setPingInterval(int interval) {
+        this.pingInterval = pingInterval;
+
+        if(client != null) {
+            client.setConnectionLostTimeout(interval);
+        }
+    }
+
     @Override
     public void disconnect()
     {
+        if(client == null) {
+            return;
+        }
         try {
             client.closeBlocking();
         } catch (Exception ex) {
         	logger.info("client.closeBlocking() failed", ex);
         } finally {
+            client = null;
             closed = true;
         }
     }
