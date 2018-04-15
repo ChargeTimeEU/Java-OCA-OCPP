@@ -23,7 +23,7 @@ import java.util.*;
  * null}-tolerant methods for computing the hash code of an object,
  * returning a string for an object, comparing two objects, etc.
  *
- * Cut version from Guava (needed to minimize dependency tree for client).
+ * Cut and modified version from Guava (needed to minimize dependency tree for client).
  *
  * @author <a href=mailto:eugene.pakhomov@ubitricity.com>Eugene Pakhomov</a>
  */
@@ -144,8 +144,8 @@ public final class MoreObjects {
      * @param self the object to be represented as string
      * @return helper to generate string representation of given input object
      */
-    public static MoreObjects.ToStringHelper toStringHelper(Object self) {
-        return new MoreObjects.ToStringHelper(self);
+    public static ToStringHelper toStringHelper(Object self) {
+        return new ToStringHelper(self);
     }
 
     /**
@@ -155,8 +155,8 @@ public final class MoreObjects {
      * @param outputFullDetails the flag to be set to output all elements of container (list, set, queue, map) or array of objects
      * @return helper to generate string representation of given input object
      */
-    public static MoreObjects.ToStringHelper toStringHelper(Object self, boolean outputFullDetails) {
-        return new MoreObjects.ToStringHelper(self, outputFullDetails);
+    public static ToStringHelper toStringHelper(Object self, boolean outputFullDetails) {
+        return new ToStringHelper(self, outputFullDetails);
     }
 
     /**
@@ -165,8 +165,8 @@ public final class MoreObjects {
      * @param clazz the class to be represented as string
      * @return helper to generate string representation of given input class
      */
-    public static MoreObjects.ToStringHelper toStringHelper(Class<?> clazz) {
-        return new MoreObjects.ToStringHelper(clazz);
+    public static ToStringHelper toStringHelper(Class<?> clazz) {
+        return new ToStringHelper(clazz);
     }
 
     /**
@@ -176,8 +176,8 @@ public final class MoreObjects {
      * @param outputFullDetails the flag to be set to output all elements of container (list, set, queue, map) or array of objects
      * @return helper to generate string representation of given input class
      */
-    public static MoreObjects.ToStringHelper toStringHelper(Class<?> clazz, boolean outputFullDetails) {
-        return new MoreObjects.ToStringHelper(clazz, outputFullDetails);
+    public static ToStringHelper toStringHelper(Class<?> clazz, boolean outputFullDetails) {
+        return new ToStringHelper(clazz, outputFullDetails);
     }
 
     /**
@@ -186,8 +186,8 @@ public final class MoreObjects {
      * @param className the name of class to be represented as string
      * @return helper to generate string representation of class with given className
      */
-    public static MoreObjects.ToStringHelper toStringHelper(String className) {
-        return new MoreObjects.ToStringHelper(className);
+    public static ToStringHelper toStringHelper(String className) {
+        return new ToStringHelper(className);
     }
 
     /**
@@ -197,16 +197,16 @@ public final class MoreObjects {
      * @param outputFullDetails the flag to be set to output all elements of container (list, set, queue, map) or array of objects
      * @return helper to generate string representation of class with given className
      */
-    public static MoreObjects.ToStringHelper toStringHelper(String className, boolean outputFullDetails) {
-        return new MoreObjects.ToStringHelper(className, outputFullDetails);
+    public static ToStringHelper toStringHelper(String className, boolean outputFullDetails) {
+        return new ToStringHelper(className, outputFullDetails);
     }
 
     /**
      * Simple decorator to encapsulate actual toString helper implementation.
-     * If array of primitives passed as input parameter to {@link MoreObjects.ToStringHelper#add} function
-     * when if array length more than {@link MoreObjects.ToStringHelper#MAXIMUM_ARRAY_SIZE_TO_OUTPUT_DETAILS}
+     * If array of primitives passed as input parameter to {@link ToStringHelper#add} function
+     * when if array length more than {@link ToStringHelper#MAXIMUM_ARRAY_SIZE_TO_OUTPUT_DETAILS}
      * then only length of that array will be written in output. If any container (list, set, queue, map)
-     * or array of objects passed as input parameter to {@link MoreObjects.ToStringHelper#add} function then only
+     * or array of objects passed as input parameter to {@link ToStringHelper#add} function then only
      * size of that container (array of objects) will be written in output.
      */
     public static final class ToStringHelper {
@@ -217,35 +217,35 @@ public final class MoreObjects {
         public static final String SECURE_FIELD_VALUE_REPLACEMENT = "********";
 
         private final boolean outputFullDetails;
-        private final MoreObjects.ToStringHelper helperImplementation;
+        private final ToStringHelperImpl helperImplementation;
 
-        private ToStringHelper(MoreObjects.ToStringHelper helperImplementation, boolean outputFullDetails) {
+        private ToStringHelper(ToStringHelperImpl helperImplementation, boolean outputFullDetails) {
             this.helperImplementation = helperImplementation;
             this.outputFullDetails = outputFullDetails;
         }
 
         private ToStringHelper(Object self) {
-            this(MoreObjects.toStringHelper(self), false);
+            this(toStringHelper(self), false);
         }
 
         private ToStringHelper(Class<?> clazz) {
-            this(MoreObjects.toStringHelper(clazz), false);
+            this(toStringHelper(clazz), false);
         }
 
         private ToStringHelper(String className) {
-            this(MoreObjects.toStringHelper(className), false);
+            this(toStringHelper(className), false);
         }
 
         private ToStringHelper(Object self, boolean outputFullDetails) {
-            this(MoreObjects.toStringHelper(self), outputFullDetails);
+            this(toStringHelper(self), outputFullDetails);
         }
 
         private ToStringHelper(Class<?> clazz, boolean outputFullDetails) {
-            this(MoreObjects.toStringHelper(clazz), outputFullDetails);
+            this(toStringHelper(clazz), outputFullDetails);
         }
 
         private ToStringHelper(String className, boolean outputFullDetails) {
-            this(MoreObjects.toStringHelper(className), outputFullDetails );
+            this(toStringHelper(className), outputFullDetails );
         }
 
         /**
@@ -253,7 +253,7 @@ public final class MoreObjects {
          *
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper omitNullValues() {
+        public ToStringHelper omitNullValues() {
             helperImplementation.omitNullValues();
             return this;
         }
@@ -266,7 +266,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, Object value) {
+        public ToStringHelper add(String name, Object value) {
             helperImplementation.add(name, value);
             return this;
         }
@@ -279,7 +279,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, boolean value) {
+        public ToStringHelper add(String name, boolean value) {
             helperImplementation.add(name, String.valueOf(value));
             return this;
         }
@@ -292,7 +292,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, char value) {
+        public ToStringHelper add(String name, char value) {
             helperImplementation.add(name, String.valueOf(value));
             return this;
         }
@@ -305,7 +305,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, double value) {
+        public ToStringHelper add(String name, double value) {
             helperImplementation.add(name, String.valueOf(value));
             return this;
         }
@@ -318,7 +318,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, float value) {
+        public ToStringHelper add(String name, float value) {
             helperImplementation.add(name, String.valueOf(value));
             return this;
         }
@@ -331,7 +331,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, int value) {
+        public ToStringHelper add(String name, int value) {
             helperImplementation.add(name, String.valueOf(value));
             return this;
         }
@@ -344,7 +344,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, long value) {
+        public ToStringHelper add(String name, long value) {
             helperImplementation.add(name, String.valueOf(value));
             return this;
         }
@@ -357,7 +357,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, List<?> value) {
+        public ToStringHelper add(String name, List<?> value) {
             return addCollection(name, value);
         }
 
@@ -369,7 +369,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, Set<?> value) {
+        public ToStringHelper add(String name, Set<?> value) {
             return addCollection(name, value);
         }
 
@@ -381,7 +381,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, Map<?, ?> value) {
+        public ToStringHelper add(String name, Map<?, ?> value) {
             return addMap(name, value);
         }
 
@@ -393,11 +393,11 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, Queue<?> value) {
+        public ToStringHelper add(String name, Queue<?> value) {
             return addCollection(name, value);
         }
 
-        private  MoreObjects.ToStringHelper addCollection(String name, Collection<?> value) {
+        private ToStringHelper addCollection(String name, Collection<?> value) {
             if(value != null && !outputFullDetails) {
                 helperImplementation.add(name + FIELD_NAME_SIZE_POSTFIX, value.size());
             } else {
@@ -406,7 +406,7 @@ public final class MoreObjects {
             return this;
         }
 
-        private  MoreObjects.ToStringHelper addMap(String name, Map<?, ?> value) {
+        private ToStringHelper addMap(String name, Map<?, ?> value) {
             if(value != null && !outputFullDetails) {
                 helperImplementation.add(name + FIELD_NAME_SIZE_POSTFIX, value.size());
             } else {
@@ -425,7 +425,7 @@ public final class MoreObjects {
          * @param <T> type of passed array elements
          * @return ToStringHelper instance
          */
-        public <T> MoreObjects.ToStringHelper add(String name, T[] value) {
+        public <T> ToStringHelper add(String name, T[] value) {
             if(value != null && !outputFullDetails) {
                 helperImplementation.add(name + FIELD_NAME_LENGTH_POSTFIX, value.length);
             } else {
@@ -442,7 +442,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, byte[] value) {
+        public ToStringHelper add(String name, byte[] value) {
             if(value != null && value.length > MAXIMUM_ARRAY_SIZE_TO_OUTPUT_DETAILS  && !outputFullDetails) {
                 helperImplementation.add(name + FIELD_NAME_LENGTH_POSTFIX, value.length);
             } else {
@@ -459,7 +459,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, boolean[] value) {
+        public ToStringHelper add(String name, boolean[] value) {
             if(value != null && value.length > MAXIMUM_ARRAY_SIZE_TO_OUTPUT_DETAILS  && !outputFullDetails) {
                 helperImplementation.add(name + FIELD_NAME_LENGTH_POSTFIX, value.length);
             } else {
@@ -476,7 +476,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, char[] value) {
+        public ToStringHelper add(String name, char[] value) {
             if(value != null && value.length > MAXIMUM_ARRAY_SIZE_TO_OUTPUT_DETAILS  && !outputFullDetails) {
                 helperImplementation.add(name + FIELD_NAME_LENGTH_POSTFIX, value.length);
             } else {
@@ -493,7 +493,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, double[] value) {
+        public ToStringHelper add(String name, double[] value) {
             if(value != null && value.length > MAXIMUM_ARRAY_SIZE_TO_OUTPUT_DETAILS  && !outputFullDetails) {
                 helperImplementation.add(name + FIELD_NAME_LENGTH_POSTFIX, value.length);
             } else {
@@ -510,7 +510,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, float[] value) {
+        public ToStringHelper add(String name, float[] value) {
             if(value != null && value.length > MAXIMUM_ARRAY_SIZE_TO_OUTPUT_DETAILS  && !outputFullDetails) {
                 helperImplementation.add(name + FIELD_NAME_LENGTH_POSTFIX, value.length);
             } else {
@@ -527,7 +527,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, int[] value ) {
+        public ToStringHelper add(String name, int[] value ) {
             if(value != null && value.length > MAXIMUM_ARRAY_SIZE_TO_OUTPUT_DETAILS  && !outputFullDetails) {
                 helperImplementation.add(name + FIELD_NAME_LENGTH_POSTFIX, value.length);
             } else {
@@ -544,7 +544,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper add(String name, long[] value) {
+        public ToStringHelper add(String name, long[] value) {
             if(value != null && value.length > MAXIMUM_ARRAY_SIZE_TO_OUTPUT_DETAILS  && !outputFullDetails) {
                 helperImplementation.add(name + FIELD_NAME_LENGTH_POSTFIX, value.length);
             } else {
@@ -561,7 +561,7 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper addSecure(String name, String value) {
+        public ToStringHelper addSecure(String name, String value) {
             value = SECURE_FIELD_VALUE_REPLACEMENT;
             helperImplementation.add(name, value);
             return this;
@@ -573,7 +573,7 @@ public final class MoreObjects {
          * @param value to add to output
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper addValue(Object value) {
+        public ToStringHelper addValue(Object value) {
             helperImplementation.addValue(value);
             return this;
         }
@@ -584,7 +584,7 @@ public final class MoreObjects {
          * @param value to add to output
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper addValue(boolean value) {
+        public ToStringHelper addValue(boolean value) {
             helperImplementation.addValue(String.valueOf(value));
             return this;
         }
@@ -595,7 +595,7 @@ public final class MoreObjects {
          * @param value to add to output
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper addValue(char value) {
+        public ToStringHelper addValue(char value) {
             helperImplementation.addValue(String.valueOf(value));
             return this;
         }
@@ -606,7 +606,7 @@ public final class MoreObjects {
          * @param value to add to output
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper addValue(double value) {
+        public ToStringHelper addValue(double value) {
             helperImplementation.addValue(String.valueOf(value));
             return this;
         }
@@ -617,7 +617,7 @@ public final class MoreObjects {
          * @param value to add to output
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper addValue(float value) {
+        public ToStringHelper addValue(float value) {
             helperImplementation.addValue(String.valueOf(value));
             return this;
         }
@@ -628,7 +628,7 @@ public final class MoreObjects {
          * @param value to add to output
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper addValue(int value) {
+        public ToStringHelper addValue(int value) {
             helperImplementation.addValue(String.valueOf(value));
             return this;
         }
@@ -639,7 +639,7 @@ public final class MoreObjects {
          * @param value to add to output
          * @return ToStringHelper instance
          */
-        public MoreObjects.ToStringHelper addValue(long value) {
+        public ToStringHelper addValue(long value) {
             helperImplementation.addValue(String.valueOf(value));
             return this;
         }
@@ -651,6 +651,263 @@ public final class MoreObjects {
          */
         public String toString() {
             return helperImplementation.toString();
+        }
+
+        /**
+         * Creates an instance of {@link ToStringHelperImpl}.
+         *
+         *
+         * @param self the object to generate the string for (typically {@code this}), used only for its
+         *     class name
+         */
+        static ToStringHelperImpl toStringHelper(Object self) {
+            return new ToStringHelperImpl(self.getClass().getSimpleName());
+        }
+
+        /**
+         * Creates an instance of {@link ToStringHelperImpl} in the same manner as {@link
+         * #toStringHelper(Object)}, but using the simple name of {@code clazz} instead of using an
+         * instance's {@link Object#getClass()}.
+         *
+         * @param clazz the {@link Class} of the instance
+         */
+        static ToStringHelperImpl toStringHelper(Class<?> clazz) {
+            return new ToStringHelperImpl(clazz.getSimpleName());
+        }
+
+        /**
+         * Creates an instance of {@link ToStringHelperImpl} in the same manner as {@link
+         * #toStringHelper(Object)}, but using {@code className} instead of using an instance's {@link
+         * Object#getClass()}.
+         *
+         * @param className the name of the instance type
+         */
+        public static ToStringHelperImpl toStringHelper(String className) {
+            return new ToStringHelperImpl(className);
+        }
+    }
+
+    /**
+     * Support class for {@link MoreObjects#toStringHelper}.
+     *
+     * @author Jason Lee
+     */
+    public static final class ToStringHelperImpl {
+        private final String className;
+        private final ValueHolder holderHead = new ValueHolder();
+        private ValueHolder holderTail = holderHead;
+        private boolean omitNullValues = false;
+
+        private ToStringHelperImpl(String className) {
+            this.className = className;
+        }
+
+        /**
+         * Configures the {@link ToStringHelperImpl} so {@link #toString()} will ignore properties with null
+         * value. The order of calling this method, relative to the {@code add()}/{@code addValue()}
+         * methods, is not significant.
+         */
+        
+        public ToStringHelperImpl omitNullValues() {
+            omitNullValues = true;
+            return this;
+        }
+
+        /**
+         * Adds a name/value pair to the formatted output in {@code name=value} format. If {@code value}
+         * is {@code null}, the string {@code "null"} is used, unless {@link #omitNullValues()} is
+         * called, in which case this name/value pair will not be added.
+         */
+        
+        public ToStringHelperImpl add(String name, Object value) {
+            return addHolder(name, value);
+        }
+
+        /**
+         * Adds a name/value pair to the formatted output in {@code name=value} format.
+         */
+        
+        public ToStringHelperImpl add(String name, boolean value) {
+            return addHolder(name, String.valueOf(value));
+        }
+
+        /**
+         * Adds a name/value pair to the formatted output in {@code name=value} format.
+         */
+        
+        public ToStringHelperImpl add(String name, char value) {
+            return addHolder(name, String.valueOf(value));
+        }
+
+        /**
+         * Adds a name/value pair to the formatted output in {@code name=value} format.
+         */
+        
+        public ToStringHelperImpl add(String name, double value) {
+            return addHolder(name, String.valueOf(value));
+        }
+
+        /**
+         * Adds a name/value pair to the formatted output in {@code name=value} format.
+         */
+        
+        public ToStringHelperImpl add(String name, float value) {
+            return addHolder(name, String.valueOf(value));
+        }
+
+        /**
+         * Adds a name/value pair to the formatted output in {@code name=value} format.
+         */
+        
+        public ToStringHelperImpl add(String name, int value) {
+            return addHolder(name, String.valueOf(value));
+        }
+
+        /**
+         * Adds a name/value pair to the formatted output in {@code name=value} format.
+         */
+        
+        public ToStringHelperImpl add(String name, long value) {
+            return addHolder(name, String.valueOf(value));
+        }
+
+        /**
+         * Adds an unnamed value to the formatted output.
+         *
+         * <p>It is strongly encouraged to use {@link #add(String, Object)} instead and give value a
+         * readable name.
+         */
+        
+        public ToStringHelperImpl addValue(Object value) {
+            return addHolder(value);
+        }
+
+        /**
+         * Adds an unnamed value to the formatted output.
+         *
+         * <p>It is strongly encouraged to use {@link #add(String, boolean)} instead and give value a
+         * readable name.
+         */
+        
+        public ToStringHelperImpl addValue(boolean value) {
+            return addHolder(String.valueOf(value));
+        }
+
+        /**
+         * Adds an unnamed value to the formatted output.
+         *
+         * <p>It is strongly encouraged to use {@link #add(String, char)} instead and give value a
+         * readable name.
+         */
+        
+        public ToStringHelperImpl addValue(char value) {
+            return addHolder(String.valueOf(value));
+        }
+
+        /**
+         * Adds an unnamed value to the formatted output.
+         *
+         * <p>It is strongly encouraged to use {@link #add(String, double)} instead and give value a
+         * readable name.
+         */
+        
+        public ToStringHelperImpl addValue(double value) {
+            return addHolder(String.valueOf(value));
+        }
+
+        /**
+         * Adds an unnamed value to the formatted output.
+         *
+         * <p>It is strongly encouraged to use {@link #add(String, float)} instead and give value a
+         * readable name.
+         */
+        
+        public ToStringHelperImpl addValue(float value) {
+            return addHolder(String.valueOf(value));
+        }
+
+        /**
+         * Adds an unnamed value to the formatted output.
+         *
+         * <p>It is strongly encouraged to use {@link #add(String, int)} instead and give value a
+         * readable name.
+         */
+        
+        public ToStringHelperImpl addValue(int value) {
+            return addHolder(String.valueOf(value));
+        }
+
+        /**
+         * Adds an unnamed value to the formatted output.
+         *
+         * <p>It is strongly encouraged to use {@link #add(String, long)} instead and give value a
+         * readable name.
+         */
+        
+        public ToStringHelperImpl addValue(long value) {
+            return addHolder(String.valueOf(value));
+        }
+
+        /**
+         * Returns a string in the format specified by {@link MoreObjects#toStringHelper(Object)}.
+         *
+         * <p>After calling this method, you can keep adding more properties to later call toString()
+         * again and get a more complete representation of the same object; but properties cannot be
+         * removed, so this only allows limited reuse of the helper instance. The helper allows
+         * duplication of properties (multiple name/value pairs with the same name can be added).
+         */
+        @Override
+        public String toString() {
+            // create a copy to keep it consistent in case value changes
+            boolean omitNullValuesSnapshot = omitNullValues;
+            String nextSeparator = "";
+            StringBuilder builder = new StringBuilder(32).append(className).append('{');
+            for (ValueHolder valueHolder = holderHead.next;
+                 valueHolder != null;
+                 valueHolder = valueHolder.next) {
+                Object value = valueHolder.value;
+                if (!omitNullValuesSnapshot || value != null) {
+                    builder.append(nextSeparator);
+                    nextSeparator = ", ";
+
+                    if (valueHolder.name != null) {
+                        builder.append(valueHolder.name).append('=');
+                    }
+                    if (value != null && value.getClass().isArray()) {
+                        Object[] objectArray = {value};
+                        String arrayString = Arrays.deepToString(objectArray);
+                        builder.append(arrayString, 1, arrayString.length() - 1);
+                    } else {
+                        builder.append(value);
+                    }
+                }
+            }
+            return builder.append('}').toString();
+        }
+
+        private ValueHolder addHolder() {
+            ValueHolder valueHolder = new ValueHolder();
+            holderTail = holderTail.next = valueHolder;
+            return valueHolder;
+        }
+
+        private ToStringHelperImpl addHolder(Object value) {
+            ValueHolder valueHolder = addHolder();
+            valueHolder.value = value;
+            return this;
+        }
+
+        private ToStringHelperImpl addHolder(String name, Object value) {
+            ValueHolder valueHolder = addHolder();
+            valueHolder.value = value;
+            valueHolder.name = name;
+            return this;
+        }
+
+        private static final class ValueHolder {
+            String name;
+            Object value;
+            ValueHolder next;
         }
     }
 }
