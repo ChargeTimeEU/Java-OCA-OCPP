@@ -38,6 +38,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
@@ -54,6 +57,8 @@ public class ClientTest extends TestUtilities {
     @Mock
     private Request request;
     @Mock
+    private CompletableFuture<Confirmation> completableFuture;
+    @Mock
     private ClientEvents events;
     @Mock
     private IFeatureRepository featureRepository;
@@ -66,7 +71,7 @@ public class ClientTest extends TestUtilities {
         doAnswer(invocation -> eventHandler = invocation.getArgumentAt(1, SessionEvents.class)).when(session).open(any(), any());
 
         client = new Client(session, featureRepository, promiseRepository);
-        when(featureRepository.findFeature(any())).thenReturn(feature);
+        when(featureRepository.findFeature(any())).thenReturn(Optional.of(feature));
     }
 
     @Test
@@ -121,6 +126,7 @@ public class ClientTest extends TestUtilities {
         // Given
         String someUniqueId = "Some id";
         when(session.storeRequest(any())).thenReturn(someUniqueId);
+        when(promiseRepository.getPromise(any())).thenReturn(Optional.of(completableFuture));
 
         // When
         client.connect(null, null);
@@ -131,7 +137,7 @@ public class ClientTest extends TestUtilities {
     }
 
     @Test
-    public void handleRequest_returnsConfirmation() {
+    public void handleRequest_returnsConfirmation() throws UnsupportedFeatureException {
         // Given
         client.connect(null, null);
         when(feature.handleRequest(null, request)).thenReturn(new TestConfirmation());
@@ -144,7 +150,7 @@ public class ClientTest extends TestUtilities {
     }
 
     @Test
-    public void handleRequest_callsFeatureHandleRequest() {
+    public void handleRequest_callsFeatureHandleRequest() throws UnsupportedFeatureException {
         // Given
         client.connect(null, null);
 

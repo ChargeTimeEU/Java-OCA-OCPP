@@ -32,6 +32,7 @@ import eu.chargetime.ocpp.model.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -74,25 +75,33 @@ public class Client
 
             @Override
             public void handleConfirmation(String uniqueId, Confirmation confirmation) {
-                CompletableFuture<Confirmation> promise = promiseRepository.getPromise(uniqueId);
-                if (promise != null) {
-                    promise.complete(confirmation);
+                Optional<CompletableFuture<Confirmation>> promiseOptional = promiseRepository.getPromise(uniqueId);
+                if (promiseOptional.isPresent()) {
+                    promiseOptional.get().complete(confirmation);
                     promiseRepository.removePromise(uniqueId);
+                } else {
+                    logger.debug("Promise not found for confirmation {}", confirmation);
                 }
             }
 
             @Override
-            public Confirmation handleRequest(Request request) {
-                Feature feature = featureRepository.findFeature(request);
-                return feature.handleRequest(null, request);
+            public Confirmation handleRequest(Request request) throws UnsupportedFeatureException {
+                Optional<Feature> featureOptional = featureRepository.findFeature(request);
+                if(featureOptional.isPresent()) {
+                    return featureOptional.get().handleRequest(null, request);
+                } else {
+                    throw new UnsupportedFeatureException();
+                }
             }
 
             @Override
             public void handleError(String uniqueId, String errorCode, String errorDescription, Object payload) {
-                CompletableFuture<Confirmation> promise = promiseRepository.getPromise(uniqueId);
-                if (promise != null) {
-                    promise.completeExceptionally(new CallErrorException(errorCode, errorCode, payload));
+                Optional<CompletableFuture<Confirmation>> promiseOptional = promiseRepository.getPromise(uniqueId);
+                if (promiseOptional.isPresent()) {
+                    promiseOptional.get().completeExceptionally(new CallErrorException(errorCode, errorCode, payload));
                     promiseRepository.removePromise(uniqueId);
+                } else {
+                    logger.debug("Promise not found for error {}", errorDescription);
                 }
             }
 
@@ -133,8 +142,8 @@ public class Client
      * @see                                     CompletableFuture
      */
     public CompletableFuture<Confirmation> send(Request request) throws UnsupportedFeatureException, OccurenceConstraintException {
-        Feature feature = featureRepository.findFeature(request);
-        if (feature == null)
+        Optional<Feature> featureOptional = featureRepository.findFeature(request);
+        if (!featureOptional.isPresent())
             throw new UnsupportedFeatureException();
 
         if (!request.validate())
@@ -142,7 +151,8 @@ public class Client
 
         String id = session.storeRequest(request);
         CompletableFuture<Confirmation> promise = promiseRepository.createPromise(id);
-        session.sendRequest(feature.getAction(), request, id);
+
+        session.sendRequest(featureOptional.get().getAction(), request, id);
         return promise;
     }
 }

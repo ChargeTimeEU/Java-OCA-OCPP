@@ -49,7 +49,7 @@ public interface SessionEvents {
      * @param request   the {@link Request}.
      * @return a {@link Confirmation} to send as a response.
      */
-    Confirmation handleRequest(Request request);
+    Confirmation handleRequest(Request request) throws UnsupportedFeatureException;
 
     /**
      * Handle a error to a {@link Request}.

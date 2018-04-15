@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 /*
@@ -73,26 +74,51 @@ public class Server {
             session.accept(new SessionEvents() {
                 @Override
                 public void handleConfirmation(String uniqueId, Confirmation confirmation) {
-                    promiseRepository.getPromise(uniqueId).complete(confirmation);
-                    promiseRepository.removePromise(uniqueId);
+
+                    Optional<CompletableFuture<Confirmation>> promiseOptional = promiseRepository.getPromise(uniqueId);
+                    if (promiseOptional.isPresent()) {
+                        promiseOptional.get().complete(confirmation);
+                        promiseRepository.removePromise(uniqueId);
+                    } else {
+                        logger.debug("Promise not found for confirmation {}", confirmation);
+                    }
                 }
 
                 @Override
-                public Confirmation handleRequest(Request request) {
-                    Feature feature = featureRepository.findFeature(request);
-                    return feature.handleRequest(getSessionID(session), request);
+                public Confirmation handleRequest(Request request) throws UnsupportedFeatureException {
+                    Optional<Feature> featureOptional = featureRepository.findFeature(request);
+                    if(featureOptional.isPresent()) {
+                        Optional<UUID> sessionIdOptional = getSessionID(session);
+                        if(sessionIdOptional.isPresent()) {
+                            return featureOptional.get().handleRequest(sessionIdOptional.get(), request);
+                        } else {
+                            throw new IllegalStateException("Active session not found");
+                        }
+                    } else {
+                        throw new UnsupportedFeatureException();
+                    }
                 }
 
                 @Override
                 public void handleError(String uniqueId, String errorCode, String errorDescription, Object payload) {
-                    promiseRepository.getPromise(uniqueId).completeExceptionally(new CallErrorException(errorCode, errorCode, payload));
-                    promiseRepository.removePromise(uniqueId);
+                    Optional<CompletableFuture<Confirmation>> promiseOptional = promiseRepository.getPromise(uniqueId);
+                    if(promiseOptional.isPresent()) {
+                        promiseOptional.get().completeExceptionally(new CallErrorException(errorCode, errorCode, payload));
+                        promiseRepository.removePromise(uniqueId);
+                    } else {
+                        logger.debug("Promise not found for error {}", errorDescription);
+                    }
                 }
 
                 @Override
                 public void handleConnectionClosed() {
-                    serverEvents.lostSession(getSessionID(session));
-                    sessions.remove(session);
+                    Optional<UUID> sessionIdOptional = getSessionID(session);
+                    if(sessionIdOptional.isPresent()) {
+                        serverEvents.lostSession(sessionIdOptional.get());
+                        sessions.remove(sessionIdOptional.get());
+                    } else {
+                        logger.warn("Active session not found");
+                    }
                 }
 
                 @Override
@@ -101,21 +127,21 @@ public class Server {
                 }
             });
             sessions.put(UUID.randomUUID(), session);
-            serverEvents.newSession(getSessionID(session), information);
+            serverEvents.newSession(getSessionID(session).get(), information);
         });
     }
 
-    private UUID getSessionID(ISession session) {
+    private Optional<UUID> getSessionID(ISession session) {
 
         if (!sessions.containsValue(session))
-            return null;
+            return Optional.empty();
 
         for (Map.Entry<UUID, ISession> entry : sessions.entrySet()) {
             if (entry.getValue() == session)
-                return entry.getKey();
+                return Optional.of(entry.getKey());
         }
 
-        return null;
+        return Optional.empty();
     }
 
     /**
@@ -135,17 +161,21 @@ public class Server {
      * @throws OccurenceConstraintException Thrown if the request isn't valid.
      */
     public CompletableFuture<Confirmation> send(UUID sessionIndex, Request request) throws UnsupportedFeatureException, OccurenceConstraintException {
-        Feature feature = featureRepository.findFeature(request);
-        if (feature == null)
+        Optional<Feature> featureOptional = featureRepository.findFeature(request);
+        if (!featureOptional.isPresent()) {
             throw new UnsupportedFeatureException();
+        }
 
-        if (!request.validate())
+        if (!request.validate()) {
             throw new OccurenceConstraintException();
+        }
 
         ISession session = sessions.get(sessionIndex);
+
+
         String id = session.storeRequest(request);
         CompletableFuture<Confirmation> promise = promiseRepository.createPromise(id);
-        session.sendRequest(feature.getAction(), request, id);
+        session.sendRequest(featureOptional.get().getAction(), request, id);
         return promise;
     }
 

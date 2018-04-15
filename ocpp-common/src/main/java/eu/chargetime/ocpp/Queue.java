@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
 
 /*
@@ -56,6 +57,9 @@ public class Queue
     public String store(Request request) {
         String ticket = UUID.randomUUID().toString();
         requestQueue.put(ticket, request);
+
+        logger.debug("Queue size: {}", requestQueue.size());
+
         return ticket;
     }
 
@@ -63,20 +67,22 @@ public class Queue
      * Restore a {@link Request} using a unique identifier.
      * The identifier can only be used once.
      * If no Request was found, null is returned.
-     * 
-     * FIXME: use optional instead
      *
      * @param ticket    unique identifier returned when {@link Request} was initially stored.
-     * @return the stored {@link Request}
+     * @return the optional with stored {@link Request}
      */
-    public Request restoreRequest(String ticket) {
-        Request request = null;
+    public Optional<Request> restoreRequest(String ticket) {
+
         try {
-            request = requestQueue.get(ticket);
+            Request request = requestQueue.get(ticket);
             requestQueue.remove(ticket);
+
+            logger.debug("Queue size: {}", requestQueue.size());
+
+            return Optional.ofNullable(request);
         } catch (Exception ex) {
             logger.warn("restoreRequest({}) failed", ticket, ex);
         }
-        return request;
+        return Optional.empty();
     }
 }
