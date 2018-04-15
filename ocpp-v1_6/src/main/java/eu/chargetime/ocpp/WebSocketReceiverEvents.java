@@ -25,5 +25,15 @@ package eu.chargetime.ocpp;/*
  */
 
 public interface WebSocketReceiverEvents {
+    /**
+     * @return true if connection is closed (either not connected or was disconnected)
+     */
+    boolean isClosed();
+
+    /**
+     * Send a message.
+     *
+     * @param message message to send
+     */
     void relay(String message);
 }

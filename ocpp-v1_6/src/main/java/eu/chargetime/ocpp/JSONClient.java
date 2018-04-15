@@ -91,4 +91,9 @@ public class JSONClient implements IClientAPI {
     public void disconnect() {
         client.disconnect();
     }
+
+    @Override
+    public boolean isClosed() {
+        return transmitter.isClosed();
+    }
 }

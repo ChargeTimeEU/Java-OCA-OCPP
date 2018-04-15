@@ -50,6 +50,7 @@ public class WebSocketListener implements Listener {
 
     private WebSocketServer server;
     private HashMap<WebSocket, WebSocketReceiver> sockets;
+    private volatile boolean closed = true;
     private boolean handleRequestAsync;
 
     public WebSocketListener(IServerSessionFactory sessionFactory) {
@@ -62,8 +63,21 @@ public class WebSocketListener implements Listener {
         Draft_6455 draft = new Draft_6455(Collections.<IExtension>emptyList(), Collections.<IProtocol>singletonList(new Protocol("ocpp1.6")));
         server = new WebSocketServer(new InetSocketAddress(hostname, port), Collections.<Draft>singletonList(draft)) {
             @Override
-            public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
-                WebSocketReceiver receiver = new WebSocketReceiver(message -> webSocket.send(message));
+            public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {                
+
+                WebSocketReceiver receiver = new WebSocketReceiver(
+                        new WebSocketReceiverEvents() {
+                            @Override
+                            public boolean isClosed() {
+                                return closed;
+                            }
+
+                            @Override
+                            public void relay(String message) {
+                               webSocket.send(message);
+                            }
+                        }
+                );
                 sockets.put(webSocket, receiver);
                 SessionInformation information = new SessionInformation.Builder()
                         .Identifier(clientHandshake.getResourceDescriptor())
@@ -94,6 +108,7 @@ public class WebSocketListener implements Listener {
             }
         };
         server.start();
+        closed = false;
     }
 
     public void enableWSS(SSLContext sslContext) {
@@ -103,7 +118,7 @@ public class WebSocketListener implements Listener {
     @Override
     public void close() {
         try {
-
+            closed = true;
             for (WebSocket ws : sockets.keySet())
                 ws.close();
 
@@ -114,6 +129,11 @@ public class WebSocketListener implements Listener {
         } catch (InterruptedException e) {
         	logger.info("close() failed", e);
         }
+    }
+
+    @Override
+    public boolean isClosed() {
+        return closed;
     }
 
     @Override

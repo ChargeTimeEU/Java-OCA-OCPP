@@ -61,6 +61,11 @@ public class WebServiceTransmitter extends SOAPSyncHelper implements Transmitter
     }
 
     @Override
+    public boolean isClosed() {
+        return !connected;
+    }
+
+    @Override
     public void connect(String uri, RadioEvents events) {
         url = uri;
         this.events = events;

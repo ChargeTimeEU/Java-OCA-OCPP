@@ -49,6 +49,11 @@ public class WebSocketReceiver implements Receiver {
     }
 
     @Override
+    public boolean isClosed() {
+        return receiverEvents.isClosed();
+    }
+
+    @Override
     public void accept(RadioEvents events) {
         handler = events;
     }
