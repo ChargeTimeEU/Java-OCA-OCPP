@@ -4,7 +4,7 @@ import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
 import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-
+import eu.chargetime.ocpp.wss.WssSocketBuilder;
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.util.concurrent.CompletionStage;
@@ -67,8 +67,9 @@ public class JSONClient implements IClientAPI {
         featureRepository.addFeatureProfile(coreProfile);
     }
 
-    public void enableWSS(SSLContext sslContext) throws IOException {
-        transmitter.enableWSS(sslContext);
+    public JSONClient enableWSS(WssSocketBuilder wssSocketBuilder) throws IOException {
+        transmitter.enableWSS(wssSocketBuilder);
+        return this;
     }
 
     @Override

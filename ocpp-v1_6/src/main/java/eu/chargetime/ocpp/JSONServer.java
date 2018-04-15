@@ -29,6 +29,7 @@ import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.wss.WssFactoryBuilder;
 
 import javax.net.ssl.SSLContext;
 import java.util.UUID;
@@ -53,8 +54,8 @@ public class JSONServer implements IServerAPI {
         featureRepository.addFeatureProfile(coreProfile);
     }
 
-    public void enableWSS(SSLContext sslContext) {
-        listener.enableWSS(sslContext);
+    public void enableWSS(WssFactoryBuilder wssFactoryBuilder) {
+        listener.enableWSS(wssFactoryBuilder);
     }
 
     @Override

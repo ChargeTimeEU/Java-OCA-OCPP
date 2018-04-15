@@ -26,7 +26,7 @@ package eu.chargetime.ocpp;
  */
 
 import eu.chargetime.ocpp.model.SessionInformation;
-
+import eu.chargetime.ocpp.wss.WssFactoryBuilder;
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
@@ -49,6 +49,7 @@ public class WebSocketListener implements Listener {
     private final IServerSessionFactory sessionFactory;
 
     private WebSocketServer server;
+    private WssFactoryBuilder wssFactoryBuilder;
     private HashMap<WebSocket, WebSocketReceiver> sockets;
     private volatile boolean closed = true;
     private boolean handleRequestAsync;
@@ -107,12 +108,21 @@ public class WebSocketListener implements Listener {
 
             }
         };
+
+        if(wssFactoryBuilder != null) {
+            server.setWebSocketFactory(wssFactoryBuilder.build());
+        }
+
         server.start();
         closed = false;
     }
 
-    public void enableWSS(SSLContext sslContext) {
-        server.setWebSocketFactory(new DefaultSSLWebSocketServerFactory(sslContext));
+    public void enableWSS(WssFactoryBuilder wssFactoryBuilder) {
+        if(server != null) {
+            throw new IllegalStateException("Cannot enable WSS on already running server");
+        }
+
+        this.wssFactoryBuilder = wssFactoryBuilder;
     }
 
     @Override
