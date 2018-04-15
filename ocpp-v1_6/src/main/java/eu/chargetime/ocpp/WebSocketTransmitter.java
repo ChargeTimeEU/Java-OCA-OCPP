@@ -29,24 +29,15 @@ package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.wss.WssSocketBuilder;
 import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.drafts.Draft_6455;
+import org.java_websocket.drafts.Draft;
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
-import org.java_websocket.extensions.IExtension;
 import org.java_websocket.handshake.ServerHandshake;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.java_websocket.protocols.IProtocol;
-import org.java_websocket.protocols.Protocol;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.URI;
-import java.util.Collections;
-
 /**
  * Web Socket implementation of the Transmitter.
  */
@@ -55,46 +46,47 @@ public class WebSocketTransmitter implements Transmitter
     private static final Logger logger = LoggerFactory.getLogger(WebSocketTransmitter.class);
 
     public static final String WSS_SCHEME = "wss";
+    private final Draft draft;
+
     // In seconds
     private int pingInterval = 60;
     private volatile boolean closed = true;
     private WebSocketClient client;
     private WssSocketBuilder wssSocketBuilder;
 
-    public WebSocketTransmitter() {
+    public WebSocketTransmitter(Draft draft) {
+        this.draft = draft;
     }
 
     @Override
     public void connect(String uri, RadioEvents events) {
         final URI resource = URI.create(uri);
-		Draft_6455 draft = new Draft_6455(Collections.<IExtension>emptyList(), Collections.<IProtocol>singletonList(new Protocol("ocpp1.6")));
+
         client = new WebSocketClient(resource, draft) {
             @Override
-            public void onOpen(ServerHandshake serverHandshake)
-            {
+            public void onOpen(ServerHandshake serverHandshake) {
+                logger.debug("On connection open (HTTP status: {})", serverHandshake.getHttpStatus());
                 events.connected();
             }
 
             @Override
-            public void onMessage(String s)
-            {
-                events.receivedMessage(s);
+            public void onMessage(String message) {
+                events.receivedMessage(message);
             }
 
             @Override
-            public void onClose(int i, String s, boolean b)
-            {
-                logger.debug("WebSocketClient.onClose: code = " + i + ", message = " + s + ", host closed = " + b);
+            public void onClose(int code, String reason, boolean remote) {
+                logger.debug("On connection close (code: {}, reason: {}, remote: {})", code, reason, remote);
+
                 events.disconnected();
             }
 
             @Override
-            public void onError(Exception ex)
-            {
+            public void onError(Exception ex) {
             	if(ex instanceof ConnectException) {
-                	logger.warn("onError() triggered caused by: " +  ex);
+                	logger.error("On error triggered caused by:",  ex);
             	} else {
-            		logger.warn("onError() triggered", ex);
+            		logger.error("On error triggered:", ex);
             	}
             }
         };
@@ -156,7 +148,10 @@ public class WebSocketTransmitter implements Transmitter
 
     @Override
     public void send(Object request) throws NotConnectedException {
-        logger.debug("Sending: " + request);
+        if(client == null) {
+            throw new NotConnectedException();
+        }
+
         try {
             client.send(request.toString());
         } catch (WebsocketNotConnectedException ex) {

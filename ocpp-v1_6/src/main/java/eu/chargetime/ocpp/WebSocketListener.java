@@ -29,45 +29,47 @@ import eu.chargetime.ocpp.model.SessionInformation;
 import eu.chargetime.ocpp.wss.WssFactoryBuilder;
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
-import org.java_websocket.drafts.Draft_6455;
-import org.java_websocket.extensions.IExtension;
 import org.java_websocket.handshake.ClientHandshake;
-import org.java_websocket.protocols.IProtocol;
-import org.java_websocket.protocols.Protocol;
-import org.java_websocket.server.DefaultSSLWebSocketServerFactory;
 import org.java_websocket.server.WebSocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.SSLContext;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class WebSocketListener implements Listener {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketListener.class);
+
+    private static final int TIMEOUT_IN_MILLIS = 1;
+
     private final IServerSessionFactory sessionFactory;
+    private final List<Draft> drafts;
 
     // In seconds
     private int pingInterval = 60;
 
     private WebSocketServer server;
     private WssFactoryBuilder wssFactoryBuilder;
-    private HashMap<WebSocket, WebSocketReceiver> sockets;
+    private Map<WebSocket, WebSocketReceiver> sockets;
     private volatile boolean closed = true;
     private boolean handleRequestAsync;
 
-    public WebSocketListener(IServerSessionFactory sessionFactory) {
+    public WebSocketListener(IServerSessionFactory sessionFactory, Draft... drafts) {
         this.sessionFactory = sessionFactory;
-        this.sockets = new HashMap<>();
+        this.drafts = Arrays.asList(drafts);
+        this.sockets = new ConcurrentHashMap<>();
     }
 
     @Override
     public void open(String hostname, int port, ListenerEvents handler) {
-        Draft_6455 draft = new Draft_6455(Collections.<IExtension>emptyList(), Collections.<IProtocol>singletonList(new Protocol("ocpp1.6")));
-        server = new WebSocketServer(new InetSocketAddress(hostname, port), Collections.<Draft>singletonList(draft)) {
+        server = new WebSocketServer(new InetSocketAddress(hostname, port), drafts) {
             @Override
-            public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {                
+            public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
+                logger.debug("On connection open (resource descriptor: {})", clientHandshake.getResourceDescriptor());
 
                 WebSocketReceiver receiver = new WebSocketReceiver(
                         new WebSocketReceiverEvents() {
@@ -91,24 +93,30 @@ public class WebSocketListener implements Listener {
             }
 
             @Override
-            public void onClose(WebSocket webSocket, int i, String s, boolean b) {
+            public void onClose(WebSocket webSocket, int code, String reason, boolean remote) {
+                logger.debug("On connection close (resource descriptor: {}, code: {}, reason: {}, remote: {})", webSocket.getResourceDescriptor(), code, reason, remote);
+
                 sockets.get(webSocket).disconnect();
                 sockets.remove(webSocket);
             }
 
             @Override
-            public void onMessage(WebSocket webSocket, String s) {
-                sockets.get(webSocket).relay(s);
+            public void onMessage(WebSocket webSocket, String message) {
+                sockets.get(webSocket).relay(message);
             }
 
             @Override
-            public void onError(WebSocket webSocket, Exception e) {
-
+            public void onError(WebSocket webSocket, Exception ex) {
+                if(ex instanceof ConnectException) {
+                    logger.error("On error (resource descriptor: " + webSocket.getResourceDescriptor() + ") triggered caused by:",  ex);
+                } else {
+                    logger.error("On error (resource descriptor: " + webSocket.getResourceDescriptor() + ") triggered:", ex);
+                }
             }
 
             @Override
             public void onStart() {
-
+                logger.debug("On start");
             }
         };
 
@@ -142,13 +150,12 @@ public class WebSocketListener implements Listener {
     public void close() {
         try {
             closed = true;
-            for (WebSocket ws : sockets.keySet())
+            for (WebSocket ws : sockets.keySet()) {
                 ws.close();
+            }
 
             sockets.clear();
-
-            server.stop(1);
-
+            server.stop(TIMEOUT_IN_MILLIS);
         } catch (InterruptedException e) {
         	logger.error("Failed to close listener", e);
         } finally {

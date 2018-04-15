@@ -79,7 +79,7 @@ public class SOAPServer implements IServerAPI {
     }
 
     @Override
-    public CompletionStage<Confirmation> send(UUID session, Request request) throws OccurenceConstraintException, UnsupportedFeatureException {
+    public CompletionStage<Confirmation> send(UUID session, Request request) throws OccurenceConstraintException, UnsupportedFeatureException, NotConnectedException {
         return server.send(session, request);
     }
 }

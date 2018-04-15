@@ -6,9 +6,10 @@ import eu.chargetime.ocpp.utilities.Stopwatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -44,10 +45,12 @@ public class Queue
 {
 	private static final Logger logger = LoggerFactory.getLogger(Queue.class);
 
-	private HashMap<String, Request> requestQueue;
+	public static final int REQUEST_QUEUE_INITIAL_CAPACITY = 1000;
+
+	private Map<String, Request> requestQueue;
 
     public Queue () {
-        requestQueue = new HashMap<>();
+        requestQueue = new ConcurrentHashMap<>(REQUEST_QUEUE_INITIAL_CAPACITY);
     }
 
     /**

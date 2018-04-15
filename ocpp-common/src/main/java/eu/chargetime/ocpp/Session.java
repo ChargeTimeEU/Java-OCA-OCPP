@@ -3,10 +3,12 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 /*
@@ -44,6 +46,7 @@ public class Session implements ISession {
 
     private static final Logger logger = LoggerFactory.getLogger(Session.class);
 
+    private final UUID sessionId = UUID.randomUUID();
     private final Communicator communicator;
     private final Queue queue;
     private final RequestDispatcher dispatcher;
@@ -61,6 +64,15 @@ public class Session implements ISession {
         this.queue = queue;
         this.dispatcher = new RequestDispatcher(fulfiller);
         this.featureRepository = featureRepository;
+    }
+
+    /**
+     * Get a unique session {@link UUID} identifier.
+     *
+     * @return the unique session {@link UUID} identifier
+     */
+    public UUID getSessionId() {
+        return sessionId;
     }
 
     /**
@@ -213,5 +225,27 @@ public class Session implements ISession {
             events.handleConnectionOpened();
         }
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return MoreObjects.equals(sessionId, session.sessionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return MoreObjects.hash(sessionId);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("sessionId", sessionId)
+                .add("queue", queue)
+                .add("featureRepository", featureRepository)
+                .toString();
     }
 }

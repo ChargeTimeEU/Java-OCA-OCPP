@@ -5,11 +5,11 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -45,7 +45,10 @@ import java.util.concurrent.CompletableFuture;
 public class Server {
 
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
-    private HashMap<UUID, ISession> sessions;
+
+    public static final int INITIAL_SESSIONS_NUMBER = 1000;
+
+    private Map<UUID, ISession> sessions;
     private Listener listener;
     private final IFeatureRepository featureRepository;
     private final IPromiseRepository promiseRepository;
@@ -59,7 +62,7 @@ public class Server {
         this.listener = listener;
         this.featureRepository = featureRepository;
         this.promiseRepository = promiseRepository;
-        this.sessions = new HashMap();
+        this.sessions = new ConcurrentHashMap<>(INITIAL_SESSIONS_NUMBER);
     }
 
     /**
@@ -126,22 +129,25 @@ public class Server {
 
                 }
             });
-            sessions.put(UUID.randomUUID(), session);
-            serverEvents.newSession(getSessionID(session).get(), information);
+
+            sessions.put(session.getSessionId(), session);
+
+            Optional<UUID> sessionIdOptional = getSessionID(session);
+            if(sessionIdOptional.isPresent()) {
+                serverEvents.newSession(sessionIdOptional.get(), information);
+                logger.debug("Session created: {}", session.getSessionId());
+            } else {
+                throw new IllegalStateException("Failed to create a session");
+            }
         });
     }
 
     private Optional<UUID> getSessionID(ISession session) {
-
-        if (!sessions.containsValue(session))
+        if (!sessions.containsValue(session)) {
             return Optional.empty();
-
-        for (Map.Entry<UUID, ISession> entry : sessions.entrySet()) {
-            if (entry.getValue() == session)
-                return Optional.of(entry.getKey());
         }
 
-        return Optional.empty();
+        return Optional.of(session.getSessionId());
     }
 
     /**
@@ -160,7 +166,7 @@ public class Server {
      * @throws UnsupportedFeatureException Thrown if the feature isn't among the list of supported featured.
      * @throws OccurenceConstraintException Thrown if the request isn't valid.
      */
-    public CompletableFuture<Confirmation> send(UUID sessionIndex, Request request) throws UnsupportedFeatureException, OccurenceConstraintException {
+    public CompletableFuture<Confirmation> send(UUID sessionIndex, Request request) throws UnsupportedFeatureException, OccurenceConstraintException, NotConnectedException {
         Optional<Feature> featureOptional = featureRepository.findFeature(request);
         if (!featureOptional.isPresent()) {
             throw new UnsupportedFeatureException();
@@ -172,6 +178,12 @@ public class Server {
 
         ISession session = sessions.get(sessionIndex);
 
+        if(session == null) {
+            logger.warn("Session not found by index: {}", sessionIndex);
+
+            // No session found means client disconnected and request should be cancelled
+            throw new NotConnectedException();
+        }
 
         String id = session.storeRequest(request);
         CompletableFuture<Confirmation> promise = promiseRepository.createPromise(id);
@@ -186,8 +198,9 @@ public class Server {
      */
     public void closeSession(UUID sessionIndex) {
         ISession session = sessions.get(sessionIndex);
-        if (session != null)
+        if (session != null) {
             session.close();
+        }
     }
 
     public void setAsyncRequestHandler(boolean asyncRequestHandler) {

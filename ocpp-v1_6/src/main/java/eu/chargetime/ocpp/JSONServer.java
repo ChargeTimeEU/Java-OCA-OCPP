@@ -30,16 +30,26 @@ import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.wss.WssFactoryBuilder;
+import org.java_websocket.drafts.Draft;
+import org.java_websocket.drafts.Draft_6455;
+import org.java_websocket.protocols.Protocol;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.SSLContext;
+import java.util.Collections;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
 
 public class JSONServer implements IServerAPI {
 
-    private WebSocketListener listener;
-    private Server server;
-    private FeatureRepository featureRepository;
+    private static final Logger logger = LoggerFactory.getLogger(JSONServer.class);
+
+    public final Draft draftOcppOnly =
+            new Draft_6455(Collections.emptyList(),
+                    Collections.singletonList(new Protocol("ocpp1.6")));
+    private final WebSocketListener listener;
+    private final Server server;
+    private final FeatureRepository featureRepository;
 
     /**
      * The core feature profile is required as a minimum.
@@ -49,7 +59,7 @@ public class JSONServer implements IServerAPI {
     public JSONServer(ServerCoreProfile coreProfile) {
         featureRepository = new FeatureRepository();
         ServerSessionFactory sessionFactory = new ServerSessionFactory(featureRepository);
-        this.listener = new WebSocketListener(sessionFactory);
+        this.listener = new WebSocketListener(sessionFactory, draftOcppOnly);
         server = new Server(this.listener, featureRepository, new PromiseRepository());
         featureRepository.addFeatureProfile(coreProfile);
     }
@@ -75,6 +85,8 @@ public class JSONServer implements IServerAPI {
 
     @Override
     public void open(String host, int port, ServerEvents serverEvents) {
+        logger.info("Feature repository: {}", featureRepository);
+
         server.open(host, port, serverEvents);
     }
 
@@ -89,7 +101,7 @@ public class JSONServer implements IServerAPI {
     }
 
     @Override
-    public CompletionStage<Confirmation> send(UUID session, Request request) throws OccurenceConstraintException, UnsupportedFeatureException {
+    public CompletionStage<Confirmation> send(UUID session, Request request) throws OccurenceConstraintException, UnsupportedFeatureException, NotConnectedException {
         return server.send(session, request);
     }
 }
