@@ -36,8 +36,7 @@ import eu.chargetime.ocpp.feature.profile.ServerRemoteTriggerProfile;
 import eu.chargetime.ocpp.feature.profile.ServerSmartChargingProfile;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsConfirmation;
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
+import eu.chargetime.ocpp.model.firmware.*;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
 import eu.chargetime.ocpp.test.FakeCentral.serverType;
@@ -45,7 +44,7 @@ import eu.chargetime.ocpp.test.FakeCentral.serverType;
 public class FakeCentralSystem {
     private IServerAPI server;
 
-    DummyHandlers dummyHandlers;
+    private DummyHandlers dummyHandlers;
     private boolean isStarted;
 
     FakeCentralSystem(serverType type) {
@@ -121,6 +120,11 @@ public class FakeCentralSystem {
 
     public boolean hasReceivedGetDiagnosticsConfirmation() {
         return dummyHandlers.wasLatestConfirmation(GetDiagnosticsConfirmation.class);
+    }
+
+
+    public boolean hasReceivedDiagnosticsStatusNotificationConfirmation() {
+        return dummyHandlers.wasLatestConfirmation(DiagnosticsStatusNotificationConfirmation.class);
     }
 
     public boolean hasReceivedChangeAvailabilityConfirmation(String status) {
@@ -223,6 +227,12 @@ public class FakeCentralSystem {
     public void sendGetDiagnosticsRequest(String location) throws Exception {
         GetDiagnosticsRequest request = new GetDiagnosticsRequest();
         request.setLocation(location);
+        send(request);
+    }
+
+
+    public void sendDiagnosticsStatusNotificationRequest(DiagnosticsStatus status) throws Exception {
+        DiagnosticsStatusNotificationRequest request = new DiagnosticsStatusNotificationRequest(status);
         send(request);
     }
 
