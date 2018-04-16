@@ -123,7 +123,7 @@ public class WebSocketTransmitter implements Transmitter
     }
 
     public void setPingInterval(int interval) {
-        this.pingInterval = pingInterval;
+        this.pingInterval = interval;
 
         if(client != null) {
             client.setConnectionLostTimeout(interval);
