@@ -41,6 +41,8 @@ import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
 import eu.chargetime.ocpp.test.FakeCentral.serverType;
 
+import java.util.Calendar;
+
 public class FakeCentralSystem {
     private IServerAPI server;
 
@@ -128,6 +130,10 @@ public class FakeCentralSystem {
 
     public boolean hasReceivedFirmwareStatusNotificationConfirmation() {
         return dummyHandlers.wasLatestConfirmation(FirmwareStatusNotificationConfirmation.class);
+    }
+
+    public boolean hasReceivedUpdateFirmwareConfirmation() {
+        return dummyHandlers.wasLatestConfirmation(UpdateFirmwareConfirmation.class);
     }
 
     public boolean hasReceivedChangeAvailabilityConfirmation(String status) {
@@ -240,6 +246,11 @@ public class FakeCentralSystem {
 
     public void sendFirmwareStatusNotificationRequest(FirmwareStatus status) throws Exception {
         FirmwareStatusNotificationRequest request = new FirmwareStatusNotificationRequest(status);
+        send(request);
+    }
+
+    public void sendUpdateFirmwareRequest(String location, Calendar retrieveDate) throws Exception {
+        UpdateFirmwareRequest request = new UpdateFirmwareRequest(location, retrieveDate);
         send(request);
     }
 

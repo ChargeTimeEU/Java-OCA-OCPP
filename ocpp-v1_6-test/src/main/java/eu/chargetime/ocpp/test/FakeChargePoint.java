@@ -160,6 +160,12 @@ public class FakeChargePoint
                 receivedRequest = request;
                 return new FirmwareStatusNotificationConfirmation();
             }
+
+            @Override
+            public UpdateFirmwareConfirmation handleUpdateFirmwareRequest(UpdateFirmwareRequest request) {
+                receivedRequest = request;
+                return new UpdateFirmwareConfirmation();
+            }
         });
 
         switch (type) {
@@ -323,6 +329,10 @@ public class FakeChargePoint
 
     public boolean hasHandledFirmwareStatusNotificationRequest() {
         return receivedRequest instanceof FirmwareStatusNotificationRequest;
+    }
+
+    public boolean hasHandledUpdateFirmwareRequest() {
+        return receivedRequest instanceof UpdateFirmwareRequest;
     }
 
     public boolean hasHandledChangeAvailabilityRequest() {
