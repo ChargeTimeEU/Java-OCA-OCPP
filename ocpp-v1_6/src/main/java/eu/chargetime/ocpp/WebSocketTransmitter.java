@@ -54,6 +54,7 @@ public class WebSocketTransmitter implements Transmitter
 {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketTransmitter.class);
 
+    private volatile boolean closed = true;
     private WebSocketClient client;
 
     public WebSocketTransmitter() {
@@ -94,6 +95,7 @@ public class WebSocketTransmitter implements Transmitter
         };
         try {
             client.connectBlocking();
+            closed = false;
         } catch (Exception ex) {
         	logger.warn("client.connectBlocking() failed", ex);
         }
@@ -111,6 +113,8 @@ public class WebSocketTransmitter implements Transmitter
             client.closeBlocking();
         } catch (Exception ex) {
         	logger.info("client.closeBlocking() failed", ex);
+        } finally {
+            closed = true;
         }
     }
 
@@ -122,5 +126,9 @@ public class WebSocketTransmitter implements Transmitter
         } catch (WebsocketNotConnectedException ex) {
             throw new NotConnectedException();
         }
+    }
+
+    public boolean isClosed() {
+        return closed;
     }
 }

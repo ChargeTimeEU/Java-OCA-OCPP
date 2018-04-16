@@ -47,6 +47,7 @@ public class WebServiceListener implements Listener {
     private String fromUrl = null;
     private HttpServer server;
     private boolean handleRequestAsync;
+    private volatile boolean closed = true;
 
     public WebServiceListener(IServerSessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -62,6 +63,8 @@ public class WebServiceListener implements Listener {
 
             server.setExecutor(java.util.concurrent.Executors.newCachedThreadPool());
             server.start();
+
+            closed = false;
         } catch (IOException e) {
             logger.warn("open() failed", e);
         }
@@ -71,6 +74,12 @@ public class WebServiceListener implements Listener {
     public void close() {
         if (server != null)
             server.stop(1);
+        closed = true;
+    }
+
+    @Override
+    public boolean isClosed() {
+        return closed;
     }
 
     @Override
@@ -108,6 +117,8 @@ public class WebServiceListener implements Listener {
                     session.close();
                     chargeBoxes.remove(identity);
                 });
+
+                // TODO: Decorator created but not used
                 ISession sessionDecorator = new TimeoutSessionDecorator(timeoutTimer, session);
 
                 SessionInformation information = new SessionInformation.Builder().Identifier(identity).InternetAddress(messageInfo.getAddress()).SOAPtoURL(toUrl).build();

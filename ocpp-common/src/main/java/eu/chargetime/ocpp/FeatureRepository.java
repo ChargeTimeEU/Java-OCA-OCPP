@@ -29,6 +29,7 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -93,5 +94,12 @@ public class FeatureRepository implements IFeatureRepository {
         contains |= object instanceof Request && feature.getRequestType() == object.getClass();
         contains |= object instanceof Confirmation && feature.getConfirmationType() == object.getClass();
         return contains;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper("FeatureRepository")
+                .add("featureList", featureList)
+                .toString();
     }
 }

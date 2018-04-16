@@ -78,6 +78,11 @@ public class JSONServer implements IServerAPI {
     }
 
     @Override
+    public boolean isClosed() {
+        return listener.isClosed();
+    }
+
+    @Override
     public CompletionStage<Confirmation> send(UUID session, Request request) throws OccurenceConstraintException, UnsupportedFeatureException {
         return server.send(session, request);
     }

@@ -35,15 +35,16 @@ import java.util.concurrent.CompletionStage;
 
 public class SOAPServer implements IServerAPI {
 
-    private FeatureRepository featureRepository;
-    private Server server;
+    private final FeatureRepository featureRepository;
+    private final Server server;
+    private final WebServiceListener listener;
 
     public SOAPServer(ServerCoreProfile coreProfile) {
 
         featureRepository = new FeatureRepository();
         ServerSessionFactory sessionFactory = new ServerSessionFactory(featureRepository);
-        Listener listener = new WebServiceListener(sessionFactory);
-        server = new Server(listener, featureRepository, new PromiseRepository());
+        this.listener = new WebServiceListener(sessionFactory);
+        server = new Server(this.listener, featureRepository, new PromiseRepository());
         featureRepository.addFeatureProfile(coreProfile);
     }
 
@@ -65,6 +66,16 @@ public class SOAPServer implements IServerAPI {
     @Override
     public void close() {
         server.close();
+    }
+
+    /**
+     * Flag if connection is closed.
+     *
+     * @return true if connection was closed or not opened
+     */
+    @Override
+    public boolean isClosed() {
+        return listener.isClosed();
     }
 
     @Override
