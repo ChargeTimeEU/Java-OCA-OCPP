@@ -1,7 +1,7 @@
-package eu.chargetime.ocpp.feature.profile;
+package eu.chargetime.ocpp.model.firmware.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
@@ -26,13 +26,29 @@ package eu.chargetime.ocpp.feature.profile;
  */
 
 import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationConfirmation;
-import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsConfirmation;
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
+import eu.chargetime.ocpp.utilities.TestUtilities;
+import org.junit.Before;
+import org.junit.Test;
 
-public interface ClientFirmwareManagementEventHandler {
-    GetDiagnosticsConfirmation handleGetDiagnosticsRequest(GetDiagnosticsRequest request);
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
-    DiagnosticsStatusNotificationConfirmation handleDiagnosticsStatusNotificationRequest(DiagnosticsStatusNotificationRequest request);
+public class DiagnosticsStatusNotificationConfirmationTest extends TestUtilities {
+
+    private DiagnosticsStatusNotificationConfirmation confirmation;
+
+    @Before
+    public void setup() {
+        confirmation = new DiagnosticsStatusNotificationConfirmation();
+    }
+
+    @Test
+    public void validate_returnsTrue() {
+        // When
+        boolean result = confirmation.validate();
+
+        // Then
+        assertThat(result, is(true));
+    }
 
 }

@@ -1,7 +1,7 @@
-package eu.chargetime.ocpp.feature.profile;
+package eu.chargetime.ocpp.model.firmware.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
@@ -25,14 +25,44 @@ package eu.chargetime.ocpp.feature.profile;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationConfirmation;
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.firmware.DiagnosticsStatus;
 import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsConfirmation;
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
+import org.junit.Before;
+import org.junit.Test;
 
-public interface ClientFirmwareManagementEventHandler {
-    GetDiagnosticsConfirmation handleGetDiagnosticsRequest(GetDiagnosticsRequest request);
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
-    DiagnosticsStatusNotificationConfirmation handleDiagnosticsStatusNotificationRequest(DiagnosticsStatusNotificationRequest request);
+public class DiagnosticsStatusNotificationRequestTest {
+
+    private DiagnosticsStatusNotificationRequest request;
+
+    @Before
+    public void setup() {
+        request = new DiagnosticsStatusNotificationRequest();
+    }
+
+    @Test
+    public void validate_statusIsNotSet_returnsFalse() {
+        // When
+        boolean result = request.validate();
+
+        // Then
+        assertThat(result, is(false));
+    }
+
+    @Test
+    public void validate_statusIsSet_returnsTrue() throws PropertyConstraintException {
+        // Given
+        DiagnosticsStatus status = DiagnosticsStatus.Uploading;
+        request.setStatus(status);
+
+        // When
+        boolean result = request.validate();
+
+        // Then
+        assertThat(result, is(true));
+    }
 
 }
