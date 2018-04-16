@@ -25,6 +25,8 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
-public interface IServerSessionFactory {
-    ISession createSession(Communicator communicator);
+import java.io.Serializable;
+
+public interface IServerSessionFactory<T extends Serializable> {
+    ISession<T> createSession(Communicator communicator);
 }

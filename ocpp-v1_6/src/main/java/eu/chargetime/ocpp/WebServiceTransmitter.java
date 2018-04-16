@@ -38,10 +38,10 @@ import javax.xml.soap.SOAPMessage;
 public class WebServiceTransmitter extends SOAPSyncHelper implements Transmitter {
     private static final Logger logger = LoggerFactory.getLogger(WebServiceTransmitter.class);
 	
-    SOAPConnection soapConnection;
+    private SOAPConnection soapConnection;
     private String url;
     private RadioEvents events;
-    boolean connected;
+    private boolean connected;
 
     public WebServiceTransmitter() {
         connected = false;
@@ -85,8 +85,7 @@ public class WebServiceTransmitter extends SOAPSyncHelper implements Transmitter
             throw new NotConnectedException();
         Thread thread = new Thread(() -> {
             try {
-                SOAPMessage soapMessage = message;
-                SOAPMessage response = soapConnection.call(soapMessage, url);
+                SOAPMessage response = soapConnection.call(message, url);
                 events.receivedMessage(response);
             } catch (SOAPException e) {
             	logger.warn("sendRequest() failed", e);

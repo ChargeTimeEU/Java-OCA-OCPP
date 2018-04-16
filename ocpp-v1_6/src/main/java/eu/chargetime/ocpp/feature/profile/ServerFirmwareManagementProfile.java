@@ -30,8 +30,9 @@ import eu.chargetime.ocpp.feature.GetDiagnosticsFeature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 
+import java.io.Serializable;
 import java.util.HashSet;
-import java.util.UUID;
+
 
 public class ServerFirmwareManagementProfile implements Profile {
 
@@ -48,7 +49,7 @@ public class ServerFirmwareManagementProfile implements Profile {
     }
 
     @Override
-    public Confirmation handleRequest(UUID sessionIndex, Request request) {
+    public Confirmation handleRequest(Serializable sessionIndex, Request request) {
         return null;
     }
 }

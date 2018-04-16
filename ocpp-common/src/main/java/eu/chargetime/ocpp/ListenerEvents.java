@@ -26,6 +26,8 @@ package eu.chargetime.ocpp;/*
 
 import eu.chargetime.ocpp.model.SessionInformation;
 
-public interface ListenerEvents {
-    void newSession(ISession session, SessionInformation information);
+import java.io.Serializable;
+
+public interface ListenerEvents<T extends Serializable> {
+    void newSession(ISession<T> session, SessionInformation information);
 }

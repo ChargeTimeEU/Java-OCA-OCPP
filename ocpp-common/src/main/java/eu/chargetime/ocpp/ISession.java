@@ -2,7 +2,7 @@ package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.model.Request;
 
-import java.util.UUID;
+import java.io.Serializable;
 
 /*
     ChargeTime.eu - Java-OCA-OCPP
@@ -29,8 +29,8 @@ import java.util.UUID;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
-public interface ISession {
-    UUID getSessionId();
+public interface ISession<T extends Serializable> {
+    T getSessionId();
 
     void open(String uri, SessionEvents eventHandler);
 

@@ -32,7 +32,7 @@ import eu.chargetime.ocpp.model.core.ClearCacheRequest;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-public class ClearCacheFeature extends Feature{
+public class ClearCacheFeature extends Feature {
     public ClearCacheFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

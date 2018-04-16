@@ -26,22 +26,22 @@ package eu.chargetime.ocpp.feature.profile;/*
 
 import eu.chargetime.ocpp.model.core.*;
 
-import java.util.UUID;
+import java.io.Serializable;
 
 public interface ServerCoreEventHandler {
-    AuthorizeConfirmation handleAuthorizeRequest(UUID sessionIndex, AuthorizeRequest request);
+    AuthorizeConfirmation handleAuthorizeRequest(Serializable sessionIndex, AuthorizeRequest request);
 
-    BootNotificationConfirmation handleBootNotificationRequest(UUID sessionIndex, BootNotificationRequest request);
+    BootNotificationConfirmation handleBootNotificationRequest(Serializable sessionIndex, BootNotificationRequest request);
 
-    DataTransferConfirmation handleDataTransferRequest(UUID sessionIndex, DataTransferRequest request);
+    DataTransferConfirmation handleDataTransferRequest(Serializable sessionIndex, DataTransferRequest request);
 
-    HeartbeatConfirmation handleHeartbeatRequest(UUID sessionIndex, HeartbeatRequest request);
+    HeartbeatConfirmation handleHeartbeatRequest(Serializable sessionIndex, HeartbeatRequest request);
 
-    MeterValuesConfirmation handleMeterValuesRequest(UUID sessionIndex, MeterValuesRequest request);
+    MeterValuesConfirmation handleMeterValuesRequest(Serializable sessionIndex, MeterValuesRequest request);
 
-    StartTransactionConfirmation handleStartTransactionRequest(UUID sessionIndex, StartTransactionRequest request);
+    StartTransactionConfirmation handleStartTransactionRequest(Serializable sessionIndex, StartTransactionRequest request);
 
-    StatusNotificationConfirmation handleStatusNotificationRequest(UUID sessionIndex, StatusNotificationRequest request);
+    StatusNotificationConfirmation handleStatusNotificationRequest(Serializable sessionIndex, StatusNotificationRequest request);
 
-    StopTransactionConfirmation handleStopTransactionRequest(UUID sessionIndex, StopTransactionRequest request);
+    StopTransactionConfirmation handleStopTransactionRequest(Serializable sessionIndex, StopTransactionRequest request);
 }

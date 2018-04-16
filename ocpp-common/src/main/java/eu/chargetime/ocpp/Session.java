@@ -42,7 +42,7 @@ import java.util.concurrent.CompletableFuture;
  * Unites outgoing {@link Request} with incoming {@link Confirmation}s or errors.
  * Catches errors and responds with error messages.
  */
-public class Session implements ISession {
+public class Session implements ISession<UUID> {
 
     private static final Logger logger = LoggerFactory.getLogger(Session.class);
 

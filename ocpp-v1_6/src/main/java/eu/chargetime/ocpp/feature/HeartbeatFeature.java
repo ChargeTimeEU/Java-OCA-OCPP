@@ -31,7 +31,7 @@ import eu.chargetime.ocpp.model.core.HeartbeatRequest;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class HeartbeatFeature extends Feature{
+public class HeartbeatFeature extends Feature {
     public HeartbeatFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

@@ -4,7 +4,7 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 
-import java.util.UUID;
+import java.io.Serializable;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -52,5 +52,5 @@ public interface Profile {
      * @param request the {@link Request} to be handled.
      * @return the {@link Confirmation} to be send.
      */
-    Confirmation handleRequest(UUID sessionIndex, Request request);
+    Confirmation handleRequest(Serializable sessionIndex, Request request);
 }

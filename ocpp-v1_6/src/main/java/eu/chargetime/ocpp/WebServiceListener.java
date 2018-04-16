@@ -36,25 +36,26 @@ import javax.xml.soap.SOAPMessage;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-public class WebServiceListener implements Listener {
+public class WebServiceListener implements Listener<UUID> {
     private static final Logger logger = LoggerFactory.getLogger(WebServiceListener.class);
     private static final String WSDL_CENTRAL_SYSTEM = "eu/chargetime/ocpp/OCPP_CentralSystemService_1.6.wsdl";
-    private final IServerSessionFactory sessionFactory;
+    private final IServerSessionFactory<UUID> sessionFactory;
 
-    private ListenerEvents events;
+    private ListenerEvents<UUID> events;
     private String fromUrl = null;
     private HttpServer server;
     private boolean handleRequestAsync;
     private volatile boolean closed = true;
 
-    public WebServiceListener(IServerSessionFactory sessionFactory) {
+    public WebServiceListener(IServerSessionFactory<UUID> sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
     @Override
-    public void open(String hostname, int port, ListenerEvents listenerEvents) {
+    public void open(String hostname, int port, ListenerEvents<UUID> listenerEvents) {
         events = listenerEvents;
         fromUrl = String.format("http://%s:%d", hostname, port);
         try {
@@ -112,7 +113,7 @@ public class WebServiceListener implements Listener {
                 SOAPCommunicator communicator = new SOAPCommunicator(hostInfo, webServiceReceiver);
                 communicator.setToUrl(toUrl);
 
-                ISession session = sessionFactory.createSession(communicator);
+                ISession<UUID> session = sessionFactory.createSession(communicator);
                 TimeoutTimer timeoutTimer = new TimeoutTimer(INITIAL_TIMEOUT, () -> {
                     session.close();
                     chargeBoxes.remove(identity);
@@ -129,9 +130,7 @@ public class WebServiceListener implements Listener {
             SOAPMessage confirmation = null;
             try {
                 confirmation = chargeBoxes.get(identity).relay(message).get();
-            } catch (InterruptedException e) {
-                logger.warn("incomingRequest() chargeBoxes.relay failed", e);
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 logger.warn("incomingRequest() chargeBoxes.relay failed", e);
             }
 

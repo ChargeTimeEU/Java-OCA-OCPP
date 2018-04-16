@@ -38,7 +38,7 @@ public class WebServiceReceiver extends SOAPSyncHelper implements Receiver {
     private static final Logger logger = LoggerFactory.getLogger(WebServiceReceiver.class);
 
     private RadioEvents events;
-    SOAPConnection soapConnection;
+    private SOAPConnection soapConnection;
     private String url;
     private WebServiceReceiverEvents receiverEvents;
     private boolean connected;

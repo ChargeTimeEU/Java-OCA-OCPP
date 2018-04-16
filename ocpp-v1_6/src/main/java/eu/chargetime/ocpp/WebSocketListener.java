@@ -39,14 +39,15 @@ import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class WebSocketListener implements Listener {
+public class WebSocketListener implements Listener<UUID> {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketListener.class);
 
     private static final int TIMEOUT_IN_MILLIS = 1;
 
-    private final IServerSessionFactory sessionFactory;
+    private final IServerSessionFactory<UUID> sessionFactory;
     private final List<Draft> drafts;
 
     // In seconds
@@ -58,14 +59,14 @@ public class WebSocketListener implements Listener {
     private volatile boolean closed = true;
     private boolean handleRequestAsync;
 
-    public WebSocketListener(IServerSessionFactory sessionFactory, Draft... drafts) {
+    public WebSocketListener(IServerSessionFactory<UUID> sessionFactory, Draft... drafts) {
         this.sessionFactory = sessionFactory;
         this.drafts = Arrays.asList(drafts);
         this.sockets = new ConcurrentHashMap<>();
     }
 
     @Override
-    public void open(String hostname, int port, ListenerEvents handler) {
+    public void open(String hostname, int port, ListenerEvents<UUID> handler) {
         server = new WebSocketServer(new InetSocketAddress(hostname, port), drafts) {
             @Override
             public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
