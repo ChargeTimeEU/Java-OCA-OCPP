@@ -27,13 +27,16 @@ package eu.chargetime.ocpp;
  SOFTWARE.
  */
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
 import org.java_websocket.extensions.IExtension;
 import org.java_websocket.handshake.ServerHandshake;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.java_websocket.protocols.IProtocol;
 import org.java_websocket.protocols.Protocol;
 
@@ -49,7 +52,7 @@ import java.util.Collections;
  */
 public class WebSocketTransmitter implements Transmitter
 {
-    private static final Logger logger = LogManager.getLogger(WebSocketTransmitter.class);
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketTransmitter.class);
 
     private WebSocketClient client;
 

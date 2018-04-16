@@ -25,8 +25,8 @@ package eu.chargetime.ocpp;/*
  */
 
 import eu.chargetime.ocpp.model.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -39,7 +39,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.*;
 
 public class SOAPCommunicator extends Communicator {
-    private static final Logger logger = LogManager.getLogger(SOAPCommunicator.class);
+    private static final Logger logger = LoggerFactory.getLogger(SOAPCommunicator.class);
 	
     private static final String HEADER_ACTION = "Action";
     private static final String HEADER_MESSAGEID = "MessageID";

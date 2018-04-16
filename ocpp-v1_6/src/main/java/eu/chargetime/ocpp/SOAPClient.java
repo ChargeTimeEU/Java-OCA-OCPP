@@ -31,8 +31,8 @@ import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.SOAPHostInfo;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.soap.SOAPMessage;
 import java.io.IOException;
@@ -44,7 +44,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class SOAPClient implements IClientAPI {
-    private static final Logger logger = LogManager.getLogger(SOAPClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(SOAPClient.class);
 	private static final String WSDL_CHARGE_POINT = "eu/chargetime/ocpp/OCPP_ChargePointService_1.6.wsdl";
 
     private Client client;
