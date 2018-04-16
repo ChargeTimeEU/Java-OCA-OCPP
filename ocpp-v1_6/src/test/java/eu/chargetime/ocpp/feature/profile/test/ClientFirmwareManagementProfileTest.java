@@ -25,11 +25,10 @@ package eu.chargetime.ocpp.feature.profile.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.feature.GetDiagnosticsFeature;
+import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.feature.profile.ClientFirmwareManagementEventHandler;
 import eu.chargetime.ocpp.feature.profile.ClientFirmwareManagementProfile;
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
+import eu.chargetime.ocpp.model.firmware.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,6 +50,7 @@ public class ClientFirmwareManagementProfileTest extends ProfileTest {
     ClientFirmwareManagementProfile profile;
 
     @Mock
+    private
     ClientFirmwareManagementEventHandler handler;
 
     @Before
@@ -59,12 +59,15 @@ public class ClientFirmwareManagementProfileTest extends ProfileTest {
     }
 
     @Test
-    public void getFeatureList_containsGetDiagnosticsFeature() {
+    public void getFeatureList_containsAllNeededFeatures() {
         // When
         Feature[] features = profile.getFeatureList();
 
         // Then
         assertThat(findFeature(features, "GetDiagnostics"), is(instanceOf(GetDiagnosticsFeature.class)));
+        assertThat(findFeature(features, "DiagnosticsStatusNotification"), is(instanceOf(DiagnosticsStatusNotificationFeature.class)));
+        assertThat(findFeature(features, "FirmwareStatusNotification"), is(instanceOf(FirmwareStatusNotificationFeature.class)));
+        assertThat(findFeature(features, "UpdateFirmware"), is(instanceOf(UpdateFirmwareFeature.class)));
     }
 
     @Test
@@ -77,6 +80,43 @@ public class ClientFirmwareManagementProfileTest extends ProfileTest {
 
         // Then
         verify(handler, times(1)).handleGetDiagnosticsRequest(eq(request));
+    }
+
+
+    @Test
+    public void handleRequest_aDiagnosticsStatusNotificationRequest_callsHandleDiagnosticsStatusNotificationRequest() {
+        // Given
+        DiagnosticsStatusNotificationRequest request = new DiagnosticsStatusNotificationRequest();
+
+        // When
+        profile.handleRequest(SESSION_NULL, request);
+
+        // Then
+        verify(handler, times(1)).handleDiagnosticsStatusNotificationRequest(eq(request));
+    }
+
+    @Test
+    public void handleRequest_aFirmwareStatusNotificationRequest_callsHandleFirmwareStatusNotificationRequest() {
+        // Given
+        FirmwareStatusNotificationRequest request = new FirmwareStatusNotificationRequest();
+
+        // When
+        profile.handleRequest(SESSION_NULL, request);
+
+        // Then
+        verify(handler, times(1)).handleFirmwareStatusNotificationRequest(eq(request));
+    }
+
+    @Test
+    public void handleRequest_aUpdateFirmwareRequest_callsHandleUpdateFirmwareRequest() {
+        // Given
+        UpdateFirmwareRequest request = new UpdateFirmwareRequest();
+
+        // When
+        profile.handleRequest(SESSION_NULL, request);
+
+        // Then
+        verify(handler, times(1)).handleUpdateFirmwareRequest(eq(request));
     }
 
 }

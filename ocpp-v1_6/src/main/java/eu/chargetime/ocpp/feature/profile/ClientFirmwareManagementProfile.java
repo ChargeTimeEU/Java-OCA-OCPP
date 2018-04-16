@@ -24,15 +24,13 @@ package eu.chargetime.ocpp.feature.profile;/*
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.DiagnosticsStatusNotificationFeature;
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.feature.FirmwareStatusNotificationFeature;
-import eu.chargetime.ocpp.feature.GetDiagnosticsFeature;
+import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
 import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationRequest;
 import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
+import eu.chargetime.ocpp.model.firmware.UpdateFirmwareRequest;
 
 import java.util.HashSet;
 import java.util.UUID;
@@ -48,6 +46,7 @@ public class ClientFirmwareManagementProfile implements Profile {
         features.add(new GetDiagnosticsFeature(this));
         features.add(new DiagnosticsStatusNotificationFeature(this));
         features.add(new FirmwareStatusNotificationFeature(this));
+        features.add(new UpdateFirmwareFeature(this));
     }
 
     @Override
@@ -65,6 +64,8 @@ public class ClientFirmwareManagementProfile implements Profile {
             result = eventHandler.handleDiagnosticsStatusNotificationRequest((DiagnosticsStatusNotificationRequest) request);
         } else if (request instanceof FirmwareStatusNotificationRequest) {
             result = eventHandler.handleFirmwareStatusNotificationRequest((FirmwareStatusNotificationRequest) request);
+        } else if (request instanceof UpdateFirmwareRequest) {
+            result = eventHandler.handleUpdateFirmwareRequest((UpdateFirmwareRequest) request);
         }
 
         return result;

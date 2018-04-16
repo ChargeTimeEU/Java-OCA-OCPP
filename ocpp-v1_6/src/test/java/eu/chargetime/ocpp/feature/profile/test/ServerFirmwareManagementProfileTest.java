@@ -25,9 +25,9 @@ package eu.chargetime.ocpp.feature.profile.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.feature.GetDiagnosticsFeature;
+import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementProfile;
+import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,12 +48,15 @@ public class ServerFirmwareManagementProfileTest extends ProfileTest {
     }
 
     @Test
-    public void getFeatureList_containsGetDiagnosticsFeature() {
+    public void getFeatureList_containsAllNeededFeatures() {
         // When
         Feature[] features = profile.getFeatureList();
 
         // Then
-        assertThat(findFeature(features, "GetDiagnostics"), is(instanceOf(GetDiagnosticsFeature.class)));
+        assertThat(findFeature(features, "GetDiagnostics"), Is.is(instanceOf(GetDiagnosticsFeature.class)));
+        assertThat(findFeature(features, "DiagnosticsStatusNotification"), Is.is(instanceOf(DiagnosticsStatusNotificationFeature.class)));
+        assertThat(findFeature(features, "FirmwareStatusNotification"), Is.is(instanceOf(FirmwareStatusNotificationFeature.class)));
+        assertThat(findFeature(features, "UpdateFirmware"), Is.is(instanceOf(UpdateFirmwareFeature.class)));
     }
 
 }
