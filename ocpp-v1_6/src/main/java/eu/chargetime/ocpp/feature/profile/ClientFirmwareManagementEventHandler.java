@@ -25,14 +25,13 @@ package eu.chargetime.ocpp.feature.profile;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationConfirmation;
-import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsConfirmation;
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
+import eu.chargetime.ocpp.model.firmware.*;
 
 public interface ClientFirmwareManagementEventHandler {
     GetDiagnosticsConfirmation handleGetDiagnosticsRequest(GetDiagnosticsRequest request);
 
     DiagnosticsStatusNotificationConfirmation handleDiagnosticsStatusNotificationRequest(DiagnosticsStatusNotificationRequest request);
+
+    FirmwareStatusNotificationConfirmation handleFirmwareStatusNotificationRequest(FirmwareStatusNotificationRequest request);
 
 }
