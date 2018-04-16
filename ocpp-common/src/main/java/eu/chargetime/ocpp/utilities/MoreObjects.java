@@ -2,7 +2,14 @@ package eu.chargetime.ocpp.utilities;
 
 /*
  * Copyright (C) 2014 The Guava Authors
+ *
  * Modified by Evgeny Pakhomov <eugene.pakhomov@ubitricity.com>
+ *
+ * Changes:
+ *  * Cut Guava specific annotations
+ *  * ToStringHelper renamed to ToStringHelperImpl
+ *  * Instead of original ToStringHelper new adapter implementation is used which provides few additional functionalities (output secrets in the masked form, output only size for collections)
+ *  * References to Guava versions in methods JavaDoc are cut as it won't be relevant
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -207,7 +214,8 @@ public final class MoreObjects {
      * when if array length more than {@link ToStringHelper#MAXIMUM_ARRAY_SIZE_TO_OUTPUT_DETAILS}
      * then only length of that array will be written in output. If any container (list, set, queue, map)
      * or array of objects passed as input parameter to {@link ToStringHelper#add} function then only
-     * size of that container (array of objects) will be written in output.
+     * size of that container (array of objects) will be written in output
+     * (this behaviour might be changed with {@link #outputFullDetails} constructor argument).
      */
     public static final class ToStringHelper {
 
