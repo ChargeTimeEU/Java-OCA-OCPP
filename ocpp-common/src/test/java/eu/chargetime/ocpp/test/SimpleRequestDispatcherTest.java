@@ -27,6 +27,7 @@ package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.SessionEvents;
 import eu.chargetime.ocpp.SimplePromiseFulfiller;
+import eu.chargetime.ocpp.UnsupportedFeatureException;
 import eu.chargetime.ocpp.model.Confirmation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,7 +54,7 @@ public class SimpleRequestDispatcherTest {
     }
 
     @Test
-    public void fulfill_throwsException_completesWithException() {
+    public void fulfill_throwsException_completesWithException() throws UnsupportedFeatureException {
         // Given
         RuntimeException expectedException = new RuntimeException();
         when(eventsMock.handleRequest(any())).thenThrow(expectedException);

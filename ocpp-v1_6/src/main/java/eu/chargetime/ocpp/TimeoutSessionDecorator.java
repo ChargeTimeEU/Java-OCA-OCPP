@@ -103,7 +103,7 @@ public class TimeoutSessionDecorator implements ISession {
             }
 
             @Override
-            synchronized public Confirmation handleRequest(Request request) {
+            synchronized public Confirmation handleRequest(Request request) throws UnsupportedFeatureException {
                 resetTimer();
                 Confirmation confirmation = eventHandler.handleRequest(request);
 

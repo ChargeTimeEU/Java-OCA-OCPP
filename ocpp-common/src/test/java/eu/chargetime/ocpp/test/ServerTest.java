@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
@@ -76,7 +77,7 @@ public class ServerTest extends TestUtilities {
         doAnswer(invocation -> sessionEvents = invocation.getArgumentAt(0, SessionEvents.class)).when(session).accept(any());
         doAnswer(invocation -> sessionIndex = invocation.getArgumentAt(0, UUID.class)).when(serverEvents).newSession(any(), any());
 
-        when(featureRepository.findFeature(any())).thenReturn(feature);
+        when(featureRepository.findFeature(any())).thenReturn(Optional.of(feature));
         server = new Server(listener, featureRepository, promiseRepository);
     }
 
@@ -118,7 +119,7 @@ public class ServerTest extends TestUtilities {
     }
 
     @Test
-    public void handleRequest_callsFeatureHandleRequest() {
+    public void handleRequest_callsFeatureHandleRequest() throws UnsupportedFeatureException {
         // Given
         server.open(LOCALHOST, PORT, serverEvents);
         listenerEvents.newSession(session, information);

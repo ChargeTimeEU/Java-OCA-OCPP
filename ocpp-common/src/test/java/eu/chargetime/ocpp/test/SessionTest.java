@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -65,7 +66,7 @@ public class SessionTest {
 
     @Before
     public void setup() throws Exception {
-        when(featureRepository.findFeature(any())).thenReturn(feature);
+        when(featureRepository.findFeature(any())).thenReturn(Optional.of(feature));
         session = new Session(communicator, queue, fulfiller, featureRepository);
         doAnswer(invocation -> eventHandler = invocation.getArgumentAt(1, CommunicatorEvents.class)).when(communicator).connect(any(), any());
         session.open(null, sessionEvents);
@@ -201,7 +202,7 @@ public class SessionTest {
     public void onCall_unknownAction_callSendCallError() {
         // Given
         String someId = "Some id";
-        when(featureRepository.findFeature(any())).thenReturn(null);
+        when(featureRepository.findFeature(any())).thenReturn(Optional.empty());
 
         // When
         eventHandler.onCall(someId, null, null);

@@ -6,6 +6,7 @@ import eu.chargetime.ocpp.model.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /*
@@ -94,12 +95,22 @@ public class Session implements ISession {
     }
 
 
-    private Class<? extends Confirmation> getConfirmationType(String uniqueId) throws UnsupportedFeatureException {
-        Request request = queue.restoreRequest(uniqueId);
-        Feature feature = featureRepository.findFeature(request);
-        if (feature == null)
-            throw new UnsupportedFeatureException("Error with getting confirmation type: request = " + request.toString() + ", feature = " + feature);
-        return feature.getConfirmationType();
+    private Optional<Class<? extends Confirmation>> getConfirmationType(String uniqueId) throws UnsupportedFeatureException {
+        Optional<Request> requestOptional = queue.restoreRequest(uniqueId);
+
+        if(requestOptional.isPresent()) {
+            Optional<Feature> featureOptional = featureRepository.findFeature(requestOptional.get());
+            if (featureOptional.isPresent()) {
+                return Optional.of(featureOptional.get().getConfirmationType());
+            } else {
+                logger.debug("Feature for request with id: {} not found in session: {}", uniqueId, this);
+                throw new UnsupportedFeatureException("Error with getting confirmation type by request id = " + uniqueId);
+            }
+        } else {
+            logger.debug("Request with id: {} not found in session: {}", uniqueId, this);
+        }
+
+        return Optional.empty();
     }
 
     /**
@@ -136,11 +147,18 @@ public class Session implements ISession {
         @Override
         public void onCallResult(String id, String action, Object payload) {
             try {
-                Confirmation confirmation = communicator.unpackPayload(payload, getConfirmationType(id));
-                if (confirmation.validate()) {
-                    events.handleConfirmation(id, confirmation);
+                Optional<Class<? extends Confirmation>> confirmationTypeOptional = getConfirmationType(id);
+
+                if(confirmationTypeOptional.isPresent()) {
+                    Confirmation confirmation = communicator.unpackPayload(payload, confirmationTypeOptional.get());
+                    if (confirmation.validate()) {
+                        events.handleConfirmation(id, confirmation);
+                    } else {
+                        communicator.sendCallError(id, action, "OccurenceConstraintViolation", OCCURENCE_CONSTRAINT_VIOLATION);
+                    }
                 } else {
-                    communicator.sendCallError(id, action, "OccurenceConstraintViolation", OCCURENCE_CONSTRAINT_VIOLATION);
+                    logger.warn(INTERNAL_ERROR);
+                    communicator.sendCallError(id, action, "InternalError", INTERNAL_ERROR);
                 }
             } catch (PropertyConstraintException ex) {
                 String message = String.format(FIELD_CONSTRAINT_VIOLATION, ex.getFieldKey(), ex.getFieldValue(), ex.getMessage());
@@ -157,12 +175,12 @@ public class Session implements ISession {
 
         @Override
         synchronized public void onCall(String id, String action, Object payload) {
-            Feature feature = featureRepository.findFeature(action);
-            if (feature == null) {
+            Optional<Feature> featureOptional = featureRepository.findFeature(action);
+            if (!featureOptional.isPresent()) {
                 communicator.sendCallError(id, action, "NotImplemented", "Requested Action is not known by receiver");
             } else {
                 try {
-                    Request request = communicator.unpackPayload(payload, feature.getRequestType());
+                    Request request = communicator.unpackPayload(payload, featureOptional.get().getRequestType());
                     if (request.validate()) {
                         CompletableFuture<Confirmation> promise = dispatcher.handleRequest(request);
                         promise.whenComplete(new ConfirmationHandler(id, action, communicator));
