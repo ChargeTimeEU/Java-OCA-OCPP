@@ -31,10 +31,12 @@ import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
 import eu.chargetime.ocpp.model.core.RegistrationStatus;
 import eu.chargetime.ocpp.utilities.TimeoutTimer;
 
-public class TimeoutSessionDecorator implements ISession {
+import java.io.Serializable;
+
+public class TimeoutSessionDecorator<T extends Serializable> implements ISession<T> {
 
     private TimeoutTimer timeoutTimer;
-    private final ISession session;
+    private final ISession<T> session;
 
     /**
      * Handles required injections.
@@ -64,6 +66,11 @@ public class TimeoutSessionDecorator implements ISession {
     private void startTimer() {
         if (timeoutTimer != null)
             timeoutTimer.begin();
+    }
+
+    @Override
+    public T getSessionId() {
+        return session.getSessionId();
     }
 
     @Override
@@ -103,7 +110,7 @@ public class TimeoutSessionDecorator implements ISession {
             }
 
             @Override
-            synchronized public Confirmation handleRequest(Request request) {
+            synchronized public Confirmation handleRequest(Request request) throws UnsupportedFeatureException {
                 resetTimer();
                 Confirmation confirmation = eventHandler.handleRequest(request);
 

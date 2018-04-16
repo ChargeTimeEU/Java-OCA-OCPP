@@ -30,8 +30,8 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
 
+import java.io.Serializable;
 import java.util.HashSet;
-import java.util.UUID;
 
 public class ClientFirmwareManagementProfile implements Profile {
 
@@ -50,7 +50,7 @@ public class ClientFirmwareManagementProfile implements Profile {
     }
 
     @Override
-    public Confirmation handleRequest(UUID sessionIndex, Request request) {
+    public Confirmation handleRequest(Serializable sessionIndex, Request request) {
         Confirmation result = null;
 
         if (request instanceof GetDiagnosticsRequest) {

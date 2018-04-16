@@ -28,8 +28,10 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.profile.Profile;
 
+import java.util.Optional;
+
 public interface IFeatureRepository {
     void addFeatureProfile(Profile profile);
 
-    Feature findFeature(Object needle);
+    Optional<Feature> findFeature(Object needle);
 }

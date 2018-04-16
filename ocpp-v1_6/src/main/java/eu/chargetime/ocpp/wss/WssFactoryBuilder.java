@@ -1,18 +1,11 @@
-package eu.chargetime.ocpp.feature.profile;
-
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-
-import java.io.Serializable;
+package eu.chargetime.ocpp.wss;
 
 /*
- ChargeTime.eu - Java-OCA-OCPP
- Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
+ ubitricity.com - Java-OCA-OCPP
 
  MIT License
 
- Copyright (C) 2016-2018 Thomas Volden
+ Copyright (C) 2018 Evgeny Pakhomov <eugene.pakhomov@ubitricity.com>
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -31,26 +24,18 @@ import java.io.Serializable;
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
- */
+*/
+
+import org.java_websocket.WebSocketServerFactory;
+
+import javax.net.ssl.SSLContext;
+import java.util.List;
 
 /**
- * Interface used for Feature Profiles.
+ * To build WSS factory with given SSL context.
  */
-public interface Profile {
-
-    /**
-     * Get a list of supported Feature for this Feature Profile.
-     *
-     * @return supported {@link Feature}s
-     */
-    Feature[] getFeatureList();
-
-    /**
-     * Handle {@link Request}
-     *
-     * @param sessionIndex source of the request.
-     * @param request the {@link Request} to be handled.
-     * @return the {@link Confirmation} to be send.
-     */
-    Confirmation handleRequest(Serializable sessionIndex, Request request);
+public interface WssFactoryBuilder {
+    WssFactoryBuilder ciphers(List<String> ciphers);
+    WssFactoryBuilder sslContext(SSLContext sslContext);
+    WebSocketServerFactory build();
 }

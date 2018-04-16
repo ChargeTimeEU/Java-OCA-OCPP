@@ -1,18 +1,11 @@
-package eu.chargetime.ocpp.feature.profile;
-
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-
-import java.io.Serializable;
+package eu.chargetime.ocpp.wss;
 
 /*
- ChargeTime.eu - Java-OCA-OCPP
- Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
+ ubitricity.com - Java-OCA-OCPP
 
  MIT License
 
- Copyright (C) 2016-2018 Thomas Volden
+ Copyright (C) 2018 Evgeny Pakhomov <eugene.pakhomov@ubitricity.com>
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -31,26 +24,39 @@ import java.io.Serializable;
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
- */
+*/
+
+
+import org.java_websocket.WebSocketServerFactory;
+import org.java_websocket.server.DefaultSSLWebSocketServerFactory;
+
+import javax.net.ssl.SSLContext;
+import java.util.List;
 
 /**
- * Interface used for Feature Profiles.
+ * Base implementation of WssFactoryBuilder.
  */
-public interface Profile {
+public class BaseWssFactoryBuilder implements WssFactoryBuilder {
 
-    /**
-     * Get a list of supported Feature for this Feature Profile.
-     *
-     * @return supported {@link Feature}s
-     */
-    Feature[] getFeatureList();
+    private SSLContext sslContext;
+    private List<String> ciphers;
 
-    /**
-     * Handle {@link Request}
-     *
-     * @param sessionIndex source of the request.
-     * @param request the {@link Request} to be handled.
-     * @return the {@link Confirmation} to be send.
-     */
-    Confirmation handleRequest(Serializable sessionIndex, Request request);
+    @Override
+    public WssFactoryBuilder ciphers(List<String> ciphers) {
+        this.ciphers = ciphers;
+        return this;
+    }
+
+    @Override
+    public WssFactoryBuilder sslContext(SSLContext sslContext) {
+        this.sslContext = sslContext;
+        return this;
+    }
+
+    @Override
+    public WebSocketServerFactory build() {
+        return ciphers == null
+                ? new DefaultSSLWebSocketServerFactory(sslContext)
+                : new CustomSSLWebSocketServerFactory(sslContext, ciphers);
+    }
 }

@@ -1,10 +1,15 @@
 package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.model.Request;
-import org.apache.logging.log4j.LogManager;
+import eu.chargetime.ocpp.utilities.MoreObjects;
+import eu.chargetime.ocpp.utilities.Stopwatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -38,12 +43,14 @@ import java.util.UUID;
  */
 public class Queue
 {
-	private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(Queue.class);
+	private static final Logger logger = LoggerFactory.getLogger(Queue.class);
 
-	private HashMap<String, Request> requestQueue;
+	public static final int REQUEST_QUEUE_INITIAL_CAPACITY = 1000;
+
+	private Map<String, Request> requestQueue;
 
     public Queue () {
-        requestQueue = new HashMap<>();
+        requestQueue = new ConcurrentHashMap<>(REQUEST_QUEUE_INITIAL_CAPACITY);
     }
 
     /**
@@ -53,8 +60,13 @@ public class Queue
      * @return a unique identifier used to fetch the request.
      */
     public String store(Request request) {
+        Stopwatch stopwatch = Stopwatch.createStarted();
+
         String ticket = UUID.randomUUID().toString();
         requestQueue.put(ticket, request);
+
+        logger.debug("Queue size: {}, store time: {}", requestQueue.size(), stopwatch.stop());
+
         return ticket;
     }
 
@@ -62,20 +74,30 @@ public class Queue
      * Restore a {@link Request} using a unique identifier.
      * The identifier can only be used once.
      * If no Request was found, null is returned.
-     * 
-     * FIXME: use optional instead
      *
      * @param ticket    unique identifier returned when {@link Request} was initially stored.
-     * @return the stored {@link Request}
+     * @return the optional with stored {@link Request}
      */
-    public Request restoreRequest(String ticket) {
-        Request request = null;
+    public Optional<Request> restoreRequest(String ticket) {
+        Stopwatch stopwatch = Stopwatch.createStarted();
+
         try {
-            request = requestQueue.get(ticket);
+            Request request = requestQueue.get(ticket);
             requestQueue.remove(ticket);
+
+            logger.debug("Queue size: {}, store time: {}", requestQueue.size(), stopwatch.stop());
+
+            return Optional.ofNullable(request);
         } catch (Exception ex) {
             logger.warn("restoreRequest({}) failed", ticket, ex);
         }
-        return request;
+        return Optional.empty();
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("requestQueue", requestQueue)
+                .toString();
     }
 }

@@ -8,6 +8,7 @@ import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import eu.chargetime.ocpp.model.SessionInformation;
 import eu.chargetime.ocpp.model.core.*;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /*
@@ -37,7 +38,7 @@ import java.util.UUID;
  SOFTWARE.
  */
 public class SOAPServerSample {
-    private IServerAPI server;
+    private IServerAPI<UUID> server;
     private ServerCoreProfile core;
 
     public void started() throws Exception
@@ -48,7 +49,7 @@ public class SOAPServerSample {
         // The core profile is mandatory
         core = new ServerCoreProfile(new ServerCoreEventHandler() {
             @Override
-            public AuthorizeConfirmation handleAuthorizeRequest(UUID sessionIndex, AuthorizeRequest request) {
+            public AuthorizeConfirmation handleAuthorizeRequest(Serializable sessionIndex, AuthorizeRequest request) {
 
                 System.out.println(request);
                 // ... handle event
@@ -57,7 +58,7 @@ public class SOAPServerSample {
             }
 
             @Override
-            public BootNotificationConfirmation handleBootNotificationRequest(UUID sessionIndex, BootNotificationRequest request) {
+            public BootNotificationConfirmation handleBootNotificationRequest(Serializable sessionIndex, BootNotificationRequest request) {
 
                 System.out.println(request);
                 // ... handle event
@@ -66,7 +67,7 @@ public class SOAPServerSample {
             }
 
             @Override
-            public DataTransferConfirmation handleDataTransferRequest(UUID sessionIndex, DataTransferRequest request) {
+            public DataTransferConfirmation handleDataTransferRequest(Serializable sessionIndex, DataTransferRequest request) {
 
                 System.out.println(request);
                 // ... handle event
@@ -75,7 +76,7 @@ public class SOAPServerSample {
             }
 
             @Override
-            public HeartbeatConfirmation handleHeartbeatRequest(UUID sessionIndex, HeartbeatRequest request) {
+            public HeartbeatConfirmation handleHeartbeatRequest(Serializable sessionIndex, HeartbeatRequest request) {
 
                 System.out.println(request);
                 // ... handle event
@@ -84,7 +85,7 @@ public class SOAPServerSample {
             }
 
             @Override
-            public MeterValuesConfirmation handleMeterValuesRequest(UUID sessionIndex, MeterValuesRequest request) {
+            public MeterValuesConfirmation handleMeterValuesRequest(Serializable sessionIndex, MeterValuesRequest request) {
 
                 System.out.println(request);
                 // ... handle event
@@ -93,7 +94,7 @@ public class SOAPServerSample {
             }
 
             @Override
-            public StartTransactionConfirmation handleStartTransactionRequest(UUID sessionIndex, StartTransactionRequest request) {
+            public StartTransactionConfirmation handleStartTransactionRequest(Serializable sessionIndex, StartTransactionRequest request) {
 
                 System.out.println(request);
                 // ... handle event
@@ -102,7 +103,7 @@ public class SOAPServerSample {
             }
 
             @Override
-            public StatusNotificationConfirmation handleStatusNotificationRequest(UUID sessionIndex, StatusNotificationRequest request) {
+            public StatusNotificationConfirmation handleStatusNotificationRequest(Serializable sessionIndex, StatusNotificationRequest request) {
 
                 System.out.println(request);
                 // ... handle event
@@ -111,7 +112,7 @@ public class SOAPServerSample {
             }
 
             @Override
-            public StopTransactionConfirmation handleStopTransactionRequest(UUID sessionIndex, StopTransactionRequest request) {
+            public StopTransactionConfirmation handleStopTransactionRequest(Serializable sessionIndex, StopTransactionRequest request) {
 
                 System.out.println(request);
                 // ... handle event
@@ -121,7 +122,7 @@ public class SOAPServerSample {
         });
 
         server = new SOAPServer(core);
-        server.open("localhost", 8887, new ServerEvents() {
+        server.open("localhost", 8887, new ServerEvents<UUID>() {
 
             @Override
             public void newSession(UUID sessionIndex, SessionInformation information) {

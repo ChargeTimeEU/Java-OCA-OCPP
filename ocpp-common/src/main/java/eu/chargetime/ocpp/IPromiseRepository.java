@@ -27,12 +27,13 @@ package eu.chargetime.ocpp;
 
 import eu.chargetime.ocpp.model.Confirmation;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public interface IPromiseRepository {
     CompletableFuture<Confirmation> createPromise(String uniqueId);
 
-    CompletableFuture<Confirmation> getPromise(String uniqueId);
+    Optional<CompletableFuture<Confirmation>> getPromise(String uniqueId);
 
     void removePromise(String uniqueId);
 }

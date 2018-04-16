@@ -29,9 +29,11 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 
 public class FeatureRepository implements IFeatureRepository {
 
@@ -62,19 +64,16 @@ public class FeatureRepository implements IFeatureRepository {
      * Anything else will return null.
      *
      * @param needle Object supports {@link String}, {@link Request} or {@link Confirmation}
-     * @return Instance of the supported Feature
+     * @return Optional of instance of the supported Feature
      */
-    public Feature findFeature(Object needle) {
-        Feature output = null;
-
+    public Optional<Feature> findFeature(Object needle) {
         for (Feature feature : featureList) {
             if (featureContains(feature, needle)) {
-                output = feature;
-                break;
+                return Optional.of(feature);
             }
         }
 
-        return output;
+        return Optional.empty();
     }
 
     /**
@@ -95,5 +94,12 @@ public class FeatureRepository implements IFeatureRepository {
         contains |= object instanceof Request && feature.getRequestType() == object.getClass();
         contains |= object instanceof Confirmation && feature.getConfirmationType() == object.getClass();
         return contains;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper("FeatureRepository")
+                .add("featureList", featureList)
+                .toString();
     }
 }

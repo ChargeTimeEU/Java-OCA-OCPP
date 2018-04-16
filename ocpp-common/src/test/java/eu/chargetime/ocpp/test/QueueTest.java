@@ -5,6 +5,8 @@ import eu.chargetime.ocpp.model.Request;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -49,8 +51,14 @@ public class QueueTest
     @Test
     public void addRequest_getTicket()
     {
+        // Given
+        Request request = mock(Request.class);
+
         // When
-        queue.store(null);
+        String ticket = queue.store(request);
+
+        // Then
+        assertThat(ticket, is(notNullValue ()));
     }
 
     @Test
@@ -61,7 +69,7 @@ public class QueueTest
         String ticket = queue.store(request);
 
         // When
-        Request result = queue.restoreRequest(ticket);
+        Request result = queue.restoreRequest(ticket).get();
 
         // Then
         assertThat(result, equalTo(request));
@@ -74,10 +82,10 @@ public class QueueTest
         String invalidTicket = "Invalid";
 
         // When
-        Request result = queue.restoreRequest(invalidTicket);
+        Optional<Request> result = queue.restoreRequest(invalidTicket);
 
         // Then
-        assertThat(result, is(nullValue(Request.class)));
+        assertThat(result, is(Optional.empty()));
     }
 
     @Test
@@ -89,10 +97,10 @@ public class QueueTest
 
         // When
         queue.store(someRequest);
-        Request result = queue.restoreRequest(invalidTicket);
+        Optional<Request> result = queue.restoreRequest(invalidTicket);
 
         // Then
-        assertThat(result, is(nullValue(Request.class)));
+        assertThat(result, is(Optional.empty()));
     }
 
     @Test
@@ -104,9 +112,9 @@ public class QueueTest
 
         // When
         queue.restoreRequest(ticket);
-        Request result = queue.restoreRequest(ticket);
+        Optional<Request> result = queue.restoreRequest(ticket);
 
         // Then
-        assertThat(result, is(nullValue(Request.class)));
+        assertThat(result, is(Optional.empty()));
     }
 }

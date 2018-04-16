@@ -3,8 +3,12 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import org.apache.logging.log4j.LogManager;
+import eu.chargetime.ocpp.utilities.MoreObjects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 /*
@@ -38,10 +42,11 @@ import java.util.concurrent.CompletableFuture;
  * Unites outgoing {@link Request} with incoming {@link Confirmation}s or errors.
  * Catches errors and responds with error messages.
  */
-public class Session implements ISession {
+public class Session implements ISession<UUID> {
 
-    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(Session.class);
+    private static final Logger logger = LoggerFactory.getLogger(Session.class);
 
+    private final UUID sessionId = UUID.randomUUID();
     private final Communicator communicator;
     private final Queue queue;
     private final RequestDispatcher dispatcher;
@@ -59,6 +64,15 @@ public class Session implements ISession {
         this.queue = queue;
         this.dispatcher = new RequestDispatcher(fulfiller);
         this.featureRepository = featureRepository;
+    }
+
+    /**
+     * Get a unique session {@link UUID} identifier.
+     *
+     * @return the unique session {@link UUID} identifier
+     */
+    public UUID getSessionId() {
+        return sessionId;
     }
 
     /**
@@ -93,12 +107,22 @@ public class Session implements ISession {
     }
 
 
-    private Class<? extends Confirmation> getConfirmationType(String uniqueId) throws UnsupportedFeatureException {
-        Request request = queue.restoreRequest(uniqueId);
-        Feature feature = featureRepository.findFeature(request);
-        if (feature == null)
-            throw new UnsupportedFeatureException("Error with getting confirmation type: request = " + request.toString() + ", feature = " + feature);
-        return feature.getConfirmationType();
+    private Optional<Class<? extends Confirmation>> getConfirmationType(String uniqueId) throws UnsupportedFeatureException {
+        Optional<Request> requestOptional = queue.restoreRequest(uniqueId);
+
+        if(requestOptional.isPresent()) {
+            Optional<Feature> featureOptional = featureRepository.findFeature(requestOptional.get());
+            if (featureOptional.isPresent()) {
+                return Optional.of(featureOptional.get().getConfirmationType());
+            } else {
+                logger.debug("Feature for request with id: {} not found in session: {}", uniqueId, this);
+                throw new UnsupportedFeatureException("Error with getting confirmation type by request id = " + uniqueId);
+            }
+        } else {
+            logger.debug("Request with id: {} not found in session: {}", uniqueId, this);
+        }
+
+        return Optional.empty();
     }
 
     /**
@@ -135,11 +159,18 @@ public class Session implements ISession {
         @Override
         public void onCallResult(String id, String action, Object payload) {
             try {
-                Confirmation confirmation = communicator.unpackPayload(payload, getConfirmationType(id));
-                if (confirmation.validate()) {
-                    events.handleConfirmation(id, confirmation);
+                Optional<Class<? extends Confirmation>> confirmationTypeOptional = getConfirmationType(id);
+
+                if(confirmationTypeOptional.isPresent()) {
+                    Confirmation confirmation = communicator.unpackPayload(payload, confirmationTypeOptional.get());
+                    if (confirmation.validate()) {
+                        events.handleConfirmation(id, confirmation);
+                    } else {
+                        communicator.sendCallError(id, action, "OccurenceConstraintViolation", OCCURENCE_CONSTRAINT_VIOLATION);
+                    }
                 } else {
-                    communicator.sendCallError(id, action, "OccurenceConstraintViolation", OCCURENCE_CONSTRAINT_VIOLATION);
+                    logger.warn(INTERNAL_ERROR);
+                    communicator.sendCallError(id, action, "InternalError", INTERNAL_ERROR);
                 }
             } catch (PropertyConstraintException ex) {
                 String message = String.format(FIELD_CONSTRAINT_VIOLATION, ex.getFieldKey(), ex.getFieldValue(), ex.getMessage());
@@ -156,12 +187,12 @@ public class Session implements ISession {
 
         @Override
         synchronized public void onCall(String id, String action, Object payload) {
-            Feature feature = featureRepository.findFeature(action);
-            if (feature == null) {
+            Optional<Feature> featureOptional = featureRepository.findFeature(action);
+            if (!featureOptional.isPresent()) {
                 communicator.sendCallError(id, action, "NotImplemented", "Requested Action is not known by receiver");
             } else {
                 try {
-                    Request request = communicator.unpackPayload(payload, feature.getRequestType());
+                    Request request = communicator.unpackPayload(payload, featureOptional.get().getRequestType());
                     if (request.validate()) {
                         CompletableFuture<Confirmation> promise = dispatcher.handleRequest(request);
                         promise.whenComplete(new ConfirmationHandler(id, action, communicator));
@@ -194,5 +225,27 @@ public class Session implements ISession {
             events.handleConnectionOpened();
         }
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return MoreObjects.equals(sessionId, session.sessionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return MoreObjects.hash(sessionId);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("sessionId", sessionId)
+                .add("queue", queue)
+                .add("featureRepository", featureRepository)
+                .toString();
     }
 }

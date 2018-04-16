@@ -1,7 +1,8 @@
 package eu.chargetime.ocpp;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.soap.SOAPConnection;
 import javax.xml.soap.SOAPConnectionFactory;
@@ -35,12 +36,12 @@ import javax.xml.soap.SOAPMessage;
  */
 
 public class WebServiceTransmitter extends SOAPSyncHelper implements Transmitter {
-    private static final Logger logger = LogManager.getLogger(WebServiceTransmitter.class);
+    private static final Logger logger = LoggerFactory.getLogger(WebServiceTransmitter.class);
 	
-    SOAPConnection soapConnection;
+    private SOAPConnection soapConnection;
     private String url;
     private RadioEvents events;
-    boolean connected;
+    private boolean connected;
 
     public WebServiceTransmitter() {
         connected = false;
@@ -57,6 +58,11 @@ public class WebServiceTransmitter extends SOAPSyncHelper implements Transmitter
             }
         }
         events.disconnected();
+    }
+
+    @Override
+    public boolean isClosed() {
+        return !connected;
     }
 
     @Override
@@ -79,8 +85,7 @@ public class WebServiceTransmitter extends SOAPSyncHelper implements Transmitter
             throw new NotConnectedException();
         Thread thread = new Thread(() -> {
             try {
-                SOAPMessage soapMessage = message;
-                SOAPMessage response = soapConnection.call(soapMessage, url);
+                SOAPMessage response = soapConnection.call(message, url);
                 events.receivedMessage(response);
             } catch (SOAPException e) {
             	logger.warn("sendRequest() failed", e);

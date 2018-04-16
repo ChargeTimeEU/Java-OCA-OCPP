@@ -32,6 +32,7 @@ import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.SessionInformation;
 import eu.chargetime.ocpp.model.core.*;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.Calendar;
 import java.util.UUID;
@@ -50,7 +51,7 @@ public class DummyHandlers {
     public ServerCoreEventHandler createServerCoreEventHandler() {
         return new ServerCoreEventHandler() {
             @Override
-            public AuthorizeConfirmation handleAuthorizeRequest(UUID sessionIndex, AuthorizeRequest request) {
+            public AuthorizeConfirmation handleAuthorizeRequest(Serializable sessionIndex, AuthorizeRequest request) {
                 receivedRequest = request;
                 AuthorizeConfirmation confirmation = new AuthorizeConfirmation();
                 IdTagInfo tagInfo = new IdTagInfo();
@@ -63,7 +64,7 @@ public class DummyHandlers {
             }
 
             @Override
-            public BootNotificationConfirmation handleBootNotificationRequest(UUID sessionIndex, BootNotificationRequest request) {
+            public BootNotificationConfirmation handleBootNotificationRequest(Serializable sessionIndex, BootNotificationRequest request) {
                 receivedRequest = request;
                 BootNotificationConfirmation confirmation = new BootNotificationConfirmation();
                 try {
@@ -77,7 +78,7 @@ public class DummyHandlers {
             }
 
             @Override
-            public DataTransferConfirmation handleDataTransferRequest(UUID sessionIndex, DataTransferRequest request) {
+            public DataTransferConfirmation handleDataTransferRequest(Serializable sessionIndex, DataTransferRequest request) {
                 receivedRequest = request;
                 DataTransferConfirmation confirmation = new DataTransferConfirmation();
                 confirmation.setStatus(DataTransferStatus.Accepted);
@@ -85,7 +86,7 @@ public class DummyHandlers {
             }
 
             @Override
-            public HeartbeatConfirmation handleHeartbeatRequest(UUID sessionIndex, HeartbeatRequest request) {
+            public HeartbeatConfirmation handleHeartbeatRequest(Serializable sessionIndex, HeartbeatRequest request) {
                 receivedRequest = request;
                 HeartbeatConfirmation confirmation = new HeartbeatConfirmation();
                 confirmation.setCurrentTime(Calendar.getInstance());
@@ -93,13 +94,13 @@ public class DummyHandlers {
             }
 
             @Override
-            public MeterValuesConfirmation handleMeterValuesRequest(UUID sessionIndex, MeterValuesRequest request) {
+            public MeterValuesConfirmation handleMeterValuesRequest(Serializable sessionIndex, MeterValuesRequest request) {
                 receivedRequest = request;
                 return failurePoint(new MeterValuesConfirmation());
             }
 
             @Override
-            public StartTransactionConfirmation handleStartTransactionRequest(UUID sessionIndex, StartTransactionRequest request) {
+            public StartTransactionConfirmation handleStartTransactionRequest(Serializable sessionIndex, StartTransactionRequest request) {
                 receivedRequest = request;
                 IdTagInfo tagInfo = new IdTagInfo();
                 tagInfo.setStatus(AuthorizationStatus.Accepted);
@@ -110,14 +111,14 @@ public class DummyHandlers {
             }
 
             @Override
-            public StatusNotificationConfirmation handleStatusNotificationRequest(UUID sessionIndex, StatusNotificationRequest request) {
+            public StatusNotificationConfirmation handleStatusNotificationRequest(Serializable sessionIndex, StatusNotificationRequest request) {
                 receivedRequest = request;
                 StatusNotificationConfirmation confirmation = new StatusNotificationConfirmation();
                 return failurePoint(confirmation);
             }
 
             @Override
-            public StopTransactionConfirmation handleStopTransactionRequest(UUID sessionIndex, StopTransactionRequest request) {
+            public StopTransactionConfirmation handleStopTransactionRequest(Serializable sessionIndex, StopTransactionRequest request) {
                 receivedRequest = request;
                 StopTransactionConfirmation confirmation = new StopTransactionConfirmation();
                 return failurePoint(confirmation);
@@ -128,13 +129,13 @@ public class DummyHandlers {
     public ServerEvents generateServerEventsHandler() {
         return new ServerEvents() {
             @Override
-            public void newSession(UUID sessionIndex, SessionInformation information) {
-                currentSessionIndex = sessionIndex;
+            public void newSession(Serializable sessionIndex, SessionInformation information) {
+                currentSessionIndex = (UUID) sessionIndex;
                 currentIdentifier = information.getIdentifier();
             }
 
             @Override
-            public void lostSession(UUID identity) {
+            public void lostSession(Serializable identity) {
                 currentSessionIndex = null;
                 currentIdentifier = null;
                 // clear

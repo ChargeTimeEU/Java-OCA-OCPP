@@ -1,4 +1,5 @@
-package eu.chargetime.ocpp;/*
+package eu.chargetime.ocpp;
+/*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
@@ -26,9 +27,9 @@ package eu.chargetime.ocpp;/*
 
 import eu.chargetime.ocpp.model.SessionInformation;
 
-import java.util.UUID;
+import java.io.Serializable;
 
-public interface ServerEvents {
-    void newSession(UUID sessionIndex, SessionInformation information);
-    void lostSession(UUID sessionIndex);
+public interface ServerEvents<T extends Serializable> {
+    void newSession(T sessionIndex, SessionInformation information);
+    void lostSession(T sessionIndex);
 }

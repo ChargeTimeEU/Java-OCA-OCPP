@@ -28,8 +28,8 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.utilities.ModelUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlType(propOrder = {"value", "context", "format", "measurand", "phase", "location", "unit"})
 public class SampledValue implements Validatable {
-    private static final Logger logger = LogManager.getLogger(SampledValue.class);
+    private static final Logger logger = LoggerFactory.getLogger(SampledValue.class);
 
 	private String value;
     private String context;

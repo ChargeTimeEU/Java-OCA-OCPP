@@ -4,7 +4,7 @@ import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 
-import java.util.UUID;
+import java.io.Serializable;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -56,7 +56,7 @@ public abstract class Feature {
      * @param request the {@link Request} to be handled.
      * @return the {@link Confirmation} to be send back.
      */
-    public Confirmation handleRequest(UUID sessionIndex, Request request) {
+    public Confirmation handleRequest(Serializable sessionIndex, Request request) {
         return profile.handleRequest(sessionIndex, request);
     }
 

@@ -33,17 +33,18 @@ import eu.chargetime.ocpp.model.Request;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
 
-public class SOAPServer implements IServerAPI {
+public class SOAPServer implements IServerAPI<UUID> {
 
-    private FeatureRepository featureRepository;
-    private Server server;
+    private final FeatureRepository featureRepository;
+    private final Server<UUID> server;
+    private final WebServiceListener listener;
 
     public SOAPServer(ServerCoreProfile coreProfile) {
 
         featureRepository = new FeatureRepository();
         ServerSessionFactory sessionFactory = new ServerSessionFactory(featureRepository);
-        Listener listener = new WebServiceListener(sessionFactory);
-        server = new Server(listener, featureRepository, new PromiseRepository());
+        this.listener = new WebServiceListener(sessionFactory);
+        server = new Server<>(this.listener, featureRepository, new PromiseRepository());
         featureRepository.addFeatureProfile(coreProfile);
     }
 
@@ -58,7 +59,7 @@ public class SOAPServer implements IServerAPI {
     }
 
     @Override
-    public void open(String host, int port, ServerEvents serverEvents) {
+    public void open(String host, int port, ServerEvents<UUID> serverEvents) {
         server.open(host, port, serverEvents);
     }
 
@@ -67,8 +68,18 @@ public class SOAPServer implements IServerAPI {
         server.close();
     }
 
+    /**
+     * Flag if connection is closed.
+     *
+     * @return true if connection was closed or not opened
+     */
     @Override
-    public CompletionStage<Confirmation> send(UUID session, Request request) throws OccurenceConstraintException, UnsupportedFeatureException {
+    public boolean isClosed() {
+        return listener.isClosed();
+    }
+
+    @Override
+    public CompletionStage<Confirmation> send(UUID session, Request request) throws OccurenceConstraintException, UnsupportedFeatureException, NotConnectedException {
         return server.send(session, request);
     }
 }

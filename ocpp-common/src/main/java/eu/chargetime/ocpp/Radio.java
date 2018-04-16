@@ -1,4 +1,5 @@
-package eu.chargetime.ocpp;/*
+package eu.chargetime.ocpp;
+/*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
@@ -41,4 +42,12 @@ public interface Radio {
      * @exception NotConnectedException Message couldn't be sent due to the lack of connection.
      */
     void send(Object message) throws NotConnectedException;
+
+
+    /**
+     * If connection is closed.
+     *
+     * @return true if connection is closed or was not opened
+     */
+    boolean isClosed();
 }

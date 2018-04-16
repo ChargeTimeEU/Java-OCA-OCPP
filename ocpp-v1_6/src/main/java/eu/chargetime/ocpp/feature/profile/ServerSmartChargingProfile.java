@@ -8,8 +8,8 @@ import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.ChargingProfile;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 
+import java.io.Serializable;
 import java.util.HashSet;
-import java.util.UUID;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -52,7 +52,7 @@ public class ServerSmartChargingProfile implements Profile {
     }
 
     @Override
-    public Confirmation handleRequest(UUID sessionIndex, Request request) {
+    public Confirmation handleRequest(Serializable sessionIndex, Request request) {
        return null;
     }
 

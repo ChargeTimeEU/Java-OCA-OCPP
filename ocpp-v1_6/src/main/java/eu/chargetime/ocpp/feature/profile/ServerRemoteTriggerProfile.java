@@ -8,8 +8,9 @@ import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
 
+import java.io.Serializable;
 import java.util.HashSet;
-import java.util.UUID;
+
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -54,7 +55,7 @@ public class ServerRemoteTriggerProfile implements Profile {
     }
 
     @Override
-    public Confirmation handleRequest(UUID sessionIndex, Request request) {
+    public Confirmation handleRequest(Serializable sessionIndex, Request request) {
         return null;
     }
 

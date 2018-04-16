@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.feature.profile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.GetLocalListVersionFeature;
@@ -30,7 +30,7 @@ public class ClientLocalAuthListProfile implements Profile {
 	}
 
 	@Override
-	public Confirmation handleRequest(UUID sessionIndex, Request request) {
+	public Confirmation handleRequest(Serializable sessionIndex, Request request) {
 		Confirmation result = null;
 
 		if(request instanceof GetLocalListVersionRequest) {

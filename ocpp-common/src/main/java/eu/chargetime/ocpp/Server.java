@@ -3,11 +3,14 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
+import java.io.Serializable;
 import java.util.Map;
-import java.util.UUID;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -40,10 +43,14 @@ import java.util.concurrent.CompletableFuture;
  * Keeps track of outgoing requests.
  * Calls back when a confirmation is received.
  */
-public class Server {
+public class Server<T extends Serializable> {
 
-    private HashMap<UUID, ISession> sessions;
-    private Listener listener;
+    private static final Logger logger = LoggerFactory.getLogger(Server.class);
+
+    public static final int INITIAL_SESSIONS_NUMBER = 1000;
+
+    private Map<T, ISession<T>> sessions;
+    private Listener<T> listener;
     private final IFeatureRepository featureRepository;
     private final IPromiseRepository promiseRepository;
 
@@ -52,11 +59,11 @@ public class Server {
      *
      * @param listener injected listener.
      */
-    public Server(Listener listener, IFeatureRepository featureRepository, IPromiseRepository promiseRepository) {
+    public Server(Listener<T> listener, IFeatureRepository featureRepository, IPromiseRepository promiseRepository) {
         this.listener = listener;
         this.featureRepository = featureRepository;
         this.promiseRepository = promiseRepository;
-        this.sessions = new HashMap();
+        this.sessions = new ConcurrentHashMap<>(INITIAL_SESSIONS_NUMBER);
     }
 
     /**
@@ -65,32 +72,57 @@ public class Server {
      * @param port the port number of the server.
      * @param serverEvents Callback handler for server specific events.
      */
-    public void open(String hostname, int port, ServerEvents serverEvents) {
+    public void open(String hostname, int port, ServerEvents<T> serverEvents) {
 
         listener.open(hostname, port, (session, information) -> {
             session.accept(new SessionEvents() {
                 @Override
                 public void handleConfirmation(String uniqueId, Confirmation confirmation) {
-                    promiseRepository.getPromise(uniqueId).complete(confirmation);
-                    promiseRepository.removePromise(uniqueId);
+
+                    Optional<CompletableFuture<Confirmation>> promiseOptional = promiseRepository.getPromise(uniqueId);
+                    if (promiseOptional.isPresent()) {
+                        promiseOptional.get().complete(confirmation);
+                        promiseRepository.removePromise(uniqueId);
+                    } else {
+                        logger.debug("Promise not found for confirmation {}", confirmation);
+                    }
                 }
 
                 @Override
-                public Confirmation handleRequest(Request request) {
-                    Feature feature = featureRepository.findFeature(request);
-                    return feature.handleRequest(getSessionID(session), request);
+                public Confirmation handleRequest(Request request) throws UnsupportedFeatureException {
+                    Optional<Feature> featureOptional = featureRepository.findFeature(request);
+                    if(featureOptional.isPresent()) {
+                        Optional<T> sessionIdOptional = getSessionID(session);
+                        if(sessionIdOptional.isPresent()) {
+                            return featureOptional.get().handleRequest(sessionIdOptional.get(), request);
+                        } else {
+                            throw new IllegalStateException("Active session not found");
+                        }
+                    } else {
+                        throw new UnsupportedFeatureException();
+                    }
                 }
 
                 @Override
                 public void handleError(String uniqueId, String errorCode, String errorDescription, Object payload) {
-                    promiseRepository.getPromise(uniqueId).completeExceptionally(new CallErrorException(errorCode, errorCode, payload));
-                    promiseRepository.removePromise(uniqueId);
+                    Optional<CompletableFuture<Confirmation>> promiseOptional = promiseRepository.getPromise(uniqueId);
+                    if(promiseOptional.isPresent()) {
+                        promiseOptional.get().completeExceptionally(new CallErrorException(errorCode, errorCode, payload));
+                        promiseRepository.removePromise(uniqueId);
+                    } else {
+                        logger.debug("Promise not found for error {}", errorDescription);
+                    }
                 }
 
                 @Override
                 public void handleConnectionClosed() {
-                    serverEvents.lostSession(getSessionID(session));
-                    sessions.remove(session);
+                    Optional<T> sessionIdOptional = getSessionID(session);
+                    if(sessionIdOptional.isPresent()) {
+                        serverEvents.lostSession(sessionIdOptional.get());
+                        sessions.remove(sessionIdOptional.get());
+                    } else {
+                        logger.warn("Active session not found");
+                    }
                 }
 
                 @Override
@@ -98,22 +130,25 @@ public class Server {
 
                 }
             });
-            sessions.put(UUID.randomUUID(), session);
-            serverEvents.newSession(getSessionID(session), information);
+
+            sessions.put(session.getSessionId(), session);
+
+            Optional<T> sessionIdOptional = getSessionID(session);
+            if(sessionIdOptional.isPresent()) {
+                serverEvents.newSession(sessionIdOptional.get(), information);
+                logger.debug("Session created: {}", session.getSessionId());
+            } else {
+                throw new IllegalStateException("Failed to create a session");
+            }
         });
     }
 
-    private UUID getSessionID(ISession session) {
-
-        if (!sessions.containsValue(session))
-            return null;
-
-        for (Map.Entry<UUID, ISession> entry : sessions.entrySet()) {
-            if (entry.getValue() == session)
-                return entry.getKey();
+    private Optional<T> getSessionID(ISession<T> session) {
+        if (!sessions.containsValue(session)) {
+            return Optional.empty();
         }
 
-        return null;
+        return Optional.of(session.getSessionId());
     }
 
     /**
@@ -132,18 +167,28 @@ public class Server {
      * @throws UnsupportedFeatureException Thrown if the feature isn't among the list of supported featured.
      * @throws OccurenceConstraintException Thrown if the request isn't valid.
      */
-    public CompletableFuture<Confirmation> send(UUID sessionIndex, Request request) throws UnsupportedFeatureException, OccurenceConstraintException {
-        Feature feature = featureRepository.findFeature(request);
-        if (feature == null)
+    public CompletableFuture<Confirmation> send(T sessionIndex, Request request) throws UnsupportedFeatureException, OccurenceConstraintException, NotConnectedException {
+        Optional<Feature> featureOptional = featureRepository.findFeature(request);
+        if (!featureOptional.isPresent()) {
             throw new UnsupportedFeatureException();
+        }
 
-        if (!request.validate())
+        if (!request.validate()) {
             throw new OccurenceConstraintException();
+        }
 
-        ISession session = sessions.get(sessionIndex);
+        ISession<T> session = sessions.get(sessionIndex);
+
+        if(session == null) {
+            logger.warn("Session not found by index: {}", sessionIndex);
+
+            // No session found means client disconnected and request should be cancelled
+            throw new NotConnectedException();
+        }
+
         String id = session.storeRequest(request);
         CompletableFuture<Confirmation> promise = promiseRepository.createPromise(id);
-        session.sendRequest(feature.getAction(), request, id);
+        session.sendRequest(featureOptional.get().getAction(), request, id);
         return promise;
     }
 
@@ -152,10 +197,11 @@ public class Server {
      *
      * @param sessionIndex Session index of the client.
      */
-    public void closeSession(UUID sessionIndex) {
-        ISession session = sessions.get(sessionIndex);
-        if (session != null)
+    public void closeSession(T sessionIndex) {
+        ISession<T> session = sessions.get(sessionIndex);
+        if (session != null) {
             session.close();
+        }
     }
 
     public void setAsyncRequestHandler(boolean asyncRequestHandler) {
