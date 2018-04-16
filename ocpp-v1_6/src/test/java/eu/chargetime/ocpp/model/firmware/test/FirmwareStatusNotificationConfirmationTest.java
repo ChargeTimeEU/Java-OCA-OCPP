@@ -1,10 +1,11 @@
-package eu.chargetime.ocpp.feature.profile;
+package eu.chargetime.ocpp.model.firmware.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,34 +26,30 @@ package eu.chargetime.ocpp.feature.profile;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.DiagnosticsStatusNotificationFeature;
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.feature.FirmwareStatusNotificationFeature;
-import eu.chargetime.ocpp.feature.GetDiagnosticsFeature;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationConfirmation;
+import eu.chargetime.ocpp.utilities.TestUtilities;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.UUID;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
-public class ServerFirmwareManagementProfile implements Profile {
+public class FirmwareStatusNotificationConfirmationTest extends TestUtilities {
 
-    private HashSet<Feature> features;
+    private FirmwareStatusNotificationConfirmation confirmation;
 
-    public ServerFirmwareManagementProfile() {
-        features = new HashSet<>();
-        features.add(new GetDiagnosticsFeature(this));
-        features.add(new DiagnosticsStatusNotificationFeature(this));
-        features.add(new FirmwareStatusNotificationFeature(this));
+    @Before
+    public void setup() {
+        confirmation = new FirmwareStatusNotificationConfirmation();
     }
 
-    @Override
-    public Feature[] getFeatureList() {
-        return features.toArray(new Feature[0]);
+    @Test
+    public void validate_returnsTrue() {
+        // When
+        boolean result = confirmation.validate();
+
+        // Then
+        assertThat(result, is(true));
     }
 
-    @Override
-    public Confirmation handleRequest(UUID sessionIndex, Request request) {
-        return null;
-    }
 }

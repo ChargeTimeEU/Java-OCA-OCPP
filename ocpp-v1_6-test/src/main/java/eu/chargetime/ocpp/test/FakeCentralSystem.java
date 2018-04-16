@@ -122,9 +122,12 @@ public class FakeCentralSystem {
         return dummyHandlers.wasLatestConfirmation(GetDiagnosticsConfirmation.class);
     }
 
-
     public boolean hasReceivedDiagnosticsStatusNotificationConfirmation() {
         return dummyHandlers.wasLatestConfirmation(DiagnosticsStatusNotificationConfirmation.class);
+    }
+
+    public boolean hasReceivedFirmwareStatusNotificationConfirmation() {
+        return dummyHandlers.wasLatestConfirmation(FirmwareStatusNotificationConfirmation.class);
     }
 
     public boolean hasReceivedChangeAvailabilityConfirmation(String status) {
@@ -230,9 +233,13 @@ public class FakeCentralSystem {
         send(request);
     }
 
-
     public void sendDiagnosticsStatusNotificationRequest(DiagnosticsStatus status) throws Exception {
         DiagnosticsStatusNotificationRequest request = new DiagnosticsStatusNotificationRequest(status);
+        send(request);
+    }
+
+    public void sendFirmwareStatusNotificationRequest(FirmwareStatus status) throws Exception {
+        FirmwareStatusNotificationRequest request = new FirmwareStatusNotificationRequest(status);
         send(request);
     }
 
