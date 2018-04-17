@@ -30,6 +30,7 @@ package eu.chargetime.ocpp.model.firmware;
 import eu.chargetime.ocpp.model.Confirmation;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 /**
  * Sent by the Charge Point to the Central System in response to an {@link DiagnosticsStatusNotificationRequest}.
@@ -52,7 +53,7 @@ public class DiagnosticsStatusNotificationConfirmation implements Confirmation {
 
     @Override
     public int hashCode() {
-        return 5;
+        return Objects.hash(DiagnosticsStatusNotificationConfirmation.class);
     }
 
     @Override

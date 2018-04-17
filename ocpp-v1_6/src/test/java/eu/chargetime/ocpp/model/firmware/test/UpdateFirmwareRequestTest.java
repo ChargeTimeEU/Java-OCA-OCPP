@@ -45,7 +45,33 @@ public class UpdateFirmwareRequestTest {
     }
 
     @Test
-    public void validate_locationIsNotSet_returnsFalse() {
+    public void validate_returnFalse() {
+        // When
+        boolean result = request.validate();
+
+        // Then
+        assertThat(result, is(false));
+    }
+
+    @Test
+    public void validate_locationOnlyIsSet_returnsFalse() {
+        // Given
+        String aLocation = "/";
+        request.setLocation(aLocation);
+
+        // When
+        boolean result = request.validate();
+
+        // Then
+        assertThat(result, is(false));
+    }
+
+    @Test
+    public void validate_retrieveDateOnlyIsSet_returnsFalse() {
+        // Given
+        Calendar aRetrieveDate = Calendar.getInstance();
+        request.setRetrieveDate(aRetrieveDate);
+
         // When
         boolean result = request.validate();
 

@@ -42,7 +42,7 @@ public class GetDiagnosticsRequestTest {
     }
 
     @Test
-    public void validate_locationIsNotSet_returnsFalse() {
+    public void validate_returnFalse() {
         // When
         boolean result = request.validate();
 
