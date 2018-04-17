@@ -50,9 +50,7 @@ public class JSONClient implements IClientAPI {
 
     private static final Logger logger = LoggerFactory.getLogger(JSONClient.class);
 
-    public final Draft draftOcppOnly =
-            new Draft_6455(Collections.emptyList(),
-                    Collections.singletonList(new Protocol("ocpp1.6")));
+    public final Draft draftOcppOnly;
     private final WebSocketTransmitter transmitter;
     private final FeatureRepository featureRepository;
     private final Client client;
@@ -71,6 +69,8 @@ public class JSONClient implements IClientAPI {
      */
     public JSONClient(ClientCoreProfile coreProfile, String identity) {
         this.identity = identity;
+        draftOcppOnly = new Draft_6455(Collections.emptyList(),
+                Collections.singletonList(new Protocol("ocpp1.6")));
         transmitter = new WebSocketTransmitter(draftOcppOnly);
         JSONCommunicator communicator = new JSONCommunicator(transmitter);
         AsyncPromiseFulfilerDecorator promiseFulfiler = new AsyncPromiseFulfilerDecorator(new SimplePromiseFulfiller());

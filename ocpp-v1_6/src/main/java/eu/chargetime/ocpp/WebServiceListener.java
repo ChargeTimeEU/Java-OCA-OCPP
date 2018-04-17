@@ -129,9 +129,7 @@ public class WebServiceListener implements Listener {
             SOAPMessage confirmation = null;
             try {
                 confirmation = chargeBoxes.get(identity).relay(message).get();
-            } catch (InterruptedException e) {
-                logger.warn("incomingRequest() chargeBoxes.relay failed", e);
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 logger.warn("incomingRequest() chargeBoxes.relay failed", e);
             }
 

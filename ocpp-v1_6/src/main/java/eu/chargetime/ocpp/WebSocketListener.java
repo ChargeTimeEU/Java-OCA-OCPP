@@ -139,7 +139,7 @@ public class WebSocketListener implements Listener {
     }
 
     public void setPingInterval(int interval) {
-        this.pingInterval = pingInterval;
+        this.pingInterval = interval;
 
         if(server != null) {
             server.setConnectionLostTimeout(interval);
