@@ -91,6 +91,11 @@ public class JSONServer implements IServerAPI {
         return this;
     }
 
+    public void setPingInterval(int interval) {
+        // Set ping interval in seconds
+        listener.setPingInterval(interval);
+    }
+
     @Override
     public void addFeatureProfile(Profile profile) {
         featureRepository.addFeatureProfile(profile);
