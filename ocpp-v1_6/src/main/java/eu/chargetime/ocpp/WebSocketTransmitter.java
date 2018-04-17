@@ -25,9 +25,9 @@ package eu.chargetime.ocpp;
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
- */
+*/
 
-
+import eu.chargetime.ocpp.wss.WssSocketBuilder;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
@@ -54,16 +54,19 @@ public class WebSocketTransmitter implements Transmitter
 {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketTransmitter.class);
 
+    public static final String WSS_SCHEME = "wss";
     private volatile boolean closed = true;
     private WebSocketClient client;
+    private WssSocketBuilder wssSocketBuilder;
 
     public WebSocketTransmitter() {
     }
 
     @Override
     public void connect(String uri, RadioEvents events) {
-        Draft_6455 draft = new Draft_6455(Collections.<IExtension>emptyList(), Collections.<IProtocol>singletonList(new Protocol("ocpp1.6")));
-        client = new WebSocketClient(URI.create(uri), draft) {
+        final URI resource = URI.create(uri);
+		Draft_6455 draft = new Draft_6455(Collections.<IExtension>emptyList(), Collections.<IProtocol>singletonList(new Protocol("ocpp1.6")));
+        client = new WebSocketClient(resource, draft) {
             @Override
             public void onOpen(ServerHandshake serverHandshake)
             {
@@ -93,6 +96,21 @@ public class WebSocketTransmitter implements Transmitter
             	}
             }
         };
+
+        if(WSS_SCHEME.equals(resource.getScheme())) {
+		
+			if(wssSocketBuilder == null) {
+                throw new IllegalStateException("wssSocketBuilder must be set to support " + WSS_SCHEME + " scheme");
+            }
+
+            try {
+                client.setSocket(wssSocketBuilder
+                        .uri(resource)
+                        .build());
+            } catch (IOException ex) {
+                logger.error("SSL socket creation failed", ex);
+            }
+        }
         try {
             client.connectBlocking();
             closed = false;
@@ -101,9 +119,13 @@ public class WebSocketTransmitter implements Transmitter
         }
     }
 
-    public void enableWSS(SSLContext sslContext) throws IOException {
-        SSLSocketFactory factory = sslContext.getSocketFactory();
-        client.setSocket(factory.createSocket());
+    public void enableWSS(WssSocketBuilder wssSocketBuilder) {
+
+        if(client != null) {
+            throw new IllegalStateException("Cannot enable WSS on already connected client");
+        }
+
+        this.wssSocketBuilder = wssSocketBuilder;
     }
 
     @Override
