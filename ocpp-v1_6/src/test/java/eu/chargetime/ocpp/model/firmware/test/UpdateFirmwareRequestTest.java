@@ -1,10 +1,11 @@
-package eu.chargetime.ocpp.feature.profile;
+package eu.chargetime.ocpp.model.firmware.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,15 +26,46 @@ package eu.chargetime.ocpp.feature.profile;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.firmware.*;
+import eu.chargetime.ocpp.model.firmware.UpdateFirmwareRequest;
+import org.junit.Before;
+import org.junit.Test;
 
-public interface ClientFirmwareManagementEventHandler {
-    GetDiagnosticsConfirmation handleGetDiagnosticsRequest(GetDiagnosticsRequest request);
+import java.util.Calendar;
 
-    DiagnosticsStatusNotificationConfirmation handleDiagnosticsStatusNotificationRequest(DiagnosticsStatusNotificationRequest request);
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
-    FirmwareStatusNotificationConfirmation handleFirmwareStatusNotificationRequest(FirmwareStatusNotificationRequest request);
+public class UpdateFirmwareRequestTest {
 
-    UpdateFirmwareConfirmation handleUpdateFirmwareRequest(UpdateFirmwareRequest request);
+    private UpdateFirmwareRequest request;
+
+    @Before
+    public void setup() {
+        request = new UpdateFirmwareRequest();
+    }
+
+    @Test
+    public void validate_locationIsNotSet_returnsFalse() {
+        // When
+        boolean result = request.validate();
+
+        // Then
+        assertThat(result, is(false));
+    }
+
+    @Test
+    public void validate_locationAndRetrieveDateIsSet_returnsTrue() {
+        // Given
+        String aLocation = "/";
+        Calendar aRetrieveDate = Calendar.getInstance();
+        request.setLocation(aLocation);
+        request.setRetrieveDate(aRetrieveDate);
+
+        // When
+        boolean result = request.validate();
+
+        // Then
+        assertThat(result, is(true));
+    }
 
 }

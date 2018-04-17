@@ -1,10 +1,11 @@
-package eu.chargetime.ocpp.feature.profile.test;
+package eu.chargetime.ocpp.model.reservation.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
 
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,38 +26,52 @@ package eu.chargetime.ocpp.feature.profile.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.*;
-import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementProfile;
-import org.hamcrest.core.Is;
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
+import java.util.Calendar;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ServerFirmwareManagementProfileTest extends ProfileTest {
+public class ReserveNowRequestTest {
 
-    ServerFirmwareManagementProfile profile;
+    private ReserveNowRequest request;
 
     @Before
     public void setup() {
-        profile = new ServerFirmwareManagementProfile();
+        request = new ReserveNowRequest();
     }
 
     @Test
-    public void getFeatureList_containsAllNeededFeatures() {
+    public void validate_statusIsNotSet_returnsFalse() {
         // When
-        Feature[] features = profile.getFeatureList();
+        boolean result = request.validate();
 
         // Then
-        assertThat(findFeature(features, "GetDiagnostics"), Is.is(instanceOf(GetDiagnosticsFeature.class)));
-        assertThat(findFeature(features, "DiagnosticsStatusNotification"), Is.is(instanceOf(DiagnosticsStatusNotificationFeature.class)));
-        assertThat(findFeature(features, "FirmwareStatusNotification"), Is.is(instanceOf(FirmwareStatusNotificationFeature.class)));
-        assertThat(findFeature(features, "UpdateFirmware"), Is.is(instanceOf(UpdateFirmwareFeature.class)));
+        assertThat(result, is(false));
+    }
+
+    @Test
+    public void validate_requiredFieldsAreSet_returnTrue() throws PropertyConstraintException {
+        // Given
+        Integer connectorId = 1;
+        Calendar expiryDate = Calendar.getInstance();
+        String idTag = "row";
+        Integer reservationId = 2;
+
+        request.setConnectorId(connectorId);
+        request.setExpiryDate(expiryDate);
+        request.setIdTag(idTag);
+        request.setReservationId(reservationId);
+
+        // When
+        boolean result = request.validate();
+
+        // Then
+        assertThat(result, is(true));
     }
 
 }

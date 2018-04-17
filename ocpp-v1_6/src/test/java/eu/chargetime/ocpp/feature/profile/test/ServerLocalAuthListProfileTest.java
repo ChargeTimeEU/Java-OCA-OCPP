@@ -5,6 +5,7 @@ package eu.chargetime.ocpp.feature.profile.test;
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,38 +26,37 @@ package eu.chargetime.ocpp.feature.profile.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.*;
-import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementProfile;
-import org.hamcrest.core.Is;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.GetLocalListVersionFeature;
+import eu.chargetime.ocpp.feature.SendLocalListFeature;
+import eu.chargetime.ocpp.feature.profile.ServerLocalAuthListProfile;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ServerFirmwareManagementProfileTest extends ProfileTest {
+public class ServerLocalAuthListProfileTest extends ProfileTest {
 
-    ServerFirmwareManagementProfile profile;
+    ServerLocalAuthListProfile profile;
 
     @Before
     public void setup() {
-        profile = new ServerFirmwareManagementProfile();
+        profile = new ServerLocalAuthListProfile();
     }
 
     @Test
     public void getFeatureList_containsAllNeededFeatures() {
         // When
-        Feature[] features = profile.getFeatureList();
+        Feature[] featureList = profile.getFeatureList();
 
         // Then
-        assertThat(findFeature(features, "GetDiagnostics"), Is.is(instanceOf(GetDiagnosticsFeature.class)));
-        assertThat(findFeature(features, "DiagnosticsStatusNotification"), Is.is(instanceOf(DiagnosticsStatusNotificationFeature.class)));
-        assertThat(findFeature(features, "FirmwareStatusNotification"), Is.is(instanceOf(FirmwareStatusNotificationFeature.class)));
-        assertThat(findFeature(features, "UpdateFirmware"), Is.is(instanceOf(UpdateFirmwareFeature.class)));
+        assertThat(findFeature(featureList, "GetLocalListVersion"), CoreMatchers.is(instanceOf(GetLocalListVersionFeature.class)));
+        assertThat(findFeature(featureList, "SendLocalList"), CoreMatchers.is(instanceOf(SendLocalListFeature.class)));
     }
 
 }

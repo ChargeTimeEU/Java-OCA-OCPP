@@ -20,5 +20,5 @@ public interface ClientLocalAuthListEventHandler {
      * @param request incoming {@link SendLocalListRequest} to handle.
      * @return outgoing {@link SendLocalListConfirmation} to reply with.
      */
-	SendLocalListConfirmation handleSendLocalListReqeust(SendLocalListRequest request);
+	SendLocalListConfirmation handleSendLocalListRequest(SendLocalListRequest request);
 }

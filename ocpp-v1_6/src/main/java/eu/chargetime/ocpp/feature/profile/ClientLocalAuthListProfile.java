@@ -13,8 +13,8 @@ import eu.chargetime.ocpp.model.localauthlist.SendLocalListRequest;
 
 public class ClientLocalAuthListProfile implements Profile {
 	
-	ClientLocalAuthListEventHandler eventHandler;
-	ArrayList<Feature> featureList;
+	private ClientLocalAuthListEventHandler eventHandler;
+	private ArrayList<Feature> featureList;
 
 	public ClientLocalAuthListProfile(ClientLocalAuthListEventHandler handler) {
 		eventHandler = handler;
@@ -36,7 +36,7 @@ public class ClientLocalAuthListProfile implements Profile {
 		if(request instanceof GetLocalListVersionRequest) {
 			result = eventHandler.handleGetLocalListVersionRequest((GetLocalListVersionRequest)request);
 		} else if (request instanceof SendLocalListRequest) {
-			result = eventHandler.handleSendLocalListReqeust((SendLocalListRequest) request); 
+			result = eventHandler.handleSendLocalListRequest((SendLocalListRequest) request);
 		}
 		
 		return result;

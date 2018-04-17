@@ -1,10 +1,11 @@
-package eu.chargetime.ocpp.feature.profile.test;
+package eu.chargetime.ocpp.model.reservation.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
 
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,38 +26,49 @@ package eu.chargetime.ocpp.feature.profile.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.*;
-import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementProfile;
-import org.hamcrest.core.Is;
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.reservation.ReservationStatus;
+import eu.chargetime.ocpp.model.reservation.ReserveNowConfirmation;
+import eu.chargetime.ocpp.utilities.TestUtilities;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
+import java.util.Calendar;
+
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ServerFirmwareManagementProfileTest extends ProfileTest {
+public class ReserveNowConfirmationTest extends TestUtilities {
 
-    ServerFirmwareManagementProfile profile;
+    private ReserveNowConfirmation confirmation;
 
     @Before
     public void setup() {
-        profile = new ServerFirmwareManagementProfile();
+        confirmation = new ReserveNowConfirmation();
     }
 
     @Test
-    public void getFeatureList_containsAllNeededFeatures() {
+    public void validate_statusIsNotSet_returnsFalse() {
         // When
-        Feature[] features = profile.getFeatureList();
+        boolean result = confirmation.validate();
 
         // Then
-        assertThat(findFeature(features, "GetDiagnostics"), Is.is(instanceOf(GetDiagnosticsFeature.class)));
-        assertThat(findFeature(features, "DiagnosticsStatusNotification"), Is.is(instanceOf(DiagnosticsStatusNotificationFeature.class)));
-        assertThat(findFeature(features, "FirmwareStatusNotification"), Is.is(instanceOf(FirmwareStatusNotificationFeature.class)));
-        assertThat(findFeature(features, "UpdateFirmware"), Is.is(instanceOf(UpdateFirmwareFeature.class)));
+        assertThat(result, CoreMatchers.is(false));
+    }
+
+    @Test
+    public void validate_statusIsSet_returnsTrue() {
+        // Given
+        ReservationStatus status = ReservationStatus.Occupied;
+
+        confirmation.setStatus(status);
+
+        // When
+        boolean result = confirmation.validate();
+
+        // Then
+        assertThat(result, CoreMatchers.is(true));
     }
 
 }
