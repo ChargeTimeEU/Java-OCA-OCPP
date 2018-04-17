@@ -34,7 +34,7 @@ import static org.junit.Assert.assertThat;
 
 public class GetDiagnosticsRequestTest {
 
-    GetDiagnosticsRequest request;
+    private GetDiagnosticsRequest request;
 
     @Before
     public void setup() {
