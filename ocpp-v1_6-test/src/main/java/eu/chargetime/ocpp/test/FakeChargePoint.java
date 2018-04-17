@@ -5,10 +5,7 @@ import eu.chargetime.ocpp.feature.profile.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
-import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationConfirmation;
-import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsConfirmation;
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
+import eu.chargetime.ocpp.model.firmware.*;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageConfirmation;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageStatus;
@@ -156,6 +153,18 @@ public class FakeChargePoint
             public DiagnosticsStatusNotificationConfirmation handleDiagnosticsStatusNotificationRequest(DiagnosticsStatusNotificationRequest request) {
                 receivedRequest = request;
                 return new DiagnosticsStatusNotificationConfirmation();
+            }
+
+            @Override
+            public FirmwareStatusNotificationConfirmation handleFirmwareStatusNotificationRequest(FirmwareStatusNotificationRequest request) {
+                receivedRequest = request;
+                return new FirmwareStatusNotificationConfirmation();
+            }
+
+            @Override
+            public UpdateFirmwareConfirmation handleUpdateFirmwareRequest(UpdateFirmwareRequest request) {
+                receivedRequest = request;
+                return new UpdateFirmwareConfirmation();
             }
         });
 
@@ -316,6 +325,14 @@ public class FakeChargePoint
 
     public boolean hasHandledDiagnosticsStatusNotificationRequest() {
         return receivedRequest instanceof DiagnosticsStatusNotificationRequest;
+    }
+
+    public boolean hasHandledFirmwareStatusNotificationRequest() {
+        return receivedRequest instanceof FirmwareStatusNotificationRequest;
+    }
+
+    public boolean hasHandledUpdateFirmwareRequest() {
+        return receivedRequest instanceof UpdateFirmwareRequest;
     }
 
     public boolean hasHandledChangeAvailabilityRequest() {

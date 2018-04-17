@@ -25,9 +25,7 @@ package eu.chargetime.ocpp.feature.profile;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.DiagnosticsStatusNotificationFeature;
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.feature.GetDiagnosticsFeature;
+import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 
@@ -42,6 +40,8 @@ public class ServerFirmwareManagementProfile implements Profile {
         features = new HashSet<>();
         features.add(new GetDiagnosticsFeature(this));
         features.add(new DiagnosticsStatusNotificationFeature(this));
+        features.add(new FirmwareStatusNotificationFeature(this));
+        features.add(new UpdateFirmwareFeature(this));
     }
 
     @Override
