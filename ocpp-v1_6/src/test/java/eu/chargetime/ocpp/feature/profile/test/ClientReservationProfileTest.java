@@ -5,6 +5,7 @@ package eu.chargetime.ocpp.feature.profile.test;
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -26,25 +27,36 @@ package eu.chargetime.ocpp.feature.profile.test;
  */
 
 import eu.chargetime.ocpp.feature.*;
-import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementProfile;
-import org.hamcrest.core.Is;
+import eu.chargetime.ocpp.feature.profile.ClientReservationEventHandler;
+import eu.chargetime.ocpp.feature.profile.ClientReservationProfile;
+import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.UUID;
+
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ServerFirmwareManagementProfileTest extends ProfileTest {
+public class ClientReservationProfileTest extends ProfileTest {
+    private static final UUID SESSION_NULL = null;
+    ClientReservationProfile profile;
 
-    ServerFirmwareManagementProfile profile;
+    @Mock
+    private
+    ClientReservationEventHandler handler;
 
     @Before
     public void setup() {
-        profile = new ServerFirmwareManagementProfile();
+        profile = new ClientReservationProfile(handler);
     }
 
     @Test
@@ -53,10 +65,19 @@ public class ServerFirmwareManagementProfileTest extends ProfileTest {
         Feature[] features = profile.getFeatureList();
 
         // Then
-        assertThat(findFeature(features, "GetDiagnostics"), Is.is(instanceOf(GetDiagnosticsFeature.class)));
-        assertThat(findFeature(features, "DiagnosticsStatusNotification"), Is.is(instanceOf(DiagnosticsStatusNotificationFeature.class)));
-        assertThat(findFeature(features, "FirmwareStatusNotification"), Is.is(instanceOf(FirmwareStatusNotificationFeature.class)));
-        assertThat(findFeature(features, "UpdateFirmware"), Is.is(instanceOf(UpdateFirmwareFeature.class)));
+        assertThat(findFeature(features, "ReserveNow"), is(instanceOf(ReserveNowFeature.class)));
+    }
+
+    @Test
+    public void handleRequest_aReserveNowRequest_callsHandleReserveNowRequest() {
+        // Given
+        ReserveNowRequest request = new ReserveNowRequest();
+
+        // When
+        profile.handleRequest(SESSION_NULL, request);
+
+        // Then
+        verify(handler, times(1)).handleReserveNowRequest(eq(request));
     }
 
 }

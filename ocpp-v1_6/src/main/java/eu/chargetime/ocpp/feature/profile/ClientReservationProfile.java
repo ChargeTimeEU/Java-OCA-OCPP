@@ -1,10 +1,10 @@
-package eu.chargetime.ocpp.feature.profile;
-/*
+package eu.chargetime.ocpp.feature.profile;/*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,15 +25,38 @@ package eu.chargetime.ocpp.feature.profile;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.firmware.*;
+import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
 
-public interface ClientFirmwareManagementEventHandler {
-    GetDiagnosticsConfirmation handleGetDiagnosticsRequest(GetDiagnosticsRequest request);
+import java.util.HashSet;
+import java.util.UUID;
 
-    DiagnosticsStatusNotificationConfirmation handleDiagnosticsStatusNotificationRequest(DiagnosticsStatusNotificationRequest request);
+public class ClientReservationProfile implements Profile {
 
-    FirmwareStatusNotificationConfirmation handleFirmwareStatusNotificationRequest(FirmwareStatusNotificationRequest request);
+    private HashSet<Feature> features;
+    private ClientReservationEventHandler eventHandler;
 
-    UpdateFirmwareConfirmation handleUpdateFirmwareRequest(UpdateFirmwareRequest request);
+    public ClientReservationProfile(ClientReservationEventHandler eventHandler) {
+        this.eventHandler = eventHandler;
+        features = new HashSet<>();
+        features.add(new ReserveNowFeature(this));
+    }
 
+    @Override
+    public Feature[] getFeatureList() {
+        return features.toArray(new Feature[0]);
+    }
+
+    @Override
+    public Confirmation handleRequest(UUID sessionIndex, Request request) {
+        Confirmation result = null;
+
+        if (request instanceof ReserveNowRequest) {
+            result = eventHandler.handleReserveNowRequest((ReserveNowRequest) request);
+        }
+
+        return result;
+    }
 }

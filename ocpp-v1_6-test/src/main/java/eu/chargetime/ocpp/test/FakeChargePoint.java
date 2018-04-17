@@ -5,13 +5,13 @@ import eu.chargetime.ocpp.feature.profile.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
-import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationConfirmation;
-import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsConfirmation;
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
+import eu.chargetime.ocpp.model.firmware.*;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageConfirmation;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageStatus;
+import eu.chargetime.ocpp.model.reservation.ReservationStatus;
+import eu.chargetime.ocpp.model.reservation.ReserveNowConfirmation;
+import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
 import eu.chargetime.ocpp.model.smartcharging.ChargingProfileStatus;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
@@ -55,6 +55,7 @@ public class FakeChargePoint
     private final ClientSmartChargingProfile smartCharging;
     private final ClientRemoteTriggerProfile remoteTrigger;
     private final ClientFirmwareManagementProfile firmware;
+    private final ClientReservationProfile reservation;
     private Throwable receivedException;
     private String url;
 
@@ -157,6 +158,26 @@ public class FakeChargePoint
                 receivedRequest = request;
                 return new DiagnosticsStatusNotificationConfirmation();
             }
+
+            @Override
+            public FirmwareStatusNotificationConfirmation handleFirmwareStatusNotificationRequest(FirmwareStatusNotificationRequest request) {
+                receivedRequest = request;
+                return new FirmwareStatusNotificationConfirmation();
+            }
+
+            @Override
+            public UpdateFirmwareConfirmation handleUpdateFirmwareRequest(UpdateFirmwareRequest request) {
+                receivedRequest = request;
+                return new UpdateFirmwareConfirmation();
+            }
+        });
+
+        reservation = new ClientReservationProfile(new ClientReservationEventHandler() {
+            @Override
+            public ReserveNowConfirmation handleReserveNowRequest(ReserveNowRequest request) {
+                receivedRequest = request;
+                return new ReserveNowConfirmation(ReservationStatus.Accepted);
+            }
         });
 
         switch (type) {
@@ -173,6 +194,7 @@ public class FakeChargePoint
         client.addFeatureProfile(smartCharging);
         client.addFeatureProfile(remoteTrigger);
         client.addFeatureProfile(firmware);
+        client.addFeatureProfile(reservation);
     }
 
     public void connect() {
@@ -318,12 +340,24 @@ public class FakeChargePoint
         return receivedRequest instanceof DiagnosticsStatusNotificationRequest;
     }
 
+    public boolean hasHandledFirmwareStatusNotificationRequest() {
+        return receivedRequest instanceof FirmwareStatusNotificationRequest;
+    }
+
+    public boolean hasHandledUpdateFirmwareRequest() {
+        return receivedRequest instanceof UpdateFirmwareRequest;
+    }
+
     public boolean hasHandledChangeAvailabilityRequest() {
         return receivedRequest instanceof ChangeAvailabilityRequest;
     }
 
     public boolean hasHandledGetConfigurationRequest() {
         return receivedRequest instanceof GetConfigurationRequest;
+    }
+
+    public boolean hasHandledReserveNowRequest() {
+        return receivedRequest instanceof ReserveNowRequest;
     }
 
     public boolean hasHandledChangeConfigurationRequest() {
