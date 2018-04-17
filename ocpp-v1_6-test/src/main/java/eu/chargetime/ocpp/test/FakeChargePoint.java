@@ -9,6 +9,9 @@ import eu.chargetime.ocpp.model.firmware.*;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageConfirmation;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageStatus;
+import eu.chargetime.ocpp.model.reservation.ReservationStatus;
+import eu.chargetime.ocpp.model.reservation.ReserveNowConfirmation;
+import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
 import eu.chargetime.ocpp.model.smartcharging.ChargingProfileStatus;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
@@ -52,6 +55,7 @@ public class FakeChargePoint
     private final ClientSmartChargingProfile smartCharging;
     private final ClientRemoteTriggerProfile remoteTrigger;
     private final ClientFirmwareManagementProfile firmware;
+    private final ClientReservationProfile reservation;
     private Throwable receivedException;
     private String url;
 
@@ -168,6 +172,14 @@ public class FakeChargePoint
             }
         });
 
+        reservation = new ClientReservationProfile(new ClientReservationEventHandler() {
+            @Override
+            public ReserveNowConfirmation handleReserveNowRequest(ReserveNowRequest request) {
+                receivedRequest = request;
+                return new ReserveNowConfirmation(ReservationStatus.Accepted);
+            }
+        });
+
         switch (type) {
             case JSON:
                 client = new JSONClient(core, "testdummy");
@@ -182,6 +194,7 @@ public class FakeChargePoint
         client.addFeatureProfile(smartCharging);
         client.addFeatureProfile(remoteTrigger);
         client.addFeatureProfile(firmware);
+        client.addFeatureProfile(reservation);
     }
 
     public void connect() {
@@ -341,6 +354,10 @@ public class FakeChargePoint
 
     public boolean hasHandledGetConfigurationRequest() {
         return receivedRequest instanceof GetConfigurationRequest;
+    }
+
+    public boolean hasHandledReserveNowRequest() {
+        return receivedRequest instanceof ReserveNowRequest;
     }
 
     public boolean hasHandledChangeConfigurationRequest() {
