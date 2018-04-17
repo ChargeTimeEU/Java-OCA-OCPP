@@ -72,7 +72,9 @@ public class ServerTest extends TestUtilities {
 
     @Before
     public void setup() {
+        UUID sessionId = UUID.randomUUID();
         when(request.validate()).thenReturn(true);
+        when(session.getSessionId()).thenReturn(sessionId);
         doAnswer(invocation -> listenerEvents = invocation.getArgumentAt(2, ListenerEvents.class)).when(listener).open(anyString(), anyInt(), any());
         doAnswer(invocation -> sessionEvents = invocation.getArgumentAt(0, SessionEvents.class)).when(session).accept(any());
         doAnswer(invocation -> sessionIndex = invocation.getArgumentAt(0, UUID.class)).when(serverEvents).newSession(any(), any());

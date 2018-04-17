@@ -31,6 +31,8 @@ import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
 import eu.chargetime.ocpp.model.core.RegistrationStatus;
 import eu.chargetime.ocpp.utilities.TimeoutTimer;
 
+import java.util.UUID;
+
 public class TimeoutSessionDecorator implements ISession {
 
     private TimeoutTimer timeoutTimer;
@@ -64,6 +66,11 @@ public class TimeoutSessionDecorator implements ISession {
     private void startTimer() {
         if (timeoutTimer != null)
             timeoutTimer.begin();
+    }
+
+    @Override
+    public UUID getSessionId() {
+        return session.getSessionId();
     }
 
     @Override

@@ -171,7 +171,7 @@ public abstract class Communicator {
                 radio.send(call);
             }
         } catch (NotConnectedException ex) {
-        	logger.warn("sendCall() failed", ex);
+        	logger.warn("sendCall() failed: not connected");
             if (request.transactionRelated()) {
                 transactionQueue.add(call);
             } else {

@@ -3,10 +3,10 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 
-
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
 /*
     ChargeTime.eu - Java-OCA-OCPP
@@ -35,10 +35,10 @@ import java.util.concurrent.CompletableFuture;
  */
 public class PromiseRepository implements IPromiseRepository {
 
-    private HashMap<String, CompletableFuture<Confirmation>> promises;
+    private Map<String, CompletableFuture<Confirmation>> promises;
 
     public PromiseRepository() {
-        this.promises = new HashMap<>();
+        this.promises = new ConcurrentHashMap<>();
     }
 
     /**

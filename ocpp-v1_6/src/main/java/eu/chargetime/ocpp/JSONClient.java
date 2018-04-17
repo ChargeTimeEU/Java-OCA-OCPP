@@ -6,8 +6,15 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.wss.BaseWssSocketBuilder;
 import eu.chargetime.ocpp.wss.WssSocketBuilder;
+import org.java_websocket.drafts.Draft;
+import org.java_websocket.drafts.Draft_6455;
+import org.java_websocket.protocols.Protocol;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.concurrent.CompletionStage;
 
         /*
@@ -41,6 +48,11 @@ import java.util.concurrent.CompletionStage;
  */
 public class JSONClient implements IClientAPI {
 
+    private static final Logger logger = LoggerFactory.getLogger(JSONClient.class);
+
+    public final Draft draftOcppOnly =
+            new Draft_6455(Collections.emptyList(),
+                    Collections.singletonList(new Protocol("ocpp1.6")));
     private final WebSocketTransmitter transmitter;
     private final FeatureRepository featureRepository;
     private final Client client;
@@ -59,7 +71,7 @@ public class JSONClient implements IClientAPI {
      */
     public JSONClient(ClientCoreProfile coreProfile, String identity) {
         this.identity = identity;
-        transmitter = new WebSocketTransmitter();
+        transmitter = new WebSocketTransmitter(draftOcppOnly);
         JSONCommunicator communicator = new JSONCommunicator(transmitter);
         AsyncPromiseFulfilerDecorator promiseFulfiler = new AsyncPromiseFulfilerDecorator(new SimplePromiseFulfiller());
         featureRepository = new FeatureRepository();
@@ -116,6 +128,8 @@ public class JSONClient implements IClientAPI {
 
     @Override
     public void connect(String url, ClientEvents clientEvents) {
+        logger.debug("Feature repository: {}", featureRepository);
+
         String identityUrl = (identity != null) ? String.format("%s/%s", url, identity) : url;
         client.connect(identityUrl, clientEvents);
     }
