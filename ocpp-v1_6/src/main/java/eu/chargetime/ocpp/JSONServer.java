@@ -49,9 +49,7 @@ public class JSONServer implements IServerAPI {
 
     private static final Logger logger = LoggerFactory.getLogger(JSONServer.class);
 
-    public final Draft draftOcppOnly =
-            new Draft_6455(Collections.emptyList(),
-                    Collections.singletonList(new Protocol("ocpp1.6")));
+    public final Draft draftOcppOnly;
     private final WebSocketListener listener;
     private final Server server;
     private final FeatureRepository featureRepository;
@@ -65,6 +63,8 @@ public class JSONServer implements IServerAPI {
     public JSONServer(ServerCoreProfile coreProfile) {
         featureRepository = new FeatureRepository();
         ServerSessionFactory sessionFactory = new ServerSessionFactory(featureRepository);
+        draftOcppOnly = new Draft_6455(Collections.emptyList(),
+                Collections.singletonList(new Protocol("ocpp1.6")));
         this.listener = new WebSocketListener(sessionFactory, draftOcppOnly);
         server = new Server(this.listener, featureRepository, new PromiseRepository());
         featureRepository.addFeatureProfile(coreProfile);
