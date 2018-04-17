@@ -1,10 +1,11 @@
-package eu.chargetime.ocpp.feature.profile;
+package eu.chargetime.ocpp.model.firmware.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,34 +26,44 @@ package eu.chargetime.ocpp.feature.profile;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.DiagnosticsStatusNotificationFeature;
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.feature.FirmwareStatusNotificationFeature;
-import eu.chargetime.ocpp.feature.GetDiagnosticsFeature;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.firmware.FirmwareStatus;
+import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationRequest;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.UUID;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
-public class ServerFirmwareManagementProfile implements Profile {
+public class FirmwareStatusNotificationRequestTest {
 
-    private HashSet<Feature> features;
+    private FirmwareStatusNotificationRequest request;
 
-    public ServerFirmwareManagementProfile() {
-        features = new HashSet<>();
-        features.add(new GetDiagnosticsFeature(this));
-        features.add(new DiagnosticsStatusNotificationFeature(this));
-        features.add(new FirmwareStatusNotificationFeature(this));
+    @Before
+    public void setup() {
+        request = new FirmwareStatusNotificationRequest();
     }
 
-    @Override
-    public Feature[] getFeatureList() {
-        return features.toArray(new Feature[0]);
+    @Test
+    public void validate_statusIsNotSet_returnsFalse() {
+        // When
+        boolean result = request.validate();
+
+        // Then
+        assertThat(result, is(false));
     }
 
-    @Override
-    public Confirmation handleRequest(UUID sessionIndex, Request request) {
-        return null;
+    @Test
+    public void validate_statusIsSet_returnsTrue() throws PropertyConstraintException {
+        // Given
+        FirmwareStatus status = FirmwareStatus.Installing;
+        request.setStatus(status);
+
+        // When
+        boolean result = request.validate();
+
+        // Then
+        assertThat(result, is(true));
     }
+
 }
