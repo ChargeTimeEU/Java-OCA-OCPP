@@ -27,6 +27,10 @@ class JSONChangeConfigurationSpec extends Specification
         chargePoint.disconnect()
     }
 
+    def cleanupSpec() {
+        centralSystem.stopped()
+    }
+
     def "Central System sends a ChangeConfiguration request and receives a response"() {
         def conditions = new PollingConditions(timeout: 10)
         given:

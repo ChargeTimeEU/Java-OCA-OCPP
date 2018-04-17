@@ -26,6 +26,10 @@ class JSONBootNotificationSpec extends Specification
     def cleanup() {
         chargePoint.disconnect()
     }
+
+    def cleanupSpec() {
+        centralSystem.stopped()
+    }
     
     def "Charge point sends Boot Notification and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)

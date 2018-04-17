@@ -28,6 +28,10 @@ class JSONChangeAvailabilitySpec extends Specification
         chargePoint.disconnect()
     }
 
+    def cleanupSpec() {
+        centralSystem.stopped()
+    }
+
     def "Central System sends a ChangeAvailability request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
         when:

@@ -26,6 +26,10 @@ class JSONRemoteStartTransactionSpec extends Specification {
         chargePoint.disconnect()
     }
 
+    def cleanupSpec() {
+        centralSystem.stopped()
+    }
+
     def "Central System sends a RemoteStartTransaction request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
         given:

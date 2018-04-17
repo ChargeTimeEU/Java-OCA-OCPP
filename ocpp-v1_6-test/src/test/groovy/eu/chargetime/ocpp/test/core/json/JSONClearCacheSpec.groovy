@@ -27,6 +27,10 @@ class JSONClearCacheSpec extends Specification
         chargePoint.disconnect()
     }
 
+    def cleanupSpec() {
+        centralSystem.stopped()
+    }
+
     def "Central System sends a ClearCache request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
 

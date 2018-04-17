@@ -27,6 +27,10 @@ class JSONAuthorizeSpec extends Specification {
         chargePoint.disconnect()
     }
 
+    def cleanupSpec() {
+        centralSystem.stopped()
+    }
+
     def "Charge point sends Authorize request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
         when:

@@ -26,6 +26,10 @@ class JSONStartTransactionSpec extends Specification {
         chargePoint.disconnect()
     }
 
+    def cleanupSpec() {
+        centralSystem.stopped()
+    }
+
     def "Charge point sends StartTransaction request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
         when:
