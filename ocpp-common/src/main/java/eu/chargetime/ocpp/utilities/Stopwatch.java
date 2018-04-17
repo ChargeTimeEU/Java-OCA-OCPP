@@ -2,7 +2,15 @@ package eu.chargetime.ocpp.utilities;
 
 /*
  * Copyright (C) 2014 The Guava Authors
+ *
  * Modified by Evgeny Pakhomov <eugene.pakhomov@ubitricity.com>
+ *
+ * Changes:
+ *  * Cut Guava specific annotations
+ *  * Ticker abstraction replaced with direct System.nanoTime() call
+ *  * Platform dependency removed and formatCompact4Digits method moved to this class
+ *  * Preconditions dependency removed and checkState method moved to this class
+ *  * References to Guava versions in methods JavaDoc are cut as it won't be relevant
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
