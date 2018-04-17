@@ -26,10 +26,12 @@ package eu.chargetime.ocpp.feature.profile;/*
 
 import eu.chargetime.ocpp.feature.DiagnosticsStatusNotificationFeature;
 import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.FirmwareStatusNotificationFeature;
 import eu.chargetime.ocpp.feature.GetDiagnosticsFeature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
+import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationRequest;
 import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
 
 import java.util.HashSet;
@@ -45,6 +47,7 @@ public class ClientFirmwareManagementProfile implements Profile {
         features = new HashSet<>();
         features.add(new GetDiagnosticsFeature(this));
         features.add(new DiagnosticsStatusNotificationFeature(this));
+        features.add(new FirmwareStatusNotificationFeature(this));
     }
 
     @Override
@@ -60,6 +63,8 @@ public class ClientFirmwareManagementProfile implements Profile {
             result = eventHandler.handleGetDiagnosticsRequest((GetDiagnosticsRequest) request);
         } else if (request instanceof DiagnosticsStatusNotificationRequest) {
             result = eventHandler.handleDiagnosticsStatusNotificationRequest((DiagnosticsStatusNotificationRequest) request);
+        } else if (request instanceof FirmwareStatusNotificationRequest) {
+            result = eventHandler.handleFirmwareStatusNotificationRequest((FirmwareStatusNotificationRequest) request);
         }
 
         return result;
