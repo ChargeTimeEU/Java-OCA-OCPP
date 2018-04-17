@@ -38,4 +38,5 @@ public interface WssFactoryBuilder {
     WssFactoryBuilder ciphers(List<String> ciphers);
     WssFactoryBuilder sslContext(SSLContext sslContext);
     WebSocketServerFactory build();
+    void verify();
 }
