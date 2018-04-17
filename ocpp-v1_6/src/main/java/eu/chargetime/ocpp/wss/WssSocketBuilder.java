@@ -28,22 +28,33 @@ package eu.chargetime.ocpp.wss;
 
 
 import java.io.IOException;
-import java.net.Proxy;
 import java.net.Socket;
 import java.net.URI;
-import javax.net.ssl.SSLSocketFactory;
 
 /**
- * To build WSS socket with given SSL factory and parameters.
+ * To build SSL {@link Socket} to support WSS scheme.
  */
 public interface WssSocketBuilder {
-    WssSocketBuilder proxy(Proxy proxy);
-    WssSocketBuilder sslSocketFactory(SSLSocketFactory sslSocketFactory);
-    WssSocketBuilder tcpNoDelay(boolean tcpNoDelay);
-    WssSocketBuilder reuseAddr(boolean reuseAddr);
-    WssSocketBuilder autoClose(boolean autoClose);
+    /**
+     * Set URI to identify endpoint for the connection.
+     *
+     * @param uri to identify endpoint for the connection.
+     * @return instance of {@link WssSocketBuilder}
+     */
     WssSocketBuilder uri(URI uri);
-    WssSocketBuilder connectionTimeout(int connectionTimeout);
+
+    /**
+     * Builds SSL {@link Socket} to support WSS scheme.
+     *
+     * @return SSL {@link Socket}
+     */
     Socket build() throws IOException;
+
+    /**
+     * Verifies if all required by the client creation time parameters are set.
+     * The idea is to allow the client to fail fast if required parameters are missing without exposing implementation details.
+     *
+     * @throws IllegalStateException if verification fails.
+     */
     void verify();
 }

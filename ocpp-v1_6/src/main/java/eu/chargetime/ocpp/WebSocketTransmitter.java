@@ -99,8 +99,6 @@ public class WebSocketTransmitter implements Transmitter
 
             try {
                 client.setSocket(wssSocketBuilder
-                        .tcpNoDelay(client.isTcpNoDelay())
-                        .reuseAddr(client.isReuseAddr())
                         .uri(resource)
                         .build());
             } catch (IOException ex) {

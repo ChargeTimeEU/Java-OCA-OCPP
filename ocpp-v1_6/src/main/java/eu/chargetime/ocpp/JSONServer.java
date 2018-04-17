@@ -86,12 +86,27 @@ public class JSONServer implements IServerAPI {
         enableWSS(builder);
     }
 
+    /**
+     * Enables server to accept WSS connections.
+     * The {@code wssFactoryBuilder} must be initialized at that step
+     * (as required parameters set might vary depending on implementation the {@link eu.chargetime.ocpp.wss.WssFactoryBuilder#verify()} is used to ensure initialization).
+     *
+     * @param wssFactoryBuilder builder to provide WebSocketServerFactory
+     * @return instance of {@link JSONServer}
+     * @throws IllegalStateException in case if the server is already connected
+     * @throws IllegalStateException in case {@code wssFactoryBuilder} not initialized properly
+     */
     public JSONServer enableWSS(WssFactoryBuilder wssFactoryBuilder) {
         wssFactoryBuilder.verify();
         listener.enableWSS(wssFactoryBuilder);
         return this;
     }
 
+    /**
+     * Set WebSocket ping interval.
+     *
+     * @param interval ping interval in seconds.
+     */
     public void setPingInterval(int interval) {
         // Set ping interval in seconds
         listener.setPingInterval(interval);

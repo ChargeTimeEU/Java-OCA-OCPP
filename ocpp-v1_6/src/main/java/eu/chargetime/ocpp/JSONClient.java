@@ -100,12 +100,27 @@ public class JSONClient implements IClientAPI {
         enableWSS(wssSocketBuilder);
     }
 
+    /**
+     * Enables WSS connection to the endpoint.
+     * The {@code wssSocketBuilder} must be initialized at that step
+     * (as required parameters set might vary depending on implementation the {@link eu.chargetime.ocpp.wss.WssSocketBuilder#verify()} is used to ensure initialization).
+     *
+     * @param wssSocketBuilder builder to provide SSL socket
+     * @return instance of {@link JSONClient}
+     * @throws IllegalStateException in case if the client is already connected
+     * @throws IllegalStateException in case {@code wssSocketBuilder} not initialized properly
+     */
     public JSONClient enableWSS(WssSocketBuilder wssSocketBuilder) {
         wssSocketBuilder.verify();
         transmitter.enableWSS(wssSocketBuilder);
         return this;
     }
 
+    /**
+     * Set WebSocket ping interval.
+     *
+     * @param interval ping interval in seconds.
+     */
     public void setPingInterval(int interval) {
         // Set ping interval in seconds
         transmitter.setPingInterval(interval);
