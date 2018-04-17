@@ -36,6 +36,8 @@ import eu.chargetime.ocpp.model.core.*;
 import eu.chargetime.ocpp.model.firmware.*;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
+import eu.chargetime.ocpp.model.reservation.CancelReservationConfirmation;
+import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
 import eu.chargetime.ocpp.model.reservation.ReserveNowConfirmation;
 import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
 import eu.chargetime.ocpp.test.FakeCentral.serverType;
@@ -135,6 +137,10 @@ public class FakeCentralSystem {
 
     public boolean hasReceivedReserveNowConfirmation() {
         return dummyHandlers.wasLatestConfirmation(ReserveNowConfirmation.class);
+    }
+
+    public boolean hasReceivedCancelReservationConfirmation() {
+        return dummyHandlers.wasLatestConfirmation(CancelReservationConfirmation.class);
     }
 
     public boolean hasReceivedUpdateFirmwareConfirmation() {
@@ -261,6 +267,11 @@ public class FakeCentralSystem {
 
     public void sendReserveNowRequest(Integer connectorId, Calendar expiryDate, String idTag, Integer reservationId) throws Exception {
         ReserveNowRequest request = new ReserveNowRequest(connectorId, expiryDate, idTag, reservationId);
+        send(request);
+    }
+
+    public void sendCancelReservationRequest(Integer reservationId) throws Exception {
+        CancelReservationRequest request = new CancelReservationRequest(reservationId);
         send(request);
     }
 
