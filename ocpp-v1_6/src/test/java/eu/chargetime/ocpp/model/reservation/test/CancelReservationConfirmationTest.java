@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.feature.profile.test;
+package eu.chargetime.ocpp.model.reservation.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
 
@@ -26,36 +26,43 @@ package eu.chargetime.ocpp.feature.profile.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.*;
-import eu.chargetime.ocpp.feature.profile.ServerReservationProfile;
-import org.hamcrest.core.Is;
+import eu.chargetime.ocpp.model.reservation.CancelReservationConfirmation;
+import eu.chargetime.ocpp.model.reservation.CancelReservationStatus;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ServerReservationProfileTest extends ProfileTest {
+public class CancelReservationConfirmationTest {
 
-    ServerReservationProfile profile;
+    private CancelReservationConfirmation request;
 
     @Before
     public void setup() {
-        profile = new ServerReservationProfile();
+        request = new CancelReservationConfirmation();
     }
 
     @Test
-    public void getFeatureList_containsAllNeededFeatures() {
+    public void validate_statusIsNotSet_returnsFalse() {
         // When
-        Feature[] features = profile.getFeatureList();
+        boolean result = request.validate();
 
         // Then
-        assertThat(findFeature(features, "ReserveNow"), Is.is(instanceOf(ReserveNowFeature.class)));
-        assertThat(findFeature(features, "CancelReservation"), is(instanceOf(CancelReservationFeature.class)));
+        assertThat(result, is(false));
+    }
+
+    @Test
+    public void validate_statusIsSet_returnsTrue() {
+        // Given
+        CancelReservationStatus status = CancelReservationStatus.Accepted;
+        request.setStatus(status);
+
+        // When
+        boolean result = request.validate();
+
+        // Then
+        assertThat(result, is(true));
     }
 
 }

@@ -9,9 +9,7 @@ import eu.chargetime.ocpp.model.firmware.*;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageConfirmation;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageStatus;
-import eu.chargetime.ocpp.model.reservation.ReservationStatus;
-import eu.chargetime.ocpp.model.reservation.ReserveNowConfirmation;
-import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
+import eu.chargetime.ocpp.model.reservation.*;
 import eu.chargetime.ocpp.model.smartcharging.ChargingProfileStatus;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
@@ -177,6 +175,12 @@ public class FakeChargePoint
             public ReserveNowConfirmation handleReserveNowRequest(ReserveNowRequest request) {
                 receivedRequest = request;
                 return new ReserveNowConfirmation(ReservationStatus.Accepted);
+            }
+
+            @Override
+            public CancelReservationConfirmation handleCancelReservationRequest(CancelReservationRequest request) {
+                receivedRequest = request;
+                return new CancelReservationConfirmation(CancelReservationStatus.Accepted);
             }
         });
 
@@ -358,6 +362,10 @@ public class FakeChargePoint
 
     public boolean hasHandledReserveNowRequest() {
         return receivedRequest instanceof ReserveNowRequest;
+    }
+
+    public boolean hasHandledCancelReservationRequest() {
+        return receivedRequest instanceof CancelReservationRequest;
     }
 
     public boolean hasHandledChangeConfigurationRequest() {

@@ -40,6 +40,7 @@ public class ServerReservationProfile implements Profile {
     public ServerReservationProfile() {
         features = new HashSet<>();
         features.add(new ReserveNowFeature(this));
+        features.add(new CancelReservationFeature(this));
     }
 
     @Override
