@@ -85,7 +85,7 @@ public class BaseWssSocketBuilder implements WssSocketBuilder {
         this.uri = uri;
         return this;
     }
-    
+
     public BaseWssSocketBuilder connectionTimeout(int connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;
