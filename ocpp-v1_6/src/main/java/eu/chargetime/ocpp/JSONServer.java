@@ -29,6 +29,7 @@ import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.wss.BaseWssFactoryBuilder;
 import eu.chargetime.ocpp.wss.WssFactoryBuilder;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
@@ -37,6 +38,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
+import javax.net.ssl.SSLContext;
+import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
 
@@ -53,6 +56,7 @@ public class JSONServer implements IServerAPI {
 
     /**
      * The core feature profile is required as a minimum.
+     * The constructor creates WS-ready server.
      *
      * @param coreProfile implementation of the core feature profile.
      */
@@ -64,8 +68,38 @@ public class JSONServer implements IServerAPI {
         featureRepository.addFeatureProfile(coreProfile);
     }
 
-    public void enableWSS(WssFactoryBuilder wssFactoryBuilder) {
+    /**
+     * The core feature profile is required as a minimum.
+     * The constructor creates WSS-ready server.
+     *
+     * @param coreProfile implementation of the core feature profile.
+     * @param wssFactoryBuilder to build {@link org.java_websocket.WebSocketServerFactory} to support wss://.
+     */
+    public JSONServer(ServerCoreProfile coreProfile, WssFactoryBuilder wssFactoryBuilder) {
+        this(coreProfile);
+        enableWSS(wssFactoryBuilder);
+    }
+
+    // To ensure the exposed API is backward compatible
+    public void enableWSS(SSLContext sslContext) throws IOException {
+        WssFactoryBuilder builder = BaseWssFactoryBuilder.builder().sslContext(sslContext);
+        enableWSS(builder);
+    }
+
+    /**
+     * Enables server to accept WSS connections.
+     * The {@code wssFactoryBuilder} must be initialized at that step
+     * (as required parameters set might vary depending on implementation the {@link eu.chargetime.ocpp.wss.WssFactoryBuilder#verify()} is used to ensure initialization).
+     *
+     * @param wssFactoryBuilder builder to provide WebSocketServerFactory
+     * @return instance of {@link JSONServer}
+     * @throws IllegalStateException in case if the server is already connected
+     * @throws IllegalStateException in case {@code wssFactoryBuilder} not initialized properly
+     */
+    public JSONServer enableWSS(WssFactoryBuilder wssFactoryBuilder) {
+        wssFactoryBuilder.verify();
         listener.enableWSS(wssFactoryBuilder);
+        return this;
     }
 
     public void setPingInterval(int interval) {

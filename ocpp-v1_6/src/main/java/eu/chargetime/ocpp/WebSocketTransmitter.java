@@ -92,10 +92,13 @@ public class WebSocketTransmitter implements Transmitter
         };
 
         if(WSS_SCHEME.equals(resource.getScheme())) {
+		
+			if(wssSocketBuilder == null) {
+                throw new IllegalStateException("wssSocketBuilder must be set to support " + WSS_SCHEME + " scheme");
+            }
+
             try {
                 client.setSocket(wssSocketBuilder
-                        .tcpNoDelay(client.isTcpNoDelay())
-                        .reuseAddr(client.isReuseAddr())
                         .uri(resource)
                         .build());
             } catch (IOException ex) {
