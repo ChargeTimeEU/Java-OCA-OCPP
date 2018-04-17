@@ -12,6 +12,7 @@ import org.java_websocket.protocols.Protocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.concurrent.CompletionStage;
