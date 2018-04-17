@@ -8,8 +8,15 @@ public class SendLocalListRequest implements Request {
 	private int listVersion = 0;
 	private AuthorizationData [] localAuthorizationList = null;
 	private UpdateType updateType = null;
-	
-	public void setListVersion(int listVersion) throws PropertyConstraintException {
+
+    public SendLocalListRequest() { }
+
+    public SendLocalListRequest(int listVersion, UpdateType updateType) {
+        this.listVersion = listVersion;
+        this.updateType = updateType;
+    }
+
+    public void setListVersion(int listVersion) throws PropertyConstraintException {
 		if(listVersion < 1) throw new PropertyConstraintException("listVersion", listVersion, "Should be greater than 0");
 		this.listVersion = listVersion;
 	}

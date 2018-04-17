@@ -75,7 +75,7 @@ public class ClientLocalAuthListProfileTest extends ProfileTest  {
 		profile.handleRequest(SESSION_NULL, request);
 		
 		// Then
-        verify(handler, times(1)).handleSendLocalListReqeust(eq(request));
+        verify(handler, times(1)).handleSendLocalListRequest(eq(request));
 	}
 	
 }

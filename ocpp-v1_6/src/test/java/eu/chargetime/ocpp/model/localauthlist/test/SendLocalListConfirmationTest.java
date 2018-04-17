@@ -3,6 +3,7 @@ package eu.chargetime.ocpp.model.localauthlist.test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
+import eu.chargetime.ocpp.PropertyConstraintException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +22,7 @@ public class SendLocalListConfirmationTest {
 	}
 	
 	@Test
-	public void setStatus_allStatus_allCorrect() {
+	public void setStatus_allStatus_allCorrect() throws PropertyConstraintException {
 		
 		for(UpdateStatus status : UpdateStatus.values()) {
 			// When

@@ -13,7 +13,7 @@ import eu.chargetime.ocpp.model.localauthlist.GetLocalListVersionConfirmation;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GetLocalListVersionConfirmationTest {
-	GetLocalListVersionConfirmation confirmation;
+	private GetLocalListVersionConfirmation confirmation;
 	
 	@Before
 	public void setUp() {
