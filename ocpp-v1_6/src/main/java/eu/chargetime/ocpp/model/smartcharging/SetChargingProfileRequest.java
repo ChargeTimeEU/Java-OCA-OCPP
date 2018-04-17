@@ -39,6 +39,13 @@ public class SetChargingProfileRequest implements Request {
     private Integer connectorId;
     private ChargingProfile chargingProfile;
 
+    public SetChargingProfileRequest() { }
+
+    public SetChargingProfileRequest(Integer connectorId, ChargingProfile chargingProfile) {
+        this.connectorId = connectorId;
+        this.chargingProfile = chargingProfile;
+    }
+
     /**
      * This identifies which connector of the Charge Point is used.
      *
@@ -77,7 +84,7 @@ public class SetChargingProfileRequest implements Request {
      *
      * @param chargingProfile   the {@link ChargingProfile}.
      */
-    @XmlElement
+    @XmlElement(name = "csChargingProfiles")
     public void setChargingProfile(ChargingProfile chargingProfile) {
         this.chargingProfile = chargingProfile;
     }

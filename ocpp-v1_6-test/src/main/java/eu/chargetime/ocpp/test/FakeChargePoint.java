@@ -393,6 +393,10 @@ public class FakeChargePoint
         return receivedRequest instanceof GetLocalListVersionRequest;
     }
 
+    public boolean hasHandledSetChargingProfileRequest() {
+        return receivedRequest instanceof SetChargingProfileRequest;
+    }
+
     public boolean hasHandledChangeConfigurationRequest() {
         return receivedRequest instanceof ChangeConfigurationRequest;
     }
