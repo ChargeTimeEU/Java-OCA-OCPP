@@ -162,7 +162,7 @@ public abstract class Communicator {
                     transactionQueue.add(call);
                 } else {
                     logger.warn("Not connected: can't send request: {}", request);
-                    events.onError(uniqueId, "Not connected", "The request can't be send due to the lack of connection", request);
+                    events.onError(uniqueId, "Not connected", "The request can't be sent due to the lack of connection", request);
                 }
             } else if (request.transactionRelated() && transactionQueue.size() > 0) {
                 transactionQueue.add(call);
@@ -175,7 +175,7 @@ public abstract class Communicator {
             if (request.transactionRelated()) {
                 transactionQueue.add(call);
             } else {
-                events.onError(uniqueId, "Not connected", "The request can't be send due to the lack of connection", request);
+                events.onError(uniqueId, "Not connected", "The request can't be sent due to the lack of connection", request);
             }
         }
     }
