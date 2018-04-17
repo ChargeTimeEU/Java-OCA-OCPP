@@ -6,6 +6,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
 import eu.chargetime.ocpp.model.firmware.*;
+import eu.chargetime.ocpp.model.localauthlist.*;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageConfirmation;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageStatus;
@@ -53,6 +54,7 @@ public class FakeChargePoint
     private final ClientSmartChargingProfile smartCharging;
     private final ClientRemoteTriggerProfile remoteTrigger;
     private final ClientFirmwareManagementProfile firmware;
+    private final ClientLocalAuthListProfile localAuthList;
     private final ClientReservationProfile reservation;
     private Throwable receivedException;
     private String url;
@@ -170,6 +172,20 @@ public class FakeChargePoint
             }
         });
 
+        localAuthList = new ClientLocalAuthListProfile(new ClientLocalAuthListEventHandler() {
+            @Override
+            public SendLocalListConfirmation handleSendLocalListRequest(SendLocalListRequest request) {
+                receivedRequest = request;
+                return new SendLocalListConfirmation(UpdateStatus.VersionMismatch);
+            }
+
+            @Override
+            public GetLocalListVersionConfirmation handleGetLocalListVersionRequest(GetLocalListVersionRequest request) {
+                receivedRequest = request;
+                return new GetLocalListVersionConfirmation(2);
+            }
+        });
+
         reservation = new ClientReservationProfile(new ClientReservationEventHandler() {
             @Override
             public ReserveNowConfirmation handleReserveNowRequest(ReserveNowRequest request) {
@@ -198,6 +214,7 @@ public class FakeChargePoint
         client.addFeatureProfile(smartCharging);
         client.addFeatureProfile(remoteTrigger);
         client.addFeatureProfile(firmware);
+        client.addFeatureProfile(localAuthList);
         client.addFeatureProfile(reservation);
     }
 
@@ -366,6 +383,14 @@ public class FakeChargePoint
 
     public boolean hasHandledCancelReservationRequest() {
         return receivedRequest instanceof CancelReservationRequest;
+    }
+
+    public boolean hasHandledSendLocalListRequest() {
+        return receivedRequest instanceof SendLocalListRequest;
+    }
+
+    public boolean hasHandledGetLocalListVersionRequest() {
+        return receivedRequest instanceof GetLocalListVersionRequest;
     }
 
     public boolean hasHandledChangeConfigurationRequest() {

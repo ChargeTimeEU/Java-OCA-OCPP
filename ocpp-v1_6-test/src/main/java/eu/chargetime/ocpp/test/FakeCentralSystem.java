@@ -34,6 +34,7 @@ import eu.chargetime.ocpp.feature.profile.*;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
 import eu.chargetime.ocpp.model.firmware.*;
+import eu.chargetime.ocpp.model.localauthlist.*;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
 import eu.chargetime.ocpp.model.reservation.CancelReservationConfirmation;
@@ -55,6 +56,7 @@ public class FakeCentralSystem {
 
         ServerCoreProfile serverCoreProfile = new ServerCoreProfile(dummyHandlers.createServerCoreEventHandler());
         ServerReservationProfile serverReservationProfile = new ServerReservationProfile();
+        ServerLocalAuthListProfile serverLocalAuthListProfile = new ServerLocalAuthListProfile();
 
         if (type == serverType.JSON) {
             server = new JSONServer(serverCoreProfile);
@@ -63,6 +65,7 @@ public class FakeCentralSystem {
         }
 
         server.addFeatureProfile(serverReservationProfile);
+        server.addFeatureProfile(serverLocalAuthListProfile);
         initializeServer();
         isStarted = false;
     }
@@ -76,6 +79,9 @@ public class FakeCentralSystem {
 
         ServerFirmwareManagementProfile firmwareManagementProfile = new ServerFirmwareManagementProfile();
         server.addFeatureProfile(firmwareManagementProfile);
+
+        ServerLocalAuthListProfile localAuthListProfile = new ServerLocalAuthListProfile();
+        server.addFeatureProfile(localAuthListProfile);
     }
 
     public boolean connected() {
@@ -141,6 +147,14 @@ public class FakeCentralSystem {
 
     public boolean hasReceivedCancelReservationConfirmation() {
         return dummyHandlers.wasLatestConfirmation(CancelReservationConfirmation.class);
+    }
+
+    public boolean hasReceivedSendLocalListConfirmation() {
+        return dummyHandlers.wasLatestConfirmation(SendLocalListConfirmation.class);
+    }
+
+    public boolean hasReceivedGetLocalListVersionConfirmation() {
+        return dummyHandlers.wasLatestConfirmation(GetLocalListVersionConfirmation.class);
     }
 
     public boolean hasReceivedUpdateFirmwareConfirmation() {
@@ -272,6 +286,16 @@ public class FakeCentralSystem {
 
     public void sendCancelReservationRequest(Integer reservationId) throws Exception {
         CancelReservationRequest request = new CancelReservationRequest(reservationId);
+        send(request);
+    }
+
+    public void sendGetLocalListVersionRequest() throws Exception {
+        GetLocalListVersionRequest request = new GetLocalListVersionRequest();
+        send(request);
+    }
+
+    public void sendSendLocalListRequest(int listVersion, UpdateType updateType) throws Exception {
+        SendLocalListRequest request = new SendLocalListRequest(listVersion, updateType);
         send(request);
     }
 
