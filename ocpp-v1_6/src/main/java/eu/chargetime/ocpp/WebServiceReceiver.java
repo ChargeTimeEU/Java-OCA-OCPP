@@ -64,6 +64,11 @@ public class WebServiceReceiver extends SOAPSyncHelper implements Receiver {
     }
 
     @Override
+    public boolean isClosed() {
+        return !connected;
+    }
+
+    @Override
     public void accept(RadioEvents events) {
         this.events = events;
         try {

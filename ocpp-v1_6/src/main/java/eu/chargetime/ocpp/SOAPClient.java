@@ -112,6 +112,16 @@ public class SOAPClient implements IClientAPI {
         }
     }
 
+    /**
+     * Flag if connection is closed.
+     *
+     * @return true if connection was closed or not opened
+     */
+    @Override
+    public boolean isClosed() {
+        return transmitter.isClosed();
+    }
+
     private int getPort() {
         return callback.getPort() == -1 ? 8000 : callback.getPort();
     }

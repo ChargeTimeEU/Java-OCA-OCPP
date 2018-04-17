@@ -26,7 +26,7 @@ package eu.chargetime.ocpp;
  */
 
 import eu.chargetime.ocpp.model.SessionInformation;
-
+import eu.chargetime.ocpp.wss.WssFactoryBuilder;
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
@@ -48,8 +48,13 @@ public class WebSocketListener implements Listener {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketListener.class);
     private final IServerSessionFactory sessionFactory;
 
+    // In seconds
+    private int pingInterval = 60;
+
     private WebSocketServer server;
+    private WssFactoryBuilder wssFactoryBuilder;
     private HashMap<WebSocket, WebSocketReceiver> sockets;
+    private volatile boolean closed = true;
     private boolean handleRequestAsync;
 
     public WebSocketListener(IServerSessionFactory sessionFactory) {
@@ -62,8 +67,21 @@ public class WebSocketListener implements Listener {
         Draft_6455 draft = new Draft_6455(Collections.<IExtension>emptyList(), Collections.<IProtocol>singletonList(new Protocol("ocpp1.6")));
         server = new WebSocketServer(new InetSocketAddress(hostname, port), Collections.<Draft>singletonList(draft)) {
             @Override
-            public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
-                WebSocketReceiver receiver = new WebSocketReceiver(message -> webSocket.send(message));
+            public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {                
+
+                WebSocketReceiver receiver = new WebSocketReceiver(
+                        new WebSocketReceiverEvents() {
+                            @Override
+                            public boolean isClosed() {
+                                return closed;
+                            }
+
+                            @Override
+                            public void relay(String message) {
+                               webSocket.send(message);
+                            }
+                        }
+                );
                 sockets.put(webSocket, receiver);
                 SessionInformation information = new SessionInformation.Builder()
                         .Identifier(clientHandshake.getResourceDescriptor())
@@ -93,17 +111,37 @@ public class WebSocketListener implements Listener {
 
             }
         };
+
+        if(wssFactoryBuilder != null) {
+            server.setWebSocketFactory(wssFactoryBuilder.build());
+        }
+
+        server.setConnectionLostTimeout(pingInterval);
+
         server.start();
+        closed = false;
     }
 
-    public void enableWSS(SSLContext sslContext) {
-        server.setWebSocketFactory(new DefaultSSLWebSocketServerFactory(sslContext));
+    public void enableWSS(WssFactoryBuilder wssFactoryBuilder) {
+        if(server != null) {
+            throw new IllegalStateException("Cannot enable WSS on already running server");
+        }
+
+        this.wssFactoryBuilder = wssFactoryBuilder;
+    }
+
+    public void setPingInterval(int interval) {
+        this.pingInterval = pingInterval;
+
+        if(server != null) {
+            server.setConnectionLostTimeout(interval);
+        }
     }
 
     @Override
     public void close() {
         try {
-
+            closed = true;
             for (WebSocket ws : sockets.keySet())
                 ws.close();
 
@@ -112,8 +150,15 @@ public class WebSocketListener implements Listener {
             server.stop(1);
 
         } catch (InterruptedException e) {
-        	logger.info("close() failed", e);
+        	logger.error("Failed to close listener", e);
+        } finally {
+            server = null;
         }
+    }
+
+    @Override
+    public boolean isClosed() {
+        return closed;
     }
 
     @Override

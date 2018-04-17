@@ -39,4 +39,6 @@ public interface IClientAPI {
     CompletionStage<Confirmation> send(Request request) throws OccurenceConstraintException, UnsupportedFeatureException;
 
     void disconnect();
+
+    boolean isClosed();
 }

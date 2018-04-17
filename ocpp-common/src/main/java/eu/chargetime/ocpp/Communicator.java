@@ -156,7 +156,14 @@ public abstract class Communicator {
     synchronized public void sendCall(String uniqueId, String action, Request request) {
         Object call = makeCall(uniqueId, action, packPayload(request));
         try {
-            if (request.transactionRelated() && transactionQueue.size() > 0) {
+            if(radio.isClosed()) {
+                logger.warn("Not connected: storing request to queue");
+                if (request.transactionRelated()) {
+                    transactionQueue.add(call);
+                } else {
+                    events.onError(uniqueId, "Not connected", "The request couldn't be send due to the lack of connection", request);
+                }
+            } else if (request.transactionRelated() && transactionQueue.size() > 0) {
                 transactionQueue.add(call);
                 processTransactionQueue();
             } else {

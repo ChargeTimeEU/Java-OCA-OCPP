@@ -1,4 +1,5 @@
-package eu.chargetime.ocpp;/*
+package eu.chargetime.ocpp;
+/*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
@@ -46,6 +47,11 @@ public class WebSocketReceiver implements Receiver {
     @Override
     public void send(Object message) {
         receiverEvents.relay(message.toString());
+    }
+
+    @Override
+    public boolean isClosed() {
+        return receiverEvents.isClosed();
     }
 
     @Override
