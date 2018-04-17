@@ -26,10 +26,14 @@ package eu.chargetime.ocpp.feature.profile;
     SOFTWARE.
  */
 
+import eu.chargetime.ocpp.model.reservation.CancelReservationConfirmation;
+import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
 import eu.chargetime.ocpp.model.reservation.ReserveNowConfirmation;
 import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
 
 public interface ClientReservationEventHandler {
     ReserveNowConfirmation handleReserveNowRequest(ReserveNowRequest request);
+
+    CancelReservationConfirmation handleCancelReservationRequest(CancelReservationRequest request);
 
 }

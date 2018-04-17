@@ -1,4 +1,12 @@
-package eu.chargetime.ocpp.feature.profile.test;
+package eu.chargetime.ocpp.test.reservation.json
+
+import eu.chargetime.ocpp.test.FakeCentral
+import eu.chargetime.ocpp.test.FakeCentralSystem
+import eu.chargetime.ocpp.test.FakeChargePoint
+import spock.lang.Shared
+import spock.lang.Specification
+import spock.util.concurrent.PollingConditions
+
 /*
     ChargeTime.eu - Java-OCA-OCPP
 
@@ -26,36 +34,39 @@ package eu.chargetime.ocpp.feature.profile.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.*;
-import eu.chargetime.ocpp.feature.profile.ServerReservationProfile;
-import org.hamcrest.core.Is;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+class JSONCancelReservationSpec extends Specification {
+    @Shared
+    FakeCentralSystem centralSystem = FakeCentral.getSystem(FakeCentral.serverType.JSON)
+    @Shared
+    FakeChargePoint chargePoint = new FakeChargePoint()
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-
-@RunWith(MockitoJUnitRunner.class)
-public class ServerReservationProfileTest extends ProfileTest {
-
-    ServerReservationProfile profile;
-
-    @Before
-    public void setup() {
-        profile = new ServerReservationProfile();
+    def setupSpec() {
+        // When a Central System is running
+        centralSystem.started()
     }
 
-    @Test
-    public void getFeatureList_containsAllNeededFeatures() {
-        // When
-        Feature[] features = profile.getFeatureList();
-
-        // Then
-        assertThat(findFeature(features, "ReserveNow"), Is.is(instanceOf(ReserveNowFeature.class)));
-        assertThat(findFeature(features, "CancelReservation"), is(instanceOf(CancelReservationFeature.class)));
+    def setup() {
+        chargePoint.connect()
     }
 
+    def cleanup() {
+        chargePoint.disconnect()
+    }
+
+    def "Central System sends a CancelReservation request and receives a response"() {
+        def conditions = new PollingConditions(timeout: 1)
+        given:
+        conditions.eventually {
+            assert centralSystem.connected()
+        }
+
+        when:
+        centralSystem.sendCancelReservationRequest(1)
+
+        then:
+        conditions.eventually {
+            assert chargePoint.hasHandledCancelReservationRequest()
+            assert centralSystem.hasReceivedCancelReservationConfirmation()
+        }
+    }
 }

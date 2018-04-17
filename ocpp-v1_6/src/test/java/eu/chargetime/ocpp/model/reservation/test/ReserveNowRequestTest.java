@@ -1,4 +1,5 @@
-package eu.chargetime.ocpp.feature.profile;/*
+package eu.chargetime.ocpp.model.reservation.test;
+/*
     ChargeTime.eu - Java-OCA-OCPP
 
     MIT License
@@ -25,42 +26,52 @@ package eu.chargetime.ocpp.feature.profile;/*
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.*;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
+import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.Calendar;
 
-public class ClientReservationProfile implements Profile {
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
-    private HashSet<Feature> features;
-    private ClientReservationEventHandler eventHandler;
+public class ReserveNowRequestTest {
 
-    public ClientReservationProfile(ClientReservationEventHandler eventHandler) {
-        this.eventHandler = eventHandler;
-        features = new HashSet<>();
-        features.add(new ReserveNowFeature(this));
-        features.add(new CancelReservationFeature(this));
+    private ReserveNowRequest request;
+
+    @Before
+    public void setup() {
+        request = new ReserveNowRequest();
     }
 
-    @Override
-    public Feature[] getFeatureList() {
-        return features.toArray(new Feature[0]);
+    @Test
+    public void validate_statusIsNotSet_returnsFalse() {
+        // When
+        boolean result = request.validate();
+
+        // Then
+        assertThat(result, is(false));
     }
 
-    @Override
-    public Confirmation handleRequest(UUID sessionIndex, Request request) {
-        Confirmation result = null;
+    @Test
+    public void validate_requiredFieldsAreSet_returnTrue() throws PropertyConstraintException {
+        // Given
+        Integer connectorId = 1;
+        Calendar expiryDate = Calendar.getInstance();
+        String idTag = "row";
+        Integer reservationId = 2;
 
-        if (request instanceof ReserveNowRequest) {
-            result = eventHandler.handleReserveNowRequest((ReserveNowRequest) request);
-        } else if (request instanceof CancelReservationRequest) {
-            result = eventHandler.handleCancelReservationRequest((CancelReservationRequest) request);
-        }
+        request.setConnectorId(connectorId);
+        request.setExpiryDate(expiryDate);
+        request.setIdTag(idTag);
+        request.setReservationId(reservationId);
 
-        return result;
+        // When
+        boolean result = request.validate();
+
+        // Then
+        assertThat(result, is(true));
     }
+
 }

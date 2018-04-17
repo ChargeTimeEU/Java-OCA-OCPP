@@ -29,6 +29,7 @@ package eu.chargetime.ocpp.feature.profile.test;
 import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.feature.profile.ClientReservationEventHandler;
 import eu.chargetime.ocpp.feature.profile.ClientReservationProfile;
+import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
 import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,6 +67,7 @@ public class ClientReservationProfileTest extends ProfileTest {
 
         // Then
         assertThat(findFeature(features, "ReserveNow"), is(instanceOf(ReserveNowFeature.class)));
+        assertThat(findFeature(features, "CancelReservation"), is(instanceOf(CancelReservationFeature.class)));
     }
 
     @Test
@@ -78,6 +80,19 @@ public class ClientReservationProfileTest extends ProfileTest {
 
         // Then
         verify(handler, times(1)).handleReserveNowRequest(eq(request));
+    }
+
+
+    @Test
+    public void handleRequest_aCancelReservationRequest_callsHandleCancelReservationRequest() {
+        // Given
+        CancelReservationRequest request = new CancelReservationRequest();
+
+        // When
+        profile.handleRequest(SESSION_NULL, request);
+
+        // Then
+        verify(handler, times(1)).handleCancelReservationRequest(eq(request));
     }
 
 }
