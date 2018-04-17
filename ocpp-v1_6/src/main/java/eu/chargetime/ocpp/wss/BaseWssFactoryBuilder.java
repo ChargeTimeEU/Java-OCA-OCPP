@@ -47,13 +47,11 @@ public class BaseWssFactoryBuilder implements WssFactoryBuilder {
         return new BaseWssFactoryBuilder();
     }
 
-    @Override
     public BaseWssFactoryBuilder ciphers(List<String> ciphers) {
         this.ciphers = ciphers;
         return this;
     }
 
-    @Override
     public BaseWssFactoryBuilder sslContext(SSLContext sslContext) {
         this.sslContext = sslContext;
         return this;

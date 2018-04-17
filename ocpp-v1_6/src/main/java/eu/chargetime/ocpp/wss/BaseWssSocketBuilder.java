@@ -55,31 +55,26 @@ public class BaseWssSocketBuilder implements WssSocketBuilder {
         return new BaseWssSocketBuilder();
     }
 
-    @Override
     public BaseWssSocketBuilder proxy(Proxy proxy) {
         this.proxy = proxy;
         return this;
     }
 
-    @Override
     public BaseWssSocketBuilder sslSocketFactory(SSLSocketFactory sslSocketFactory) {
         this.sslSocketFactory = sslSocketFactory;
         return this;
     }
 
-    @Override
     public BaseWssSocketBuilder tcpNoDelay(boolean tcpNoDelay) {
         this.tcpNoDelay = tcpNoDelay;
         return this;
     }
 
-    @Override
     public BaseWssSocketBuilder reuseAddr(boolean reuseAddr) {
         this.reuseAddr = reuseAddr;
         return this;
     }
 
-    @Override
     public BaseWssSocketBuilder autoClose(boolean autoClose) {
         this.autoClose = autoClose;
         return this;
@@ -91,7 +86,6 @@ public class BaseWssSocketBuilder implements WssSocketBuilder {
         return this;
     }
 
-    @Override
     public BaseWssSocketBuilder connectionTimeout(int connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;
