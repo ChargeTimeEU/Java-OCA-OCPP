@@ -45,4 +45,5 @@ public interface WssSocketBuilder {
     WssSocketBuilder uri(URI uri);
     WssSocketBuilder connectionTimeout(int connectionTimeout);
     Socket build() throws IOException;
+    void verify();
 }
