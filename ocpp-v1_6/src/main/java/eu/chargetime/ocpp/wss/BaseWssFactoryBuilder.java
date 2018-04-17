@@ -41,14 +41,18 @@ public class BaseWssFactoryBuilder implements WssFactoryBuilder {
     private SSLContext sslContext;
     private List<String> ciphers;
 
-    @Override
-    public WssFactoryBuilder ciphers(List<String> ciphers) {
+    private BaseWssFactoryBuilder() {}
+
+    public static BaseWssFactoryBuilder builder() {
+        return new BaseWssFactoryBuilder();
+    }
+
+    public BaseWssFactoryBuilder ciphers(List<String> ciphers) {
         this.ciphers = ciphers;
         return this;
     }
 
-    @Override
-    public WssFactoryBuilder sslContext(SSLContext sslContext) {
+    public BaseWssFactoryBuilder sslContext(SSLContext sslContext) {
         this.sslContext = sslContext;
         return this;
     }
@@ -58,5 +62,12 @@ public class BaseWssFactoryBuilder implements WssFactoryBuilder {
         return ciphers == null
                 ? new DefaultSSLWebSocketServerFactory(sslContext)
                 : new CustomSSLWebSocketServerFactory(sslContext, ciphers);
+    }
+
+    @Override
+    public void verify() {
+        if(sslContext == null) {
+            throw new IllegalStateException("sslContext must be set");
+        }
     }
 }

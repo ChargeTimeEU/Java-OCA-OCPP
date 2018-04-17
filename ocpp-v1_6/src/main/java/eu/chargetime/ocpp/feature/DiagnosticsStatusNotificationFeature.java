@@ -1,11 +1,18 @@
-package eu.chargetime.ocpp.wss;
+package eu.chargetime.ocpp.feature;
+
+import eu.chargetime.ocpp.feature.profile.Profile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationConfirmation;
+import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
 
 /*
- ubitricity.com - Java-OCA-OCPP
+ ChargeTime.eu - Java-OCA-OCPP
 
  MIT License
 
- Copyright (C) 2018 Evgeny Pakhomov <eugene.pakhomov@ubitricity.com>
+ Copyright (C) 2016-2018 Thomas Volden
+ Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,27 +31,26 @@ package eu.chargetime.ocpp.wss;
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
-*/
-
-import org.java_websocket.WebSocketServerFactory;
-
-/**
- * To build {@link WebSocketServerFactory} factory to support WSS scheme.
  */
-public interface WssFactoryBuilder {
 
-    /**
-     * Builds {@link WebSocketServerFactory} to support WSS scheme.
-     *
-     * @return {@link WebSocketServerFactory}
-     */
-    WebSocketServerFactory build();
+public class DiagnosticsStatusNotificationFeature extends Feature {
 
-    /**
-     * Verifies if all required by the server creation time parameters are set.
-     * The idea is to allow the server to fail fast if required parameters are missing without exposing implementation details.
-     *
-     * @throws IllegalStateException if verification fails.
-     */
-    void verify();
+    public DiagnosticsStatusNotificationFeature(Profile ownerProfile) {
+        super(ownerProfile);
+    }
+
+    @Override
+    public Class<? extends Request> getRequestType() {
+        return DiagnosticsStatusNotificationRequest.class;
+    }
+
+    @Override
+    public Class<? extends Confirmation> getConfirmationType() {
+        return DiagnosticsStatusNotificationConfirmation.class;
+    }
+
+    @Override
+    public String getAction() {
+        return "DiagnosticsStatusNotification";
+    }
 }

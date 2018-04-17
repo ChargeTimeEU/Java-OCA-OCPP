@@ -49,44 +49,44 @@ public class BaseWssSocketBuilder implements WssSocketBuilder {
     // 0 for infinite timeout
     private int connectionTimeout = 0;
 
-    @Override
-    public WssSocketBuilder proxy(Proxy proxy) {
+    private BaseWssSocketBuilder(){}
+
+    public static BaseWssSocketBuilder builder() {
+        return new BaseWssSocketBuilder();
+    }
+
+    public BaseWssSocketBuilder proxy(Proxy proxy) {
         this.proxy = proxy;
         return this;
     }
 
-    @Override
-    public WssSocketBuilder sslSocketFactory(SSLSocketFactory sslSocketFactory) {
+    public BaseWssSocketBuilder sslSocketFactory(SSLSocketFactory sslSocketFactory) {
         this.sslSocketFactory = sslSocketFactory;
         return this;
     }
 
-    @Override
-    public WssSocketBuilder tcpNoDelay(boolean tcpNoDelay) {
+    public BaseWssSocketBuilder tcpNoDelay(boolean tcpNoDelay) {
         this.tcpNoDelay = tcpNoDelay;
         return this;
     }
 
-    @Override
-    public WssSocketBuilder reuseAddr(boolean reuseAddr) {
+    public BaseWssSocketBuilder reuseAddr(boolean reuseAddr) {
         this.reuseAddr = reuseAddr;
         return this;
     }
 
-    @Override
-    public WssSocketBuilder autoClose(boolean autoClose) {
+    public BaseWssSocketBuilder autoClose(boolean autoClose) {
         this.autoClose = autoClose;
         return this;
     }
 
     @Override
-    public WssSocketBuilder uri(URI uri) {
+    public BaseWssSocketBuilder uri(URI uri) {
         this.uri = uri;
         return this;
     }
 
-    @Override
-    public WssSocketBuilder connectionTimeout(int connectionTimeout) {
+    public BaseWssSocketBuilder connectionTimeout(int connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;
     }
@@ -102,6 +102,13 @@ public class BaseWssSocketBuilder implements WssSocketBuilder {
         }
 
         return sslSocketFactory.createSocket(socket, uri.getHost(), getPort(uri), autoClose);
+    }
+
+    @Override
+    public void verify() {
+        if(sslSocketFactory == null) {
+            throw new IllegalStateException("sslSocketFactory must be set");
+        }
     }
 
     private int getPort(URI uri) {
