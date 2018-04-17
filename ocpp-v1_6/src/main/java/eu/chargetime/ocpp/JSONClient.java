@@ -4,6 +4,7 @@ import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
 import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.wss.BaseWssSocketBuilder;
 import eu.chargetime.ocpp.wss.WssSocketBuilder;
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -67,7 +68,38 @@ public class JSONClient implements IClientAPI {
         featureRepository.addFeatureProfile(coreProfile);
     }
 
-    public JSONClient enableWSS(WssSocketBuilder wssSocketBuilder) throws IOException {
+    /**
+     * Application composite root for a json client.
+     * The core feature profile is required as a minimum.
+     *
+     * @param coreProfile   implementation of the core feature profile.
+     * @param identity      if set, will append identity to url.
+     * @param wssSocketBuilder to build {@link java.net.Socket} to support wss://.
+     */
+    public JSONClient(ClientCoreProfile coreProfile, String identity, WssSocketBuilder wssSocketBuilder) {
+        this(coreProfile, identity);
+        enableWSS(wssSocketBuilder);
+    }
+
+    // To ensure the exposed API is backward compatible
+    public void enableWSS(SSLContext sslContext) throws IOException {
+        WssSocketBuilder wssSocketBuilder =
+                BaseWssSocketBuilder.builder().sslSocketFactory(sslContext.getSocketFactory());
+        enableWSS(wssSocketBuilder);
+    }
+
+    /**
+     * Enables WSS connection to the endpoint.
+     * The {@code wssSocketBuilder} must be initialized at that step
+     * (as required parameters set might vary depending on implementation the {@link eu.chargetime.ocpp.wss.WssSocketBuilder#verify()} is used to ensure initialization).
+     *
+     * @param wssSocketBuilder builder to provide SSL socket
+     * @return instance of {@link JSONClient}
+     * @throws IllegalStateException in case if the client is already connected
+     * @throws IllegalStateException in case {@code wssSocketBuilder} not initialized properly
+     */
+    public JSONClient enableWSS(WssSocketBuilder wssSocketBuilder) {
+        wssSocketBuilder.verify();
         transmitter.enableWSS(wssSocketBuilder);
         return this;
     }
