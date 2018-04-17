@@ -41,6 +41,8 @@ import eu.chargetime.ocpp.model.reservation.CancelReservationConfirmation;
 import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
 import eu.chargetime.ocpp.model.reservation.ReserveNowConfirmation;
 import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
+import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
+import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 import eu.chargetime.ocpp.test.FakeCentral.serverType;
 
 import java.util.Calendar;
@@ -55,8 +57,6 @@ public class FakeCentralSystem {
         dummyHandlers = new DummyHandlers();
 
         ServerCoreProfile serverCoreProfile = new ServerCoreProfile(dummyHandlers.createServerCoreEventHandler());
-        ServerReservationProfile serverReservationProfile = new ServerReservationProfile();
-        ServerLocalAuthListProfile serverLocalAuthListProfile = new ServerLocalAuthListProfile();
 
         if (type == serverType.JSON) {
             server = new JSONServer(serverCoreProfile);
@@ -64,8 +64,6 @@ public class FakeCentralSystem {
             server = new SOAPServer(serverCoreProfile);
         }
 
-        server.addFeatureProfile(serverReservationProfile);
-        server.addFeatureProfile(serverLocalAuthListProfile);
         initializeServer();
         isStarted = false;
     }
@@ -82,6 +80,9 @@ public class FakeCentralSystem {
 
         ServerLocalAuthListProfile localAuthListProfile = new ServerLocalAuthListProfile();
         server.addFeatureProfile(localAuthListProfile);
+
+        ServerReservationProfile serverReservationProfile = new ServerReservationProfile();
+        server.addFeatureProfile(serverReservationProfile);
     }
 
     public boolean connected() {
@@ -159,6 +160,10 @@ public class FakeCentralSystem {
 
     public boolean hasReceivedUpdateFirmwareConfirmation() {
         return dummyHandlers.wasLatestConfirmation(UpdateFirmwareConfirmation.class);
+    }
+
+    public boolean hasReceivedSetChargingProfileConfirmation() {
+        return dummyHandlers.wasLatestConfirmation(SetChargingProfileConfirmation.class);
     }
 
     public boolean hasReceivedChangeAvailabilityConfirmation(String status) {
@@ -296,6 +301,11 @@ public class FakeCentralSystem {
 
     public void sendSendLocalListRequest(int listVersion, UpdateType updateType) throws Exception {
         SendLocalListRequest request = new SendLocalListRequest(listVersion, updateType);
+        send(request);
+    }
+
+    public void sendSetChargingProfileRequest(Integer connectorId, ChargingProfile chargingProfile) throws Exception {
+        SetChargingProfileRequest request = new SetChargingProfileRequest(connectorId,  chargingProfile);
         send(request);
     }
 
