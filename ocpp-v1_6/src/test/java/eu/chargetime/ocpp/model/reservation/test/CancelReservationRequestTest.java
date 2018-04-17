@@ -1,10 +1,11 @@
-package eu.chargetime.ocpp.feature.profile;
+package eu.chargetime.ocpp.model.reservation.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,15 +26,43 @@ package eu.chargetime.ocpp.feature.profile;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.firmware.*;
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
+import org.junit.Before;
+import org.junit.Test;
 
-public interface ClientFirmwareManagementEventHandler {
-    GetDiagnosticsConfirmation handleGetDiagnosticsRequest(GetDiagnosticsRequest request);
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
-    DiagnosticsStatusNotificationConfirmation handleDiagnosticsStatusNotificationRequest(DiagnosticsStatusNotificationRequest request);
+public class CancelReservationRequestTest {
 
-    FirmwareStatusNotificationConfirmation handleFirmwareStatusNotificationRequest(FirmwareStatusNotificationRequest request);
+    private CancelReservationRequest request;
 
-    UpdateFirmwareConfirmation handleUpdateFirmwareRequest(UpdateFirmwareRequest request);
+    @Before
+    public void setup() {
+        request = new CancelReservationRequest();
+    }
+
+    @Test
+    public void validate_statusIsNotSet_returnsFalse() {
+        // When
+        boolean result = request.validate();
+
+        // Then
+        assertThat(result, is(false));
+    }
+
+    @Test
+    public void validate_reservationIdIsSet_returnsTrue() {
+        // Given
+        Integer reservationId = 1;
+        request.setReservationId(reservationId);
+
+        // When
+        boolean result = request.validate();
+
+        // Then
+        assertThat(result, is(true));
+    }
 
 }

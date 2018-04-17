@@ -30,16 +30,19 @@ import eu.chargetime.ocpp.IServerAPI;
 import eu.chargetime.ocpp.JSONServer;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.SOAPServer;
-import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
-import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementProfile;
-import eu.chargetime.ocpp.feature.profile.ServerRemoteTriggerProfile;
-import eu.chargetime.ocpp.feature.profile.ServerSmartChargingProfile;
+import eu.chargetime.ocpp.feature.profile.*;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
 import eu.chargetime.ocpp.model.firmware.*;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
+import eu.chargetime.ocpp.model.reservation.CancelReservationConfirmation;
+import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
+import eu.chargetime.ocpp.model.reservation.ReserveNowConfirmation;
+import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
 import eu.chargetime.ocpp.test.FakeCentral.serverType;
+
+import java.util.Calendar;
 
 public class FakeCentralSystem {
     private IServerAPI server;
@@ -51,6 +54,7 @@ public class FakeCentralSystem {
         dummyHandlers = new DummyHandlers();
 
         ServerCoreProfile serverCoreProfile = new ServerCoreProfile(dummyHandlers.createServerCoreEventHandler());
+        ServerReservationProfile serverReservationProfile = new ServerReservationProfile();
 
         if (type == serverType.JSON) {
             server = new JSONServer(serverCoreProfile);
@@ -58,6 +62,7 @@ public class FakeCentralSystem {
             server = new SOAPServer(serverCoreProfile);
         }
 
+        server.addFeatureProfile(serverReservationProfile);
         initializeServer();
         isStarted = false;
     }
@@ -122,9 +127,24 @@ public class FakeCentralSystem {
         return dummyHandlers.wasLatestConfirmation(GetDiagnosticsConfirmation.class);
     }
 
-
     public boolean hasReceivedDiagnosticsStatusNotificationConfirmation() {
         return dummyHandlers.wasLatestConfirmation(DiagnosticsStatusNotificationConfirmation.class);
+    }
+
+    public boolean hasReceivedFirmwareStatusNotificationConfirmation() {
+        return dummyHandlers.wasLatestConfirmation(FirmwareStatusNotificationConfirmation.class);
+    }
+
+    public boolean hasReceivedReserveNowConfirmation() {
+        return dummyHandlers.wasLatestConfirmation(ReserveNowConfirmation.class);
+    }
+
+    public boolean hasReceivedCancelReservationConfirmation() {
+        return dummyHandlers.wasLatestConfirmation(CancelReservationConfirmation.class);
+    }
+
+    public boolean hasReceivedUpdateFirmwareConfirmation() {
+        return dummyHandlers.wasLatestConfirmation(UpdateFirmwareConfirmation.class);
     }
 
     public boolean hasReceivedChangeAvailabilityConfirmation(String status) {
@@ -230,9 +250,28 @@ public class FakeCentralSystem {
         send(request);
     }
 
-
     public void sendDiagnosticsStatusNotificationRequest(DiagnosticsStatus status) throws Exception {
         DiagnosticsStatusNotificationRequest request = new DiagnosticsStatusNotificationRequest(status);
+        send(request);
+    }
+
+    public void sendFirmwareStatusNotificationRequest(FirmwareStatus status) throws Exception {
+        FirmwareStatusNotificationRequest request = new FirmwareStatusNotificationRequest(status);
+        send(request);
+    }
+
+    public void sendUpdateFirmwareRequest(String location, Calendar retrieveDate) throws Exception {
+        UpdateFirmwareRequest request = new UpdateFirmwareRequest(location, retrieveDate);
+        send(request);
+    }
+
+    public void sendReserveNowRequest(Integer connectorId, Calendar expiryDate, String idTag, Integer reservationId) throws Exception {
+        ReserveNowRequest request = new ReserveNowRequest(connectorId, expiryDate, idTag, reservationId);
+        send(request);
+    }
+
+    public void sendCancelReservationRequest(Integer reservationId) throws Exception {
+        CancelReservationRequest request = new CancelReservationRequest(reservationId);
         send(request);
     }
 
