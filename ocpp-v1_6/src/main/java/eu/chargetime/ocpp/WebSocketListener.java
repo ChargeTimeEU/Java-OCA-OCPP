@@ -34,6 +34,7 @@ import org.java_websocket.server.WebSocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.util.Arrays;
@@ -122,7 +123,7 @@ public class WebSocketListener implements Listener {
 
             @Override
             public void onStart() {
-                logger.debug("On start");
+                logger.debug("Server socket bound");
             }
         };
 
@@ -164,9 +165,9 @@ public class WebSocketListener implements Listener {
         } catch (InterruptedException e) {
             // Do second try
             try {
-                server.stop(TIMEOUT_IN_MILLIS);
-            } catch (InterruptedException e1) {
-                logger.error("Failed to close listener", e);
+                server.stop();
+            } catch (IOException | InterruptedException ex) {
+                logger.error("Failed to close listener", ex);
             }
         } finally {
             closed = true;

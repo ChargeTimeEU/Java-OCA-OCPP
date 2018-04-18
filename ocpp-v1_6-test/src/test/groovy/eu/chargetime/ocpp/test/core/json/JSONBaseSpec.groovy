@@ -41,5 +41,7 @@ abstract class JSONBaseSpec extends Specification {
         conditions.eventually {
             assert centralSystem.isClosed()
         }
+
+        Thread.sleep(1000);
     }
 }
