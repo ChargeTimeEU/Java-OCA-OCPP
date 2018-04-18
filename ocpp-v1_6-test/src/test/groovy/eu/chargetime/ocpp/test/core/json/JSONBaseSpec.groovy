@@ -27,6 +27,8 @@ abstract class JSONBaseSpec extends Specification {
     }
 
     def setup() {
+        Thread.sleep(100);
+        
         chargePoint.connect()
     }
 
