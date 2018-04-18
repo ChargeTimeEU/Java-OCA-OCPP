@@ -40,11 +40,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class WebSocketListener implements Listener {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketListener.class);
 
-    private static final int TIMEOUT_IN_MILLIS = 1;
+    private static final int TIMEOUT_IN_MILLIS = 1000;
 
     private final IServerSessionFactory sessionFactory;
     private final List<Draft> drafts;
@@ -52,6 +54,7 @@ public class WebSocketListener implements Listener {
     // In seconds
     private int pingInterval = 60;
 
+    private Lock finalizationLock = new ReentrantLock();
     private WebSocketServer server;
     private WssFactoryBuilder wssFactoryBuilder;
     private Map<WebSocket, WebSocketReceiver> sockets;
@@ -84,7 +87,14 @@ public class WebSocketListener implements Listener {
                             }
                         }
                 );
-                sockets.put(webSocket, receiver);
+
+                finalizationLock.lock();
+                try {
+                    sockets.put(webSocket, receiver);
+                } finally {
+                    finalizationLock.unlock();
+                }
+
                 SessionInformation information = new SessionInformation.Builder()
                         .Identifier(clientHandshake.getResourceDescriptor())
                         .InternetAddress(webSocket.getRemoteSocketAddress()).build();
@@ -107,10 +117,12 @@ public class WebSocketListener implements Listener {
 
             @Override
             public void onError(WebSocket webSocket, Exception ex) {
+                String resourceDescriptor = (webSocket != null) ? webSocket.getResourceDescriptor() : "not defined (webSocket is null)";
+
                 if(ex instanceof ConnectException) {
-                    logger.error("On error (resource descriptor: " + webSocket.getResourceDescriptor() + ") triggered caused by:",  ex);
+                    logger.error("On error (resource descriptor: " + resourceDescriptor + ") triggered caused by:",  ex);
                 } else {
-                    logger.error("On error (resource descriptor: " + webSocket.getResourceDescriptor() + ") triggered:", ex);
+                    logger.error("On error (resource descriptor: " + resourceDescriptor + ") triggered:", ex);
                 }
             }
 
@@ -125,7 +137,6 @@ public class WebSocketListener implements Listener {
         }
 
         server.setConnectionLostTimeout(pingInterval);
-
         server.start();
         closed = false;
     }
@@ -148,8 +159,13 @@ public class WebSocketListener implements Listener {
 
     @Override
     public void close() {
+
+        if(server == null) {
+            return;
+        }
+
+        finalizationLock.lock();
         try {
-            closed = true;
             for (WebSocket ws : sockets.keySet()) {
                 ws.close();
             }
@@ -157,9 +173,16 @@ public class WebSocketListener implements Listener {
             sockets.clear();
             server.stop(TIMEOUT_IN_MILLIS);
         } catch (InterruptedException e) {
-        	logger.error("Failed to close listener", e);
+            // Do second try
+            try {
+                server.stop(TIMEOUT_IN_MILLIS);
+            } catch (InterruptedException e1) {
+                logger.error("Failed to close listener", e);
+            }
         } finally {
+            closed = true;
             server = null;
+            finalizationLock.unlock();
         }
     }
 

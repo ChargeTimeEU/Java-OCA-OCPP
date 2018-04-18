@@ -73,6 +73,10 @@ public class FakeCentralSystem {
         server.addFeatureProfile(firmwareManagementProfile);
     }
 
+    public boolean isClosed() {
+        return server.isClosed();
+    }
+
     public boolean connected() {
         return dummyHandlers.getCurrentIdentifier() != null;
     }
@@ -82,11 +86,11 @@ public class FakeCentralSystem {
     }
 
     public void started() throws Exception {
-
         if (!isStarted) {
             int port = 8890;
-            if (server instanceof JSONServer)
+            if (server instanceof JSONServer) {
                 port = 8887;
+            }
 
             server.open("127.0.0.1", port, dummyHandlers.generateServerEventsHandler());
             isStarted = true;
@@ -95,6 +99,7 @@ public class FakeCentralSystem {
 
     public void stopped() {
         server.close();
+        isStarted = false;
     }
 
     public boolean hasHandledAuthorizeRequest() {
@@ -279,6 +284,10 @@ public class FakeCentralSystem {
 
     public void rigNextRequestToFail() {
         dummyHandlers.setRiggedToFail(true);
+    }
+
+    public void clearRiggedToFailFlag() {
+        dummyHandlers.setRiggedToFail(false);
     }
 
     public void sendTriggerMessage(TriggerMessageRequestType type, Integer connectorId) throws Exception {
