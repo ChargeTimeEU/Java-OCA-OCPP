@@ -19,6 +19,8 @@ abstract class JSONBaseSpec extends Specification {
         // When a Central System is running
         centralSystem.started()
 
+        Thread.sleep(1000);
+
         conditions.eventually {
             assert !centralSystem.isClosed()
         }
@@ -41,7 +43,5 @@ abstract class JSONBaseSpec extends Specification {
         conditions.eventually {
             assert centralSystem.isClosed()
         }
-
-        Thread.sleep(1000);
     }
 }
