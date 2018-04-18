@@ -133,7 +133,7 @@ public class WebSocketListener implements Listener {
 
         server.setConnectionLostTimeout(pingInterval);
 
-        server.setReuseAddr(true);
+        //server.setReuseAddr(true);
 
         server.start();
         closed = false;
