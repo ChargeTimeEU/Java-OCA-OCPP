@@ -7,7 +7,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class JSONBaseSpec extends Specification {
+abstract class JSONBaseSpec extends Specification {
     @Shared
     FakeCentralSystem centralSystem = FakeCentral.getSystem(FakeCentral.serverType.JSON)
     @Shared
