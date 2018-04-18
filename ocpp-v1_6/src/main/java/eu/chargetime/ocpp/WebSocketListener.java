@@ -46,7 +46,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class WebSocketListener implements Listener {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketListener.class);
 
-    private static final int TIMEOUT_IN_MILLIS = 1000;
+    private static final int TIMEOUT_IN_MILLIS = 10000;
 
     private final IServerSessionFactory sessionFactory;
     private final List<Draft> drafts;
