@@ -40,8 +40,12 @@ import eu.chargetime.ocpp.model.firmware.*;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
 import eu.chargetime.ocpp.test.FakeCentral.serverType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FakeCentralSystem {
+    private static final Logger logger = LoggerFactory.getLogger(FakeCentralSystem.class);
+
     private IServerAPI server;
 
     private DummyHandlers dummyHandlers;
@@ -89,16 +93,18 @@ public class FakeCentralSystem {
         if (!isStarted) {
             int port = 8890;
             if (server instanceof JSONServer) {
-                port = 8889;
+                port = 8885;
             }
 
             server.open("127.0.0.1", port, dummyHandlers.generateServerEventsHandler());
+            logger.info("Server started on port: {}", port);
             isStarted = true;
         }
     }
 
     public void stopped() {
         server.close();
+        logger.info("Server stopped");
         isStarted = false;
     }
 

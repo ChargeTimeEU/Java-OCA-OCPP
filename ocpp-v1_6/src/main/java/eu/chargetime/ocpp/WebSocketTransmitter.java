@@ -51,7 +51,7 @@ public class WebSocketTransmitter implements Transmitter
     // In seconds
     private int pingInterval = 60;
     private volatile boolean closed = true;
-    private WebSocketClient client;
+    private volatile WebSocketClient client;
     private WssSocketBuilder wssSocketBuilder;
 
     public WebSocketTransmitter(Draft draft) {

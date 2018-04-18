@@ -54,8 +54,7 @@ public class WebSocketListener implements Listener {
     // In seconds
     private int pingInterval = 60;
 
-    private Lock finalizationLock = new ReentrantLock();
-    private WebSocketServer server;
+    private volatile WebSocketServer server;
     private WssFactoryBuilder wssFactoryBuilder;
     private Map<WebSocket, WebSocketReceiver> sockets;
     private volatile boolean closed = true;
@@ -88,12 +87,7 @@ public class WebSocketListener implements Listener {
                         }
                 );
 
-                finalizationLock.lock();
-                try {
-                    sockets.put(webSocket, receiver);
-                } finally {
-                    finalizationLock.unlock();
-                }
+                sockets.put(webSocket, receiver);
 
                 SessionInformation information = new SessionInformation.Builder()
                         .Identifier(clientHandshake.getResourceDescriptor())
@@ -164,12 +158,7 @@ public class WebSocketListener implements Listener {
             return;
         }
 
-        finalizationLock.lock();
         try {
-            for (WebSocket ws : sockets.keySet()) {
-                ws.close();
-            }
-
             sockets.clear();
             server.stop(TIMEOUT_IN_MILLIS);
         } catch (InterruptedException e) {
@@ -182,7 +171,6 @@ public class WebSocketListener implements Listener {
         } finally {
             closed = true;
             server = null;
-            finalizationLock.unlock();
         }
     }
 
