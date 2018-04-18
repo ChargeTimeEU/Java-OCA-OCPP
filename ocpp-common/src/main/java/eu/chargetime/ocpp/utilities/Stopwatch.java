@@ -7,7 +7,7 @@ package eu.chargetime.ocpp.utilities;
  *
  * Changes:
  *  * Cut Guava specific annotations
- *  * Ticker abstraction replaced with direct System.nanoTime() call
+ *  * Ticker dependency removed and abstraction and default implementation moved to this class
  *  * Platform dependency removed and formatCompact4Digits method moved to this class
  *  * Preconditions dependency removed and checkState method moved to this class
  *  * References to Guava versions in methods JavaDoc are cut as it won't be relevant
@@ -37,6 +37,19 @@ public final class Stopwatch {
     private boolean isRunning;
     private long elapsedNanos;
     private long startTick;
+    private Ticker ticker;
+
+    private Stopwatch() {
+        this(System::nanoTime);
+    }
+
+    public Stopwatch(Ticker ticker) {
+        this.ticker = ticker;
+    }
+
+    public interface Ticker {
+        long read();
+    }
 
     /**
      * Creates (but does not start) a new stopwatch using {@link System#nanoTime} as its time source.
@@ -71,7 +84,7 @@ public final class Stopwatch {
         checkState(false);
 
         isRunning = true;
-        startTick = System.nanoTime();
+        startTick = ticker.read();
         return this;
     }
 
@@ -86,7 +99,7 @@ public final class Stopwatch {
     public Stopwatch stop() {
         checkState(true);
 
-        long tick = System.nanoTime();
+        long tick = ticker.read();
         isRunning = false;
         elapsedNanos += tick - startTick;
         return this;
@@ -104,7 +117,7 @@ public final class Stopwatch {
     }
 
     private long elapsedNanos() {
-        return isRunning ? System.nanoTime() - startTick + elapsedNanos : elapsedNanos;
+        return isRunning ? ticker.read() - startTick + elapsedNanos : elapsedNanos;
     }
 
     /**
