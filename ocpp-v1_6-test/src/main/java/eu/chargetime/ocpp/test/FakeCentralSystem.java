@@ -89,7 +89,7 @@ public class FakeCentralSystem {
         if (!isStarted) {
             int port = 8890;
             if (server instanceof JSONServer) {
-                port = 8887;
+                port = 8889;
             }
 
             server.open("127.0.0.1", port, dummyHandlers.generateServerEventsHandler());
