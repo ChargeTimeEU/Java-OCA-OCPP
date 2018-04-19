@@ -59,14 +59,38 @@ public class ClientFirmwareManagementProfileTest extends ProfileTest {
     }
 
     @Test
-    public void getFeatureList_containsAllNeededFeatures() {
+    public void getFeatureList_containsGetDiagnosticsFeature() {
         // When
         Feature[] features = profile.getFeatureList();
 
         // Then
         assertThat(findFeature(features, "GetDiagnostics"), is(instanceOf(GetDiagnosticsFeature.class)));
+    }
+
+    @Test
+    public void getFeatureList_containsDiagnosticsStatusNotificationFeature() {
+        // When
+        Feature[] features = profile.getFeatureList();
+
+        // Then
         assertThat(findFeature(features, "DiagnosticsStatusNotification"), is(instanceOf(DiagnosticsStatusNotificationFeature.class)));
+    }
+
+    @Test
+    public void getFeatureList_containsFirmwareStatusNotificationFeature() {
+        // When
+        Feature[] features = profile.getFeatureList();
+
+        // Then
         assertThat(findFeature(features, "FirmwareStatusNotification"), is(instanceOf(FirmwareStatusNotificationFeature.class)));
+    }
+
+    @Test
+    public void getFeatureList_containsUpdateFirmwareFeature() {
+        // When
+        Feature[] features = profile.getFeatureList();
+
+        // Then
         assertThat(findFeature(features, "UpdateFirmware"), is(instanceOf(UpdateFirmwareFeature.class)));
     }
 

@@ -61,7 +61,7 @@ class JSONReserveNowSpec extends Specification {
         }
 
         when:
-        centralSystem.sendReserveNowRequest(1, Calendar.getInstance(), "123", 2)
+        centralSystem.sendReserveNowRequest(0, Calendar.getInstance(), "123", 2)
 
         then:
         conditions.eventually {

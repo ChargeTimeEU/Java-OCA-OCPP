@@ -5,6 +5,7 @@ package eu.chargetime.ocpp.utilities;
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal

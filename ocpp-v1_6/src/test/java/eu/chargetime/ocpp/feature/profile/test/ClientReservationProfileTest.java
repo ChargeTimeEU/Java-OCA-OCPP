@@ -61,12 +61,20 @@ public class ClientReservationProfileTest extends ProfileTest {
     }
 
     @Test
-    public void getFeatureList_containsAllNeededFeatures() {
+    public void getFeatureList_containsReserveNowFeature() {
         // When
         Feature[] features = profile.getFeatureList();
 
         // Then
         assertThat(findFeature(features, "ReserveNow"), is(instanceOf(ReserveNowFeature.class)));
+    }
+
+    @Test
+    public void getFeatureList_containsCancelReservationFeature() {
+        // When
+        Feature[] features = profile.getFeatureList();
+
+        // Then
         assertThat(findFeature(features, "CancelReservation"), is(instanceOf(CancelReservationFeature.class)));
     }
 

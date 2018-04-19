@@ -57,7 +57,7 @@ public class ReserveNowRequestTest {
     @Test
     public void validate_requiredFieldsAreSet_returnTrue() throws PropertyConstraintException {
         // Given
-        Integer connectorId = 1;
+        Integer connectorId = 0;
         Calendar expiryDate = Calendar.getInstance();
         String idTag = "row";
         Integer reservationId = 2;

@@ -50,12 +50,21 @@ public class ServerLocalAuthListProfileTest extends ProfileTest {
     }
 
     @Test
-    public void getFeatureList_containsAllNeededFeatures() {
+    public void getFeatureList_containsGetLocalListVersionFeature() {
         // When
         Feature[] featureList = profile.getFeatureList();
 
         // Then
         assertThat(findFeature(featureList, "GetLocalListVersion"), CoreMatchers.is(instanceOf(GetLocalListVersionFeature.class)));
+    }
+
+
+    @Test
+    public void getFeatureList_containsSendLocalListFeature() {
+        // When
+        Feature[] featureList = profile.getFeatureList();
+
+        // Then
         assertThat(findFeature(featureList, "SendLocalList"), CoreMatchers.is(instanceOf(SendLocalListFeature.class)));
     }
 

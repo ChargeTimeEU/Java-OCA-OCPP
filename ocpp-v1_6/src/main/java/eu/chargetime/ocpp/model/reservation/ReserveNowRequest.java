@@ -61,7 +61,7 @@ public class ReserveNowRequest implements Request {
 
     @Override
     public boolean validate() {
-        boolean valid = connectorId != null && connectorId > 0;
+        boolean valid = connectorId != null && connectorId >= 0;
         valid &= expiryDate != null;
         valid &= ModelUtil.validate(idTag, 20);
         valid &= reservationId != null;
@@ -87,7 +87,7 @@ public class ReserveNowRequest implements Request {
      */
     @XmlElement
     public void setConnectorId(Integer connectorId) throws PropertyConstraintException {
-        if (connectorId <= 0)
+        if (connectorId < 0)
             throw new PropertyConstraintException("connectorId", connectorId);
 
         this.connectorId = connectorId;
