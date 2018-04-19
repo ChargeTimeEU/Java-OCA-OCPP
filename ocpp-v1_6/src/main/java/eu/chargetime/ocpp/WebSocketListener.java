@@ -52,19 +52,22 @@ public class WebSocketListener implements Listener {
     private final IServerSessionFactory sessionFactory;
     private final List<Draft> drafts;
 
-    // In seconds
-    private int pingInterval = 60;
-
+    private final JSONConfiguration configuration;
     private volatile WebSocketServer server;
     private WssFactoryBuilder wssFactoryBuilder;
-    private Map<WebSocket, WebSocketReceiver> sockets;
+    private final Map<WebSocket, WebSocketReceiver> sockets;
     private volatile boolean closed = true;
     private boolean handleRequestAsync;
 
-    public WebSocketListener(IServerSessionFactory sessionFactory, Draft... drafts) {
+    public WebSocketListener(IServerSessionFactory sessionFactory, JSONConfiguration configuration, Draft... drafts) {
         this.sessionFactory = sessionFactory;
+        this.configuration = configuration;
         this.drafts = Arrays.asList(drafts);
         this.sockets = new ConcurrentHashMap<>();
+    }
+
+    public WebSocketListener(IServerSessionFactory sessionFactory, Draft... drafts) {
+        this(sessionFactory, new JSONConfiguration(), drafts);
     }
 
     @Override
@@ -131,28 +134,26 @@ public class WebSocketListener implements Listener {
             server.setWebSocketFactory(wssFactoryBuilder.build());
         }
 
-        server.setConnectionLostTimeout(pingInterval);
-
-        //server.setReuseAddr(true);
-
+        configure();
         server.start();
         closed = false;
     }
 
-    public void enableWSS(WssFactoryBuilder wssFactoryBuilder) {
+    void configure() {
+        server.setReuseAddr(
+                configuration.getParameter(JSONConfiguration.REUSE_ADDR_PARAMETER, false));
+        server.setTcpNoDelay(
+                configuration.getParameter(JSONConfiguration.TCP_NO_DELAY_PARAMETER, false));
+        server.setConnectionLostTimeout(
+                configuration.getParameter(JSONConfiguration.PING_INTERVAL_PARAMETER, 60));
+    }
+
+    void enableWSS(WssFactoryBuilder wssFactoryBuilder) {
         if(server != null) {
             throw new IllegalStateException("Cannot enable WSS on already running server");
         }
 
         this.wssFactoryBuilder = wssFactoryBuilder;
-    }
-
-    public void setPingInterval(int interval) {
-        this.pingInterval = interval;
-
-        if(server != null) {
-            server.setConnectionLostTimeout(interval);
-        }
     }
 
     @Override

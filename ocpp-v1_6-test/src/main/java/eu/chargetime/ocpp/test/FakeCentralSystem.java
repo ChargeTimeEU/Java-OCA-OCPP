@@ -26,10 +26,7 @@ package eu.chargetime.ocpp.test;
  SOFTWARE.
  */
 
-import eu.chargetime.ocpp.IServerAPI;
-import eu.chargetime.ocpp.JSONServer;
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.SOAPServer;
+import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementProfile;
 import eu.chargetime.ocpp.feature.profile.ServerRemoteTriggerProfile;
@@ -57,7 +54,10 @@ public class FakeCentralSystem {
         ServerCoreProfile serverCoreProfile = new ServerCoreProfile(dummyHandlers.createServerCoreEventHandler());
 
         if (type == serverType.JSON) {
-            server = new JSONServer(serverCoreProfile);
+            JSONConfiguration configuration =
+                    JSONConfiguration.get()
+                            .setParameter(JSONConfiguration.REUSE_ADDR_PARAMETER, true);
+            server = new JSONServer(serverCoreProfile, configuration);
         } else {
             server = new SOAPServer(serverCoreProfile);
         }

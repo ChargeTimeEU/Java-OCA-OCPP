@@ -53,6 +53,24 @@ public class JSONServer implements IServerAPI {
     private final WebSocketListener listener;
     private final Server server;
     private final FeatureRepository featureRepository;
+    private JSONConfiguration jsonConfiguration;
+
+    /**
+     * The core feature profile is required as a minimum.
+     * The constructor creates WS-ready server.
+     *
+     * @param coreProfile implementation of the core feature profile.
+     * @param configuration network configuration for a json server.
+     */
+    public JSONServer(ServerCoreProfile coreProfile, JSONConfiguration configuration) {
+        featureRepository = new FeatureRepository();
+        ServerSessionFactory sessionFactory = new ServerSessionFactory(featureRepository);
+        draftOcppOnly = new Draft_6455(Collections.emptyList(),
+                Collections.singletonList(new Protocol("ocpp1.6")));
+        this.listener = new WebSocketListener(sessionFactory, configuration, draftOcppOnly);
+        server = new Server(this.listener, featureRepository, new PromiseRepository());
+        featureRepository.addFeatureProfile(coreProfile);
+    }
 
     /**
      * The core feature profile is required as a minimum.
@@ -61,28 +79,36 @@ public class JSONServer implements IServerAPI {
      * @param coreProfile implementation of the core feature profile.
      */
     public JSONServer(ServerCoreProfile coreProfile) {
-        featureRepository = new FeatureRepository();
-        ServerSessionFactory sessionFactory = new ServerSessionFactory(featureRepository);
-        draftOcppOnly = new Draft_6455(Collections.emptyList(),
-                Collections.singletonList(new Protocol("ocpp1.6")));
-        this.listener = new WebSocketListener(sessionFactory, draftOcppOnly);
-        server = new Server(this.listener, featureRepository, new PromiseRepository());
-        featureRepository.addFeatureProfile(coreProfile);
+        this(coreProfile, new JSONConfiguration());
     }
 
     /**
      * The core feature profile is required as a minimum.
      * The constructor creates WSS-ready server.
      *
-     * @param coreProfile implementation of the core feature profile.
+     * @param coreProfile       implementation of the core feature profile.
      * @param wssFactoryBuilder to build {@link org.java_websocket.WebSocketServerFactory} to support wss://.
+     * @param configuration network configuration for a json server.
      */
-    public JSONServer(ServerCoreProfile coreProfile, WssFactoryBuilder wssFactoryBuilder) {
-        this(coreProfile);
+    public JSONServer(ServerCoreProfile coreProfile, WssFactoryBuilder wssFactoryBuilder,
+                      JSONConfiguration configuration) {
+        this(coreProfile, configuration);
         enableWSS(wssFactoryBuilder);
     }
 
-    // To ensure the exposed API is backward compatible
+    /**
+     * The core feature profile is required as a minimum.
+     * The constructor creates WSS-ready server.
+     *
+     * @param coreProfile       implementation of the core feature profile.
+     * @param wssFactoryBuilder to build {@link org.java_websocket.WebSocketServerFactory} to support wss://.
+     */
+    public JSONServer(ServerCoreProfile coreProfile, WssFactoryBuilder wssFactoryBuilder) {
+        this(coreProfile, wssFactoryBuilder, new JSONConfiguration());
+    }
+
+
+        // To ensure the exposed API is backward compatible
     public void enableWSS(SSLContext sslContext) throws IOException {
         WssFactoryBuilder builder = BaseWssFactoryBuilder.builder().sslContext(sslContext);
         enableWSS(builder);
@@ -102,16 +128,6 @@ public class JSONServer implements IServerAPI {
         wssFactoryBuilder.verify();
         listener.enableWSS(wssFactoryBuilder);
         return this;
-    }
-
-    /**
-     * Set WebSocket ping interval.
-     *
-     * @param interval ping interval in seconds.
-     */
-    public void setPingInterval(int interval) {
-        // Set ping interval in seconds
-        listener.setPingInterval(interval);
     }
 
     @Override
