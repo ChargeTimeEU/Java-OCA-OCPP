@@ -67,7 +67,7 @@ public class WebSocketListener implements Listener {
     }
 
     public WebSocketListener(IServerSessionFactory sessionFactory, Draft... drafts) {
-        this(sessionFactory, new JSONConfiguration(), drafts);
+        this(sessionFactory, JSONConfiguration.get(), drafts);
     }
 
     @Override

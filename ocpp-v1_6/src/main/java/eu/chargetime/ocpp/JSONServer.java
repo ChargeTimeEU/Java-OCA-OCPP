@@ -79,7 +79,7 @@ public class JSONServer implements IServerAPI {
      * @param coreProfile implementation of the core feature profile.
      */
     public JSONServer(ServerCoreProfile coreProfile) {
-        this(coreProfile, new JSONConfiguration());
+        this(coreProfile, JSONConfiguration.get());
     }
 
     /**
@@ -104,7 +104,7 @@ public class JSONServer implements IServerAPI {
      * @param wssFactoryBuilder to build {@link org.java_websocket.WebSocketServerFactory} to support wss://.
      */
     public JSONServer(ServerCoreProfile coreProfile, WssFactoryBuilder wssFactoryBuilder) {
-        this(coreProfile, wssFactoryBuilder, new JSONConfiguration());
+        this(coreProfile, wssFactoryBuilder, JSONConfiguration.get());
     }
 
 

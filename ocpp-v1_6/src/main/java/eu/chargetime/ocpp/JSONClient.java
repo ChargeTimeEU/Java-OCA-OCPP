@@ -89,7 +89,7 @@ public class JSONClient implements IClientAPI {
      * @param identity      if set, will append identity to url.
      */
     public JSONClient(ClientCoreProfile coreProfile, String identity) {
-        this(coreProfile, identity, new JSONConfiguration());
+        this(coreProfile, identity, JSONConfiguration.get());
     }
 
     /**
@@ -117,7 +117,7 @@ public class JSONClient implements IClientAPI {
      *
      */
     public JSONClient(ClientCoreProfile coreProfile, String identity, WssSocketBuilder wssSocketBuilder) {
-        this(coreProfile, identity, wssSocketBuilder, new JSONConfiguration());
+        this(coreProfile, identity, wssSocketBuilder, JSONConfiguration.get());
     }
 
     // To ensure the exposed API is backward compatible

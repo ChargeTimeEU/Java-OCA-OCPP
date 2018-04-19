@@ -60,7 +60,7 @@ public class WebSocketTransmitter implements Transmitter
     }
 
     public WebSocketTransmitter(Draft draft) {
-        this(new JSONConfiguration(), draft);
+        this(JSONConfiguration.get(), draft);
     }
 
     @Override

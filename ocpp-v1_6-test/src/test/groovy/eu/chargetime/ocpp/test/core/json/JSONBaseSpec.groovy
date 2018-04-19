@@ -15,7 +15,7 @@ abstract class JSONBaseSpec extends Specification {
 
     def setupSpec() {
         def conditions = new PollingConditions(timeout: 10)
-        
+
         // When a Central System is running
         centralSystem.started()
 
