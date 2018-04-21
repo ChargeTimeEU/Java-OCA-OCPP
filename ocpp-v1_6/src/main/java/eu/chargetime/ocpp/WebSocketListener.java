@@ -141,7 +141,7 @@ public class WebSocketListener implements Listener {
 
     void configure() {
         server.setReuseAddr(
-                configuration.getParameter(JSONConfiguration.REUSE_ADDR_PARAMETER, false));
+                configuration.getParameter(JSONConfiguration.REUSE_ADDR_PARAMETER, true));
         server.setTcpNoDelay(
                 configuration.getParameter(JSONConfiguration.TCP_NO_DELAY_PARAMETER, false));
         server.setConnectionLostTimeout(
