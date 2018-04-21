@@ -7,28 +7,9 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class SOAPUnlockConnectorSpec extends Specification {
-    @Shared
-    FakeCentralSystem centralSystem = new FakeCentralSystem(FakeCentral.serverType.SOAP)
-    @Shared
-    FakeChargePoint chargePoint = new FakeChargePoint(FakeChargePoint.clientType.SOAP)
-
-    def setupSpec() {
-        // When a Central System is running
-        centralSystem.started()
-    }
-
+class SOAPUnlockConnectorSpec extends SOAPBaseSpec {
     def setup() {
-        chargePoint.connect()
         chargePoint.sendBootNotification("VendorX", "SingleSocketCharger")
-    }
-
-    def cleanup() {
-        chargePoint.disconnect()
-    }
-
-    def cleanupSpec() {
-        centralSystem.stopped()
     }
 
     def "Central System sends a UnlockConnector request and receives a response"() {
