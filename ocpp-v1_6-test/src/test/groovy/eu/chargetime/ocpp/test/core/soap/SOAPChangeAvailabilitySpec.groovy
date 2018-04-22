@@ -1,6 +1,7 @@
 package eu.chargetime.ocpp.test.core.soap
 
 import eu.chargetime.ocpp.model.core.AvailabilityType
+import eu.chargetime.ocpp.test.base.soap.SOAPBaseSpec
 import spock.util.concurrent.PollingConditions
 
 class SOAPChangeAvailabilitySpec extends SOAPBaseSpec {

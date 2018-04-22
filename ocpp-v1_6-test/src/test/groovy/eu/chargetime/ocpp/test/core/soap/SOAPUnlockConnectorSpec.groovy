@@ -1,10 +1,6 @@
 package eu.chargetime.ocpp.test.core.soap
 
-import eu.chargetime.ocpp.test.FakeCentral
-import eu.chargetime.ocpp.test.FakeCentralSystem
-import eu.chargetime.ocpp.test.FakeChargePoint
-import spock.lang.Shared
-import spock.lang.Specification
+import eu.chargetime.ocpp.test.base.soap.SOAPBaseSpec
 import spock.util.concurrent.PollingConditions
 
 class SOAPUnlockConnectorSpec extends SOAPBaseSpec {

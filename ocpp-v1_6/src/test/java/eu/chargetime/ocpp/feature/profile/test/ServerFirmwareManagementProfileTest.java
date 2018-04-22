@@ -25,9 +25,9 @@ package eu.chargetime.ocpp.feature.profile.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.feature.GetDiagnosticsFeature;
+import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementProfile;
+import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,7 +53,35 @@ public class ServerFirmwareManagementProfileTest extends ProfileTest {
         Feature[] features = profile.getFeatureList();
 
         // Then
-        assertThat(findFeature(features, "GetDiagnostics"), is(instanceOf(GetDiagnosticsFeature.class)));
+        assertThat(findFeature(features, "GetDiagnostics"), Is.is(instanceOf(GetDiagnosticsFeature.class)));
     }
+
+    @Test
+    public void getFeatureList_containsDiagnosticsStatusNotificationFeature() {
+        // When
+        Feature[] features = profile.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "DiagnosticsStatusNotification"), Is.is(instanceOf(DiagnosticsStatusNotificationFeature.class)));
+    }
+
+    @Test
+    public void getFeatureList_containsFirmwareStatusNotificationFeature() {
+        // When
+        Feature[] features = profile.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "FirmwareStatusNotification"), Is.is(instanceOf(FirmwareStatusNotificationFeature.class)));
+    }
+
+    @Test
+    public void getFeatureList_containsUpdateFirmwareFeature() {
+        // When
+        Feature[] features = profile.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "UpdateFirmware"), Is.is(instanceOf(UpdateFirmwareFeature.class)));
+    }
+
 
 }

@@ -27,18 +27,24 @@ package eu.chargetime.ocpp.test;
  */
 
 import eu.chargetime.ocpp.*;
-import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
-import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementProfile;
-import eu.chargetime.ocpp.feature.profile.ServerRemoteTriggerProfile;
-import eu.chargetime.ocpp.feature.profile.ServerSmartChargingProfile;
+import eu.chargetime.ocpp.feature.profile.*;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
 import eu.chargetime.ocpp.model.firmware.*;
+import eu.chargetime.ocpp.model.localauthlist.*;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
+import eu.chargetime.ocpp.model.reservation.CancelReservationConfirmation;
+import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
+import eu.chargetime.ocpp.model.reservation.ReserveNowConfirmation;
+import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
+import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
+import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 import eu.chargetime.ocpp.test.FakeCentral.serverType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Calendar;
 
 public class FakeCentralSystem {
     private static final Logger logger = LoggerFactory.getLogger(FakeCentralSystem.class);
@@ -75,6 +81,12 @@ public class FakeCentralSystem {
 
         ServerFirmwareManagementProfile firmwareManagementProfile = new ServerFirmwareManagementProfile();
         server.addFeatureProfile(firmwareManagementProfile);
+
+        ServerLocalAuthListProfile localAuthListProfile = new ServerLocalAuthListProfile();
+        server.addFeatureProfile(localAuthListProfile);
+
+        ServerReservationProfile serverReservationProfile = new ServerReservationProfile();
+        server.addFeatureProfile(serverReservationProfile);
     }
 
     public boolean isClosed() {
@@ -139,6 +151,30 @@ public class FakeCentralSystem {
 
     public boolean hasReceivedFirmwareStatusNotificationConfirmation() {
         return dummyHandlers.wasLatestConfirmation(FirmwareStatusNotificationConfirmation.class);
+    }
+
+    public boolean hasReceivedReserveNowConfirmation() {
+        return dummyHandlers.wasLatestConfirmation(ReserveNowConfirmation.class);
+    }
+
+    public boolean hasReceivedCancelReservationConfirmation() {
+        return dummyHandlers.wasLatestConfirmation(CancelReservationConfirmation.class);
+    }
+
+    public boolean hasReceivedSendLocalListConfirmation() {
+        return dummyHandlers.wasLatestConfirmation(SendLocalListConfirmation.class);
+    }
+
+    public boolean hasReceivedGetLocalListVersionConfirmation() {
+        return dummyHandlers.wasLatestConfirmation(GetLocalListVersionConfirmation.class);
+    }
+
+    public boolean hasReceivedUpdateFirmwareConfirmation() {
+        return dummyHandlers.wasLatestConfirmation(UpdateFirmwareConfirmation.class);
+    }
+
+    public boolean hasReceivedSetChargingProfileConfirmation() {
+        return dummyHandlers.wasLatestConfirmation(SetChargingProfileConfirmation.class);
     }
 
     public boolean hasReceivedChangeAvailabilityConfirmation(String status) {
@@ -251,6 +287,36 @@ public class FakeCentralSystem {
 
     public void sendFirmwareStatusNotificationRequest(FirmwareStatus status) throws Exception {
         FirmwareStatusNotificationRequest request = new FirmwareStatusNotificationRequest(status);
+        send(request);
+    }
+
+    public void sendUpdateFirmwareRequest(String location, Calendar retrieveDate) throws Exception {
+        UpdateFirmwareRequest request = new UpdateFirmwareRequest(location, retrieveDate);
+        send(request);
+    }
+
+    public void sendReserveNowRequest(Integer connectorId, Calendar expiryDate, String idTag, Integer reservationId) throws Exception {
+        ReserveNowRequest request = new ReserveNowRequest(connectorId, expiryDate, idTag, reservationId);
+        send(request);
+    }
+
+    public void sendCancelReservationRequest(Integer reservationId) throws Exception {
+        CancelReservationRequest request = new CancelReservationRequest(reservationId);
+        send(request);
+    }
+
+    public void sendGetLocalListVersionRequest() throws Exception {
+        GetLocalListVersionRequest request = new GetLocalListVersionRequest();
+        send(request);
+    }
+
+    public void sendSendLocalListRequest(int listVersion, UpdateType updateType) throws Exception {
+        SendLocalListRequest request = new SendLocalListRequest(listVersion, updateType);
+        send(request);
+    }
+
+    public void sendSetChargingProfileRequest(Integer connectorId, ChargingProfile chargingProfile) throws Exception {
+        SetChargingProfileRequest request = new SetChargingProfileRequest(connectorId,  chargingProfile);
         send(request);
     }
 

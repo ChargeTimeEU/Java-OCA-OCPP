@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.core.soap
+package eu.chargetime.ocpp.test.base.soap
 
 import eu.chargetime.ocpp.test.FakeCentral
 import eu.chargetime.ocpp.test.FakeCentralSystem

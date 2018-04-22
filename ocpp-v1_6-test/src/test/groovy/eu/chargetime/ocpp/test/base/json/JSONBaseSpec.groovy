@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.core.json
+package eu.chargetime.ocpp.test.base.json
 
 import eu.chargetime.ocpp.test.FakeCentral
 import eu.chargetime.ocpp.test.FakeCentralSystem

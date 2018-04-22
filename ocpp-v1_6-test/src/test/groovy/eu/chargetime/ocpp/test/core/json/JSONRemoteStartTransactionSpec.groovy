@@ -1,5 +1,6 @@
 package eu.chargetime.ocpp.test.core.json
 
+import eu.chargetime.ocpp.test.base.json.JSONBaseSpec
 import spock.util.concurrent.PollingConditions
 
 class JSONRemoteStartTransactionSpec extends JSONBaseSpec {

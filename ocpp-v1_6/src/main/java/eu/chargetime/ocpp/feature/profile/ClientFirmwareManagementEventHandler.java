@@ -34,4 +34,6 @@ public interface ClientFirmwareManagementEventHandler {
 
     FirmwareStatusNotificationConfirmation handleFirmwareStatusNotificationRequest(FirmwareStatusNotificationRequest request);
 
+    UpdateFirmwareConfirmation handleUpdateFirmwareRequest(UpdateFirmwareRequest request);
+
 }
