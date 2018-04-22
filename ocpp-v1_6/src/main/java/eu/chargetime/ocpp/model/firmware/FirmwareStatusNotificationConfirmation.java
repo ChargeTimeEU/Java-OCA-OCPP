@@ -31,6 +31,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 /**
  * Sent by the Charge Point to the Central System in response to an {@link FirmwareStatusNotificationRequest}.
@@ -53,7 +54,7 @@ public class FirmwareStatusNotificationConfirmation implements Confirmation {
 
     @Override
     public int hashCode() {
-        return 6;
+        return Objects.hash(FirmwareStatusNotificationConfirmation.class);
     }
 
     @Override

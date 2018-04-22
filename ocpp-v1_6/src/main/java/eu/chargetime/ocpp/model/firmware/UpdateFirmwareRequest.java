@@ -46,7 +46,7 @@ public class UpdateFirmwareRequest implements Request {
     private String location;
     private Integer retries;
     private Calendar retrieveDate;
-    private int retryInterval;
+    private Integer retryInterval;
 
     public UpdateFirmwareRequest() {}
 
@@ -131,7 +131,7 @@ public class UpdateFirmwareRequest implements Request {
      *
      * @return int, retry interval.
      */
-    public int getRetryInterval() {
+    public Integer getRetryInterval() {
         return retryInterval;
     }
 
@@ -145,7 +145,7 @@ public class UpdateFirmwareRequest implements Request {
      * 
      */
     @XmlElement
-    public void setRetryInterval(int retryInterval) throws PropertyConstraintException {
+    public void setRetryInterval(Integer retryInterval) throws PropertyConstraintException {
         if (retryInterval <= 0)
             throw new PropertyConstraintException("retryInterval", retryInterval);
 
@@ -162,7 +162,7 @@ public class UpdateFirmwareRequest implements Request {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UpdateFirmwareRequest that = (UpdateFirmwareRequest) o;
-        return retryInterval == that.retryInterval &&
+        return retryInterval.equals(that.retryInterval) &&
             Objects.equals(location, that.location) &&
             Objects.equals(retries, that.retries) &&
             Objects.equals(retrieveDate, that.retrieveDate);
