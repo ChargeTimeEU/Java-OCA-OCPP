@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.concurrent.CompletionStage;
 
-        /*
+/*
  * ChargeTime.eu - Java-OCA-OCPP
  *
  * MIT License
@@ -66,12 +66,13 @@ public class JSONClient implements IClientAPI {
      *
      * @param coreProfile   implementation of the core feature profile.
      * @param identity      if set, will append identity to url.
+     * @param configuration network configuration for a json client.
      */
-    public JSONClient(ClientCoreProfile coreProfile, String identity) {
+    public JSONClient(ClientCoreProfile coreProfile, String identity, JSONConfiguration configuration) {
         this.identity = identity;
         draftOcppOnly = new Draft_6455(Collections.emptyList(),
                 Collections.singletonList(new Protocol("ocpp1.6")));
-        transmitter = new WebSocketTransmitter(draftOcppOnly);
+        transmitter = new WebSocketTransmitter(configuration, draftOcppOnly);
         JSONCommunicator communicator = new JSONCommunicator(transmitter);
         AsyncPromiseFulfilerDecorator promiseFulfiler = new AsyncPromiseFulfilerDecorator(new SimplePromiseFulfiller());
         featureRepository = new FeatureRepository();
@@ -86,11 +87,37 @@ public class JSONClient implements IClientAPI {
      *
      * @param coreProfile   implementation of the core feature profile.
      * @param identity      if set, will append identity to url.
+     */
+    public JSONClient(ClientCoreProfile coreProfile, String identity) {
+        this(coreProfile, identity, JSONConfiguration.get());
+    }
+
+    /**
+     * Application composite root for a json client.
+     * The core feature profile is required as a minimum.
+     *
+     * @param coreProfile   implementation of the core feature profile.
+     * @param identity      if set, will append identity to url.
      * @param wssSocketBuilder to build {@link java.net.Socket} to support wss://.
+     * @param configuration network configuration for a json client.
+     */
+    public JSONClient(ClientCoreProfile coreProfile, String identity, WssSocketBuilder wssSocketBuilder,
+                      JSONConfiguration configuration) {
+        this(coreProfile, identity, configuration);
+        enableWSS(wssSocketBuilder);
+    }
+
+    /**
+     * Application composite root for a json client.
+     * The core feature profile is required as a minimum.
+     *
+     * @param coreProfile   implementation of the core feature profile.
+     * @param identity      if set, will append identity to url.
+     * @param wssSocketBuilder to build {@link java.net.Socket} to support wss://.
+     *
      */
     public JSONClient(ClientCoreProfile coreProfile, String identity, WssSocketBuilder wssSocketBuilder) {
-        this(coreProfile, identity);
-        enableWSS(wssSocketBuilder);
+        this(coreProfile, identity, wssSocketBuilder, JSONConfiguration.get());
     }
 
     // To ensure the exposed API is backward compatible
@@ -114,11 +141,6 @@ public class JSONClient implements IClientAPI {
         wssSocketBuilder.verify();
         transmitter.enableWSS(wssSocketBuilder);
         return this;
-    }
-
-    public void setPingInterval(int interval) {
-        // Set ping interval in seconds
-        transmitter.setPingInterval(interval);
     }
 
     @Override

@@ -26,10 +26,7 @@ package eu.chargetime.ocpp.test;
  SOFTWARE.
  */
 
-import eu.chargetime.ocpp.IServerAPI;
-import eu.chargetime.ocpp.JSONServer;
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.SOAPServer;
+import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.profile.*;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
@@ -44,10 +41,14 @@ import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 import eu.chargetime.ocpp.test.FakeCentral.serverType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Calendar;
 
 public class FakeCentralSystem {
+    private static final Logger logger = LoggerFactory.getLogger(FakeCentralSystem.class);
+
     private IServerAPI server;
 
     private DummyHandlers dummyHandlers;
@@ -59,7 +60,10 @@ public class FakeCentralSystem {
         ServerCoreProfile serverCoreProfile = new ServerCoreProfile(dummyHandlers.createServerCoreEventHandler());
 
         if (type == serverType.JSON) {
-            server = new JSONServer(serverCoreProfile);
+            JSONConfiguration configuration =
+                    JSONConfiguration.get()
+                            .setParameter(JSONConfiguration.REUSE_ADDR_PARAMETER, true);
+            server = new JSONServer(serverCoreProfile, configuration);
         } else {
             server = new SOAPServer(serverCoreProfile);
         }
@@ -85,6 +89,10 @@ public class FakeCentralSystem {
         server.addFeatureProfile(serverReservationProfile);
     }
 
+    public boolean isClosed() {
+        return server.isClosed();
+    }
+
     public boolean connected() {
         return dummyHandlers.getCurrentIdentifier() != null;
     }
@@ -94,19 +102,22 @@ public class FakeCentralSystem {
     }
 
     public void started() throws Exception {
-
         if (!isStarted) {
             int port = 8890;
-            if (server instanceof JSONServer)
+            if (server instanceof JSONServer) {
                 port = 8887;
+            }
 
             server.open("127.0.0.1", port, dummyHandlers.generateServerEventsHandler());
+            logger.info("Server started on port: {}", port);
             isStarted = true;
         }
     }
 
     public void stopped() {
         server.close();
+        logger.info("Server stopped");
+        isStarted = false;
     }
 
     public boolean hasHandledAuthorizeRequest() {
@@ -345,6 +356,10 @@ public class FakeCentralSystem {
 
     public void rigNextRequestToFail() {
         dummyHandlers.setRiggedToFail(true);
+    }
+
+    public void clearRiggedToFailFlag() {
+        dummyHandlers.setRiggedToFail(false);
     }
 
     public void sendTriggerMessage(TriggerMessageRequestType type, Integer connectorId) throws Exception {

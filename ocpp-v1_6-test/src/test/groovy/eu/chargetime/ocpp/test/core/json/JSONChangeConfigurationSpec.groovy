@@ -1,37 +1,16 @@
 package eu.chargetime.ocpp.test.core.json
 
-import eu.chargetime.ocpp.test.FakeCentral
-import eu.chargetime.ocpp.test.FakeCentralSystem
-import eu.chargetime.ocpp.test.FakeChargePoint
-import spock.lang.Shared
-import spock.lang.Specification
+import eu.chargetime.ocpp.test.base.json.JSONBaseSpec
 import spock.util.concurrent.PollingConditions
 
-class JSONChangeConfigurationSpec extends Specification
+class JSONChangeConfigurationSpec extends JSONBaseSpec
 {
-    @Shared
-    FakeCentralSystem centralSystem = FakeCentral.getSystem(FakeCentral.serverType.JSON)
-    @Shared
-    FakeChargePoint chargePoint = new FakeChargePoint()
-
-    def setupSpec() {
-        // When a Central System is running
-        centralSystem.started()
-    }
-
-    def setup() {
-        chargePoint.connect()
-    }
-
-    def cleanup() {
-        chargePoint.disconnect()
-    }
-
     def "Central System sends a ChangeConfiguration request and receives a response"() {
-        def conditions = new PollingConditions(timeout: 10)
+        def conditions = new PollingConditions(timeout: 1)
+
         given:
         conditions.eventually {
-            assert centralSystem.connected()
+            assert !centralSystem.isClosed()
         }
         when:
         centralSystem.sendChangeConfigurationRequest("key", "value")

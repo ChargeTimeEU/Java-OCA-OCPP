@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.ConnectException;
+import java.net.Proxy;
 import java.net.URI;
 /**
  * Web Socket implementation of the Transmitter.
@@ -48,14 +49,18 @@ public class WebSocketTransmitter implements Transmitter
     public static final String WSS_SCHEME = "wss";
     private final Draft draft;
 
-    // In seconds
-    private int pingInterval = 60;
+    private final JSONConfiguration configuration;
     private volatile boolean closed = true;
-    private WebSocketClient client;
+    private volatile WebSocketClient client;
     private WssSocketBuilder wssSocketBuilder;
 
-    public WebSocketTransmitter(Draft draft) {
+    public WebSocketTransmitter(JSONConfiguration configuration, Draft draft) {
+        this.configuration = configuration;
         this.draft = draft;
+    }
+
+    public WebSocketTransmitter(Draft draft) {
+        this(JSONConfiguration.get(), draft);
     }
 
     @Override
@@ -92,8 +97,8 @@ public class WebSocketTransmitter implements Transmitter
         };
 
         if(WSS_SCHEME.equals(resource.getScheme())) {
-		
-			if(wssSocketBuilder == null) {
+
+            if(wssSocketBuilder == null) {
                 throw new IllegalStateException("wssSocketBuilder must be set to support " + WSS_SCHEME + " scheme");
             }
 
@@ -106,8 +111,7 @@ public class WebSocketTransmitter implements Transmitter
             }
         }
 
-        client.setConnectionLostTimeout(pingInterval);
-
+        configure();
         try {
             client.connectBlocking();
             closed = false;
@@ -116,21 +120,22 @@ public class WebSocketTransmitter implements Transmitter
         }
     }
 
-    public void enableWSS(WssSocketBuilder wssSocketBuilder) {
+    void configure() {
+        client.setReuseAddr(
+                configuration.getParameter(JSONConfiguration.REUSE_ADDR_PARAMETER, false));
+        client.setTcpNoDelay(
+                configuration.getParameter(JSONConfiguration.TCP_NO_DELAY_PARAMETER, false));
+        client.setConnectionLostTimeout(
+                configuration.getParameter(JSONConfiguration.PING_INTERVAL_PARAMETER, 60));
+        client.setProxy(
+                configuration.getParameter(JSONConfiguration.PROXY_PARAMETER, Proxy.NO_PROXY));
+    }
 
+    void enableWSS(WssSocketBuilder wssSocketBuilder) {
         if(client != null) {
             throw new IllegalStateException("Cannot enable WSS on already connected client");
         }
-
         this.wssSocketBuilder = wssSocketBuilder;
-    }
-
-    public void setPingInterval(int interval) {
-        this.pingInterval = interval;
-
-        if(client != null) {
-            client.setConnectionLostTimeout(interval);
-        }
     }
 
     @Override

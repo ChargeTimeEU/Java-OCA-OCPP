@@ -1,32 +1,10 @@
 package eu.chargetime.ocpp.test.core.json
 
-import eu.chargetime.ocpp.test.FakeCentral
-import eu.chargetime.ocpp.test.FakeCentralSystem
-import eu.chargetime.ocpp.test.FakeChargePoint
-import spock.lang.Shared
-import spock.lang.Specification
+import eu.chargetime.ocpp.test.base.json.JSONBaseSpec
 import spock.util.concurrent.PollingConditions
 
-class JSONDataTransferSpec extends Specification
+class JSONDataTransferSpec extends JSONBaseSpec
 {
-    @Shared
-    FakeCentralSystem centralSystem = FakeCentral.getSystem(FakeCentral.serverType.JSON)
-    @Shared
-    FakeChargePoint chargePoint = new FakeChargePoint()
-
-    def setupSpec() {
-        // When a Central System is running
-        centralSystem.started()
-    }
-
-    def setup() {
-        chargePoint.connect()
-    }
-
-    def cleanup() {
-        chargePoint.disconnect()
-    }
-
     def "Central System sends a DataTransfer request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
 

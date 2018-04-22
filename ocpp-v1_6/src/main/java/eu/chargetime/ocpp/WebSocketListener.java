@@ -34,34 +34,40 @@ import org.java_websocket.server.WebSocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class WebSocketListener implements Listener {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketListener.class);
 
-    private static final int TIMEOUT_IN_MILLIS = 1;
+    private static final int TIMEOUT_IN_MILLIS = 10000;
 
     private final IServerSessionFactory sessionFactory;
     private final List<Draft> drafts;
 
-    // In seconds
-    private int pingInterval = 60;
-
-    private WebSocketServer server;
+    private final JSONConfiguration configuration;
+    private volatile WebSocketServer server;
     private WssFactoryBuilder wssFactoryBuilder;
-    private Map<WebSocket, WebSocketReceiver> sockets;
+    private final Map<WebSocket, WebSocketReceiver> sockets;
     private volatile boolean closed = true;
     private boolean handleRequestAsync;
 
-    public WebSocketListener(IServerSessionFactory sessionFactory, Draft... drafts) {
+    public WebSocketListener(IServerSessionFactory sessionFactory, JSONConfiguration configuration, Draft... drafts) {
         this.sessionFactory = sessionFactory;
+        this.configuration = configuration;
         this.drafts = Arrays.asList(drafts);
         this.sockets = new ConcurrentHashMap<>();
+    }
+
+    public WebSocketListener(IServerSessionFactory sessionFactory, Draft... drafts) {
+        this(sessionFactory, JSONConfiguration.get(), drafts);
     }
 
     @Override
@@ -84,7 +90,9 @@ public class WebSocketListener implements Listener {
                             }
                         }
                 );
+
                 sockets.put(webSocket, receiver);
+
                 SessionInformation information = new SessionInformation.Builder()
                         .Identifier(clientHandshake.getResourceDescriptor())
                         .InternetAddress(webSocket.getRemoteSocketAddress()).build();
@@ -107,16 +115,18 @@ public class WebSocketListener implements Listener {
 
             @Override
             public void onError(WebSocket webSocket, Exception ex) {
+                String resourceDescriptor = (webSocket != null) ? webSocket.getResourceDescriptor() : "not defined (webSocket is null)";
+
                 if(ex instanceof ConnectException) {
-                    logger.error("On error (resource descriptor: " + webSocket.getResourceDescriptor() + ") triggered caused by:",  ex);
+                    logger.error("On error (resource descriptor: " + resourceDescriptor + ") triggered caused by:",  ex);
                 } else {
-                    logger.error("On error (resource descriptor: " + webSocket.getResourceDescriptor() + ") triggered:", ex);
+                    logger.error("On error (resource descriptor: " + resourceDescriptor + ") triggered:", ex);
                 }
             }
 
             @Override
             public void onStart() {
-                logger.debug("On start");
+                logger.debug("Server socket bound");
             }
         };
 
@@ -124,13 +134,21 @@ public class WebSocketListener implements Listener {
             server.setWebSocketFactory(wssFactoryBuilder.build());
         }
 
-        server.setConnectionLostTimeout(pingInterval);
-
+        configure();
         server.start();
         closed = false;
     }
 
-    public void enableWSS(WssFactoryBuilder wssFactoryBuilder) {
+    void configure() {
+        server.setReuseAddr(
+                configuration.getParameter(JSONConfiguration.REUSE_ADDR_PARAMETER, true));
+        server.setTcpNoDelay(
+                configuration.getParameter(JSONConfiguration.TCP_NO_DELAY_PARAMETER, false));
+        server.setConnectionLostTimeout(
+                configuration.getParameter(JSONConfiguration.PING_INTERVAL_PARAMETER, 60));
+    }
+
+    void enableWSS(WssFactoryBuilder wssFactoryBuilder) {
         if(server != null) {
             throw new IllegalStateException("Cannot enable WSS on already running server");
         }
@@ -138,27 +156,25 @@ public class WebSocketListener implements Listener {
         this.wssFactoryBuilder = wssFactoryBuilder;
     }
 
-    public void setPingInterval(int interval) {
-        this.pingInterval = interval;
-
-        if(server != null) {
-            server.setConnectionLostTimeout(interval);
-        }
-    }
-
     @Override
     public void close() {
-        try {
-            closed = true;
-            for (WebSocket ws : sockets.keySet()) {
-                ws.close();
-            }
 
+        if(server == null) {
+            return;
+        }
+
+        try {
             sockets.clear();
             server.stop(TIMEOUT_IN_MILLIS);
         } catch (InterruptedException e) {
-        	logger.error("Failed to close listener", e);
+            // Do second try
+            try {
+                server.stop();
+            } catch (IOException | InterruptedException ex) {
+                logger.error("Failed to close listener", ex);
+            }
         } finally {
+            closed = true;
             server = null;
         }
     }

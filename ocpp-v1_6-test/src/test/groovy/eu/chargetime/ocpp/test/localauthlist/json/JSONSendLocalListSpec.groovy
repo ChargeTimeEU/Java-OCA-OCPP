@@ -1,11 +1,7 @@
 package eu.chargetime.ocpp.test.localauthlist.json
 
 import eu.chargetime.ocpp.model.localauthlist.UpdateType
-import eu.chargetime.ocpp.test.FakeCentral
-import eu.chargetime.ocpp.test.FakeCentralSystem
-import eu.chargetime.ocpp.test.FakeChargePoint
-import spock.lang.Shared
-import spock.lang.Specification
+import eu.chargetime.ocpp.test.base.json.JSONBaseSpec
 import spock.util.concurrent.PollingConditions
 
 /*
@@ -35,24 +31,7 @@ import spock.util.concurrent.PollingConditions
     SOFTWARE.
  */
 
-class JSONSendLocalListSpec extends Specification {
-    @Shared
-    FakeCentralSystem centralSystem = FakeCentral.getSystem(FakeCentral.serverType.JSON)
-    @Shared
-    FakeChargePoint chargePoint = new FakeChargePoint()
-
-    def setupSpec() {
-        // When a Central System is running
-        centralSystem.started()
-    }
-
-    def setup() {
-        chargePoint.connect()
-    }
-
-    def cleanup() {
-        chargePoint.disconnect()
-    }
+class JSONSendLocalListSpec extends JSONBaseSpec {
 
     def "Central System sends a SendLocalList request and receives a response"() {
         def conditions = new PollingConditions(timeout: 1)
