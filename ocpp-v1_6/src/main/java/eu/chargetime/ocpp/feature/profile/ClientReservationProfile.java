@@ -1,10 +1,10 @@
-package eu.chargetime.ocpp.feature.profile;
-/*
+package eu.chargetime.ocpp.feature.profile;/*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -28,20 +28,22 @@ package eu.chargetime.ocpp.feature.profile;
 import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
+import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
 
 import java.util.HashSet;
 import java.util.UUID;
 
-public class ServerFirmwareManagementProfile implements Profile {
+public class ClientReservationProfile implements Profile {
 
     private HashSet<Feature> features;
+    private ClientReservationEventHandler eventHandler;
 
-    public ServerFirmwareManagementProfile() {
+    public ClientReservationProfile(ClientReservationEventHandler eventHandler) {
+        this.eventHandler = eventHandler;
         features = new HashSet<>();
-        features.add(new GetDiagnosticsFeature(this));
-        features.add(new DiagnosticsStatusNotificationFeature(this));
-        features.add(new FirmwareStatusNotificationFeature(this));
-        features.add(new UpdateFirmwareFeature(this));
+        features.add(new ReserveNowFeature(this));
+        features.add(new CancelReservationFeature(this));
     }
 
     @Override
@@ -51,6 +53,14 @@ public class ServerFirmwareManagementProfile implements Profile {
 
     @Override
     public Confirmation handleRequest(UUID sessionIndex, Request request) {
-        return null;
+        Confirmation result = null;
+
+        if (request instanceof ReserveNowRequest) {
+            result = eventHandler.handleReserveNowRequest((ReserveNowRequest) request);
+        } else if (request instanceof CancelReservationRequest) {
+            result = eventHandler.handleCancelReservationRequest((CancelReservationRequest) request);
+        }
+
+        return result;
     }
 }

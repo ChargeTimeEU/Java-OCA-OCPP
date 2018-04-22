@@ -5,6 +5,7 @@ package eu.chargetime.ocpp.feature.profile.test;
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +27,7 @@ package eu.chargetime.ocpp.feature.profile.test;
  */
 
 import eu.chargetime.ocpp.feature.*;
-import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementProfile;
+import eu.chargetime.ocpp.feature.profile.ServerReservationProfile;
 import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,54 +35,35 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ServerFirmwareManagementProfileTest extends ProfileTest {
+public class ServerReservationProfileTest extends ProfileTest {
 
-    ServerFirmwareManagementProfile profile;
+    ServerReservationProfile profile;
 
     @Before
     public void setup() {
-        profile = new ServerFirmwareManagementProfile();
+        profile = new ServerReservationProfile();
     }
 
     @Test
-    public void getFeatureList_containsGetDiagnosticsFeature() {
+    public void getFeatureList_containsReserveNowFeature() {
         // When
         Feature[] features = profile.getFeatureList();
 
         // Then
-        assertThat(findFeature(features, "GetDiagnostics"), Is.is(instanceOf(GetDiagnosticsFeature.class)));
+        assertThat(findFeature(features, "ReserveNow"), Is.is(instanceOf(ReserveNowFeature.class)));
     }
 
     @Test
-    public void getFeatureList_containsDiagnosticsStatusNotificationFeature() {
+    public void getFeatureList_containsCancelReservationFeature() {
         // When
         Feature[] features = profile.getFeatureList();
 
         // Then
-        assertThat(findFeature(features, "DiagnosticsStatusNotification"), Is.is(instanceOf(DiagnosticsStatusNotificationFeature.class)));
+        assertThat(findFeature(features, "CancelReservation"), is(instanceOf(CancelReservationFeature.class)));
     }
-
-    @Test
-    public void getFeatureList_containsFirmwareStatusNotificationFeature() {
-        // When
-        Feature[] features = profile.getFeatureList();
-
-        // Then
-        assertThat(findFeature(features, "FirmwareStatusNotification"), Is.is(instanceOf(FirmwareStatusNotificationFeature.class)));
-    }
-
-    @Test
-    public void getFeatureList_containsUpdateFirmwareFeature() {
-        // When
-        Feature[] features = profile.getFeatureList();
-
-        // Then
-        assertThat(findFeature(features, "UpdateFirmware"), Is.is(instanceOf(UpdateFirmwareFeature.class)));
-    }
-
 
 }

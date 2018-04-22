@@ -42,6 +42,13 @@ public class ChargingSchedulePeriod implements Validatable {
     private Double limit;
     private Integer numberPhases = 3;
 
+    public ChargingSchedulePeriod() { }
+
+    public ChargingSchedulePeriod(Integer startPeriod, Double limit) {
+        this.startPeriod = startPeriod;
+        this.limit = limit;
+    }
+
     @Override
     public boolean validate() {
         boolean valid = true;

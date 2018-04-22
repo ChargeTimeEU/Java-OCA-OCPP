@@ -25,15 +25,30 @@ package eu.chargetime.ocpp.feature.profile;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.firmware.*;
+import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
 
-public interface ClientFirmwareManagementEventHandler {
-    GetDiagnosticsConfirmation handleGetDiagnosticsRequest(GetDiagnosticsRequest request);
+import java.util.HashSet;
+import java.util.UUID;
 
-    DiagnosticsStatusNotificationConfirmation handleDiagnosticsStatusNotificationRequest(DiagnosticsStatusNotificationRequest request);
+public class ServerLocalAuthListProfile implements Profile {
 
-    FirmwareStatusNotificationConfirmation handleFirmwareStatusNotificationRequest(FirmwareStatusNotificationRequest request);
+    private HashSet<Feature> featureList;
 
-    UpdateFirmwareConfirmation handleUpdateFirmwareRequest(UpdateFirmwareRequest request);
+    public ServerLocalAuthListProfile() {
+        featureList = new HashSet<>();
+        featureList.add(new GetLocalListVersionFeature(this));
+        featureList.add(new SendLocalListFeature(this));
+    }
 
+    @Override
+    public Feature[] getFeatureList() {
+        return featureList.toArray(new Feature[0]);
+    }
+
+    @Override
+    public Confirmation handleRequest(UUID sessionIndex, Request request) {
+        return null;
+    }
 }

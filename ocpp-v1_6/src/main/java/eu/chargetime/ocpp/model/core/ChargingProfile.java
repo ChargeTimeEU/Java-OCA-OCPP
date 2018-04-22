@@ -46,10 +46,26 @@ public class ChargingProfile implements Validatable {
     private Calendar validTo;
     private ChargingSchedule chargingSchedule;
 
+    public ChargingProfile() { }
+
+    public ChargingProfile(Integer chargingProfileId, Integer stackLevel, ChargingProfilePurposeType chargingProfilePurpose, ChargingProfileKindType chargingProfileKind, ChargingSchedule chargingSchedule) {
+        this.chargingProfileId = chargingProfileId;
+        this.stackLevel = stackLevel;
+        this.chargingProfilePurpose = chargingProfilePurpose;
+        this.chargingProfileKind = chargingProfileKind;
+        this.chargingSchedule = chargingSchedule;
+    }
+
+    public ChargingProfile(Integer chargingProfileId, Integer stackLevel, ChargingProfilePurposeType chargingProfilePurpose, ChargingProfileKindType chargingProfileKind) {
+        this.chargingProfileId = chargingProfileId;
+        this.stackLevel = stackLevel;
+        this.chargingProfilePurpose = chargingProfilePurpose;
+        this.chargingProfileKind = chargingProfileKind;
+    }
+
     @Override
     public boolean validate() {
-        boolean valid = true;
-        valid &= chargingProfileId != null;
+        boolean valid = chargingProfileId != null;
         valid &= stackLevel >= 0;
         valid &= chargingProfilePurpose != null;
         valid &= transactionId == null || chargingProfilePurpose == ChargingProfilePurposeType.TxProfile;
@@ -61,7 +77,7 @@ public class ChargingProfile implements Validatable {
     @XmlElement
     public void setChargingProfileId(Integer chargingProfileId) throws PropertyConstraintException {
         if (chargingProfileId == null)
-            throw new PropertyConstraintException("chargingProfileId", chargingProfileId);
+            throw new PropertyConstraintException("chargingProfileId", null);
 
         this.chargingProfileId = chargingProfileId;
     }

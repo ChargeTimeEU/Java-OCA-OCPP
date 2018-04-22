@@ -45,10 +45,16 @@ public class ChargingSchedule implements Validatable {
     private ChargingSchedulePeriod[] chargingSchedulePeriod;
     private Double minChargingRate;
 
+    public ChargingSchedule() { }
+
+    public ChargingSchedule(ChargingRateUnitType chargingRateUnit, ChargingSchedulePeriod[] chargingSchedulePeriod) {
+        this.chargingRateUnit = chargingRateUnit;
+        this.chargingSchedulePeriod = chargingSchedulePeriod;
+    }
+
     @Override
     public boolean validate() {
-        boolean valid = true;
-        valid &= chargingRateUnit != null;
+        boolean valid = chargingRateUnit != null;
         if (valid &= chargingSchedulePeriod != null) {
             for (ChargingSchedulePeriod period : chargingSchedulePeriod)
                 valid &= period.validate();

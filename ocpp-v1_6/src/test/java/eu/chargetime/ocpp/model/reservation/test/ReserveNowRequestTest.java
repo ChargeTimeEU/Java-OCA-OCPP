@@ -1,10 +1,11 @@
-package eu.chargetime.ocpp.model.firmware.test;
+package eu.chargetime.ocpp.model.reservation.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
 
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,24 +26,27 @@ package eu.chargetime.ocpp.model.firmware.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Calendar;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class GetDiagnosticsRequestTest {
+public class ReserveNowRequestTest {
 
-    private GetDiagnosticsRequest request;
+    private ReserveNowRequest request;
 
     @Before
     public void setup() {
-        request = new GetDiagnosticsRequest();
+        request = new ReserveNowRequest();
     }
 
     @Test
-    public void validate_locationIsNotSet_returnsFalse() {
+    public void validate_statusIsNotSet_returnsFalse() {
         // When
         boolean result = request.validate();
 
@@ -51,10 +55,17 @@ public class GetDiagnosticsRequestTest {
     }
 
     @Test
-    public void validate_locationIsSet_returnsTrue() {
+    public void validate_requiredFieldsAreSet_returnTrue() throws PropertyConstraintException {
         // Given
-        String aLocation = "/";
-        request.setLocation(aLocation);
+        Integer connectorId = 0;
+        Calendar expiryDate = Calendar.getInstance();
+        String idTag = "row";
+        Integer reservationId = 2;
+
+        request.setConnectorId(connectorId);
+        request.setExpiryDate(expiryDate);
+        request.setIdTag(idTag);
+        request.setReservationId(reservationId);
 
         // When
         boolean result = request.validate();

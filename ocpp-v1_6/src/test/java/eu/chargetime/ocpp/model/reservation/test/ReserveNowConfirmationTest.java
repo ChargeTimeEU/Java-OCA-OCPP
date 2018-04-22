@@ -1,10 +1,11 @@
-package eu.chargetime.ocpp.model.firmware.test;
+package eu.chargetime.ocpp.model.reservation.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
 
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,42 +26,49 @@ package eu.chargetime.ocpp.model.firmware.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.reservation.ReservationStatus;
+import eu.chargetime.ocpp.model.reservation.ReserveNowConfirmation;
+import eu.chargetime.ocpp.utilities.TestUtilities;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
+import java.util.Calendar;
+
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class GetDiagnosticsRequestTest {
+public class ReserveNowConfirmationTest extends TestUtilities {
 
-    private GetDiagnosticsRequest request;
+    private ReserveNowConfirmation confirmation;
 
     @Before
     public void setup() {
-        request = new GetDiagnosticsRequest();
+        confirmation = new ReserveNowConfirmation();
     }
 
     @Test
-    public void validate_locationIsNotSet_returnsFalse() {
+    public void validate_statusIsNotSet_returnsFalse() {
         // When
-        boolean result = request.validate();
+        boolean result = confirmation.validate();
 
         // Then
-        assertThat(result, is(false));
+        assertThat(result, CoreMatchers.is(false));
     }
 
     @Test
-    public void validate_locationIsSet_returnsTrue() {
+    public void validate_statusIsSet_returnsTrue() {
         // Given
-        String aLocation = "/";
-        request.setLocation(aLocation);
+        ReservationStatus status = ReservationStatus.Occupied;
+
+        confirmation.setStatus(status);
 
         // When
-        boolean result = request.validate();
+        boolean result = confirmation.validate();
 
         // Then
-        assertThat(result, is(true));
+        assertThat(result, CoreMatchers.is(true));
     }
 
 }

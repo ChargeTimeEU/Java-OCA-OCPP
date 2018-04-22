@@ -5,6 +5,7 @@ package eu.chargetime.ocpp.feature.profile.test;
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -26,62 +27,80 @@ package eu.chargetime.ocpp.feature.profile.test;
  */
 
 import eu.chargetime.ocpp.feature.*;
-import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementProfile;
-import org.hamcrest.core.Is;
+import eu.chargetime.ocpp.feature.profile.ClientReservationEventHandler;
+import eu.chargetime.ocpp.feature.profile.ClientReservationProfile;
+import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
+import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.UUID;
+
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ServerFirmwareManagementProfileTest extends ProfileTest {
+public class ClientReservationProfileTest extends ProfileTest {
+    private static final UUID SESSION_NULL = null;
+    ClientReservationProfile profile;
 
-    ServerFirmwareManagementProfile profile;
+    @Mock
+    private
+    ClientReservationEventHandler handler;
 
     @Before
     public void setup() {
-        profile = new ServerFirmwareManagementProfile();
+        profile = new ClientReservationProfile(handler);
     }
 
     @Test
-    public void getFeatureList_containsGetDiagnosticsFeature() {
+    public void getFeatureList_containsReserveNowFeature() {
         // When
         Feature[] features = profile.getFeatureList();
 
         // Then
-        assertThat(findFeature(features, "GetDiagnostics"), Is.is(instanceOf(GetDiagnosticsFeature.class)));
+        assertThat(findFeature(features, "ReserveNow"), is(instanceOf(ReserveNowFeature.class)));
     }
 
     @Test
-    public void getFeatureList_containsDiagnosticsStatusNotificationFeature() {
+    public void getFeatureList_containsCancelReservationFeature() {
         // When
         Feature[] features = profile.getFeatureList();
 
         // Then
-        assertThat(findFeature(features, "DiagnosticsStatusNotification"), Is.is(instanceOf(DiagnosticsStatusNotificationFeature.class)));
+        assertThat(findFeature(features, "CancelReservation"), is(instanceOf(CancelReservationFeature.class)));
     }
 
     @Test
-    public void getFeatureList_containsFirmwareStatusNotificationFeature() {
+    public void handleRequest_aReserveNowRequest_callsHandleReserveNowRequest() {
+        // Given
+        ReserveNowRequest request = new ReserveNowRequest();
+
         // When
-        Feature[] features = profile.getFeatureList();
+        profile.handleRequest(SESSION_NULL, request);
 
         // Then
-        assertThat(findFeature(features, "FirmwareStatusNotification"), Is.is(instanceOf(FirmwareStatusNotificationFeature.class)));
+        verify(handler, times(1)).handleReserveNowRequest(eq(request));
     }
+
 
     @Test
-    public void getFeatureList_containsUpdateFirmwareFeature() {
+    public void handleRequest_aCancelReservationRequest_callsHandleCancelReservationRequest() {
+        // Given
+        CancelReservationRequest request = new CancelReservationRequest();
+
         // When
-        Feature[] features = profile.getFeatureList();
+        profile.handleRequest(SESSION_NULL, request);
 
         // Then
-        assertThat(findFeature(features, "UpdateFirmware"), Is.is(instanceOf(UpdateFirmwareFeature.class)));
+        verify(handler, times(1)).handleCancelReservationRequest(eq(request));
     }
-
 
 }

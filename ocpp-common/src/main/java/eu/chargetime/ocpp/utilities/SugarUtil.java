@@ -1,10 +1,11 @@
-package eu.chargetime.ocpp.feature.profile;
+package eu.chargetime.ocpp.utilities;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,15 +26,14 @@ package eu.chargetime.ocpp.feature.profile;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.firmware.*;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
 
-public interface ClientFirmwareManagementEventHandler {
-    GetDiagnosticsConfirmation handleGetDiagnosticsRequest(GetDiagnosticsRequest request);
+public class SugarUtil {
 
-    DiagnosticsStatusNotificationConfirmation handleDiagnosticsStatusNotificationRequest(DiagnosticsStatusNotificationRequest request);
-
-    FirmwareStatusNotificationConfirmation handleFirmwareStatusNotificationRequest(FirmwareStatusNotificationRequest request);
-
-    UpdateFirmwareConfirmation handleUpdateFirmwareRequest(UpdateFirmwareRequest request);
-
+    public static String calendarToString(Calendar calendar) {
+        if (calendar == null)
+            return "";
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(calendar.getTime());
+    }
 }
