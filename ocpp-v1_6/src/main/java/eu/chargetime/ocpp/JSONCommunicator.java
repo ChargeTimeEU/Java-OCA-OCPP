@@ -154,7 +154,10 @@ public class JSONCommunicator extends Communicator {
             ((CallErrorMessage) message).setErrorCode(array.get(INDEX_CALLERROR_ERRORCODE).getAsString());
             ((CallErrorMessage) message).setErrorDescription(array.get(INDEX_CALLERROR_DESCRIPTION).getAsString());
             ((CallErrorMessage) message).setRawPayload(array.get(INDEX_CALLERROR_PAYLOAD).toString());
+        } else {
+            throw new IllegalArgumentException("Unknown message type");
         }
+
         message.setId(array.get(INDEX_UNIQUEID).getAsString());
 
         return message;

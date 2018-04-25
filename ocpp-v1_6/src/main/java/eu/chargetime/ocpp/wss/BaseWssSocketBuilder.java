@@ -40,11 +40,14 @@ public class BaseWssSocketBuilder implements WssSocketBuilder {
 
     public static final int DEFAULT_WSS_PORT = 443;
     private Proxy proxy = Proxy.NO_PROXY;
+    private SocketFactory socketFactory = Socket::new;
     private SSLSocketFactory sslSocketFactory;
     private boolean tcpNoDelay;
     private boolean reuseAddr;
     private boolean autoClose = true;
     private URI uri;
+    private InetSocketAddressFactory inetSocketAddressFactory =
+            (host, port) -> new InetSocketAddress(host, port);
 
     // 0 for infinite timeout
     private int connectionTimeout = 0;
@@ -62,6 +65,16 @@ public class BaseWssSocketBuilder implements WssSocketBuilder {
 
     public BaseWssSocketBuilder sslSocketFactory(SSLSocketFactory sslSocketFactory) {
         this.sslSocketFactory = sslSocketFactory;
+        return this;
+    }
+
+    public BaseWssSocketBuilder socketFactory(SocketFactory socketFactory) {
+        this.socketFactory = socketFactory;
+        return this;
+    }
+
+    public BaseWssSocketBuilder inetSocketAddressFactory(InetSocketAddressFactory inetSocketAddressFactory) {
+        this.inetSocketAddressFactory = inetSocketAddressFactory;
         return this;
     }
 
@@ -93,12 +106,15 @@ public class BaseWssSocketBuilder implements WssSocketBuilder {
 
     @Override
     public Socket build() throws IOException {
-        Socket socket = new Socket(proxy);
+        verify(true);
+
+        Socket socket = socketFactory.getSocket(proxy);
         socket.setTcpNoDelay(tcpNoDelay);
         socket.setReuseAddress(reuseAddr);
 
-        if( !socket.isBound() ) {
-            socket.connect(new InetSocketAddress(uri.getHost(), getPort(uri)), connectionTimeout);
+        if(!socket.isBound()) {
+            socket.connect(inetSocketAddressFactory.getInetSocketAddress(uri.getHost(), getPort(uri)),
+                    connectionTimeout);
         }
 
         return sslSocketFactory.createSocket(socket, uri.getHost(), getPort(uri), autoClose);
@@ -106,8 +122,26 @@ public class BaseWssSocketBuilder implements WssSocketBuilder {
 
     @Override
     public void verify() {
+        verify(false);
+    }
+
+    public interface SocketFactory {
+        Socket getSocket(Proxy proxy);
+    }
+
+    public interface InetSocketAddressFactory {
+        InetSocketAddress getInetSocketAddress(String host, int port);
+    }
+
+    private void verify(boolean complete) {
         if(sslSocketFactory == null) {
             throw new IllegalStateException("sslSocketFactory must be set");
+        }
+
+        if(complete) {
+            if(uri == null) {
+                throw new IllegalStateException("uri must be set");
+            }
         }
     }
 

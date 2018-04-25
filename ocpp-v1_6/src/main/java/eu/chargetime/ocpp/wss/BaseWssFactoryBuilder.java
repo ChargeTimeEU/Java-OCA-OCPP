@@ -59,6 +59,8 @@ public class BaseWssFactoryBuilder implements WssFactoryBuilder {
 
     @Override
     public WebSocketServerFactory build() {
+        verify();
+
         return ciphers == null
                 ? new DefaultSSLWebSocketServerFactory(sslContext)
                 : new CustomSSLWebSocketServerFactory(sslContext, ciphers);
