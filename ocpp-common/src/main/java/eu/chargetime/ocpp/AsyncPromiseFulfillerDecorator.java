@@ -1,6 +1,7 @@
-package eu.chargetime.ocpp;/*
+package eu.chargetime.ocpp;
+/*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
@@ -24,21 +25,22 @@ package eu.chargetime.ocpp;/*
     SOFTWARE.
  */
 
-public interface WebSocketReceiverEvents {
-    /**
-     * @return true if connection is closed (either not connected or was disconnected)
-     */
-    boolean isClosed();
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
 
-    /**
-     * Close connection
-     */
-    void close();
+import java.util.concurrent.CompletableFuture;
 
-    /**
-     * Send a message.
-     *
-     * @param message message to send
-     */
-    void relay(String message);
+public class AsyncPromiseFulfillerDecorator implements PromiseFulfiller {
+
+    private final PromiseFulfiller promiseFulfiller;
+
+    @Override
+    public void fulfill(CompletableFuture<Confirmation> promise, SessionEvents eventHandler, Request request) {
+        new Thread(() -> promiseFulfiller.fulfill(promise, eventHandler, request)).start();
+    }
+
+    public AsyncPromiseFulfillerDecorator(PromiseFulfiller promiseFulfiller) {
+
+        this.promiseFulfiller = promiseFulfiller;
+    }
 }

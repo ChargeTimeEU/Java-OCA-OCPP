@@ -41,15 +41,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class WebSocketListener implements Listener {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketListener.class);
 
     private static final int TIMEOUT_IN_MILLIS = 10000;
 
-    private final IServerSessionFactory sessionFactory;
+    private final ISessionFactory sessionFactory;
     private final List<Draft> drafts;
 
     private final JSONConfiguration configuration;
@@ -59,14 +57,14 @@ public class WebSocketListener implements Listener {
     private volatile boolean closed = true;
     private boolean handleRequestAsync;
 
-    public WebSocketListener(IServerSessionFactory sessionFactory, JSONConfiguration configuration, Draft... drafts) {
+    public WebSocketListener(ISessionFactory sessionFactory, JSONConfiguration configuration, Draft... drafts) {
         this.sessionFactory = sessionFactory;
         this.configuration = configuration;
         this.drafts = Arrays.asList(drafts);
         this.sockets = new ConcurrentHashMap<>();
     }
 
-    public WebSocketListener(IServerSessionFactory sessionFactory, Draft... drafts) {
+    public WebSocketListener(ISessionFactory sessionFactory, Draft... drafts) {
         this(sessionFactory, JSONConfiguration.get(), drafts);
     }
 
@@ -82,6 +80,11 @@ public class WebSocketListener implements Listener {
                             @Override
                             public boolean isClosed() {
                                 return closed;
+                            }
+
+                            @Override
+                            public void close() {
+                                webSocket.close();
                             }
 
                             @Override

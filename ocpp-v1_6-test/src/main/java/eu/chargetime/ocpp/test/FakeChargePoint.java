@@ -1,24 +1,4 @@
 package eu.chargetime.ocpp.test;
-
-import eu.chargetime.ocpp.*;
-import eu.chargetime.ocpp.feature.profile.*;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.core.*;
-import eu.chargetime.ocpp.model.firmware.*;
-import eu.chargetime.ocpp.model.localauthlist.*;
-import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageConfirmation;
-import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
-import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageStatus;
-import eu.chargetime.ocpp.model.reservation.*;
-import eu.chargetime.ocpp.model.smartcharging.ChargingProfileStatus;
-import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
-import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Calendar;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -45,6 +25,26 @@ import java.util.Calendar;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.feature.profile.*;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.core.*;
+import eu.chargetime.ocpp.model.firmware.*;
+import eu.chargetime.ocpp.model.localauthlist.*;
+import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageConfirmation;
+import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
+import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageStatus;
+import eu.chargetime.ocpp.model.reservation.*;
+import eu.chargetime.ocpp.model.smartcharging.ChargingProfileStatus;
+import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
+import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Calendar;
+
 public class FakeChargePoint
 {
     private IClientAPI client;
@@ -202,11 +202,11 @@ public class FakeChargePoint
 
         switch (type) {
             case JSON:
-                client = new JSONClient(core, "testdummy");
+                client = new JSONTestClient(core);
                 url = "ws://127.0.0.1:8887";
                 break;
             case SOAP:
-                client = new SOAPClient("me", new URL("http://127.0.0.1:8889"), core);
+                client = new SOAPTestClient(new URL("http://127.0.0.1:8889"), core);
                 url = "http://127.0.0.1:8890";
                 break;
         }
@@ -298,6 +298,12 @@ public class FakeChargePoint
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void clearMemory() {
+        receivedConfirmation = null;
+        receivedException = null;
+        receivedRequest = null;
     }
 
     private void send(Request request) throws Exception {
@@ -427,5 +433,11 @@ public class FakeChargePoint
 
     public boolean hasReceivedError() {
         return receivedException != null;
+    }
+
+    public boolean hasReceivedNotConnectedError() {
+        if (receivedException instanceof CallErrorException)
+            return ((CallErrorException) receivedException).getErrorCode().equals("Not connected");
+        return false;
     }
 }

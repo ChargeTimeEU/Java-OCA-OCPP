@@ -74,9 +74,8 @@ public class JSONClient implements IClientAPI {
                 Collections.singletonList(new Protocol("ocpp1.6")));
         transmitter = new WebSocketTransmitter(configuration, draftOcppOnly);
         JSONCommunicator communicator = new JSONCommunicator(transmitter);
-        AsyncPromiseFulfilerDecorator promiseFulfiler = new AsyncPromiseFulfilerDecorator(new SimplePromiseFulfiller());
         featureRepository = new FeatureRepository();
-        Session session = new Session(communicator, new Queue(), promiseFulfiler, featureRepository);
+        ISession session = new SessionFactory(featureRepository).createSession(communicator);
         client = new Client(session, featureRepository, new PromiseRepository());
         featureRepository.addFeatureProfile(coreProfile);
     }

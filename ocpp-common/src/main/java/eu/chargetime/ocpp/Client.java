@@ -46,8 +46,8 @@ import java.util.concurrent.CompletableFuture;
 public class Client
 {
     private static final Logger logger = LoggerFactory.getLogger(Client.class);
-	
-    private Session session;
+
+    private ISession session;
     private final IFeatureRepository featureRepository;
     private final IPromiseRepository promiseRepository;
 
@@ -57,7 +57,7 @@ public class Client
      * @param   session     Inject session object
      * @see                 Session
      */
-    public Client(Session session, IFeatureRepository featureRepository, IPromiseRepository promiseRepository) {
+    public Client(ISession session, IFeatureRepository featureRepository, IPromiseRepository promiseRepository) {
         this.session = session;
         this.featureRepository = featureRepository;
         this.promiseRepository = promiseRepository;

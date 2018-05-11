@@ -1,18 +1,7 @@
 package eu.chargetime.ocpp;
-
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
@@ -35,6 +24,18 @@ import java.util.concurrent.ConcurrentHashMap;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Handles basic server logic:
@@ -95,6 +96,7 @@ public class Server {
                         if(sessionIdOptional.isPresent()) {
                             return featureOptional.get().handleRequest(sessionIdOptional.get(), request);
                         } else {
+                            logger.error("Unable to handle request ({}), the active session was not found.", request);
                             throw new IllegalStateException("Active session not found");
                         }
                     } else {
@@ -201,9 +203,5 @@ public class Server {
         if (session != null) {
             session.close();
         }
-    }
-
-    public void setAsyncRequestHandler(boolean asyncRequestHandler) {
-        listener.setAsyncRequestHandler(asyncRequestHandler);
     }
 }

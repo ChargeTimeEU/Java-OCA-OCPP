@@ -1,4 +1,5 @@
-package eu.chargetime.ocpp;/*
+package eu.chargetime.ocpp.test;
+/*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
@@ -24,21 +25,18 @@ package eu.chargetime.ocpp;/*
     SOFTWARE.
  */
 
-public interface WebSocketReceiverEvents {
-    /**
-     * @return true if connection is closed (either not connected or was disconnected)
-     */
-    boolean isClosed();
+import eu.chargetime.ocpp.*;
 
-    /**
-     * Close connection
-     */
-    void close();
+public class TestSessionFactory implements ISessionFactory {
 
-    /**
-     * Send a message.
-     *
-     * @param message message to send
-     */
-    void relay(String message);
+    private final IFeatureRepository featureRepository;
+
+    public TestSessionFactory(IFeatureRepository featureRepository) {
+        this.featureRepository = featureRepository;
+    }
+
+    @Override
+    public ISession createSession(Communicator communicator) {
+        return new Session(communicator, new Queue(), new SimplePromiseFulfiller(), this.featureRepository);
+    }
 }
