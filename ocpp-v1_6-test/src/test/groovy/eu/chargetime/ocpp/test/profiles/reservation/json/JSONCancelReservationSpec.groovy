@@ -1,9 +1,15 @@
-package eu.chargetime.ocpp;/*
+package eu.chargetime.ocpp.test.profiles.reservation.json
+
+import eu.chargetime.ocpp.test.base.json.JSONBaseSpec
+import spock.util.concurrent.PollingConditions
+
+/*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -24,21 +30,22 @@ package eu.chargetime.ocpp;/*
     SOFTWARE.
  */
 
-public interface WebSocketReceiverEvents {
-    /**
-     * @return true if connection is closed (either not connected or was disconnected)
-     */
-    boolean isClosed();
+class JSONCancelReservationSpec extends JSONBaseSpec {
 
-    /**
-     * Close connection
-     */
-    void close();
+    def "Central System sends a CancelReservation request and receives a response"() {
+        def conditions = new PollingConditions(timeout: 1)
+        given:
+        conditions.eventually {
+            assert centralSystem.connected()
+        }
 
-    /**
-     * Send a message.
-     *
-     * @param message message to send
-     */
-    void relay(String message);
+        when:
+        centralSystem.sendCancelReservationRequest(1)
+
+        then:
+        conditions.eventually {
+            assert chargePoint.hasHandledCancelReservationRequest()
+            assert centralSystem.hasReceivedCancelReservationConfirmation()
+        }
+    }
 }

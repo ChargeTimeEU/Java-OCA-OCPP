@@ -26,7 +26,9 @@ package eu.chargetime.ocpp.test;
  SOFTWARE.
  */
 
-import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.IServerAPI;
+import eu.chargetime.ocpp.JSONConfiguration;
+import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.feature.profile.*;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
@@ -63,9 +65,9 @@ public class FakeCentralSystem {
             JSONConfiguration configuration =
                     JSONConfiguration.get()
                             .setParameter(JSONConfiguration.REUSE_ADDR_PARAMETER, true);
-            server = new JSONServer(serverCoreProfile, configuration);
+            server = new JSONTestServer(serverCoreProfile, configuration);
         } else {
-            server = new SOAPServer(serverCoreProfile);
+            server = new SOAPTestServer(serverCoreProfile);
         }
 
         initializeServer();
@@ -104,7 +106,7 @@ public class FakeCentralSystem {
     public void started() throws Exception {
         if (!isStarted) {
             int port = 8890;
-            if (server instanceof JSONServer) {
+            if (server instanceof JSONTestServer) {
                 port = 8887;
             }
 

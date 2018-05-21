@@ -1,10 +1,16 @@
-package eu.chargetime.ocpp;
+package eu.chargetime.ocpp.test.profiles.smartcharging.json
+
+import eu.chargetime.ocpp.model.core.*
+import eu.chargetime.ocpp.test.base.json.JSONBaseSpec
+import spock.util.concurrent.PollingConditions
+
 /*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,37 +31,25 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
-public class WebSocketReceiver implements Receiver {
+class JSONSetChargingProfileSpec extends JSONBaseSpec {
 
-    private RadioEvents handler;
-    private WebSocketReceiverEvents receiverEvents;
+    def "Central System sends a SetChargingProfile request and receives a response"() {
+        def conditions = new PollingConditions(timeout: 1)
+        given:
+        conditions.eventually {
+            assert centralSystem.connected()
+        }
 
-    public WebSocketReceiver(WebSocketReceiverEvents handler) {
-        receiverEvents = handler;
-    }
+        when:
+        ChargingSchedulePeriod[] chargingSchedulePeriod = new ChargingSchedulePeriod[1]
+        chargingSchedulePeriod[0] = new ChargingSchedulePeriod(1, 2D)
+        centralSystem.sendSetChargingProfileRequest(1, new ChargingProfile(1, 2, ChargingProfilePurposeType.ChargePointMaxProfile, ChargingProfileKindType.Recurring,
+                new ChargingSchedule(ChargingRateUnitType.A, chargingSchedulePeriod)))
 
-    @Override
-    public void disconnect() {
-        receiverEvents.close();
-        handler.disconnected();
-    }
-
-    void relay(String message) {
-        handler.receivedMessage(message);
-    }
-
-    @Override
-    public void send(Object message) {
-        receiverEvents.relay(message.toString());
-    }
-
-    @Override
-    public boolean isClosed() {
-        return receiverEvents.isClosed();
-    }
-
-    @Override
-    public void accept(RadioEvents events) {
-        handler = events;
+        then:
+        conditions.eventually {
+            assert chargePoint.hasHandledSetChargingProfileRequest()
+            assert centralSystem.hasReceivedSetChargingProfileConfirmation()
+        }
     }
 }

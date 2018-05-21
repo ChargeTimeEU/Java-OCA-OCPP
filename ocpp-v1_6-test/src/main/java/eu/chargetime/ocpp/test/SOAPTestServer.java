@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp;
+package eu.chargetime.ocpp.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -25,6 +25,7 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
+import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import eu.chargetime.ocpp.model.Confirmation;
@@ -33,16 +34,15 @@ import eu.chargetime.ocpp.model.Request;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
 
-public class SOAPServer implements IServerAPI {
+public class SOAPTestServer implements IServerAPI {
 
     private final FeatureRepository featureRepository;
     private final Server server;
     private final WebServiceListener listener;
 
-    public SOAPServer(ServerCoreProfile coreProfile) {
-
+    public SOAPTestServer(ServerCoreProfile coreProfile) {
         featureRepository = new FeatureRepository();
-        SessionFactory sessionFactory = new SessionFactory(featureRepository);
+        ISessionFactory sessionFactory = new TestSessionFactory(featureRepository);
         this.listener = new WebServiceListener(sessionFactory);
         server = new Server(this.listener, featureRepository, new PromiseRepository());
         featureRepository.addFeatureProfile(coreProfile);

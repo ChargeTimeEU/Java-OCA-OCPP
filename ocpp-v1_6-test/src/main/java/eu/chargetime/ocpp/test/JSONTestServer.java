@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp;
+package eu.chargetime.ocpp.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -25,25 +25,41 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
+import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import org.java_websocket.drafts.Draft;
+import org.java_websocket.drafts.Draft_6455;
+import org.java_websocket.protocols.Protocol;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
 
-public class SOAPServer implements IServerAPI {
+public class JSONTestServer implements IServerAPI {
 
-    private final FeatureRepository featureRepository;
+    private static final Logger logger = LoggerFactory.getLogger(JSONTestServer.class);
+
+    public final Draft draftOcppOnly;
+    private final WebSocketListener listener;
     private final Server server;
-    private final WebServiceListener listener;
+    private final FeatureRepository featureRepository;
 
-    public SOAPServer(ServerCoreProfile coreProfile) {
-
+    /**
+     * The core feature profile is required as a minimum.
+     *
+     * @param coreProfile   implementation of the core feature profile.
+     * @param configuration network configuration for a json server.
+     */
+    public JSONTestServer(ServerCoreProfile coreProfile, JSONConfiguration configuration) {
         featureRepository = new FeatureRepository();
-        SessionFactory sessionFactory = new SessionFactory(featureRepository);
-        this.listener = new WebServiceListener(sessionFactory);
+        ISessionFactory sessionFactory = new TestSessionFactory(featureRepository);
+        draftOcppOnly = new Draft_6455(Collections.emptyList(), Collections.singletonList(new Protocol("ocpp1.6")));
+        this.listener = new WebSocketListener(sessionFactory, configuration, draftOcppOnly);
         server = new Server(this.listener, featureRepository, new PromiseRepository());
         featureRepository.addFeatureProfile(coreProfile);
     }
@@ -60,6 +76,7 @@ public class SOAPServer implements IServerAPI {
 
     @Override
     public void open(String host, int port, ServerEvents serverEvents) {
+        logger.info("Feature repository: {}", featureRepository);
         server.open(host, port, serverEvents);
     }
 
@@ -68,11 +85,6 @@ public class SOAPServer implements IServerAPI {
         server.close();
     }
 
-    /**
-     * Flag if connection is closed.
-     *
-     * @return true if connection was closed or not opened
-     */
     @Override
     public boolean isClosed() {
         return listener.isClosed();

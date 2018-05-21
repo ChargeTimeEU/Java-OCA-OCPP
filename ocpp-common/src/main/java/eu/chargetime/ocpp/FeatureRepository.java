@@ -39,7 +39,7 @@ public class FeatureRepository implements IFeatureRepository {
 
     private ArrayList<Feature> featureList;
 
-    FeatureRepository() {
+    public FeatureRepository() {
         this.featureList = new ArrayList<>();
     }
 

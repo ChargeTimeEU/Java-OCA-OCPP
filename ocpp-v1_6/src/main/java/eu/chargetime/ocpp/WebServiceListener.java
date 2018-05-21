@@ -41,7 +41,7 @@ import java.util.concurrent.ExecutionException;
 public class WebServiceListener implements Listener {
     private static final Logger logger = LoggerFactory.getLogger(WebServiceListener.class);
     private static final String WSDL_CENTRAL_SYSTEM = "eu/chargetime/ocpp/OCPP_CentralSystemService_1.6.wsdl";
-    private final IServerSessionFactory sessionFactory;
+    private final ISessionFactory sessionFactory;
 
     private ListenerEvents events;
     private String fromUrl = null;
@@ -49,7 +49,7 @@ public class WebServiceListener implements Listener {
     private boolean handleRequestAsync;
     private volatile boolean closed = true;
 
-    public WebServiceListener(IServerSessionFactory sessionFactory) {
+    public WebServiceListener(ISessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 

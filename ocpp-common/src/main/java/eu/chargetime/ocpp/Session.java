@@ -1,16 +1,4 @@
 package eu.chargetime.ocpp;
-
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.utilities.MoreObjects;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -37,6 +25,17 @@ import java.util.concurrent.CompletableFuture;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.MoreObjects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Unites outgoing {@link Request} with incoming {@link Confirmation}s or errors.

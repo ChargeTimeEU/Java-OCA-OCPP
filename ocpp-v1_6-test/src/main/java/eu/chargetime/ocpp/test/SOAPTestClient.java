@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp;
+package eu.chargetime.ocpp.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -26,6 +26,7 @@ package eu.chargetime.ocpp;
  */
 
 import com.sun.net.httpserver.HttpServer;
+import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
 import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
@@ -43,9 +44,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class SOAPClient implements IClientAPI {
-    private static final Logger logger = LoggerFactory.getLogger(SOAPClient.class);
-	private static final String WSDL_CHARGE_POINT = "eu/chargetime/ocpp/OCPP_ChargePointService_1.6.wsdl";
+public class SOAPTestClient implements IClientAPI {
+    private static final Logger logger = LoggerFactory.getLogger(SOAPTestClient.class);
+    private static final String WSDL_CHARGE_POINT = "eu/chargetime/ocpp/OCPP_ChargePointService_1.6.wsdl";
 
     private Client client;
     private SOAPCommunicator communicator;
@@ -55,23 +56,15 @@ public class SOAPClient implements IClientAPI {
     private ExecutorService threadPool;
     private FeatureRepository featureRepository;
 
-    /**
-     * The core feature profile is required.
-     * The client will use the information taken from the callback parameter to open a HTTP based Web Service.
-     *
-     * @param chargeBoxIdentity  required identity used in message header.
-     * @param callback           call back info that the server can send requests to.
-     * @param coreProfile        implementation of the core feature profile.
-     */
-    public SOAPClient(String chargeBoxIdentity, URL callback, ClientCoreProfile coreProfile) {
+    public SOAPTestClient(URL callback, ClientCoreProfile coreProfile) {
 
-        SOAPHostInfo hostInfo = new SOAPHostInfo.Builder().isClient(true).chargeBoxIdentity(chargeBoxIdentity).fromUrl(callback.toString()).namespace(SOAPHostInfo.NAMESPACE_CHARGEBOX).build();
+        SOAPHostInfo hostInfo = new SOAPHostInfo.Builder().isClient(true).chargeBoxIdentity("testdummy").fromUrl(callback.toString()).namespace(SOAPHostInfo.NAMESPACE_CHARGEBOX).build();
 
         this.callback = callback;
         this.transmitter = new WebServiceTransmitter();
         this.communicator = new SOAPCommunicator(hostInfo, transmitter);
         featureRepository = new FeatureRepository();
-        ISession session = new SessionFactory(featureRepository).createSession(communicator);
+        ISession session = new TestSessionFactory(featureRepository).createSession(communicator);
         this.client = new Client(session, featureRepository, new PromiseRepository());
         featureRepository.addFeatureProfile(coreProfile);
     }

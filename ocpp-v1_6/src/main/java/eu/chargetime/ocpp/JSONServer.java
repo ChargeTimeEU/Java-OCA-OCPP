@@ -40,8 +40,6 @@ import org.slf4j.LoggerFactory;
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.util.Collections;
-import javax.net.ssl.SSLContext;
-import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
 
@@ -64,7 +62,7 @@ public class JSONServer implements IServerAPI {
      */
     public JSONServer(ServerCoreProfile coreProfile, JSONConfiguration configuration) {
         featureRepository = new FeatureRepository();
-        ServerSessionFactory sessionFactory = new ServerSessionFactory(featureRepository);
+        SessionFactory sessionFactory = new SessionFactory(featureRepository);
         draftOcppOnly = new Draft_6455(Collections.emptyList(),
                 Collections.singletonList(new Protocol("ocpp1.6")));
         this.listener = new WebSocketListener(sessionFactory, configuration, draftOcppOnly);
@@ -143,7 +141,6 @@ public class JSONServer implements IServerAPI {
     @Override
     public void open(String host, int port, ServerEvents serverEvents) {
         logger.info("Feature repository: {}", featureRepository);
-
         server.open(host, port, serverEvents);
     }
 
