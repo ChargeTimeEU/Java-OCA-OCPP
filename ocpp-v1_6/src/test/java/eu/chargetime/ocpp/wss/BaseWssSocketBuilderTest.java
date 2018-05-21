@@ -19,19 +19,19 @@ import static org.mockito.Mockito.*;
 public class BaseWssSocketBuilderTest {
 
     @Test
-    public void builder() {
+    public void builder_returnsBuilder() {
         BaseWssSocketBuilder builder = BaseWssSocketBuilder.builder();
         assertThat(builder, is(CoreMatchers.any(BaseWssSocketBuilder.class)));
     }
 
 
     @Test
-    public void build() throws IOException, URISyntaxException {
+    public void builder_withUnboundedSocket_connectsAndReturnsProperlyInitializedSocket() throws IOException, URISyntaxException {
         SSLSocketFactory sslSocketFactory = mock(SSLSocketFactory.class);
         Socket expectedSocket = mock(Socket.class);
         Socket socket = mock(Socket.class);
         when(socket.isBound()).thenReturn(false);
-        when(sslSocketFactory.createSocket(socket,"fake", 101, false)).thenReturn(expectedSocket);
+        when(sslSocketFactory.createSocket(socket, "fake", 101, false)).thenReturn(expectedSocket);
         Proxy proxy = mock(Proxy.class);
         BaseWssSocketBuilder.SocketFactory socketFactory = mock(BaseWssSocketBuilder.SocketFactory.class);
         when(socketFactory.getSocket(any(Proxy.class))).thenReturn(socket);
@@ -64,12 +64,12 @@ public class BaseWssSocketBuilderTest {
     }
 
     @Test
-    public void buildSocketIsBound() throws IOException, URISyntaxException {
+    public void builder_withBoundedSocket_returnsProperlyInitializedSocket() throws IOException, URISyntaxException {
         SSLSocketFactory sslSocketFactory = mock(SSLSocketFactory.class);
         Socket expectedSocket = mock(Socket.class);
         Socket socket = mock(Socket.class);
         when(socket.isBound()).thenReturn(true);
-        when(sslSocketFactory.createSocket(socket,"fake", 101, false)).thenReturn(expectedSocket);
+        when(sslSocketFactory.createSocket(socket, "fake", 101, false)).thenReturn(expectedSocket);
         Proxy proxy = mock(Proxy.class);
         BaseWssSocketBuilder.SocketFactory socketFactory = mock(BaseWssSocketBuilder.SocketFactory.class);
         when(socketFactory.getSocket(any(Proxy.class))).thenReturn(socket);
@@ -102,18 +102,18 @@ public class BaseWssSocketBuilderTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void failBuildNoFactory() throws IOException {
+    public void builder_withNoFactorySet_failsBuildWithException() throws IOException {
         BaseWssSocketBuilder.builder().build();
     }
 
     @Test(expected = IllegalStateException.class)
-    public void failBuildNoUri() throws IOException {
+    public void builder_withNoURISet_failsBuildWithException() throws IOException {
         SSLSocketFactory sslSocketFactory = mock(SSLSocketFactory.class);
         BaseWssSocketBuilder.builder().sslSocketFactory(sslSocketFactory).build();
     }
 
     @Test(expected = IllegalStateException.class)
-    public void testVerify() {
+    public void builder_withNoFactorySet_failsVerificationWithException() {
         BaseWssSocketBuilder.builder().verify();
     }
 }

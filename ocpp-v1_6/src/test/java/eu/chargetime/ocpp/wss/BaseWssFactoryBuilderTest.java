@@ -20,19 +20,19 @@ import static org.mockito.Mockito.mock;
 public class BaseWssFactoryBuilderTest {
 
     @Test
-    public void builder() {
+    public void builder_returnsBuilder() {
         BaseWssFactoryBuilder builder = BaseWssFactoryBuilder.builder();
         assertThat(builder, is(any(BaseWssFactoryBuilder.class)));
     }
 
     @Test
-    public void sslContext() {
+    public void builder_withSSLContextSet_throwsNoException() {
         SSLContext sslContext = mock(SSLContext.class);
         BaseWssFactoryBuilder.builder().sslContext(sslContext).verify();
     }
 
     @Test
-    public void buildWithCiphers() {
+    public void builder_builtWithCiphers_returnsCustomSSLWebSocketServerFactory() {
         SSLContext sslContext = mock(SSLContext.class);
         List<String> cihpers = mock(List.class);
         WebSocketServerFactory factory = BaseWssFactoryBuilder.builder()
@@ -44,7 +44,7 @@ public class BaseWssFactoryBuilderTest {
     }
 
     @Test
-    public void buildWithoutCiphers() {
+    public void builder_builtWithoutCiphers_returnsDefaultSSLWebSocketServerFactory() {
         SSLContext sslContext = mock(SSLContext.class);
         WebSocketServerFactory factory = BaseWssFactoryBuilder.builder()
                 .sslContext(sslContext)
@@ -54,12 +54,12 @@ public class BaseWssFactoryBuilderTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void failBuild() {
+    public void builder_withoutSSLContextSet_failsBuildWithException() {
         BaseWssFactoryBuilder.builder().build();
     }
 
     @Test(expected = IllegalStateException.class)
-    public void verify() {
+    public void builder_withoutSSLContextSet_failsVerificationWithException() {
         BaseWssFactoryBuilder.builder().verify();
     }
 }

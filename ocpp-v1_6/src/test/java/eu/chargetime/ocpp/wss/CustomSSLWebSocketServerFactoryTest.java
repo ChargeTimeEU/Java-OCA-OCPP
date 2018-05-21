@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 public class CustomSSLWebSocketServerFactoryTest {
 
     @Test
-    public void wrapChannel() throws IOException {
+    public void factory_initializedProperly_returnsSSLWrappedChannel() throws IOException {
         SSLEngine sslEngine = mock(SSLEngine.class);
         SSLSession sslSession = mock(SSLSession.class);
         SSLContextSpi sslContextSpi = new TestSSLContextSpi(sslEngine);
