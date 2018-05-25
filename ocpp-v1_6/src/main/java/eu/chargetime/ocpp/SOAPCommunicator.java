@@ -1,4 +1,6 @@
-package eu.chargetime.ocpp;/*
+package eu.chargetime.ocpp;
+
+/*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
@@ -63,9 +65,9 @@ public class SOAPCommunicator extends Communicator {
         T output = null;
         try {
             Document input = (Document) payload;
-            input = setNamespace(input, "urn://Ocpp/Cs/2015/10/");
+            setNamespace(input, "urn://Ocpp/Cs/2015/10/");
             Unmarshaller unmarshaller = JAXBContext.newInstance(type).createUnmarshaller();
-            JAXBElement<T> jaxbElement = (JAXBElement<T>) unmarshaller.unmarshal(input, type);
+            JAXBElement<T> jaxbElement = unmarshaller.unmarshal(input, type);
             output = jaxbElement.getValue();
         } catch (JAXBException e) {
         	 logger.warn("unpackPayload() failed", e);
@@ -82,17 +84,14 @@ public class SOAPCommunicator extends Communicator {
             factory.setNamespaceAware(false);
             document = factory.newDocumentBuilder().newDocument();
             marshaller.marshal(payload, document);
-            document = setNamespace(document, hostInfo.getNamespace());
-        } catch (JAXBException e) {
+            setNamespace(document, hostInfo.getNamespace());
+        } catch (JAXBException | ParserConfigurationException e) {
         	logger.warn("packPayload() failed", e);
-        } catch (ParserConfigurationException e) {
-       	 	logger.warn("packPayload() failed", e);
         }
         return document;
     }
 
-    private Document setNamespace(Document document, String namespace) {
-        Document output = document;
+    private void setNamespace(Document document, String namespace) {
         Element orgElement = document.getDocumentElement();
         Element newElement = document.createElementNS(namespace, orgElement.getNodeName());
 
@@ -101,8 +100,7 @@ public class SOAPCommunicator extends Communicator {
             appendChildNS(document, newElement, childNodes.item(i), namespace);
         }
 
-        output.replaceChild(newElement, orgElement);
-        return output;
+        document.replaceChild(newElement, orgElement);
     }
 
     private void appendChildNS(Document doc, Node destination, Node child, String namespace) {
@@ -173,7 +171,7 @@ public class SOAPCommunicator extends Communicator {
             createMessageHeader(uniqueId, action, isResponse, message);
 
             if (isResponse) {
-                payload = setNamespace(payload, hostInfo.isClient() ? SOAPHostInfo.NAMESPACE_CHARGEBOX : SOAPHostInfo.NAMESPACE_CENTRALSYSTEM);
+                setNamespace(payload, hostInfo.isClient() ? SOAPHostInfo.NAMESPACE_CHARGEBOX : SOAPHostInfo.NAMESPACE_CENTRALSYSTEM);
             }
 
             message.getSOAPBody().addDocument(payload);
@@ -260,7 +258,8 @@ public class SOAPCommunicator extends Communicator {
 
                 String relatesTo = getElementValue(HEADER_RELATESTO);
                 String action = getElementValue(HEADER_ACTION);
-                if (relatesTo != null && !"".equals(relatesTo) && action.endsWith("Response")) {
+
+                if (relatesTo != null && !relatesTo.isEmpty() && action != null && action.endsWith("Response")) {
                     if (soapMessage.getSOAPBody().hasFault())
                         output = parseError();
                     else
@@ -269,7 +268,7 @@ public class SOAPCommunicator extends Communicator {
                     output = parseCall();
                 }
 
-                if (action != null && !"".equals(action))
+                if (action != null && !action.isEmpty())
                     output.setAction(action.substring(1));
 
                 if (!soapMessage.getSOAPBody().hasFault())
@@ -302,7 +301,7 @@ public class SOAPCommunicator extends Communicator {
                     message.setErrorDescription(fault.getFaultReasonTexts().next().toString());
 
             } catch (SOAPException e) {
-                e.printStackTrace();
+                logger.error("Parse error", e);
             }
 
             return message;

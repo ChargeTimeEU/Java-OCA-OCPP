@@ -5,6 +5,8 @@ import eu.chargetime.ocpp.model.CallErrorMessage;
 import eu.chargetime.ocpp.model.CallMessage;
 import eu.chargetime.ocpp.model.CallResultMessage;
 import eu.chargetime.ocpp.model.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
@@ -45,6 +47,8 @@ import java.util.TimeZone;
  * Communicator for JSON messages
  */
 public class JSONCommunicator extends Communicator {
+
+    private static final Logger logger = LoggerFactory.getLogger(JSONCommunicator.class);
 
     private static final int INDEX_MESSAGEID = 0;
     private static final int TYPENUMBER_CALL = 2;
@@ -138,7 +142,7 @@ public class JSONCommunicator extends Communicator {
 
     @Override
     protected Message parse(Object json) {
-        Message message = null;
+        Message message;
         JsonParser parser = new JsonParser();
         JsonArray array = parser.parse(json.toString()).getAsJsonArray();
 
@@ -154,7 +158,11 @@ public class JSONCommunicator extends Communicator {
             ((CallErrorMessage) message).setErrorCode(array.get(INDEX_CALLERROR_ERRORCODE).getAsString());
             ((CallErrorMessage) message).setErrorDescription(array.get(INDEX_CALLERROR_DESCRIPTION).getAsString());
             ((CallErrorMessage) message).setRawPayload(array.get(INDEX_CALLERROR_PAYLOAD).toString());
+        } else {
+            logger.error("Unknown message type of message: {}", json.toString());
+            throw new IllegalArgumentException("Unknown message type");
         }
+
         message.setId(array.get(INDEX_UNIQUEID).getAsString());
 
         return message;
