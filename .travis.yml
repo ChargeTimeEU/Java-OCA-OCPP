@@ -17,6 +17,11 @@ jobs:
       script: "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report -B"
       after_success:
         - bash <(curl -s https://codecov.io/bash)
-    - stage: integration-
+    - stage: integration
       jdk: oraclejdk8
       script: mvn integration-test -B
+    - stage: deploy
+      if: type = push
+      provider: script
+      script: "cp .travis.settings.xml $HOME/.m2/settings.xml && mvn deploy"
+      skip_cleanup: true

@@ -7,6 +7,7 @@
     <groupId>eu.chargetime.ocpp</groupId>
     <artifactId>v1_6</artifactId>
     <version>0.5-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <name>Java-OCA-OCPP v1.6</name>
     <description>Implementation of Open Charge-Point Protocol version 1.6.</description>
@@ -33,6 +34,17 @@
        <developerConnection>scm:git:ssh://github.com:ChargeTimeEU/Java-OCA-OCPP.git</developerConnection>
        <url>https://github.com/ChargeTimeEU/Java-OCA-OCPP.git</url>
      </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
@@ -109,22 +121,20 @@
                 </execution>
               </executions>
             </plugin>
-<!--
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-gpg-plugin</artifactId>
-              <version>1.5</version>
-              <executions>
-                <execution>
-                  <id>sign-artifacts</id>
-                  <phase>verify</phase>
-                  <goals>
-                    <goal>sign</goal>
-                  </goals>
-                </execution>
-              </executions>
-            </plugin>
--->
+            <!--            <plugin>
+                          <groupId>org.apache.maven.plugins</groupId>
+                          <artifactId>maven-gpg-plugin</artifactId>
+                          <version>1.5</version>
+                          <executions>
+                            <execution>
+                              <id>sign-artifacts</id>
+                              <phase>verify</phase>
+                              <goals>
+                                <goal>sign</goal>
+                              </goals>
+                            </execution>
+                          </executions>
+                        </plugin> -->
         </plugins>
     </build>
 
