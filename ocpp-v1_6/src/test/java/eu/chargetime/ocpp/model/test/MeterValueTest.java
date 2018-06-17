@@ -14,7 +14,9 @@ import java.util.Calendar;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -42,18 +44,20 @@ import static org.mockito.Mockito.*;
  * SOFTWARE.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class MeterValueTest extends TestUtilities{
-    MeterValue meterValue;
+public class MeterValueTest extends TestUtilities {
+
+    private MeterValue meterValue;
+
     @Mock
     private SampledValue sampledValueMock;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         meterValue = new MeterValue();
     }
 
     @Test
-    public void setTimestamp_now_timestampIsSet() throws Exception {
+    public void setTimestamp_now_timestampIsSet() {
         // Given
         Calendar now = Calendar.getInstance();
 
@@ -74,7 +78,7 @@ public class MeterValueTest extends TestUtilities{
     }
 
     @Test
-    public void validate_sampledValueIsSet_validatesSampledValue() throws Exception {
+    public void validate_sampledValueIsSet_validatesSampledValue() {
         // Given
         meterValue.setTimestamp(Calendar.getInstance());
         meterValue.setSampledValue(aList(sampledValueMock));
@@ -87,10 +91,11 @@ public class MeterValueTest extends TestUtilities{
     }
 
     @Test
-    public void validate_TimestampAndSampledValueIsValid_returnTrue() throws Exception {
+    public void validate_TimestampAndSampledValueIsValid_returnTrue() {
         // Given
         meterValue.setTimestamp(Calendar.getInstance());
         meterValue.setSampledValue(aList(sampledValueMock));
+
         when(sampledValueMock.validate()).thenReturn(true);
 
         // When
@@ -98,5 +103,31 @@ public class MeterValueTest extends TestUtilities{
 
         // Then
         assertThat(isValid, is(true));
+    }
+
+    @Test
+    public void validate_missingTimestamp_returnFalse() {
+        // Given
+        meterValue.setSampledValue(aList(sampledValueMock));
+
+        when(sampledValueMock.validate()).thenReturn(true);
+
+        // When
+        boolean isValid = meterValue.validate();
+
+        // Then
+        assertThat(isValid, is(false));
+    }
+
+    @Test
+    public void validate_missingSampleValue_returnFalse() {
+        // Given
+        meterValue.setSampledValue(null);
+
+        // When
+        boolean isValid = meterValue.validate();
+
+        // Then
+        assertThat(isValid, is(false));
     }
 }

@@ -42,6 +42,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlType(propOrder = {"key", "readonly", "value"})
 public class KeyValueType implements Validatable {
+
+    private static final String ERROR_MESSAGE = "Exceeds limit of %s chars";
+
     private String key;
     private Boolean readonly;
     private String value;
@@ -59,12 +62,12 @@ public class KeyValueType implements Validatable {
      * Required. Name of the key.
      *
      * @param key String, max 50 characters, case insensitive.
-     * @throws PropertyConstraintException Value exceeds 50 charactesr.
      */
     @XmlElement
-    public void setKey(String key) throws PropertyConstraintException{
-        if (!isValidKey(key))
-            throw new PropertyConstraintException("key", key);
+    public void setKey(String key) {
+        if (!isValidKey(key)) {
+            throw new PropertyConstraintException(key.length(), createErrorMessage(50));
+        }
 
         this.key = key;
     }
@@ -86,12 +89,12 @@ public class KeyValueType implements Validatable {
      * Required. False if the value can be set with a {@link ChangeConfigurationRequest}.
      *
      * @param readonly Boolean, configuration is read only.
-     * @throws PropertyConstraintException Value was null.
      */
     @XmlElement
-    public void setReadonly(Boolean readonly) throws PropertyConstraintException {
-        if (!isValidReadonly(readonly))
-            throw new PropertyConstraintException("readonly", readonly);
+    public void setReadonly(Boolean readonly) {
+        if (!isValidReadonly(readonly)) {
+            throw new PropertyConstraintException(null, "readonly must be present");
+        }
 
         this.readonly = readonly;
     }
@@ -112,13 +115,13 @@ public class KeyValueType implements Validatable {
     /**
      * Optional. If key is known but not set, this field may be absent.
      *
-     * @param value                         String, max 500 characters, case insensitive.
-     * @throws PropertyConstraintException  Value exceeds 500 characters.
+     * @param value String, max 500 characters, case insensitive.
      */
     @XmlElement
-    public void setValue(String value) throws PropertyConstraintException {
-        if (!isValidValue(value))
-            throw new PropertyConstraintException("value", value);
+    public void setValue(String value) {
+        if (!isValidValue(value)) {
+            throw new PropertyConstraintException(value.length(), createErrorMessage(500));
+        }
 
         this.value = value;
     }
@@ -129,9 +132,10 @@ public class KeyValueType implements Validatable {
 
     @Override
     public boolean validate() {
-        boolean output = true;
-        output &= isValidKey(this.key);
-        output &= isValidReadonly(this.readonly);
-        return output;
+        return isValidKey(this.key) && isValidReadonly(this.readonly);
+    }
+
+    private static String createErrorMessage(int maxLength) {
+        return String.format(ERROR_MESSAGE, maxLength);
     }
 }

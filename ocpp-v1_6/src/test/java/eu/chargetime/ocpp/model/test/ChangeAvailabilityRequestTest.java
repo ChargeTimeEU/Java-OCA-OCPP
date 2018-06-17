@@ -3,11 +3,13 @@ package eu.chargetime.ocpp.model.test;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.AvailabilityType;
 import eu.chargetime.ocpp.model.core.ChangeAvailabilityRequest;
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -37,33 +39,31 @@ import static org.junit.Assert.assertThat;
  * SOFTWARE.
  */
 public class ChangeAvailabilityRequestTest {
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
+
     private ChangeAvailabilityRequest request;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
 
         request = new ChangeAvailabilityRequest();
     }
 
     @Test
     public void setConnectorId_negativeValue_throwsPropertyConstraintException() {
-        // Given
+
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage("");
+
         int aNegativeValue = -1;
 
-        // When
-        try {
-            request.setConnectorId(aNegativeValue);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("connectorId"));
-            assertThat(ex.getFieldValue(), equalTo(aNegativeValue));
-        }
+        request.setConnectorId(aNegativeValue);
     }
 
     @Test
-    public void setConnectorId_zero_connectorIdIsSet() throws Exception {
+    public void setConnectorId_zero_connectorIdIsSet() {
         // Given
         int zero = 0;
 
@@ -75,7 +75,7 @@ public class ChangeAvailabilityRequestTest {
     }
 
     @Test
-    public void setConnectorId_positiveValue_connectorIdIsSet() throws Exception {
+    public void setConnectorId_positiveValue_connectorIdIsSet() {
         // Given
         int aPositiveValue = 42;
 
@@ -87,7 +87,7 @@ public class ChangeAvailabilityRequestTest {
     }
 
     @Test
-    public void setType_availabilityType_typeIsSet() throws Exception {
+    public void setType_availabilityType_typeIsSet() {
         // Given
         AvailabilityType availabilityType = AvailabilityType.Operative;
 
@@ -99,7 +99,7 @@ public class ChangeAvailabilityRequestTest {
     }
 
     @Test
-    public void validate_typeAndConnectorIdIsSet_returnsTrue() throws Exception {
+    public void validate_typeAndConnectorIdIsSet_returnsTrue() {
         // Given
         request.setType(AvailabilityType.Operative);
         request.setConnectorId(0);
@@ -112,7 +112,7 @@ public class ChangeAvailabilityRequestTest {
     }
 
     @Test
-    public void validate_onlyTypeIsSet_returnsFalse() throws Exception {
+    public void validate_onlyTypeIsSet_returnsFalse() {
         // Given
         request.setType(AvailabilityType.Operative);
 
@@ -124,7 +124,7 @@ public class ChangeAvailabilityRequestTest {
     }
 
     @Test
-    public void validate_connectorIdIsSet_returnsFalse() throws Exception {
+    public void validate_connectorIdIsSet_returnsFalse() {
         // Given
         request.setConnectorId(0);
 

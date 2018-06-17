@@ -50,8 +50,7 @@ public class StopTransactionRequest implements Request {
 
     @Override
     public boolean validate() {
-        boolean valid = true;
-        valid &= meterStop != null;
+        boolean valid = meterStop != null;
         valid &= timestamp != null;
         valid &= transactionId != null;
         if (transactionData != null) {
@@ -59,6 +58,7 @@ public class StopTransactionRequest implements Request {
                 valid &= meterValue.validate();
             }
         }
+
         return valid;
     }
 
@@ -77,12 +77,12 @@ public class StopTransactionRequest implements Request {
      * A Charge Point SHALL send the idTag if known.
      *
      * @param idTag a String with max length 20
-     * @throws PropertyConstraintException  field isn't filled out correct.
      */
     @XmlElement
-    public void setIdTag(String idTag) throws PropertyConstraintException {
-        if (idTag != null && !ModelUtil.validate(idTag, 20))
-            throw new PropertyConstraintException("idTag", idTag, "Exceeded limit");
+    public void setIdTag(String idTag) {
+        if (!ModelUtil.validate(idTag, 20)) {
+            throw new PropertyConstraintException(idTag.length(), "Exceeded limit of 20 chars");
+        }
 
         this.idTag = idTag;
     }
@@ -147,7 +147,7 @@ public class StopTransactionRequest implements Request {
     /**
      * Required. This contains the transaction-id as received by the {@link StartTransactionConfirmation}.
      *
-     * @param transactionId    integer, transaction id.
+     * @param transactionId integer, transaction id.
      */
     @XmlElement
     public void setTransactionId(Integer transactionId) {
@@ -177,7 +177,7 @@ public class StopTransactionRequest implements Request {
      * Optional. This contains the reason why the transaction was stopped.
      * MAY only be omitted when the {@link Reason} is "Local".
      *
-     * @param reason    the {@link Reason}.
+     * @param reason the {@link Reason}.
      */
     @XmlElement
     public void setReason(Reason reason) {

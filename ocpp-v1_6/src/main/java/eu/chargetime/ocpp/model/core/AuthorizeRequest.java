@@ -38,21 +38,23 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Sent by the Charge Point to the Central System.
  */
 @XmlRootElement
-public class AuthorizeRequest implements Request
-{
+public class AuthorizeRequest implements Request {
+
+    private static final int IDTAG_MAX_LENGTH = 20;
+    private static final String ERROR_MESSAGE = "Exceeded limit of " + IDTAG_MAX_LENGTH + " chars";
+
     private String idTag;
 
-    public AuthorizeRequest() {}
+    public AuthorizeRequest() {
+    }
 
     /**
      * Handle required fields.
      *
      * @param idToken authorize id.
-     * @throws PropertyConstraintException field isn't filled out correct.
      */
-    public AuthorizeRequest(String idToken) throws PropertyConstraintException
-    {
-         setIdTag(idToken);
+    public AuthorizeRequest(String idToken) {
+        setIdTag(idToken);
     }
 
     /**
@@ -60,30 +62,27 @@ public class AuthorizeRequest implements Request
      *
      * @return String, max 20 characters. Case insensitive.
      */
-    public String getIdTag()
-    {
+    public String getIdTag() {
         return idTag;
     }
 
     /**
      * Required. This contains the identifier that needs to be authorized.
      *
-     * @param idTag                         String, max 20 characters. Case insensitive.
-     * @throws PropertyConstraintException  field isn't filled out correct.
+     * @param idTag String, max 20 characters. Case insensitive.
      */
     @XmlElement
-    public void setIdTag(String idTag) throws PropertyConstraintException {
-        if (!ModelUtil.validate(idTag, 20))
-            throw new PropertyConstraintException("idTag", idTag, "Exceeded limit");
+    public void setIdTag(String idTag) {
+        if (!ModelUtil.validate(idTag, IDTAG_MAX_LENGTH)) {
+            throw new PropertyConstraintException(idTag.length(), ERROR_MESSAGE);
+        }
 
         this.idTag = idTag;
     }
 
     @Override
     public boolean validate() {
-        boolean valid = true;
-        valid &= ModelUtil.validate(idTag, 20);
-        return valid;
+        return ModelUtil.validate(idTag, IDTAG_MAX_LENGTH);
     }
 
     @Override

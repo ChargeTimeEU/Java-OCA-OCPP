@@ -42,8 +42,8 @@ import java.util.Calendar;
  */
 @XmlRootElement(name = "bootNotificationResponse")
 @XmlType(propOrder = {"status", "currentTime", "interval"})
-public class BootNotificationConfirmation implements Confirmation
-{
+public class BootNotificationConfirmation implements Confirmation {
+
     private Calendar currentTime;
     private int interval;
     private RegistrationStatus status;
@@ -53,8 +53,7 @@ public class BootNotificationConfirmation implements Confirmation
      *
      * @return an instance of Calendar.
      */
-    public Calendar getCurrentTime()
-    {
+    public Calendar getCurrentTime() {
         return currentTime;
     }
 
@@ -74,8 +73,7 @@ public class BootNotificationConfirmation implements Confirmation
      * @param currentTime Central System’s current time.
      */
     @XmlElement
-    public void setCurrentTime(Calendar currentTime)
-    {
+    public void setCurrentTime(Calendar currentTime) {
         this.currentTime = currentTime;
     }
 
@@ -86,8 +84,7 @@ public class BootNotificationConfirmation implements Confirmation
      *
      * @return Heartbeat/delay interval in seconds.
      */
-    public int getInterval()
-    {
+    public int getInterval() {
         return interval;
     }
 
@@ -97,12 +94,12 @@ public class BootNotificationConfirmation implements Confirmation
      * indicates the minimum wait time before sending a next BootNotification request.
      *
      * @param interval heartbeat/delay interval in seconds. Min value 0.
-     * @throws PropertyConstraintException field isn't filled out correct.
      */
     @XmlElement
-    public void setInterval(int interval) throws PropertyConstraintException {
-        if (interval <= 0)
-            throw new PropertyConstraintException("interval", interval, "Must be a positive value");
+    public void setInterval(int interval) {
+        if (interval <= 0) {
+            throw new PropertyConstraintException(interval, "interval be a positive value");
+        }
 
         this.interval = interval;
     }
@@ -113,8 +110,7 @@ public class BootNotificationConfirmation implements Confirmation
      * @return Charge Points registration status as {@link RegistrationStatus}.
      */
     @Deprecated
-    public RegistrationStatus objStatus()
-    {
+    public RegistrationStatus objStatus() {
         return status;
     }
 
@@ -123,15 +119,14 @@ public class BootNotificationConfirmation implements Confirmation
      *
      * @return Charge Points registration status as {@link RegistrationStatus}.
      */
-    public RegistrationStatus getStatus()
-    {
+    public RegistrationStatus getStatus() {
         return status;
     }
 
     /**
      * Required. This contains whether the Charge Point has been registered within the System Central.
      *
-     * @param status                        Charge Points registration status.
+     * @param status Charge Points registration status.
      */
     @XmlElement
     public void setStatus(RegistrationStatus status) {
@@ -140,10 +135,10 @@ public class BootNotificationConfirmation implements Confirmation
 
     @Override
     public boolean validate() {
-        boolean valid = true;
-        valid &= status != null;
+        boolean valid = status != null;
         valid &= currentTime != null;
         valid &= interval > 0;
+
         return valid;
     }
 }

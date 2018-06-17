@@ -3,13 +3,15 @@ package eu.chargetime.ocpp.model.test;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
 import eu.chargetime.ocpp.model.core.RegistrationStatus;
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.Calendar;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -40,10 +42,13 @@ import static org.junit.Assert.assertThat;
  SOFTWARE.
  */
 public class BootNotificationConfirmationTest {
-    BootNotificationConfirmation confirmation;
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
+
+    private BootNotificationConfirmation confirmation;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         confirmation = new BootNotificationConfirmation();
     }
 
@@ -60,7 +65,7 @@ public class BootNotificationConfirmationTest {
     }
 
     @Test
-    public void setInterval_anInteger_intervalIsSet() throws Exception {
+    public void setInterval_anInteger_intervalIsSet() {
         // Given
         int anInterval = 41;
 
@@ -73,23 +78,18 @@ public class BootNotificationConfirmationTest {
 
     @Test
     public void setInterval_aNegativeValue_throwsPropertyConstraintException() {
-        // Given
-        int aNegativeValue = - 42;
 
-        // When
-        try {
-            confirmation.setInterval(aNegativeValue);
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [interval be a positive value]. Current Value: [-42]"));
 
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("interval"));
-            assertThat(ex.getFieldValue(), equalTo(aNegativeValue));
-        }
+        int aNegativeValue = -42;
+
+        confirmation.setInterval(aNegativeValue);
+
     }
 
     @Test
-    public void setStatus_enumValue_statusIsAccepted() throws Exception {
+    public void setStatus_enumValue_statusIsAccepted() {
         // Given
         RegistrationStatus status = RegistrationStatus.Accepted;
 
@@ -101,7 +101,7 @@ public class BootNotificationConfirmationTest {
     }
 
     @Test
-    public void validate_currentTimeAndIntervalAndStatusIsSet_returnTrue() throws Exception {
+    public void validate_currentTimeAndIntervalAndStatusIsSet_returnTrue() {
         // Given
         confirmation.setCurrentTime(Calendar.getInstance());
         confirmation.setInterval(42);

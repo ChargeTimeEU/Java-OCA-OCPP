@@ -63,7 +63,7 @@ public class TriggerMessageRequestTest {
 
     private void testInvalidConnectorId(int invalidConnectorId) {
         thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo(""));
+        thrownException.expectMessage(equalTo("Validation failed: [connectorId must be > 0]. Current Value: [" + invalidConnectorId + "]"));
 
         request.setConnectorId(invalidConnectorId);
     }

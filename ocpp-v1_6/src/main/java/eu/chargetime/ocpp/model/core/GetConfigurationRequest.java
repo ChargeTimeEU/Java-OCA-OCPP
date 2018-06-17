@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class GetConfigurationRequest implements Request {
+
     private String[] key;
 
     /**
@@ -54,23 +55,20 @@ public class GetConfigurationRequest implements Request {
      * Optional. List of keys for which the configuration value is requested.
      *
      * @param key Array of Strings, max 50 characters each, case insensitive.
-     * @throws PropertyConstraintException At least one of the Strings exceeds 50 characters.
      */
     @XmlElement
-    public void setKey(String[] key) throws PropertyConstraintException {
-        if (!isValidKey(key))
-            throw new PropertyConstraintException("key", key);
+    public void setKey(String[] key) {
+        validateKeys(key);
 
         this.key = key;
     }
 
-    private boolean isValidKey(String[] keys) {
-        boolean output = true;
-        for(String key: keys) {
-            if ((output = ModelUtil.validate(key, 50)) == false)
-                break;
+    private void validateKeys(String[] keys) {
+        for (String k : keys) {
+            if (!ModelUtil.validate(k, 50)) {
+                throw new PropertyConstraintException(k.length(), "Exceeds limit of 50 chars");
+            }
         }
-        return output;
     }
 
     @Override

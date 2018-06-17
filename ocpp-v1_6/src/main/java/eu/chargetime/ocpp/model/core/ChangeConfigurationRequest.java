@@ -43,6 +43,11 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlType(propOrder = {"key", "value"})
 public class ChangeConfigurationRequest implements Request {
+
+    private static final String ERROR_MESSAGE = "Exceeded limit of %s chars";
+    private static final int KEY_MAX_LENGTH = 50;
+    private static final int VALUE_MAX_LENGTH = 500;
+
     private String key;
     private String value;
 
@@ -58,19 +63,19 @@ public class ChangeConfigurationRequest implements Request {
     /**
      * Required. The name of the configuration setting to change.
      *
-     * @param key                           String, max 50 characters, case insensitive.
-     * @throws PropertyConstraintException  Value exceeds 50 characters.
+     * @param key String, max 50 characters, case insensitive.
      */
     @XmlElement
-    public void setKey(String key) throws PropertyConstraintException {
-        if (!isValidKey(key))
-            throw new PropertyConstraintException("key", key);
+    public void setKey(String key) {
+        if (!isValidKey(key)) {
+            throw new PropertyConstraintException(key.length(), createErrorMessage(KEY_MAX_LENGTH));
+        }
 
         this.key = key;
     }
 
     private boolean isValidKey(String key) {
-        return ModelUtil.validate(key, 50);
+        return ModelUtil.validate(key, KEY_MAX_LENGTH);
     }
 
     /**
@@ -85,31 +90,32 @@ public class ChangeConfigurationRequest implements Request {
     /**
      * Required. The new value as string for the setting.
      *
-     * @param value                         String, max 500 characters, case insensitive.
-     * @throws PropertyConstraintException  Value exceeds 500 characters.
+     * @param value String, max 500 characters, case insensitive.
      */
     @XmlElement
-    public void setValue(String value) throws PropertyConstraintException {
-        if (!isValidValue(value))
-            throw new PropertyConstraintException("value", value);
+    public void setValue(String value) {
+        if (!isValidValue(value)) {
+            throw new PropertyConstraintException(value.length(), createErrorMessage(VALUE_MAX_LENGTH));
+        }
 
         this.value = value;
     }
 
     private boolean isValidValue(String value) {
-        return ModelUtil.validate(value, 500);
+        return ModelUtil.validate(value, VALUE_MAX_LENGTH);
     }
 
     @Override
     public boolean validate() {
-        boolean valid = true;
-        valid &= isValidKey(this.key);
-        valid &= isValidValue(this.value);
-        return valid;
+        return isValidKey(this.key) && isValidValue(this.value);
     }
 
     @Override
     public boolean transactionRelated() {
         return false;
+    }
+
+    private static String createErrorMessage(int valueMaxLength) {
+        return String.format(ERROR_MESSAGE, valueMaxLength);
     }
 }

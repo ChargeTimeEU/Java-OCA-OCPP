@@ -1,14 +1,20 @@
 package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.core.*;
-import org.junit.Assert;
+import eu.chargetime.ocpp.model.core.ChargingProfile;
+import eu.chargetime.ocpp.model.core.ChargingProfileKindType;
+import eu.chargetime.ocpp.model.core.ChargingProfilePurposeType;
+import eu.chargetime.ocpp.model.core.ChargingSchedule;
+import eu.chargetime.ocpp.model.core.RecurrencyKindType;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.Calendar;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -40,32 +46,31 @@ import static org.mockito.Mockito.when;
  * SOFTWARE.
  */
 public class ChargingProfileTest {
-    ChargingProfile chargingProfile;
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
+
+    private ChargingProfile chargingProfile;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         chargingProfile = new ChargingProfile();
     }
 
     @Test
     public void setChargingProfileId_nullValue_throwsPropertyConstraintException() {
-        // Given
-        Integer nullValue = null;
+        defineExpectedException("Validation failed: [chargingProfileId must be present]. Current Value: [null]");
 
-        try {
-            // When
-            chargingProfile.setChargingProfileId(nullValue);
+        chargingProfile.setChargingProfileId(null);
+    }
 
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("chargingProfileId"));
-            assertThat(ex.getFieldValue(), equalTo(nullValue));
-        }
+    private void defineExpectedException(String expectedExceptionMessage) {
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo(expectedExceptionMessage));
     }
 
     @Test
-    public void setChargingProfileId_positiveInteger_chargingProfileIdIsSet() throws Exception {
+    public void setChargingProfileId_positiveInteger_chargingProfileIdIsSet() {
         // Given
         int someInteger = 42;
 
@@ -90,23 +95,22 @@ public class ChargingProfileTest {
 
     @Test
     public void setStackLevel_negativeInteger_throwsPropertyConstraintException() {
-        // Given
-        Integer negativeValue = -42;
-
-        try {
-            // When
-            chargingProfile.setStackLevel(negativeValue);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("stackLevel"));
-            assertThat(ex.getFieldValue(), equalTo(negativeValue));
-        }
+        testStackLeverInvalidValues(-42);
     }
 
     @Test
-    public void setStackLevel_zeroInteger_stackLevelIsSet() throws Exception {
+    public void setStackLevel_asNullValue_throwsPropertyConstraintException() {
+        testStackLeverInvalidValues(null);
+    }
+
+    private void testStackLeverInvalidValues(Integer erroneousValue) {
+        defineExpectedException("Validation failed: [stackLevel must be >= 0]. Current Value: [" + erroneousValue + "]");
+
+        chargingProfile.setStackLevel(erroneousValue);
+    }
+
+    @Test
+    public void setStackLevel_zeroInteger_stackLevelIsSet() {
         // Given
         int zero = 0;
 
@@ -118,7 +122,7 @@ public class ChargingProfileTest {
     }
 
     @Test
-    public void setChargingProfilePurpose_chargingProfilePurposeType_chargingProfilePurposeIsSet() throws Exception {
+    public void setChargingProfilePurpose_chargingProfilePurposeType_chargingProfilePurposeIsSet() {
         // Given
         ChargingProfilePurposeType chargingProfilePurposeType = ChargingProfilePurposeType.ChargePointMaxProfile;
 
@@ -130,7 +134,7 @@ public class ChargingProfileTest {
     }
 
     @Test
-    public void setChargingProfileKind_chargingProfileKindType_chargingProfileKindIsSet() throws Exception {
+    public void setChargingProfileKind_chargingProfileKindType_chargingProfileKindIsSet() {
         // Given
         ChargingProfileKindType chargingProfileKindType = ChargingProfileKindType.Absolute;
 
@@ -142,7 +146,7 @@ public class ChargingProfileTest {
     }
 
     @Test
-    public void setRecurrencyKind_recurrencyKindType_recurrencyKindIsSet() throws Exception {
+    public void setRecurrencyKind_recurrencyKindType_recurrencyKindIsSet() {
         // Given
         RecurrencyKindType recurrencyKindType = RecurrencyKindType.Daily;
 
@@ -190,7 +194,7 @@ public class ChargingProfileTest {
     }
 
     @Test
-    public void validate_mandatoryFieldsIsSet_returnTrue() throws Exception {
+    public void validate_mandatoryFieldsIsSet_returnTrue() {
         // Given
         chargingProfile.setChargingProfileId(42);
         chargingProfile.setStackLevel(0);
@@ -208,7 +212,7 @@ public class ChargingProfileTest {
     }
 
     @Test
-    public void validate_transactionIdIsSetAndChargingProfilePurposeIsNotTxProfile_returnFalse() throws Exception {
+    public void validate_transactionIdIsSetAndChargingProfilePurposeIsNotTxProfile_returnFalse() {
         // Given
         chargingProfile.setChargingProfileId(42);
         chargingProfile.setStackLevel(0);
