@@ -2,6 +2,7 @@ package eu.chargetime.ocpp.model.firmware;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -39,9 +40,11 @@ import java.util.Objects;
  */
 @XmlRootElement
 public class FirmwareStatusNotificationRequest implements Request {
+
     private FirmwareStatus status;
 
-    public FirmwareStatusNotificationRequest() { }
+    public FirmwareStatusNotificationRequest() {
+    }
 
     /**
      * Set required fields.
@@ -69,13 +72,13 @@ public class FirmwareStatusNotificationRequest implements Request {
     /**
      * Required. This contains the identifier of the status.
      *
-     * @param status FirmwareStatus, value != 0.
-     * @throws PropertyConstraintException Value was zero or negative.
+     * @param status {@link FirmwareStatus}
      */
     @XmlElement
-    public void setStatus(FirmwareStatus status) throws PropertyConstraintException {
-        if (status == null)
-            throw new PropertyConstraintException("status", null);
+    public void setStatus(FirmwareStatus status) {
+        if (status == null) {
+            throw new PropertyConstraintException(null, "FirmwareStatus must be present");
+        }
 
         this.status = status;
     }
@@ -100,9 +103,8 @@ public class FirmwareStatusNotificationRequest implements Request {
 
     @Override
     public String toString() {
-        return "FirmwareStatusNotificationRequest{" +
-                "status=" + status +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                          .add("status", status)
+                          .toString();
     }
 }

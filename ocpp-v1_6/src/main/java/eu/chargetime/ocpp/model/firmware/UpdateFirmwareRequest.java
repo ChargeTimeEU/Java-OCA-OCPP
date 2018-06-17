@@ -48,7 +48,8 @@ public class UpdateFirmwareRequest implements Request {
     private Calendar retrieveDate;
     private Integer retryInterval;
 
-    public UpdateFirmwareRequest() {}
+    public UpdateFirmwareRequest() {
+    }
 
     public UpdateFirmwareRequest(String location, Calendar retrieveDate) {
         this.location = location;
@@ -57,7 +58,7 @@ public class UpdateFirmwareRequest implements Request {
 
     @Override
     public boolean validate() {
-        return (location != null) & (retrieveDate != null);
+        return (location != null) && (retrieveDate != null);
     }
 
     /**
@@ -98,9 +99,10 @@ public class UpdateFirmwareRequest implements Request {
      * @param retries int, retry times.
      */
     @XmlElement
-    public void setRetries(int retries) throws PropertyConstraintException {
-        if (retries <= 0)
-            throw new PropertyConstraintException("retries", retries);
+    public void setRetries(int retries) {
+        if (retries <= 0) {
+            throw new PropertyConstraintException(retries, "retries must be > 0");
+        }
 
         this.retries = retries;
     }
@@ -141,13 +143,12 @@ public class UpdateFirmwareRequest implements Request {
      * it is left to Charge Point to decide how long to wait between attempts.
      *
      * @param retryInterval int, retry interval.
-     * @throws PropertyConstraintException Value was zero or negative.
-     * 
      */
     @XmlElement
-    public void setRetryInterval(Integer retryInterval) throws PropertyConstraintException {
-        if (retryInterval <= 0)
-            throw new PropertyConstraintException("retryInterval", retryInterval);
+    public void setRetryInterval(int retryInterval) {
+        if (retryInterval <= 0) {
+            throw new PropertyConstraintException(retryInterval, "retryInterval must be > 0");
+        }
 
         this.retryInterval = retryInterval;
     }
@@ -163,9 +164,9 @@ public class UpdateFirmwareRequest implements Request {
         if (o == null || getClass() != o.getClass()) return false;
         UpdateFirmwareRequest that = (UpdateFirmwareRequest) o;
         return retryInterval.equals(that.retryInterval) &&
-            Objects.equals(location, that.location) &&
-            Objects.equals(retries, that.retries) &&
-            Objects.equals(retrieveDate, that.retrieveDate);
+                Objects.equals(location, that.location) &&
+                Objects.equals(retries, that.retries) &&
+                Objects.equals(retrieveDate, that.retrieveDate);
     }
 
     @Override
@@ -180,7 +181,7 @@ public class UpdateFirmwareRequest implements Request {
                 ", retries=" + retries +
                 ", retrieveDate='" + SugarUtil.calendarToString(retrieveDate) +
                 ", retryInterval=" + retryInterval +
-                ", isValid=" + String.valueOf(validate()) +
+                ", isValid=" + validate() +
                 '}';
     }
 }

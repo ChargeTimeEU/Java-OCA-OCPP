@@ -26,16 +26,24 @@ package eu.chargetime.ocpp.model.firmware.test;
     SOFTWARE.
  */
 
+import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.firmware.UpdateFirmwareRequest;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.Calendar;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class UpdateFirmwareRequestTest {
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
 
     private UpdateFirmwareRequest request;
 
@@ -68,4 +76,41 @@ public class UpdateFirmwareRequestTest {
         assertThat(result, is(true));
     }
 
+    @Test
+    public void setRetries_asNegative_throwsPropertyConstraintException() {
+        testInvalidRetries(-42);
+    }
+
+    @Test
+    public void setRetries_asZero_throwsPropertyConstraintException() {
+        testInvalidRetries(0);
+    }
+
+    private void testInvalidRetries(int retryInvalidRetries) {
+        defineThrownException("a");
+
+        request.setRetries(retryInvalidRetries);
+    }
+
+    private void defineThrownException(String a) {
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo(a));
+    }
+
+    @Test
+    public void setRetryInterval_asNegative_throwsPropertyConstraintException() {
+        testInvalidRetryInterval(-42);
+    }
+
+
+    @Test
+    public void setRetryInterval_asZero_throwsPropertyConstraintException() {
+        testInvalidRetryInterval(0);
+    }
+
+    private void testInvalidRetryInterval(int invalidRetryValue) {
+        defineThrownException("b");
+
+        request.setRetryInterval(invalidRetryValue);
+    }
 }
