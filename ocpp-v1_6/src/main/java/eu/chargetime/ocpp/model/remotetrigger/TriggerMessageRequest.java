@@ -63,8 +63,8 @@ public class TriggerMessageRequest implements Request {
      * @param connectorId integer. value &gt; 0
      */
     @XmlElement
-    public void setConnectorId(int connectorId) {
-        if (connectorId <= 0) {
+    public void setConnectorId(Integer connectorId) {
+        if (connectorId != null && connectorId <= 0) {
             throw new PropertyConstraintException(connectorId, "connectorId must be > 0");
         }
 
@@ -85,7 +85,6 @@ public class TriggerMessageRequest implements Request {
         this.requestedMessage = requestedMessage;
     }
 
-
     /**
      * This identifies which type of message you want to trigger.
      *
@@ -99,7 +98,7 @@ public class TriggerMessageRequest implements Request {
     @Override
     public boolean validate() {
         boolean valid = requestedMessage != null;
-        valid &= (connectorId != null && connectorId > 0);
+        valid &= (connectorId == null || connectorId > 0);
 
         return valid;
     }

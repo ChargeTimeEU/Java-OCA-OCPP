@@ -61,7 +61,7 @@ public class FirmwareStatusNotificationRequestTest {
     }
 
     @Test
-    public void validate_statusIsSet_returnsTrue() throws PropertyConstraintException {
+    public void validate_statusIsSet_returnsTrue() {
         // Given
         FirmwareStatus status = FirmwareStatus.Installing;
         request.setStatus(status);

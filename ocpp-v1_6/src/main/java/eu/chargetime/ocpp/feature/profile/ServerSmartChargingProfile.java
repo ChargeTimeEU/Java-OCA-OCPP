@@ -1,6 +1,5 @@
 package eu.chargetime.ocpp.feature.profile;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.SetChargingProfileFeature;
 import eu.chargetime.ocpp.model.Confirmation;
@@ -53,10 +52,10 @@ public class ServerSmartChargingProfile implements Profile {
 
     @Override
     public Confirmation handleRequest(UUID sessionIndex, Request request) {
-       return null;
+        return null;
     }
 
-    public SetChargingProfileRequest createSetChargingProfileRequest(int connectorId, ChargingProfile profile) throws PropertyConstraintException {
+    public SetChargingProfileRequest createSetChargingProfileRequest(int connectorId, ChargingProfile profile) {
         SetChargingProfileRequest request = new SetChargingProfileRequest();
         request.setConnectorId(connectorId);
         request.setChargingProfile(profile);

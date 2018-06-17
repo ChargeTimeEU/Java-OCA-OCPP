@@ -199,7 +199,6 @@ public class SampledValue implements Validatable {
      * {@code Voltage}
      *
      * @param measurand String, enum value of measurand.
-     * @throws PropertyConstraintException Value wasn't accepted.
      */
     // TODO: Change to enum, solve format issue and change exception message.
     @XmlElement
@@ -244,7 +243,6 @@ public class SampledValue implements Validatable {
      * {@code L3-L1}
      *
      * @param phase String, enum value of phase.
-     * @throws PropertyConstraintException Value wasn't accepted.
      */
     // TODO: Change to enum, solve format issue and change exception message.
     @XmlElement
@@ -322,7 +320,6 @@ public class SampledValue implements Validatable {
      * {@code Percent}
      *
      * @param unit String, enum value, Unit of Measure.
-     * @throws PropertyConstraintException Value wasn't accepted.
      */
     // TODO: Change to enum, solve format issue and change exception message.
     @XmlElement
