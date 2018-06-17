@@ -41,7 +41,7 @@ import static org.junit.Assert.assertThat;
 public class GetDiagnosticsConfirmationTest extends TestUtilities {
 
     @Rule
-    private ExpectedException thrownException = ExpectedException.none();
+    public ExpectedException thrownException = ExpectedException.none();
 
     private GetDiagnosticsConfirmation confirmation;
 
@@ -63,7 +63,7 @@ public class GetDiagnosticsConfirmationTest extends TestUtilities {
     public void setFileName_stringLength256_throwsPropertyConstraintException() {
 
         thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo(""));
+        thrownException.expectMessage(equalTo("Validation failed: [Exceeds limit of 255 chars]. Current Value: [256]"));
 
         String aString = aString(256);
 

@@ -41,7 +41,7 @@ public class SendLocalListConfirmationTest {
     @Test
     public void setStatus_asNull_throwsPropertyConstraintException() {
         thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo(""));
+        thrownException.expectMessage(equalTo("Validation failed: [updateStatus must be present]. Current Value: [null]"));
 
         confirmation.setStatus(null);
     }

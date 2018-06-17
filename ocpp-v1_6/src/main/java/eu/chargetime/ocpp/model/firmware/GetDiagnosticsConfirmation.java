@@ -60,7 +60,7 @@ public class GetDiagnosticsConfirmation implements Confirmation {
     @XmlElement
     public void setFileName(String fileName) {
         if (!ModelUtil.validate(fileName, 255)) {
-            throw new PropertyConstraintException(fileName, "Exceeds limit of 255 chars");
+            throw new PropertyConstraintException(fileName.length(), "Exceeds limit of 255 chars");
         }
 
         this.fileName = fileName;

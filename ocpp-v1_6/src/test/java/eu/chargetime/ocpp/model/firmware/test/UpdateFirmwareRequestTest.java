@@ -62,6 +62,20 @@ public class UpdateFirmwareRequestTest {
     }
 
     @Test
+    public void validate_retrieveDateIsNotSet_returnsFalse() {
+
+        // Given
+        String aLocation = "/";
+        request.setLocation(aLocation);
+
+        // When
+        boolean result = request.validate();
+
+        // Then
+        assertThat(result, is(false));
+    }
+
+    @Test
     public void validate_locationAndRetrieveDateIsSet_returnsTrue() {
         // Given
         String aLocation = "/";
@@ -87,14 +101,21 @@ public class UpdateFirmwareRequestTest {
     }
 
     private void testInvalidRetries(int retryInvalidRetries) {
-        defineThrownException("a");
+        defineThrownException("Validation failed: [retries must be > 0]. Current Value: [" + retryInvalidRetries + "]");
 
         request.setRetries(retryInvalidRetries);
     }
 
-    private void defineThrownException(String a) {
+    private void defineThrownException(String expectedExceptionMessage) {
         thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo(a));
+        thrownException.expectMessage(equalTo(expectedExceptionMessage));
+    }
+
+    @Test
+    public void setRetries_asPositive_isAccepted() {
+        request.setRetries(42);
+
+        assertThat(request.getRetries(), equalTo(42));
     }
 
     @Test
@@ -109,8 +130,15 @@ public class UpdateFirmwareRequestTest {
     }
 
     private void testInvalidRetryInterval(int invalidRetryValue) {
-        defineThrownException("b");
+        defineThrownException("Validation failed: [retryInterval must be > 0]. Current Value: [" + invalidRetryValue + "]");
 
         request.setRetryInterval(invalidRetryValue);
+    }
+
+    @Test
+    public void setRetryInterval_asPositive_isAccepted() {
+        request.setRetryInterval(42);
+
+        assertThat(request.getRetryInterval(), equalTo(42));
     }
 }

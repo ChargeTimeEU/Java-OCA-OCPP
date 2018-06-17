@@ -29,7 +29,7 @@ public class GetLocalListVersionConfirmationTest {
     @Test
     public void setListVersion_lessThanNegativeOne_throwsPropertyConstraintException() {
         thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo(""));
+        thrownException.expectMessage(equalTo("Validation failed: [listVersion must be >= -1]. Current Value: [-2]"));
 
         confirmation.setListVersion(-2);
     }

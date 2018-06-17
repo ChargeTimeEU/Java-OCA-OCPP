@@ -5,7 +5,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 
 public class GetLocalListVersionConfirmation implements Confirmation {
 
-    private int listVersion = -1;
+    private int listVersion = -2;
 
     public GetLocalListVersionConfirmation() {
     }

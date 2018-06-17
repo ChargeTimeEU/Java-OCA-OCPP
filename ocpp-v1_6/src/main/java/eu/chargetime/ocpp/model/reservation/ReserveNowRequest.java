@@ -137,7 +137,7 @@ public class ReserveNowRequest implements Request {
     @XmlElement
     public void setIdTag(String idTag) {
         if (!ModelUtil.validate(idTag, ID_TAG_MAX_LENGTH)) {
-            throw new PropertyConstraintException(idTag, ERROR_MESSAGE);
+            throw new PropertyConstraintException(idTag.length(), ERROR_MESSAGE);
         }
 
         this.idTag = idTag;

@@ -84,7 +84,7 @@ public class ReserveNowRequestTest {
     @Test
     public void setIdTag_withMoreThan20Chars_throwsPropertyConstraintException() {
         thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo(""));
+        thrownException.expectMessage(equalTo("Validation failed: [Exceeded limit of 20 chars]. Current Value: [26]"));
 
         request.setIdTag("abcdefghijklmnopqrstuvwxyz");
     }
@@ -92,7 +92,7 @@ public class ReserveNowRequestTest {
     @Test
     public void setParentIdTag_withMoreThan20Chars_throwsPropertyConstraintException() {
         thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo(""));
+        thrownException.expectMessage(equalTo("Validation failed: [Exceeded limit of 20 chars]. Current Value: [26]"));
 
         request.setParentIdTag("abcdefghijklmnopqrstuvwxyz");
     }
@@ -100,7 +100,7 @@ public class ReserveNowRequestTest {
     @Test
     public void setConnectorId_asNegative_throwsPropertyConstraintException() {
         thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo(""));
+        thrownException.expectMessage(equalTo("Validation failed: [connectorId must be >= 0]. Current Value: [-42]"));
 
         request.setConnectorId(-42);
     }

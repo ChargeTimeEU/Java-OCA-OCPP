@@ -43,11 +43,11 @@ public class SendLocalListRequestTest extends TestUtilities {
         testInvalidListVersion(0);
     }
 
-    private void testInvalidListVersion(int i) {
+    private void testInvalidListVersion(int invalidVersion) {
         thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo(""));
+        thrownException.expectMessage(equalTo("Validation failed: [listVersion must be > 0]. Current Value: [" + invalidVersion + "]"));
 
-        request.setListVersion(i);
+        request.setListVersion(invalidVersion);
     }
 
     @Test

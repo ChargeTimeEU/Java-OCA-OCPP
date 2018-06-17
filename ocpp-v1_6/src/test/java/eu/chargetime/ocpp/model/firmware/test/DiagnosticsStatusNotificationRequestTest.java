@@ -75,7 +75,7 @@ public class DiagnosticsStatusNotificationRequestTest {
     @Test
     public void setStatus_asNull_throwsPropertyConstraintException() {
         thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo(""));
+        thrownException.expectMessage(equalTo("Validation failed: [Diagnostic status must be present]. Current Value: [null]"));
 
         request.setStatus(null);
     }
