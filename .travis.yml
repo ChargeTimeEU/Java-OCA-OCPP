@@ -20,7 +20,7 @@ jobs:
       jdk: oraclejdk8
       script: mvn integration-test -B
 
-deploy:
-  provider: script
-  script: "cp .travis.settings.xml $HOME/.m2/settings.xml && mvn deploy"
-  skip_cleanup: true
+#deploy:
+#  provider: script
+#  script: "cp .travis.settings.xml $HOME/.m2/settings.xml && mvn deploy"
+#  skip_cleanup: true
