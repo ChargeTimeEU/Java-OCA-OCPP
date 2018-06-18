@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlType(propOrder = {"requestedMessage", "connectorId"})
 public class TriggerMessageRequest implements Request {
+
     private Integer connectorId;
     private TriggerMessageRequestType requestedMessage;
 
@@ -60,12 +61,12 @@ public class TriggerMessageRequest implements Request {
      * Optional. This identifies which connector of the Charge Point is used.
      *
      * @param connectorId integer. value &gt; 0
-     * @throws PropertyConstraintException Value was 0 or negative.
      */
     @XmlElement
-    public void setConnectorId(Integer connectorId) throws PropertyConstraintException {
-        if (connectorId != null && connectorId <= 0)
-            throw new PropertyConstraintException("connectorId", connectorId);
+    public void setConnectorId(Integer connectorId) {
+        if (connectorId != null && connectorId <= 0) {
+            throw new PropertyConstraintException(connectorId, "connectorId must be > 0");
+        }
 
         this.connectorId = connectorId;
     }
@@ -84,7 +85,6 @@ public class TriggerMessageRequest implements Request {
         this.requestedMessage = requestedMessage;
     }
 
-
     /**
      * This identifies which type of message you want to trigger.
      *
@@ -97,9 +97,9 @@ public class TriggerMessageRequest implements Request {
 
     @Override
     public boolean validate() {
-        boolean valid = true;
-        valid &= connectorId == null || connectorId > 0;
-        valid &= this.requestedMessage != null;
+        boolean valid = requestedMessage != null;
+        valid &= (connectorId == null || connectorId > 0);
+
         return valid;
     }
 }

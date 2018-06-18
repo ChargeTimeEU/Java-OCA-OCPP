@@ -41,6 +41,9 @@ import java.util.Calendar;
 @XmlRootElement
 @XmlType(propOrder = {"connectorId", "status", "errorCode", "info", "timestamp", "vendorId", "vendorErrorCode"})
 public class StatusNotificationRequest implements Request {
+
+    private static final String ERROR_MESSAGE = "Exceeds limit of %s chars";
+
     private Integer connectorId;
     private ChargePointErrorCode errorCode;
     private String info;
@@ -51,8 +54,7 @@ public class StatusNotificationRequest implements Request {
 
     @Override
     public boolean validate() {
-        boolean valid = true;
-        valid &= isValidConnectorId(connectorId);
+        boolean valid = isValidConnectorId(connectorId);
         valid &= errorCode != null;
         valid &= status != null;
         return valid;
@@ -73,12 +75,12 @@ public class StatusNotificationRequest implements Request {
      * Id '0' (zero) is used if the status is for the Charge Point main controller.
      *
      * @param connectorId integer, connector id. 0 = main controller.
-     * @throws PropertyConstraintException Value was negative.
      */
     @XmlElement
-    public void setConnectorId(Integer connectorId) throws PropertyConstraintException {
-        if (!isValidConnectorId(connectorId))
-            throw new PropertyConstraintException("connectorId", connectorId);
+    public void setConnectorId(Integer connectorId) {
+        if (!isValidConnectorId(connectorId)) {
+            throw new PropertyConstraintException(connectorId, "connectorId >= 0");
+        }
 
         this.connectorId = connectorId;
     }
@@ -128,13 +130,13 @@ public class StatusNotificationRequest implements Request {
     /**
      * Optional. Additional free format information related to the error.
      *
-     * @param info                          String, max 50 characters, case insensitive.
-     * @throws PropertyConstraintException  Value exceeds 50 characters.
+     * @param info String, max 50 characters, case insensitive.
      */
     @XmlElement
-    public void setInfo(String info) throws PropertyConstraintException {
-        if (!ModelUtil.validate(info, 50))
-            throw new PropertyConstraintException("info", info);
+    public void setInfo(String info) {
+        if (!ModelUtil.validate(info, 50)) {
+            throw new PropertyConstraintException(info.length(), createErrorMessage(50));
+        }
 
         this.info = info;
     }
@@ -193,7 +195,7 @@ public class StatusNotificationRequest implements Request {
      * Optional. The time for which the status is reported.
      * If absent time of receipt of the message will be assumed.
      *
-     * @param timestamp    Calendar, status time.
+     * @param timestamp Calendar, status time.
      */
     @XmlElement
     public void setTimestamp(Calendar timestamp) {
@@ -213,12 +215,12 @@ public class StatusNotificationRequest implements Request {
      * Optional. This identifies the vendor-specific implementation.
      *
      * @param vendorId String, max 255 characters, case insensitive.
-     * @throws PropertyConstraintException Value exceeds 255 characters.
      */
     @XmlElement
-    public void setVendorId(String vendorId) throws PropertyConstraintException {
-        if (!ModelUtil.validate(vendorId, 255))
-            throw new PropertyConstraintException("vendorId", vendorId);
+    public void setVendorId(String vendorId) {
+        if (!ModelUtil.validate(vendorId, 255)) {
+            throw new PropertyConstraintException(vendorId.length(), createErrorMessage(255));
+        }
 
         this.vendorId = vendorId;
     }
@@ -235,13 +237,12 @@ public class StatusNotificationRequest implements Request {
     /**
      * Optional. This contains the vendor-specific error code.
      *
-     * @param vendorErrorCode               String, max 50 characters, case insensitive.
-     * @throws PropertyConstraintException  Value excceds 50 characters.
+     * @param vendorErrorCode String, max 50 characters, case insensitive.
      */
     @XmlElement
-    public void setVendorErrorCode(String vendorErrorCode) throws PropertyConstraintException {
+    public void setVendorErrorCode(String vendorErrorCode) {
         if (!ModelUtil.validate(vendorErrorCode, 50))
-            throw new PropertyConstraintException("vendorErrorCode", vendorErrorCode);
+            throw new PropertyConstraintException(vendorErrorCode.length(), createErrorMessage(50));
 
         this.vendorErrorCode = vendorErrorCode;
     }
@@ -249,5 +250,9 @@ public class StatusNotificationRequest implements Request {
     @Override
     public boolean transactionRelated() {
         return false;
+    }
+
+    private static String createErrorMessage(int maxLength) {
+        return String.format(ERROR_MESSAGE, maxLength);
     }
 }

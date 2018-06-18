@@ -39,7 +39,8 @@ public class SetChargingProfileRequest implements Request {
     private Integer connectorId;
     private ChargingProfile chargingProfile;
 
-    public SetChargingProfileRequest() { }
+    public SetChargingProfileRequest() {
+    }
 
     public SetChargingProfileRequest(Integer connectorId, ChargingProfile chargingProfile) {
         this.connectorId = connectorId;
@@ -59,12 +60,12 @@ public class SetChargingProfileRequest implements Request {
      * Required. This identifies which connector of the Charge Point is used.
      *
      * @param connectorId integer. value &gt; 0
-     * @throws PropertyConstraintException Value was 0 or negative.
      */
     @XmlElement
-    public void setConnectorId(Integer connectorId) throws PropertyConstraintException {
-        if (connectorId <= 0)
-            throw new PropertyConstraintException("connectorId", connectorId);
+    public void setConnectorId(Integer connectorId) {
+        if (connectorId == null || connectorId <= 0) {
+            throw new PropertyConstraintException(connectorId, "connectorId must be > 0");
+        }
 
         this.connectorId = connectorId;
     }
@@ -82,7 +83,7 @@ public class SetChargingProfileRequest implements Request {
      * Optional. Charging Profile to be used by the Charge Point for the requested transaction.
      * {@link ChargingProfile#setChargingProfilePurpose(ChargingProfilePurposeType)} MUST be set to TxProfile.
      *
-     * @param chargingProfile   the {@link ChargingProfile}.
+     * @param chargingProfile the {@link ChargingProfile}.
      */
     @XmlElement(name = "csChargingProfiles")
     public void setChargingProfile(ChargingProfile chargingProfile) {
@@ -96,12 +97,12 @@ public class SetChargingProfileRequest implements Request {
 
     @Override
     public boolean validate() {
-        boolean valid = true;
-        valid &= connectorId != null && connectorId > 0;
+        boolean valid = connectorId != null && connectorId > 0;
 
         if (chargingProfile != null) {
             valid &= chargingProfile.validate();
         }
+
         return valid;
     }
 }

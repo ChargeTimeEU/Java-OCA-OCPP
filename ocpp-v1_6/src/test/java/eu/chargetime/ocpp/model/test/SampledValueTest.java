@@ -4,11 +4,13 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.Location;
 import eu.chargetime.ocpp.model.core.SampledValue;
 import eu.chargetime.ocpp.model.core.ValueFormat;
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -38,10 +40,14 @@ import static org.junit.Assert.assertThat;
  * SOFTWARE.
  */
 public class SampledValueTest {
-    SampledValue sampledValue;
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
+
+    private SampledValue sampledValue;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         sampledValue = new SampledValue();
     }
 
@@ -71,22 +77,16 @@ public class SampledValueTest {
 
     @Test
     public void setContext_illegalValue_throwsPropertyConstraintException() {
-        // Given
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [context is not properly defined]. Current Value: [some value]"));
+
         String illegalValue = "some value";
 
-        try {
-            // When
-            sampledValue.setContext(illegalValue);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("context"));
-            assertThat(ex.getFieldValue(), equalTo(illegalValue));
-        }
+        sampledValue.setContext(illegalValue);
     }
 
     @Test
-    public void setContext_interruptionBegin_contextIsSet() throws Exception {
+    public void setContext_interruptionBegin_contextIsSet() {
         // Given
         String readingContext = "Interruption.Begin";
 
@@ -98,7 +98,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setContext_interruptionEnd_contextIsSet() throws Exception {
+    public void setContext_interruptionEnd_contextIsSet() {
         // Given
         String readingContext = "Interruption.End";
 
@@ -110,7 +110,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setContext_other_contextIsSet() throws Exception {
+    public void setContext_other_contextIsSet() {
         // Given
         String readingContext = "Other";
 
@@ -122,7 +122,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setContext_sampleClock_contextIsSet() throws Exception {
+    public void setContext_sampleClock_contextIsSet() {
         // Given
         String readingContext = "Sample.Clock";
 
@@ -134,7 +134,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setContext_samplePeriodic_contextIsSet() throws Exception {
+    public void setContext_samplePeriodic_contextIsSet() {
         // Given
         String readingContext = "Sample.Periodic";
 
@@ -146,7 +146,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setContext_transactionBegin_contextIsSet() throws Exception {
+    public void setContext_transactionBegin_contextIsSet() {
         // Given
         String readingContext = "Transaction.Begin";
 
@@ -158,7 +158,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setContext_transactionEnd_contextIsSet() throws Exception {
+    public void setContext_transactionEnd_contextIsSet() {
         // Given
         String readingContext = "Transaction.End";
 
@@ -170,7 +170,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setContext_trigger_contextIsSet() throws Exception {
+    public void setContext_trigger_contextIsSet() {
         // Given
         String readingContext = "Trigger";
 
@@ -194,7 +194,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setFormat_valueFormat_formatIsSet() throws Exception {
+    public void setFormat_valueFormat_formatIsSet() {
         // Given
         ValueFormat valueFormat = ValueFormat.Raw;
 
@@ -219,22 +219,16 @@ public class SampledValueTest {
 
     @Test
     public void setMeasurand_illegalValue_throwsPropertyConstraintException() {
-        // Given
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [measurand value is not properly defined]. Current Value: [some measurand]"));
+
         String illegalValue = "some measurand";
 
-        try {
-            // When
-            sampledValue.setMeasurand(illegalValue);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("measurand"));
-            assertThat(ex.getFieldValue(), equalTo(illegalValue));
-        }
+        sampledValue.setMeasurand(illegalValue);
     }
 
     @Test
-    public void setMeasurand_currentExport_measurandIsSet() throws Exception {
+    public void setMeasurand_currentExport_measurandIsSet() {
         // Given
         String measurand = "Current.Export";
 
@@ -246,7 +240,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_currentImport_measurandIsSet() throws Exception {
+    public void setMeasurand_currentImport_measurandIsSet() {
         // Given
         String measurand = "Current.Import";
 
@@ -258,7 +252,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_currentOffered_measurandIsSet() throws Exception {
+    public void setMeasurand_currentOffered_measurandIsSet() {
         // Given
         String measurand = "Current.Offered";
 
@@ -270,7 +264,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_energyActiveExportRegister_measurandIsSet() throws Exception {
+    public void setMeasurand_energyActiveExportRegister_measurandIsSet() {
         // Given
         String measurand = "Energy.Active.Export.Register";
 
@@ -282,7 +276,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_energyActiveImportRegister_measurandIsSet() throws Exception {
+    public void setMeasurand_energyActiveImportRegister_measurandIsSet() {
         // Given
         String measurand = "Energy.Active.Import.Register";
 
@@ -294,7 +288,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_energyReactiveExportRegister_measurandIsSet() throws Exception {
+    public void setMeasurand_energyReactiveExportRegister_measurandIsSet() {
         // Given
         String measurand = "Energy.Reactive.Export.Register";
 
@@ -306,7 +300,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_energyReactiveImportRegister_measurandIsSet() throws Exception {
+    public void setMeasurand_energyReactiveImportRegister_measurandIsSet() {
         // Given
         String measurand = "Energy.Reactive.Import.Register";
 
@@ -318,7 +312,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_energyActiveExportInterval_measurandIsSet() throws Exception {
+    public void setMeasurand_energyActiveExportInterval_measurandIsSet() {
         // Given
         String measurand = "Energy.Active.Export.Interval";
 
@@ -330,7 +324,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_energyActiveImportInterval_measurandIsSet() throws Exception {
+    public void setMeasurand_energyActiveImportInterval_measurandIsSet() {
         // Given
         String measurand = "Energy.Active.Import.Interval";
 
@@ -342,7 +336,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_energyReactiveExportInterval_measurandIsSet() throws Exception {
+    public void setMeasurand_energyReactiveExportInterval_measurandIsSet() {
         // Given
         String measurand = "Energy.Reactive.Export.Interval";
 
@@ -354,7 +348,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_energyReactiveImportInterval_measurandIsSet() throws Exception {
+    public void setMeasurand_energyReactiveImportInterval_measurandIsSet() {
         // Given
         String measurand = "Energy.Reactive.Import.Interval";
 
@@ -366,7 +360,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_frequency_measurandIsSet() throws Exception {
+    public void setMeasurand_frequency_measurandIsSet() {
         // Given
         String measurand = "Frequency";
 
@@ -378,7 +372,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_powerActiveExport_measurandIsSet() throws Exception {
+    public void setMeasurand_powerActiveExport_measurandIsSet() {
         // Given
         String measurand = "Power.Active.Export";
 
@@ -390,7 +384,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_powerActiveImport_measurandIsSet() throws Exception {
+    public void setMeasurand_powerActiveImport_measurandIsSet() {
         // Given
         String measurand = "Power.Active.Import";
 
@@ -402,7 +396,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_powerFactor_measurandIsSet() throws Exception {
+    public void setMeasurand_powerFactor_measurandIsSet() {
         // Given
         String measurand = "Power.Factor";
 
@@ -414,7 +408,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_powerOffered_measurandIsSet() throws Exception {
+    public void setMeasurand_powerOffered_measurandIsSet() {
         // Given
         String measurand = "Power.Offered";
 
@@ -426,7 +420,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_powerReactiveExport_measurandIsSet() throws Exception {
+    public void setMeasurand_powerReactiveExport_measurandIsSet() {
         // Given
         String measurand = "Power.Reactive.Export";
 
@@ -438,7 +432,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_powerReactiveImport_measurandIsSet() throws Exception {
+    public void setMeasurand_powerReactiveImport_measurandIsSet() {
         // Given
         String measurand = "Power.Reactive.Import";
 
@@ -450,7 +444,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_rpm_measurandIsSet() throws Exception {
+    public void setMeasurand_rpm_measurandIsSet() {
         // Given
         String measurand = "RPM";
 
@@ -462,7 +456,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_soc_measurandIsSet() throws Exception {
+    public void setMeasurand_soc_measurandIsSet() {
         // Given
         String measurand = "SoC";
 
@@ -474,7 +468,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_temperature_measurandIsSet() throws Exception {
+    public void setMeasurand_temperature_measurandIsSet() {
         // Given
         String measurand = "Temperature";
 
@@ -486,7 +480,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setMeasurand_voltage_measurandIsSet() throws Exception {
+    public void setMeasurand_voltage_measurandIsSet() {
         // Given
         String measurand = "Voltage";
 
@@ -511,22 +505,16 @@ public class SampledValueTest {
 
     @Test
     public void setPhase_illegalValue_throwsPropertyConstraintException() {
-        // Given
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [phase is not properly defined]. Current Value: [some phase]"));
+
         String illegalValue = "some phase";
 
-        try {
-            // When
-            sampledValue.setPhase(illegalValue);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("phase"));
-            assertThat(ex.getFieldValue(), equalTo(illegalValue));
-        }
+        sampledValue.setPhase(illegalValue);
     }
 
     @Test
-    public void setPhase_l1_phaseIsSet() throws Exception {
+    public void setPhase_l1_phaseIsSet() {
         // Given
         String phase = "L1";
 
@@ -538,7 +526,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setPhase_l2_phaseIsSet() throws Exception {
+    public void setPhase_l2_phaseIsSet() {
         // Given
         String phase = "L2";
 
@@ -550,7 +538,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setPhase_l3_phaseIsSet() throws Exception {
+    public void setPhase_l3_phaseIsSet() {
         // Given
         String phase = "L3";
 
@@ -562,7 +550,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setPhase_n_phaseIsSet() throws Exception {
+    public void setPhase_n_phaseIsSet() {
         // Given
         String phase = "N";
 
@@ -574,7 +562,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setPhase_l1N_phaseIsSet() throws Exception {
+    public void setPhase_l1N_phaseIsSet() {
         // Given
         String phase = "L1-N";
 
@@ -586,7 +574,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setPhase_l2N_phaseIsSet() throws Exception {
+    public void setPhase_l2N_phaseIsSet() {
         // Given
         String phase = "L2-N";
 
@@ -598,7 +586,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setPhase_l3N_phaseIsSet() throws Exception {
+    public void setPhase_l3N_phaseIsSet() {
         // Given
         String phase = "L3-N";
 
@@ -610,7 +598,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setPhase_l1L2_phaseIsSet() throws Exception {
+    public void setPhase_l1L2_phaseIsSet() {
         // Given
         String phase = "L1-L2";
 
@@ -622,7 +610,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setPhase_l2L3_phaseIsSet() throws Exception {
+    public void setPhase_l2L3_phaseIsSet() {
         // Given
         String phase = "L2-L3";
 
@@ -634,7 +622,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setPhase_l3L1_phaseIsSet() throws Exception {
+    public void setPhase_l3L1_phaseIsSet() {
         // Given
         String phase = "L3-L1";
 
@@ -646,7 +634,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setLocation_location_locationIsSet() throws Exception {
+    public void setLocation_location_locationIsSet() {
         // Given
         Location location = Location.Outlet;
 
@@ -671,22 +659,16 @@ public class SampledValueTest {
 
     @Test
     public void setUnit_illegalValue_throwsPropertyConstraintException() {
-        // Given
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [unit is not properly defined]. Current Value: [Some unit]"));
+
         String illegalValue = "Some unit";
 
-        try {
-            // When
-            sampledValue.setUnit(illegalValue);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("unit"));
-            assertThat(ex.getFieldValue(), equalTo(illegalValue));
-        }
+        sampledValue.setUnit(illegalValue);
     }
 
     @Test
-    public void setUnit_wh_unitIsSet() throws Exception {
+    public void setUnit_wh_unitIsSet() {
         // Given
         String unitOfMeasure = "Wh";
 
@@ -698,7 +680,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setUnit_kwh_unitIsSet() throws Exception {
+    public void setUnit_kwh_unitIsSet() {
         // Given
         String unitOfMeasure = "kWh";
 
@@ -710,7 +692,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setUnit_varh_unitIsSet() throws Exception {
+    public void setUnit_varh_unitIsSet() {
         // Given
         String unitOfMeasure = "varh";
 
@@ -722,7 +704,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setUnit_kvarh_unitIsSet() throws Exception {
+    public void setUnit_kvarh_unitIsSet() {
         // Given
         String unitOfMeasure = "kvarh";
 
@@ -734,7 +716,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setUnit_w_unitIsSet() throws Exception {
+    public void setUnit_w_unitIsSet() {
         // Given
         String unitOfMeasure = "W";
 
@@ -746,7 +728,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setUnit_kw_unitIsSet() throws Exception {
+    public void setUnit_kw_unitIsSet() {
         // Given
         String unitOfMeasure = "kW";
 
@@ -758,7 +740,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setUnit_va_unitIsSet() throws Exception {
+    public void setUnit_va_unitIsSet() {
         // Given
         String unitOfMeasure = "VA";
 
@@ -770,7 +752,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setUnit_kva_unitIsSet() throws Exception {
+    public void setUnit_kva_unitIsSet() {
         // Given
         String unitOfMeasure = "kVA";
 
@@ -782,7 +764,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setUnit_var_unitIsSet() throws Exception {
+    public void setUnit_var_unitIsSet() {
         // Given
         String unitOfMeasure = "var";
 
@@ -794,7 +776,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setUnit_kvar_unitIsSet() throws Exception {
+    public void setUnit_kvar_unitIsSet() {
         // Given
         String unitOfMeasure = "kvar";
 
@@ -806,7 +788,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setUnit_a_unitIsSet() throws Exception {
+    public void setUnit_a_unitIsSet() {
         // Given
         String unitOfMeasure = "A";
 
@@ -818,7 +800,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setUnit_v_unitIsSet() throws Exception {
+    public void setUnit_v_unitIsSet() {
         // Given
         String unitOfMeasure = "V";
 
@@ -830,7 +812,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setUnit_celsius_unitIsSet() throws Exception {
+    public void setUnit_celsius_unitIsSet() {
         // Given
         String unitOfMeasure = "Celsius";
 
@@ -842,7 +824,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setUnit_fahrenheit_unitIsSet() throws Exception {
+    public void setUnit_fahrenheit_unitIsSet() {
         // Given
         String unitOfMeasure = "Fahrenheit";
 
@@ -854,7 +836,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setUnit_k_unitIsSet() throws Exception {
+    public void setUnit_k_unitIsSet() {
         // Given
         String unitOfMeasure = "K";
 
@@ -866,7 +848,7 @@ public class SampledValueTest {
     }
 
     @Test
-    public void setUnit_percent_unitIsSet() throws Exception {
+    public void setUnit_percent_unitIsSet() {
         // Given
         String unitOfMeasure = "Percent";
 

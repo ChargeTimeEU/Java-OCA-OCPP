@@ -1,6 +1,5 @@
 package eu.chargetime.ocpp.feature.profile;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.TriggerMessageFeature;
 import eu.chargetime.ocpp.model.Confirmation;
@@ -58,11 +57,11 @@ public class ServerRemoteTriggerProfile implements Profile {
         return null;
     }
 
-    public TriggerMessageRequest createTriggerMessageRequest(TriggerMessageRequestType type) throws PropertyConstraintException {
+    public TriggerMessageRequest createTriggerMessageRequest(TriggerMessageRequestType type) {
         return createTriggerMessageRequest(type, null);
     }
 
-    public TriggerMessageRequest createTriggerMessageRequest(TriggerMessageRequestType type, Integer connectorId) throws PropertyConstraintException {
+    public TriggerMessageRequest createTriggerMessageRequest(TriggerMessageRequestType type, Integer connectorId) {
         TriggerMessageRequest request = new TriggerMessageRequest(type);
         request.setConnectorId(connectorId);
         return request;

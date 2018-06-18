@@ -47,13 +47,16 @@ public class RemoteStartTransactionRequest implements Request {
 
     @Override
     public boolean validate() {
-        boolean valid = true;
-        valid &= ModelUtil.validate(idTag, 20);
+        boolean valid = ModelUtil.validate(idTag, 20);
 
         if (chargingProfile != null) {
             valid &= chargingProfile.validate();
-            valid &= chargingProfile.getChargingProfilePurpose() == ChargingProfilePurposeType.TxProfile;
         }
+
+        if (connectorId != null) {
+            valid &= connectorId > 0;
+        }
+
         return valid;
     }
 
@@ -72,12 +75,12 @@ public class RemoteStartTransactionRequest implements Request {
      * connectorId SHALL be &gt; 0.
      *
      * @param connectorId integer, connector
-     * @throws PropertyConstraintException Value is 0 or negative.
      */
     @XmlElement
-    public void setConnectorId(Integer connectorId) throws PropertyConstraintException {
-        if (connectorId <= 0)
-            throw new PropertyConstraintException("connectorId", connectorId);
+    public void setConnectorId(Integer connectorId) {
+        if (connectorId <= 0) {
+            throw new PropertyConstraintException(connectorId, "connectorId must be > 0");
+        }
 
         this.connectorId = connectorId;
     }
@@ -95,12 +98,12 @@ public class RemoteStartTransactionRequest implements Request {
      * Required. The identifier that Charge Point must use to start a transaction.
      *
      * @param idTag a String with max length 20
-     * @throws PropertyConstraintException  field isn't filled out correct.
      */
     @XmlElement
-    public void setIdTag(String idTag) throws PropertyConstraintException {
-        if (!ModelUtil.validate(idTag, 20))
-            throw new PropertyConstraintException("idTag", idTag, "Exceeded limit");
+    public void setIdTag(String idTag) {
+        if (!ModelUtil.validate(idTag, 20)) {
+            throw new PropertyConstraintException(idTag.length(), "Exceeded limit of 20 chars");
+        }
 
         this.idTag = idTag;
     }
@@ -118,7 +121,7 @@ public class RemoteStartTransactionRequest implements Request {
      * Optional. Charging Profile to be used by the Charge Point for the requested transaction.
      * {@link ChargingProfile#setChargingProfilePurpose(ChargingProfilePurposeType)} MUST be set to TxProfile.
      *
-     * @param chargingProfile   the {@link ChargingProfile}.
+     * @param chargingProfile the {@link ChargingProfile}.
      */
     @XmlElement
     public void setChargingProfile(ChargingProfile chargingProfile) {

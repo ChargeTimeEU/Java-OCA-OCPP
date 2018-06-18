@@ -3,11 +3,13 @@ package eu.chargetime.ocpp.model.test;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.KeyValueType;
 import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -36,33 +38,30 @@ import static org.junit.Assert.assertThat;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class KeyValueTypeTest extends TestUtilities{
-    KeyValueType keyValueType;
+public class KeyValueTypeTest extends TestUtilities {
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
+
+    private KeyValueType keyValueType;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         keyValueType = new KeyValueType();
     }
 
     @Test
     public void setKey_stringLength51_throwsPropertyConstraintException() {
-        // Given
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [Exceeds limit of 50 chars]. Current Value: [51]"));
+
         String aString = aString(51);
 
-        try {
-            // When
-            keyValueType.setKey(aString);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("key"));
-            assertThat(ex.getFieldValue(), equalTo(aString));
-        }
+        keyValueType.setKey(aString);
     }
 
     @Test
-    public void seyKey_stringLength50_keyIsSet() throws Exception {
+    public void seyKey_stringLength50_keyIsSet() {
         // Given
         String aString = aString(50);
 
@@ -75,23 +74,15 @@ public class KeyValueTypeTest extends TestUtilities{
 
     @Test
     public void setReadonly_null_throwsPropertyConstraintException() {
-        // Given
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [readonly must be present]. Current Value: [null]"));
+
         Boolean nullValue = null;
-
-        try {
-            // When
-            keyValueType.setReadonly(nullValue);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("readonly"));
-            assertThat(ex.getFieldValue(), equalTo(nullValue));
-        }
+        keyValueType.setReadonly(nullValue);
     }
 
     @Test
-    public void setReadonly_aBooleanValue_readonlyIsSet() throws Exception {
+    public void setReadonly_aBooleanValue_readonlyIsSet() {
         // Given
         Boolean aBool = true;
 
@@ -104,23 +95,17 @@ public class KeyValueTypeTest extends TestUtilities{
 
     @Test
     public void setValue_stringLength501_throwsPropertyConstraintException() {
-        // Given
+
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [Exceeds limit of 500 chars]. Current Value: [501]"));
+
         String aString = aString(501);
 
-        try {
-            // When
-            keyValueType.setValue(aString);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("value"));
-            assertThat(ex.getFieldValue(), equalTo(aString));
-        }
+        keyValueType.setValue(aString);
     }
 
     @Test
-    public void setValue_stringLength500_valueIsSet() throws Exception {
+    public void setValue_stringLength500_valueIsSet() {
         // Given
         String aString = aString(500);
 
@@ -141,7 +126,7 @@ public class KeyValueTypeTest extends TestUtilities{
     }
 
     @Test
-    public void validate_keyAndReadonlyIsSet_returnTrue() throws Exception {
+    public void validate_keyAndReadonlyIsSet_returnTrue() {
         // Given
         keyValueType.setKey("test key");
         keyValueType.setReadonly(false);
@@ -154,7 +139,7 @@ public class KeyValueTypeTest extends TestUtilities{
     }
 
     @Test
-    public void validate_onlyReadonlyIsSet_returnFalse() throws Exception {
+    public void validate_onlyReadonlyIsSet_returnFalse() {
         // Given
         keyValueType.setReadonly(false);
 
@@ -166,7 +151,7 @@ public class KeyValueTypeTest extends TestUtilities{
     }
 
     @Test
-    public void validate_onlyKeyIsSet_returnFalse() throws Exception {
+    public void validate_onlyKeyIsSet_returnFalse() {
         // Given
         keyValueType.setKey("some key");
 

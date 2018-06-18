@@ -41,7 +41,7 @@ public class UnlockConnectorRequest implements Request {
 
     @Override
     public boolean validate() {
-        return connectorId != null;
+        return connectorId != null && connectorId > 0;
     }
 
     /**
@@ -57,12 +57,12 @@ public class UnlockConnectorRequest implements Request {
      * Required. This contains the identifier of the connector to be unlocked.
      *
      * @param connectorId integer, value &gt; 0.
-     * @throws PropertyConstraintException Value was zero or negative.
      */
     @XmlElement
-    public void setConnectorId(Integer connectorId) throws PropertyConstraintException {
-        if (connectorId <= 0)
-            throw new PropertyConstraintException("connectorId", connectorId);
+    public void setConnectorId(Integer connectorId) {
+        if (connectorId == null || connectorId <= 0) {
+            throw new PropertyConstraintException(connectorId, "connectorId must be > 0");
+        }
 
         this.connectorId = connectorId;
     }

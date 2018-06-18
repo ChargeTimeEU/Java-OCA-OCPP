@@ -28,15 +28,20 @@ package eu.chargetime.ocpp.model.firmware.test;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.firmware.GetDiagnosticsConfirmation;
 import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class GetDiagnosticsConfirmationTest extends TestUtilities {
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
 
     private GetDiagnosticsConfirmation confirmation;
 
@@ -55,24 +60,19 @@ public class GetDiagnosticsConfirmationTest extends TestUtilities {
     }
 
     @Test
-    public void setFileName_stringLength256_throwsPropertyConstraintException() throws Exception {
-        // Given
+    public void setFileName_stringLength256_throwsPropertyConstraintException() {
+
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [Exceeds limit of 255 chars]. Current Value: [256]"));
+
         String aString = aString(256);
 
-        // When
-        try {
-            confirmation.setFileName(aString);
+        confirmation.setFileName(aString);
 
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("fileName"));
-            assertThat(ex.getFieldValue(), equalTo(aString));
-        }
     }
 
     @Test
-    public void setFileName_stringLength255_fileNameIsSet() throws Exception {
+    public void setFileName_stringLength255_fileNameIsSet() {
         // Given
         String aString = aString(255);
 

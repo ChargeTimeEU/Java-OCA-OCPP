@@ -4,14 +4,19 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.GetConfigurationConfirmation;
 import eu.chargetime.ocpp.model.core.KeyValueType;
 import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -39,10 +44,14 @@ import static org.mockito.Mockito.*;
  * SOFTWARE.
  */
 public class GetConfigurationConfirmationTest extends TestUtilities {
-    GetConfigurationConfirmation confirmation;
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
+
+    private GetConfigurationConfirmation confirmation;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         confirmation = new GetConfigurationConfirmation();
     }
 
@@ -53,29 +62,27 @@ public class GetConfigurationConfirmationTest extends TestUtilities {
 
         // When
         confirmation.setConfigurationKey(keyValueType);
-        
+
         // Then
         assertThat(confirmation.getConfigurationKey(), equalTo(keyValueType));
     }
 
     @Test
     public void setUnknownKey_aListWithStringLength51_throwsPropertyConstraintException() {
-        // Given
+        defineExpectedException();
+
         String[] aList = aList(aString(51));
 
-        try {
-            // When
-            confirmation.setUnknownKey(aList);
+        confirmation.setUnknownKey(aList);
+    }
 
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("unknownKey"));
-            assertThat(ex.getFieldValue(), equalTo(aList));
-        }
+    private void defineExpectedException() {
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [Exceeds limit of 50 chars]. Current Value: [51]"));
     }
 
     @Test
-    public void setUnknownKey_aListWithStringLength50_unknownKeyIsSet() throws Exception {
+    public void setUnknownKey_aListWithStringLength50_unknownKeyIsSet() {
         // Given
         String[] aList = aList(aString(50));
 
@@ -88,22 +95,16 @@ public class GetConfigurationConfirmationTest extends TestUtilities {
 
     @Test
     public void setUnknownKey_aListWithAStringLength51_throwsPropertyConstraintException() {
-        // Given
+
+        defineExpectedException();
+
         String[] aList = aList(aString(50), aString(51), aString(50));
 
-        try {
-            // When
-            confirmation.setUnknownKey(aList);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("unknownKey"));
-            assertThat(ex.getFieldValue(), equalTo(aList));
-        }
+        confirmation.setUnknownKey(aList);
     }
 
     @Test
-    public void setUnknownKey_aListWithMoreStringLength50_unknownKeyIsSet() throws Exception {
+    public void setUnknownKey_aListWithMoreStringLength50_unknownKeyIsSet() {
         // Given
         String[] aList = aList(aString(50), aString(50), aString(50));
 

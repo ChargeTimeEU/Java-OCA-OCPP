@@ -2,11 +2,13 @@ package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.UnlockConnectorRequest;
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -36,32 +38,41 @@ import static org.junit.Assert.assertThat;
  * SOFTWARE.
  */
 public class UnlockConnectorRequestTest {
-    UnlockConnectorRequest request;
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
+
+    private UnlockConnectorRequest request;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         request = new UnlockConnectorRequest();
     }
 
     @Test
     public void setConnectorId_zeroInteger_throwsPropertyConstraintException() {
-        // Given
-        Integer zero = 0;
-
-        try {
-            // When
-            request.setConnectorId(zero);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("connectorId"));
-            assertThat(ex.getFieldValue(), equalTo(zero));
-        }
+        testInvalidConnectorId(0);
     }
 
     @Test
-    public void setConnectorId_positiveInteger_connectorIdIsSet() throws Exception {
+    public void setConnectorId_negativeInteger_throwsPropertyConstraintException() {
+        testInvalidConnectorId(-42);
+    }
+
+    @Test
+    public void setConnectorId_asNull_throwsPropertyConstraintException() {
+        testInvalidConnectorId(null);
+    }
+
+    private void testInvalidConnectorId(Integer invalidValue) {
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [connectorId must be > 0]. Current Value: [" + invalidValue + "]"));
+
+        request.setConnectorId(invalidValue);
+    }
+
+    @Test
+    public void setConnectorId_positiveInteger_connectorIdIsSet() {
         // Given
         Integer positive = 42;
 
@@ -82,7 +93,7 @@ public class UnlockConnectorRequestTest {
     }
 
     @Test
-    public void validate_connectorIdIsSet_returnTrue() throws Exception {
+    public void validate_connectorIdIsSet_returnTrue() {
         // Given
         request.setConnectorId(42);
 

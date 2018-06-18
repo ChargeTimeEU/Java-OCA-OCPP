@@ -5,9 +5,10 @@ import eu.chargetime.ocpp.model.Confirmation;
 
 public class SendLocalListConfirmation implements Confirmation {
 
-	private UpdateStatus status;
+    private UpdateStatus status;
 
-    public SendLocalListConfirmation() { }
+    public SendLocalListConfirmation() {
+    }
 
     public SendLocalListConfirmation(UpdateStatus status) {
         this.status = status;
@@ -28,17 +29,18 @@ public class SendLocalListConfirmation implements Confirmation {
      * This indicates whether the Charge Point has successfully received and applied the update of
      * the local authorization list.
      *
-     * @param status UpdateStatus, status of localAuthList updating.
+     * @param status {@link UpdateStatus}, status of localAuthList updating.
      */
-    public void setStatus(UpdateStatus status) throws PropertyConstraintException {
-		if (status == null)
-			throw new PropertyConstraintException("status", null);
+    public void setStatus(UpdateStatus status) {
+        if (status == null) {
+            throw new PropertyConstraintException(null, "updateStatus must be present");
+        }
 
-		this.status = status;
-	}
+        this.status = status;
+    }
 
-	@Override
-	public boolean validate() {
-		return status != null;
-	}
+    @Override
+    public boolean validate() {
+        return status != null;
+    }
 }

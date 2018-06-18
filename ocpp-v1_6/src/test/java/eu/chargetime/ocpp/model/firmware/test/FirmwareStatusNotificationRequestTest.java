@@ -30,12 +30,19 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.firmware.FirmwareStatus;
 import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationRequest;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class FirmwareStatusNotificationRequestTest {
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
 
     private FirmwareStatusNotificationRequest request;
 
@@ -54,7 +61,7 @@ public class FirmwareStatusNotificationRequestTest {
     }
 
     @Test
-    public void validate_statusIsSet_returnsTrue() throws PropertyConstraintException {
+    public void validate_statusIsSet_returnsTrue() {
         // Given
         FirmwareStatus status = FirmwareStatus.Installing;
         request.setStatus(status);
@@ -66,4 +73,11 @@ public class FirmwareStatusNotificationRequestTest {
         assertThat(result, is(true));
     }
 
+    @Test
+    public void setStatus_asNull_throwsPropertyConstraintException() {
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [FirmwareStatus must be present]. Current Value: [null]"));
+
+        request.setStatus(null);
+    }
 }

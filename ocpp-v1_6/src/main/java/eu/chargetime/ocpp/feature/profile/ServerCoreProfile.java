@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.feature.profile;/*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
@@ -24,11 +24,43 @@ package eu.chargetime.ocpp.feature.profile;/*
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.feature.AuthorizeFeature;
+import eu.chargetime.ocpp.feature.BootNotificationFeature;
+import eu.chargetime.ocpp.feature.ChangeAvailabilityFeature;
+import eu.chargetime.ocpp.feature.ChangeConfigurationFeature;
+import eu.chargetime.ocpp.feature.ClearCacheFeature;
+import eu.chargetime.ocpp.feature.DataTransferFeature;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.GetConfigurationFeature;
+import eu.chargetime.ocpp.feature.HeartbeatFeature;
+import eu.chargetime.ocpp.feature.MeterValuesFeature;
+import eu.chargetime.ocpp.feature.RemoteStartTransactionFeature;
+import eu.chargetime.ocpp.feature.RemoteStopTransactionFeature;
+import eu.chargetime.ocpp.feature.ResetFeature;
+import eu.chargetime.ocpp.feature.StartTransactionFeature;
+import eu.chargetime.ocpp.feature.StatusNotificationFeature;
+import eu.chargetime.ocpp.feature.StopTransactionFeature;
+import eu.chargetime.ocpp.feature.UnlockConnectorFeature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.core.*;
+import eu.chargetime.ocpp.model.core.AuthorizeRequest;
+import eu.chargetime.ocpp.model.core.AvailabilityType;
+import eu.chargetime.ocpp.model.core.BootNotificationRequest;
+import eu.chargetime.ocpp.model.core.ChangeAvailabilityRequest;
+import eu.chargetime.ocpp.model.core.ChangeConfigurationRequest;
+import eu.chargetime.ocpp.model.core.ClearCacheRequest;
+import eu.chargetime.ocpp.model.core.DataTransferRequest;
+import eu.chargetime.ocpp.model.core.GetConfigurationRequest;
+import eu.chargetime.ocpp.model.core.HeartbeatRequest;
+import eu.chargetime.ocpp.model.core.MeterValuesRequest;
+import eu.chargetime.ocpp.model.core.RemoteStartTransactionRequest;
+import eu.chargetime.ocpp.model.core.RemoteStopTransactionRequest;
+import eu.chargetime.ocpp.model.core.ResetRequest;
+import eu.chargetime.ocpp.model.core.ResetType;
+import eu.chargetime.ocpp.model.core.StartTransactionRequest;
+import eu.chargetime.ocpp.model.core.StatusNotificationRequest;
+import eu.chargetime.ocpp.model.core.StopTransactionRequest;
+import eu.chargetime.ocpp.model.core.UnlockConnectorRequest;
 
 import java.util.HashSet;
 import java.util.UUID;
@@ -90,14 +122,14 @@ public class ServerCoreProfile implements Profile {
         return result;
     }
 
-    public ChangeAvailabilityRequest createChangeAvailabilityRequest(AvailabilityType type, int connectorId) throws PropertyConstraintException {
+    public ChangeAvailabilityRequest createChangeAvailabilityRequest(AvailabilityType type, int connectorId) {
         ChangeAvailabilityRequest request = new ChangeAvailabilityRequest();
         request.setType(type);
         request.setConnectorId(connectorId);
         return request;
     }
 
-    public ChangeConfigurationRequest createChangeConfigurationRequest(String key, String value) throws PropertyConstraintException {
+    public ChangeConfigurationRequest createChangeConfigurationRequest(String key, String value) {
         ChangeConfigurationRequest request = new ChangeConfigurationRequest();
         request.setKey(key);
         request.setValue(value);
@@ -108,7 +140,7 @@ public class ServerCoreProfile implements Profile {
         return new ClearCacheRequest();
     }
 
-    public DataTransferRequest createDataTransferRequest(String vendorId) throws PropertyConstraintException {
+    public DataTransferRequest createDataTransferRequest(String vendorId) {
         DataTransferRequest request = new DataTransferRequest();
         request.setVendorId(vendorId);
         return request;
@@ -118,7 +150,7 @@ public class ServerCoreProfile implements Profile {
         return new GetConfigurationRequest();
     }
 
-    public RemoteStartTransactionRequest createRemoteStartTransactionRequest(String idToken) throws PropertyConstraintException {
+    public RemoteStartTransactionRequest createRemoteStartTransactionRequest(String idToken) {
         RemoteStartTransactionRequest request = new RemoteStartTransactionRequest();
         request.setIdTag(idToken);
         return request;
@@ -136,7 +168,7 @@ public class ServerCoreProfile implements Profile {
         return request;
     }
 
-    public UnlockConnectorRequest createUnlockConnectorRequest(int connectorId) throws PropertyConstraintException {
+    public UnlockConnectorRequest createUnlockConnectorRequest(int connectorId) {
         UnlockConnectorRequest request = new UnlockConnectorRequest();
         request.setConnectorId(connectorId);
         return request;

@@ -1,19 +1,26 @@
 package eu.chargetime.ocpp.model.test;
 
+import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.MeterValue;
 import eu.chargetime.ocpp.model.core.Reason;
 import eu.chargetime.ocpp.model.core.StopTransactionRequest;
 import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.Calendar;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -41,15 +48,19 @@ import static org.mockito.Mockito.*;
  * SOFTWARE.
  */
 public class StopTransactionRequestTest extends TestUtilities {
-    StopTransactionRequest request;
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
+
+    private StopTransactionRequest request;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         request = new StopTransactionRequest();
     }
 
     @Test
-    public void setIdTag_anIdToken_idTagIsSet() throws Exception {
+    public void setIdTag_anIdToken_idTagIsSet() {
         // Given
         String idTag = "xxx";
 
@@ -58,6 +69,14 @@ public class StopTransactionRequestTest extends TestUtilities {
 
         // Then
         assertThat(request.getIdTag(), equalTo(idTag));
+    }
+
+    @Test
+    public void setIdTag_moreThan20Chars_throwsPropertyConstraintException() {
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [Exceeded limit of 20 chars]. Current Value: [42]"));
+
+        request.setIdTag(aString(42));
     }
 
     @Test
@@ -97,7 +116,7 @@ public class StopTransactionRequestTest extends TestUtilities {
     }
 
     @Test
-    public void setReason_reason_throwsPropertyConstraintException() throws Exception {
+    public void setReason_reason_throwsPropertyConstraintException() {
         // Given
         Reason reason = Reason.DeAuthorized;
 
