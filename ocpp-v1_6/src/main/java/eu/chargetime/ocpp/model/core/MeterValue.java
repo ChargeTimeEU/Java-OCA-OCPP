@@ -46,11 +46,12 @@ public class MeterValue implements Validatable {
 
     @Override
     public boolean validate() {
-        boolean valid = true;
-        valid &= timestamp != null;
-        if (valid &= sampledValue != null) {
-            for (SampledValue value : sampledValue)
+        boolean valid = timestamp != null && sampledValue != null;
+
+        if (valid) {
+            for (SampledValue value : sampledValue) {
                 valid &= value.validate();
+            }
         }
         return valid;
     }

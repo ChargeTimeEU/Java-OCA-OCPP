@@ -43,7 +43,7 @@ import javax.xml.bind.annotation.XmlType;
 public class SampledValue implements Validatable {
     private static final Logger logger = LoggerFactory.getLogger(SampledValue.class);
 
-	private String value;
+    private String value;
     private String context;
     private ValueFormat format;
     private String measurand;
@@ -59,7 +59,7 @@ public class SampledValue implements Validatable {
             setLocation(Location.Outlet);
             setUnit("Wh");
         } catch (PropertyConstraintException ex) {
-        	logger.error("constructor of SampledValue failed", ex);
+            logger.error("constructor of SampledValue failed", ex);
         }
     }
 
@@ -115,13 +115,13 @@ public class SampledValue implements Validatable {
      * {@code Trigger}
      *
      * @param context String, see description for accepted values.
-     * @throws PropertyConstraintException Value wasn't accepted.
      */
-    // TODO: Change to enum, solve format issue.
+    // TODO: Change to enum, solve format issue and change exception message.
     @XmlElement
-    public void setContext(String context) throws PropertyConstraintException {
-        if (!isValidContext(context))
-            throw new PropertyConstraintException("context", context);
+    public void setContext(String context) {
+        if (!isValidContext(context)) {
+            throw new PropertyConstraintException(context, "context is not properly defined");
+        }
 
         this.context = context;
     }
@@ -132,7 +132,7 @@ public class SampledValue implements Validatable {
     }
 
     /**
-     *Raw or signed data.
+     * Raw or signed data.
      *
      * @return the {@link ValueFormat}.
      */
@@ -141,7 +141,7 @@ public class SampledValue implements Validatable {
     }
 
     /**
-     *Raw or signed data.
+     * Raw or signed data.
      *
      * @return the {@link ValueFormat}.
      */
@@ -199,13 +199,12 @@ public class SampledValue implements Validatable {
      * {@code Voltage}
      *
      * @param measurand String, enum value of measurand.
-     * @throws PropertyConstraintException Value wasn't accepted.
      */
-    // TODO: Change to enum, solve format issue.
+    // TODO: Change to enum, solve format issue and change exception message.
     @XmlElement
-    public void setMeasurand(String measurand) throws PropertyConstraintException {
+    public void setMeasurand(String measurand) {
         if (!isValidMeasurand(measurand))
-            throw new PropertyConstraintException("measurand", measurand);
+            throw new PropertyConstraintException(measurand, "measurand value is not properly defined");
 
         this.measurand = measurand;
     }
@@ -243,14 +242,14 @@ public class SampledValue implements Validatable {
      * {@code L2-L3},
      * {@code L3-L1}
      *
-     * @param phase                         String, enum value of phase.
-     * @throws PropertyConstraintException  Value wasn't accepted.
+     * @param phase String, enum value of phase.
      */
-    // TODO: Change to enum, solve format issue.
+    // TODO: Change to enum, solve format issue and change exception message.
     @XmlElement
-    public void setPhase(String phase) throws PropertyConstraintException {
-        if (!isValidPhase(phase))
-            throw new PropertyConstraintException("phase", phase);
+    public void setPhase(String phase) {
+        if (!isValidPhase(phase)) {
+            throw new PropertyConstraintException(phase, "phase is not properly defined");
+        }
 
         this.phase = phase;
     }
@@ -321,13 +320,14 @@ public class SampledValue implements Validatable {
      * {@code Percent}
      *
      * @param unit String, enum value, Unit of Measure.
-     * @throws PropertyConstraintException Value wasn't accepted.
      */
-    // TODO: Change to enum, solve format issue.
+    // TODO: Change to enum, solve format issue and change exception message.
     @XmlElement
-    public void setUnit(String unit) throws PropertyConstraintException {
-        if (!isValidUnit(unit))
-            throw new PropertyConstraintException("unit", unit);
+    public void setUnit(String unit) {
+        if (!isValidUnit(unit)) {
+            throw new PropertyConstraintException(unit, "unit is not properly defined");
+        }
+
         this.unit = unit;
     }
 

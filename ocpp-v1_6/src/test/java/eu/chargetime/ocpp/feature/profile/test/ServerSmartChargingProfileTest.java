@@ -3,7 +3,12 @@ package eu.chargetime.ocpp.feature.profile.test;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.SetChargingProfileFeature;
 import eu.chargetime.ocpp.feature.profile.ServerSmartChargingProfile;
-import eu.chargetime.ocpp.model.core.*;
+import eu.chargetime.ocpp.model.core.ChargingProfile;
+import eu.chargetime.ocpp.model.core.ChargingProfileKindType;
+import eu.chargetime.ocpp.model.core.ChargingProfilePurposeType;
+import eu.chargetime.ocpp.model.core.ChargingRateUnitType;
+import eu.chargetime.ocpp.model.core.ChargingSchedule;
+import eu.chargetime.ocpp.model.core.ChargingSchedulePeriod;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +65,7 @@ public class ServerSmartChargingProfileTest extends ProfileTest {
     }
 
     @Test
-    public void createSetChargingProfileRequest_returnsValidSetChargingProfileRequest() throws Exception {
+    public void createSetChargingProfileRequest_returnsValidSetChargingProfileRequest() {
 
         int connectorId = 123;
 
@@ -78,11 +83,11 @@ public class ServerSmartChargingProfileTest extends ProfileTest {
         period.setStartPeriod(0);
         period.setLimit(20.3);
         period.setNumberPhases(1);
-        schedule.setChargingSchedulePeriod(new ChargingSchedulePeriod[]{ period });
+        schedule.setChargingSchedulePeriod(new ChargingSchedulePeriod[]{period});
         profile.setChargingSchedule(schedule);
 
         // When
-        SetChargingProfileRequest result = smartCharging.createSetChargingProfileRequest(connectorId,  profile);
+        SetChargingProfileRequest result = smartCharging.createSetChargingProfileRequest(connectorId, profile);
 
         // Then
         assertThat(result.validate(), is(true));

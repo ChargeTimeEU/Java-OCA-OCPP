@@ -48,12 +48,14 @@ public class MeterValuesRequest implements Request {
 
     @Override
     public boolean validate() {
-        boolean valid = true;
-        valid &= this.connectorId >= 0;
-        if (valid &= this.meterValue != null) {
-            for (MeterValue current: this.meterValue)
-                valid &= current != null && current.validate();
+        boolean valid = this.connectorId >= 0 && this.meterValue != null;
+
+        if (valid) {
+            for (MeterValue current : this.meterValue) {
+                valid &= (current != null && current.validate());
+            }
         }
+
         return valid;
     }
 
@@ -71,13 +73,13 @@ public class MeterValuesRequest implements Request {
      * Required. This contains a number (&gt;0) designating a connector of the Charge Point.
      * ‘0’ (zero) is used to designate the main power meter.
      *
-     * @param connectorId                   integer, connector
-     * @throws PropertyConstraintException  Value is 0 or negative.
+     * @param connectorId integer, connector
      */
     @XmlElement
-    public void setConnectorId(int connectorId) throws PropertyConstraintException {
-        if (connectorId < 0)
-            throw new PropertyConstraintException("connectorId", connectorId);
+    public void setConnectorId(int connectorId) {
+        if (connectorId < 0) {
+            throw new PropertyConstraintException(connectorId, "connectorId must be >= 0");
+        }
 
         this.connectorId = connectorId;
     }

@@ -44,13 +44,18 @@ import java.util.Objects;
 @XmlRootElement
 @XmlType(propOrder = {"connectorId", "expiryDate", "idTag", "parentIdTag", "reservationId"})
 public class ReserveNowRequest implements Request {
+
+    private static final int ID_TAG_MAX_LENGTH = 20;
+    private static final String ERROR_MESSAGE = "Exceeded limit of " + ID_TAG_MAX_LENGTH + " chars";
+
     private Integer connectorId;
     private Calendar expiryDate;
     private String idTag;
     private String parentIdTag;
     private Integer reservationId;
 
-    public ReserveNowRequest() {}
+    public ReserveNowRequest() {
+    }
 
     public ReserveNowRequest(Integer connectorId, Calendar expiryDate, String idTag, Integer reservationId) {
         this.connectorId = connectorId;
@@ -61,9 +66,9 @@ public class ReserveNowRequest implements Request {
 
     @Override
     public boolean validate() {
-        boolean valid = connectorId != null && connectorId >= 0;
+        boolean valid = (connectorId != null && connectorId >= 0);
         valid &= expiryDate != null;
-        valid &= ModelUtil.validate(idTag, 20);
+        valid &= ModelUtil.validate(idTag, ID_TAG_MAX_LENGTH);
         valid &= reservationId != null;
         return valid;
     }
@@ -86,9 +91,10 @@ public class ReserveNowRequest implements Request {
      * @param connectorId Integer, the destination connectorId.
      */
     @XmlElement
-    public void setConnectorId(Integer connectorId) throws PropertyConstraintException {
-        if (connectorId < 0)
-            throw new PropertyConstraintException("connectorId", connectorId);
+    public void setConnectorId(Integer connectorId) {
+        if (connectorId < 0) {
+            throw new PropertyConstraintException(connectorId, "connectorId must be >= 0");
+        }
 
         this.connectorId = connectorId;
     }
@@ -129,9 +135,11 @@ public class ReserveNowRequest implements Request {
      * @param idTag String, the identifier.
      */
     @XmlElement
-    public void setIdTag(String idTag) throws PropertyConstraintException  {
-        if (!ModelUtil.validate(idTag, 20))
-            throw new PropertyConstraintException("idTag", idTag, "Exceeded limit");
+    public void setIdTag(String idTag) {
+        if (!ModelUtil.validate(idTag, ID_TAG_MAX_LENGTH)) {
+            throw new PropertyConstraintException(idTag.length(), ERROR_MESSAGE);
+        }
+
         this.idTag = idTag;
     }
 
@@ -151,9 +159,10 @@ public class ReserveNowRequest implements Request {
      * @param parentIdTag String, the parent identifier.
      */
     @XmlElement
-    public void setParentIdTag(String parentIdTag) throws PropertyConstraintException  {
-        if (!ModelUtil.validate(idTag, 20))
-            throw new PropertyConstraintException("idTag", idTag, "Exceeded limit");
+    public void setParentIdTag(String parentIdTag) {
+        if (!ModelUtil.validate(parentIdTag, ID_TAG_MAX_LENGTH)) {
+            throw new PropertyConstraintException(parentIdTag.length(), ERROR_MESSAGE);
+        }
         this.parentIdTag = parentIdTag;
     }
 
@@ -188,10 +197,10 @@ public class ReserveNowRequest implements Request {
         if (o == null || getClass() != o.getClass()) return false;
         ReserveNowRequest that = (ReserveNowRequest) o;
         return Objects.equals(connectorId, that.connectorId) &&
-            Objects.equals(expiryDate, that.expiryDate) &&
-            Objects.equals(idTag, that.idTag) &&
-            Objects.equals(parentIdTag, that.parentIdTag) &&
-            Objects.equals(reservationId, that.reservationId);
+                Objects.equals(expiryDate, that.expiryDate) &&
+                Objects.equals(idTag, that.idTag) &&
+                Objects.equals(parentIdTag, that.parentIdTag) &&
+                Objects.equals(reservationId, that.reservationId);
     }
 
     @Override
@@ -207,7 +216,7 @@ public class ReserveNowRequest implements Request {
                 ", idTag='" + idTag + '\'' +
                 ", parentIdTag='" + parentIdTag + '\'' +
                 ", reservationId=" + reservationId +
-                ", isValid=" + String.valueOf(validate()) +
+                ", isValid=" + validate() +
                 '}';
     }
 }

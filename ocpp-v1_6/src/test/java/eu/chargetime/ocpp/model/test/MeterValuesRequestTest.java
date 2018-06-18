@@ -4,17 +4,21 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.MeterValue;
 import eu.chargetime.ocpp.model.core.MeterValuesRequest;
 import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -42,35 +46,33 @@ import static org.mockito.Mockito.*;
  * SOFTWARE.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class MeterValuesRequestTest extends TestUtilities{
-    MeterValuesRequest request;
+public class MeterValuesRequestTest extends TestUtilities {
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
+
+    private MeterValuesRequest request;
+
     @Mock
     private MeterValue meterValueMock;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         request = new MeterValuesRequest();
     }
 
     @Test
     public void setConnectorId_negativeInteger_throwsPropertyConstraintException() {
-        // Given
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [connectorId must be >= 0]. Current Value: [-1]"));
+
         int negativeValue = -1;
 
-        // When
-        try {
-            request.setConnectorId(negativeValue);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("connectorId"));
-            assertThat(ex.getFieldValue(), equalTo(negativeValue));
-        }
+        request.setConnectorId(negativeValue);
     }
 
     @Test
-    public void setConnectorId_zeroInteger_connectorIdIsSet() throws Exception {
+    public void setConnectorId_zeroInteger_connectorIdIsSet() {
         // Given
         int zeroValue = 0;
 
@@ -94,7 +96,7 @@ public class MeterValuesRequestTest extends TestUtilities{
     }
 
     @Test
-    public void setMeterValue_aMeterValueArray_meterValueIsSet() throws Exception {
+    public void setMeterValue_aMeterValueArray_meterValueIsSet() {
         // Given
         MeterValue[] listOfMeterValues = aList(new MeterValue());
 
@@ -115,7 +117,7 @@ public class MeterValuesRequestTest extends TestUtilities{
     }
 
     @Test
-    public void validate_meterValueIsSet_validatesMeterValue() throws Exception {
+    public void validate_meterValueIsSet_validatesMeterValue() {
         // Given
         request.setMeterValue(aList(meterValueMock));
 
@@ -127,7 +129,7 @@ public class MeterValuesRequestTest extends TestUtilities{
     }
 
     @Test
-    public void validate_connectorIdAndMeterValueIsValid_returnTrue() throws Exception {
+    public void validate_connectorIdAndMeterValueIsValid_returnTrue() {
         // Given
         request.setConnectorId(42);
         request.setMeterValue(aList(meterValueMock));

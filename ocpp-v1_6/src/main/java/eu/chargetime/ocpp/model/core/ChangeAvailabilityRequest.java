@@ -37,8 +37,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Sent by the Central System to the Charge Point.
  */
 @XmlRootElement
-public class ChangeAvailabilityRequest implements Request
-{
+public class ChangeAvailabilityRequest implements Request {
+
     private int connectorId = -1;
     private AvailabilityType type;
 
@@ -56,13 +56,13 @@ public class ChangeAvailabilityRequest implements Request
      * Required. The id of the connector for which availability needs to change.
      * Id '0' (zero) is used if the availability of the Charge Point and all its connectors needs to change.
      *
-     * @param connectorId integer, must be a positive number.
-     * @throws PropertyConstraintException Value was a negative number.
+     * @param connectorId integer, must be a non-negative number.
      */
     @XmlElement
-    public void setConnectorId(int connectorId) throws PropertyConstraintException {
-        if (connectorId < 0)
-            throw new PropertyConstraintException("connectorId", connectorId, "Must be >= 0");
+    public void setConnectorId(int connectorId) {
+        if (connectorId < 0) {
+            throw new PropertyConstraintException(connectorId, "connectorId must be >= 0");
+        }
 
         this.connectorId = connectorId;
     }
@@ -70,7 +70,7 @@ public class ChangeAvailabilityRequest implements Request
     /**
      * This contains the type of availability change that the Charge Point should perform.
      *
-     * @return  {@link AvailabilityType} of the connector.
+     * @return {@link AvailabilityType} of the connector.
      */
     public AvailabilityType getType() {
         return type;
@@ -79,7 +79,7 @@ public class ChangeAvailabilityRequest implements Request
     /**
      * This contains the type of availability change that the Charge Point should perform.
      *
-     * @return  {@link AvailabilityType} of the connector.
+     * @return {@link AvailabilityType} of the connector.
      */
     @Deprecated
     public AvailabilityType objType() {
@@ -89,7 +89,7 @@ public class ChangeAvailabilityRequest implements Request
     /**
      * Required. This contains the type of availability change that the Charge Point should perform.
      *
-     * @param type    {@link AvailabilityType} of the connector
+     * @param type {@link AvailabilityType} of the connector
      */
     @XmlElement
     public void setType(AvailabilityType type) {
@@ -99,10 +99,7 @@ public class ChangeAvailabilityRequest implements Request
 
     @Override
     public boolean validate() {
-        boolean valid = true;
-        valid &= type != null;
-        valid &= connectorId >= 0;
-        return valid;
+        return type != null && connectorId >= 0;
     }
 
     @Override

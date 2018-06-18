@@ -109,7 +109,7 @@ public class Session implements ISession {
     private Optional<Class<? extends Confirmation>> getConfirmationType(String uniqueId) throws UnsupportedFeatureException {
         Optional<Request> requestOptional = queue.restoreRequest(uniqueId);
 
-        if(requestOptional.isPresent()) {
+        if (requestOptional.isPresent()) {
             Optional<Feature> featureOptional = featureRepository.findFeature(requestOptional.get());
             if (featureOptional.isPresent()) {
                 return Optional.of(featureOptional.get().getConfirmationType());
@@ -151,7 +151,6 @@ public class Session implements ISession {
 
     private class CommunicatorEventHandler implements CommunicatorEvents {
         private static final String OCCURENCE_CONSTRAINT_VIOLATION = "Payload for Action is syntactically correct but at least one of the fields violates occurence constraints";
-        private static final String FIELD_CONSTRAINT_VIOLATION = "Field %s violates constraints with value: \"%s\". %s";
         private static final String INTERNAL_ERROR = "An internal error occurred and the receiver was not able to process the requested Action successfully";
         private static final String UNABLE_TO_PROCESS = "Unable to process action";
 
@@ -160,7 +159,7 @@ public class Session implements ISession {
             try {
                 Optional<Class<? extends Confirmation>> confirmationTypeOptional = getConfirmationType(id);
 
-                if(confirmationTypeOptional.isPresent()) {
+                if (confirmationTypeOptional.isPresent()) {
                     Confirmation confirmation = communicator.unpackPayload(payload, confirmationTypeOptional.get());
                     if (confirmation.validate()) {
                         events.handleConfirmation(id, confirmation);
@@ -172,9 +171,8 @@ public class Session implements ISession {
                     communicator.sendCallError(id, action, "InternalError", INTERNAL_ERROR);
                 }
             } catch (PropertyConstraintException ex) {
-                String message = String.format(FIELD_CONSTRAINT_VIOLATION, ex.getFieldKey(), ex.getFieldValue(), ex.getMessage());
-                logger.warn(message, ex);
-                communicator.sendCallError(id, action, "TypeConstraintViolation", message);
+                logger.warn(ex.getMessage(), ex);
+                communicator.sendCallError(id, action, "TypeConstraintViolation", ex.getMessage());
             } catch (UnsupportedFeatureException ex) {
                 logger.warn(INTERNAL_ERROR, ex);
                 communicator.sendCallError(id, action, "InternalError", INTERNAL_ERROR);
@@ -185,7 +183,7 @@ public class Session implements ISession {
         }
 
         @Override
-        synchronized public void onCall(String id, String action, Object payload) {
+        public synchronized void onCall(String id, String action, Object payload) {
             Optional<Feature> featureOptional = featureRepository.findFeature(action);
             if (!featureOptional.isPresent()) {
                 communicator.sendCallError(id, action, "NotImplemented", "Requested Action is not known by receiver");
@@ -199,9 +197,8 @@ public class Session implements ISession {
                         communicator.sendCallError(id, action, "OccurenceConstraintViolation", OCCURENCE_CONSTRAINT_VIOLATION);
                     }
                 } catch (PropertyConstraintException ex) {
-                    String message = String.format(FIELD_CONSTRAINT_VIOLATION, ex.getFieldKey(), ex.getFieldValue(), ex.getMessage());
-                    logger.warn(message, ex);
-                    communicator.sendCallError(id, action, "TypeConstraintViolation", message);
+                    logger.warn(ex.getMessage(), ex);
+                    communicator.sendCallError(id, action, "TypeConstraintViolation", ex.getMessage());
                 } catch (Exception ex) {
                     logger.warn(UNABLE_TO_PROCESS, ex);
                     communicator.sendCallError(id, action, "FormationViolation", UNABLE_TO_PROCESS);
@@ -242,9 +239,9 @@ public class Session implements ISession {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("sessionId", sessionId)
-                .add("queue", queue)
-                .add("featureRepository", featureRepository)
-                .toString();
+                          .add("sessionId", sessionId)
+                          .add("queue", queue)
+                          .add("featureRepository", featureRepository)
+                          .toString();
     }
 }

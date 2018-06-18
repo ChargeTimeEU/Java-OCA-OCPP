@@ -2,11 +2,13 @@ package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.BootNotificationRequest;
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -37,6 +39,12 @@ import static org.junit.Assert.assertThat;
  SOFTWARE.
  */
 public class BootNotificationRequestTest {
+
+    private static final String EXCEPTION_MESSAGE_TEMPLATE = "Validation failed: [Exceeded limit of %s chars]. Current Value: [%s]";
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
+
     private BootNotificationRequest request;
 
     private String stringLength20 = "12345678901234567890";
@@ -45,13 +53,13 @@ public class BootNotificationRequestTest {
     private String stringLength26 = "12345678901234567890123456";
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
 
         request = new BootNotificationRequest();
     }
 
     @Test
-    public void setChargeBoxSerialNumber_stringLength25_noExceptions() throws Exception {
+    public void setChargeBoxSerialNumber_stringLength25_noExceptions() {
         // When
         request.setChargeBoxSerialNumber(stringLength25);
 
@@ -61,20 +69,18 @@ public class BootNotificationRequestTest {
 
     @Test
     public void setChargeBoxSerialNumber_stringLength26_throwsPropertyConstraintException() {
-        // When
-        try {
-            request.setChargeBoxSerialNumber(stringLength26);
+        setExpectedPropertyConstraintException(createExpectedExceptionMessage(25, 26));
 
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("chargeBoxSerialNumber"));
-            assertThat(ex.getFieldValue(), equalTo(stringLength26));
-        }
+        request.setChargeBoxSerialNumber(stringLength26);
+    }
+
+    private void setExpectedPropertyConstraintException(String expectedExceptionMessage) {
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo(expectedExceptionMessage));
     }
 
     @Test
-    public void setChargePointModel_stringLength20_noExceptions() throws Exception {
+    public void setChargePointModel_stringLength20_noExceptions() {
         // When
         request.setChargePointModel(stringLength20);
 
@@ -84,20 +90,13 @@ public class BootNotificationRequestTest {
 
     @Test
     public void setChargePointModel_stringLength21_throwsPropertyConstraintException() {
-        // When
-        try {
-            request.setChargePointModel(stringLength21);
+        setExpectedPropertyConstraintException(createExpectedExceptionMessage(20, 21));
 
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("chargePointModel"));
-            assertThat(ex.getFieldValue(), equalTo(stringLength21));
-        }
+        request.setChargePointModel(stringLength21);
     }
 
     @Test
-    public void setChargePointSerialNumber_stringLength25_noExceptions() throws Exception {
+    public void setChargePointSerialNumber_stringLength25_noExceptions() {
         // When
         request.setChargePointSerialNumber(stringLength25);
 
@@ -107,20 +106,13 @@ public class BootNotificationRequestTest {
 
     @Test
     public void setChargePointSerialNumber_stringLength26_throwsPropertyConstraintException() {
-        // When
-        try {
-            request.setChargePointSerialNumber(stringLength26);
+        setExpectedPropertyConstraintException(createExpectedExceptionMessage(25, 26));
 
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("chargePointSerialNumber"));
-            assertThat(ex.getFieldValue(), equalTo(stringLength26));
-        }
+        request.setChargePointSerialNumber(stringLength26);
     }
 
     @Test
-    public void setChargePointVendor_stringLength20_noExceptions() throws Exception {
+    public void setChargePointVendor_stringLength20_noExceptions() {
         // When
         request.setChargePointVendor(stringLength20);
 
@@ -130,20 +122,13 @@ public class BootNotificationRequestTest {
 
     @Test
     public void setChargePointVendor_stringLength21_throwsPropertyConstraintException() {
-        // When
-        try {
-            request.setChargePointVendor(stringLength21);
+        setExpectedPropertyConstraintException(createExpectedExceptionMessage(20, 21));
 
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("chargePointVendor"));
-            assertThat(ex.getFieldValue(), equalTo(stringLength21));
-        }
+        request.setChargePointVendor(stringLength21);
     }
 
     @Test
-    public void setFirmwareVersion_stringLength50_noException() throws Exception {
+    public void setFirmwareVersion_stringLength50_noException() {
         // Given
         String stringLength50 = "12345678901234567890123456789012345678901234567890";
 
@@ -156,23 +141,16 @@ public class BootNotificationRequestTest {
 
     @Test
     public void setFirmwareVersion_stringLength51_throwsPropertyConstraintException() {
-        // Given
+        setExpectedPropertyConstraintException(createExpectedExceptionMessage(50, 51));
+
         String stringLength51 = "123456789012345678901234567890123456789012345678901";
 
-        // When
-        try {
-            request.setFirmwareVersion(stringLength51);
+        request.setFirmwareVersion(stringLength51);
 
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("firmwareVersion"));
-            assertThat(ex.getFieldValue(), equalTo(stringLength51));
-        }
     }
 
     @Test
-    public void setIccid_stringLength20_noExceptions() throws Exception {
+    public void setIccid_stringLength20_noExceptions() {
         // When
         request.setIccid(stringLength20);
 
@@ -182,20 +160,14 @@ public class BootNotificationRequestTest {
 
     @Test
     public void setIccid_stringLength21_throwsPropertyConstraintException() {
-        // When
-        try {
-            request.setIccid(stringLength21);
+        setExpectedPropertyConstraintException(createExpectedExceptionMessage(20, 21));
 
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("iccid"));
-            assertThat(ex.getFieldValue(), equalTo(stringLength21));
-        }
+        request.setIccid(stringLength21);
+
     }
 
     @Test
-    public void setImsi_stringLength20_noExceptions() throws Exception {
+    public void setImsi_stringLength20_noExceptions() {
         // When
         request.setImsi(stringLength20);
 
@@ -205,20 +177,13 @@ public class BootNotificationRequestTest {
 
     @Test
     public void setImsi_stringLength21_throwsPropertyConstraintException() {
-        // When
-        try {
-            request.setImsi(stringLength21);
+        setExpectedPropertyConstraintException(createExpectedExceptionMessage(20, 21));
 
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("imsi"));
-            assertThat(ex.getFieldValue(), equalTo(stringLength21));
-        }
+        request.setImsi(stringLength21);
     }
 
     @Test
-    public void setMeterSerialNumber_stringLength25_noExceptions() throws Exception {
+    public void setMeterSerialNumber_stringLength25_noExceptions() {
         // When
         request.setMeterSerialNumber(stringLength25);
 
@@ -228,20 +193,13 @@ public class BootNotificationRequestTest {
 
     @Test
     public void setMeterSerialNumber_stringLength26_throwsPropertyConstraintException() {
-        // When
-        try {
-            request.setMeterSerialNumber(stringLength26);
+        setExpectedPropertyConstraintException(createExpectedExceptionMessage(25, 26));
 
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("meterSerialNumber"));
-            assertThat(ex.getFieldValue(), equalTo(stringLength26));
-        }
+        request.setMeterSerialNumber(stringLength26);
     }
 
     @Test
-    public void setMeterType_stringLength25_noExceptions() throws Exception {
+    public void setMeterType_stringLength25_noExceptions() {
         // When
         request.setMeterType(stringLength25);
 
@@ -251,20 +209,13 @@ public class BootNotificationRequestTest {
 
     @Test
     public void setMeterType_stringLength26_throwsPropertyConstraintException() {
-        // When
-        try {
-            request.setMeterType(stringLength26);
+        setExpectedPropertyConstraintException(createExpectedExceptionMessage(25, 26));
 
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("meterType"));
-            assertThat(ex.getFieldValue(), equalTo(stringLength26));
-        }
+        request.setMeterType(stringLength26);
     }
 
     @Test
-    public void validate_chargePointVendorAndChargePointModelIsSet_returnsTrue() throws Exception {
+    public void validate_chargePointVendorAndChargePointModelIsSet_returnsTrue() {
         // Given
         request.setChargePointModel(stringLength20);
         request.setChargePointVendor(stringLength20);
@@ -277,7 +228,7 @@ public class BootNotificationRequestTest {
     }
 
     @Test
-    public void validate_nothingIsSet_returnsFalse() throws Exception {
+    public void validate_nothingIsSet_returnsFalse() {
         // When
         boolean isValid = request.validate();
 
@@ -292,5 +243,9 @@ public class BootNotificationRequestTest {
 
         // Then
         assertThat(isTransactionRelated, is(false));
+    }
+
+    private static String createExpectedExceptionMessage(int maxAllowedLength, int currentLength) {
+        return String.format(EXCEPTION_MESSAGE_TEMPLATE, maxAllowedLength, currentLength);
     }
 }

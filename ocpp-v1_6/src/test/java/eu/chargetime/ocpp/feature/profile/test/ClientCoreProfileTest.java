@@ -1,11 +1,49 @@
 package eu.chargetime.ocpp.feature.profile.test;
 
-import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.feature.AuthorizeFeature;
+import eu.chargetime.ocpp.feature.BootNotificationFeature;
+import eu.chargetime.ocpp.feature.ChangeAvailabilityFeature;
+import eu.chargetime.ocpp.feature.ChangeConfigurationFeature;
+import eu.chargetime.ocpp.feature.ClearCacheFeature;
+import eu.chargetime.ocpp.feature.DataTransferFeature;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.GetConfigurationFeature;
+import eu.chargetime.ocpp.feature.HeartbeatFeature;
+import eu.chargetime.ocpp.feature.MeterValuesFeature;
+import eu.chargetime.ocpp.feature.RemoteStartTransactionFeature;
+import eu.chargetime.ocpp.feature.RemoteStopTransactionFeature;
+import eu.chargetime.ocpp.feature.ResetFeature;
+import eu.chargetime.ocpp.feature.StartTransactionFeature;
+import eu.chargetime.ocpp.feature.StatusNotificationFeature;
+import eu.chargetime.ocpp.feature.StopTransactionFeature;
+import eu.chargetime.ocpp.feature.UnlockConnectorFeature;
 import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.core.*;
+import eu.chargetime.ocpp.model.core.AuthorizeRequest;
+import eu.chargetime.ocpp.model.core.BootNotificationRequest;
+import eu.chargetime.ocpp.model.core.ChangeAvailabilityConfirmation;
+import eu.chargetime.ocpp.model.core.ChangeAvailabilityRequest;
+import eu.chargetime.ocpp.model.core.ChangeConfigurationConfirmation;
+import eu.chargetime.ocpp.model.core.ChangeConfigurationRequest;
+import eu.chargetime.ocpp.model.core.ChargePointErrorCode;
+import eu.chargetime.ocpp.model.core.ChargePointStatus;
+import eu.chargetime.ocpp.model.core.ClearCacheConfirmation;
+import eu.chargetime.ocpp.model.core.ClearCacheRequest;
+import eu.chargetime.ocpp.model.core.DataTransferConfirmation;
+import eu.chargetime.ocpp.model.core.DataTransferRequest;
+import eu.chargetime.ocpp.model.core.GetConfigurationConfirmation;
+import eu.chargetime.ocpp.model.core.GetConfigurationRequest;
+import eu.chargetime.ocpp.model.core.HeartbeatRequest;
+import eu.chargetime.ocpp.model.core.MeterValuesRequest;
+import eu.chargetime.ocpp.model.core.RemoteStartTransactionRequest;
+import eu.chargetime.ocpp.model.core.RemoteStopTransactionRequest;
+import eu.chargetime.ocpp.model.core.ResetRequest;
+import eu.chargetime.ocpp.model.core.StartTransactionRequest;
+import eu.chargetime.ocpp.model.core.StatusNotificationRequest;
+import eu.chargetime.ocpp.model.core.StopTransactionRequest;
+import eu.chargetime.ocpp.model.core.UnlockConnectorRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +56,11 @@ import java.util.UUID;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -53,7 +95,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     private ClientCoreProfile core;
 
     @Mock
-    ClientCoreEventHandler handler;
+    private ClientCoreEventHandler handler;
 
     @Before
     public void setup() {
@@ -61,7 +103,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     }
 
     @Test
-    public void createAuthorizeRequest_withIdToken_returnsAuthorizeRequestWithIdTag() throws Exception {
+    public void createAuthorizeRequest_withIdToken_returnsAuthorizeRequestWithIdTag() {
         // Given
         String legalIdToken = "test123";
 
@@ -96,7 +138,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     }
 
     @Test
-    public void createMeterValuesRequest_returnsMeterValuesRequest() throws Exception {
+    public void createMeterValuesRequest_returnsMeterValuesRequest() {
         // When
         Request result = core.createMeterValuesRequest(42, Calendar.getInstance(), "42");
 
@@ -105,7 +147,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     }
 
     @Test
-    public void createStartTransactionRequest_returnsStartTransactionRequest() throws Exception {
+    public void createStartTransactionRequest_returnsStartTransactionRequest() {
         // When
         Request result = core.createStartTransactionRequest(42, "some token", 42, Calendar.getInstance());
 
@@ -114,7 +156,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     }
 
     @Test
-    public void createStatusNotificationRequest_returnsStatusNotificationRequest() throws Exception {
+    public void createStatusNotificationRequest_returnsStatusNotificationRequest() {
         // When
         Request result = core.createStatusNotificationRequest(42, ChargePointErrorCode.NoError, ChargePointStatus.Available);
 
@@ -123,7 +165,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     }
 
     @Test
-    public void createStopTransactionRequest_returnsStopTransactionRequest() throws Exception {
+    public void createStopTransactionRequest_returnsStopTransactionRequest() {
         // When
         Request result = core.createStopTransactionRequest(42, Calendar.getInstance(), 42);
 

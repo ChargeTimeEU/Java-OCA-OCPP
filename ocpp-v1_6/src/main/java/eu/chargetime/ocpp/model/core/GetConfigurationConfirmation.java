@@ -41,6 +41,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "getConfigurationResponse")
 @XmlType(propOrder = {"configurationKey", "unknownKey"})
 public class GetConfigurationConfirmation implements Confirmation {
+
+    private static final String ERROR_MESSAGE = "Exceeds limit of %s chars";
+
     private KeyValueType[] configurationKey;
     private String[] unknownKey;
 
@@ -76,39 +79,40 @@ public class GetConfigurationConfirmation implements Confirmation {
      * Optional. Requested keys that are unknown.
      *
      * @param unknownKey Array of String, max 50 characters, case insensitive.
-     * @throws PropertyConstraintException At least one of the Strings exceeds 50 characters.
      */
     @XmlElement
-    public void setUnknownKey(String[] unknownKey) throws PropertyConstraintException {
-        if (!isValidUnknownKey(unknownKey))
-            throw new PropertyConstraintException("unknownKey", unknownKey);
+    public void setUnknownKey(String[] unknownKey) {
+        isValidUnknownKey(unknownKey);
 
         this.unknownKey = unknownKey;
     }
 
-    private boolean isValidUnknownKey(String[] unknownKeys) {
-        boolean output = true;
-        for(String key: unknownKeys) {
-            if ((output = ModelUtil.validate(key, 50)) == false) break;
+    private void isValidUnknownKey(String[] unknownKeys) {
+
+        for (String key : unknownKeys) {
+            if (!ModelUtil.validate(key, 50)) {
+                throw new PropertyConstraintException(key.length(), String.format(ERROR_MESSAGE, 50));
+            }
         }
-        return output;
     }
 
     private boolean validateConfigurationKeys() {
         boolean output = true;
+
         if (configurationKey != null && configurationKey.length > 0) {
             for (KeyValueType key : configurationKey) {
-                if ((output = key.validate()) == false)
+                if (!key.validate()) {
+                    output = false;
                     break;
+                }
             }
         }
+
         return output;
     }
 
     @Override
     public boolean validate() {
-        boolean output = true;
-        output &= validateConfigurationKeys();
-        return output;
+        return validateConfigurationKeys();
     }
 }

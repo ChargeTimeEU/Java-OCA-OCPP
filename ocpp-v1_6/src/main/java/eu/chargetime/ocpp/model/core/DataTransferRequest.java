@@ -41,11 +41,14 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(propOrder = {"vendorId", "messageId", "data"})
 public class DataTransferRequest implements Request {
 
+    private static final String ERROR_MESSAGE = "Exceeded limit of %s chars";
+
     private String vendorId;
     private String messageId;
     private String data;
 
-    public DataTransferRequest() {}
+    public DataTransferRequest() {
+    }
 
     /**
      * Set required fields.
@@ -74,12 +77,12 @@ public class DataTransferRequest implements Request {
      * Required. This identifies the Vendor specific implementation.
      *
      * @param vendorId String, max 255 characters, case insensitive.
-     * @throws PropertyConstraintException Value exceeds 255 characters.
      */
     @XmlElement
-    public void setVendorId(String vendorId) throws PropertyConstraintException {
-        if (!isValidVendorId(vendorId))
-            throw new PropertyConstraintException("vendorId", vendorId);
+    public void setVendorId(String vendorId) {
+        if (!isValidVendorId(vendorId)) {
+            throw new PropertyConstraintException(vendorId.length(), createErrorMessage(255));
+        }
 
         this.vendorId = vendorId;
     }
@@ -100,13 +103,13 @@ public class DataTransferRequest implements Request {
     /**
      * Optional. Additional identification field.
      *
-     * @param messageId                     String, max 50 characters, case insensitive.
-     * @throws PropertyConstraintException  Value exceeds 50 characters.
+     * @param messageId String, max 50 characters, case insensitive.
      */
     @XmlElement
-    public void setMessageId(String messageId) throws PropertyConstraintException {
-        if (!isValidMessageId(messageId))
-            throw new PropertyConstraintException("messageId", messageId);
+    public void setMessageId(String messageId) {
+        if (!isValidMessageId(messageId)) {
+            throw new PropertyConstraintException(messageId.length(), createErrorMessage(50));
+        }
 
         this.messageId = messageId;
     }
@@ -127,7 +130,7 @@ public class DataTransferRequest implements Request {
     /**
      * Optional. Data without specified length or format.
      *
-     * @param data  String, data.
+     * @param data String, data.
      */
     @XmlElement
     public void setData(String data) {
@@ -137,5 +140,9 @@ public class DataTransferRequest implements Request {
     @Override
     public boolean transactionRelated() {
         return false;
+    }
+
+    private String createErrorMessage(int maxLength) {
+        return String.format(ERROR_MESSAGE, maxLength);
     }
 }

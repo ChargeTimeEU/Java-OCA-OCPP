@@ -60,7 +60,7 @@ public class ServerRemoteTriggerProfileTest extends ProfileTest {
     }
 
     @Test
-    public void createTriggerMessageRequest_returnsValidTriggerMessageRequest() throws Exception {
+    public void createTriggerMessageRequest_returnsValidTriggerMessageRequest() {
         TriggerMessageRequestType type = TriggerMessageRequestType.DiagnosticsStatusNotification;
         int connectorId = 1;
 
@@ -78,7 +78,7 @@ public class ServerRemoteTriggerProfileTest extends ProfileTest {
     }
 
     @Test
-    public void createTriggerMessageRequest_returnsValidTriggerMessageRequestNoConnectorId() throws Exception {
+    public void createTriggerMessageRequest_returnsValidTriggerMessageRequestNoConnectorId() {
         TriggerMessageRequestType type = TriggerMessageRequestType.DiagnosticsStatusNotification;
 
         // When

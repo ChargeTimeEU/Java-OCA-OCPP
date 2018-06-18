@@ -41,6 +41,10 @@ import java.util.Calendar;
 @XmlRootElement
 @XmlType(propOrder = {"connectorId", "idTag", "timestamp", "meterStart", "reservationId"})
 public class StartTransactionRequest implements Request {
+
+    private static final int IDTAG_MAX_LENGTH = 20;
+    private static final String IDTAG_ERROR_MESSAGE = "Exceeded limit of " + IDTAG_MAX_LENGTH + " chars";
+
     private Integer connectorId;
     private String idTag;
     private Integer meterStart;
@@ -49,8 +53,7 @@ public class StartTransactionRequest implements Request {
 
     @Override
     public boolean validate() {
-        boolean valid = true;
-        valid &= connectorId != null && connectorId > 0;
+        boolean valid = connectorId != null && connectorId > 0;
         valid &= ModelUtil.validate(idTag, 20);
         valid &= meterStart != null;
         valid &= timestamp != null;
@@ -70,12 +73,12 @@ public class StartTransactionRequest implements Request {
      * Required. This identifies which connector of the Charge Point is used.
      *
      * @param connectorId integer. value &gt; 0
-     * @throws PropertyConstraintException Value was 0 or negative.
      */
     @XmlElement
-    public void setConnectorId(Integer connectorId) throws PropertyConstraintException {
-        if (connectorId <= 0)
-            throw new PropertyConstraintException("connectorId", connectorId);
+    public void setConnectorId(Integer connectorId) {
+        if (connectorId == null || connectorId <= 0) {
+            throw new PropertyConstraintException(connectorId, "connectorId must be > 0");
+        }
 
         this.connectorId = connectorId;
     }
@@ -93,12 +96,12 @@ public class StartTransactionRequest implements Request {
      * Required. This contains the identifier for which a transaction has to be started.
      *
      * @param idTag a String with max length 20
-     * @throws PropertyConstraintException  field isn't filled out correct.
      */
     @XmlElement
-    public void setIdTag(String idTag) throws PropertyConstraintException {
-        if (!ModelUtil.validate(idTag, 20))
-            throw new PropertyConstraintException("idTag", idTag, "Exceeded limit");
+    public void setIdTag(String idTag) {
+        if (!ModelUtil.validate(idTag, IDTAG_MAX_LENGTH)) {
+            throw new PropertyConstraintException(idTag.length(), IDTAG_ERROR_MESSAGE);
+        }
 
         this.idTag = idTag;
     }
@@ -115,7 +118,7 @@ public class StartTransactionRequest implements Request {
     /**
      * Required. This contains the meter value in Wh for the connector at start of the transaction.
      *
-     * @param meterStart    integer, Wh at start.
+     * @param meterStart integer, Wh at start.
      */
     @XmlElement
     public void setMeterStart(Integer meterStart) {

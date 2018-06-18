@@ -30,51 +30,15 @@ package eu.chargetime.ocpp;
 /**
  * Exception used when validating fields.
  */
-public class PropertyConstraintException extends Exception {
-    private final String fieldKey;
-    private final Object fieldValue;
-    private final String message;
+public class PropertyConstraintException extends IllegalArgumentException {
 
-    @Override
-    public String getMessage() {
-        return message;
+    private static final String EXCEPTION_MESSAGE_TEMPLATE = "Validation failed: [%s]. Current Value: [%s]";
+
+    public PropertyConstraintException(Object currentFieldValue, String errorMessage) {
+        super(createValidationMessage(currentFieldValue, errorMessage));
     }
 
-    /**
-     * @return value of the failing field.
-     */
-    public Object getFieldValue() {
-        return fieldValue;
+    private static String createValidationMessage(Object fieldValue, String errorMessage) {
+        return String.format(EXCEPTION_MESSAGE_TEMPLATE, errorMessage, fieldValue);
     }
-
-    /**
-     * @return name of the failing field.
-     */
-    public String getFieldKey() {
-        return fieldKey;
-    }
-
-    public PropertyConstraintException(String fieldKey, Object fieldValue) {
-        this(fieldKey, fieldValue, null);
-    }
-
-    public PropertyConstraintException(String fieldKey, Object fieldValue, String message) {
-
-        this.fieldKey = fieldKey;
-        this.fieldValue = fieldValue;
-        this.message = message;
-    }
-
-    @Override
-    public String toString() {
-        String output;
-        if (fieldValue != null) {
-            output = String.format("Field %s %s with value %s", fieldKey, message, fieldValue);
-        }
-        else {
-            output = String.format("Field %s has invalid value %s", fieldKey, fieldValue);
-        }
-        return output;
-    }
-
 }

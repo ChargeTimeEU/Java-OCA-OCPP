@@ -3,13 +3,15 @@ package eu.chargetime.ocpp.model.test;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.StartTransactionRequest;
 import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.Calendar;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -39,66 +41,49 @@ import static org.junit.Assert.assertThat;
  * SOFTWARE.
  */
 public class StartTransactionRequestTest extends TestUtilities {
-    StartTransactionRequest request;
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
+
+    private StartTransactionRequest request;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         request = new StartTransactionRequest();
     }
 
     @Test
-    public void setConnectorId_zeroInteger_throwsPropertyConstraintException() {
-        // Given
-        Integer zero = 0;
-
-        try {
-            // When
-            request.setConnectorId(zero);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("connectorId"));
-            assertThat(ex.getFieldValue(), equalTo(zero));
-        }
+    public void setConnectorId_asZeroInteger_throwsPropertyConstraintException() {
+        testConnectorIdInvalidValue(0);
     }
 
     @Test
-    public void setIdTag_nullValue_throwsPropertyConstraintException() {
-        // Given
-        String nullValue = null;
+    public void setConnectorId_asNegativeInteger_throwsPropertyConstraintException() {
+        testConnectorIdInvalidValue(-1);
+    }
 
-        try {
-            // When
-            request.setIdTag(nullValue);
+    @Test
+    public void setConnectorId_asNullInteger_throwsPropertyConstraintException() {
+        testConnectorIdInvalidValue(null);
+    }
 
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("idTag"));
-            assertThat(ex.getFieldValue(), equalTo(nullValue));
-        }
+    private void testConnectorIdInvalidValue(Integer invalidValue) {
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [connectorId must be > 0]. Current Value: [" + invalidValue + "]"));
+
+        request.setConnectorId(invalidValue);
     }
 
     @Test
     public void setIdTag_exceeds20Chars_throwsPropertyConstraintException() {
-        // Given
-        String longString = aString(21);
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [Exceeded limit of 20 chars]. Current Value: [21]"));
 
-        try {
-            // When
-            request.setIdTag(longString);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("idTag"));
-            assertThat(ex.getFieldValue(), equalTo(longString));
-        }
+        request.setIdTag(aString(21));
     }
 
     @Test
-    public void setIdTag_string20_isSet() throws Exception {
+    public void setIdTag_string20_isSet() {
         // Given
         String validString = aString(20);
 
@@ -110,7 +95,7 @@ public class StartTransactionRequestTest extends TestUtilities {
     }
 
     @Test
-    public void setConnectorId_positiveInteger_connectorIdIsSet() throws Exception {
+    public void setConnectorId_positiveInteger_connectorIdIsSet() {
         // Given
         Integer positive = 42;
 
@@ -167,7 +152,7 @@ public class StartTransactionRequestTest extends TestUtilities {
     }
 
     @Test
-    public void validate_requiredFieldsAreSet_returnTrue() throws Exception {
+    public void validate_requiredFieldsAreSet_returnTrue() {
         // Given
         request.setConnectorId(42);
         request.setIdTag("xxx");

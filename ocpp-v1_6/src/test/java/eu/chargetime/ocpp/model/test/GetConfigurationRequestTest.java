@@ -3,11 +3,13 @@ package eu.chargetime.ocpp.model.test;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.GetConfigurationRequest;
 import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -37,31 +39,28 @@ import static org.junit.Assert.assertThat;
  * SOFTWARE.
  */
 public class GetConfigurationRequestTest extends TestUtilities {
-    GetConfigurationRequest request;
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
+
+    private GetConfigurationRequest request;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         request = new GetConfigurationRequest();
     }
 
     @Test
     public void setKey_stringLength51_throwsPropertyConstraintException() {
-        // Given
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [Exceeds limit of 50 chars]. Current Value: [51]"));
+
         String[] aList = aList(aString(51));
-
-        try {
-            // When
-            request.setKey(aList);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("key"));
-            assertThat(ex.getFieldValue(), equalTo(aList));
-        }
+        request.setKey(aList);
     }
 
     @Test
-    public void setKey_stringLength50_keyIsSet() throws Exception {
+    public void setKey_stringLength50_keyIsSet() {
         // Given
         String[] aList = aList(aString(50));
 
@@ -74,22 +73,16 @@ public class GetConfigurationRequestTest extends TestUtilities {
 
     @Test
     public void setKey_listWithOneStringLength51_throwsPropertyConstraintException() {
-        // Given
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [Exceeds limit of 50 chars]. Current Value: [51]"));
+
         String[] aList = aList(aString(50), aString(51), aString(50));
 
-        try {
-            // When
-            request.setKey(aList);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("key"));
-            assertThat(ex.getFieldValue(), equalTo(aList));
-        }
+        request.setKey(aList);
     }
 
     @Test
-    public void setKey_listWithStringLength50_keyIsSet() throws Exception {
+    public void setKey_listWithStringLength50_keyIsSet() {
         // Given
         String[] aList = aList(aString(50), aString(50), aString(50));
 

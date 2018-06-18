@@ -29,12 +29,19 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.firmware.DiagnosticsStatus;
 import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class DiagnosticsStatusNotificationRequestTest {
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
 
     private DiagnosticsStatusNotificationRequest request;
 
@@ -53,7 +60,7 @@ public class DiagnosticsStatusNotificationRequestTest {
     }
 
     @Test
-    public void validate_statusIsSet_returnsTrue() throws PropertyConstraintException {
+    public void validate_statusIsSet_returnsTrue() {
         // Given
         DiagnosticsStatus status = DiagnosticsStatus.Uploading;
         request.setStatus(status);
@@ -65,4 +72,11 @@ public class DiagnosticsStatusNotificationRequestTest {
         assertThat(result, is(true));
     }
 
+    @Test
+    public void setStatus_asNull_throwsPropertyConstraintException() {
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [Diagnostic status must be present]. Current Value: [null]"));
+
+        request.setStatus(null);
+    }
 }

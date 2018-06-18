@@ -3,11 +3,13 @@ package eu.chargetime.ocpp.model.test;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.ChangeConfigurationRequest;
 import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -38,33 +40,31 @@ import static org.junit.Assert.assertThat;
  */
 
 public class ChangeConfigurationRequestTest extends TestUtilities {
-    ChangeConfigurationRequest request;
+
+    private static final String EXCEPTION_MESSAGE_TEMPLATE = "Validation failed: [Exceeded limit of %s chars]. Current Value: [%s]";
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
+
+    private ChangeConfigurationRequest request;
 
     @Before
-    public void setUp() throws Exception {
-
+    public void setUp() {
         request = new ChangeConfigurationRequest();
     }
 
     @Test
     public void setKey_stringLength51_throwsPropertyConstraintException() {
-        // Given
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo(createExpectedExceptionMessage(50, 51)));
+
         String stringLength51 = aString(51);
 
-        try {
-            // When
-            request.setKey(stringLength51);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("key"));
-            assertThat(ex.getFieldValue(), equalTo(stringLength51));
-        }
+        request.setKey(stringLength51);
     }
 
     @Test
-    public void setKey_stringLength50_keyIsSet() throws Exception{
+    public void setKey_stringLength50_keyIsSet() {
         // Given
         String stringLength50 = aString(50);
 
@@ -77,23 +77,16 @@ public class ChangeConfigurationRequestTest extends TestUtilities {
 
     @Test
     public void setValue_stringLength501_throwsPropertyConstraintException() {
-        // Given
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo(createExpectedExceptionMessage(500, 501)));
+
         String stringLength501 = aString(501);
 
-        try {
-            // When
-            request.setValue(stringLength501);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("value"));
-            assertThat(ex.getFieldValue(), equalTo(stringLength501));
-        }
+        request.setValue(stringLength501);
     }
 
     @Test
-    public void setValue_stringLength500_valueIsSet() throws Exception {
+    public void setValue_stringLength500_valueIsSet() {
         // Given
         String stringLength500 = aString(500);
 
@@ -105,7 +98,7 @@ public class ChangeConfigurationRequestTest extends TestUtilities {
     }
 
     @Test
-    public void validate_keyAndValueIsSet_returnTrue() throws Exception {
+    public void validate_keyAndValueIsSet_returnTrue() {
         // Given
         request.setKey("some key");
         request.setValue("some value");
@@ -127,7 +120,7 @@ public class ChangeConfigurationRequestTest extends TestUtilities {
     }
 
     @Test
-    public void validate_onlyKeyIsSet_returnFalse() throws Exception{
+    public void validate_onlyKeyIsSet_returnFalse() {
         // Given
         request.setKey("some key");
 
@@ -139,7 +132,7 @@ public class ChangeConfigurationRequestTest extends TestUtilities {
     }
 
     @Test
-    public void validate_onlyValueIsSet_returnFalse() throws Exception{
+    public void validate_onlyValueIsSet_returnFalse() {
         // Given
         request.setValue("some value");
 
@@ -157,5 +150,9 @@ public class ChangeConfigurationRequestTest extends TestUtilities {
 
         // Then
         assertThat(isTransactionRelated, is(false));
+    }
+
+    private static String createExpectedExceptionMessage(int maxAllowedLength, int currentLength) {
+        return String.format(EXCEPTION_MESSAGE_TEMPLATE, maxAllowedLength, currentLength);
     }
 }

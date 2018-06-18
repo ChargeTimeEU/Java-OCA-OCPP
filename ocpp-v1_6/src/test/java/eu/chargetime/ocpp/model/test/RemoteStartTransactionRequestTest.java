@@ -4,14 +4,18 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.ChargingProfile;
 import eu.chargetime.ocpp.model.core.RemoteStartTransactionRequest;
 import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -39,32 +43,35 @@ import static org.mockito.Mockito.*;
  * SOFTWARE.
  */
 public class RemoteStartTransactionRequestTest extends TestUtilities {
-    RemoteStartTransactionRequest request;
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
+
+    private RemoteStartTransactionRequest request;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         request = new RemoteStartTransactionRequest();
     }
 
     @Test
     public void setConnectorId_integerZero_throwsPropertyConstraintException() {
-        // Given
-        int zero = 0;
-
-        try {
-            // When
-            request.setConnectorId(zero);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("connectorId"));
-            assertThat(ex.getFieldValue(), equalTo(zero));
-        }
+        testInvalidConnectorIdValue(0);
     }
 
     @Test
-    public void setConnectorId_positiveInteger_connectorIdIsSet() throws Exception {
+    public void setConnectorId_negativeInteger_throwsPropertyConstraintException() {
+        testInvalidConnectorIdValue(-42);
+    }
+
+    private void testInvalidConnectorIdValue(int invalidValue) {
+        defineExpectedException("Validation failed: [connectorId must be > 0]. Current Value: [" + invalidValue + "]");
+
+        request.setConnectorId(invalidValue);
+    }
+
+    @Test
+    public void setConnectorId_positiveInteger_connectorIdIsSet() {
         // Given
         int someInteger = 42;
 
@@ -76,7 +83,7 @@ public class RemoteStartTransactionRequestTest extends TestUtilities {
     }
 
     @Test
-    public void setIdTag_string20_idTagIsSet() throws Exception {
+    public void setIdTag_string20_idTagIsSet() {
         // Given
         String idTag = aString(20);
 
@@ -88,41 +95,20 @@ public class RemoteStartTransactionRequestTest extends TestUtilities {
     }
 
     @Test
-    public void setIdTag_nullValue_throwsPropertyConstraintException() {
-        // Given
-        String nullValue = null;
-
-        try {
-            // When
-            request.setIdTag(nullValue);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("idTag"));
-            assertThat(ex.getFieldValue(), equalTo(nullValue));
-        }
-    }
-
-    @Test
     public void setIdTag_exceeds20Chars_throwsPropertyConstraintException() {
-        // Given
-        String longString = aString(21);
+        defineExpectedException("Validation failed: [Exceeded limit of 20 chars]. Current Value: [21]");
 
-        try {
-            // When
-            request.setIdTag(longString);
+        request.setIdTag(aString(21));
+    }
 
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("idTag"));
-            assertThat(ex.getFieldValue(), equalTo(longString));
-        }
+    private void defineExpectedException(String expectedExceptionMessage) {
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo(expectedExceptionMessage));
     }
 
     @Test
-    public void setChargingProfile_someChargingProfile_chargingProfileIsSet() throws Exception {
+    public void setChargingProfile_someChargingProfile_chargingProfileIsSet
+            () {
         // Given
         ChargingProfile chargingProfile = mock(ChargingProfile.class);
 
@@ -143,7 +129,7 @@ public class RemoteStartTransactionRequestTest extends TestUtilities {
     }
 
     @Test
-    public void validate_chargingProfileIsSet_chargingsProfileIsValidated() throws Exception {
+    public void validate_chargingProfileIsSet_chargingsProfileIsValidated() {
         // Given
         ChargingProfile chargingProfile = mock(ChargingProfile.class);
         request.setChargingProfile(chargingProfile);

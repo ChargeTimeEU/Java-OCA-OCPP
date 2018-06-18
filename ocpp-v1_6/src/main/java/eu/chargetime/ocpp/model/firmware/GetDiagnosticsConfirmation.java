@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.firmware;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
@@ -58,9 +58,10 @@ public class GetDiagnosticsConfirmation implements Confirmation {
      * @param fileName String, file name
      */
     @XmlElement
-    public void setFileName(String fileName) throws PropertyConstraintException {
-        if (!ModelUtil.validate(fileName, 255))
-            throw new PropertyConstraintException("fileName", fileName);
+    public void setFileName(String fileName) {
+        if (!ModelUtil.validate(fileName, 255)) {
+            throw new PropertyConstraintException(fileName.length(), "Exceeds limit of 255 chars");
+        }
 
         this.fileName = fileName;
     }

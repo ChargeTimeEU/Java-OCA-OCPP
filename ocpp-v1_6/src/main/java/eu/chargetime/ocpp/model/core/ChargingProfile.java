@@ -34,7 +34,17 @@ import java.util.Calendar;
  * SOFTWARE.
  */
 @XmlRootElement
-@XmlType(propOrder = {"chargingProfileId", "transactionId", "stackLevel", "chargingProfilePurpose", "chargingProfileKind", "recurrencyKind", "validFrom", "validTo", "chargingSchedule"})
+@XmlType(propOrder = {
+        "chargingProfileId",
+        "transactionId",
+        "stackLevel",
+        "chargingProfilePurpose",
+        "chargingProfileKind",
+        "recurrencyKind",
+        "validFrom",
+        "validTo",
+        "chargingSchedule"
+})
 public class ChargingProfile implements Validatable {
     private Integer chargingProfileId;
     private Integer transactionId;
@@ -46,7 +56,8 @@ public class ChargingProfile implements Validatable {
     private Calendar validTo;
     private ChargingSchedule chargingSchedule;
 
-    public ChargingProfile() { }
+    public ChargingProfile() {
+    }
 
     public ChargingProfile(Integer chargingProfileId, Integer stackLevel, ChargingProfilePurposeType chargingProfilePurpose, ChargingProfileKindType chargingProfileKind, ChargingSchedule chargingSchedule) {
         this.chargingProfileId = chargingProfileId;
@@ -66,18 +77,19 @@ public class ChargingProfile implements Validatable {
     @Override
     public boolean validate() {
         boolean valid = chargingProfileId != null;
-        valid &= stackLevel >= 0;
+        valid &= (stackLevel != null && stackLevel >= 0);
         valid &= chargingProfilePurpose != null;
-        valid &= transactionId == null || chargingProfilePurpose == ChargingProfilePurposeType.TxProfile;
+        valid &= (transactionId == null || chargingProfilePurpose == ChargingProfilePurposeType.TxProfile);
         valid &= chargingProfileKind != null;
-        valid &= chargingSchedule != null && chargingSchedule.validate();
+        valid &= (chargingSchedule != null && chargingSchedule.validate());
         return valid;
     }
 
     @XmlElement
-    public void setChargingProfileId(Integer chargingProfileId) throws PropertyConstraintException {
-        if (chargingProfileId == null)
-            throw new PropertyConstraintException("chargingProfileId", null);
+    public void setChargingProfileId(Integer chargingProfileId) {
+        if (chargingProfileId == null) {
+            throw new PropertyConstraintException(null, "chargingProfileId must be present");
+        }
 
         this.chargingProfileId = chargingProfileId;
     }
@@ -96,9 +108,10 @@ public class ChargingProfile implements Validatable {
     }
 
     @XmlElement
-    public void setStackLevel(Integer stackLevel) throws PropertyConstraintException {
-        if (stackLevel < 0)
-            throw new PropertyConstraintException("stackLevel", stackLevel);
+    public void setStackLevel(Integer stackLevel) {
+        if (stackLevel == null || stackLevel < 0) {
+            throw new PropertyConstraintException(stackLevel, "stackLevel must be >= 0");
+        }
 
         this.stackLevel = stackLevel;
     }
@@ -108,7 +121,7 @@ public class ChargingProfile implements Validatable {
     }
 
     @XmlElement
-    public void setChargingProfilePurpose(ChargingProfilePurposeType chargingProfilePurpose) throws PropertyConstraintException {
+    public void setChargingProfilePurpose(ChargingProfilePurposeType chargingProfilePurpose) {
         this.chargingProfilePurpose = chargingProfilePurpose;
     }
 
@@ -122,7 +135,7 @@ public class ChargingProfile implements Validatable {
     }
 
     @XmlElement
-    public void setChargingProfileKind(ChargingProfileKindType chargingProfileKind) throws PropertyConstraintException {
+    public void setChargingProfileKind(ChargingProfileKindType chargingProfileKind) {
         this.chargingProfileKind = chargingProfileKind;
     }
 
@@ -136,7 +149,7 @@ public class ChargingProfile implements Validatable {
     }
 
     @XmlElement
-    public void setRecurrencyKind(RecurrencyKindType recurrencyKind) throws PropertyConstraintException {
+    public void setRecurrencyKind(RecurrencyKindType recurrencyKind) {
         this.recurrencyKind = recurrencyKind;
     }
 

@@ -3,11 +3,13 @@ package eu.chargetime.ocpp.model.test;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.DataTransferRequest;
 import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -37,32 +39,32 @@ import static org.junit.Assert.assertThat;
  * SOFTWARE.
  */
 public class DataTransferRequestTest extends TestUtilities {
-    DataTransferRequest request;
+
+    private static final String EXCEPTION_MESSAGE_TEMPLATE = "Validation failed: [Exceeded limit of %s chars]. Current Value: [%s]";
+
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
+
+    private DataTransferRequest request;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         request = new DataTransferRequest();
     }
 
     @Test
     public void setVendorId_stringLength256_throwsPropertyConstraintException() {
-        // Given
+
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo(createExpectedExceptionMessage(255, 256)));
+
         String aString = aString(256);
 
-        try {
-            // When
-            request.setVendorId(aString);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            // Then
-            assertThat(ex.getFieldKey(), equalTo("vendorId"));
-            assertThat(ex.getFieldValue(), equalTo(aString));
-        }
+        request.setVendorId(aString);
     }
 
     @Test
-    public void setVendorId_stringLength255_vendorIdIsSet() throws Exception {
+    public void setVendorId_stringLength255_vendorIdIsSet() {
         // Given
         String aString = aString(255);
 
@@ -75,22 +77,17 @@ public class DataTransferRequestTest extends TestUtilities {
 
     @Test
     public void setMessageId_stringLength51_throwsPropertyConstraintException() {
-        // given
+
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo(createExpectedExceptionMessage(50, 51)));
+
         String aString = aString(51);
 
-        try {
-            // When
-            request.setMessageId(aString);
-
-            Assert.fail("Expected PropertyConstraintException");
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("messageId"));
-            assertThat(ex.getFieldValue(), equalTo(aString));
-        }
+        request.setMessageId(aString);
     }
 
     @Test
-    public void setMessageId_stringLength50_messageIdIsSet() throws Exception {
+    public void setMessageId_stringLength50_messageIdIsSet() {
         // Given
         String aString = aString(50);
 
@@ -114,7 +111,7 @@ public class DataTransferRequestTest extends TestUtilities {
     }
 
     @Test
-    public void validate_vendorIdIsSet_returnTrue() throws Exception {
+    public void validate_vendorIdIsSet_returnTrue() {
         // Given
         request.setVendorId("Some vendor id");
 
@@ -141,5 +138,9 @@ public class DataTransferRequestTest extends TestUtilities {
 
         // Then
         assertThat(isTransactionRelated, is(false));
+    }
+
+    private static String createExpectedExceptionMessage(int maxAllowedLength, int currentLength) {
+        return String.format(EXCEPTION_MESSAGE_TEMPLATE, maxAllowedLength, currentLength);
     }
 }

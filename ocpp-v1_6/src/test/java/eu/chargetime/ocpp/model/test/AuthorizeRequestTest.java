@@ -2,11 +2,13 @@ package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.AuthorizeRequest;
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -38,7 +40,10 @@ import static org.junit.Assert.assertThat;
  */
 public class AuthorizeRequestTest {
 
-    AuthorizeRequest request;
+    @Rule
+    public ExpectedException thrownException = ExpectedException.none();
+
+    private AuthorizeRequest request;
 
     @Before
     public void setup() {
@@ -46,7 +51,7 @@ public class AuthorizeRequestTest {
     }
 
     @Test
-    public void  setIdToken_stringLength20_idTokenIsSet() throws Exception {
+    public void setIdToken_stringLength20_idTokenIsSet() {
         // Given
         String stringLength20 = "12345678901234567890";
 
@@ -59,20 +64,13 @@ public class AuthorizeRequestTest {
 
     @Test
     public void setIdToken_exceed20chars_throwsPropertyConstraintException() {
-        // Given
+
+        thrownException.expect(instanceOf(PropertyConstraintException.class));
+        thrownException.expectMessage(equalTo("Validation failed: [Exceeded limit of 20 chars]. Current Value: [22]"));
+
         String illegalValue = "1234567890123456789012";
 
-        // When
-        try {
-            request.setIdTag(illegalValue);
-
-            Assert.fail("Expected exception");
-        // Then
-        } catch (PropertyConstraintException ex) {
-            assertThat(ex.getFieldKey(), equalTo("idTag"));
-            assertThat(ex.getFieldValue(), equalTo(illegalValue ));
-        }
-
+        request.setIdTag(illegalValue);
     }
 
     @Test
@@ -85,7 +83,7 @@ public class AuthorizeRequestTest {
     }
 
     @Test
-    public void validate_idTagSet_returnTrue() throws Exception{
+    public void validate_idTagSet_returnTrue() {
         // Given
         request.setIdTag("42");
 
