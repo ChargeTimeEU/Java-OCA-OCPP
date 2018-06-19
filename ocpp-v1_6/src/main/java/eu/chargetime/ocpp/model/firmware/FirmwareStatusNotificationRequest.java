@@ -1,13 +1,4 @@
 package eu.chargetime.ocpp.model.firmware;
-
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.utilities.MoreObjects;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Objects;
-
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -35,8 +26,16 @@ import java.util.Objects;
  * SOFTWARE.
  */
 
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.MoreObjects;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
+
 /**
- * Sent by the Central System to the Charge Point.
+ * Sent by the Charge Point to the Central System.
  */
 @XmlRootElement
 public class FirmwareStatusNotificationRequest implements Request {

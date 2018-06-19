@@ -1,5 +1,4 @@
 package eu.chargetime.ocpp.model.firmware;
-
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -33,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
 
 /**
- * Sent by the Charge Point to the Central System in response to an {@link DiagnosticsStatusNotificationRequest}.
+ * Sent by the Central System to the Charge Point in response to an {@link DiagnosticsStatusNotificationRequest}.
  */
 @XmlRootElement(name = "diagnosticsStatusNotificationResponse")
 public class DiagnosticsStatusNotificationConfirmation implements Confirmation {

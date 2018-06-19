@@ -28,15 +28,19 @@ package eu.chargetime.ocpp.feature.profile;
 import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
+import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationRequest;
 
 import java.util.HashSet;
 import java.util.UUID;
 
 public class ServerFirmwareManagementProfile implements Profile {
 
+    private final ServerFirmwareManagementEventHandler eventHandler;
     private HashSet<Feature> features;
 
-    public ServerFirmwareManagementProfile() {
+    public ServerFirmwareManagementProfile(ServerFirmwareManagementEventHandler eventHandler) {
+        this.eventHandler = eventHandler;
         features = new HashSet<>();
         features.add(new GetDiagnosticsFeature(this));
         features.add(new DiagnosticsStatusNotificationFeature(this));
@@ -51,6 +55,15 @@ public class ServerFirmwareManagementProfile implements Profile {
 
     @Override
     public Confirmation handleRequest(UUID sessionIndex, Request request) {
-        return null;
+        Confirmation result = null;
+
+        if (request instanceof DiagnosticsStatusNotificationRequest) {
+            result = eventHandler.handleDiagnosticsStatusNotificationRequest((DiagnosticsStatusNotificationRequest) request);
+        } else if (request instanceof FirmwareStatusNotificationRequest) {
+            result = eventHandler.handleFirmwareStatusNotificationRequest((FirmwareStatusNotificationRequest) request);
+        }
+
+        return result;
     }
+
 }

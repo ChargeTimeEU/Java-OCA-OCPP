@@ -1,5 +1,4 @@
 package eu.chargetime.ocpp.model.firmware;
-
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -29,12 +28,11 @@ package eu.chargetime.ocpp.model.firmware;
 
 import eu.chargetime.ocpp.model.Confirmation;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
 
 /**
- * Sent by the Charge Point to the Central System in response to an {@link FirmwareStatusNotificationRequest}.
+ * Sent by the Central System to the Charge Point in response to an {@link FirmwareStatusNotificationRequest}.
  */
 @XmlRootElement(name = "firmwareStatusNotificationResponse")
 public class FirmwareStatusNotificationConfirmation implements Confirmation {

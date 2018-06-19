@@ -1,9 +1,4 @@
 package eu.chargetime.ocpp.test.profiles.firmware.json
-
-import eu.chargetime.ocpp.model.firmware.DiagnosticsStatus
-import eu.chargetime.ocpp.test.base.json.JSONBaseSpec
-import spock.util.concurrent.PollingConditions
-
 /*
     ChargeTime.eu - Java-OCA-OCPP
 
@@ -31,6 +26,10 @@ import spock.util.concurrent.PollingConditions
     SOFTWARE.
  */
 
+import eu.chargetime.ocpp.model.firmware.DiagnosticsStatus
+import eu.chargetime.ocpp.test.base.json.JSONBaseSpec
+import spock.util.concurrent.PollingConditions
+
 class JSONDiagnosticsStatusNotificationSpec extends JSONBaseSpec {
 
     def "Central System sends a DiagnosticsStatusNotification request and receives a response"() {
@@ -41,12 +40,12 @@ class JSONDiagnosticsStatusNotificationSpec extends JSONBaseSpec {
         }
 
         when:
-        centralSystem.sendDiagnosticsStatusNotificationRequest(DiagnosticsStatus.Uploading)
+        chargePoint.sendDiagnosticsStatusNotificationRequest(DiagnosticsStatus.Uploading)
 
         then:
         conditions.eventually {
-            assert chargePoint.hasHandledDiagnosticsStatusNotificationRequest()
-            assert centralSystem.hasReceivedDiagnosticsStatusNotificationConfirmation()
+            assert centralSystem.hasHandledDiagnosticsStatusNotificationRequest()
+            assert chargePoint.hasReceivedDiagnosticsStatusNotificationConfirmation()
         }
     }
 }

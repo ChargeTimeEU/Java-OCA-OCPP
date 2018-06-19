@@ -154,18 +154,6 @@ public class FakeChargePoint
             }
 
             @Override
-            public DiagnosticsStatusNotificationConfirmation handleDiagnosticsStatusNotificationRequest(DiagnosticsStatusNotificationRequest request) {
-                receivedRequest = request;
-                return new DiagnosticsStatusNotificationConfirmation();
-            }
-
-            @Override
-            public FirmwareStatusNotificationConfirmation handleFirmwareStatusNotificationRequest(FirmwareStatusNotificationRequest request) {
-                receivedRequest = request;
-                return new FirmwareStatusNotificationConfirmation();
-            }
-
-            @Override
             public UpdateFirmwareConfirmation handleUpdateFirmwareRequest(UpdateFirmwareRequest request) {
                 receivedRequest = request;
                 return new UpdateFirmwareConfirmation();
@@ -300,6 +288,16 @@ public class FakeChargePoint
         }
     }
 
+    public void sendDiagnosticsStatusNotificationRequest(DiagnosticsStatus status) throws Exception {
+        DiagnosticsStatusNotificationRequest request = new DiagnosticsStatusNotificationRequest(status);
+        send(request);
+    }
+
+    public void sendFirmwareStatusNotificationRequest(FirmwareStatus status) throws Exception {
+        FirmwareStatusNotificationRequest request = new FirmwareStatusNotificationRequest(status);
+        send(request);
+    }
+
     public void clearMemory() {
         receivedConfirmation = null;
         receivedException = null;
@@ -327,6 +325,14 @@ public class FakeChargePoint
         if (receivedConfirmation instanceof AuthorizeConfirmation)
             return ((AuthorizeConfirmation) receivedConfirmation).getIdTagInfo().getStatus().toString().equals(status);
         return false;
+    }
+
+    public boolean hasReceivedDiagnosticsStatusNotificationConfirmation() {
+        return (receivedConfirmation instanceof DiagnosticsStatusNotificationConfirmation);
+    }
+
+    public boolean hasReceivedFirmwareStatusNotificationConfirmation() {
+        return (receivedConfirmation instanceof FirmwareStatusNotificationConfirmation);
     }
 
     public boolean hasReceivedDataTransferConfirmation(String status) {
@@ -361,14 +367,6 @@ public class FakeChargePoint
 
     public boolean hasHandledGetDiagnosticsRequest() {
         return receivedRequest instanceof GetDiagnosticsRequest;
-    }
-
-    public boolean hasHandledDiagnosticsStatusNotificationRequest() {
-        return receivedRequest instanceof DiagnosticsStatusNotificationRequest;
-    }
-
-    public boolean hasHandledFirmwareStatusNotificationRequest() {
-        return receivedRequest instanceof FirmwareStatusNotificationRequest;
     }
 
     public boolean hasHandledUpdateFirmwareRequest() {

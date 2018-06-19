@@ -81,7 +81,7 @@ public class FakeCentralSystem {
         ServerRemoteTriggerProfile remoteTriggerProfile = new ServerRemoteTriggerProfile();
         server.addFeatureProfile(remoteTriggerProfile);
 
-        ServerFirmwareManagementProfile firmwareManagementProfile = new ServerFirmwareManagementProfile();
+        ServerFirmwareManagementProfile firmwareManagementProfile = new ServerFirmwareManagementProfile(dummyHandlers.createServerFirmwareManagementEventHandler());
         server.addFeatureProfile(firmwareManagementProfile);
 
         ServerLocalAuthListProfile localAuthListProfile = new ServerLocalAuthListProfile();
@@ -122,6 +122,14 @@ public class FakeCentralSystem {
         isStarted = false;
     }
 
+    public boolean hasHandledDiagnosticsStatusNotificationRequest() {
+        return dummyHandlers.wasLatestRequest(DiagnosticsStatusNotificationRequest.class);
+    }
+
+    public boolean hasHandledFirmwareStatusNotificationRequest() {
+        return dummyHandlers.wasLatestRequest(FirmwareStatusNotificationRequest.class);
+    }
+
     public boolean hasHandledAuthorizeRequest() {
         return dummyHandlers.wasLatestRequest(AuthorizeRequest.class);
     }
@@ -145,14 +153,6 @@ public class FakeCentralSystem {
 
     public boolean hasReceivedGetDiagnosticsConfirmation() {
         return dummyHandlers.wasLatestConfirmation(GetDiagnosticsConfirmation.class);
-    }
-
-    public boolean hasReceivedDiagnosticsStatusNotificationConfirmation() {
-        return dummyHandlers.wasLatestConfirmation(DiagnosticsStatusNotificationConfirmation.class);
-    }
-
-    public boolean hasReceivedFirmwareStatusNotificationConfirmation() {
-        return dummyHandlers.wasLatestConfirmation(FirmwareStatusNotificationConfirmation.class);
     }
 
     public boolean hasReceivedReserveNowConfirmation() {
@@ -279,16 +279,6 @@ public class FakeCentralSystem {
     public void sendGetDiagnosticsRequest(String location) throws Exception {
         GetDiagnosticsRequest request = new GetDiagnosticsRequest();
         request.setLocation(location);
-        send(request);
-    }
-
-    public void sendDiagnosticsStatusNotificationRequest(DiagnosticsStatus status) throws Exception {
-        DiagnosticsStatusNotificationRequest request = new DiagnosticsStatusNotificationRequest(status);
-        send(request);
-    }
-
-    public void sendFirmwareStatusNotificationRequest(FirmwareStatus status) throws Exception {
-        FirmwareStatusNotificationRequest request = new FirmwareStatusNotificationRequest(status);
         send(request);
     }
 

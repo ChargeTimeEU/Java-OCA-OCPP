@@ -27,10 +27,15 @@ package eu.chargetime.ocpp.test;
 
 import eu.chargetime.ocpp.ServerEvents;
 import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
+import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementEventHandler;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.SessionInformation;
 import eu.chargetime.ocpp.model.core.*;
+import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationConfirmation;
+import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
+import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationConfirmation;
+import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationRequest;
 
 import java.lang.reflect.Type;
 import java.util.Calendar;
@@ -120,6 +125,24 @@ public class DummyHandlers {
             public StopTransactionConfirmation handleStopTransactionRequest(UUID sessionIndex, StopTransactionRequest request) {
                 receivedRequest = request;
                 StopTransactionConfirmation confirmation = new StopTransactionConfirmation();
+                return failurePoint(confirmation);
+            }
+        };
+    }
+
+    public ServerFirmwareManagementEventHandler createServerFirmwareManagementEventHandler() {
+        return new ServerFirmwareManagementEventHandler() {
+            @Override
+            public DiagnosticsStatusNotificationConfirmation handleDiagnosticsStatusNotificationRequest(DiagnosticsStatusNotificationRequest request) {
+                receivedRequest = request;
+                DiagnosticsStatusNotificationConfirmation confirmation = new DiagnosticsStatusNotificationConfirmation();
+                return failurePoint(confirmation);
+            }
+
+            @Override
+            public FirmwareStatusNotificationConfirmation handleFirmwareStatusNotificationRequest(FirmwareStatusNotificationRequest request) {
+                receivedRequest = request;
+                FirmwareStatusNotificationConfirmation confirmation = new FirmwareStatusNotificationConfirmation();
                 return failurePoint(confirmation);
             }
         };

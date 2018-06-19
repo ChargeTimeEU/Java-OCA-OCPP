@@ -1,11 +1,10 @@
-package eu.chargetime.ocpp.test.profiles.firmware.json
+package eu.chargetime.ocpp.feature.profile;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-
+    
     MIT License
 
-    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
-    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
+    Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -26,26 +25,13 @@ package eu.chargetime.ocpp.test.profiles.firmware.json
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.firmware.FirmwareStatus
-import eu.chargetime.ocpp.test.base.json.JSONBaseSpec
-import spock.util.concurrent.PollingConditions
+import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationConfirmation;
+import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
+import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationConfirmation;
+import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationRequest;
 
-class JSONFirmwareStatusNotificationSpec extends JSONBaseSpec {
+public interface ServerFirmwareManagementEventHandler {
+    DiagnosticsStatusNotificationConfirmation handleDiagnosticsStatusNotificationRequest(DiagnosticsStatusNotificationRequest request);
 
-    def "Charge point sends a FirmwareStatusNotification request and receives a response"() {
-        def conditions = new PollingConditions(timeout: 1)
-        given:
-        conditions.eventually {
-            assert centralSystem.connected()
-        }
-
-        when:
-        chargePoint.sendFirmwareStatusNotificationRequest(FirmwareStatus.Downloading)
-
-        then:
-        conditions.eventually {
-            assert centralSystem.hasHandledFirmwareStatusNotificationRequest()
-            assert chargePoint.hasReceivedFirmwareStatusNotificationConfirmation()
-        }
-    }
+    FirmwareStatusNotificationConfirmation handleFirmwareStatusNotificationRequest(FirmwareStatusNotificationRequest request);
 }

@@ -26,25 +26,37 @@ package eu.chargetime.ocpp.feature.profile.test;
  */
 
 import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementEventHandler;
 import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementProfile;
+import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
+import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationRequest;
 import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.UUID;
+
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ServerFirmwareManagementProfileTest extends ProfileTest {
+    private static final UUID SESSION_NULL = null;
 
     ServerFirmwareManagementProfile profile;
 
+    @Mock
+    private ServerFirmwareManagementEventHandler handler;
+
     @Before
     public void setup() {
-        profile = new ServerFirmwareManagementProfile();
+        profile = new ServerFirmwareManagementProfile(handler);
     }
 
     @Test
@@ -83,5 +95,28 @@ public class ServerFirmwareManagementProfileTest extends ProfileTest {
         assertThat(findFeature(features, "UpdateFirmware"), Is.is(instanceOf(UpdateFirmwareFeature.class)));
     }
 
+    @Test
+    public void handleRequest_aDiagnosticsStatusNotificationRequest_callsHandleDiagnosticsStatusNotificationRequest() {
+        // Given
+        DiagnosticsStatusNotificationRequest request = new DiagnosticsStatusNotificationRequest();
+
+        // When
+        profile.handleRequest(SESSION_NULL, request);
+
+        // Then
+        verify(handler, times(1)).handleDiagnosticsStatusNotificationRequest(eq(request));
+    }
+
+    @Test
+    public void handleRequest_aFirmwareStatusNotificationRequest_callsHandleFirmwareStatusNotificationRequest() {
+        // Given
+        FirmwareStatusNotificationRequest request = new FirmwareStatusNotificationRequest();
+
+        // When
+        profile.handleRequest(SESSION_NULL, request);
+
+        // Then
+        verify(handler, times(1)).handleFirmwareStatusNotificationRequest(eq(request));
+    }
 
 }

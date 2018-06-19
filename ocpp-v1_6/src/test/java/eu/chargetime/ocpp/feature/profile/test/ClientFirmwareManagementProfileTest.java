@@ -28,7 +28,8 @@ package eu.chargetime.ocpp.feature.profile.test;
 import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.feature.profile.ClientFirmwareManagementEventHandler;
 import eu.chargetime.ocpp.feature.profile.ClientFirmwareManagementProfile;
-import eu.chargetime.ocpp.model.firmware.*;
+import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
+import eu.chargetime.ocpp.model.firmware.UpdateFirmwareRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,8 +51,7 @@ public class ClientFirmwareManagementProfileTest extends ProfileTest {
     ClientFirmwareManagementProfile profile;
 
     @Mock
-    private
-    ClientFirmwareManagementEventHandler handler;
+    private ClientFirmwareManagementEventHandler handler;
 
     @Before
     public void setup() {
@@ -104,31 +104,6 @@ public class ClientFirmwareManagementProfileTest extends ProfileTest {
 
         // Then
         verify(handler, times(1)).handleGetDiagnosticsRequest(eq(request));
-    }
-
-
-    @Test
-    public void handleRequest_aDiagnosticsStatusNotificationRequest_callsHandleDiagnosticsStatusNotificationRequest() {
-        // Given
-        DiagnosticsStatusNotificationRequest request = new DiagnosticsStatusNotificationRequest();
-
-        // When
-        profile.handleRequest(SESSION_NULL, request);
-
-        // Then
-        verify(handler, times(1)).handleDiagnosticsStatusNotificationRequest(eq(request));
-    }
-
-    @Test
-    public void handleRequest_aFirmwareStatusNotificationRequest_callsHandleFirmwareStatusNotificationRequest() {
-        // Given
-        FirmwareStatusNotificationRequest request = new FirmwareStatusNotificationRequest();
-
-        // When
-        profile.handleRequest(SESSION_NULL, request);
-
-        // Then
-        verify(handler, times(1)).handleFirmwareStatusNotificationRequest(eq(request));
     }
 
     @Test
