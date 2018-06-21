@@ -87,7 +87,7 @@ public class UpdateFirmwareRequest implements Request {
      *
      * @return int, retry times.
      */
-    public int getRetries() {
+    public Integer getRetries() {
         return retries;
     }
 
