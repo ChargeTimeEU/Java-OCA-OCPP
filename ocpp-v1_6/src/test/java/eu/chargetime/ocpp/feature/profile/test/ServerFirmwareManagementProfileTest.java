@@ -47,8 +47,6 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ServerFirmwareManagementProfileTest extends ProfileTest {
-    private static final UUID SESSION_NULL = null;
-
     ServerFirmwareManagementProfile profile;
 
     @Mock
@@ -99,24 +97,26 @@ public class ServerFirmwareManagementProfileTest extends ProfileTest {
     public void handleRequest_aDiagnosticsStatusNotificationRequest_callsHandleDiagnosticsStatusNotificationRequest() {
         // Given
         DiagnosticsStatusNotificationRequest request = new DiagnosticsStatusNotificationRequest();
+        UUID sessionId = UUID.randomUUID();
 
         // When
-        profile.handleRequest(SESSION_NULL, request);
+        profile.handleRequest(sessionId, request);
 
         // Then
-        verify(handler, times(1)).handleDiagnosticsStatusNotificationRequest(eq(request));
+        verify(handler, times(1)).handleDiagnosticsStatusNotificationRequest(eq(sessionId), eq(request));
     }
 
     @Test
     public void handleRequest_aFirmwareStatusNotificationRequest_callsHandleFirmwareStatusNotificationRequest() {
         // Given
         FirmwareStatusNotificationRequest request = new FirmwareStatusNotificationRequest();
+        UUID sessionId = UUID.randomUUID();
 
         // When
-        profile.handleRequest(SESSION_NULL, request);
+        profile.handleRequest(sessionId, request);
 
         // Then
-        verify(handler, times(1)).handleFirmwareStatusNotificationRequest(eq(request));
+        verify(handler, times(1)).handleFirmwareStatusNotificationRequest(eq(sessionId), eq(request));
     }
 
 }

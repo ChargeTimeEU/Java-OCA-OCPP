@@ -58,9 +58,9 @@ public class ServerFirmwareManagementProfile implements Profile {
         Confirmation result = null;
 
         if (request instanceof DiagnosticsStatusNotificationRequest) {
-            result = eventHandler.handleDiagnosticsStatusNotificationRequest((DiagnosticsStatusNotificationRequest) request);
+            result = eventHandler.handleDiagnosticsStatusNotificationRequest(sessionIndex, (DiagnosticsStatusNotificationRequest) request);
         } else if (request instanceof FirmwareStatusNotificationRequest) {
-            result = eventHandler.handleFirmwareStatusNotificationRequest((FirmwareStatusNotificationRequest) request);
+            result = eventHandler.handleFirmwareStatusNotificationRequest(sessionIndex, (FirmwareStatusNotificationRequest) request);
         }
 
         return result;
