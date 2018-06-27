@@ -112,6 +112,9 @@ public class WebSocketTransmitter implements Transmitter
         }
 
         configure();
+
+        logger.debug("Trying to connect to: {}", resource);
+
         try {
             client.connectBlocking();
             closed = false;

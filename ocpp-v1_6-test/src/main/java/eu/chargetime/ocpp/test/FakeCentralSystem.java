@@ -104,14 +104,16 @@ public class FakeCentralSystem {
     }
 
     public void started() throws Exception {
+        final String host = "127.0.0.1";
+
         if (!isStarted) {
             int port = 8890;
             if (server instanceof JSONTestServer) {
                 port = 8887;
             }
 
-            server.open("127.0.0.1", port, dummyHandlers.generateServerEventsHandler());
-            logger.info("Server started on port: {}", port);
+            server.open(host, port, dummyHandlers.generateServerEventsHandler());
+            logger.info("Server started on host: {}, port: {}", host, port);
             isStarted = true;
         }
     }
