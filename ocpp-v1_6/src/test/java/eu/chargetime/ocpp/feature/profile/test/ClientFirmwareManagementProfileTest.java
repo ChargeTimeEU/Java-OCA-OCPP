@@ -28,8 +28,7 @@ package eu.chargetime.ocpp.feature.profile.test;
 import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.feature.profile.ClientFirmwareManagementEventHandler;
 import eu.chargetime.ocpp.feature.profile.ClientFirmwareManagementProfile;
-import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
-import eu.chargetime.ocpp.model.firmware.UpdateFirmwareRequest;
+import eu.chargetime.ocpp.model.firmware.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -116,6 +115,30 @@ public class ClientFirmwareManagementProfileTest extends ProfileTest {
 
         // Then
         verify(handler, times(1)).handleUpdateFirmwareRequest(eq(request));
+    }
+
+    @Test
+    public void createDiagnosticsStatusNotificationRequest_withStatus_returnsDiagnosticsStatusNotificationRequestWithStatus() {
+        // Given
+        DiagnosticsStatus status = DiagnosticsStatus.Idle;
+
+        // When
+        DiagnosticsStatusNotificationRequest result = profile.createDiagnosticsStatusNotificationRequest(status);
+
+        // Then
+        assertThat(result.getStatus(), is(status));
+    }
+
+    @Test
+    public void createFirmwareStatusNotificationRequest_withStatus_returnsFirmwareStatusNotificationRequestWithStatus() {
+        // Given
+        FirmwareStatus status = FirmwareStatus.Idle;
+
+        // When
+        FirmwareStatusNotificationRequest result = profile.createFirmwareStatusNotificationRequest(status);
+
+        // Then
+        assertThat(result.getStatus(), is(status));
     }
 
 }
