@@ -133,14 +133,14 @@ public class DummyHandlers {
     public ServerFirmwareManagementEventHandler createServerFirmwareManagementEventHandler() {
         return new ServerFirmwareManagementEventHandler() {
             @Override
-            public DiagnosticsStatusNotificationConfirmation handleDiagnosticsStatusNotificationRequest(DiagnosticsStatusNotificationRequest request) {
+            public DiagnosticsStatusNotificationConfirmation handleDiagnosticsStatusNotificationRequest(UUID sessionId, DiagnosticsStatusNotificationRequest request) {
                 receivedRequest = request;
                 DiagnosticsStatusNotificationConfirmation confirmation = new DiagnosticsStatusNotificationConfirmation();
                 return failurePoint(confirmation);
             }
 
             @Override
-            public FirmwareStatusNotificationConfirmation handleFirmwareStatusNotificationRequest(FirmwareStatusNotificationRequest request) {
+            public FirmwareStatusNotificationConfirmation handleFirmwareStatusNotificationRequest(UUID sessionId, FirmwareStatusNotificationRequest request) {
                 receivedRequest = request;
                 FirmwareStatusNotificationConfirmation confirmation = new FirmwareStatusNotificationConfirmation();
                 return failurePoint(confirmation);
