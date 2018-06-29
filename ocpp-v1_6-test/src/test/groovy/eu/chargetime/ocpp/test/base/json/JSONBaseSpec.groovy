@@ -14,7 +14,7 @@ abstract class JSONBaseSpec extends Specification {
     FakeChargePoint chargePoint = new FakeChargePoint()
 
     def setupSpec() {
-        def conditions = new PollingConditions(timeout: 10)
+        def conditions = new PollingConditions(timeout: 11)
 
         // When a Central System is running
         centralSystem.started()
@@ -36,7 +36,7 @@ abstract class JSONBaseSpec extends Specification {
     }
 
     def cleanupSpec() {
-        def conditions = new PollingConditions(timeout: 10)
+        def conditions = new PollingConditions(timeout: 11)
 
         centralSystem.stopped()
 

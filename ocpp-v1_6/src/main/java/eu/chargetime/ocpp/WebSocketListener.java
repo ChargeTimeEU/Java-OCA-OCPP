@@ -107,8 +107,13 @@ public class WebSocketListener implements Listener {
             public void onClose(WebSocket webSocket, int code, String reason, boolean remote) {
                 logger.debug("On connection close (resource descriptor: {}, code: {}, reason: {}, remote: {})", webSocket.getResourceDescriptor(), code, reason, remote);
 
-                sockets.get(webSocket).disconnect();
-                sockets.remove(webSocket);
+                WebSocketReceiver receiver = sockets.get(webSocket);
+                if(receiver != null) {
+                    receiver.disconnect();
+                    sockets.remove(webSocket);
+                } else {
+                    logger.debug("Receiver for socket not found: {}", webSocket);
+                }
             }
 
             @Override
@@ -167,8 +172,8 @@ public class WebSocketListener implements Listener {
         }
 
         try {
-            sockets.clear();
             server.stop(TIMEOUT_IN_MILLIS);
+            sockets.clear();
         } catch (InterruptedException e) {
             // Do second try
             try {
