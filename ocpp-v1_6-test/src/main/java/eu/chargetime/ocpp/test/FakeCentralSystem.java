@@ -250,6 +250,17 @@ public class FakeCentralSystem {
         send(request);
     }
 
+    public void sendRemoteStartTransactionWithProfileRequest(int connectorId, String idTag) throws Exception {
+        RemoteStartTransactionRequest request = new RemoteStartTransactionRequest();
+        request.setIdTag(idTag);
+        request.setConnectorId(connectorId);
+
+        ChargingSchedule schedule = new ChargingSchedule(ChargingRateUnitType.A, new ChargingSchedulePeriod[]{new ChargingSchedulePeriod(1, 32d)});
+        ChargingProfile profile = new ChargingProfile(1, 1, ChargingProfilePurposeType.ChargePointMaxProfile, ChargingProfileKindType.Recurring, schedule);
+        request.setChargingProfile(profile);
+        send(request);
+    }
+
     public boolean hasReceivedRemoteStartTransactionConfirmation(String status) {
         boolean result = false;
         RemoteStartTransactionConfirmation confirmation = dummyHandlers.getReceivedConfirmation(new RemoteStartTransactionConfirmation());

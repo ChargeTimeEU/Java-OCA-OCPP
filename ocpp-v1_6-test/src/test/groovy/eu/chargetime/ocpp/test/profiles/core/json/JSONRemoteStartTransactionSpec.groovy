@@ -20,4 +20,21 @@ class JSONRemoteStartTransactionSpec extends JSONBaseSpec {
             assert centralSystem.hasReceivedRemoteStartTransactionConfirmation("Accepted")
         }
     }
+
+    def "Central System sends a RemoteStartTransaction with charging profile request and receives a response"() {
+        def conditions = new PollingConditions(timeout: 1)
+        given:
+        conditions.eventually {
+            assert centralSystem.connected()
+        }
+
+        when:
+        centralSystem.sendRemoteStartTransactionWithProfileRequest(1, "some id")
+
+        then:
+        conditions.eventually {
+            assert chargePoint.hasHandledRemoteStartTransactionRequest()
+            assert centralSystem.hasReceivedRemoteStartTransactionConfirmation("Accepted")
+        }
+    }
 }
