@@ -9,10 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
@@ -110,16 +110,8 @@ public class JSONCommunicator extends Communicator {
         public Calendar deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             try {
                 String dateString = json.getAsJsonPrimitive().getAsString();
-
-                hasLongDateFormat = dateString.length() == DATE_FORMAT_WITH_MS_LENGTH;
-                SimpleDateFormat formatter = new SimpleDateFormat(hasLongDateFormat ? DATE_FORMAT_WITH_MS : DATE_FORMAT);
-
-                formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
-                Calendar calendar = Calendar.getInstance();
-                Date date = formatter.parse(dateString);
-                calendar.setTime(date);
-                return calendar;
-            } catch (ParseException e) {
+                return GregorianCalendar.from(ZonedDateTime.parse(dateString));
+            } catch (DateTimeParseException e) {
                 throw new JsonParseException(e);
             }
         }
