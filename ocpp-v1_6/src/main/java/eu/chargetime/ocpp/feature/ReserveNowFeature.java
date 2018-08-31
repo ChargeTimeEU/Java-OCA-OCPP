@@ -1,11 +1,5 @@
 package eu.chargetime.ocpp.feature;
 
-import eu.chargetime.ocpp.feature.profile.Profile;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.reservation.ReserveNowConfirmation;
-import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
 
@@ -32,6 +26,13 @@ import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+import eu.chargetime.ocpp.feature.profile.Profile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.reservation.ReserveNowConfirmation;
+import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
+
 
 public class ReserveNowFeature extends Feature {
 

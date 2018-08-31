@@ -30,6 +30,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 /**
  * Sent by the Charge Point to the Central System in response to an {@link UnlockConnectorRequest}.
@@ -82,5 +83,26 @@ public class UnlockConnectorConfirmation implements Confirmation {
     @XmlElement
     public void setStatus(UnlockStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UnlockConnectorConfirmation that = (UnlockConnectorConfirmation) o;
+        return status == that.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(status);
+    }
+
+    @Override
+    public String toString() {
+        return "UnlockConnectorConfirmation{" +
+                "status=" + status +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

@@ -1,13 +1,5 @@
 package eu.chargetime.ocpp.model.core;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.utilities.ModelUtil;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -33,6 +25,16 @@ import javax.xml.bind.annotation.XmlType;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.ModelUtil;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.Objects;
+
 
 /**
  * Sent either by the Central System to the Charge Point or vice versa.
@@ -144,5 +146,30 @@ public class DataTransferRequest implements Request {
 
     private String createErrorMessage(int maxLength) {
         return String.format(ERROR_MESSAGE, maxLength);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DataTransferRequest that = (DataTransferRequest) o;
+        return Objects.equals(vendorId, that.vendorId) &&
+                Objects.equals(messageId, that.messageId) &&
+                Objects.equals(data, that.data);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(vendorId, messageId, data);
+    }
+
+    @Override
+    public String toString() {
+        return "DataTransferRequest{" +
+                "data='" + data + '\'' +
+                ", messageId='" + messageId + '\'' +
+                ", vendorId='" + vendorId + '\'' +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

@@ -40,8 +40,8 @@ import java.util.UUID;
  * Callback handler for client events of the Remote Trigger feature profile.
  */
 public class ClientRemoteTriggerProfile implements Profile {
-    ClientRemoteTriggerHandler eventHandler;
-    ArrayList<Feature> features;
+    private ClientRemoteTriggerHandler eventHandler;
+    private ArrayList<Feature> features;
 
     public ClientRemoteTriggerProfile(ClientRemoteTriggerHandler handler) {
         features = new ArrayList<>();

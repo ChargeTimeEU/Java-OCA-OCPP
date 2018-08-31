@@ -31,6 +31,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 /**
  * Sent by the Charge Point to the Central System in response to a {@link ClearCacheRequest}.
@@ -72,5 +73,26 @@ public class ClearCacheConfirmation implements Confirmation {
     @Override
     public boolean validate() {
         return this.status != null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ClearCacheConfirmation that = (ClearCacheConfirmation) o;
+        return status == that.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(status);
+    }
+
+    @Override
+    public String toString() {
+        return "ClearCacheConfirmation{" +
+                "status=" + status +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

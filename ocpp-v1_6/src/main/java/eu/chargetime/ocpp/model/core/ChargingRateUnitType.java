@@ -30,5 +30,6 @@ package eu.chargetime.ocpp.model.core;
  * Accepted values used for {@link ChargingSchedule}.
  */
 public enum ChargingRateUnitType {
-    W, A
+    W,
+    A
 }

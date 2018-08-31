@@ -7,6 +7,7 @@ import eu.chargetime.ocpp.model.core.ChargingProfilePurposeType;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -104,5 +105,28 @@ public class SetChargingProfileRequest implements Request {
         }
 
         return valid;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SetChargingProfileRequest that = (SetChargingProfileRequest) o;
+        return Objects.equals(connectorId, that.connectorId) &&
+                Objects.equals(chargingProfile, that.chargingProfile);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(connectorId, chargingProfile);
+    }
+
+    @Override
+    public String toString() {
+        return "SetChargingProfileRequest{" +
+                "connectorId=" + connectorId +
+                ", chargingProfile=" + chargingProfile +
+                '}';
     }
 }

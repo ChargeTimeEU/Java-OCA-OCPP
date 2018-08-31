@@ -25,11 +25,13 @@ package eu.chargetime.ocpp.model.firmware;/*
  */
 
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.SugarUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.Calendar;
+import java.util.Objects;
 
 @XmlRootElement
 @XmlType(propOrder = {"location", "startTime", "stopTime", "retries", "retryInterval"})
@@ -148,5 +150,34 @@ public class GetDiagnosticsRequest implements Request {
     @XmlElement
     public void setStopTime(Calendar stopTime) {
         this.stopTime = stopTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GetDiagnosticsRequest that = (GetDiagnosticsRequest) o;
+        return retries == that.retries &&
+                retryInterval == that.retryInterval &&
+                Objects.equals(location, that.location) &&
+                Objects.equals(startTime, that.startTime) &&
+                Objects.equals(stopTime, that.stopTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(location, retries, retryInterval, startTime, stopTime);
+    }
+
+    @Override
+    public String toString() {
+        return "GetDiagnosticsRequest{" +
+                "location='" + location + '\'' +
+                ", retries=" + retries +
+                ", retryInterval=" + retryInterval +
+                ", startTime='" + SugarUtil.calendarToString(startTime) +
+                ", stopTime='" + SugarUtil.calendarToString(stopTime) +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

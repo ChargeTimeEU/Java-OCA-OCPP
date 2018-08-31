@@ -1,13 +1,5 @@
 package eu.chargetime.ocpp.model.core;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Validatable;
-import eu.chargetime.ocpp.utilities.ModelUtil;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -34,6 +26,16 @@ import javax.xml.bind.annotation.XmlType;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.Validatable;
+import eu.chargetime.ocpp.utilities.ModelUtil;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.Objects;
 
 /**
  * Contains information about a specific configuration key.
@@ -137,5 +139,30 @@ public class KeyValueType implements Validatable {
 
     private static String createErrorMessage(int maxLength) {
         return String.format(ERROR_MESSAGE, maxLength);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        KeyValueType that = (KeyValueType) o;
+        return Objects.equals(key, that.key) &&
+                Objects.equals(readonly, that.readonly) &&
+                Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key, readonly, value);
+    }
+
+    @Override
+    public String toString() {
+        return "KeyValueType{" +
+                "key='" + key + '\'' +
+                ", readonly=" + readonly +
+                ", value='" + value + '\'' +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

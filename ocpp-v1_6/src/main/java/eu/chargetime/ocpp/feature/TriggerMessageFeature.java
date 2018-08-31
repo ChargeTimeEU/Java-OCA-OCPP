@@ -1,11 +1,5 @@
 package eu.chargetime.ocpp.feature;
 
-import eu.chargetime.ocpp.feature.profile.Profile;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageConfirmation;
-import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2017 Emil Christopher Solli Melar <emil@iconsultable.no>
@@ -32,6 +26,13 @@ import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+import eu.chargetime.ocpp.feature.profile.Profile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageConfirmation;
+import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
+
 
 public class TriggerMessageFeature extends Feature {
     public TriggerMessageFeature(Profile ownerProfile) {

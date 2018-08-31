@@ -1,11 +1,5 @@
 package eu.chargetime.ocpp.feature;
 
-import eu.chargetime.ocpp.feature.profile.Profile;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationConfirmation;
-import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
 
@@ -32,6 +26,13 @@ import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+import eu.chargetime.ocpp.feature.profile.Profile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationConfirmation;
+import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
+
 
 public class DiagnosticsStatusNotificationFeature extends Feature {
 

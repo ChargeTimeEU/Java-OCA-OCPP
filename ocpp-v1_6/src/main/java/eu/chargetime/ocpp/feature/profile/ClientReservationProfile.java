@@ -1,4 +1,6 @@
-package eu.chargetime.ocpp.feature.profile;/*
+package eu.chargetime.ocpp.feature.profile;
+
+/*
     ChargeTime.eu - Java-OCA-OCPP
 
     MIT License

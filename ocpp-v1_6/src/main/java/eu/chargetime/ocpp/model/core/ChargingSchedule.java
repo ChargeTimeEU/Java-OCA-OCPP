@@ -1,12 +1,5 @@
 package eu.chargetime.ocpp.model.core;
 
-import eu.chargetime.ocpp.model.Validatable;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import java.util.Calendar;
-
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -32,6 +25,17 @@ import java.util.Calendar;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+import eu.chargetime.ocpp.model.Validatable;
+import eu.chargetime.ocpp.utilities.SugarUtil;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Objects;
+
 
 /**
  * Class type used with {@link ChargingProfile}
@@ -183,5 +187,34 @@ public class ChargingSchedule implements Validatable {
     @XmlElement
     public void setMinChargingRate(Double minChargingRate) {
         this.minChargingRate = minChargingRate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChargingSchedule that = (ChargingSchedule) o;
+        return Objects.equals(duration, that.duration) &&
+                Objects.equals(startSchedule, that.startSchedule) &&
+                chargingRateUnit == that.chargingRateUnit &&
+                Arrays.equals(chargingSchedulePeriod, that.chargingSchedulePeriod) &&
+                Objects.equals(minChargingRate, that.minChargingRate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(duration, startSchedule, chargingRateUnit, chargingSchedulePeriod, minChargingRate);
+    }
+
+    @Override
+    public String toString() {
+        return "ChargingSchedule{" +
+                "chargingRateUnit=" + chargingRateUnit +
+                ", chargingSchedulePeriod=" + Arrays.toString(chargingSchedulePeriod) +
+                ", duration=" + duration +
+                ", minChargingRate=" + minChargingRate +
+                ", startSchedule='" + SugarUtil.calendarToString(startSchedule) +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

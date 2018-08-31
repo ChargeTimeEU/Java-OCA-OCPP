@@ -1,11 +1,14 @@
 package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Validatable;
+import eu.chargetime.ocpp.utilities.SugarUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Objects;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -102,5 +105,28 @@ public class MeterValue implements Validatable {
     @XmlElement
     public void setSampledValue(SampledValue[] sampledValue) {
         this.sampledValue = sampledValue;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MeterValue that = (MeterValue) o;
+        return Objects.equals(timestamp, that.timestamp) &&
+                Arrays.equals(sampledValue, that.sampledValue);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(timestamp, sampledValue);
+    }
+
+    @Override
+    public String toString() {
+        return "MeterValue{" +
+                "sampledValue=" + Arrays.toString(sampledValue) +
+                ", timestamp='" + SugarUtil.calendarToString(timestamp) +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

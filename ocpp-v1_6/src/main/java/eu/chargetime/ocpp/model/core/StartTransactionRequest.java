@@ -1,14 +1,5 @@
 package eu.chargetime.ocpp.model.core;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.utilities.ModelUtil;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import java.util.Calendar;
-
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -34,6 +25,18 @@ import java.util.Calendar;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.ModelUtil;
+import eu.chargetime.ocpp.utilities.SugarUtil;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.Calendar;
+import java.util.Objects;
+
 
 /**
  * Sent by the Charge Point to the Central System.
@@ -177,4 +180,34 @@ public class StartTransactionRequest implements Request {
     public boolean transactionRelated() {
         return true;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StartTransactionRequest that = (StartTransactionRequest) o;
+        return Objects.equals(connectorId, that.connectorId) &&
+                Objects.equals(idTag, that.idTag) &&
+                Objects.equals(meterStart, that.meterStart) &&
+                Objects.equals(reservationId, that.reservationId) &&
+                Objects.equals(timestamp, that.timestamp);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(connectorId, idTag, meterStart, reservationId, timestamp);
+    }
+
+    @Override
+    public String toString() {
+        return "StartTransactionRequest{" +
+                "connectorId=" + connectorId +
+                ", idTag='" + idTag + '\'' +
+                ", meterStart=" + meterStart +
+                ", reservationId=" + reservationId +
+                ", timestamp='" + SugarUtil.calendarToString(timestamp) +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
+    }
+
 }

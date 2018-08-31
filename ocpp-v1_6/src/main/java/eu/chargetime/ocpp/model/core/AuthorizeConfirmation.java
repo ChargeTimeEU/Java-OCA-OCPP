@@ -31,9 +31,10 @@ import eu.chargetime.ocpp.model.Confirmation;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 /**
- * Sent by the Centarl System to the Charge Point in response to a {@link AuthorizeRequest}.
+ * Sent by the Central System to the Charge Point in response to a {@link AuthorizeRequest}.
  */
 @XmlRootElement(name = "authorizeResponse")
 public class AuthorizeConfirmation implements Confirmation
@@ -66,5 +67,27 @@ public class AuthorizeConfirmation implements Confirmation
         if (valid &= idTagInfo != null)
             valid &= idTagInfo.validate();
         return valid;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AuthorizeConfirmation response = (AuthorizeConfirmation) o;
+        return Objects.equals(idTagInfo, response.idTagInfo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idTagInfo);
+    }
+
+    @Override
+    public String toString() {
+        return "AuthorizeConfirmation{" +
+                "idTagInfo=" + idTagInfo +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

@@ -30,5 +30,7 @@ package eu.chargetime.ocpp.model.core;
  * Accepted values used with {@link ChargingProfile}
  */
 public enum ChargingProfileKindType {
-    Absolute, Recurring, Relative
+    Absolute,
+    Recurring,
+    Relative
 }

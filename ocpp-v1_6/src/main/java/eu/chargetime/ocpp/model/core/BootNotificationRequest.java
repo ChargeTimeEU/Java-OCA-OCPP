@@ -1,13 +1,5 @@
 package eu.chargetime.ocpp.model.core;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.utilities.ModelUtil;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -34,6 +26,16 @@ import javax.xml.bind.annotation.XmlType;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.ModelUtil;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.Objects;
+
 
 /**
  * Sent by the Charge Point to the Central System.
@@ -304,5 +306,42 @@ public class BootNotificationRequest implements Request {
 
     private static String validationErrorMessage(int maxAllowedLength) {
         return String.format(ERROR_MESSAGE, maxAllowedLength);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BootNotificationRequest that = (BootNotificationRequest) o;
+        return Objects.equals(chargePointVendor, that.chargePointVendor) &&
+                Objects.equals(chargePointModel, that.chargePointModel) &&
+                Objects.equals(chargeBoxSerialNumber, that.chargeBoxSerialNumber) &&
+                Objects.equals(chargePointSerialNumber, that.chargePointSerialNumber) &&
+                Objects.equals(firmwareVersion, that.firmwareVersion) &&
+                Objects.equals(iccid, that.iccid) &&
+                Objects.equals(imsi, that.imsi) &&
+                Objects.equals(meterSerialNumber, that.meterSerialNumber) &&
+                Objects.equals(meterType, that.meterType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(chargePointVendor, chargePointModel, chargeBoxSerialNumber, chargePointSerialNumber, firmwareVersion, iccid, imsi, meterSerialNumber, meterType);
+    }
+
+    @Override
+    public String toString() {
+        return "BootNotificationRequest{" +
+                "chargeBoxSerialNumber='" + chargeBoxSerialNumber + '\'' +
+                ", chargePointModel='" + chargePointModel + '\'' +
+                ", chargePointSerialNumber='" + chargePointSerialNumber + '\'' +
+                ", chargePointVendor='" + chargePointVendor + '\'' +
+                ", firmwareVersion='" + firmwareVersion + '\'' +
+                ", iccid='" + iccid + '\'' +
+                ", imsi='" + imsi + '\'' +
+                ", meterSerialNumber='" + meterSerialNumber + '\'' +
+                ", meterType='" + meterType + '\'' +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

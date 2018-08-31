@@ -2,11 +2,13 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Validatable;
+import eu.chargetime.ocpp.utilities.SugarUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.Calendar;
+import java.util.Objects;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -197,5 +199,42 @@ public class ChargingProfile implements Validatable {
 
     public ChargingSchedule getChargingSchedule() {
         return chargingSchedule;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChargingProfile that = (ChargingProfile) o;
+        return Objects.equals(chargingProfileId, that.chargingProfileId) &&
+                Objects.equals(transactionId, that.transactionId) &&
+                Objects.equals(stackLevel, that.stackLevel) &&
+                chargingProfilePurpose == that.chargingProfilePurpose &&
+                chargingProfileKind == that.chargingProfileKind &&
+                recurrencyKind == that.recurrencyKind &&
+                Objects.equals(validFrom, that.validFrom) &&
+                Objects.equals(validTo, that.validTo) &&
+                Objects.equals(chargingSchedule, that.chargingSchedule);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(chargingProfileId, transactionId, stackLevel, chargingProfilePurpose, chargingProfileKind, recurrencyKind, validFrom, validTo, chargingSchedule);
+    }
+
+    @Override
+    public String toString() {
+        return "ChargingProfile{" +
+                "chargingProfileId=" + chargingProfileId +
+                ", chargingProfileKind=" + chargingProfileKind +
+                ", chargingProfilePurpose=" + chargingProfilePurpose +
+                ", chargingSchedule=" + chargingSchedule +
+                ", recurrencyKind=" + recurrencyKind +
+                ", stackLevel=" + stackLevel +
+                ", transactionId=" + transactionId +
+                ", validFrom='" + SugarUtil.calendarToString(validFrom) +
+                ", validTo='" + SugarUtil.calendarToString(validTo) +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

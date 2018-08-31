@@ -31,6 +31,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Objects;
 
 /**
  * Sent by the Charge Point to the Central System or vice versa in response to a {@link DataTransferRequest}.
@@ -92,5 +93,28 @@ public class DataTransferConfirmation implements Confirmation {
     @Override
     public boolean validate() {
         return this.status != null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DataTransferConfirmation that = (DataTransferConfirmation) o;
+        return status == that.status &&
+                Objects.equals(data, that.data);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(status, data);
+    }
+
+    @Override
+    public String toString() {
+        return "DataTransferConfirmation{" +
+                "data='" + data + '\'' +
+                ", status=" + status +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

@@ -29,6 +29,7 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.model.Request;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 /**
  * Sent by the Charge Point to the Central System.
@@ -44,5 +45,20 @@ public class HeartbeatRequest implements Request {
     @Override
     public boolean transactionRelated() {
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return this == o || o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(HeartbeatRequest.class);
+    }
+
+    @Override
+    public String toString() {
+        return "HeartbeatRequest" + "{isValid=" + String.valueOf(validate()) + "}";
     }
 }

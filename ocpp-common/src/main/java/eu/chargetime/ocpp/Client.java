@@ -143,11 +143,15 @@ public class Client
      */
     public CompletableFuture<Confirmation> send(Request request) throws UnsupportedFeatureException, OccurenceConstraintException {
         Optional<Feature> featureOptional = featureRepository.findFeature(request);
-        if (!featureOptional.isPresent())
+        if (!featureOptional.isPresent()) {
+            logger.error("Can't send request: unsupported feature. Payload: {}", request);
             throw new UnsupportedFeatureException();
+        }
 
-        if (!request.validate())
+        if (!request.validate()) {
+            logger.error("Can't send request: not validated. Payload {}: ", request);
             throw new OccurenceConstraintException();
+        }
 
         String id = session.storeRequest(request);
         CompletableFuture<Confirmation> promise = promiseRepository.createPromise(id);

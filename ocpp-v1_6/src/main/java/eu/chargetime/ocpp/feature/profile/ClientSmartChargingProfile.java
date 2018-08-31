@@ -39,8 +39,8 @@ import java.util.UUID;
  * Callback handler for client events of the Smart Charging feature profile.
  */
 public class ClientSmartChargingProfile implements Profile {
-    ClientSmartChargingEventHandler eventHandler;
-    ArrayList<Feature> features;
+    private ClientSmartChargingEventHandler eventHandler;
+    private ArrayList<Feature> features;
 
     public ClientSmartChargingProfile(ClientSmartChargingEventHandler handler) {
         features = new ArrayList<>();

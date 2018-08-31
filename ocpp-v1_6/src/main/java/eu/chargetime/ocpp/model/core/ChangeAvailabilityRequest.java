@@ -1,11 +1,5 @@
 package eu.chargetime.ocpp.model.core;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -32,6 +26,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.Request;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
+
 
 /**
  * Sent by the Central System to the Charge Point.
@@ -105,5 +107,28 @@ public class ChangeAvailabilityRequest implements Request {
     @Override
     public boolean transactionRelated() {
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChangeAvailabilityRequest that = (ChangeAvailabilityRequest) o;
+        return connectorId == that.connectorId &&
+                type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(connectorId, type);
+    }
+
+    @Override
+    public String toString() {
+        return "ChangeAvailabilityRequest{" +
+                "connectorId=" + connectorId +
+                ", type=" + type +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

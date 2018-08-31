@@ -1,4 +1,5 @@
 package eu.chargetime.ocpp.feature;
+
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -30,6 +31,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.firmware.GetDiagnosticsConfirmation;
 import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
+
 
 public class GetDiagnosticsFeature extends Feature {
 

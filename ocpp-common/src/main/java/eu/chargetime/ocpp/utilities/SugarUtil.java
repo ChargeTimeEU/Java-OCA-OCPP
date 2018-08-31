@@ -26,6 +26,17 @@ package eu.chargetime.ocpp.utilities;
     SOFTWARE.
  */
 
+import org.w3c.dom.Document;
+
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPMessage;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 
@@ -36,4 +47,27 @@ public class SugarUtil {
             return "";
         return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(calendar.getTime());
     }
+
+    public static String docToString(Document doc) {
+        try {
+            StringWriter sw = new StringWriter();
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.transform(new DOMSource(doc), new StreamResult(sw));
+            return sw.toString();
+        } catch (Exception ex) {
+            throw new RuntimeException("Error converting to String", ex);
+        }
+    }
+
+    public static String soapMessageToString(SOAPMessage message) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            message.writeTo(out);
+        } catch (SOAPException | IOException e) {
+            return "";
+        }
+        return new String(out.toByteArray());
+    }
+
 }

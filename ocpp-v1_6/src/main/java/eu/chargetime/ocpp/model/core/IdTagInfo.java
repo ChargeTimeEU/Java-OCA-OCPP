@@ -1,12 +1,5 @@
 package eu.chargetime.ocpp.model.core;
 
-import eu.chargetime.ocpp.model.Validatable;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import java.util.Calendar;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -33,6 +26,15 @@ import java.util.Calendar;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+import eu.chargetime.ocpp.model.Validatable;
+import eu.chargetime.ocpp.utilities.SugarUtil;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.Calendar;
+import java.util.Objects;
 
 /**
  * Contains status information about an identifier.
@@ -131,5 +133,29 @@ public class IdTagInfo implements Validatable
         boolean valid = true;
         valid &= this.status != null;
         return valid;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        IdTagInfo idTagInfo = (IdTagInfo) o;
+        return Objects.equals(expiryDate, idTagInfo.expiryDate) &&
+                Objects.equals(parentIdTag, idTagInfo.parentIdTag) &&
+                status == idTagInfo.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(expiryDate, parentIdTag, status);
+    }
+
+    @Override
+    public String toString() {
+        return "IdTagInfo{" +
+                "expiryDate='" + SugarUtil.calendarToString(expiryDate) +
+                ", parentIdTag='" + parentIdTag + '\'' +
+                ", status=" + status +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

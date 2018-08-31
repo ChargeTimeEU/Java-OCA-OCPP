@@ -30,6 +30,8 @@ import eu.chargetime.ocpp.model.Request;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
+
 
 /**
  * sent to Charge Point by Central System.
@@ -65,5 +67,26 @@ public class RemoteStopTransactionRequest implements Request {
     @Override
     public boolean transactionRelated() {
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RemoteStopTransactionRequest that = (RemoteStopTransactionRequest) o;
+        return Objects.equals(transactionId, that.transactionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(transactionId);
+    }
+
+    @Override
+    public String toString() {
+        return "RemoteStopTransactionRequest{" +
+                "transactionId=" + transactionId +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }
