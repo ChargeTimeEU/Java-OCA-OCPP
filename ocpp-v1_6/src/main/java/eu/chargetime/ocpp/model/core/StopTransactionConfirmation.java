@@ -30,6 +30,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 /**
  * Sent by the Central System to the Charge Point in response to a {@link StopTransactionRequest}.
@@ -41,8 +42,9 @@ public class StopTransactionConfirmation implements Confirmation {
     @Override
     public boolean validate() {
         boolean valid = true;
-        if (idTagInfo != null)
+        if (idTagInfo != null) {
             valid &= idTagInfo.validate();
+        }
         return valid;
     }
 
@@ -65,5 +67,26 @@ public class StopTransactionConfirmation implements Confirmation {
     @XmlElement
     public void setIdTagInfo(IdTagInfo idTagInfo) {
         this.idTagInfo = idTagInfo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StopTransactionConfirmation that = (StopTransactionConfirmation) o;
+        return Objects.equals(idTagInfo, that.idTagInfo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idTagInfo);
+    }
+
+    @Override
+    public String toString() {
+        return "StopTransactionConfirmation{" +
+                "idTagInfo=" + idTagInfo +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Objects;
 
 /**
  * Single sampled value in {@link MeterValue}. Each value can be accompanied by optional fields.
@@ -334,5 +335,38 @@ public class SampledValue implements Validatable {
     private boolean isValidUnit(String unit) {
         String[] unitOfMeasure = {"Wh", "kWh", "varh", "kvarh", "W", "kW", "VA", "kVA", "var", "kvar", "A", "V", "Celsius", "Fahrenheit", "K", "Percent"};
         return ModelUtil.isAmong(unit, unitOfMeasure);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SampledValue that = (SampledValue) o;
+        return Objects.equals(value, that.value) &&
+                Objects.equals(context, that.context) &&
+                format == that.format &&
+                Objects.equals(measurand, that.measurand) &&
+                Objects.equals(phase, that.phase) &&
+                location == that.location &&
+                Objects.equals(unit, that.unit);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value, context, format, measurand, phase, location, unit);
+    }
+
+    @Override
+    public String toString() {
+        return "SampledValue{" +
+                "context='" + context + '\'' +
+                ", format=" + format +
+                ", location=" + location +
+                ", measurand='" + measurand + '\'' +
+                ", phase='" + phase + '\'' +
+                ", unit='" + unit + '\'' +
+                ", value='" + value + '\'' +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

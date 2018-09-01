@@ -1,13 +1,5 @@
 package eu.chargetime.ocpp.model.core;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Confirmation;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import java.util.Calendar;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -34,6 +26,17 @@ import java.util.Calendar;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.utilities.SugarUtil;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.Calendar;
+import java.util.Objects;
+
 
 /**
  * Sent by the Central System to the Charge Point in response to a {@link BootNotificationRequest}.
@@ -141,4 +144,30 @@ public class BootNotificationConfirmation implements Confirmation {
 
         return valid;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BootNotificationConfirmation that = (BootNotificationConfirmation) o;
+        return interval == that.interval &&
+                Objects.equals(currentTime, that.currentTime) &&
+                status == that.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(currentTime, interval, status);
+    }
+
+    @Override
+    public String toString() {
+        return "BootNotificationConfirmation{" +
+                "currentTime='" + SugarUtil.calendarToString(currentTime) +
+                ", interval=" + interval +
+                ", status=" + status +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
+    }
+
 }

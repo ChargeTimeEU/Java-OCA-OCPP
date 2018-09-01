@@ -1,11 +1,4 @@
 package eu.chargetime.ocpp.feature;
-
-import eu.chargetime.ocpp.feature.profile.Profile;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.core.DataTransferConfirmation;
-import eu.chargetime.ocpp.model.core.DataTransferRequest;
-
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -31,6 +24,14 @@ import eu.chargetime.ocpp.model.core.DataTransferRequest;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+import eu.chargetime.ocpp.feature.profile.Profile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.core.DataTransferConfirmation;
+import eu.chargetime.ocpp.model.core.DataTransferRequest;
+
+
 public class DataTransferFeature extends Feature {
 
     public DataTransferFeature(Profile ownerProfile) {

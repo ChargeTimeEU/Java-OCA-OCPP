@@ -1,10 +1,5 @@
 package eu.chargetime.ocpp.model.remotetrigger;
 
-import eu.chargetime.ocpp.model.Confirmation;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2017 Emil Christopher Solli Melar <emil@iconsultable.no>
@@ -31,6 +26,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+import eu.chargetime.ocpp.model.Confirmation;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
+
 
 @XmlRootElement(name = "triggerMessageResponse")
 public class TriggerMessageConfirmation implements Confirmation {
@@ -71,5 +73,26 @@ public class TriggerMessageConfirmation implements Confirmation {
     @Override
     public boolean validate() {
         return this.status != null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TriggerMessageConfirmation that = (TriggerMessageConfirmation) o;
+        return status == that.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(status);
+    }
+
+    @Override
+    public String toString() {
+        return "TriggerMessageConfirmation{" +
+                "status=" + status +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

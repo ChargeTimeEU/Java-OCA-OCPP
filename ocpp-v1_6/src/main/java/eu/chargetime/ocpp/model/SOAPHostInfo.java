@@ -24,6 +24,8 @@ package eu.chargetime.ocpp.model;/*
     SOFTWARE.
  */
 
+import java.util.Objects;
+
 public class SOAPHostInfo {
     public static final String NAMESPACE_CHARGEBOX = "urn://Ocpp/Cp/2015/10/";
     public static final String NAMESPACE_CENTRALSYSTEM =  "urn://Ocpp/Cs/2015/10/";
@@ -119,5 +121,33 @@ public class SOAPHostInfo {
                 throw new IllegalStateException("Some required fields where not set.");
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SOAPHostInfo that = (SOAPHostInfo) o;
+        return isClient == that.isClient &&
+                Objects.equals(chargeBoxIdentity, that.chargeBoxIdentity) &&
+                Objects.equals(fromUrl, that.fromUrl) &&
+                Objects.equals(toUrl, that.toUrl) &&
+                Objects.equals(namespace, that.namespace);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(chargeBoxIdentity, fromUrl, toUrl, namespace, isClient);
+    }
+
+    @Override
+    public String toString() {
+        return "SOAPHostInfo{" +
+                "chargeBoxIdentity='" + chargeBoxIdentity + '\'' +
+                ", fromUrl='" + fromUrl + '\'' +
+                ", toUrl='" + toUrl + '\'' +
+                ", namespace='" + namespace + '\'' +
+                ", isClient=" + isClient +
+                '}';
     }
 }

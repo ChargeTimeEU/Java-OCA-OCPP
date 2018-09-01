@@ -1,11 +1,5 @@
 package eu.chargetime.ocpp.model.core;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -31,6 +25,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.Request;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
+
 
 /**
  * Sent by the Central System to the Charge Point.
@@ -70,5 +72,26 @@ public class UnlockConnectorRequest implements Request {
     @Override
     public boolean transactionRelated() {
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UnlockConnectorRequest that = (UnlockConnectorRequest) o;
+        return Objects.equals(connectorId, that.connectorId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(connectorId);
+    }
+
+    @Override
+    public String toString() {
+        return "UnlockConnectorRequest{" +
+                "connectorId=" + connectorId +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

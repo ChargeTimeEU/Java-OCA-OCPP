@@ -7,6 +7,8 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Arrays;
+import java.util.Objects;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -114,5 +116,28 @@ public class GetConfigurationConfirmation implements Confirmation {
     @Override
     public boolean validate() {
         return validateConfigurationKeys();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GetConfigurationConfirmation that = (GetConfigurationConfirmation) o;
+        return Arrays.equals(configurationKey, that.configurationKey) &&
+                Arrays.equals(unknownKey, that.unknownKey);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(configurationKey, unknownKey);
+    }
+
+    @Override
+    public String toString() {
+        return "GetConfigurationConfirmation{" +
+                "configurationKey=" + Arrays.toString(configurationKey) +
+                ", unknownKey=" + Arrays.toString(unknownKey) +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

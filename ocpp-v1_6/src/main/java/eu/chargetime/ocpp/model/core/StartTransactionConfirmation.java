@@ -31,6 +31,8 @@ import eu.chargetime.ocpp.model.Confirmation;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Objects;
+
 
 /**
  * Sent by the Central System to the Charge Point in response to a {@link StartTransactionRequest}.
@@ -85,5 +87,28 @@ public class StartTransactionConfirmation implements Confirmation {
     @XmlElement
     public void setTransactionId(Integer transactionId) {
         this.transactionId = transactionId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StartTransactionConfirmation that = (StartTransactionConfirmation) o;
+        return Objects.equals(idTagInfo, that.idTagInfo) &&
+                Objects.equals(transactionId, that.transactionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idTagInfo, transactionId);
+    }
+
+    @Override
+    public String toString() {
+        return "StartTransactionConfirmation{" +
+                "idTagInfo=" + idTagInfo +
+                ", transactionId=" + transactionId +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

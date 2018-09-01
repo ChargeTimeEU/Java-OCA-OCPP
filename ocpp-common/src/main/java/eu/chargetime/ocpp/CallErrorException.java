@@ -40,6 +40,9 @@ public class CallErrorException extends Exception {
      * @param payload          raw payload send from the other end.
      */
     public CallErrorException(String errorCode, String errorDescription, Object payload) {
+        super("errorCode='" + errorCode + '\'' +
+                ", errorDescription='" + errorDescription + '\'' +
+                ", payload=" + payload);
         this.errorCode = errorCode;
         this.errorDescription = errorDescription;
         this.payload = payload;

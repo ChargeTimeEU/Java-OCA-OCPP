@@ -30,5 +30,7 @@ package eu.chargetime.ocpp.model.core;
  * Accepted values used with {@link BootNotificationConfirmation}.
  */
 public enum RegistrationStatus {
-    Accepted, Pending, Rejected
+    Accepted,
+    Pending,
+    Rejected
 }

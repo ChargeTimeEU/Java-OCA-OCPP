@@ -1,13 +1,5 @@
 package eu.chargetime.ocpp.model.core;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.utilities.ModelUtil;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -33,6 +25,16 @@ import javax.xml.bind.annotation.XmlType;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.ModelUtil;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.Objects;
+
 
 /**
  * Sent to Charge Point by Central System.
@@ -131,5 +133,30 @@ public class RemoteStartTransactionRequest implements Request {
     @Override
     public boolean transactionRelated() {
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RemoteStartTransactionRequest that = (RemoteStartTransactionRequest) o;
+        return Objects.equals(connectorId, that.connectorId) &&
+                Objects.equals(idTag, that.idTag) &&
+                Objects.equals(chargingProfile, that.chargingProfile);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(connectorId, idTag, chargingProfile);
+    }
+
+    @Override
+    public String toString() {
+        return "RemoteStartTransactionRequest{" +
+                "chargingProfile=" + chargingProfile +
+                ", connectorId=" + connectorId +
+                ", idTag='" + idTag + '\'' +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

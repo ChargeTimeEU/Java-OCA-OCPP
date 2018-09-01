@@ -1,12 +1,5 @@
 package eu.chargetime.ocpp.model.core;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -32,6 +25,16 @@ import javax.xml.bind.annotation.XmlType;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.Request;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.Arrays;
+import java.util.Objects;
+
 
 /**
  * Sent by the Charge Point to the Central System.
@@ -125,5 +128,30 @@ public class MeterValuesRequest implements Request {
     @Override
     public boolean transactionRelated() {
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MeterValuesRequest that = (MeterValuesRequest) o;
+        return connectorId == that.connectorId &&
+                transactionId == that.transactionId &&
+                Arrays.equals(meterValue, that.meterValue);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(connectorId, transactionId, meterValue);
+    }
+
+    @Override
+    public String toString() {
+        return "MeterValuesRequest{" +
+                "connectorId=" + connectorId +
+                ", meterValue=" + Arrays.toString(meterValue) +
+                ", transactionId=" + transactionId +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

@@ -1,14 +1,5 @@
 package eu.chargetime.ocpp.model.core;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.utilities.ModelUtil;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import java.util.Calendar;
-
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -34,6 +25,19 @@ import java.util.Calendar;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.ModelUtil;
+import eu.chargetime.ocpp.utilities.SugarUtil;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Objects;
+
 
 /**
  * Sent by the Charge Point to the Central System.
@@ -206,5 +210,36 @@ public class StopTransactionRequest implements Request {
     @Override
     public boolean transactionRelated() {
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StopTransactionRequest that = (StopTransactionRequest) o;
+        return Objects.equals(idTag, that.idTag) &&
+                Objects.equals(meterStop, that.meterStop) &&
+                Objects.equals(timestamp, that.timestamp) &&
+                Objects.equals(transactionId, that.transactionId) &&
+                reason == that.reason &&
+                Arrays.equals(transactionData, that.transactionData);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idTag, meterStop, timestamp, transactionId, reason, transactionData);
+    }
+
+    @Override
+    public String toString() {
+        return "StopTransactionRequest{" +
+                "idTag='" + idTag + '\'' +
+                ", meterStop=" + meterStop +
+                ", reason=" + reason +
+                ", timestamp='" + SugarUtil.calendarToString(timestamp) +
+                ", transactionData=" + Arrays.toString(transactionData) +
+                ", transactionId=" + transactionId +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

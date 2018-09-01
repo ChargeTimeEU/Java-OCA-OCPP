@@ -6,6 +6,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
@@ -88,5 +89,26 @@ public class AuthorizeRequest implements Request {
     @Override
     public boolean transactionRelated() {
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AuthorizeRequest request = (AuthorizeRequest) o;
+        return Objects.equals(idTag, request.idTag);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idTag);
+    }
+
+    @Override
+    public String toString() {
+        return "AuthorizeRequest{" +
+                "idTag='" + idTag + '\'' +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

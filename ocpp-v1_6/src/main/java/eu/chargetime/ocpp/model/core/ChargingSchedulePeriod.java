@@ -31,6 +31,7 @@ import eu.chargetime.ocpp.model.Validatable;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Objects;
 
 /**
  * Class Type used with {@link ChargingSchedule}.
@@ -118,5 +119,30 @@ public class ChargingSchedulePeriod implements Validatable {
      */
     public Integer getNumberPhases() {
         return numberPhases;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChargingSchedulePeriod that = (ChargingSchedulePeriod) o;
+        return Objects.equals(startPeriod, that.startPeriod) &&
+                Objects.equals(limit, that.limit) &&
+                Objects.equals(numberPhases, that.numberPhases);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(startPeriod, limit, numberPhases);
+    }
+
+    @Override
+    public String toString() {
+        return "ChargingSchedulePeriod{" +
+                "limit=" + limit +
+                ", numberPhases=" + numberPhases +
+                ", startPeriod=" + startPeriod +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

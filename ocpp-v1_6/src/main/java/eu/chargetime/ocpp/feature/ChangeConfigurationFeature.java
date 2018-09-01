@@ -1,11 +1,5 @@
 package eu.chargetime.ocpp.feature;
 
-import eu.chargetime.ocpp.feature.profile.Profile;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.core.ChangeConfigurationConfirmation;
-import eu.chargetime.ocpp.model.core.ChangeConfigurationRequest;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -32,6 +26,14 @@ import eu.chargetime.ocpp.model.core.ChangeConfigurationRequest;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+import eu.chargetime.ocpp.feature.profile.Profile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.core.ChangeConfigurationConfirmation;
+import eu.chargetime.ocpp.model.core.ChangeConfigurationRequest;
+
+
 public class ChangeConfigurationFeature extends Feature {
     public ChangeConfigurationFeature(Profile ownerProfile) {
         super(ownerProfile);

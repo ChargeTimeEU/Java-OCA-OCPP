@@ -29,6 +29,7 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.model.Confirmation;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 @XmlRootElement(name = "statusNotificationResponse")
 public class StatusNotificationConfirmation implements Confirmation {
@@ -36,4 +37,20 @@ public class StatusNotificationConfirmation implements Confirmation {
     public boolean validate() {
         return true;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return this == o || o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(StatusNotificationConfirmation.class);
+    }
+
+    @Override
+    public String toString() {
+        return "StatusNotificationConfirmation{}" + "{isValid=" + String.valueOf(validate()) + "}";
+    }
+
 }

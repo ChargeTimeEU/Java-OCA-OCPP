@@ -30,6 +30,7 @@ import eu.chargetime.ocpp.model.Request;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 /**
  * Sent by the Central System to the Charge Point.
@@ -75,5 +76,26 @@ public class ResetRequest implements Request {
     @Override
     public boolean transactionRelated() {
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ResetRequest that = (ResetRequest) o;
+        return type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type);
+    }
+
+    @Override
+    public String toString() {
+        return "ResetRequest{" +
+                "type=" + type +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

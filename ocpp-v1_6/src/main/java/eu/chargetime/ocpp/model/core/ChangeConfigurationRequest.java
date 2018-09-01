@@ -1,13 +1,5 @@
 package eu.chargetime.ocpp.model.core;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.utilities.ModelUtil;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
 
@@ -33,6 +25,16 @@ import javax.xml.bind.annotation.XmlType;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.ModelUtil;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.Objects;
+
 
 /**
  * Sent by Central System to Charge Point.
@@ -117,5 +119,28 @@ public class ChangeConfigurationRequest implements Request {
 
     private static String createErrorMessage(int valueMaxLength) {
         return String.format(ERROR_MESSAGE, valueMaxLength);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChangeConfigurationRequest that = (ChangeConfigurationRequest) o;
+        return Objects.equals(key, that.key) &&
+                Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key, value);
+    }
+
+    @Override
+    public String toString() {
+        return "ChangeConfigurationRequest{" +
+                "key='" + key + '\'' +
+                ", value='" + value + '\'' +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

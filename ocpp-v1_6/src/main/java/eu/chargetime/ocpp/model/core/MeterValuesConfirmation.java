@@ -29,6 +29,7 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.model.Confirmation;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 /**
  *
@@ -38,5 +39,20 @@ public class MeterValuesConfirmation implements Confirmation {
     @Override
     public boolean validate() {
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return this == o || o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(MeterValuesConfirmation.class);
+    }
+
+    @Override
+    public String toString() {
+        return "MeterValuesConfirmation" + "{isValid=" + String.valueOf(validate()) + "}";
     }
 }

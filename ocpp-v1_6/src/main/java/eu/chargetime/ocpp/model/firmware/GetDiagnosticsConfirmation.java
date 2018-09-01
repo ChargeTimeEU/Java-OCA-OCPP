@@ -31,6 +31,7 @@ import eu.chargetime.ocpp.utilities.ModelUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 @XmlRootElement(name = "getDiagnosticsResponse")
 public class GetDiagnosticsConfirmation implements Confirmation {
@@ -64,5 +65,26 @@ public class GetDiagnosticsConfirmation implements Confirmation {
         }
 
         this.fileName = fileName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GetDiagnosticsConfirmation that = (GetDiagnosticsConfirmation) o;
+        return Objects.equals(fileName, that.fileName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fileName);
+    }
+
+    @Override
+    public String toString() {
+        return "GetDiagnosticsConfirmation{" +
+                "fileName='" + fileName + '\'' +
+                ", isValid=" + String.valueOf(validate()) +
+                '}';
     }
 }

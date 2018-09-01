@@ -1,11 +1,5 @@
 package eu.chargetime.ocpp.feature;
 
-import eu.chargetime.ocpp.feature.profile.Profile;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.core.ChangeAvailabilityConfirmation;
-import eu.chargetime.ocpp.model.core.ChangeAvailabilityRequest;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -32,6 +26,14 @@ import eu.chargetime.ocpp.model.core.ChangeAvailabilityRequest;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
+
+import eu.chargetime.ocpp.feature.profile.Profile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.core.ChangeAvailabilityConfirmation;
+import eu.chargetime.ocpp.model.core.ChangeAvailabilityRequest;
+
+
 public class ChangeAvailabilityFeature extends Feature {
     public ChangeAvailabilityFeature(Profile ownerProfile) {
         super(ownerProfile);

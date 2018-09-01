@@ -1,11 +1,5 @@
 package eu.chargetime.ocpp.feature;
 
-import eu.chargetime.ocpp.feature.profile.Profile;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.core.StartTransactionConfirmation;
-import eu.chargetime.ocpp.model.core.StartTransactionRequest;
-
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -31,6 +25,14 @@ import eu.chargetime.ocpp.model.core.StartTransactionRequest;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+import eu.chargetime.ocpp.feature.profile.Profile;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.core.StartTransactionConfirmation;
+import eu.chargetime.ocpp.model.core.StartTransactionRequest;
+
+
 public class StartTransactionFeature extends Feature {
     public StartTransactionFeature(Profile ownerProfile) {
         super(ownerProfile);
