@@ -99,7 +99,7 @@ public class FeatureRepository implements IFeatureRepository {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper("FeatureRepository")
-                .add("featureList", featureList)
-                .toString();
+                          .add("featureList", featureList)
+                          .toString();
     }
 }

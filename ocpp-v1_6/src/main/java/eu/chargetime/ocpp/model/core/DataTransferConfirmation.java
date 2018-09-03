@@ -27,6 +27,7 @@ package eu.chargetime.ocpp.model.core;
  */
 
 import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -64,7 +65,7 @@ public class DataTransferConfirmation implements Confirmation {
     /**
      * Required. This indicates the success or failure of the data transfer.
      *
-     * @param status                        the {@link DataTransferStatus}.
+     * @param status the {@link DataTransferStatus}.
      */
     @XmlElement
     public void setStatus(DataTransferStatus status) {
@@ -111,10 +112,10 @@ public class DataTransferConfirmation implements Confirmation {
 
     @Override
     public String toString() {
-        return "DataTransferConfirmation{" +
-                "data='" + data + '\'' +
-                ", status=" + status +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("status", status)
+                .add("data", data)
+                .add("isValid", validate())
+                .toString();
     }
 }

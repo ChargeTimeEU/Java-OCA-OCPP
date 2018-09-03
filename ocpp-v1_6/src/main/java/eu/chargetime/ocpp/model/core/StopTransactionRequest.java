@@ -29,6 +29,7 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.ModelUtil;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 import eu.chargetime.ocpp.utilities.SugarUtil;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -232,14 +233,14 @@ public class StopTransactionRequest implements Request {
 
     @Override
     public String toString() {
-        return "StopTransactionRequest{" +
-                "idTag='" + idTag + '\'' +
-                ", meterStop=" + meterStop +
-                ", reason=" + reason +
-                ", timestamp='" + SugarUtil.calendarToString(timestamp) +
-                ", transactionData=" + Arrays.toString(transactionData) +
-                ", transactionId=" + transactionId +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("idTag", idTag)
+                .add("meterStop", meterStop)
+                .add("timestamp", timestamp)
+                .add("transactionId", transactionId)
+                .add("reason", reason)
+                .add("transactionData", transactionData)
+                .add("isValid", validate())
+                .toString();
     }
 }

@@ -27,6 +27,7 @@ package eu.chargetime.ocpp.model.core;
  */
 
 import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -84,9 +85,9 @@ public class StopTransactionConfirmation implements Confirmation {
 
     @Override
     public String toString() {
-        return "StopTransactionConfirmation{" +
-                "idTagInfo=" + idTagInfo +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("idTagInfo", idTagInfo)
+                .add("isValid", validate())
+                .toString();
     }
 }

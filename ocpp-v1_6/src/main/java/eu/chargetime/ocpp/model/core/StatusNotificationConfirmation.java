@@ -27,6 +27,7 @@ package eu.chargetime.ocpp.model.core;
  */
 
 import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
@@ -50,7 +51,9 @@ public class StatusNotificationConfirmation implements Confirmation {
 
     @Override
     public String toString() {
-        return "StatusNotificationConfirmation{}" + "{isValid=" + String.valueOf(validate()) + "}";
+        return MoreObjects.toStringHelper(this)
+                .add("isValid", validate())
+                .toString();
     }
 
 }

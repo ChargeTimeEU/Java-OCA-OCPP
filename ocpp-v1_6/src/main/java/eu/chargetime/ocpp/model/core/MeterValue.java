@@ -1,6 +1,7 @@
 package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Validatable;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 import eu.chargetime.ocpp.utilities.SugarUtil;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -123,10 +124,10 @@ public class MeterValue implements Validatable {
 
     @Override
     public String toString() {
-        return "MeterValue{" +
-                "sampledValue=" + Arrays.toString(sampledValue) +
-                ", timestamp='" + SugarUtil.calendarToString(timestamp) +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("timestamp", timestamp)
+                .add("sampledValue", sampledValue)
+                .add("isValid", validate())
+                .toString();
     }
 }

@@ -27,6 +27,7 @@ package eu.chargetime.ocpp.model.core;
  */
 
 import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -100,9 +101,9 @@ public class RemoteStopTransactionConfirmation implements Confirmation {
 
     @Override
     public String toString() {
-        return "RemoteStopTransactionConfirmation{" +
-                "status=" + status +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("status", status)
+                .add("isValid", validate())
+                .toString();
     }
 }

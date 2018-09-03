@@ -3,6 +3,7 @@ package eu.chargetime.ocpp.model.reservation;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.ModelUtil;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 import eu.chargetime.ocpp.utilities.SugarUtil;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -210,13 +211,13 @@ public class ReserveNowRequest implements Request {
 
     @Override
     public String toString() {
-        return "ReserveNowRequest{" +
-                "connectorId=" + connectorId +
-                ", expiryDate='" + SugarUtil.calendarToString(expiryDate) +
-                ", idTag='" + idTag + '\'' +
-                ", parentIdTag='" + parentIdTag + '\'' +
-                ", reservationId=" + reservationId +
-                ", isValid=" + validate() +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("connectorId", connectorId)
+                .add("expiryDate", expiryDate)
+                .add("idTag", idTag)
+                .add("parentIdTag", parentIdTag)
+                .add("reservationId", reservationId)
+                .add("isValid", validate())
+                .toString();
     }
 }

@@ -28,6 +28,7 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -147,11 +148,11 @@ public class MeterValuesRequest implements Request {
 
     @Override
     public String toString() {
-        return "MeterValuesRequest{" +
-                "connectorId=" + connectorId +
-                ", meterValue=" + Arrays.toString(meterValue) +
-                ", transactionId=" + transactionId +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("connectorId", connectorId)
+                .add("transactionId", transactionId)
+                .add("meterValue", meterValue)
+                .add("isValid", validate())
+                .toString();
     }
 }

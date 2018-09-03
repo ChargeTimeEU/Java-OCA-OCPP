@@ -28,6 +28,7 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.utilities.ModelUtil;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -358,15 +359,15 @@ public class SampledValue implements Validatable {
 
     @Override
     public String toString() {
-        return "SampledValue{" +
-                "context='" + context + '\'' +
-                ", format=" + format +
-                ", location=" + location +
-                ", measurand='" + measurand + '\'' +
-                ", phase='" + phase + '\'' +
-                ", unit='" + unit + '\'' +
-                ", value='" + value + '\'' +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("value", value)
+                .add("context", context)
+                .add("format", format)
+                .add("measurand", measurand)
+                .add("phase", phase)
+                .add("location", location)
+                .add("unit", unit)
+                .add("isValid", validate())
+                .toString();
     }
 }

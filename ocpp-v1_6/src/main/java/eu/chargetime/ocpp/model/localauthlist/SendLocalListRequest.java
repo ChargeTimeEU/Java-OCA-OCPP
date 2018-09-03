@@ -28,6 +28,7 @@ package eu.chargetime.ocpp.model.localauthlist;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -108,11 +109,11 @@ public class SendLocalListRequest implements Request {
 
     @Override
     public String toString() {
-        return "SendLocalListRequest{" +
-                "listVersion=" + listVersion +
-                ", localAuthorisationList=" + Arrays.toString(localAuthorizationList) +
-                ", updateType=" + updateType +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("listVersion", listVersion)
+                .add("localAuthorizationList", localAuthorizationList)
+                .add("updateType", updateType)
+                .add("isValid", validate())
+                .toString();
     }
 }

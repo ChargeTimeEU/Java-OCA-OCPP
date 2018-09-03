@@ -3,6 +3,7 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.ModelUtil;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -134,10 +135,10 @@ public class GetConfigurationConfirmation implements Confirmation {
 
     @Override
     public String toString() {
-        return "GetConfigurationConfirmation{" +
-                "configurationKey=" + Arrays.toString(configurationKey) +
-                ", unknownKey=" + Arrays.toString(unknownKey) +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("configurationKey", configurationKey)
+                .add("unknownKey", unknownKey)
+                .add("isValid", validate())
+                .toString();
     }
 }

@@ -29,6 +29,7 @@ package eu.chargetime.ocpp.model.localauthlist;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
@@ -90,9 +91,9 @@ public class GetLocalListVersionConfirmation implements Confirmation {
 
     @Override
     public String toString() {
-        return "GetLocalListVersionConfirmation{" +
-                "listVersion=" + listVersion +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("listVersion", listVersion)
+                .add("isValid", validate())
+                .toString();
     }
 }

@@ -2,6 +2,7 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Validatable;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 import eu.chargetime.ocpp.utilities.SugarUtil;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -224,17 +225,17 @@ public class ChargingProfile implements Validatable {
 
     @Override
     public String toString() {
-        return "ChargingProfile{" +
-                "chargingProfileId=" + chargingProfileId +
-                ", chargingProfileKind=" + chargingProfileKind +
-                ", chargingProfilePurpose=" + chargingProfilePurpose +
-                ", chargingSchedule=" + chargingSchedule +
-                ", recurrencyKind=" + recurrencyKind +
-                ", stackLevel=" + stackLevel +
-                ", transactionId=" + transactionId +
-                ", validFrom='" + SugarUtil.calendarToString(validFrom) +
-                ", validTo='" + SugarUtil.calendarToString(validTo) +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("chargingProfileId", chargingProfileId)
+                .add("transactionId", transactionId)
+                .add("stackLevel", stackLevel)
+                .add("chargingProfilePurpose", chargingProfilePurpose)
+                .add("chargingProfileKind", chargingProfileKind)
+                .add("recurrencyKind", recurrencyKind)
+                .add("validFrom", validFrom)
+                .add("validTo", validTo)
+                .add("chargingSchedule", chargingSchedule)
+                .add("isValid", validate())
+                .toString();
     }
 }

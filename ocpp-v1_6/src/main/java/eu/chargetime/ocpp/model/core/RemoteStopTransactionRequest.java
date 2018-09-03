@@ -27,6 +27,7 @@ package eu.chargetime.ocpp.model.core;
  */
 
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -84,9 +85,9 @@ public class RemoteStopTransactionRequest implements Request {
 
     @Override
     public String toString() {
-        return "RemoteStopTransactionRequest{" +
-                "transactionId=" + transactionId +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("transactionId", transactionId)
+                .add("isValid", validate())
+                .toString();
     }
 }

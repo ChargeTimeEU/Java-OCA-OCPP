@@ -27,6 +27,7 @@ package eu.chargetime.ocpp.model.firmware;
  */
 
 import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
@@ -57,6 +58,8 @@ public class FirmwareStatusNotificationConfirmation implements Confirmation {
 
     @Override
     public String toString() {
-        return "FirmwareStatusNotificationConfirmation{}" + "{isValid=" + String.valueOf(validate()) + "}";
+        return MoreObjects.toStringHelper(this)
+                .add("isValid", validate())
+                .toString();
     }
 }

@@ -4,6 +4,7 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.ChargingProfile;
 import eu.chargetime.ocpp.model.core.ChargingProfilePurposeType;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -124,9 +125,10 @@ public class SetChargingProfileRequest implements Request {
 
     @Override
     public String toString() {
-        return "SetChargingProfileRequest{" +
-                "connectorId=" + connectorId +
-                ", chargingProfile=" + chargingProfile +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("connectorId", connectorId)
+                .add("chargingProfile", chargingProfile)
+                .add("isValid", validate())
+                .toString();
     }
 }

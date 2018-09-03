@@ -27,6 +27,7 @@ package eu.chargetime.ocpp.model.core;
  */
 
 import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
@@ -53,6 +54,8 @@ public class MeterValuesConfirmation implements Confirmation {
 
     @Override
     public String toString() {
-        return "MeterValuesConfirmation" + "{isValid=" + String.valueOf(validate()) + "}";
+        return MoreObjects.toStringHelper(this)
+                .add("isValid", validate())
+                .toString();
     }
 }

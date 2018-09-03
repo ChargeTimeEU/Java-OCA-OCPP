@@ -30,6 +30,7 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.model.core.IdTagInfo;
 import eu.chargetime.ocpp.utilities.ModelUtil;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
@@ -82,10 +83,9 @@ public class AuthorizationData implements Validatable {
 
     @Override
     public String toString() {
-        return "AuthorisationData{" +
-                "idTag='" + idTag + '\'' +
-                ", idTagInfo=" + idTagInfo +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("idTag", idTag)
+                .add("idTagInfo", idTagInfo)
+                .toString();
     }
 }

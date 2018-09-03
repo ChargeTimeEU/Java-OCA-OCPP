@@ -29,6 +29,7 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 import eu.chargetime.ocpp.utilities.SugarUtil;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -162,12 +163,12 @@ public class BootNotificationConfirmation implements Confirmation {
 
     @Override
     public String toString() {
-        return "BootNotificationConfirmation{" +
-                "currentTime='" + SugarUtil.calendarToString(currentTime) +
-                ", interval=" + interval +
-                ", status=" + status +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("currentTime", currentTime)
+                .add("interval", interval)
+                .add("status", status)
+                .add("isValid", validate())
+                .toString();
     }
 
 }
