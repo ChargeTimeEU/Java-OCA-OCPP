@@ -29,6 +29,7 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.ModelUtil;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -165,11 +166,11 @@ public class DataTransferRequest implements Request {
 
     @Override
     public String toString() {
-        return "DataTransferRequest{" +
-                "data='" + data + '\'' +
-                ", messageId='" + messageId + '\'' +
-                ", vendorId='" + vendorId + '\'' +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("vendorId", vendorId)
+                .add("messageId", messageId)
+                .add("data", data)
+                .add("isValid", validate())
+                .toString();
     }
 }

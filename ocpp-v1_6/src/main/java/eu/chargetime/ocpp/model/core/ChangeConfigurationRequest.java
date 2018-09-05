@@ -29,6 +29,7 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.ModelUtil;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -137,10 +138,10 @@ public class ChangeConfigurationRequest implements Request {
 
     @Override
     public String toString() {
-        return "ChangeConfigurationRequest{" +
-                "key='" + key + '\'' +
-                ", value='" + value + '\'' +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("key", key)
+                .add("value", value)
+                .add("isValid", validate())
+                .toString();
     }
 }

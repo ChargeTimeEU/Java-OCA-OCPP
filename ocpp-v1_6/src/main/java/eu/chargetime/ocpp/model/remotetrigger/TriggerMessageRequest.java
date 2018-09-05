@@ -29,6 +29,7 @@ package eu.chargetime.ocpp.model.remotetrigger;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -121,11 +122,11 @@ public class TriggerMessageRequest implements Request {
 
     @Override
     public String toString() {
-        return "TriggerMessageRequest{" +
-                "connectorId=" + connectorId +
-                ", requestedMessage=" + requestedMessage +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("connectorId", connectorId)
+                .add("requestedMessage", requestedMessage)
+                .add("isValid", validate())
+                .toString();
     }
 }
 

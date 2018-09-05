@@ -28,6 +28,7 @@ package eu.chargetime.ocpp.model.core;
  */
 
 import eu.chargetime.ocpp.model.Validatable;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 import eu.chargetime.ocpp.utilities.SugarUtil;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -134,6 +135,7 @@ public class IdTagInfo implements Validatable
         valid &= this.status != null;
         return valid;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -146,16 +148,16 @@ public class IdTagInfo implements Validatable
 
     @Override
     public int hashCode() {
+
         return Objects.hash(expiryDate, parentIdTag, status);
     }
 
     @Override
     public String toString() {
-        return "IdTagInfo{" +
-                "expiryDate='" + SugarUtil.calendarToString(expiryDate) +
-                ", parentIdTag='" + parentIdTag + '\'' +
-                ", status=" + status +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("expiryDate", expiryDate)
+                .add("parentIdTag", parentIdTag)
+                .add("status", status)
+                .toString();
     }
 }

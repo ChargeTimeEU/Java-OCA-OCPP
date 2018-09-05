@@ -30,6 +30,7 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.ModelUtil;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -331,17 +332,17 @@ public class BootNotificationRequest implements Request {
 
     @Override
     public String toString() {
-        return "BootNotificationRequest{" +
-                "chargeBoxSerialNumber='" + chargeBoxSerialNumber + '\'' +
-                ", chargePointModel='" + chargePointModel + '\'' +
-                ", chargePointSerialNumber='" + chargePointSerialNumber + '\'' +
-                ", chargePointVendor='" + chargePointVendor + '\'' +
-                ", firmwareVersion='" + firmwareVersion + '\'' +
-                ", iccid='" + iccid + '\'' +
-                ", imsi='" + imsi + '\'' +
-                ", meterSerialNumber='" + meterSerialNumber + '\'' +
-                ", meterType='" + meterType + '\'' +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("chargePointVendor", chargePointVendor)
+                .add("chargePointModel", chargePointModel)
+                .add("chargeBoxSerialNumber", chargeBoxSerialNumber)
+                .add("chargePointSerialNumber", chargePointSerialNumber)
+                .add("firmwareVersion", firmwareVersion)
+                .add("iccid", iccid)
+                .add("imsi", imsi)
+                .add("meterSerialNumber", meterSerialNumber)
+                .add("meterType", meterType)
+                .add("isValid", validate())
+                .toString();
     }
 }

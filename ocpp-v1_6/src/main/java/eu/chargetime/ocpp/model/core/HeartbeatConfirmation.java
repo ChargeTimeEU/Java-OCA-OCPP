@@ -27,6 +27,7 @@ package eu.chargetime.ocpp.model.core;
  */
 
 import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 import eu.chargetime.ocpp.utilities.SugarUtil;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -91,9 +92,9 @@ public class HeartbeatConfirmation implements Confirmation {
 
     @Override
     public String toString() {
-        return "HeartbeatConfirmation{" +
-                "currentTime='" + SugarUtil.calendarToString(currentTime) +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("currentTime", currentTime)
+                .add("isValid", validate())
+                .toString();
     }
 }

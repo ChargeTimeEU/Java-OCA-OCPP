@@ -27,6 +27,7 @@ package eu.chargetime.ocpp.model.core;
  */
 
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
@@ -59,6 +60,8 @@ public class HeartbeatRequest implements Request {
 
     @Override
     public String toString() {
-        return "HeartbeatRequest" + "{isValid=" + String.valueOf(validate()) + "}";
+        return MoreObjects.toStringHelper(this)
+                .add("isValid", validate())
+                .toString();
     }
 }

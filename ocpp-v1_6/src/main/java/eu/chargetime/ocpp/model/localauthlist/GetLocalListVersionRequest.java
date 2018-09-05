@@ -27,6 +27,7 @@ package eu.chargetime.ocpp.model.localauthlist;
  */
 
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
@@ -54,6 +55,8 @@ public class GetLocalListVersionRequest implements Request {
 
     @Override
     public String toString() {
-        return "GetLocalListVersionRequest{}" + "{isValid=" + String.valueOf(validate()) + "}";
+        return MoreObjects.toStringHelper(this)
+                .add("isValid", validate())
+                .toString();
     }
 }

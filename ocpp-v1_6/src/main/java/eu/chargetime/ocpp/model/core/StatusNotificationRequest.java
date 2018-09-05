@@ -29,6 +29,7 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.ModelUtil;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 import eu.chargetime.ocpp.utilities.SugarUtil;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -280,15 +281,15 @@ public class StatusNotificationRequest implements Request {
 
     @Override
     public String toString() {
-        return "StatusNotificationRequest{" +
-                "connectorId=" + connectorId +
-                ", errorCode=" + errorCode +
-                ", info='" + info + '\'' +
-                ", status=" + status +
-                ", timestamp='" + SugarUtil.calendarToString(timestamp) +
-                ", vendorErrorCode='" + vendorErrorCode + '\'' +
-                ", vendorId='" + vendorId + '\'' +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("connectorId", connectorId)
+                .add("errorCode", errorCode)
+                .add("info", info)
+                .add("status", status)
+                .add("timestamp", timestamp)
+                .add("vendorId", vendorId)
+                .add("vendorErrorCode", vendorErrorCode)
+                .add("isValid", validate())
+                .toString();
     }
 }

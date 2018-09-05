@@ -24,6 +24,8 @@ package eu.chargetime.ocpp.model;/*
     SOFTWARE.
  */
 
+import eu.chargetime.ocpp.utilities.MoreObjects;
+
 import java.util.Objects;
 
 public class SOAPHostInfo {
@@ -142,12 +144,12 @@ public class SOAPHostInfo {
 
     @Override
     public String toString() {
-        return "SOAPHostInfo{" +
-                "chargeBoxIdentity='" + chargeBoxIdentity + '\'' +
-                ", fromUrl='" + fromUrl + '\'' +
-                ", toUrl='" + toUrl + '\'' +
-                ", namespace='" + namespace + '\'' +
-                ", isClient=" + isClient +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("chargeBoxIdentity", chargeBoxIdentity)
+                .add("fromUrl", fromUrl)
+                .add("toUrl", toUrl)
+                .add("namespace", namespace)
+                .add("isClient", isClient)
+                .toString();
     }
 }

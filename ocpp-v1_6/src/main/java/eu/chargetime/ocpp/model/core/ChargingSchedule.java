@@ -27,6 +27,7 @@ package eu.chargetime.ocpp.model.core;
  */
 
 import eu.chargetime.ocpp.model.Validatable;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 import eu.chargetime.ocpp.utilities.SugarUtil;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -208,13 +209,13 @@ public class ChargingSchedule implements Validatable {
 
     @Override
     public String toString() {
-        return "ChargingSchedule{" +
-                "chargingRateUnit=" + chargingRateUnit +
-                ", chargingSchedulePeriod=" + Arrays.toString(chargingSchedulePeriod) +
-                ", duration=" + duration +
-                ", minChargingRate=" + minChargingRate +
-                ", startSchedule='" + SugarUtil.calendarToString(startSchedule) +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("duration", duration)
+                .add("startSchedule", startSchedule)
+                .add("chargingRateUnit", chargingRateUnit)
+                .add("chargingSchedulePeriod", chargingSchedulePeriod)
+                .add("minChargingRate", minChargingRate)
+                .add("isValid", validate())
+                .toString();
     }
 }

@@ -29,6 +29,7 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.ModelUtil;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,7 +42,8 @@ import java.util.Objects;
  */
 @XmlRootElement
 @XmlType(propOrder = {"connectorId", "idTag", "chargingProfile"})
-public class RemoteStartTransactionRequest implements Request {
+public class
+RemoteStartTransactionRequest implements Request {
 
     private Integer connectorId;
     private String idTag;
@@ -152,11 +154,11 @@ public class RemoteStartTransactionRequest implements Request {
 
     @Override
     public String toString() {
-        return "RemoteStartTransactionRequest{" +
-                "chargingProfile=" + chargingProfile +
-                ", connectorId=" + connectorId +
-                ", idTag='" + idTag + '\'' +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("connectorId", connectorId)
+                .add("idTag", idTag)
+                .add("chargingProfile", chargingProfile)
+                .add("isValid", validate())
+                .toString();
     }
 }

@@ -31,6 +31,7 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.utilities.ModelUtil;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -158,11 +159,10 @@ public class KeyValueType implements Validatable {
 
     @Override
     public String toString() {
-        return "KeyValueType{" +
-                "key='" + key + '\'' +
-                ", readonly=" + readonly +
-                ", value='" + value + '\'' +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("key", key)
+                .add("readonly", readonly)
+                .add("value", value)
+                .toString();
     }
 }

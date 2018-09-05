@@ -137,7 +137,6 @@ public class StartTransactionRequestTest extends TestUtilities {
 
         // When
         request.setTimestamp(now);
-
         // Then
         assertThat(request.objTimestamp(), equalTo(now));
     }

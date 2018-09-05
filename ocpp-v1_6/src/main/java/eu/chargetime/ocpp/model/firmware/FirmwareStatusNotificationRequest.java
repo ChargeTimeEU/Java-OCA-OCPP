@@ -104,6 +104,7 @@ public class FirmwareStatusNotificationRequest implements Request {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                           .add("status", status)
+                          .add("isValid", validate())
                           .toString();
     }
 }

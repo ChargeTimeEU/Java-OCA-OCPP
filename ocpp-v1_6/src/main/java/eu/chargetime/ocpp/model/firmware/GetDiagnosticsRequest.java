@@ -25,6 +25,7 @@ package eu.chargetime.ocpp.model.firmware;/*
  */
 
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 import eu.chargetime.ocpp.utilities.SugarUtil;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -171,13 +172,13 @@ public class GetDiagnosticsRequest implements Request {
 
     @Override
     public String toString() {
-        return "GetDiagnosticsRequest{" +
-                "location='" + location + '\'' +
-                ", retries=" + retries +
-                ", retryInterval=" + retryInterval +
-                ", startTime='" + SugarUtil.calendarToString(startTime) +
-                ", stopTime='" + SugarUtil.calendarToString(stopTime) +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("location", location)
+                .add("retries", retries)
+                .add("retryInterval", retryInterval)
+                .add("startTime", startTime)
+                .add("stopTime", stopTime)
+                .add("isValid", validate())
+                .toString();
     }
 }

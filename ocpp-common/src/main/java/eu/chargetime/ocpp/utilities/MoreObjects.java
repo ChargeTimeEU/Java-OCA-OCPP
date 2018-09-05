@@ -287,6 +287,19 @@ public final class MoreObjects {
          * @param value field value
          * @return ToStringHelper instance
          */
+        public ToStringHelper add(String name, Calendar value) {
+            helperImplementation.add(name, value);
+            return this;
+        }
+
+        /**
+         * Add field name and value to output.
+         * It's safe to pass null as value.
+         *
+         * @param name field name
+         * @param value field value
+         * @return ToStringHelper instance
+         */
         public ToStringHelper add(String name, boolean value) {
             helperImplementation.add(name, String.valueOf(value));
             return this;
@@ -726,8 +739,16 @@ public final class MoreObjects {
          * is {@code null}, the string {@code "null"} is used, unless {@link #omitNullValues()} is
          * called, in which case this name/value pair will not be added.
          */
-        
+
         public ToStringHelperImpl add(String name, Object value) {
+            return addHolder(name, value);
+        }
+
+        /**
+         * Adds a name/value pair to the formatted output in {@code name=value} format.
+         */
+
+        public ToStringHelperImpl add(String name, Calendar value) {
             return addHolder(name, value);
         }
 
@@ -785,7 +806,7 @@ public final class MoreObjects {
          * <p>It is strongly encouraged to use {@link #add(String, Object)} instead and give value a
          * readable name.
          */
-        
+
         public ToStringHelperImpl addValue(Object value) {
             return addHolder(value);
         }
@@ -908,6 +929,13 @@ public final class MoreObjects {
         private ToStringHelperImpl addHolder(String name, Object value) {
             ValueHolder valueHolder = addHolder();
             valueHolder.value = value;
+            valueHolder.name = name;
+            return this;
+        }
+
+        private ToStringHelperImpl addHolder(String name, Calendar value) {
+            ValueHolder valueHolder = addHolder();
+            valueHolder.value = "\"" + SugarUtil.calendarToString(value) + "\"";
             valueHolder.name = name;
             return this;
         }

@@ -240,8 +240,11 @@ public class Session implements ISession {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                           .add("sessionId", sessionId)
+                          .add("communicator", communicator)
                           .add("queue", queue)
+                          .add("dispatcher", dispatcher)
                           .add("featureRepository", featureRepository)
+                          .add("events", events)
                           .toString();
     }
 }

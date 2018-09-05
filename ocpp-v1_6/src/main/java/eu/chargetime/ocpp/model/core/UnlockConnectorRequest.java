@@ -28,6 +28,7 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -89,9 +90,9 @@ public class UnlockConnectorRequest implements Request {
 
     @Override
     public String toString() {
-        return "UnlockConnectorRequest{" +
-                "connectorId=" + connectorId +
-                ", isValid=" + String.valueOf(validate()) +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("connectorId", connectorId)
+                .add("isValid", validate())
+                .toString();
     }
 }
