@@ -39,14 +39,14 @@ import java.util.Objects;
 @XmlRootElement
 public class SetChargingProfileRequest implements Request {
     private Integer connectorId;
-    private ChargingProfile chargingProfile;
+    private ChargingProfile csChargingProfiles;
 
     public SetChargingProfileRequest() {
     }
 
-    public SetChargingProfileRequest(Integer connectorId, ChargingProfile chargingProfile) {
+    public SetChargingProfileRequest(Integer connectorId, ChargingProfile csChargingProfiles) {
         this.connectorId = connectorId;
-        this.chargingProfile = chargingProfile;
+        this.csChargingProfiles = csChargingProfiles;
     }
 
     /**
@@ -77,19 +77,19 @@ public class SetChargingProfileRequest implements Request {
      *
      * @return the {@link ChargingProfile}.
      */
-    public ChargingProfile getChargingProfile() {
-        return chargingProfile;
+    public ChargingProfile getCsChargingProfiles() {
+        return csChargingProfiles;
     }
 
     /**
      * Optional. Charging Profile to be used by the Charge Point for the requested transaction.
      * {@link ChargingProfile#setChargingProfilePurpose(ChargingProfilePurposeType)} MUST be set to TxProfile.
      *
-     * @param chargingProfile the {@link ChargingProfile}.
+     * @param csChargingProfiles the {@link ChargingProfile}.
      */
     @XmlElement(name = "csChargingProfiles")
-    public void setChargingProfile(ChargingProfile chargingProfile) {
-        this.chargingProfile = chargingProfile;
+    public void setCsChargingProfiles(ChargingProfile csChargingProfiles) {
+        this.csChargingProfiles = csChargingProfiles;
     }
 
     @Override
@@ -101,8 +101,8 @@ public class SetChargingProfileRequest implements Request {
     public boolean validate() {
         boolean valid = connectorId != null && connectorId > 0;
 
-        if (chargingProfile != null) {
-            valid &= chargingProfile.validate();
+        if (csChargingProfiles != null) {
+            valid &= csChargingProfiles.validate();
         }
 
         return valid;
@@ -115,19 +115,19 @@ public class SetChargingProfileRequest implements Request {
         if (o == null || getClass() != o.getClass()) return false;
         SetChargingProfileRequest that = (SetChargingProfileRequest) o;
         return Objects.equals(connectorId, that.connectorId) &&
-                Objects.equals(chargingProfile, that.chargingProfile);
+                Objects.equals(csChargingProfiles, that.csChargingProfiles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(connectorId, chargingProfile);
+        return Objects.hash(connectorId, csChargingProfiles);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("connectorId", connectorId)
-                .add("chargingProfile", chargingProfile)
+                .add("csChargingProfiles", csChargingProfiles)
                 .add("isValid", validate())
                 .toString();
     }
