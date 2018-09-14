@@ -320,8 +320,8 @@ public class FakeCentralSystem {
         send(request);
     }
 
-    public void sendSetChargingProfileRequest(Integer connectorId, ChargingProfile chargingProfile) throws Exception {
-        SetChargingProfileRequest request = new SetChargingProfileRequest(connectorId,  chargingProfile);
+    public void sendSetChargingProfileRequest(Integer connectorId, ChargingProfile csChargingProfiles) throws Exception {
+        SetChargingProfileRequest request = new SetChargingProfileRequest(connectorId,  csChargingProfiles);
         send(request);
     }
 

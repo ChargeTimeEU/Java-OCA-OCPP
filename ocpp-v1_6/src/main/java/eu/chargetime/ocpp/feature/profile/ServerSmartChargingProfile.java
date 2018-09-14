@@ -58,7 +58,7 @@ public class ServerSmartChargingProfile implements Profile {
     public SetChargingProfileRequest createSetChargingProfileRequest(int connectorId, ChargingProfile profile) {
         SetChargingProfileRequest request = new SetChargingProfileRequest();
         request.setConnectorId(connectorId);
-        request.setChargingProfile(profile);
+        request.setCsChargingProfiles(profile);
         return request;
     }
 }
