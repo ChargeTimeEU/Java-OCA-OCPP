@@ -39,7 +39,7 @@ import static org.junit.Assert.assertThat;
 
 public class SetChargingProfileRequestTest {
 
-    private static final String EXPECTED_ERROR_MESSAGE = "Validation failed: [connectorId must be > 0]. Current Value: [%s]";
+    private static final String EXPECTED_ERROR_MESSAGE = "Validation failed: [connectorId must be >= 0]. Current Value: [%s]";
 
     @Rule
     public ExpectedException thrownException = ExpectedException.none();
@@ -49,12 +49,6 @@ public class SetChargingProfileRequestTest {
     @Before
     public void setUp() {
         request = new SetChargingProfileRequest();
-    }
-
-
-    @Test
-    public void setConnectorId_zeroInteger_throwsPropertyConstraintException() {
-        testInvalidConnectorIdValue(0);
     }
 
     @Test
