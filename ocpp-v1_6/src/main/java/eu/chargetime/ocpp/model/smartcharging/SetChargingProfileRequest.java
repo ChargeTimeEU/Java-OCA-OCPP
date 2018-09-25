@@ -65,8 +65,8 @@ public class SetChargingProfileRequest implements Request {
      */
     @XmlElement
     public void setConnectorId(Integer connectorId) {
-        if (connectorId == null || connectorId <= 0) {
-            throw new PropertyConstraintException(connectorId, "connectorId must be > 0");
+        if (connectorId == null || connectorId < 0) {
+            throw new PropertyConstraintException(connectorId, "connectorId must be >= 0");
         }
 
         this.connectorId = connectorId;
@@ -99,7 +99,7 @@ public class SetChargingProfileRequest implements Request {
 
     @Override
     public boolean validate() {
-        boolean valid = connectorId != null && connectorId > 0;
+        boolean valid = connectorId != null && connectorId >= 0;
 
         if (csChargingProfiles != null) {
             valid &= csChargingProfiles.validate();
