@@ -41,6 +41,13 @@ import java.util.Objects;
 public class RemoteStopTransactionRequest implements Request {
     private Integer transactionId;
 
+    public RemoteStopTransactionRequest() {
+    }
+
+    public RemoteStopTransactionRequest(Integer transactionId) {
+        this.transactionId = transactionId;
+    }
+
     @Override
     public boolean validate() {
         return transactionId != null;

@@ -54,6 +54,14 @@ public class ChangeConfigurationRequest implements Request {
     private String key;
     private String value;
 
+    public ChangeConfigurationRequest() {
+    }
+
+    public ChangeConfigurationRequest(String key, String value) {
+        this.key = key;
+        this.value = value;
+    }
+
     /**
      * The name of the configuration setting to change.
      *

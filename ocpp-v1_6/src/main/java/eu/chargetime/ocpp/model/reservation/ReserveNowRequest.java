@@ -65,6 +65,15 @@ public class ReserveNowRequest implements Request {
         this.reservationId = reservationId;
     }
 
+    public ReserveNowRequest(Integer connectorId, Calendar expiryDate, String idTag, String parentIdTag,
+                             Integer reservationId) {
+        this.connectorId = connectorId;
+        this.expiryDate = expiryDate;
+        this.idTag = idTag;
+        this.parentIdTag = parentIdTag;
+        this.reservationId = reservationId;
+    }
+
     @Override
     public boolean validate() {
         boolean valid = (connectorId != null && connectorId >= 0);

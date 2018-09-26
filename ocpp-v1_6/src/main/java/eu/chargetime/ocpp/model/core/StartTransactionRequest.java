@@ -55,6 +55,25 @@ public class StartTransactionRequest implements Request {
     private Integer reservationId;
     private Calendar timestamp;
 
+    public StartTransactionRequest() {
+    }
+
+    public StartTransactionRequest(Integer connectorId, String idTag, Integer meterStart, Calendar timestamp) {
+        this.connectorId = connectorId;
+        this.idTag = idTag;
+        this.meterStart = meterStart;
+        this.timestamp = timestamp;
+    }
+
+    public StartTransactionRequest(Integer connectorId, String idTag, Integer meterStart, Integer reservationId,
+                                   Calendar timestamp) {
+        this.connectorId = connectorId;
+        this.idTag = idTag;
+        this.meterStart = meterStart;
+        this.reservationId = reservationId;
+        this.timestamp = timestamp;
+    }
+
     @Override
     public boolean validate() {
         boolean valid = connectorId != null && connectorId > 0;

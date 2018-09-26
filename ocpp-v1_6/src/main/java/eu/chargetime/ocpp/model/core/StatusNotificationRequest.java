@@ -56,6 +56,27 @@ public class StatusNotificationRequest implements Request {
     private String vendorId;
     private String vendorErrorCode;
 
+    public StatusNotificationRequest() {
+    }
+
+    public StatusNotificationRequest(Integer connectorId, ChargePointErrorCode errorCode, ChargePointStatus status) {
+        this.connectorId = connectorId;
+        this.errorCode = errorCode;
+        this.status = status;
+    }
+
+    public StatusNotificationRequest(Integer connectorId, ChargePointErrorCode errorCode, String info,
+                                     ChargePointStatus status, Calendar timestamp, String vendorId,
+                                     String vendorErrorCode) {
+        this.connectorId = connectorId;
+        this.errorCode = errorCode;
+        this.info = info;
+        this.status = status;
+        this.timestamp = timestamp;
+        this.vendorId = vendorId;
+        this.vendorErrorCode = vendorErrorCode;
+    }
+
     @Override
     public boolean validate() {
         boolean valid = isValidConnectorId(connectorId);

@@ -58,6 +58,12 @@ public class UpdateFirmwareRequest implements Request {
         this.retrieveDate = retrieveDate;
     }
 
+    public UpdateFirmwareRequest(String location, Integer retries, Calendar retrieveDate, Integer retryInterval) {
+        this.location = location;
+        this.retries = retries;
+        this.retrieveDate = retrieveDate;
+        this.retryInterval = retryInterval;
+    }
     @Override
     public boolean validate() {
         return (location != null) && (retrieveDate != null);

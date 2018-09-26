@@ -49,6 +49,19 @@ RemoteStartTransactionRequest implements Request {
     private String idTag;
     private ChargingProfile chargingProfile;
 
+    public RemoteStartTransactionRequest() {
+    }
+
+    public RemoteStartTransactionRequest(String idTag) {
+        this.idTag = idTag;
+    }
+
+    public RemoteStartTransactionRequest(Integer connectorId, String idTag, ChargingProfile chargingProfile) {
+        this.connectorId = connectorId;
+        this.idTag = idTag;
+        this.chargingProfile = chargingProfile;
+    }
+
     @Override
     public boolean validate() {
         boolean valid = ModelUtil.validate(idTag, 20);

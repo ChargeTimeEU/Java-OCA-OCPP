@@ -42,6 +42,13 @@ import java.util.Objects;
 public class UnlockConnectorRequest implements Request {
     private Integer connectorId;
 
+    public UnlockConnectorRequest() {
+    }
+
+    public UnlockConnectorRequest(Integer connectorId) {
+        this.connectorId = connectorId;
+    }
+
     @Override
     public boolean validate() {
         return connectorId != null && connectorId > 0;

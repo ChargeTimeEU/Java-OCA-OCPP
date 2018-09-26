@@ -44,6 +44,21 @@ public class GetDiagnosticsRequest implements Request {
     private Calendar startTime;
     private Calendar stopTime;
 
+    public GetDiagnosticsRequest() {
+    }
+
+    public GetDiagnosticsRequest(String location) {
+        this.location = location;
+    }
+
+    public GetDiagnosticsRequest(String location, int retries, int retryInterval, Calendar startTime, Calendar stopTime) {
+        this.location = location;
+        this.retries = retries;
+        this.retryInterval = retryInterval;
+        this.startTime = startTime;
+        this.stopTime = stopTime;
+    }
+
     @Override
     public boolean transactionRelated() {
         return false;

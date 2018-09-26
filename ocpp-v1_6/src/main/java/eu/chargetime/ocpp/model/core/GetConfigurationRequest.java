@@ -45,6 +45,13 @@ public class GetConfigurationRequest implements Request {
 
     private String[] key;
 
+    public GetConfigurationRequest() {
+    }
+
+    public GetConfigurationRequest(String[] key) {
+        this.key = key;
+    }
+
     /**
      * List of keys for which the configuration value is requested.
      *

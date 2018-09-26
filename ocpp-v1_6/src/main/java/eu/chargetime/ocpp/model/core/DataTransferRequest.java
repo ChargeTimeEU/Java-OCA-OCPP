@@ -62,6 +62,12 @@ public class DataTransferRequest implements Request {
         this.vendorId = vendorId;
     }
 
+    public DataTransferRequest(String vendorId, String messageId, String data) {
+        this.vendorId = vendorId;
+        this.messageId = messageId;
+        this.data = data;
+    }
+
     @Override
     public boolean validate() {
         return isValidVendorId(this.vendorId);

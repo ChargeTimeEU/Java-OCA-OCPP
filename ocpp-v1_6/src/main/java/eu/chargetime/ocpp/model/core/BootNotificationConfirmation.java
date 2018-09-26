@@ -52,6 +52,15 @@ public class BootNotificationConfirmation implements Confirmation {
     private int interval;
     private RegistrationStatus status;
 
+    public BootNotificationConfirmation() {
+    }
+
+    public BootNotificationConfirmation(Calendar currentTime, int interval, RegistrationStatus status) {
+        this.currentTime = currentTime;
+        this.interval = interval;
+        this.status = status;
+    }
+
     /**
      * Central System's current time.
      *

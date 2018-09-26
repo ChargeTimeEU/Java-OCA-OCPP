@@ -65,6 +65,21 @@ public class SampledValue implements Validatable {
         }
     }
 
+    public SampledValue(String value) {
+        this.value = value;
+    }
+
+    public SampledValue(String value, String context, ValueFormat format, String measurand, String phase,
+                        Location location, String unit) {
+        this.value = value;
+        this.context = context;
+        this.format = format;
+        this.measurand = measurand;
+        this.phase = phase;
+        this.location = location;
+        this.unit = unit;
+    }
+
     @Override
     public boolean validate() {
         return this.value != null;

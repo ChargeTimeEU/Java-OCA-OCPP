@@ -51,6 +51,17 @@ public class IdTagInfo implements Validatable
     private Calendar expiryDate;
     private String parentIdTag;
     private AuthorizationStatus status;
+    public IdTagInfo() { }
+
+    public IdTagInfo(AuthorizationStatus status) {
+        this.status = status;
+    }
+
+    public IdTagInfo(AuthorizationStatus status, Calendar expiryDate, String parentIdTag) {
+        this.status = status;
+        this.expiryDate = expiryDate;
+        this.parentIdTag = parentIdTag;
+    }
 
     /**
      * This contains the date at which idTag should be removed from the Authorization Cache.

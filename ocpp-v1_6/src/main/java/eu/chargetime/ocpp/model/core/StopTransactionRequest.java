@@ -53,6 +53,15 @@ public class StopTransactionRequest implements Request {
     private Reason reason;
     private MeterValue[] transactionData;
 
+    public StopTransactionRequest() {
+    }
+
+    public StopTransactionRequest(Integer meterStop, Calendar timestamp, Integer transactionId) {
+        this.meterStop = meterStop;
+        this.timestamp = timestamp;
+        this.transactionId = transactionId;
+    }
+
     @Override
     public boolean validate() {
         boolean valid = meterStop != null;

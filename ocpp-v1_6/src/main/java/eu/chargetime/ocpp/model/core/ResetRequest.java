@@ -40,6 +40,13 @@ import java.util.Objects;
 public class ResetRequest implements Request {
     private ResetType type;
 
+    public ResetRequest() {
+    }
+
+    public ResetRequest(ResetType type) {
+        this.type = type;
+    }
+
     /**
      * This contains the type of reset that the Charge Point should perform.
      *
