@@ -261,7 +261,7 @@ public abstract class Communicator {
                 if (payload instanceof Document) {
                     logger.trace("Receive a message: {}", SugarUtil.docToString((Document) payload));
                 } else {
-                    logger.trace("Receive a message: {}", message);
+                    logger.trace("Receive a message: {}", payload);
                 }
             }
             if (message instanceof CallResultMessage) {
