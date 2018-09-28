@@ -63,7 +63,7 @@ public class StatusNotificationRequest implements Request {
         this.status = status;
     }
 
-    public StatusNotificationRequest(Integer connectorId, ChargePointErrorCode errorCode, String info,
+    public StatusNotificationRequest(int connectorId, ChargePointErrorCode errorCode, String info,
                                      ChargePointStatus status, Calendar timestamp, String vendorId,
                                      String vendorErrorCode) {
         this.connectorId = connectorId;
@@ -80,6 +80,16 @@ public class StatusNotificationRequest implements Request {
         boolean valid = isValidConnectorId(connectorId);
         valid &= errorCode != null;
         valid &= status != null;
+        if (connectorId == 0 && status != null) {
+            switch (status) {
+                case Available:
+                case Unavailable:
+                case Faulted:
+                    break;
+                default:
+                    valid = false;
+            }
+        }
         return valid;
     }
 

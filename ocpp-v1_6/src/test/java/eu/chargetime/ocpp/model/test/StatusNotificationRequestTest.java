@@ -54,6 +54,7 @@ public class StatusNotificationRequestTest extends TestUtilities {
     @Before
     public void setUp() {
         request = new StatusNotificationRequest();
+        request.setConnectorId(1);
     }
 
     @Test
