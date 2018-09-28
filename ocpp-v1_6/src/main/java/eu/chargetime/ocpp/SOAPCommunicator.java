@@ -187,7 +187,7 @@ public class SOAPCommunicator extends Communicator {
         SOAPHeader soapHeader = message.getSOAPHeader();
 
         String prefix = "wsa";
-        String namespace = "http://schemas.xmlsoap.org/ws/2004/08/addressing";
+        String namespace = "http://www.w3.org/2005/08/addressing";
 
         // Set chargeBoxIdentity
         SOAPHeaderElement chargeBoxIdentityHeader = soapHeader.addHeaderElement(soapFactory.createName(HEADER_CHARGEBOXIDENTITY, "cs", hostInfo.getNamespace()));
