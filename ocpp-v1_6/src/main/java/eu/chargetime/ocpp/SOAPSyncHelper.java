@@ -24,6 +24,7 @@ package eu.chargetime.ocpp;/*
     SOFTWARE.
  */
 
+import eu.chargetime.ocpp.utilities.SugarUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.NodeList;
@@ -78,6 +79,11 @@ public abstract class SOAPSyncHelper {
 
         String relatesTo = getHeaderValue(soapMessage, "RelatesTo");
         if (relatesTo != null && promises.containsKey(relatesTo)) {
+            try {
+                logger.trace("Send an answer: {}", SugarUtil.sourceToString(soapMessage.getSOAPPart().getContent()));
+            } catch (SOAPException e) {
+            logger.warn("Message {} raised SOAPException", soapMessage, e);
+            }
             promises.get(relatesTo).complete(soapMessage);
         } else {
             sendRequest(soapMessage);

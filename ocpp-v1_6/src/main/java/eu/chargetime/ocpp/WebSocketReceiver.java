@@ -25,7 +25,12 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class WebSocketReceiver implements Receiver {
+
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketReceiver.class);
 
     private RadioEvents handler;
     private WebSocketReceiverEvents receiverEvents;
@@ -46,6 +51,7 @@ public class WebSocketReceiver implements Receiver {
 
     @Override
     public void send(Object message) {
+        logger.trace("Send an answer: {}", message.toString());
         receiverEvents.relay(message.toString());
     }
 

@@ -28,6 +28,7 @@ package eu.chargetime.ocpp.utilities;
 
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -45,12 +46,12 @@ public class SugarUtil {
         return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(calendar.getTime());
     }
 
-    public static String docToString(Document doc) {
+    public static String sourceToString(Source source) {
         try {
             StringWriter sw = new StringWriter();
             TransformerFactory tf = TransformerFactory.newInstance();
             Transformer transformer = tf.newTransformer();
-            transformer.transform(new DOMSource(doc), new StreamResult(sw));
+            transformer.transform(source, new StreamResult(sw));
             return sw.toString();
         } catch (Exception ex) {
             throw new RuntimeException("Error converting to String", ex);
