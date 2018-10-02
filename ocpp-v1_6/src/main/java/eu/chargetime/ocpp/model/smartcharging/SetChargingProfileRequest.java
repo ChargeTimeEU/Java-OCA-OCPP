@@ -38,13 +38,13 @@ import java.util.Objects;
 
 @XmlRootElement
 public class SetChargingProfileRequest implements Request {
-    private Integer connectorId;
+
+    private int connectorId = -2;
     private ChargingProfile csChargingProfiles;
 
-    public SetChargingProfileRequest() {
-    }
+    public SetChargingProfileRequest() { }
 
-    public SetChargingProfileRequest(Integer connectorId, ChargingProfile csChargingProfiles) {
+    public SetChargingProfileRequest(int connectorId, ChargingProfile csChargingProfiles) {
         this.connectorId = connectorId;
         this.csChargingProfiles = csChargingProfiles;
     }
@@ -54,7 +54,7 @@ public class SetChargingProfileRequest implements Request {
      *
      * @return connector.
      */
-    public Integer getConnectorId() {
+    public int getConnectorId() {
         return connectorId;
     }
 
@@ -99,7 +99,7 @@ public class SetChargingProfileRequest implements Request {
 
     @Override
     public boolean validate() {
-        boolean valid = connectorId != null && connectorId >= 0;
+        boolean valid = connectorId >= 0;
 
         if (csChargingProfiles != null) {
             valid &= csChargingProfiles.validate();

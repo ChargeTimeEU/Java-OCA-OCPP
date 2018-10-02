@@ -44,6 +44,17 @@ public class DataTransferConfirmation implements Confirmation {
     private DataTransferStatus status;
     private String data;
 
+    public DataTransferConfirmation() { }
+
+    public DataTransferConfirmation(DataTransferStatus status) {
+        this.status = status;
+    }
+
+    public DataTransferConfirmation(DataTransferStatus status, String data) {
+        this.status = status;
+        this.data = data;
+    }
+
     /**
      * This indicates the success or failure of the data transfer.
      *

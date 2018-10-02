@@ -43,6 +43,7 @@ import java.util.Objects;
 @XmlRootElement
 @XmlType(propOrder = {"value", "context", "format", "measurand", "phase", "location", "unit"})
 public class SampledValue implements Validatable {
+
     private static final Logger logger = LoggerFactory.getLogger(SampledValue.class);
 
     private String value;

@@ -38,10 +38,10 @@ import java.util.Objects;
  */
 @XmlRootElement(name = "remoteStartTransactionResponse")
 public class RemoteStartTransactionConfirmation implements Confirmation {
+
     private RemoteStartStopStatus status;
 
-    public RemoteStartTransactionConfirmation() {
-    }
+    public RemoteStartTransactionConfirmation() { }
 
     /**
      * Set required fields.

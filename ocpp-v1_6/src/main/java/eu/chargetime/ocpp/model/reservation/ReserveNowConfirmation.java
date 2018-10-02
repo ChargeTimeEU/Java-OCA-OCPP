@@ -39,10 +39,10 @@ import java.util.Objects;
  */
 @XmlRootElement(name = "reserveNowResponse")
 public class ReserveNowConfirmation implements Confirmation {
+
     private ReservationStatus status;
 
-    public ReserveNowConfirmation() {
-    }
+    public ReserveNowConfirmation() { }
 
     public ReserveNowConfirmation(ReservationStatus status) {
         setStatus(status);

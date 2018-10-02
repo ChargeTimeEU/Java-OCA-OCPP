@@ -38,8 +38,7 @@ import java.util.Objects;
 @XmlRootElement(name = "diagnosticsStatusNotificationResponse")
 public class DiagnosticsStatusNotificationConfirmation implements Confirmation {
 
-    public DiagnosticsStatusNotificationConfirmation() {
-    }
+    public DiagnosticsStatusNotificationConfirmation() { }
 
     @Override
     public boolean validate() {

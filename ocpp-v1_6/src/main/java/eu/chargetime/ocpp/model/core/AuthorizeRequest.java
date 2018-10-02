@@ -47,8 +47,7 @@ public class AuthorizeRequest implements Request {
 
     private String idTag;
 
-    public AuthorizeRequest() {
-    }
+    public AuthorizeRequest() { }
 
     /**
      * Handle required fields.

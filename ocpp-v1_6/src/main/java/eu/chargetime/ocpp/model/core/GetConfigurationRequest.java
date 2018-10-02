@@ -45,8 +45,7 @@ public class GetConfigurationRequest implements Request {
 
     private String[] key;
 
-    public GetConfigurationRequest() {
-    }
+    public GetConfigurationRequest() { }
 
     public GetConfigurationRequest(String[] key) {
         this.key = key;

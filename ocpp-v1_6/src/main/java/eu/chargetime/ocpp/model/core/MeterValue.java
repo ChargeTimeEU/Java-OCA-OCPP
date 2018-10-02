@@ -48,8 +48,7 @@ public class MeterValue implements Validatable {
     private Calendar timestamp;
     private SampledValue[] sampledValue;
 
-    public MeterValue() {
-    }
+    public MeterValue() { }
 
     public MeterValue(Calendar timestamp, SampledValue... sampledValue) {
         this.timestamp = timestamp;

@@ -42,8 +42,7 @@ public class DiagnosticsStatusNotificationRequest implements Request {
 
     private DiagnosticsStatus status;
 
-    public DiagnosticsStatusNotificationRequest() {
-    }
+    public DiagnosticsStatusNotificationRequest() { }
 
     /**
      * Set required fields.

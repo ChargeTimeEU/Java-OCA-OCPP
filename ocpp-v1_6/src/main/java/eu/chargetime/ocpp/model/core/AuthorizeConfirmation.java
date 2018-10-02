@@ -38,9 +38,15 @@ import java.util.Objects;
  * Sent by the Central System to the Charge Point in response to a {@link AuthorizeRequest}.
  */
 @XmlRootElement(name = "authorizeResponse")
-public class AuthorizeConfirmation implements Confirmation
-{
+public class AuthorizeConfirmation implements Confirmation {
+
     private IdTagInfo idTagInfo;
+
+    public AuthorizeConfirmation() { }
+
+    public AuthorizeConfirmation(IdTagInfo idTagInfo) {
+        this.idTagInfo = idTagInfo;
+    }
 
     /**
      * This contains information about authorization status, expiry and parent id.
@@ -64,9 +70,9 @@ public class AuthorizeConfirmation implements Confirmation
 
     @Override
     public boolean validate() {
-        boolean valid = true;
-        if (valid &= idTagInfo != null)
-            valid &= idTagInfo.validate();
+        boolean valid = idTagInfo != null;
+        if (valid)
+            valid = idTagInfo.validate();
         return valid;
     }
 

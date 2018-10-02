@@ -37,6 +37,9 @@ import java.util.Objects;
  */
 @XmlRootElement(name = "meterValuesResponse")
 public class MeterValuesConfirmation implements Confirmation {
+
+    public MeterValuesConfirmation() { }
+
     @Override
     public boolean validate() {
         return true;

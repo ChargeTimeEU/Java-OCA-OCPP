@@ -52,6 +52,19 @@ public class KeyValueType implements Validatable {
     private Boolean readonly;
     private String value;
 
+    public KeyValueType() { }
+
+    public KeyValueType(String key, boolean readonly) {
+        this.key = key;
+        this.readonly = readonly;
+    }
+
+    public KeyValueType(String key, boolean readonly, String value) {
+        this.key = key;
+        this.readonly = readonly;
+        this.value = value;
+    }
+
     /**
      * Name of the key.
      *

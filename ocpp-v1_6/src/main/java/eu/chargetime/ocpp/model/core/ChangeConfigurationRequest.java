@@ -54,8 +54,7 @@ public class ChangeConfigurationRequest implements Request {
     private String key;
     private String value;
 
-    public ChangeConfigurationRequest() {
-    }
+    public ChangeConfigurationRequest() { }
 
     public ChangeConfigurationRequest(String key, String value) {
         this.key = key;

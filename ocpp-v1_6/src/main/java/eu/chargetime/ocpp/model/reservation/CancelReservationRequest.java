@@ -39,17 +39,18 @@ import java.util.Objects;
  */
 @XmlRootElement
 public class CancelReservationRequest implements Request {
-    private Integer reservationId;
+
+    private int reservationId = -2;
 
     public CancelReservationRequest() {}
 
-    public CancelReservationRequest(Integer reservationId) {
+    public CancelReservationRequest(int reservationId) {
         this.reservationId = reservationId;
     }
 
     @Override
     public boolean validate() {
-        return reservationId != null;
+        return reservationId > 0;
     }
 
     /**
@@ -57,7 +58,7 @@ public class CancelReservationRequest implements Request {
      *
      * @return Integer, id of the reservation.
      */
-    public Integer getReservationId() {
+    public int getReservationId() {
         return reservationId;
     }
 

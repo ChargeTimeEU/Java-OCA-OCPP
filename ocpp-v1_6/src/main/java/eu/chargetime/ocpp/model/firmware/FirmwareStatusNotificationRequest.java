@@ -42,8 +42,7 @@ public class FirmwareStatusNotificationRequest implements Request {
 
     private FirmwareStatus status;
 
-    public FirmwareStatusNotificationRequest() {
-    }
+    public FirmwareStatusNotificationRequest() { }
 
     /**
      * Set required fields.

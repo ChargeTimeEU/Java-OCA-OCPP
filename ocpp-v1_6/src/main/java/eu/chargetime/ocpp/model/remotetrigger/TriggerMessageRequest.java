@@ -44,10 +44,14 @@ public class TriggerMessageRequest implements Request {
     private Integer connectorId;
     private TriggerMessageRequestType requestedMessage;
 
-    public TriggerMessageRequest() {
-    }
+    public TriggerMessageRequest() { }
 
     public TriggerMessageRequest(TriggerMessageRequestType requestedMessage) {
+        this.requestedMessage = requestedMessage;
+    }
+
+    public TriggerMessageRequest(Integer connectorId, TriggerMessageRequestType requestedMessage) {
+        this.connectorId = connectorId;
         this.requestedMessage = requestedMessage;
     }
 

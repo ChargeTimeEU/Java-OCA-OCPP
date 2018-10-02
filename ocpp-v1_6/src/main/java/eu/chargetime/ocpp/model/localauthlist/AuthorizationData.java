@@ -35,8 +35,20 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 
 public class AuthorizationData implements Validatable {
+
     private String idTag;
     private IdTagInfo idTagInfo;
+
+    public AuthorizationData() { }
+
+    public AuthorizationData(String idTag) {
+        this.idTag = idTag;
+    }
+
+    public AuthorizationData(String idTag, IdTagInfo idTagInfo) {
+        this.idTag = idTag;
+        this.idTagInfo = idTagInfo;
+    }
 
     public void setIdTag(String idTag) {
         if (!ModelUtil.validate(idTag, 20)) {

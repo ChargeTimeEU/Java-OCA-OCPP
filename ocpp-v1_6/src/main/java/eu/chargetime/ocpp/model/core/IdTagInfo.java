@@ -46,11 +46,12 @@ import java.util.Objects;
  */
 @XmlRootElement
 @XmlType(propOrder = {"status", "expiryDate", "parentIdTag"})
-public class IdTagInfo implements Validatable
-{
+public class IdTagInfo implements Validatable {
+
     private Calendar expiryDate;
     private String parentIdTag;
     private AuthorizationStatus status;
+
     public IdTagInfo() { }
 
     public IdTagInfo(AuthorizationStatus status) {

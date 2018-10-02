@@ -38,13 +38,20 @@ import java.util.Objects;
  */
 @XmlRootElement(name = "stopTransactionResponse")
 public class StopTransactionConfirmation implements Confirmation {
+
     private IdTagInfo idTagInfo;
+
+    public StopTransactionConfirmation() { }
+
+    public StopTransactionConfirmation(IdTagInfo idTagInfo) {
+        this.idTagInfo = idTagInfo;
+    }
 
     @Override
     public boolean validate() {
         boolean valid = true;
         if (idTagInfo != null) {
-            valid &= idTagInfo.validate();
+            valid = idTagInfo.validate();
         }
         return valid;
     }

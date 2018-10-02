@@ -42,6 +42,12 @@ public class ClearCacheConfirmation implements Confirmation {
 
     private ClearCacheStatus status;
 
+    public ClearCacheConfirmation() { }
+
+    public ClearCacheConfirmation(ClearCacheStatus status) {
+        this.status = status;
+    }
+
     /**
      * Accepted if the Charge Point has executed the request, otherwise rejected.
      *

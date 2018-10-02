@@ -36,8 +36,7 @@ public class SendLocalListConfirmation implements Confirmation {
 
     private UpdateStatus status;
 
-    public SendLocalListConfirmation() {
-    }
+    public SendLocalListConfirmation() { }
 
     public SendLocalListConfirmation(UpdateStatus status) {
         this.status = status;

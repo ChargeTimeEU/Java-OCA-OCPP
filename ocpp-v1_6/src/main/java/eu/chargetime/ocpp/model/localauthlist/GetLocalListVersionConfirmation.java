@@ -37,8 +37,7 @@ public class GetLocalListVersionConfirmation implements Confirmation {
 
     private int listVersion = -2;
 
-    public GetLocalListVersionConfirmation() {
-    }
+    public GetLocalListVersionConfirmation() { }
 
     public GetLocalListVersionConfirmation(int listVersion) {
         this.listVersion = listVersion;

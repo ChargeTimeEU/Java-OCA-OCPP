@@ -49,23 +49,22 @@ public class StartTransactionRequest implements Request {
     private static final int IDTAG_MAX_LENGTH = 20;
     private static final String IDTAG_ERROR_MESSAGE = "Exceeded limit of " + IDTAG_MAX_LENGTH + " chars";
 
-    private Integer connectorId;
+    private int connectorId = -2;
     private String idTag;
-    private Integer meterStart;
+    private int meterStart = -2;
     private Integer reservationId;
     private Calendar timestamp;
 
-    public StartTransactionRequest() {
-    }
+    public StartTransactionRequest() { }
 
-    public StartTransactionRequest(Integer connectorId, String idTag, Integer meterStart, Calendar timestamp) {
+    public StartTransactionRequest(int connectorId, String idTag, int meterStart, Calendar timestamp) {
         this.connectorId = connectorId;
         this.idTag = idTag;
         this.meterStart = meterStart;
         this.timestamp = timestamp;
     }
 
-    public StartTransactionRequest(Integer connectorId, String idTag, Integer meterStart, Integer reservationId,
+    public StartTransactionRequest(int connectorId, String idTag, int meterStart, Integer reservationId,
                                    Calendar timestamp) {
         this.connectorId = connectorId;
         this.idTag = idTag;
@@ -76,9 +75,9 @@ public class StartTransactionRequest implements Request {
 
     @Override
     public boolean validate() {
-        boolean valid = connectorId != null && connectorId > 0;
+        boolean valid = connectorId > 0;
+        valid &= meterStart >= 0;
         valid &= ModelUtil.validate(idTag, 20);
-        valid &= meterStart != null;
         valid &= timestamp != null;
         return valid;
     }
@@ -88,7 +87,7 @@ public class StartTransactionRequest implements Request {
      *
      * @return connector.
      */
-    public Integer getConnectorId() {
+    public int getConnectorId() {
         return connectorId;
     }
 
@@ -134,7 +133,7 @@ public class StartTransactionRequest implements Request {
      *
      * @return Wh at start.
      */
-    public Integer getMeterStart() {
+    public int getMeterStart() {
         return meterStart;
     }
 

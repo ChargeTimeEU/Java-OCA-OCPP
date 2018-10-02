@@ -41,7 +41,14 @@ import java.util.Objects;
  */
 @XmlRootElement(name = "heartbeatResponse")
 public class HeartbeatConfirmation implements Confirmation {
+
     private Calendar currentTime;
+
+    public HeartbeatConfirmation() { }
+
+    public HeartbeatConfirmation(Calendar currentTime) {
+        this.currentTime = currentTime;
+    }
 
     /**
      * This contains the current time of the Central System.

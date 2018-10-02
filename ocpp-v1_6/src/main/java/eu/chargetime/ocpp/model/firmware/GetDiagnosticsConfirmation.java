@@ -36,7 +36,14 @@ import java.util.Objects;
 
 @XmlRootElement(name = "getDiagnosticsResponse")
 public class GetDiagnosticsConfirmation implements Confirmation {
+
     private String fileName;
+
+    public GetDiagnosticsConfirmation() { }
+
+    public GetDiagnosticsConfirmation(String fileName) {
+        this.fileName = fileName;
+    }
 
     @Override
     public boolean validate() {

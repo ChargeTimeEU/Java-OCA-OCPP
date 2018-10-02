@@ -45,13 +45,13 @@ import java.util.Objects;
 @XmlRootElement
 @XmlType(propOrder = {"location", "retries", "retrieveDate", "retryInterval"})
 public class UpdateFirmwareRequest implements Request {
+
     private String location;
     private Integer retries;
     private Calendar retrieveDate;
     private Integer retryInterval;
 
-    public UpdateFirmwareRequest() {
-    }
+    public UpdateFirmwareRequest() { }
 
     public UpdateFirmwareRequest(String location, Calendar retrieveDate) {
         this.location = location;
@@ -64,6 +64,7 @@ public class UpdateFirmwareRequest implements Request {
         this.retrieveDate = retrieveDate;
         this.retryInterval = retryInterval;
     }
+
     @Override
     public boolean validate() {
         return (location != null) && (retrieveDate != null);

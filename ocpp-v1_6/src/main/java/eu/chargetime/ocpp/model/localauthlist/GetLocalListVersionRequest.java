@@ -33,7 +33,9 @@ import java.util.Objects;
 
 public class GetLocalListVersionRequest implements Request {
 
-	@Override
+    public GetLocalListVersionRequest() { }
+
+    @Override
 	public boolean validate() {
 		return true;
 	}

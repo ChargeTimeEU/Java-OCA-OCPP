@@ -34,6 +34,9 @@ import java.util.Objects;
 
 @XmlRootElement(name = "statusNotificationResponse")
 public class StatusNotificationConfirmation implements Confirmation {
+
+    public StatusNotificationConfirmation() { }
+
     @Override
     public boolean validate() {
         return true;

@@ -38,8 +38,7 @@ import java.util.Objects;
 @XmlRootElement(name = "firmwareStatusNotificationResponse")
 public class FirmwareStatusNotificationConfirmation implements Confirmation {
 
-    public FirmwareStatusNotificationConfirmation() {
-    }
+    public FirmwareStatusNotificationConfirmation() { }
 
     @Override
     public boolean validate() {

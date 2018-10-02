@@ -40,8 +40,7 @@ import java.util.Objects;
 @XmlRootElement(name = "updateFirmwareResponse")
 public class UpdateFirmwareConfirmation implements Confirmation {
 
-    public UpdateFirmwareConfirmation() {
-    }
+    public UpdateFirmwareConfirmation() { }
 
     @Override
     public boolean validate() {

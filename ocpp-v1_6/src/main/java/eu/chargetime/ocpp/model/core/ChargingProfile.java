@@ -49,9 +49,10 @@ import java.util.Objects;
         "chargingSchedule"
 })
 public class ChargingProfile implements Validatable {
-    private Integer chargingProfileId;
+
+    private int chargingProfileId = -2;
     private Integer transactionId;
-    private Integer stackLevel;
+    private int stackLevel = -2;
     private ChargingProfilePurposeType chargingProfilePurpose;
     private ChargingProfileKindType chargingProfileKind;
     private RecurrencyKindType recurrencyKind;
@@ -59,10 +60,10 @@ public class ChargingProfile implements Validatable {
     private Calendar validTo;
     private ChargingSchedule chargingSchedule;
 
-    public ChargingProfile() {
-    }
+    public ChargingProfile() { }
 
-    public ChargingProfile(Integer chargingProfileId, Integer stackLevel, ChargingProfilePurposeType chargingProfilePurpose, ChargingProfileKindType chargingProfileKind, ChargingSchedule chargingSchedule) {
+    public ChargingProfile(int chargingProfileId, int stackLevel, ChargingProfilePurposeType chargingProfilePurpose,
+                           ChargingProfileKindType chargingProfileKind, ChargingSchedule chargingSchedule) {
         this.chargingProfileId = chargingProfileId;
         this.stackLevel = stackLevel;
         this.chargingProfilePurpose = chargingProfilePurpose;
@@ -70,17 +71,25 @@ public class ChargingProfile implements Validatable {
         this.chargingSchedule = chargingSchedule;
     }
 
-    public ChargingProfile(Integer chargingProfileId, Integer stackLevel, ChargingProfilePurposeType chargingProfilePurpose, ChargingProfileKindType chargingProfileKind) {
+    public ChargingProfile(int chargingProfileId, Integer transactionId, int stackLevel,
+                           ChargingProfilePurposeType chargingProfilePurpose,
+                           ChargingProfileKindType chargingProfileKind, RecurrencyKindType recurrencyKind,
+                           Calendar validFrom, Calendar validTo, ChargingSchedule chargingSchedule) {
         this.chargingProfileId = chargingProfileId;
+        this.transactionId = transactionId;
         this.stackLevel = stackLevel;
         this.chargingProfilePurpose = chargingProfilePurpose;
         this.chargingProfileKind = chargingProfileKind;
+        this.recurrencyKind = recurrencyKind;
+        this.validFrom = validFrom;
+        this.validTo = validTo;
+        this.chargingSchedule = chargingSchedule;
     }
 
     @Override
     public boolean validate() {
-        boolean valid = chargingProfileId != null;
-        valid &= (stackLevel != null && stackLevel >= 0);
+        boolean valid = stackLevel >= 0;
+        valid &= chargingProfileId > 0;
         valid &= chargingProfilePurpose != null;
         valid &= (transactionId == null || chargingProfilePurpose == ChargingProfilePurposeType.TxProfile);
         valid &= chargingProfileKind != null;
@@ -97,7 +106,7 @@ public class ChargingProfile implements Validatable {
         this.chargingProfileId = chargingProfileId;
     }
 
-    public Integer getChargingProfileId() {
+    public int getChargingProfileId() {
         return chargingProfileId;
     }
 
@@ -106,7 +115,7 @@ public class ChargingProfile implements Validatable {
         this.transactionId = transactionId;
     }
 
-    public Integer getTransactionId() {
+    public int getTransactionId() {
         return transactionId;
     }
 
@@ -119,7 +128,7 @@ public class ChargingProfile implements Validatable {
         this.stackLevel = stackLevel;
     }
 
-    public Integer getStackLevel() {
+    public int getStackLevel() {
         return stackLevel;
     }
 

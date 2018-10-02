@@ -40,23 +40,27 @@ import java.util.Objects;
 @XmlRootElement
 @XmlType(propOrder = {"startPeriod", "limit", "numberPhases"})
 public class ChargingSchedulePeriod implements Validatable {
-    private Integer startPeriod;
-    private Double limit;
+
+    private int startPeriod = -2;
+    private double limit = -2.0;
     private Integer numberPhases = 3;
 
     public ChargingSchedulePeriod() { }
 
-    public ChargingSchedulePeriod(Integer startPeriod, Double limit) {
+    public ChargingSchedulePeriod(int startPeriod, double limit) {
         this.startPeriod = startPeriod;
         this.limit = limit;
     }
 
+    public ChargingSchedulePeriod(int startPeriod, double limit, Integer numberPhases) {
+        this.startPeriod = startPeriod;
+        this.limit = limit;
+        this.numberPhases = numberPhases;
+    }
+
     @Override
     public boolean validate() {
-        boolean valid = true;
-        valid &= startPeriod != null;
-        valid &= limit != null;
-        return valid;
+        return startPeriod >= 0 && limit >= 0;
     }
 
     /**
@@ -76,7 +80,7 @@ public class ChargingSchedulePeriod implements Validatable {
      *
      * @return Seconds from start of schedule.
      */
-    public Integer getStartPeriod() {
+    public int getStartPeriod() {
         return startPeriod;
     }
 
@@ -97,7 +101,7 @@ public class ChargingSchedulePeriod implements Validatable {
      *
      * @return Power limit.
      */
-    public Double getLimit() {
+    public double getLimit() {
         return limit;
     }
 

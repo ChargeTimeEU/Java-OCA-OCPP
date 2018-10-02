@@ -38,6 +38,9 @@ import java.util.Objects;
  */
 @XmlRootElement
 public class HeartbeatRequest implements Request {
+
+    public HeartbeatRequest() { }
+
     @Override
     public boolean validate() {
         return true;

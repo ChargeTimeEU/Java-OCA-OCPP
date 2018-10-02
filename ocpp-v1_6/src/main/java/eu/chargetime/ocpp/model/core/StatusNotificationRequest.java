@@ -48,7 +48,7 @@ public class StatusNotificationRequest implements Request {
 
     private static final String ERROR_MESSAGE = "Exceeds limit of %s chars";
 
-    private Integer connectorId;
+    private int connectorId = -2;
     private ChargePointErrorCode errorCode;
     private String info;
     private ChargePointStatus status;
@@ -56,10 +56,9 @@ public class StatusNotificationRequest implements Request {
     private String vendorId;
     private String vendorErrorCode;
 
-    public StatusNotificationRequest() {
-    }
+    public StatusNotificationRequest() { }
 
-    public StatusNotificationRequest(Integer connectorId, ChargePointErrorCode errorCode, ChargePointStatus status) {
+    public StatusNotificationRequest(int connectorId, ChargePointErrorCode errorCode, ChargePointStatus status) {
         this.connectorId = connectorId;
         this.errorCode = errorCode;
         this.status = status;
@@ -91,7 +90,7 @@ public class StatusNotificationRequest implements Request {
      *
      * @return connector id. 0 = main controller.
      */
-    public Integer getConnectorId() {
+    public int getConnectorId() {
         return connectorId;
     }
 
@@ -110,8 +109,8 @@ public class StatusNotificationRequest implements Request {
         this.connectorId = connectorId;
     }
 
-    private boolean isValidConnectorId(Integer connectorId) {
-        return connectorId != null && connectorId >= 0;
+    private boolean isValidConnectorId(int connectorId) {
+        return connectorId >= 0;
     }
 
     /**

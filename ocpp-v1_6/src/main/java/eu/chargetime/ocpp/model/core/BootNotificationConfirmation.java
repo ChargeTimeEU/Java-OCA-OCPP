@@ -49,11 +49,10 @@ import java.util.Objects;
 public class BootNotificationConfirmation implements Confirmation {
 
     private Calendar currentTime;
-    private int interval;
+    private int interval = -2;
     private RegistrationStatus status;
 
-    public BootNotificationConfirmation() {
-    }
+    public BootNotificationConfirmation() { }
 
     public BootNotificationConfirmation(Calendar currentTime, int interval, RegistrationStatus status) {
         this.currentTime = currentTime;

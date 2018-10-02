@@ -38,10 +38,10 @@ import java.util.Objects;
  */
 @XmlRootElement
 public class ResetConfirmation implements Confirmation {
+
     private ResetStatus status;
 
-    public ResetConfirmation() {
-    }
+    public ResetConfirmation() { }
 
     /**
      * Set required fields.

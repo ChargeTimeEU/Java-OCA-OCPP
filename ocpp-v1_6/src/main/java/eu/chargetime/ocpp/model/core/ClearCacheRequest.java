@@ -39,6 +39,9 @@ import java.util.Objects;
  */
 @XmlRootElement
 public class ClearCacheRequest implements Request {
+
+    public ClearCacheRequest() { }
+
     @Override
     public boolean validate() {
         return true;

@@ -70,8 +70,7 @@ public class BootNotificationRequest implements Request {
     private String meterSerialNumber;
     private String meterType;
 
-    public BootNotificationRequest() {
-    }
+    public BootNotificationRequest() { }
 
     /**
      * Handle required fields.
@@ -82,6 +81,20 @@ public class BootNotificationRequest implements Request {
     public BootNotificationRequest(String vendor, String model) {
         chargePointVendor = vendor;
         chargePointModel = model;
+    }
+
+    public BootNotificationRequest(String chargePointVendor, String chargePointModel, String chargeBoxSerialNumber,
+                                   String chargePointSerialNumber, String firmwareVersion, String iccid, String imsi,
+                                   String meterSerialNumber, String meterType) {
+        this.chargePointVendor = chargePointVendor;
+        this.chargePointModel = chargePointModel;
+        this.chargeBoxSerialNumber = chargeBoxSerialNumber;
+        this.chargePointSerialNumber = chargePointSerialNumber;
+        this.firmwareVersion = firmwareVersion;
+        this.iccid = iccid;
+        this.imsi = imsi;
+        this.meterSerialNumber = meterSerialNumber;
+        this.meterType = meterType;
     }
 
     /**

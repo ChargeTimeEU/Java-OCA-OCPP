@@ -39,6 +39,7 @@ import java.util.Objects;
  */
 @XmlRootElement(name = "cancelReservationResponse")
 public class CancelReservationConfirmation implements Confirmation {
+
     private CancelReservationStatus status;
 
     public CancelReservationConfirmation() { }

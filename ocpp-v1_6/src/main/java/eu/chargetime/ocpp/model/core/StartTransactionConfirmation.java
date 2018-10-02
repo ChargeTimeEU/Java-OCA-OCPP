@@ -41,14 +41,22 @@ import java.util.Objects;
 @XmlRootElement(name = "startTransactionResponse")
 @XmlType(propOrder = {"transactionId", "idTagInfo"})
 public class StartTransactionConfirmation implements Confirmation {
+
     private IdTagInfo idTagInfo;
-    private Integer transactionId;
+    private int transactionId = -2;
+
+    public StartTransactionConfirmation() { }
+
+    public StartTransactionConfirmation(IdTagInfo idTagInfo, int transactionId) {
+        this.idTagInfo = idTagInfo;
+        this.transactionId = transactionId;
+    }
 
     @Override
     public boolean validate() {
-        boolean valid = true;
+        boolean valid = transactionId > 0;
         if (valid &= idTagInfo != null)
-            valid &= idTagInfo.validate();
+            valid = idTagInfo.validate();
         return valid;
     }
 
@@ -76,7 +84,7 @@ public class StartTransactionConfirmation implements Confirmation {
      *
      * @return transaction id.
      */
-    public Integer getTransactionId() {
+    public int getTransactionId() {
         return transactionId;
     }
 

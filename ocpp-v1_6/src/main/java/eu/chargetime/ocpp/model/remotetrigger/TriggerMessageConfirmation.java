@@ -37,10 +37,10 @@ import java.util.Objects;
 
 @XmlRootElement(name = "triggerMessageResponse")
 public class TriggerMessageConfirmation implements Confirmation {
+
     private TriggerMessageStatus status;
 
-    public TriggerMessageConfirmation() {
-    }
+    public TriggerMessageConfirmation() { }
 
     /**
      * Set required values.

@@ -39,8 +39,7 @@ public class SendLocalListRequest implements Request {
     private AuthorizationData[] localAuthorizationList = null;
     private UpdateType updateType = null;
 
-    public SendLocalListRequest() {
-    }
+    public SendLocalListRequest() { }
 
     public SendLocalListRequest(int listVersion, UpdateType updateType) {
         this.listVersion = listVersion;

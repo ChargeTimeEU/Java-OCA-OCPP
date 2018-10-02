@@ -39,13 +39,12 @@ import java.util.Objects;
 public class GetDiagnosticsRequest implements Request {
 
     private String location;
-    private int retries;
-    private int retryInterval;
+    private Integer retries;
+    private Integer retryInterval;
     private Calendar startTime;
     private Calendar stopTime;
 
-    public GetDiagnosticsRequest() {
-    }
+    public GetDiagnosticsRequest() { }
 
     public GetDiagnosticsRequest(String location) {
         this.location = location;

@@ -40,18 +40,18 @@ import java.util.Objects;
  */
 @XmlRootElement
 public class UnlockConnectorRequest implements Request {
-    private Integer connectorId;
 
-    public UnlockConnectorRequest() {
-    }
+    private int connectorId = -2;
 
-    public UnlockConnectorRequest(Integer connectorId) {
+    public UnlockConnectorRequest() { }
+
+    public UnlockConnectorRequest(int connectorId) {
         this.connectorId = connectorId;
     }
 
     @Override
     public boolean validate() {
-        return connectorId != null && connectorId > 0;
+        return connectorId > 0;
     }
 
     /**
@@ -59,7 +59,7 @@ public class UnlockConnectorRequest implements Request {
      *
      * @return connector.
      */
-    public Integer getConnectorId() {
+    public int getConnectorId() {
         return connectorId;
     }
 

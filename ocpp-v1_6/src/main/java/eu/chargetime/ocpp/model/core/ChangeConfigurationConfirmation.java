@@ -40,7 +40,14 @@ import java.util.Objects;
  */
 @XmlRootElement(name = "changeConfigurationResponse")
 public class ChangeConfigurationConfirmation implements Confirmation {
+
     private ConfigurationStatus status;
+
+    public ChangeConfigurationConfirmation() { }
+
+    public ChangeConfigurationConfirmation(ConfigurationStatus status) {
+        this.status = status;
+    }
 
     /**
      * Returns whether configuration change has been accepted.

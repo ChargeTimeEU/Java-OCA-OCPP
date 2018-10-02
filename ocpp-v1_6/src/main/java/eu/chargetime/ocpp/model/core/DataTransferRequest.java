@@ -50,8 +50,7 @@ public class DataTransferRequest implements Request {
     private String messageId;
     private String data;
 
-    public DataTransferRequest() {
-    }
+    public DataTransferRequest() { }
 
     /**
      * Set required fields.

@@ -50,6 +50,13 @@ public class GetConfigurationConfirmation implements Confirmation {
     private KeyValueType[] configurationKey;
     private String[] unknownKey;
 
+    public GetConfigurationConfirmation() { }
+
+    public GetConfigurationConfirmation(KeyValueType[] configurationKey, String[] unknownKey) {
+        this.configurationKey = configurationKey;
+        this.unknownKey = unknownKey;
+    }
+
     /**
      * List of requested or known keys.
      *

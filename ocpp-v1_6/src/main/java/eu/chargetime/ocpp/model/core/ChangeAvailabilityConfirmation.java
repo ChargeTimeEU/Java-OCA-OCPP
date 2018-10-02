@@ -42,6 +42,17 @@ public class ChangeAvailabilityConfirmation implements Confirmation {
 
     private AvailabilityStatus status;
 
+    public ChangeAvailabilityConfirmation() { }
+
+    /**
+     * Handle required fields.
+     *
+     * @param status the {@link AvailabilityStatus}, see {@link #setStatus(AvailabilityStatus)}
+     */
+    public ChangeAvailabilityConfirmation(AvailabilityStatus status) {
+        this.status = status;
+    }
+
     /**
      * This indicates whether the Charge Point is able to perform the availability change.
      *
@@ -68,17 +79,6 @@ public class ChangeAvailabilityConfirmation implements Confirmation {
      */
     @XmlElement
     public void setStatus(AvailabilityStatus status) {
-        this.status = status;
-    }
-
-    public ChangeAvailabilityConfirmation() { }
-
-    /**
-     * Handle required fields.
-     *
-     * @param status the {@link AvailabilityStatus}, see {@link #setStatus(AvailabilityStatus)}
-     */
-    public ChangeAvailabilityConfirmation(AvailabilityStatus status) {
         this.status = status;
     }
 

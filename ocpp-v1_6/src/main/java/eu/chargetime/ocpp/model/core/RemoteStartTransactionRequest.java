@@ -42,15 +42,13 @@ import java.util.Objects;
  */
 @XmlRootElement
 @XmlType(propOrder = {"connectorId", "idTag", "chargingProfile"})
-public class
-RemoteStartTransactionRequest implements Request {
+public class RemoteStartTransactionRequest implements Request {
 
     private Integer connectorId;
     private String idTag;
     private ChargingProfile chargingProfile;
 
-    public RemoteStartTransactionRequest() {
-    }
+    public RemoteStartTransactionRequest() { }
 
     public RemoteStartTransactionRequest(String idTag) {
         this.idTag = idTag;

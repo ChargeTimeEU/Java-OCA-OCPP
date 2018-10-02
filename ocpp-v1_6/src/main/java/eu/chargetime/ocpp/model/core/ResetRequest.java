@@ -38,10 +38,10 @@ import java.util.Objects;
  */
 @XmlRootElement
 public class ResetRequest implements Request {
+
     private ResetType type;
 
-    public ResetRequest() {
-    }
+    public ResetRequest() { }
 
     public ResetRequest(ResetType type) {
         this.type = type;

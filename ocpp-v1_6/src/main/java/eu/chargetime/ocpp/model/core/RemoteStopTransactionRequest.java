@@ -39,18 +39,18 @@ import java.util.Objects;
  */
 @XmlRootElement
 public class RemoteStopTransactionRequest implements Request {
-    private Integer transactionId;
 
-    public RemoteStopTransactionRequest() {
-    }
+    private int transactionId = -2;
 
-    public RemoteStopTransactionRequest(Integer transactionId) {
+    public RemoteStopTransactionRequest() { }
+
+    public RemoteStopTransactionRequest(int transactionId) {
         this.transactionId = transactionId;
     }
 
     @Override
     public boolean validate() {
-        return transactionId != null;
+        return transactionId > 0;
     }
 
     /**
@@ -58,7 +58,7 @@ public class RemoteStopTransactionRequest implements Request {
      *
      * @return transaction id.
      */
-    public Integer getTransactionId() {
+    public int getTransactionId() {
         return transactionId;
     }
 

@@ -46,9 +46,22 @@ import java.util.Objects;
 @XmlType(propOrder = {"connectorId", "transactionId", "meterValue"})
 public class MeterValuesRequest implements Request {
 
-    private int connectorId;
-    private int transactionId;
+    private int connectorId = -2;
+    private Integer transactionId;
     private MeterValue[] meterValue;
+
+    public MeterValuesRequest() { }
+
+    public MeterValuesRequest(int connectorId, MeterValue[] meterValue) {
+        this.connectorId = connectorId;
+        this.meterValue = meterValue;
+    }
+
+    public MeterValuesRequest(int connectorId, Integer transactionId, MeterValue[] meterValue) {
+        this.connectorId = connectorId;
+        this.transactionId = transactionId;
+        this.meterValue = meterValue;
+    }
 
     @Override
     public boolean validate() {

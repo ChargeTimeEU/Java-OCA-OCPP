@@ -46,27 +46,37 @@ import java.util.Objects;
 @XmlRootElement
 @XmlType(propOrder = {"transactionId", "idTag", "timestamp", "meterStop", "reason", "transactionData"})
 public class StopTransactionRequest implements Request {
+
     private String idTag;
-    private Integer meterStop;
+    private int meterStop = -2;
     private Calendar timestamp;
-    private Integer transactionId;
+    private int transactionId = -2;
     private Reason reason;
     private MeterValue[] transactionData;
 
-    public StopTransactionRequest() {
-    }
+    public StopTransactionRequest() { }
 
-    public StopTransactionRequest(Integer meterStop, Calendar timestamp, Integer transactionId) {
+    public StopTransactionRequest(int meterStop, Calendar timestamp, int transactionId) {
         this.meterStop = meterStop;
         this.timestamp = timestamp;
         this.transactionId = transactionId;
     }
 
+    public StopTransactionRequest(String idTag, int meterStop, Calendar timestamp, int transactionId, Reason reason,
+                                  MeterValue[] transactionData) {
+        this.idTag = idTag;
+        this.meterStop = meterStop;
+        this.timestamp = timestamp;
+        this.transactionId = transactionId;
+        this.reason = reason;
+        this.transactionData = transactionData;
+    }
+
     @Override
     public boolean validate() {
-        boolean valid = meterStop != null;
-        valid &= timestamp != null;
-        valid &= transactionId != null;
+        boolean valid = timestamp != null;
+        valid &= meterStop > 0;
+        valid &= transactionId > 0;
         if (transactionData != null) {
             for (MeterValue meterValue : transactionData) {
                 valid &= meterValue.validate();
@@ -106,7 +116,7 @@ public class StopTransactionRequest implements Request {
      *
      * @return meter value in Wh.
      */
-    public Integer getMeterStop() {
+    public int getMeterStop() {
         return meterStop;
     }
 
@@ -154,7 +164,7 @@ public class StopTransactionRequest implements Request {
      *
      * @return transaction id.
      */
-    public Integer getTransactionId() {
+    public int getTransactionId() {
         return transactionId;
     }
 

@@ -36,8 +36,10 @@ import java.util.Objects;
 
 @XmlRootElement(name = "setChargingProfileResponse")
 public class SetChargingProfileConfirmation implements Confirmation {
-    public SetChargingProfileConfirmation() {
-    }
+
+    private ChargingProfileStatus status;
+
+    public SetChargingProfileConfirmation() { }
 
     /**
      * Set required values.
@@ -47,7 +49,7 @@ public class SetChargingProfileConfirmation implements Confirmation {
     public SetChargingProfileConfirmation(ChargingProfileStatus status) {
         setStatus(status);
     }
-    private ChargingProfileStatus status;
+
     /**
      * This indicates the success or failure of the change of the charging profile.
      *

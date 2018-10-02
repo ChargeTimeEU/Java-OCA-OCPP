@@ -49,24 +49,23 @@ public class ReserveNowRequest implements Request {
     private static final int ID_TAG_MAX_LENGTH = 20;
     private static final String ERROR_MESSAGE = "Exceeded limit of " + ID_TAG_MAX_LENGTH + " chars";
 
-    private Integer connectorId;
+    private int connectorId = -2;
     private Calendar expiryDate;
     private String idTag;
     private String parentIdTag;
-    private Integer reservationId;
+    private int reservationId = -2;
 
-    public ReserveNowRequest() {
-    }
+    public ReserveNowRequest() { }
 
-    public ReserveNowRequest(Integer connectorId, Calendar expiryDate, String idTag, Integer reservationId) {
+    public ReserveNowRequest(int connectorId, Calendar expiryDate, String idTag, int reservationId) {
         this.connectorId = connectorId;
         this.expiryDate = expiryDate;
         this.idTag = idTag;
         this.reservationId = reservationId;
     }
 
-    public ReserveNowRequest(Integer connectorId, Calendar expiryDate, String idTag, String parentIdTag,
-                             Integer reservationId) {
+    public ReserveNowRequest(int connectorId, Calendar expiryDate, String idTag, String parentIdTag,
+                             int reservationId) {
         this.connectorId = connectorId;
         this.expiryDate = expiryDate;
         this.idTag = idTag;
@@ -76,10 +75,10 @@ public class ReserveNowRequest implements Request {
 
     @Override
     public boolean validate() {
-        boolean valid = (connectorId != null && connectorId >= 0);
+        boolean valid = connectorId >= 0;
+        valid &= reservationId >= 0;
         valid &= expiryDate != null;
         valid &= ModelUtil.validate(idTag, ID_TAG_MAX_LENGTH);
-        valid &= reservationId != null;
         return valid;
     }
 
@@ -89,7 +88,7 @@ public class ReserveNowRequest implements Request {
      *
      * @return Integer, the destination connectorId.
      */
-    public Integer getConnectorId() {
+    public int getConnectorId() {
         return connectorId;
     }
 
@@ -181,7 +180,7 @@ public class ReserveNowRequest implements Request {
      *
      * @return Integer, id of reservation.
      */
-    public Integer getReservationId() {
+    public int getReservationId() {
         return reservationId;
     }
 

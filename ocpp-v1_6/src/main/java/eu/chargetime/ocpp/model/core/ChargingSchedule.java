@@ -44,6 +44,7 @@ import java.util.Objects;
 @XmlRootElement
 @XmlType(propOrder = {"duration", "startSchedule", "chargingRateUnit", "chargingSchedulePeriod", "minChargingRate"})
 public class ChargingSchedule implements Validatable {
+
     private Integer duration;
     private Calendar startSchedule;
     private ChargingRateUnitType chargingRateUnit;
@@ -55,6 +56,15 @@ public class ChargingSchedule implements Validatable {
     public ChargingSchedule(ChargingRateUnitType chargingRateUnit, ChargingSchedulePeriod[] chargingSchedulePeriod) {
         this.chargingRateUnit = chargingRateUnit;
         this.chargingSchedulePeriod = chargingSchedulePeriod;
+    }
+
+    public ChargingSchedule(Integer duration, Calendar startSchedule, ChargingRateUnitType chargingRateUnit,
+                            ChargingSchedulePeriod[] chargingSchedulePeriod, Double minChargingRate) {
+        this.duration = duration;
+        this.startSchedule = startSchedule;
+        this.chargingRateUnit = chargingRateUnit;
+        this.chargingSchedulePeriod = chargingSchedulePeriod;
+        this.minChargingRate = minChargingRate;
     }
 
     @Override

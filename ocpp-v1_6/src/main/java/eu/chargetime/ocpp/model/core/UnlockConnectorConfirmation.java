@@ -38,10 +38,10 @@ import java.util.Objects;
  */
 @XmlRootElement(name = "unlockConnectorResponse")
 public class UnlockConnectorConfirmation implements Confirmation {
+
     private UnlockStatus status;
 
-    public UnlockConnectorConfirmation() {
-    }
+    public UnlockConnectorConfirmation() { }
 
     /**
      * Set required values.
