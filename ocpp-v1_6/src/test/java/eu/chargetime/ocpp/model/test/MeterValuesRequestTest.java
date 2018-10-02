@@ -59,6 +59,7 @@ public class MeterValuesRequestTest extends TestUtilities {
     @Before
     public void setUp() {
         request = new MeterValuesRequest();
+        request.setConnectorId(1);
     }
 
     @Test

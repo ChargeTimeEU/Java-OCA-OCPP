@@ -35,7 +35,10 @@ import org.slf4j.LoggerFactory;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Single sampled value in {@link MeterValue}. Each value can be accompanied by optional fields.
@@ -47,12 +50,12 @@ public class SampledValue implements Validatable {
     private static final Logger logger = LoggerFactory.getLogger(SampledValue.class);
 
     private String value;
-    private String context;
+    private Context context;
     private ValueFormat format;
-    private String measurand;
-    private String phase;
+    private Measurand measurand;
+    private Phase phase;
     private Location location;
-    private String unit;
+    private Unit unit;
 
     public SampledValue() {
         try {
@@ -70,8 +73,8 @@ public class SampledValue implements Validatable {
         this.value = value;
     }
 
-    public SampledValue(String value, String context, ValueFormat format, String measurand, String phase,
-                        Location location, String unit) {
+    public SampledValue(String value, Context context, ValueFormat format, Measurand measurand, Phase phase,
+                        Location location, Unit unit) {
         this.value = value;
         this.context = context;
         this.format = format;
@@ -115,7 +118,7 @@ public class SampledValue implements Validatable {
      * @return enum value for context.
      */
     public String getContext() {
-        return context;
+        return Context.nameOfValue(context);
     }
 
     /**
@@ -141,12 +144,11 @@ public class SampledValue implements Validatable {
             throw new PropertyConstraintException(context, "context is not properly defined");
         }
 
-        this.context = context;
+        this.context = Context.valueOfStr(context);
     }
 
     private boolean isValidContext(String context) {
-        String[] readingContext = {"Interruption.Begin", "Interruption.End", "Other", "Sample.Clock", "Sample.Periodic", "Transaction.Begin", "Transaction.End", "Trigger"};
-        return ModelUtil.isAmong(context, readingContext);
+        return ModelUtil.isAmong(context, Context.getValues());
     }
 
     /**
@@ -185,7 +187,7 @@ public class SampledValue implements Validatable {
      * @return enum value of measurand.
      */
     public String getMeasurand() {
-        return measurand;
+        return Measurand.nameOfValue(measurand);
     }
 
     /**
@@ -224,12 +226,11 @@ public class SampledValue implements Validatable {
         if (!isValidMeasurand(measurand))
             throw new PropertyConstraintException(measurand, "measurand value is not properly defined");
 
-        this.measurand = measurand;
+        this.measurand = Measurand.valueOfStr(measurand);
     }
 
     private boolean isValidMeasurand(String measurand) {
-        String[] measurandValues = {"Current.Export", "Current.Import", "Current.Offered", "Energy.Active.Export.Register", "Energy.Active.Import.Register", "Energy.Reactive.Export.Register", "Energy.Reactive.Import.Register", "Energy.Active.Export.Interval", "Energy.Active.Import.Interval", "Energy.Reactive.Export.Interval", "Energy.Reactive.Import.Interval", "Frequency", "Power.Active.Export", "Power.Active.Import", "Power.Factor", "Power.Offered", "Power.Reactive.Export", "Power.Reactive.Import", "RPM", "SoC", "Temperature", "Voltage"};
-        return ModelUtil.isAmong(measurand, measurandValues);
+        return ModelUtil.isAmong(measurand, Measurand.getValues());
     }
 
     /**
@@ -239,7 +240,7 @@ public class SampledValue implements Validatable {
      * @return enum value of phase.
      */
     public String getPhase() {
-        return phase;
+        return Phase.nameOfValue(phase);
     }
 
     /**
@@ -269,11 +270,11 @@ public class SampledValue implements Validatable {
             throw new PropertyConstraintException(phase, "phase is not properly defined");
         }
 
-        this.phase = phase;
+        this.phase = Phase.valueOfStr(phase);
     }
 
     private boolean isValidPhase(String phase) {
-        return ModelUtil.isAmong(phase, "L1", "L2", "L3", "N", "L1-N", "L2-N", "L3-N", "L1-L2", "L2-L3", "L3-L1");
+        return ModelUtil.isAmong(phase, Phase.getValues());
     }
 
     /**
@@ -312,7 +313,7 @@ public class SampledValue implements Validatable {
      * @return Unit of Measure.
      */
     public String getUnit() {
-        return unit;
+        return unit.name();
     }
 
     /**
@@ -346,12 +347,11 @@ public class SampledValue implements Validatable {
             throw new PropertyConstraintException(unit, "unit is not properly defined");
         }
 
-        this.unit = unit;
+        this.unit = Unit.valueOf(unit);
     }
 
     private boolean isValidUnit(String unit) {
-        String[] unitOfMeasure = {"Wh", "kWh", "varh", "kvarh", "W", "kW", "VA", "kVA", "var", "kvar", "A", "V", "Celsius", "Fahrenheit", "K", "Percent"};
-        return ModelUtil.isAmong(unit, unitOfMeasure);
+        return ModelUtil.isAmong(unit, Unit.getValues());
     }
 
     @Override
