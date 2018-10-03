@@ -32,7 +32,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-import com.sun.xml.internal.messaging.saaj.soap.ver1_2.Message1_2Impl;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import java.util.ArrayDeque;
@@ -258,8 +257,8 @@ public abstract class Communicator {
         @Override
         public void receivedMessage(Object input) {
             if (input != null) {
-                if (input instanceof Message1_2Impl) {
-                    Message1_2Impl message1_2 = (Message1_2Impl) input;
+                if (input instanceof SOAPMessage) {
+                    SOAPMessage message1_2 = (SOAPMessage) input;
                     try {
                         logger.trace("Receive a message: {}", SugarUtil.sourceToString(
                                                                   message1_2.getSOAPPart().getContent()));

@@ -82,7 +82,7 @@ public abstract class SOAPSyncHelper {
             try {
                 logger.trace("Send an answer: {}", SugarUtil.sourceToString(soapMessage.getSOAPPart().getContent()));
             } catch (SOAPException e) {
-            logger.warn("Message {} raised SOAPException", soapMessage, e);
+                logger.warn("Message {} raised SOAPException", soapMessage, e);
             }
             promises.get(relatesTo).complete(soapMessage);
         } else {
