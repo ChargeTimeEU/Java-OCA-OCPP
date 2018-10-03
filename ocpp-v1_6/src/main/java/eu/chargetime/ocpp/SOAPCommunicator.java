@@ -26,7 +26,11 @@ package eu.chargetime.ocpp;
 
  */
 
-import eu.chargetime.ocpp.model.*;
+import eu.chargetime.ocpp.model.CallErrorMessage;
+import eu.chargetime.ocpp.model.CallMessage;
+import eu.chargetime.ocpp.model.CallResultMessage;
+import eu.chargetime.ocpp.model.Message;
+import eu.chargetime.ocpp.model.SOAPHostInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -34,11 +38,23 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.bind.*;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.soap.*;
+import javax.xml.soap.MessageFactory;
+import javax.xml.soap.SOAPConstants;
+import javax.xml.soap.SOAPElement;
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPFactory;
+import javax.xml.soap.SOAPFault;
+import javax.xml.soap.SOAPHeader;
+import javax.xml.soap.SOAPHeaderElement;
+import javax.xml.soap.SOAPMessage;
 
 public class SOAPCommunicator extends Communicator {
     private static final Logger logger = LoggerFactory.getLogger(SOAPCommunicator.class);

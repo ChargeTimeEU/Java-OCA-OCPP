@@ -26,7 +26,9 @@ package eu.chargetime.ocpp.feature.profile.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.feature.CancelReservationFeature;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.ReserveNowFeature;
 import eu.chargetime.ocpp.feature.profile.ClientReservationEventHandler;
 import eu.chargetime.ocpp.feature.profile.ClientReservationProfile;
 import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;

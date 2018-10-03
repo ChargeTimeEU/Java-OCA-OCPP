@@ -5,13 +5,12 @@ import org.java_websocket.server.DefaultSSLWebSocketServerFactory;
 import org.junit.Test;
 
 import javax.net.ssl.SSLContext;
-
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
 /**

@@ -26,6 +26,5 @@
 @XmlSchema(elementFormDefault = XmlNsForm.QUALIFIED, namespace = "urn://Ocpp/Cs/2015/10/")
 package eu.chargetime.ocpp.model.core;
 
-import javax.xml.bind.annotation.XmlNs;
 import javax.xml.bind.annotation.XmlNsForm;
 import javax.xml.bind.annotation.XmlSchema;

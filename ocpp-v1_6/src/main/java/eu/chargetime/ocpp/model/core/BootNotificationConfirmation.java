@@ -30,7 +30,6 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-import eu.chargetime.ocpp.utilities.SugarUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

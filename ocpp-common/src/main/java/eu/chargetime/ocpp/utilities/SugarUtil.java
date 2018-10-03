@@ -26,19 +26,16 @@ package eu.chargetime.ocpp.utilities;
     SOFTWARE.
  */
 
-import org.w3c.dom.Document;
-
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Calendar;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class SugarUtil {
 

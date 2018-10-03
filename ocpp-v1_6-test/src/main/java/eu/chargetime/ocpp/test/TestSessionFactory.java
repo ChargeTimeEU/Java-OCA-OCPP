@@ -25,7 +25,13 @@ package eu.chargetime.ocpp.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.Communicator;
+import eu.chargetime.ocpp.IFeatureRepository;
+import eu.chargetime.ocpp.ISession;
+import eu.chargetime.ocpp.ISessionFactory;
+import eu.chargetime.ocpp.Queue;
+import eu.chargetime.ocpp.Session;
+import eu.chargetime.ocpp.SimplePromiseFulfiller;
 
 public class TestSessionFactory implements ISessionFactory {
 

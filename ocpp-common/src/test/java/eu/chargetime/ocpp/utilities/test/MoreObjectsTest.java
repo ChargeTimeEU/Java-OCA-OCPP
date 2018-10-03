@@ -29,9 +29,19 @@ package eu.chargetime.ocpp.utilities.test;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * Unit test for {@link MoreObjects}.

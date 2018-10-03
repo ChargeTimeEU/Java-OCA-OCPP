@@ -1,6 +1,10 @@
 package eu.chargetime.ocpp.test;
 
-import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.Communicator;
+import eu.chargetime.ocpp.CommunicatorEvents;
+import eu.chargetime.ocpp.NotConnectedException;
+import eu.chargetime.ocpp.RadioEvents;
+import eu.chargetime.ocpp.Receiver;
 import eu.chargetime.ocpp.model.Message;
 import eu.chargetime.ocpp.model.Request;
 import org.junit.Before;
@@ -10,7 +14,14 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /*
     ChargeTime.eu - Java-OCA-OCPP

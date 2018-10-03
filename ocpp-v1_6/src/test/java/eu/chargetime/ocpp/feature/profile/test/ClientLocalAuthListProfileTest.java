@@ -1,21 +1,6 @@
 package eu.chargetime.ocpp.feature.profile.test;
 
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-import java.util.UUID;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.GetLocalListVersionFeature;
 import eu.chargetime.ocpp.feature.SendLocalListFeature;
@@ -23,6 +8,20 @@ import eu.chargetime.ocpp.feature.profile.ClientLocalAuthListEventHandler;
 import eu.chargetime.ocpp.feature.profile.ClientLocalAuthListProfile;
 import eu.chargetime.ocpp.model.localauthlist.GetLocalListVersionRequest;
 import eu.chargetime.ocpp.model.localauthlist.SendLocalListRequest;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.UUID;
+
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClientLocalAuthListProfileTest extends ProfileTest  {

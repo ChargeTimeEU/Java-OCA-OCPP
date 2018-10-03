@@ -25,7 +25,11 @@ package eu.chargetime.ocpp.feature.profile;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.feature.DiagnosticsStatusNotificationFeature;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.FirmwareStatusNotificationFeature;
+import eu.chargetime.ocpp.feature.GetDiagnosticsFeature;
+import eu.chargetime.ocpp.feature.UpdateFirmwareFeature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;

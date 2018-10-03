@@ -1,7 +1,5 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.core.IdTagInfo;
-import eu.chargetime.ocpp.model.core.StartTransactionConfirmation;
 import eu.chargetime.ocpp.model.smartcharging.ChargingProfileStatus;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
 import org.junit.Before;
@@ -10,7 +8,6 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP

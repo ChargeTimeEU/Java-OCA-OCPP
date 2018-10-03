@@ -25,7 +25,17 @@ package eu.chargetime.ocpp.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.FeatureRepository;
+import eu.chargetime.ocpp.IServerAPI;
+import eu.chargetime.ocpp.ISessionFactory;
+import eu.chargetime.ocpp.JSONConfiguration;
+import eu.chargetime.ocpp.NotConnectedException;
+import eu.chargetime.ocpp.OccurenceConstraintException;
+import eu.chargetime.ocpp.PromiseRepository;
+import eu.chargetime.ocpp.Server;
+import eu.chargetime.ocpp.ServerEvents;
+import eu.chargetime.ocpp.UnsupportedFeatureException;
+import eu.chargetime.ocpp.WebSocketListener;
 import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import eu.chargetime.ocpp.model.Confirmation;

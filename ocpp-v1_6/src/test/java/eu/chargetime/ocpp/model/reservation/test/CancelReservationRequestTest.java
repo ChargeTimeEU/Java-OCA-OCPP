@@ -26,7 +26,6 @@ package eu.chargetime.ocpp.model.reservation.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
 import org.junit.Before;
 import org.junit.Test;

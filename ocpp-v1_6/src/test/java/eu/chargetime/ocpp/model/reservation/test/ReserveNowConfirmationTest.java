@@ -26,7 +26,6 @@ package eu.chargetime.ocpp.model.reservation.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.reservation.ReservationStatus;
 import eu.chargetime.ocpp.model.reservation.ReserveNowConfirmation;
 import eu.chargetime.ocpp.utilities.TestUtilities;
@@ -34,9 +33,6 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Calendar;
-
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class ReserveNowConfirmationTest extends TestUtilities {

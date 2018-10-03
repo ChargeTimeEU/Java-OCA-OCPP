@@ -35,10 +35,7 @@ import org.slf4j.LoggerFactory;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Single sampled value in {@link MeterValue}. Each value can be accompanied by optional fields.

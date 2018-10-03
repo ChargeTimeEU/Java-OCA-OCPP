@@ -26,7 +26,13 @@ package eu.chargetime.ocpp.test;
  SOFTWARE.
  */
 
-import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.Client;
+import eu.chargetime.ocpp.ClientEvents;
+import eu.chargetime.ocpp.IFeatureRepository;
+import eu.chargetime.ocpp.IPromiseRepository;
+import eu.chargetime.ocpp.Session;
+import eu.chargetime.ocpp.SessionEvents;
+import eu.chargetime.ocpp.UnsupportedFeatureException;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
@@ -43,7 +49,15 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyObject;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClientTest extends TestUtilities {

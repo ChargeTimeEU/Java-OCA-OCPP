@@ -26,7 +26,6 @@ package eu.chargetime.ocpp.model.firmware;/*
 
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-import eu.chargetime.ocpp.utilities.SugarUtil;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

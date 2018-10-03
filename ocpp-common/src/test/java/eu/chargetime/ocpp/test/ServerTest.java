@@ -1,6 +1,14 @@
 package eu.chargetime.ocpp.test;
 
-import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.IFeatureRepository;
+import eu.chargetime.ocpp.IPromiseRepository;
+import eu.chargetime.ocpp.Listener;
+import eu.chargetime.ocpp.ListenerEvents;
+import eu.chargetime.ocpp.Server;
+import eu.chargetime.ocpp.ServerEvents;
+import eu.chargetime.ocpp.Session;
+import eu.chargetime.ocpp.SessionEvents;
+import eu.chargetime.ocpp.UnsupportedFeatureException;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.SessionInformation;
@@ -14,7 +22,14 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /*
     ChargeTime.eu - Java-OCA-OCPP

@@ -6,7 +6,6 @@ import eu.chargetime.ocpp.ServerEvents;
 import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import eu.chargetime.ocpp.model.SessionInformation;
-import eu.chargetime.ocpp.model.core.*;
 
 import java.util.UUID;
 

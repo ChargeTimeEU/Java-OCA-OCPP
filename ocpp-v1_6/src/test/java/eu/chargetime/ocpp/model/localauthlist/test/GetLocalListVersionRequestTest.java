@@ -1,16 +1,14 @@
 package eu.chargetime.ocpp.model.localauthlist.test;
 
-import static org.junit.Assert.assertThat;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
-
+import eu.chargetime.ocpp.model.localauthlist.GetLocalListVersionRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import eu.chargetime.ocpp.model.localauthlist.GetLocalListVersionRequest;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GetLocalListVersionRequestTest {

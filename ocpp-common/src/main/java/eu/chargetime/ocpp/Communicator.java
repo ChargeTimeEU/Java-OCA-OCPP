@@ -26,12 +26,18 @@ package eu.chargetime.ocpp;
  SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.*;
+import com.sun.xml.internal.messaging.saaj.soap.ver1_2.Message1_2Impl;
+import eu.chargetime.ocpp.model.CallErrorMessage;
+import eu.chargetime.ocpp.model.CallMessage;
+import eu.chargetime.ocpp.model.CallResultMessage;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Message;
+import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.SugarUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
 
+import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import java.util.ArrayDeque;
 
@@ -255,15 +261,21 @@ public abstract class Communicator {
 
         @Override
         public void receivedMessage(Object input) {
-            Message message = parse(input);
-            if (message != null) {
-                Object payload = message.getPayload();
-                if (payload instanceof Document) {
-                    logger.trace("Receive a message: {}", SugarUtil.docToString((Document) payload));
+            if (input != null) {
+                if (input instanceof Message1_2Impl) {
+                    Message1_2Impl message1_2 = (Message1_2Impl) input;
+                    logger.info(message1_2.getSOAPPart().toString());
+                    try {
+                        logger.trace("Receive a message: {}", SugarUtil.sourceToString(
+                                                                  message1_2.getSOAPPart().getContent()));
+                    } catch (SOAPException e) {
+                        logger.warn("Message {} raised SOAPException", input, e);
+                    }
                 } else {
-                    logger.trace("Receive a message: {}", payload);
+                    logger.trace("Receive a message: {}", input);
                 }
             }
+            Message message = parse(input);
             if (message instanceof CallResultMessage) {
                 events.onCallResult(message.getId(), message.getAction(), message.getPayload());
             } else if (message instanceof CallErrorMessage) {

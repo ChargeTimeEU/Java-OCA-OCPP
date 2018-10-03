@@ -24,7 +24,22 @@ package eu.chargetime.ocpp.feature.profile;/*
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.core.*;
+import eu.chargetime.ocpp.model.core.AuthorizeConfirmation;
+import eu.chargetime.ocpp.model.core.AuthorizeRequest;
+import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
+import eu.chargetime.ocpp.model.core.BootNotificationRequest;
+import eu.chargetime.ocpp.model.core.DataTransferConfirmation;
+import eu.chargetime.ocpp.model.core.DataTransferRequest;
+import eu.chargetime.ocpp.model.core.HeartbeatConfirmation;
+import eu.chargetime.ocpp.model.core.HeartbeatRequest;
+import eu.chargetime.ocpp.model.core.MeterValuesConfirmation;
+import eu.chargetime.ocpp.model.core.MeterValuesRequest;
+import eu.chargetime.ocpp.model.core.StartTransactionConfirmation;
+import eu.chargetime.ocpp.model.core.StartTransactionRequest;
+import eu.chargetime.ocpp.model.core.StatusNotificationConfirmation;
+import eu.chargetime.ocpp.model.core.StatusNotificationRequest;
+import eu.chargetime.ocpp.model.core.StopTransactionConfirmation;
+import eu.chargetime.ocpp.model.core.StopTransactionRequest;
 
 import java.util.UUID;
 

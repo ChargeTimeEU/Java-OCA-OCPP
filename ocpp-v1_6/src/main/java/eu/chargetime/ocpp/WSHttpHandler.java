@@ -30,8 +30,11 @@ import com.sun.net.httpserver.HttpHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.soap.*;
-
+import javax.xml.soap.MessageFactory;
+import javax.xml.soap.MimeHeaders;
+import javax.xml.soap.SOAPConstants;
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPMessage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

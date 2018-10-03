@@ -25,7 +25,9 @@ package eu.chargetime.ocpp.feature.profile;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.GetLocalListVersionFeature;
+import eu.chargetime.ocpp.feature.SendLocalListFeature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 

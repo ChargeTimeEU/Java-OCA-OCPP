@@ -27,9 +27,6 @@ package eu.chargetime.ocpp.feature.profile;
  SOFTWARE.
  */
 
-import java.util.ArrayList;
-import java.util.UUID;
-
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.GetLocalListVersionFeature;
 import eu.chargetime.ocpp.feature.SendLocalListFeature;
@@ -37,6 +34,9 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.localauthlist.GetLocalListVersionRequest;
 import eu.chargetime.ocpp.model.localauthlist.SendLocalListRequest;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 public class ClientLocalAuthListProfile implements Profile {
 	

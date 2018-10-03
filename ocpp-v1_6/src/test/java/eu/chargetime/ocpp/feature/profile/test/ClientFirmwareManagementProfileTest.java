@@ -25,10 +25,19 @@ package eu.chargetime.ocpp.feature.profile.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.feature.DiagnosticsStatusNotificationFeature;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.FirmwareStatusNotificationFeature;
+import eu.chargetime.ocpp.feature.GetDiagnosticsFeature;
+import eu.chargetime.ocpp.feature.UpdateFirmwareFeature;
 import eu.chargetime.ocpp.feature.profile.ClientFirmwareManagementEventHandler;
 import eu.chargetime.ocpp.feature.profile.ClientFirmwareManagementProfile;
-import eu.chargetime.ocpp.model.firmware.*;
+import eu.chargetime.ocpp.model.firmware.DiagnosticsStatus;
+import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
+import eu.chargetime.ocpp.model.firmware.FirmwareStatus;
+import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationRequest;
+import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
+import eu.chargetime.ocpp.model.firmware.UpdateFirmwareRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,6 +1,12 @@
 package eu.chargetime.ocpp.test;
 
-import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.Communicator;
+import eu.chargetime.ocpp.CommunicatorEvents;
+import eu.chargetime.ocpp.FeatureRepository;
+import eu.chargetime.ocpp.PromiseFulfiller;
+import eu.chargetime.ocpp.Queue;
+import eu.chargetime.ocpp.Session;
+import eu.chargetime.ocpp.SessionEvents;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
@@ -16,7 +22,13 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /*
  ChargeTime.eu - Java-OCA-OCPP
