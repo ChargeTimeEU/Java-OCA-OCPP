@@ -64,8 +64,8 @@ public class SetChargingProfileRequest implements Request {
      * @param connectorId integer. value &gt; 0
      */
     @XmlElement
-    public void setConnectorId(Integer connectorId) {
-        if (connectorId == null || connectorId < 0) {
+    public void setConnectorId(int connectorId) {
+        if (connectorId < 0) {
             throw new PropertyConstraintException(connectorId, "connectorId must be >= 0");
         }
 

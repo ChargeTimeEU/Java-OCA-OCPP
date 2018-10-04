@@ -70,7 +70,7 @@ public class ChargingSchedulePeriod implements Validatable {
      * @param startPeriod integer, seconds from start of schedule.
      */
     @XmlElement
-    public void setStartPeriod(Integer startPeriod) {
+    public void setStartPeriod(int startPeriod) {
         this.startPeriod = startPeriod;
     }
 

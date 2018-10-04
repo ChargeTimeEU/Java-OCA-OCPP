@@ -125,7 +125,7 @@ public class StopTransactionRequest implements Request {
      * @param meterStop integer, meter value in Wh.
      */
     @XmlElement
-    public void setMeterStop(Integer meterStop) {
+    public void setMeterStop(int meterStop) {
         this.meterStop = meterStop;
     }
 
@@ -173,7 +173,7 @@ public class StopTransactionRequest implements Request {
      * @param transactionId integer, transaction id.
      */
     @XmlElement
-    public void setTransactionId(Integer transactionId) {
+    public void setTransactionId(int transactionId) {
         this.transactionId = transactionId;
     }
 

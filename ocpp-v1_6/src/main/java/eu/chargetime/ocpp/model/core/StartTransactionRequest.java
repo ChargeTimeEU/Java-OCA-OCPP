@@ -96,8 +96,8 @@ public class StartTransactionRequest implements Request {
      * @param connectorId integer. value &gt; 0
      */
     @XmlElement
-    public void setConnectorId(Integer connectorId) {
-        if (connectorId == null || connectorId <= 0) {
+    public void setConnectorId(int connectorId) {
+        if (connectorId <= 0) {
             throw new PropertyConstraintException(connectorId, "connectorId must be > 0");
         }
 
@@ -142,7 +142,7 @@ public class StartTransactionRequest implements Request {
      * @param meterStart integer, Wh at start.
      */
     @XmlElement
-    public void setMeterStart(Integer meterStart) {
+    public void setMeterStart(int meterStart) {
         this.meterStart = meterStart;
     }
 

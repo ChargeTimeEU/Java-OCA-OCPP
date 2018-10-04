@@ -110,7 +110,7 @@ public class StatusNotificationRequest implements Request {
      * @param connectorId integer, connector id. 0 = main controller.
      */
     @XmlElement
-    public void setConnectorId(Integer connectorId) {
+    public void setConnectorId(int connectorId) {
         if (!isValidConnectorId(connectorId)) {
             throw new PropertyConstraintException(connectorId, "connectorId >= 0");
         }

@@ -59,11 +59,6 @@ public class UnlockConnectorRequestTest {
         testInvalidConnectorId(-42);
     }
 
-    @Test
-    public void setConnectorId_asNull_throwsPropertyConstraintException() {
-        testInvalidConnectorId(null);
-    }
-
     private void testInvalidConnectorId(Integer invalidValue) {
         thrownException.expect(instanceOf(PropertyConstraintException.class));
         thrownException.expectMessage(equalTo("Validation failed: [connectorId must be > 0]. Current Value: [" + invalidValue + "]"));

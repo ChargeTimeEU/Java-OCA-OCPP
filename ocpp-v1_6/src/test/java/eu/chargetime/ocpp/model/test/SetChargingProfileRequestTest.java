@@ -53,23 +53,10 @@ public class SetChargingProfileRequestTest {
 
     @Test
     public void setConnectorId_negativeInteger_throwsPropertyConstraintException() {
-        testInvalidConnectorIdValue(-42);
-    }
-
-    @Test
-    public void setConnectorId_asNull_throwsPropertyConstraintException() {
-        testInvalidConnectorIdValue(null);
-    }
-
-    private void testInvalidConnectorIdValue(Integer invalidConnectorId) {
         thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo(createExpectedErrorMessage(invalidConnectorId)));
+        thrownException.expectMessage(equalTo(String.format(EXPECTED_ERROR_MESSAGE, -42)));
 
-        request.setConnectorId(invalidConnectorId);
-    }
-
-    private static String createExpectedErrorMessage(Integer invalidConnectorId) {
-        return String.format(EXPECTED_ERROR_MESSAGE, invalidConnectorId);
+        request.setConnectorId(-42);
     }
 
     @Test

@@ -116,7 +116,7 @@ public class MeterValuesRequest implements Request {
      * @param transactionId integer, transaction id.
      */
     @XmlElement
-    public void setTransactionId(int transactionId) {
+    public void setTransactionId(Integer transactionId) {
         this.transactionId = transactionId;
     }
 

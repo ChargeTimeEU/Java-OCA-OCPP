@@ -57,13 +57,6 @@ public class ChargingProfileTest {
         chargingProfile = new ChargingProfile();
     }
 
-    @Test
-    public void setChargingProfileId_nullValue_throwsPropertyConstraintException() {
-        defineExpectedException("Validation failed: [chargingProfileId must be present]. Current Value: [null]");
-
-        chargingProfile.setChargingProfileId(null);
-    }
-
     private void defineExpectedException(String expectedExceptionMessage) {
         thrownException.expect(instanceOf(PropertyConstraintException.class));
         thrownException.expectMessage(equalTo(expectedExceptionMessage));
@@ -95,18 +88,9 @@ public class ChargingProfileTest {
 
     @Test
     public void setStackLevel_negativeInteger_throwsPropertyConstraintException() {
-        testStackLeverInvalidValues(-42);
-    }
+        defineExpectedException("Validation failed: [stackLevel must be >= 0]. Current Value: [-42]");
 
-    @Test
-    public void setStackLevel_asNullValue_throwsPropertyConstraintException() {
-        testStackLeverInvalidValues(null);
-    }
-
-    private void testStackLeverInvalidValues(Integer erroneousValue) {
-        defineExpectedException("Validation failed: [stackLevel must be >= 0]. Current Value: [" + erroneousValue + "]");
-
-        chargingProfile.setStackLevel(erroneousValue);
+        chargingProfile.setStackLevel(-42);
     }
 
     @Test

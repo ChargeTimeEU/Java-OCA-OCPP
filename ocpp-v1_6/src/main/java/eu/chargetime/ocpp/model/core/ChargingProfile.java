@@ -97,11 +97,7 @@ public class ChargingProfile implements Validatable {
     }
 
     @XmlElement
-    public void setChargingProfileId(Integer chargingProfileId) {
-        if (chargingProfileId == null) {
-            throw new PropertyConstraintException(null, "chargingProfileId must be present");
-        }
-
+    public void setChargingProfileId(int chargingProfileId) {
         this.chargingProfileId = chargingProfileId;
     }
 
@@ -119,8 +115,8 @@ public class ChargingProfile implements Validatable {
     }
 
     @XmlElement
-    public void setStackLevel(Integer stackLevel) {
-        if (stackLevel == null || stackLevel < 0) {
+    public void setStackLevel(int stackLevel) {
+        if (stackLevel < 0) {
             throw new PropertyConstraintException(stackLevel, "stackLevel must be >= 0");
         }
 

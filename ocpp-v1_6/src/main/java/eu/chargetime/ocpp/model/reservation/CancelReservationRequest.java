@@ -69,7 +69,7 @@ public class CancelReservationRequest implements Request {
      * @param reservationId Integer, id of the reservation.
      */
     @XmlElement
-    public void setReservationId(Integer reservationId) {
+    public void setReservationId(int reservationId) {
         this.reservationId = reservationId;
     }
 

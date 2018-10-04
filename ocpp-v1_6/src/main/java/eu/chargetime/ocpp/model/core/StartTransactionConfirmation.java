@@ -94,7 +94,7 @@ public class StartTransactionConfirmation implements Confirmation {
      * @param transactionId integer, transaction.
      */
     @XmlElement
-    public void setTransactionId(Integer transactionId) {
+    public void setTransactionId(int transactionId) {
         this.transactionId = transactionId;
     }
 

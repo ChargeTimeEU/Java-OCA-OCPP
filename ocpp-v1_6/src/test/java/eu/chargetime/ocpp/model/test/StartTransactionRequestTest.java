@@ -62,11 +62,6 @@ public class StartTransactionRequestTest extends TestUtilities {
         testConnectorIdInvalidValue(-1);
     }
 
-    @Test
-    public void setConnectorId_asNullInteger_throwsPropertyConstraintException() {
-        testConnectorIdInvalidValue(null);
-    }
-
     private void testConnectorIdInvalidValue(Integer invalidValue) {
         thrownException.expect(instanceOf(PropertyConstraintException.class));
         thrownException.expectMessage(equalTo("Validation failed: [connectorId must be > 0]. Current Value: [" + invalidValue + "]"));

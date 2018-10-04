@@ -68,7 +68,7 @@ public class RemoteStopTransactionRequest implements Request {
      * @param transactionId integer, transaction id.
      */
     @XmlElement
-    public void setTransactionId(Integer transactionId) {
+    public void setTransactionId(int transactionId) {
         this.transactionId = transactionId;
     }
 

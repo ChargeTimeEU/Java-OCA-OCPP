@@ -99,7 +99,7 @@ public class ReserveNowRequest implements Request {
      * @param connectorId Integer, the destination connectorId.
      */
     @XmlElement
-    public void setConnectorId(Integer connectorId) {
+    public void setConnectorId(int connectorId) {
         if (connectorId < 0) {
             throw new PropertyConstraintException(connectorId, "connectorId must be >= 0");
         }
@@ -190,7 +190,7 @@ public class ReserveNowRequest implements Request {
      * @param reservationId Integer, id of reservation.
      */
     @XmlElement
-    public void setReservationId(Integer reservationId) {
+    public void setReservationId(int reservationId) {
         this.reservationId = reservationId;
     }
 
