@@ -106,7 +106,7 @@ public class MeterValuesRequest implements Request {
      *
      * @return transaction id.
      */
-    public int getTransactionId() {
+    public Integer getTransactionId() {
         return transactionId;
     }
 

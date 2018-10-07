@@ -129,6 +129,7 @@ public class DummyHandlers {
                 tagInfo.setStatus(AuthorizationStatus.Accepted);
 
                 StartTransactionConfirmation confirmation = new StartTransactionConfirmation();
+                confirmation.setTransactionId(42);
                 confirmation.setIdTagInfo(tagInfo);
                 return failurePoint(confirmation);
             }

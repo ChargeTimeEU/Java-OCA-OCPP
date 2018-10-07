@@ -19,7 +19,11 @@ public enum Phase {
     }
 
     public static String nameOfValue(Phase phase) {
-        return phase.name().replace("_", "-");
+        if (phase == null) {
+            return null;
+        } else {
+            return phase.name().replace("_", "-");
+        }
     }
 
     public static String[] getValues() {

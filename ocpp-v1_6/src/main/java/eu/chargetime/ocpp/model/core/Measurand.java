@@ -31,7 +31,11 @@ public enum Measurand {
     }
 
     public static String nameOfValue(Measurand measurand) {
-        return measurand.name().replace("_", ".");
+        if (measurand == null) {
+            return null;
+        } else {
+            return measurand.name().replace("_", ".");
+        }
     }
 
     public static String[] getValues() {

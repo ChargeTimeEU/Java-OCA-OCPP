@@ -110,7 +110,7 @@ public class ChargingProfile implements Validatable {
         this.transactionId = transactionId;
     }
 
-    public int getTransactionId() {
+    public Integer getTransactionId() {
         return transactionId;
     }
 

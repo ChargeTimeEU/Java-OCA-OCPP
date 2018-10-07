@@ -91,7 +91,7 @@ public class ChargingSchedulePeriod implements Validatable {
      * @param limit decimal, power limit.
      */
     @XmlElement
-    public void setLimit(Double limit) {
+    public void setLimit(double limit) {
         this.limit = limit;
     }
 

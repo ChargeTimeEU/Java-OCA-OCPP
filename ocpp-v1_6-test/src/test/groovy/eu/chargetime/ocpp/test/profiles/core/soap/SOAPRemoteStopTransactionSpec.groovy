@@ -16,7 +16,7 @@ class SOAPRemoteStopTransactionSpec extends SOAPBaseSpec {
         }
 
         when:
-        centralSystem.sendRemoteStopTransactionRequest(0)
+        centralSystem.sendRemoteStopTransactionRequest(1)
 
         then:
         conditions.eventually {

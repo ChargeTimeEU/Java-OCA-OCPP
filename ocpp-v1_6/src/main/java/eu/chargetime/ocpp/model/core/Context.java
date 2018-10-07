@@ -17,7 +17,11 @@ public enum Context {
     }
 
     public static String nameOfValue(Context context) {
-        return context.name().replace("_", ".");
+        if (context == null) {
+            return null;
+        } else {
+            return context.name().replace("_", ".");
+        }
     }
 
     public static String[] getValues() {

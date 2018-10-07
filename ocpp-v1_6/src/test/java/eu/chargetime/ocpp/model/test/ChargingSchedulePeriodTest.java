@@ -44,7 +44,7 @@ public class ChargingSchedulePeriodTest {
     @Test
     public void setStartPeriod_anInteger_startPeriodIsSet() {
         // Given
-        Integer anInteger = 42;
+        int anInteger = 42;
 
         // When
         chargingSchedulePeriod.setStartPeriod(anInteger);
@@ -56,7 +56,7 @@ public class ChargingSchedulePeriodTest {
     @Test
     public void setLimit_aDouble_limitIsSet() {
         // Given
-        Double aDouble = 4.2;
+        double aDouble = 4.2;
 
         // When
         chargingSchedulePeriod.setLimit(aDouble);
