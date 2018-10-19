@@ -106,7 +106,6 @@ public class ClearChargingProfileRequest implements Request {
         this.chargingProfilePurpose = chargingProfilePurpose;
     }
 
-
     /**
      * Specifies the stackLevel for which charging profiles will be cleared,
      * if they meet the other criteria in the request.
