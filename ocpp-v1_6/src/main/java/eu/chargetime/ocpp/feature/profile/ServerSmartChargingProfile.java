@@ -1,10 +1,12 @@
 package eu.chargetime.ocpp.feature.profile;
 
+import eu.chargetime.ocpp.feature.ClearChargingProfileFeature;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.SetChargingProfileFeature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.ChargingProfile;
+import eu.chargetime.ocpp.model.smartcharging.ClearChargingProfileRequest;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 
 import java.util.HashSet;
@@ -16,6 +18,8 @@ import java.util.UUID;
  * MIT License
  *
  * Copyright (C) 2017 Emil Christopher Solli Melar <emil@iconsultable.no>
+ * Copyright (C) 2018 Fabian Röhr <fabian.roehr@netlight.com>
+ * Copyright (C) 2018 Robin Roscher <r.roscher@ee-mobility.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,6 +47,7 @@ public class ServerSmartChargingProfile implements Profile {
     public ServerSmartChargingProfile() {
         features = new HashSet<>();
         features.add(new SetChargingProfileFeature(this));
+        features.add(new ClearChargingProfileFeature(this));
     }
 
     @Override
@@ -60,5 +65,9 @@ public class ServerSmartChargingProfile implements Profile {
         request.setConnectorId(connectorId);
         request.setCsChargingProfiles(profile);
         return request;
+    }
+
+    public ClearChargingProfileRequest createClearChargingProfileRequest() {
+        return new ClearChargingProfileRequest();
     }
 }
