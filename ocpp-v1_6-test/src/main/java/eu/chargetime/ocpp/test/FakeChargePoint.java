@@ -138,7 +138,7 @@ public class FakeChargePoint
             @Override
             public ClearChargingProfileConfirmation handleClearChargingProfileRequest(ClearChargingProfileRequest request) {
                 receivedRequest = request;
-                return new ClearChargingProfileConfirmation(ChargingProfileStatus.Accepted);
+                return new ClearChargingProfileConfirmation(ClearChargingProfileStatus.Accepted);
             }
         });
 
