@@ -5,7 +5,8 @@ package eu.chargetime.ocpp.model.smartcharging;
  *
  * MIT License
  *
- * Copyright (C) 2017 Emil Christopher Solli Melar <emil@iconsultable.no>
+ * Copyright (C) 2018 Fabian Röhr <fabian.roehr@netlight.com>
+ * Copyright (C) 2018 Robin Roscher <r.roscher@ee-mobility.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,12 +35,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
 
 
-@XmlRootElement(name = "setChargingProfileResponse")
-public class SetChargingProfileConfirmation implements Confirmation {
+@XmlRootElement(name = "clearChargingProfileResponse")
+public class ClearChargingProfileConfirmation implements Confirmation {
 
     private ChargingProfileStatus status;
 
-    public SetChargingProfileConfirmation() {
+    public ClearChargingProfileConfirmation() {
     }
 
     /**
@@ -47,7 +48,7 @@ public class SetChargingProfileConfirmation implements Confirmation {
      *
      * @param status the {@link ChargingProfileStatus}, see {@link #setStatus(ChargingProfileStatus)}.
      */
-    public SetChargingProfileConfirmation(ChargingProfileStatus status) {
+    public ClearChargingProfileConfirmation(ChargingProfileStatus status) {
         setStatus(status);
     }
 
@@ -61,15 +62,6 @@ public class SetChargingProfileConfirmation implements Confirmation {
     }
 
     /**
-     * This indicates the success or failure of the change of the charging profile.
-     * @return the {@link ChargingProfileStatus}.
-     */
-    @Deprecated
-    public ChargingProfileStatus objStatus() {
-        return status;
-    }
-
-    /**
      * Required. This indicates the success or failure of the change of the charging profile.
      *
      * @param status the {@link ChargingProfileStatus}.
@@ -78,7 +70,6 @@ public class SetChargingProfileConfirmation implements Confirmation {
     public void setStatus(ChargingProfileStatus status) {
         this.status = status;
     }
-
 
     @Override
     public boolean validate() {
@@ -89,7 +80,7 @@ public class SetChargingProfileConfirmation implements Confirmation {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SetChargingProfileConfirmation that = (SetChargingProfileConfirmation) o;
+        ClearChargingProfileConfirmation that = (ClearChargingProfileConfirmation) o;
         return status == that.status;
     }
 
