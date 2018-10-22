@@ -74,7 +74,7 @@ public class AuthorizeRequestTest {
     }
 
     @Test
-    public void validate_idTagIsNull_returnTrue() {
+    public void validate_idTagIsNull_returnFalse() {
         // When
         boolean isValid = request.validate();
 
