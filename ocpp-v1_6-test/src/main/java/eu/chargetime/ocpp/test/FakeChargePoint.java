@@ -37,9 +37,7 @@ import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageConfirmation;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageStatus;
 import eu.chargetime.ocpp.model.reservation.*;
-import eu.chargetime.ocpp.model.smartcharging.ChargingProfileStatus;
-import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
-import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
+import eu.chargetime.ocpp.model.smartcharging.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -135,6 +133,12 @@ public class FakeChargePoint
             public SetChargingProfileConfirmation handleSetChargingProfileRequest(SetChargingProfileRequest request) {
                 receivedRequest = request;
                 return new SetChargingProfileConfirmation(ChargingProfileStatus.Accepted);
+            }
+
+            @Override
+            public ClearChargingProfileConfirmation handleClearChargingProfileRequest(ClearChargingProfileRequest request) {
+                receivedRequest = request;
+                return new ClearChargingProfileConfirmation(ClearChargingProfileStatus.Accepted);
             }
         });
 

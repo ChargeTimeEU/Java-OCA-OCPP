@@ -1,9 +1,11 @@
 package eu.chargetime.ocpp.feature.profile;
 
+import eu.chargetime.ocpp.feature.ClearChargingProfileFeature;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.SetChargingProfileFeature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.smartcharging.ClearChargingProfileRequest;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ public class ClientSmartChargingProfile implements Profile {
         eventHandler = handler;
 
         features.add(new SetChargingProfileFeature(this));
+        features.add(new ClearChargingProfileFeature(this));
     }
 
     @Override
@@ -60,6 +63,8 @@ public class ClientSmartChargingProfile implements Profile {
 
         if (request instanceof SetChargingProfileRequest) {
             result = eventHandler.handleSetChargingProfileRequest((SetChargingProfileRequest) request);
+        } else if (request instanceof ClearChargingProfileRequest) {
+            result = eventHandler.handleClearChargingProfileRequest((ClearChargingProfileRequest) request);
         }
 
         return  result;

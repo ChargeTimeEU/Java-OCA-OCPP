@@ -1,14 +1,11 @@
 package eu.chargetime.ocpp.feature.profile.test;
 
+import eu.chargetime.ocpp.feature.ClearChargingProfileFeature;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.SetChargingProfileFeature;
 import eu.chargetime.ocpp.feature.profile.ServerSmartChargingProfile;
-import eu.chargetime.ocpp.model.core.ChargingProfile;
-import eu.chargetime.ocpp.model.core.ChargingProfileKindType;
-import eu.chargetime.ocpp.model.core.ChargingProfilePurposeType;
-import eu.chargetime.ocpp.model.core.ChargingRateUnitType;
-import eu.chargetime.ocpp.model.core.ChargingSchedule;
-import eu.chargetime.ocpp.model.core.ChargingSchedulePeriod;
+import eu.chargetime.ocpp.model.core.*;
+import eu.chargetime.ocpp.model.smartcharging.ClearChargingProfileRequest;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 import org.junit.Before;
 import org.junit.Test;
@@ -98,4 +95,21 @@ public class ServerSmartChargingProfileTest extends ProfileTest {
 
     }
 
+    @Test
+    public void getFeatureList_containsClearChargingProfileFeature() {
+        // When
+        Feature[] features = smartCharging.getFeatureList();
+
+        // Then
+        assertThat(findFeature(features, "ClearChargingProfile"), is(instanceOf(ClearChargingProfileFeature.class)));
+    }
+
+    @Test
+    public void createClearCacheRequest_returnsValidClearCacheRequest() {
+        // When
+        ClearChargingProfileRequest result = smartCharging.createClearChargingProfileRequest();
+
+        // Then
+        assertThat(result.validate(), is(true));
+    }
 }
