@@ -28,6 +28,7 @@ package eu.chargetime.ocpp.model.basic;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.basic.types.BootReasonEnumType;
 import eu.chargetime.ocpp.model.basic.types.ChargingStationType;
+import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
@@ -37,6 +38,7 @@ import java.util.Objects;
  * Sent by the Charge Point to the Central System.
  */
 public class BootNotificationRequest implements Request {
+    private RequiredValidator validator = new RequiredValidator();
 
     private BootReasonEnumType reason;
     private ChargingStationType chargingStation;
@@ -49,6 +51,7 @@ public class BootNotificationRequest implements Request {
     }
 
     public void setReason(BootReasonEnumType reason) {
+        validator.validate(reason);
         this.reason = reason;
     }
 
@@ -62,7 +65,9 @@ public class BootNotificationRequest implements Request {
 
     @Override
     public boolean validate() {
-        return true;
+        return validator.safeValidate(reason) &&
+                validator.safeValidate(chargingStation) &&
+                chargingStation.validate();
     }
 
     @Override
@@ -80,13 +85,14 @@ public class BootNotificationRequest implements Request {
 
     @Override
     public int hashCode() {
-        return Objects.hash();
+        return Objects.hash(reason, chargingStation);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("reason", reason)
+                .add("chargingStation", chargingStation)
                 .toString();
     }
 }

@@ -1,13 +1,4 @@
 package eu.chargetime.ocpp;
-
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -33,6 +24,15 @@ import java.util.concurrent.ConcurrentHashMap;
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class PromiseRepository implements IPromiseRepository {
 
     private Map<String, CompletableFuture<Confirmation>> promises;

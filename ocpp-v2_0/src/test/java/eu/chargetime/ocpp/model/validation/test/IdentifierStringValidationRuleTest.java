@@ -1,7 +1,7 @@
-package eu.chargetime.ocpp.model.basic.types;
+package eu.chargetime.ocpp.model.validation.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-
+    
     MIT License
 
     Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
@@ -25,40 +25,28 @@ package eu.chargetime.ocpp.model.basic.types;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.Validatable;
-import eu.chargetime.ocpp.model.validation.Validator;
-import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
-import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.validation.IdentifierStringValidationRule;
+import org.junit.Test;
 
-public class ModemType implements Validatable {
-    private Validator validator = new ValidatorBuilder().
-            addRule(OCPP2PrimDatatypes.identifierString()).
-            addRule(OCPP2PrimDatatypes.string20()).
-            build();
+public class IdentifierStringValidationRuleTest {
 
-    private String iccid;
-    private String imsi;
-
-    public String getIccid() {
-        return iccid;
+    private IdentifierStringValidationRule createSut() {
+        return new IdentifierStringValidationRule();
     }
 
-    public void setIccid(String iccid) {
-        validator.validate(iccid);
-        this.iccid = iccid;
+    @Test
+    public void validate_legalString_nothingHappens() {
+        String legalString = "abc123ABC_";
+        IdentifierStringValidationRule sut = createSut();
+        sut.validate(legalString);
     }
 
-    public String getImsi() {
-        return imsi;
+    @Test(expected = PropertyConstraintException.class)
+    public void validate_illegalString_throwsException() {
+        String legalString = "a%c1$3A!C";
+        IdentifierStringValidationRule sut = createSut();
+        sut.validate(legalString);
     }
 
-    public void setImsi(String imsi) {
-        validator.validate(imsi);
-        this.imsi = imsi;
-    }
-
-    @Override
-    public boolean validate() {
-        return validator.safeValidate(iccid) && validator.safeValidate(imsi);
-    }
 }

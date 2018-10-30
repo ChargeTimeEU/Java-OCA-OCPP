@@ -1,7 +1,7 @@
-package eu.chargetime.ocpp.model.basic.types;
+package eu.chargetime.ocpp.model.validation;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-
+    
     MIT License
 
     Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
@@ -25,40 +25,23 @@ package eu.chargetime.ocpp.model.basic.types;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.Validatable;
-import eu.chargetime.ocpp.model.validation.Validator;
-import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
-import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
+import eu.chargetime.ocpp.PropertyConstraintException;
 
-public class ModemType implements Validatable {
-    private Validator validator = new ValidatorBuilder().
-            addRule(OCPP2PrimDatatypes.identifierString()).
-            addRule(OCPP2PrimDatatypes.string20()).
-            build();
+import java.util.regex.Pattern;
 
-    private String iccid;
-    private String imsi;
-
-    public String getIccid() {
-        return iccid;
-    }
-
-    public void setIccid(String iccid) {
-        validator.validate(iccid);
-        this.iccid = iccid;
-    }
-
-    public String getImsi() {
-        return imsi;
-    }
-
-    public void setImsi(String imsi) {
-        validator.validate(imsi);
-        this.imsi = imsi;
-    }
+public class IdentifierStringValidationRule implements IValidationRule {
+    private final String ERROR_MESSAGE = "Illegal character(s) in IdentifierString.";
+    private final String PATTERN = "([a-zA-Z0-9]|\\*|\\-|\\_|\\=|\\:|\\+|\\||\\@|\\.)+";
 
     @Override
-    public boolean validate() {
-        return validator.safeValidate(iccid) && validator.safeValidate(imsi);
+    public void validate(String value) throws PropertyConstraintException {
+        if (!match(value)) {
+            throw new PropertyConstraintException(value, ERROR_MESSAGE);
+        }
+    }
+
+    private boolean match(String value) {
+        Pattern pattern = Pattern.compile(PATTERN);
+        return pattern.matcher(value).matches();
     }
 }

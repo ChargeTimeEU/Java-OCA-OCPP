@@ -1,7 +1,7 @@
-package eu.chargetime.ocpp.model.basic.types;
+package eu.chargetime.ocpp.model.validation;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-
+    
     MIT License
 
     Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
@@ -25,40 +25,31 @@ package eu.chargetime.ocpp.model.basic.types;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.Validatable;
-import eu.chargetime.ocpp.model.validation.Validator;
-import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
-import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
+import java.util.ArrayList;
 
-public class ModemType implements Validatable {
-    private Validator validator = new ValidatorBuilder().
-            addRule(OCPP2PrimDatatypes.identifierString()).
-            addRule(OCPP2PrimDatatypes.string20()).
-            build();
+public class ValidatorBuilder {
 
-    private String iccid;
-    private String imsi;
+    private boolean required = false;
+    private ArrayList<IValidationRule> rules;
 
-    public String getIccid() {
-        return iccid;
+    public ValidatorBuilder() {
+        rules = new ArrayList<>();
     }
 
-    public void setIccid(String iccid) {
-        validator.validate(iccid);
-        this.iccid = iccid;
+    public ValidatorBuilder addRule(IValidationRule rule) {
+        rules.add(rule);
+        return this;
     }
 
-    public String getImsi() {
-        return imsi;
+    public ValidatorBuilder setRequired(boolean isRequired) {
+        required = isRequired;
+        return this;
     }
 
-    public void setImsi(String imsi) {
-        validator.validate(imsi);
-        this.imsi = imsi;
-    }
-
-    @Override
-    public boolean validate() {
-        return validator.safeValidate(iccid) && validator.safeValidate(imsi);
+    public Validator build() {
+        Validator validator = new StringValidator(rules.toArray(new IValidationRule[0]));
+        if (!required)
+            validator = new OptionalDecorator(validator);
+        return validator;
     }
 }

@@ -1,7 +1,7 @@
-package eu.chargetime.ocpp.model.basic.types;
+package eu.chargetime.ocpp.model.validation;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-
+    
     MIT License
 
     Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
@@ -25,40 +25,19 @@ package eu.chargetime.ocpp.model.basic.types;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.Validatable;
-import eu.chargetime.ocpp.model.validation.Validator;
-import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
-import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
+public class OptionalDecorator extends Validator<String> {
 
-public class ModemType implements Validatable {
-    private Validator validator = new ValidatorBuilder().
-            addRule(OCPP2PrimDatatypes.identifierString()).
-            addRule(OCPP2PrimDatatypes.string20()).
-            build();
+    private final Validator validator;
 
-    private String iccid;
-    private String imsi;
-
-    public String getIccid() {
-        return iccid;
-    }
-
-    public void setIccid(String iccid) {
-        validator.validate(iccid);
-        this.iccid = iccid;
-    }
-
-    public String getImsi() {
-        return imsi;
-    }
-
-    public void setImsi(String imsi) {
-        validator.validate(imsi);
-        this.imsi = imsi;
+    public OptionalDecorator(Validator validator) {
+        this.validator = validator;
     }
 
     @Override
-    public boolean validate() {
-        return validator.safeValidate(iccid) && validator.safeValidate(imsi);
+    public void validate(String value) {
+        if (value == null)
+            return;
+
+        this.validator.validate(value);
     }
 }
