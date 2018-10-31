@@ -1,10 +1,10 @@
-package eu.chargetime.ocpp;
+package eu.chargetime.ocpp.model.basic.types;
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
 
-    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,21 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.Feature;
+public enum RegistrationStatusEnumType {
+    /**
+     * Charging Station is accepted by the CSMS.
+     */
+    Accepted,
 
-import java.util.Optional;
+    /**
+     * CSMS is not yet ready to accept the Charging Station.
+     * CSMS may send messages to retrieve information or prepare the Charging Station.
+     */
+    Pending,
 
-public interface IFeatureRepository {
-    Optional<Feature> findFeature(Object needle);
+    /**
+     * Charging Station is not accepted by CSMS.
+     * This may happen when the Charging Station id is not known by CSMS.
+     */
+    Rejected
 }

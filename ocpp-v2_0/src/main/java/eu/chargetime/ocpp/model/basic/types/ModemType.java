@@ -39,19 +39,39 @@ public class ModemType implements Validatable {
     private String iccid;
     private String imsi;
 
+    /**
+     * This contains the ICCID of the modem’s SIM card.
+     *
+     * @return identifierString[0..20]
+     */
     public String getIccid() {
         return iccid;
     }
 
+    /**
+     * Optional. This contains the ICCID of the modem’s SIM card.
+     *
+     * @param iccid identifierString[0..20]
+     */
     public void setIccid(String iccid) {
         validator.validate(iccid);
         this.iccid = iccid;
     }
 
+    /**
+     * This contains the IMSI of the modem’s SIM card.
+     *
+     * @return identifierString[0..20]
+     */
     public String getImsi() {
         return imsi;
     }
 
+    /**
+     * Optional. This contains the IMSI of the modem’s SIM card.
+     *
+     * @param imsi identifierString[0..20]
+     */
     public void setImsi(String imsi) {
         validator.validate(imsi);
         this.imsi = imsi;

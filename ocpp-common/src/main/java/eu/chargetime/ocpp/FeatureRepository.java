@@ -55,6 +55,14 @@ public class FeatureRepository implements IFeatureRepository {
     }
 
     /**
+     * Add {@link Feature} to support.
+     * @param feature supported {@link Feature}.
+     */
+    public void addFeature(Feature feature) {
+        featureList.add(feature);
+    }
+
+    /**
      * Search for supported features added with the addProfile.
      * If no supported feature is found, null is returned
      * <p>

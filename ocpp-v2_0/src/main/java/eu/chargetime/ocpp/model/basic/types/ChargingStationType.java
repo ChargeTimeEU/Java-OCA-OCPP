@@ -25,10 +25,9 @@ package eu.chargetime.ocpp.model.basic.types;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Validatable;
-import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
+import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 
 public class ChargingStationType implements Validatable {
@@ -43,50 +42,100 @@ public class ChargingStationType implements Validatable {
     private String firmwareVersion;
     private ModemType modem;
 
+    /**
+     * Vendor-specific device identifier.
+     *
+     * @return string[0..20]
+     */
     public String getSerialNumber() {
         return serialNumber;
     }
 
-    public void setSerialNumber(String serialNumber) throws PropertyConstraintException {
+    /**
+     * Optional. Vendor-specific device identifier.
+     *
+     * @param serialNumber string[0..20]
+     */
+    public void setSerialNumber(String serialNumber) {
         serialNumberValidator.validate(serialNumber);
 
         this.serialNumber = serialNumber;
     }
 
+    /**
+     * Defines the model of the device.
+     *
+     * @return string[0..20]
+     */
     public String getModel() {
         return model;
     }
 
+    /**
+     * Required. Defines the model of the device.
+     *
+     * @param model string[0..20]
+     */
     public void setModel(String model) {
         modelValidator.validate(model);
 
         this.model = model;
     }
 
+    /**
+     * Identifies the vendor (not necessarily in a unique manner).
+     *
+     * @return string[0..50]
+     */
     public String getVendorName() {
         return vendorName;
     }
 
+    /**
+     * Required. Identifies the vendor (not necessarily in a unique manner).
+     *
+     * @param vendorName string[0..50]
+     */
     public void setVendorName(String vendorName) {
         vendorNameValidator.validate(vendorName);
 
         this.vendorName = vendorName;
     }
 
+    /**
+     * This contains the firmware version of the Charging Station.
+     *
+     * @return string[0..50]
+     */
     public String getFirmwareVersion() {
         return firmwareVersion;
     }
 
+    /**
+     * Optional. This contains the firmware version of the Charging Station.
+     *
+     * @param firmwareVersion string[0..50]
+     */
     public void setFirmwareVersion(String firmwareVersion) {
         firmwareVersionValidator.validate(firmwareVersion);
 
         this.firmwareVersion = firmwareVersion;
     }
 
+    /**
+     * Defines the functional parameters of a communication link.
+     *
+     * @return {@link ModemType}
+     */
     public ModemType getModem() {
         return modem;
     }
 
+    /**
+     * Optional. Defines the functional parameters of a communication link.
+     *
+     * @param modem {@link ModemType}
+     */
     public void setModem(ModemType modem) {
         this.modem = modem;
     }

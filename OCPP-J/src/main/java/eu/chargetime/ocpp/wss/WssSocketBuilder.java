@@ -1,5 +1,4 @@
 package eu.chargetime.ocpp.wss;
-
 /*
  ubitricity.com - Java-OCA-OCPP
 
@@ -27,49 +26,34 @@ package eu.chargetime.ocpp.wss;
 */
 
 
-import org.java_websocket.WebSocketServerFactory;
-import org.java_websocket.server.DefaultSSLWebSocketServerFactory;
-
-import javax.net.ssl.SSLContext;
-import java.util.List;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.URI;
 
 /**
- * Base implementation of WssFactoryBuilder.
+ * To build SSL {@link Socket} to support WSS scheme.
  */
-public class BaseWssFactoryBuilder implements WssFactoryBuilder {
+public interface WssSocketBuilder {
+    /**
+     * Set URI to identify endpoint for the connection.
+     *
+     * @param uri to identify endpoint for the connection.
+     * @return instance of {@link WssSocketBuilder}
+     */
+    WssSocketBuilder uri(URI uri);
 
-    private SSLContext sslContext;
-    private List<String> ciphers;
+    /**
+     * Builds SSL {@link Socket} to support WSS scheme.
+     *
+     * @return SSL {@link Socket}
+     */
+    Socket build() throws IOException;
 
-    private BaseWssFactoryBuilder() {}
-
-    public static BaseWssFactoryBuilder builder() {
-        return new BaseWssFactoryBuilder();
-    }
-
-    public BaseWssFactoryBuilder ciphers(List<String> ciphers) {
-        this.ciphers = ciphers;
-        return this;
-    }
-
-    public BaseWssFactoryBuilder sslContext(SSLContext sslContext) {
-        this.sslContext = sslContext;
-        return this;
-    }
-
-    @Override
-    public WebSocketServerFactory build() {
-        verify();
-
-        return ciphers == null
-                ? new DefaultSSLWebSocketServerFactory(sslContext)
-                : new CustomSSLWebSocketServerFactory(sslContext, ciphers);
-    }
-
-    @Override
-    public void verify() {
-        if(sslContext == null) {
-            throw new IllegalStateException("sslContext must be set");
-        }
-    }
+    /**
+     * Verifies if all required by the client creation time parameters are set.
+     * The idea is to allow the client to fail fast if required parameters are missing without exposing implementation details.
+     *
+     * @throws IllegalStateException if verification fails.
+     */
+    void verify();
 }

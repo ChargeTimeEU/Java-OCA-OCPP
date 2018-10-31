@@ -1,5 +1,4 @@
 package eu.chargetime.ocpp.wss;
-
 /*
  ubitricity.com - Java-OCA-OCPP
 

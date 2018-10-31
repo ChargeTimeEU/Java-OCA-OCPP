@@ -4,7 +4,7 @@ package eu.chargetime.ocpp;
     
     MIT License
 
-    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -26,9 +26,22 @@ package eu.chargetime.ocpp;
  */
 
 import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
 
-import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.CompletionStage;
 
-public interface IFeatureRepository {
-    Optional<Feature> findFeature(Object needle);
+public interface IServerAPI {
+    void addFeature(Feature feature);
+
+    void closeSession(UUID session);
+
+    void open(String host, int port, ServerEvents serverEvents);
+
+    void close();
+
+    boolean isClosed();
+
+    CompletionStage<Confirmation> send(UUID sessionIndex, Request request) throws OccurenceConstraintException, UnsupportedFeatureException, NotConnectedException;
 }

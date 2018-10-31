@@ -1,5 +1,4 @@
 package eu.chargetime.ocpp;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>

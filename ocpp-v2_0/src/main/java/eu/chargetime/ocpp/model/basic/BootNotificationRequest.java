@@ -35,7 +35,7 @@ import java.util.Objects;
 
 
 /**
- * Sent by the Charge Point to the Central System.
+ * Sent by the Charging Station to the CSMS.
  */
 public class BootNotificationRequest implements Request {
     private RequiredValidator validator = new RequiredValidator();
@@ -46,19 +46,39 @@ public class BootNotificationRequest implements Request {
     public BootNotificationRequest() {
     }
 
+    /**
+     * This contains the reason for sending this message to the CSMS.
+     *
+     * @return {@link BootReasonEnumType}
+     */
     public BootReasonEnumType getReason() {
         return reason;
     }
 
+    /**
+     * Required. This contains the reason for sending this message to the CSMS.
+     *
+     * @param reason {@link BootReasonEnumType}
+     */
     public void setReason(BootReasonEnumType reason) {
         validator.validate(reason);
         this.reason = reason;
     }
 
+    /**
+     * Identifies the Charging Station.
+     *
+     * @return {@link ChargingStationType}
+     */
     public ChargingStationType getChargingStation() {
         return chargingStation;
     }
 
+    /**
+     * Required. Identifies the Charging Station.
+     *
+     * @param chargingStation {@link ChargingStationType}
+     */
     public void setChargingStation(ChargingStationType chargingStation) {
         this.chargingStation = chargingStation;
     }

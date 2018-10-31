@@ -9,11 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>v2_0</artifactId>
+    <artifactId>OCPP-J</artifactId>
     <version>0.1-SNAPSHOT</version>
 
-    <name>Java-OCA-OCPP v2.0</name>
-    <description>Implementation of Open Charge-Point Protocol version 2.0.</description>
+    <name>Java-OCA-OCPP OCPP-J</name>
+    <description>Implementation of Open Charge-Point Protocols OCPP-J</description>
     <url>https://github.com/ChargeTimeEU/Java-OCA-OCPP</url>
 
     <licenses>
@@ -49,7 +49,6 @@
         </repository>
     </distributionManagement>
 
-
     <dependencies>
         <dependency>
             <groupId>eu.chargetime.ocpp</groupId>
@@ -57,9 +56,10 @@
             <version>0.5-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>eu.chargetime.ocpp</groupId>
-            <artifactId>OCPP-J</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.0</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.java-websocket</groupId>
@@ -124,20 +124,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--            <plugin>
-                          <groupId>org.apache.maven.plugins</groupId>
-                          <artifactId>maven-gpg-plugin</artifactId>
-                          <version>1.5</version>
-                          <executions>
-                            <execution>
-                              <id>sign-artifacts</id>
-                              <phase>verify</phase>
-                              <goals>
-                                <goal>sign</goal>
-                              </goals>
-                            </execution>
-                          </executions>
-                        </plugin> -->
         </plugins>
     </build>
 

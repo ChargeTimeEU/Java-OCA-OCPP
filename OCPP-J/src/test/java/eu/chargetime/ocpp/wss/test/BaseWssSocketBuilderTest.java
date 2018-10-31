@@ -1,5 +1,7 @@
-package eu.chargetime.ocpp.wss;
+package eu.chargetime.ocpp.wss.test;
 
+import eu.chargetime.ocpp.wss.BaseWssFactoryBuilder;
+import eu.chargetime.ocpp.wss.BaseWssSocketBuilder;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 

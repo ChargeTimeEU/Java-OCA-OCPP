@@ -1,10 +1,10 @@
-package eu.chargetime.ocpp;
+package eu.chargetime.ocpp.model.basic.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
     MIT License
 
-    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,24 @@ package eu.chargetime.ocpp;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.basic.BootNotificationResponse;
+import org.junit.Test;
 
-import java.util.Optional;
+public class BootNotificationResponseTest {
 
-public interface IFeatureRepository {
-    Optional<Feature> findFeature(Object needle);
+    @Test(expected = PropertyConstraintException.class)
+    public void setCurrentTime_null_throwsPropertyConstraintException() {
+        BootNotificationResponse sut = new BootNotificationResponse();
+
+        sut.setCurrentTime(null);
+    }
+
+    @Test(expected = PropertyConstraintException.class)
+    public void setStatus_null_throwsPropertyConstraintException() {
+        BootNotificationResponse sut = new BootNotificationResponse();
+
+        sut.setStatus(null);
+    }
+
 }

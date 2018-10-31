@@ -1,27 +1,22 @@
-package eu.chargetime.ocpp.wss;
+package eu.chargetime.ocpp.wss.test;
 
+import eu.chargetime.ocpp.wss.CustomSSLWebSocketServerFactory;
 import org.java_websocket.SSLSocketChannel2;
 import org.junit.Test;
 
 import javax.net.ssl.*;
-
 import java.io.IOException;
 import java.nio.channels.ByteChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.security.KeyManagementException;
-import java.security.Provider;
 import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 /**
  * Test for {@link CustomSSLWebSocketServerFactory}
