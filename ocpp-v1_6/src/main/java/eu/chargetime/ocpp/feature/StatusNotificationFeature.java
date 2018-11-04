@@ -33,7 +33,7 @@ import eu.chargetime.ocpp.model.core.StatusNotificationConfirmation;
 import eu.chargetime.ocpp.model.core.StatusNotificationRequest;
 
 
-public class StatusNotificationFeature extends Feature {
+public class StatusNotificationFeature extends ProfileFeature {
     public StatusNotificationFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

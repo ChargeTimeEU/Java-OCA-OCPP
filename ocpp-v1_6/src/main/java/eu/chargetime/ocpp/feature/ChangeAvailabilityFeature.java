@@ -34,7 +34,8 @@ import eu.chargetime.ocpp.model.core.ChangeAvailabilityConfirmation;
 import eu.chargetime.ocpp.model.core.ChangeAvailabilityRequest;
 
 
-public class ChangeAvailabilityFeature extends Feature {
+public class ChangeAvailabilityFeature extends ProfileFeature {
+
     public ChangeAvailabilityFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

@@ -33,7 +33,7 @@ import eu.chargetime.ocpp.model.core.HeartbeatConfirmation;
 import eu.chargetime.ocpp.model.core.HeartbeatRequest;
 
 
-public class HeartbeatFeature extends Feature{
+public class HeartbeatFeature extends ProfileFeature {
     public HeartbeatFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

@@ -1,22 +1,6 @@
 package eu.chargetime.ocpp.feature.profile;
 
-import eu.chargetime.ocpp.feature.AuthorizeFeature;
-import eu.chargetime.ocpp.feature.BootNotificationFeature;
-import eu.chargetime.ocpp.feature.ChangeAvailabilityFeature;
-import eu.chargetime.ocpp.feature.ChangeConfigurationFeature;
-import eu.chargetime.ocpp.feature.ClearCacheFeature;
-import eu.chargetime.ocpp.feature.DataTransferFeature;
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.feature.GetConfigurationFeature;
-import eu.chargetime.ocpp.feature.HeartbeatFeature;
-import eu.chargetime.ocpp.feature.MeterValuesFeature;
-import eu.chargetime.ocpp.feature.RemoteStartTransactionFeature;
-import eu.chargetime.ocpp.feature.RemoteStopTransactionFeature;
-import eu.chargetime.ocpp.feature.ResetFeature;
-import eu.chargetime.ocpp.feature.StartTransactionFeature;
-import eu.chargetime.ocpp.feature.StatusNotificationFeature;
-import eu.chargetime.ocpp.feature.StopTransactionFeature;
-import eu.chargetime.ocpp.feature.UnlockConnectorFeature;
+import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.AuthorizeRequest;
@@ -260,8 +244,8 @@ public class ClientCoreProfile implements Profile {
     }
 
     @Override
-    public Feature[] getFeatureList() {
-        return features.toArray(new Feature[0]);
+    public ProfileFeature[] getFeatureList() {
+        return features.toArray(new ProfileFeature[0]);
     }
 
     @Override

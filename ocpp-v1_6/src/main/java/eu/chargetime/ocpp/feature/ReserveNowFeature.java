@@ -34,7 +34,7 @@ import eu.chargetime.ocpp.model.reservation.ReserveNowConfirmation;
 import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
 
 
-public class ReserveNowFeature extends Feature {
+public class ReserveNowFeature extends ProfileFeature {
 
     public ReserveNowFeature(Profile ownerProfile) {
         super(ownerProfile);

@@ -33,7 +33,7 @@ import eu.chargetime.ocpp.model.core.UnlockConnectorConfirmation;
 import eu.chargetime.ocpp.model.core.UnlockConnectorRequest;
 
 
-public class UnlockConnectorFeature extends Feature {
+public class UnlockConnectorFeature extends ProfileFeature {
     public UnlockConnectorFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

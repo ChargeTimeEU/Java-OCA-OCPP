@@ -1,11 +1,4 @@
 package eu.chargetime.ocpp.feature.profile;
-
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-
-import java.util.UUID;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -33,6 +26,13 @@ import java.util.UUID;
  SOFTWARE.
  */
 
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.ProfileFeature;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+
+import java.util.UUID;
+
 /**
  * Interface used for Feature Profiles.
  */
@@ -43,7 +43,7 @@ public interface Profile {
      *
      * @return supported {@link Feature}s
      */
-    Feature[] getFeatureList();
+    ProfileFeature[] getFeatureList();
 
     /**
      * Handle {@link Request}

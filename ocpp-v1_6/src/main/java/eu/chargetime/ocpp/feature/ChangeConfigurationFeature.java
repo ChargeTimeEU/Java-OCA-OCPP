@@ -34,7 +34,8 @@ import eu.chargetime.ocpp.model.core.ChangeConfigurationConfirmation;
 import eu.chargetime.ocpp.model.core.ChangeConfigurationRequest;
 
 
-public class ChangeConfigurationFeature extends Feature {
+public class ChangeConfigurationFeature extends ProfileFeature {
+
     public ChangeConfigurationFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

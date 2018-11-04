@@ -33,7 +33,7 @@ import eu.chargetime.ocpp.model.core.RemoteStartTransactionConfirmation;
 import eu.chargetime.ocpp.model.core.RemoteStartTransactionRequest;
 
 
-public class RemoteStartTransactionFeature extends Feature {
+public class RemoteStartTransactionFeature extends ProfileFeature {
     public RemoteStartTransactionFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

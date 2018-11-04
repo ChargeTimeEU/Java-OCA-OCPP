@@ -33,7 +33,7 @@ import eu.chargetime.ocpp.model.core.MeterValuesConfirmation;
 import eu.chargetime.ocpp.model.core.MeterValuesRequest;
 
 
-public class MeterValuesFeature extends Feature {
+public class MeterValuesFeature extends ProfileFeature {
     public MeterValuesFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

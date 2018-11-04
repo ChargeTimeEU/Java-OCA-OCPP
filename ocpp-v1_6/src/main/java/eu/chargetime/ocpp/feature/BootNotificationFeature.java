@@ -34,7 +34,7 @@ import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
 import eu.chargetime.ocpp.model.core.BootNotificationRequest;
 
 
-public class BootNotificationFeature extends Feature {
+public class BootNotificationFeature extends ProfileFeature {
 
     public BootNotificationFeature(Profile ownerProfile) {
         super(ownerProfile);

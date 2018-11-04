@@ -33,7 +33,7 @@ import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 
 
-public class SetChargingProfileFeature extends Feature {
+public class SetChargingProfileFeature extends ProfileFeature {
     public SetChargingProfileFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

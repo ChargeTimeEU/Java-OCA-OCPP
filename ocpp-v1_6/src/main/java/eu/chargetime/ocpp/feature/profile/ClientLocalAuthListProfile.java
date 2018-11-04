@@ -32,6 +32,7 @@ import java.util.UUID;
 
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.GetLocalListVersionFeature;
+import eu.chargetime.ocpp.feature.ProfileFeature;
 import eu.chargetime.ocpp.feature.SendLocalListFeature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
@@ -52,8 +53,8 @@ public class ClientLocalAuthListProfile implements Profile {
 	}
 	
 	@Override
-	public Feature[] getFeatureList() {
-		return featureList.toArray(new Feature[0]);
+	public ProfileFeature[] getFeatureList() {
+		return featureList.toArray(new ProfileFeature[0]);
 	}
 
 	@Override

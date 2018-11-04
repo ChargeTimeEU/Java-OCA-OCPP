@@ -43,8 +43,8 @@ public class ServerLocalAuthListProfile implements Profile {
     }
 
     @Override
-    public Feature[] getFeatureList() {
-        return featureList.toArray(new Feature[0]);
+    public ProfileFeature[] getFeatureList() {
+        return featureList.toArray(new ProfileFeature[0]);
     }
 
     @Override

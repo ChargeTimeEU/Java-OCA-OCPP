@@ -34,7 +34,7 @@ import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationConfirmati
 import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
 
 
-public class DiagnosticsStatusNotificationFeature extends Feature {
+public class DiagnosticsStatusNotificationFeature extends ProfileFeature {
 
     public DiagnosticsStatusNotificationFeature(Profile ownerProfile) {
         super(ownerProfile);

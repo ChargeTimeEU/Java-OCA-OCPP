@@ -1,11 +1,4 @@
 package eu.chargetime.ocpp.feature;
-
-import eu.chargetime.ocpp.feature.profile.Profile;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-
-import java.util.UUID;
-
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -33,51 +26,42 @@ import java.util.UUID;
  SOFTWARE.
  */
 
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+
+import java.util.UUID;
+
 /**
  * Abstract class. Feature ties {@link Request} and {@link Confirmation} types together with an action name.
- * Can handle a incoming request by forwarding it to the feature {@link Profile}.
  */
-public abstract class Feature {
-    private Profile profile;
-
+public interface Feature {
     /**
-     * Creates link back to the {@link Profile}.
-     *
-     * @param ownerProfile the {@link Profile} that owns the function.
-     */
-    public Feature(Profile ownerProfile) {
-        profile = ownerProfile;
-    }
-
-    /**
-     * Calls {@link Profile} to handle a {@link Request}.
+     * Handle request.
      *
      * @param sessionIndex source of the request.
      * @param request the {@link Request} to be handled.
      * @return the {@link Confirmation} to be send back.
      */
-    public Confirmation handleRequest(UUID sessionIndex, Request request) {
-        return profile.handleRequest(sessionIndex, request);
-    }
+    Confirmation handleRequest(UUID sessionIndex, Request request);
 
     /**
      * Get the {@link Request} {@link java.lang.reflect.Type} for the feature.
      *
      * @return the {@link Request} {@link java.lang.reflect.Type}
      */
-    public abstract Class<? extends Request> getRequestType();
+    Class<? extends Request> getRequestType();
 
     /**
      * Get the {@link Confirmation} {@link java.lang.reflect.Type} for the feature.
      *
      * @return the {@link Confirmation} {@link java.lang.reflect.Type}.
      */
-    public abstract Class<? extends Confirmation> getConfirmationType();
+    Class<? extends Confirmation> getConfirmationType();
 
     /**
      * Get the action name of the feature.
      *
      * @return the action name.
      */
-    public abstract String getAction();
+    String getAction();
 }

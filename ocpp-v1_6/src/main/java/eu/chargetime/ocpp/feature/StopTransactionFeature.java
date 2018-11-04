@@ -33,7 +33,7 @@ import eu.chargetime.ocpp.model.core.StopTransactionConfirmation;
 import eu.chargetime.ocpp.model.core.StopTransactionRequest;
 
 
-public class StopTransactionFeature extends Feature {
+public class StopTransactionFeature extends ProfileFeature {
     public StopTransactionFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

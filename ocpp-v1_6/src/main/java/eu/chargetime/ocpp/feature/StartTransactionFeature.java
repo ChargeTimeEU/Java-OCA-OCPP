@@ -33,7 +33,7 @@ import eu.chargetime.ocpp.model.core.StartTransactionConfirmation;
 import eu.chargetime.ocpp.model.core.StartTransactionRequest;
 
 
-public class StartTransactionFeature extends Feature {
+public class StartTransactionFeature extends ProfileFeature {
     public StartTransactionFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

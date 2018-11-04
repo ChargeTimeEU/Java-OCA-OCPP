@@ -1,11 +1,10 @@
-package eu.chargetime.ocpp.feature.profile;
+package eu.chargetime.ocpp.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-
+    
     MIT License
 
-    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
-    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
+    Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -26,30 +25,49 @@ package eu.chargetime.ocpp.feature.profile;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.test.features.TestRequest;
 
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.concurrent.CompletionStage;
 
-public class ServerReservationProfile implements Profile {
+public class FakeChargePoint {
+    private final String url = "ws://127.0.0.1:8887";
+    private IClientAPI client;
+    private Request receivedRequest = null;
+    private Confirmation receivedConfirmation = null;
 
-    private HashSet<Feature> features;
-
-    public ServerReservationProfile() {
-        features = new HashSet<>();
-        features.add(new ReserveNowFeature(this));
-        features.add(new CancelReservationFeature(this));
+    public FakeChargePoint() {
+        client = new JSONClient();
     }
 
-    @Override
-    public ProfileFeature[] getFeatureList() {
-        return features.toArray(new ProfileFeature[0]);
+    public void connect() {
+        client.connect(url, new ClientEvents() {
+            @Override
+            public void connectionOpened() {
+
+            }
+
+            @Override
+            public void connectionClosed() {
+
+            }
+        });
     }
 
-    @Override
-    public Confirmation handleRequest(UUID sessionIndex, Request request) {
-        return null;
+    public void addFeature(Feature feature) {
+        client.addFeature(feature);
+    }
+
+    public void disconnect() {
+        client.disconnect();
+    }
+
+    public void send(TestRequest request) throws OccurenceConstraintException, UnsupportedFeatureException {
+        client.addFeature(request.getFeature());
+        CompletionStage<Confirmation> send = client.send(request.getRequest());
+        send.whenComplete(request::receiveConfirmation);
     }
 }

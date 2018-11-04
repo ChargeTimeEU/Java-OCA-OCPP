@@ -34,7 +34,7 @@ import eu.chargetime.ocpp.model.firmware.UpdateFirmwareConfirmation;
 import eu.chargetime.ocpp.model.firmware.UpdateFirmwareRequest;
 
 
-public class UpdateFirmwareFeature extends Feature {
+public class UpdateFirmwareFeature extends ProfileFeature {
 
     public UpdateFirmwareFeature(Profile ownerProfile) {
         super(ownerProfile);

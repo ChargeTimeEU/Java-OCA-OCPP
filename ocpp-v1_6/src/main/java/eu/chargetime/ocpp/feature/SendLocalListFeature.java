@@ -34,7 +34,7 @@ import eu.chargetime.ocpp.model.localauthlist.SendLocalListConfirmation;
 import eu.chargetime.ocpp.model.localauthlist.SendLocalListRequest;
 
 
-public class SendLocalListFeature extends Feature  {
+public class SendLocalListFeature extends ProfileFeature  {
 
     public SendLocalListFeature(Profile ownerProfile) {
         super(ownerProfile);

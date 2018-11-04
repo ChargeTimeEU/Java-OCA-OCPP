@@ -1,6 +1,7 @@
 package eu.chargetime.ocpp.feature.profile;
 
 import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.ProfileFeature;
 import eu.chargetime.ocpp.feature.TriggerMessageFeature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
@@ -48,8 +49,8 @@ public class ServerRemoteTriggerProfile implements Profile {
     }
 
     @Override
-    public Feature[] getFeatureList() {
-        return features.toArray(new Feature[0]);
+    public ProfileFeature[] getFeatureList() {
+        return features.toArray(new ProfileFeature[0]);
     }
 
     @Override

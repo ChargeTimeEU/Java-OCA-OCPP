@@ -32,7 +32,7 @@ import eu.chargetime.ocpp.model.core.DataTransferConfirmation;
 import eu.chargetime.ocpp.model.core.DataTransferRequest;
 
 
-public class DataTransferFeature extends Feature {
+public class DataTransferFeature extends ProfileFeature {
 
     public DataTransferFeature(Profile ownerProfile) {
         super(ownerProfile);

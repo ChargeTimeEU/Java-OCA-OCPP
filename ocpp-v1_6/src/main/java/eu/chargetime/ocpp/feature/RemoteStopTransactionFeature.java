@@ -33,7 +33,7 @@ import eu.chargetime.ocpp.model.core.RemoteStopTransactionConfirmation;
 import eu.chargetime.ocpp.model.core.RemoteStopTransactionRequest;
 
 
-public class RemoteStopTransactionFeature extends Feature {
+public class RemoteStopTransactionFeature extends ProfileFeature {
     public RemoteStopTransactionFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

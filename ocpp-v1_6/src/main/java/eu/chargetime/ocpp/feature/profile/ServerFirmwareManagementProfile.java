@@ -49,8 +49,8 @@ public class ServerFirmwareManagementProfile implements Profile {
     }
 
     @Override
-    public Feature[] getFeatureList() {
-        return features.toArray(new Feature[0]);
+    public ProfileFeature[] getFeatureList() {
+        return features.toArray(new ProfileFeature[0]);
     }
 
     @Override

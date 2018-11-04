@@ -34,7 +34,7 @@ import eu.chargetime.ocpp.model.localauthlist.GetLocalListVersionConfirmation;
 import eu.chargetime.ocpp.model.localauthlist.GetLocalListVersionRequest;
 
 
-public class GetLocalListVersionFeature extends Feature {
+public class GetLocalListVersionFeature extends ProfileFeature {
     public GetLocalListVersionFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

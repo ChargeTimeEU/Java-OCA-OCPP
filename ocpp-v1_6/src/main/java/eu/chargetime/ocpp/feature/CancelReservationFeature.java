@@ -34,7 +34,7 @@ import eu.chargetime.ocpp.model.reservation.CancelReservationConfirmation;
 import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
 
 
-public class CancelReservationFeature extends Feature {
+public class CancelReservationFeature extends ProfileFeature {
 
     public CancelReservationFeature(Profile ownerProfile) {
         super(ownerProfile);

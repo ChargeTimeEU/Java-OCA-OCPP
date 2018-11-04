@@ -34,7 +34,7 @@ import eu.chargetime.ocpp.model.core.AuthorizeConfirmation;
 import eu.chargetime.ocpp.model.core.AuthorizeRequest;
 
 
-public class AuthorizeFeature extends Feature {
+public class AuthorizeFeature extends ProfileFeature {
 
     public AuthorizeFeature(Profile ownerProfile) {
         super(ownerProfile);

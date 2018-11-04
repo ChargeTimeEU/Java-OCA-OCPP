@@ -34,7 +34,7 @@ import eu.chargetime.ocpp.model.core.ClearCacheConfirmation;
 import eu.chargetime.ocpp.model.core.ClearCacheRequest;
 
 
-public class ClearCacheFeature extends Feature{
+public class ClearCacheFeature extends ProfileFeature {
     public ClearCacheFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

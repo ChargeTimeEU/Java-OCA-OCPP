@@ -34,7 +34,7 @@ import eu.chargetime.ocpp.model.smartcharging.ClearChargingProfileConfirmation;
 import eu.chargetime.ocpp.model.smartcharging.ClearChargingProfileRequest;
 
 
-public class ClearChargingProfileFeature extends Feature {
+public class ClearChargingProfileFeature extends ProfileFeature {
     public ClearChargingProfileFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

@@ -33,7 +33,7 @@ import eu.chargetime.ocpp.model.core.GetConfigurationConfirmation;
 import eu.chargetime.ocpp.model.core.GetConfigurationRequest;
 
 
-public class GetConfigurationFeature extends Feature {
+public class GetConfigurationFeature extends ProfileFeature {
     public GetConfigurationFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

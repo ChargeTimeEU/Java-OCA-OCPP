@@ -33,7 +33,7 @@ import eu.chargetime.ocpp.model.firmware.GetDiagnosticsConfirmation;
 import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
 
 
-public class GetDiagnosticsFeature extends Feature {
+public class GetDiagnosticsFeature extends ProfileFeature {
 
     /**
      * Creates link back to the {@link Profile}.

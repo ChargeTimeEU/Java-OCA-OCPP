@@ -41,6 +41,7 @@
         <module>ocpp-v1_6</module>
         <module>ocpp-v1_6-test</module>
         <module>ocpp-v2_0</module>
+        <module>ocpp-v2_0-test</module>
     </modules>
 
     <distributionManagement>

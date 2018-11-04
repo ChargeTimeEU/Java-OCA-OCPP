@@ -32,7 +32,7 @@ import eu.chargetime.ocpp.model.core.ResetRequest;
  * SOFTWARE.
  */
 
-public class ResetFeature extends Feature {
+public class ResetFeature extends ProfileFeature {
     public ResetFeature(Profile ownerProfile) {
         super(ownerProfile);
     }

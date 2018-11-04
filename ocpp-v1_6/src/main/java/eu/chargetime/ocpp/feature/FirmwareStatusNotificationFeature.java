@@ -35,7 +35,7 @@ import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationConfirmation;
 import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationRequest;
 
 
-public class FirmwareStatusNotificationFeature extends Feature {
+public class FirmwareStatusNotificationFeature extends ProfileFeature {
 
     public FirmwareStatusNotificationFeature(Profile ownerProfile) {
         super(ownerProfile);

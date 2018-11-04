@@ -1,12 +1,10 @@
-package eu.chargetime.ocpp.feature.profile;
-
+package eu.chargetime.ocpp.feature;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-
+    
     MIT License
 
-    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
-    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
+    Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -27,42 +25,33 @@ package eu.chargetime.ocpp.feature.profile;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
-import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
 
-import java.util.HashSet;
 import java.util.UUID;
 
-public class ClientReservationProfile implements Profile {
+public abstract class ProfileFeature implements Feature {
 
-    private HashSet<Feature> features;
-    private ClientReservationEventHandler eventHandler;
+    private Profile profile;
 
-    public ClientReservationProfile(ClientReservationEventHandler eventHandler) {
-        this.eventHandler = eventHandler;
-        features = new HashSet<>();
-        features.add(new ReserveNowFeature(this));
-        features.add(new CancelReservationFeature(this));
+    /**
+     * Creates link back to the {@link Profile}.
+     *
+     * @param ownerProfile the {@link Profile} that owns the function.
+     */
+    public ProfileFeature(Profile ownerProfile) {
+        profile = ownerProfile;
     }
 
-    @Override
-    public ProfileFeature[] getFeatureList() {
-        return features.toArray(new ProfileFeature[0]);
-    }
-
-    @Override
+    /**
+     * Calls {@link Profile} to handle a {@link Request}.
+     *
+     * @param sessionIndex source of the request.
+     * @param request the {@link Request} to be handled.
+     * @return the {@link Confirmation} to be send back.
+     */
     public Confirmation handleRequest(UUID sessionIndex, Request request) {
-        Confirmation result = null;
-
-        if (request instanceof ReserveNowRequest) {
-            result = eventHandler.handleReserveNowRequest((ReserveNowRequest) request);
-        } else if (request instanceof CancelReservationRequest) {
-            result = eventHandler.handleCancelReservationRequest((CancelReservationRequest) request);
-        }
-
-        return result;
+        return profile.handleRequest(sessionIndex, request);
     }
 }

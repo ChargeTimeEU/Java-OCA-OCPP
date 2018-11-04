@@ -1,11 +1,10 @@
-package eu.chargetime.ocpp.feature.profile;
+package eu.chargetime.ocpp.test.features;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-
+    
     MIT License
 
-    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
-    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
+    Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -26,30 +25,21 @@ package eu.chargetime.ocpp.feature.profile;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.*;
-import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Request;
 
-import java.util.HashSet;
-import java.util.UUID;
+public class BootNotification extends TestRequest {
 
-public class ServerReservationProfile implements Profile {
-
-    private HashSet<Feature> features;
-
-    public ServerReservationProfile() {
-        features = new HashSet<>();
-        features.add(new ReserveNowFeature(this));
-        features.add(new CancelReservationFeature(this));
+    public BootNotification() {
     }
 
     @Override
-    public ProfileFeature[] getFeatureList() {
-        return features.toArray(new ProfileFeature[0]);
+    public Feature getFeature() {
+        return null;
     }
 
     @Override
-    public Confirmation handleRequest(UUID sessionIndex, Request request) {
+    public Request getRequest() {
         return null;
     }
 }
