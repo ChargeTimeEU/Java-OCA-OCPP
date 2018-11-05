@@ -28,15 +28,16 @@ package eu.chargetime.ocpp.model.basic;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.basic.types.RegistrationStatusEnumType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
-import eu.chargetime.ocpp.model.validation.Validator;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 /**
  * sent by the CSMS to the Charging Station in response to a {@link BootNotificationRequest}.
  */
-public class BootNotificationResponse implements Confirmation {
-    private Validator<Object> validator = new RequiredValidator();
+public class BootNotificationConfirmation implements Confirmation {
+    private transient RequiredValidator validator = new RequiredValidator();
 
     private Calendar currentTime;
     private int interval;
@@ -104,6 +105,32 @@ public class BootNotificationResponse implements Confirmation {
 
     @Override
     public boolean validate() {
-        return false;
+        return currentTime != null &&
+                interval > 0 &&
+                status != null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BootNotificationConfirmation that = (BootNotificationConfirmation) o;
+        return currentTime.compareTo(that.currentTime) == 0 &&
+                Objects.equals(interval, that.interval) &&
+                Objects.equals(status, that.status);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(currentTime, interval, status);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("currentTime", currentTime)
+                .add("interval", interval)
+                .add("status", status)
+                .toString();
     }
 }

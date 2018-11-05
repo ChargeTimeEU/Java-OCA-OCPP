@@ -29,7 +29,6 @@ import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.test.features.TestRequest;
 
 import java.util.concurrent.CompletionStage;
 
@@ -65,9 +64,14 @@ public class FakeChargePoint {
         client.disconnect();
     }
 
-    public void send(TestRequest request) throws OccurenceConstraintException, UnsupportedFeatureException {
-        client.addFeature(request.getFeature());
-        CompletionStage<Confirmation> send = client.send(request.getRequest());
-        send.whenComplete(request::receiveConfirmation);
+    public void send(Request request) throws OccurenceConstraintException, UnsupportedFeatureException {
+        CompletionStage<Confirmation> send = client.send(request);
+        send.whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
+    }
+
+    public boolean recieved(Confirmation confirmation) {
+        if (receivedConfirmation != null && confirmation != null)
+            return receivedConfirmation.equals(confirmation);
+        return false;
     }
 }

@@ -26,15 +26,19 @@ package eu.chargetime.ocpp.model.basic.types;
  */
 
 import eu.chargetime.ocpp.model.Validatable;
+import eu.chargetime.ocpp.model.basic.BootNotificationRequest;
 import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
+import eu.chargetime.ocpp.utilities.MoreObjects;
+
+import java.util.Objects;
 
 public class ChargingStationType implements Validatable {
-    private Validator serialNumberValidator = new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string20()).build();
-    private Validator modelValidator = new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string20()).build();
-    private Validator vendorNameValidator = new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string50()).build();
-    private Validator firmwareVersionValidator = new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string50()).build();
+    private transient Validator serialNumberValidator = new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string20()).build();
+    private transient Validator modelValidator = new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string20()).build();
+    private transient Validator vendorNameValidator = new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string50()).build();
+    private transient Validator firmwareVersionValidator = new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string50()).build();
 
     private String serialNumber;
     private String model;
@@ -147,5 +151,33 @@ public class ChargingStationType implements Validatable {
                 vendorNameValidator.safeValidate(vendorName) &&
                 firmwareVersionValidator.safeValidate(firmwareVersion) &&
                 (modem == null || modem.validate());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChargingStationType that = (ChargingStationType) o;
+        return Objects.equals(serialNumber, that.serialNumber) &&
+                Objects.equals(model, that.model) &&
+                Objects.equals(vendorName, that.vendorName) &&
+                Objects.equals(firmwareVersion, that.firmwareVersion) &&
+                Objects.equals(modem, that.modem);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(serialNumber, model, vendorName, firmwareVersion, modem);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("serialNumber", serialNumber)
+                .add("model", model)
+                .add("vendorName", vendorName)
+                .add("firmwareVersion", firmwareVersion)
+                .add("modem", modem)
+                .toString();
     }
 }

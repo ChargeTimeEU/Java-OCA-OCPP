@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.basic.test;
+package eu.chargetime.ocpp.features.basic;
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -25,24 +25,40 @@ package eu.chargetime.ocpp.model.basic.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.basic.BootNotificationResponse;
-import org.junit.Test;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.features.basic.handlers.IServerBootNotificationRequestHandler;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.basic.BootNotificationConfirmation;
+import eu.chargetime.ocpp.model.basic.BootNotificationRequest;
 
-public class BootNotificationResponseTest {
+import java.util.UUID;
 
-    @Test(expected = PropertyConstraintException.class)
-    public void setCurrentTime_null_throwsPropertyConstraintException() {
-        BootNotificationResponse sut = new BootNotificationResponse();
+public class BootNotificationFeature implements Feature {
 
-        sut.setCurrentTime(null);
+    private final IServerBootNotificationRequestHandler handler;
+
+    public BootNotificationFeature(IServerBootNotificationRequestHandler handler) {
+        this.handler = handler;
     }
 
-    @Test(expected = PropertyConstraintException.class)
-    public void setStatus_null_throwsPropertyConstraintException() {
-        BootNotificationResponse sut = new BootNotificationResponse();
-
-        sut.setStatus(null);
+    @Override
+    public Confirmation handleRequest(UUID sessionIndex, Request request) {
+        return handler.handleBootNotificationRequest(sessionIndex, (BootNotificationRequest)request);
     }
 
+    @Override
+    public Class<? extends Request> getRequestType() {
+        return BootNotificationRequest.class;
+    }
+
+    @Override
+    public Class<? extends Confirmation> getConfirmationType() {
+        return BootNotificationConfirmation.class;
+    }
+
+    @Override
+    public String getAction() {
+        return "BootNotification";
+    }
 }

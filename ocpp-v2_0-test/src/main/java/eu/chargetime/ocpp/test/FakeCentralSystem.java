@@ -30,6 +30,8 @@ import eu.chargetime.ocpp.JSONConfiguration;
 import eu.chargetime.ocpp.JSONServer;
 import eu.chargetime.ocpp.ServerEvents;
 import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.SessionInformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +46,7 @@ public class FakeCentralSystem {
     private IServerAPI server;
     private boolean isStarted;
     private UUID currentSession;
+    private Request handletReuqest = null;
 
     public FakeCentralSystem() {
         JSONConfiguration configuration =
@@ -54,7 +57,29 @@ public class FakeCentralSystem {
     }
 
     public void addFeature(Feature feature) {
-        server.addFeature(feature);
+        Feature decorator = new Feature() {
+            @Override
+            public Confirmation handleRequest(UUID sessionIndex, Request request) {
+                handletReuqest = request;
+                return feature.handleRequest(sessionIndex, request);
+            }
+
+            @Override
+            public Class<? extends Request> getRequestType() {
+                return feature.getRequestType();
+            }
+
+            @Override
+            public Class<? extends Confirmation> getConfirmationType() {
+                return feature.getConfirmationType();
+            }
+
+            @Override
+            public String getAction() {
+                return feature.getAction();
+            }
+        };
+        server.addFeature(decorator);
     }
 
     public void started() throws Exception {
@@ -78,5 +103,11 @@ public class FakeCentralSystem {
     public void stopped() {
         server.close();
         isStarted = false;
+    }
+
+    public boolean hasHandled(Request request) {
+        if (handletReuqest != null && request != null)
+            return handletReuqest.equals(request);
+        return false;
     }
 }

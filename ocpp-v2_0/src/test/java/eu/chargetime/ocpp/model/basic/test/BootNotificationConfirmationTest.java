@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.features;
+package eu.chargetime.ocpp.model.basic.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -25,24 +25,24 @@ package eu.chargetime.ocpp.test.features;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.basic.BootNotificationConfirmation;
+import org.junit.Test;
 
-import java.lang.reflect.Type;
+public class BootNotificationConfirmationTest {
 
-public abstract class TestRequest {
+    @Test(expected = PropertyConstraintException.class)
+    public void setCurrentTime_null_throwsPropertyConstraintException() {
+        BootNotificationConfirmation sut = new BootNotificationConfirmation();
 
-    private Confirmation receivedConfirmation;
-
-    public abstract Feature getFeature();
-    public abstract Request getRequest();
-
-    public void receiveConfirmation(Confirmation confirmation, Throwable ex) {
-        this.receivedConfirmation = confirmation;
+        sut.setCurrentTime(null);
     }
 
-    public boolean wasLatestConfirmation(Type confirmationType) {
-        return confirmationType != null && receivedConfirmation != null && confirmationType.equals(receivedConfirmation.getClass());
+    @Test(expected = PropertyConstraintException.class)
+    public void setStatus_null_throwsPropertyConstraintException() {
+        BootNotificationConfirmation sut = new BootNotificationConfirmation();
+
+        sut.setStatus(null);
     }
+
 }

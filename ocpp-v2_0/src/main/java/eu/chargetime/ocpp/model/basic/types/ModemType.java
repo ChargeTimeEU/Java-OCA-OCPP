@@ -29,9 +29,12 @@ import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
+import eu.chargetime.ocpp.utilities.MoreObjects;
+
+import java.util.Objects;
 
 public class ModemType implements Validatable {
-    private Validator validator = new ValidatorBuilder().
+    private transient Validator validator = new ValidatorBuilder().
             addRule(OCPP2PrimDatatypes.identifierString()).
             addRule(OCPP2PrimDatatypes.string20()).
             build();
@@ -80,5 +83,27 @@ public class ModemType implements Validatable {
     @Override
     public boolean validate() {
         return validator.safeValidate(iccid) && validator.safeValidate(imsi);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ModemType that = (ModemType) o;
+        return Objects.equals(iccid, that.iccid) &&
+                Objects.equals(imsi, that.imsi);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(iccid, imsi);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("iccid", iccid)
+                .add("imsi", imsi)
+                .toString();
     }
 }

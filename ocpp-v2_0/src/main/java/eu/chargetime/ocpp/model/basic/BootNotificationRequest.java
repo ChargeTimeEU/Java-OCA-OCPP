@@ -38,7 +38,7 @@ import java.util.Objects;
  * Sent by the Charging Station to the CSMS.
  */
 public class BootNotificationRequest implements Request {
-    private RequiredValidator validator = new RequiredValidator();
+    private transient RequiredValidator validator = new RequiredValidator();
 
     private BootReasonEnumType reason;
     private ChargingStationType chargingStation;

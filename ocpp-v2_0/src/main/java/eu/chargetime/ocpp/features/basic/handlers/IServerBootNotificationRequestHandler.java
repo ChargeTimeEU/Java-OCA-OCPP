@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.features;
+package eu.chargetime.ocpp.features.basic.handlers;
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -25,8 +25,14 @@ package eu.chargetime.ocpp.test.features;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.model.basic.BootNotificationConfirmation;
+import eu.chargetime.ocpp.model.basic.BootNotificationRequest;
 
-public interface ITestHandler {
-    Feature getFeature();
+import java.util.UUID;
+
+/**
+ * Central system handler of {@link BootNotificationRequest}s.
+ */
+public interface IServerBootNotificationRequestHandler {
+    BootNotificationConfirmation handleBootNotificationRequest(UUID sessionIndex, BootNotificationRequest request);
 }
