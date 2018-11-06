@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.validation;
+package eu.chargetime.ocpp.test.features
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -25,23 +25,6 @@ package eu.chargetime.ocpp.model.validation;
     SOFTWARE.
  */
 
-public class OCPP2PrimDatatypes {
+class SetVariables {
 
-    Validator validator;
-
-    public static IValidationRule string50(){
-        return new StringMaxLenghtValidationRule(50);
-    }
-
-    public static IValidationRule string20() {
-        return new StringMaxLenghtValidationRule(20);
-    }
-
-    public static IValidationRule string1000() {
-        return new StringMaxLenghtValidationRule(1000);
-    }
-
-    public static IValidationRule identifierString() {
-        return new IdentifierStringValidationRule();
-    }
 }

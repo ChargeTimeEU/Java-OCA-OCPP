@@ -48,8 +48,12 @@ public class ValidatorBuilder {
 
     public Validator build() {
         Validator validator = new StringValidator(rules.toArray(new IValidationRule[0]));
-        if (!required)
+
+        if (required)
+            validator = new RequiredDecorator(validator);
+        else
             validator = new OptionalDecorator(validator);
+
         return validator;
     }
 }

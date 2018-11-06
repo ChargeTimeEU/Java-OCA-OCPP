@@ -25,23 +25,20 @@ package eu.chargetime.ocpp.model.validation;
     SOFTWARE.
  */
 
-public class OCPP2PrimDatatypes {
+import eu.chargetime.ocpp.PropertyConstraintException;
 
-    Validator validator;
+public class RequiredDecorator extends Validator<Object> {
 
-    public static IValidationRule string50(){
-        return new StringMaxLenghtValidationRule(50);
+    private final Validator requiredValidator = new RequiredValidator();
+    private final Validator decoratee;
+
+    public RequiredDecorator(Validator validator) {
+        this.decoratee = validator;
     }
 
-    public static IValidationRule string20() {
-        return new StringMaxLenghtValidationRule(20);
-    }
-
-    public static IValidationRule string1000() {
-        return new StringMaxLenghtValidationRule(1000);
-    }
-
-    public static IValidationRule identifierString() {
-        return new IdentifierStringValidationRule();
+    @Override
+    public void validate(Object value) throws PropertyConstraintException {
+        requiredValidator.validate(value);
+        decoratee.validate(value);
     }
 }

@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.validation;
+package eu.chargetime.ocpp.model.basic.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -25,23 +25,16 @@ package eu.chargetime.ocpp.model.validation;
     SOFTWARE.
  */
 
-public class OCPP2PrimDatatypes {
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.basic.SetVariablesRequest;
+import org.junit.Test;
 
-    Validator validator;
+public class SetVariablesRequestTest {
 
-    public static IValidationRule string50(){
-        return new StringMaxLenghtValidationRule(50);
-    }
+    @Test(expected = PropertyConstraintException.class)
+    public void setSetVariableData_Null_ThrowsPropertyConstraintException() {
+        SetVariablesRequest sut = new SetVariablesRequest();
 
-    public static IValidationRule string20() {
-        return new StringMaxLenghtValidationRule(20);
-    }
-
-    public static IValidationRule string1000() {
-        return new StringMaxLenghtValidationRule(1000);
-    }
-
-    public static IValidationRule identifierString() {
-        return new IdentifierStringValidationRule();
+        sut.setSetVariableData(null);
     }
 }

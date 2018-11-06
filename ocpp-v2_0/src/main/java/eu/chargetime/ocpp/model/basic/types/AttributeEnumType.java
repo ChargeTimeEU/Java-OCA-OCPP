@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.validation;
+package eu.chargetime.ocpp.model.basic.types;
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -25,23 +25,24 @@ package eu.chargetime.ocpp.model.validation;
     SOFTWARE.
  */
 
-public class OCPP2PrimDatatypes {
+public enum AttributeEnumType {
+    /**
+     * The actual value of the variable.
+     */
+    Actual,
 
-    Validator validator;
+    /**
+     * The target value for this variable.
+     */
+    Target,
 
-    public static IValidationRule string50(){
-        return new StringMaxLenghtValidationRule(50);
-    }
+    /**
+     * The minimal allowed value for this variable.
+     */
+    MinSet,
 
-    public static IValidationRule string20() {
-        return new StringMaxLenghtValidationRule(20);
-    }
-
-    public static IValidationRule string1000() {
-        return new StringMaxLenghtValidationRule(1000);
-    }
-
-    public static IValidationRule identifierString() {
-        return new IdentifierStringValidationRule();
-    }
+    /**
+     * The maximum allowed value for this variable.
+     */
+    MaxSet
 }
