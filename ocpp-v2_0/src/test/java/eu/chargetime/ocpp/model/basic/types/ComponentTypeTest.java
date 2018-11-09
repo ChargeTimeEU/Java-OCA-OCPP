@@ -26,11 +26,12 @@ package eu.chargetime.ocpp.model.basic.types;
  */
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ComponentTypeTest extends TestUtilities {
+import static eu.chargetime.ocpp.utilities.TestUtilities.aString;
+
+public class ComponentTypeTest {
 
     @Test(expected = PropertyConstraintException.class)
     public void setName_Null_throwsPropertyConstraintException() {

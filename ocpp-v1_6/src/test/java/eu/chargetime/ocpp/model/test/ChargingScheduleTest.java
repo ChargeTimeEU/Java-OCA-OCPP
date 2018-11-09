@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.util.Calendar;
 
+import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -39,7 +40,7 @@ import static org.mockito.Mockito.*;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class ChargingScheduleTest extends TestUtilities {
+public class ChargingScheduleTest {
     ChargingSchedule chargingSchedule;
 
     @Before
@@ -68,7 +69,7 @@ public class ChargingScheduleTest extends TestUtilities {
         chargingSchedule.setStartSchedule(now);
 
         // Then
-        assertThat(chargingSchedule.objStartSchedule(), equalTo(now));
+        assertThat(chargingSchedule.getStartSchedule(), equalTo(now));
     }
 
 
@@ -81,7 +82,7 @@ public class ChargingScheduleTest extends TestUtilities {
         chargingSchedule.setChargingRateUnit(chargingRateUnitType);
 
         // Then
-        assertThat(chargingSchedule.objChargingRateUnit(), equalTo(chargingRateUnitType));
+        assertThat(chargingSchedule.getChargingRateUnit(), equalTo(chargingRateUnitType));
     }
 
     @Test

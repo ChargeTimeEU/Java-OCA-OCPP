@@ -13,6 +13,8 @@ import org.junit.rules.ExpectedException;
 
 import java.util.Calendar;
 
+import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
+import static eu.chargetime.ocpp.utilities.TestUtilities.aString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -47,7 +49,7 @@ import static org.mockito.Mockito.when;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class StopTransactionRequestTest extends TestUtilities {
+public class StopTransactionRequestTest {
 
     @Rule
     public ExpectedException thrownException = ExpectedException.none();
@@ -100,7 +102,7 @@ public class StopTransactionRequestTest extends TestUtilities {
         request.setTimestamp(now);
 
         // Then
-        assertThat(request.objTimestamp(), equalTo(now));
+        assertThat(request.getTimestamp(), equalTo(now));
     }
 
     @Test
@@ -124,7 +126,7 @@ public class StopTransactionRequestTest extends TestUtilities {
         request.setReason(reason);
 
         // Then
-        assertThat(request.objReason(), equalTo(reason));
+        assertThat(request.getReason(), equalTo(reason));
     }
 
     @Test

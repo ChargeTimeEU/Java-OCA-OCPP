@@ -202,7 +202,7 @@ public class SampledValueTest {
         sampledValue.setFormat(valueFormat);
 
         // Then
-        assertThat(sampledValue.objFormat(), equalTo(valueFormat));
+        assertThat(sampledValue.getFormat(), equalTo(valueFormat));
     }
 
     @Test
@@ -642,7 +642,7 @@ public class SampledValueTest {
         sampledValue.setLocation(location);
 
         // Then
-        assertThat(sampledValue.objLocation(), equalTo(location));
+        assertThat(sampledValue.getLocation(), equalTo(location));
     }
 
     @Test

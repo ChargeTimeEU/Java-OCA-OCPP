@@ -1,10 +1,10 @@
-package eu.chargetime.ocpp.model.firmware.test;
+package eu.chargetime.ocpp.model.basic.types;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-
+    
     MIT License
 
-    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,30 +25,48 @@ package eu.chargetime.ocpp.model.firmware.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationConfirmation;
-import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Before;
-import org.junit.Test;
+/**
+ * SetVariableStatusEnumType is used by {@link eu.chargetime.ocpp.model.basic.SetVariablesConfirmation}
+ */
+public enum SetVariableStatusEnumType {
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+    /**
+     * Variable successfully set.
+     */
+    Accepted,
 
-public class DiagnosticsStatusNotificationConfirmationTest {
+    /**
+     * Request is rejected.
+     */
+    Rejected,
 
-    private DiagnosticsStatusNotificationConfirmation confirmation;
+    /**
+     * Value has invalid format for the variable.
+     */
+    InvalidValue,
 
-    @Before
-    public void setup() {
-        confirmation = new DiagnosticsStatusNotificationConfirmation();
-    }
+    /**
+     * Component is not known.
+     */
+    UnknownComponent,
 
-    @Test
-    public void validate_returnsTrue() {
-        // When
-        boolean result = confirmation.validate();
+    /**
+     * Variable is not known.
+     */
+    UnknownVariable,
 
-        // Then
-        assertThat(result, is(true));
-    }
+    /**
+     * The AttributeType is not supported.
+     */
+    NotSupportedAttributeType,
 
+    /**
+     * Value is out of range defined in VariableCharacteristics.
+     */
+    OutOfRange,
+
+    /**
+     * A reboot is required.
+     */
+    RebootRequired
 }

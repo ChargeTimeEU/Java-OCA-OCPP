@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.basic.test;
+package eu.chargetime.ocpp.model.basic;
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -26,8 +26,7 @@ package eu.chargetime.ocpp.model.basic.test;
  */
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.basic.SetVariablesRequest;
-import eu.chargetime.ocpp.model.basic.types.SetVariableDataType;
+import eu.chargetime.ocpp.model.basic.types.SetVariableResultType;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -35,19 +34,19 @@ import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class SetVariablesRequestTest {
+public class SetVariablesConfirmationTest {
 
     @Test(expected = PropertyConstraintException.class)
-    public void setSetVariableData_Null_ThrowsPropertyConstraintException() {
-        SetVariablesRequest sut = new SetVariablesRequest();
+    public void setSetVariableResult_Null_ThrowsPropertyConstraintException() {
+        SetVariablesConfirmation sut = new SetVariablesConfirmation();
 
-        sut.setSetVariableData(null);
+        sut.setSetVariableResult(null);
     }
 
     @Test
     public void validate_default_returnsFalse() {
         boolean expected = false;
-        SetVariablesRequest sut = new SetVariablesRequest();
+        SetVariablesConfirmation sut = new SetVariablesConfirmation();
 
         boolean result = sut.validate();
 
@@ -55,16 +54,16 @@ public class SetVariablesRequestTest {
     }
 
     @Test
-    public void validate_SetVariableDataIsSet_returnsTrue() {
+    public void validate_SetVariableResultIsSet_returnsTrue() {
         boolean expected = true;
-        SetVariableDataType setVariableDataTypeStub = mock(SetVariableDataType.class);
-        when(setVariableDataTypeStub.validate()).thenReturn(true);
-
-        SetVariablesRequest sut = new SetVariablesRequest();
-        sut.setSetVariableData(aList(setVariableDataTypeStub));
+        SetVariableResultType setVariableResultTypeStub = mock(SetVariableResultType.class);
+        when(setVariableResultTypeStub.validate()).thenReturn(true);
+        SetVariablesConfirmation sut = new SetVariablesConfirmation();
+        sut.setSetVariableResult(aList(setVariableResultTypeStub));
 
         boolean result = sut.validate();
 
         Assert.assertEquals(expected, result);
+
     }
 }

@@ -12,6 +12,7 @@ import org.junit.rules.ExpectedException;
 
 import java.util.Calendar;
 
+import static eu.chargetime.ocpp.utilities.TestUtilities.aString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -42,7 +43,7 @@ import static org.junit.Assert.assertThat;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class StatusNotificationRequestTest extends TestUtilities {
+public class StatusNotificationRequestTest {
 
     private static final String EXCEPTION_MESSAGE_TEMPLATE = "Validation failed: [Exceeds limit of %s chars]. Current Value: [%s]";
 
@@ -88,7 +89,7 @@ public class StatusNotificationRequestTest extends TestUtilities {
         request.setErrorCode(chargePointErrorCode);
 
         // Then
-        assertThat(request.objErrorCode(), equalTo(chargePointErrorCode));
+        assertThat(request.getErrorCode(), equalTo(chargePointErrorCode));
     }
 
     @Test
@@ -127,7 +128,7 @@ public class StatusNotificationRequestTest extends TestUtilities {
         request.setStatus(chargePointStatus);
 
         // Then
-        assertThat(request.objStatus(), equalTo(chargePointStatus));
+        assertThat(request.getStatus(), equalTo(chargePointStatus));
     }
 
     @Test
@@ -139,7 +140,7 @@ public class StatusNotificationRequestTest extends TestUtilities {
         request.setTimestamp(now);
 
         // Then
-        assertThat(request.objTimestamp(), equalTo(now));
+        assertThat(request.getTimestamp(), equalTo(now));
     }
 
     @Test

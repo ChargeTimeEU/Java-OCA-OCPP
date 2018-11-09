@@ -58,6 +58,7 @@ public class BootNotificationRequestTest {
         request = new BootNotificationRequest();
     }
 
+    @Deprecated
     @Test
     public void setChargeBoxSerialNumber_stringLength25_noExceptions() {
         // When
@@ -67,6 +68,7 @@ public class BootNotificationRequestTest {
         assertThat(request.getChargeBoxSerialNumber(), equalTo(stringLength25));
     }
 
+    @Deprecated
     @Test
     public void setChargeBoxSerialNumber_stringLength26_throwsPropertyConstraintException() {
         setExpectedPropertyConstraintException(createExpectedExceptionMessage(25, 26));

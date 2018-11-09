@@ -25,11 +25,18 @@ package eu.chargetime.ocpp.model.basic.types;
     SOFTWARE.
  */
 
+import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 
-public class VariableType {
+import java.util.Objects;
+
+/**
+ * Reference key to a component-variable.
+ */
+public class VariableType implements Validatable {
     private transient Validator nameValidator = new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string50()).build();
     private transient Validator instanceValidator = new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string50()).build();
 
@@ -74,5 +81,33 @@ public class VariableType {
     public void setInstance(String instance) {
         instanceValidator.validate(instance);
         this.instance = instance;
+    }
+
+    @Override
+    public boolean validate() {
+        return nameValidator.safeValidate(name) &&
+                instanceValidator.safeValidate(instance);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VariableType that = (VariableType) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(instance, that.instance);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, instance);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("name", name)
+                .add("instance", instance)
+                .toString();
     }
 }

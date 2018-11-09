@@ -8,6 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import static eu.chargetime.ocpp.utilities.TestUtilities.aString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -39,7 +40,7 @@ import static org.junit.Assert.assertThat;
  * SOFTWARE.
  */
 
-public class ChangeConfigurationRequestTest extends TestUtilities {
+public class ChangeConfigurationRequestTest {
 
     private static final String EXCEPTION_MESSAGE_TEMPLATE = "Validation failed: [Exceeded limit of %s chars]. Current Value: [%s]";
 

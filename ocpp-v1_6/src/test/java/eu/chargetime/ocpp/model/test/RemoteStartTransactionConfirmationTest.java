@@ -51,7 +51,7 @@ public class RemoteStartTransactionConfirmationTest {
         confirmation.setStatus(remoteStartStopStatus);
 
         // Then
-        assertThat(confirmation.objStatus(), equalTo(remoteStartStopStatus));
+        assertThat(confirmation.getStatus(), equalTo(remoteStartStopStatus));
     }
 
     @Test

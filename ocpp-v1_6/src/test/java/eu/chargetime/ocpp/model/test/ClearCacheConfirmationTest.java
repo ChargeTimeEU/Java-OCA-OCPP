@@ -51,7 +51,7 @@ public class ClearCacheConfirmationTest {
         confirmation.setStatus(clearCacheStatus);
 
         // Then
-        assertThat(confirmation.objStatus(), equalTo(clearCacheStatus));
+        assertThat(confirmation.getStatus(), equalTo(clearCacheStatus));
     }
 
     @Test

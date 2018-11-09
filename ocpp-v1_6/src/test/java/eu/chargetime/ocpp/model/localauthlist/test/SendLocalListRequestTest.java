@@ -13,12 +13,13 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SendLocalListRequestTest extends TestUtilities {
+public class SendLocalListRequestTest {
 
     @Rule
     public ExpectedException thrownException = ExpectedException.none();

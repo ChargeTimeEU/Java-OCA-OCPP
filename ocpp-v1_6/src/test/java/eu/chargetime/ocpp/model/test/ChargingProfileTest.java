@@ -130,7 +130,7 @@ public class ChargingProfileTest {
         chargingProfile.setChargingProfilePurpose(chargingProfilePurposeType);
 
         // Then
-        assertThat(chargingProfile.objChargingProfilePurpose(), equalTo(chargingProfilePurposeType));
+        assertThat(chargingProfile.getChargingProfilePurpose(), equalTo(chargingProfilePurposeType));
     }
 
     @Test
@@ -142,7 +142,7 @@ public class ChargingProfileTest {
         chargingProfile.setChargingProfileKind(chargingProfileKindType);
 
         // Then
-        assertThat(chargingProfile.objChargingProfileKind(), equalTo(chargingProfileKindType));
+        assertThat(chargingProfile.getChargingProfileKind(), equalTo(chargingProfileKindType));
     }
 
     @Test
@@ -154,7 +154,7 @@ public class ChargingProfileTest {
         chargingProfile.setRecurrencyKind(recurrencyKindType);
 
         // Then
-        assertThat(chargingProfile.objRecurrencyKind(), equalTo(recurrencyKindType));
+        assertThat(chargingProfile.getRecurrencyKind(), equalTo(recurrencyKindType));
     }
 
     @Test
@@ -166,7 +166,7 @@ public class ChargingProfileTest {
         chargingProfile.setValidFrom(now);
 
         // Then
-        assertThat(chargingProfile.objValidFrom(), equalTo(now));
+        assertThat(chargingProfile.getValidFrom(), equalTo(now));
     }
 
     @Test
@@ -178,7 +178,7 @@ public class ChargingProfileTest {
         chargingProfile.setValidTo(now);
 
         // Then
-        assertThat(chargingProfile.objValidTo(), equalTo(now));
+        assertThat(chargingProfile.getValidTo(), equalTo(now));
     }
 
     @Test

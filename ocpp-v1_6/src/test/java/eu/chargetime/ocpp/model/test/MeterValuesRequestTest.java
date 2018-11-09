@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -46,7 +47,7 @@ import static org.mockito.Mockito.when;
  * SOFTWARE.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class MeterValuesRequestTest extends TestUtilities {
+public class MeterValuesRequestTest {
 
     @Rule
     public ExpectedException thrownException = ExpectedException.none();

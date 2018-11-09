@@ -1,10 +1,10 @@
-package eu.chargetime.ocpp.model.firmware.test;
+package eu.chargetime.ocpp.features.basic.handlers;
 /*
     ChargeTime.eu - Java-OCA-OCPP
-
+    
     MIT License
 
-    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+    Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -25,30 +25,12 @@ package eu.chargetime.ocpp.model.firmware.test;
     SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationConfirmation;
-import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Before;
-import org.junit.Test;
+import eu.chargetime.ocpp.model.basic.SetVariablesConfirmation;
+import eu.chargetime.ocpp.model.basic.SetVariablesRequest;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-
-public class DiagnosticsStatusNotificationConfirmationTest {
-
-    private DiagnosticsStatusNotificationConfirmation confirmation;
-
-    @Before
-    public void setup() {
-        confirmation = new DiagnosticsStatusNotificationConfirmation();
-    }
-
-    @Test
-    public void validate_returnsTrue() {
-        // When
-        boolean result = confirmation.validate();
-
-        // Then
-        assertThat(result, is(true));
-    }
-
+/**
+ * Charging Station handler of {@link SetVariablesRequest}
+ */
+public interface IClientSetVariablesRequestHandler {
+    SetVariablesConfirmation handleSetVariablesRequest(SetVariablesRequest request);
 }

@@ -34,7 +34,7 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class FirmwareStatusNotificationConfirmationTest extends TestUtilities {
+public class FirmwareStatusNotificationConfirmationTest {
 
     private FirmwareStatusNotificationConfirmation confirmation;
 

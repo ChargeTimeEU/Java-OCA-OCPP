@@ -51,7 +51,7 @@ public class UnlockConnectorConfirmationTest {
         confirmation.setStatus(unlockStatus);
 
         // Then
-        assertThat(confirmation.objStatus(), equalTo(unlockStatus));
+        assertThat(confirmation.getStatus(), equalTo(unlockStatus));
     }
 
     @Test

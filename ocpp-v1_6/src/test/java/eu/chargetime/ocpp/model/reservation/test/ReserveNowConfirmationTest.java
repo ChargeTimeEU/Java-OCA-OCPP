@@ -39,7 +39,7 @@ import java.util.Calendar;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class ReserveNowConfirmationTest extends TestUtilities {
+public class ReserveNowConfirmationTest {
 
     private ReserveNowConfirmation confirmation;
 

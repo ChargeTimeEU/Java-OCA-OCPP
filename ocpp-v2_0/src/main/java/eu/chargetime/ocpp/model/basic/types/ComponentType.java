@@ -33,6 +33,9 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
+/**
+ * A physical or logical component.
+ */
 public class ComponentType implements Validatable {
     private transient Validator nameValidator = new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string50()).build();
     private transient Validator instanceValidator = new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string50()).build();

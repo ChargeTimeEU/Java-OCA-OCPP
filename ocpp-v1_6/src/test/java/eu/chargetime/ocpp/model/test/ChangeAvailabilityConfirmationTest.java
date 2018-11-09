@@ -52,7 +52,7 @@ public class ChangeAvailabilityConfirmationTest {
         confirmation.setStatus(availabilityStatus);
 
         // Then
-        assertThat(confirmation.objStatus(), equalTo(availabilityStatus));
+        assertThat(confirmation.getStatus(), equalTo(availabilityStatus));
     }
 
     @Test

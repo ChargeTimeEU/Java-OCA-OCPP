@@ -29,14 +29,15 @@ import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.basic.SetVariablesRequest;
 
 import java.util.concurrent.CompletionStage;
 
 public class FakeChargePoint {
     private final String url = "ws://127.0.0.1:8887";
     private IClientAPI client;
-    private Request receivedRequest = null;
     private Confirmation receivedConfirmation = null;
+    private Request handletReuqest;
 
     public FakeChargePoint() {
         client = new JSONClient();
@@ -57,7 +58,8 @@ public class FakeChargePoint {
     }
 
     public void addFeature(Feature feature) {
-        client.addFeature(feature);
+        FeatureTestDecorator monitoredFeature = new FeatureTestDecorator(feature, request -> handletReuqest = request);
+        client.addFeature(monitoredFeature);
     }
 
     public void disconnect() {
@@ -72,6 +74,12 @@ public class FakeChargePoint {
     public boolean recieved(Confirmation confirmation) {
         if (receivedConfirmation != null && confirmation != null)
             return receivedConfirmation.equals(confirmation);
+        return false;
+    }
+
+    public boolean hasHandled(Request request) {
+        if (handletReuqest != null && request != null)
+            return handletReuqest.equals(request);
         return false;
     }
 }

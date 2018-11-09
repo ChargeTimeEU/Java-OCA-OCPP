@@ -58,7 +58,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
     SOFTWARE.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class SOAPCommunicatorTest extends TestUtilities {
+public class SOAPCommunicatorTest {
 
     private SOAPCommunicator communicator;
     private String chargeBoxIdentity = "testIdentity";

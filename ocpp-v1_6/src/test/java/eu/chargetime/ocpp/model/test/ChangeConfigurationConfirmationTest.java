@@ -51,7 +51,7 @@ public class ChangeConfigurationConfirmationTest {
         confirmation.setStatus(configurationStatus);
 
         // Then
-        assertThat(confirmation.objStatus(), equalTo(configurationStatus));
+        assertThat(confirmation.getStatus(), equalTo(configurationStatus));
     }
 
     @Test

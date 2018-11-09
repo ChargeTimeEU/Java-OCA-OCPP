@@ -51,7 +51,7 @@ public class ResetConfirmationTest {
         confirmation.setStatus(resetStatus);
 
         // Then
-        assertThat(confirmation.objStatus(), equalTo(resetStatus));
+        assertThat(confirmation.getStatus(), equalTo(resetStatus));
     }
 
     @Test

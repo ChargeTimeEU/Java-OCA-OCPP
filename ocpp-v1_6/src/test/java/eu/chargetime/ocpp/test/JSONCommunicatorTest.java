@@ -18,6 +18,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import static eu.chargetime.ocpp.utilities.TestUtilities.join;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
@@ -49,7 +50,7 @@ import static org.mockito.Mockito.*;
  SOFTWARE.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class JSONCommunicatorTest extends TestUtilities
+public class JSONCommunicatorTest
 {
     private JSONCommunicator communicator;
 

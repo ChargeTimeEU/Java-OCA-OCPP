@@ -52,7 +52,7 @@ public class HeartbeatConfirmationTest {
         confirmation.setCurrentTime(now);
 
         // Then
-        assertThat(confirmation.objCurrentTime(), equalTo(now));
+        assertThat(confirmation.getCurrentTime(), equalTo(now));
     }
 
     @Test

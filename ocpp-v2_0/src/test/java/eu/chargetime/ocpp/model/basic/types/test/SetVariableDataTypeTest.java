@@ -27,11 +27,12 @@ package eu.chargetime.ocpp.model.basic.types.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.basic.types.SetVariableDataType;
-import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class SetVariableDataTypeTest extends TestUtilities {
+import static eu.chargetime.ocpp.utilities.TestUtilities.aString;
+
+public class SetVariableDataTypeTest {
 
     @Test(expected = PropertyConstraintException.class)
     public void setAttributeValue_Null_throwsPropertyConstraintException() {

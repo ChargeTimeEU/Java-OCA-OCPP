@@ -26,101 +26,96 @@ package eu.chargetime.ocpp.model.basic.types;
  */
 
 import eu.chargetime.ocpp.model.Validatable;
-import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
+import eu.chargetime.ocpp.model.basic.SetVariablesConfirmation;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
-import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class SetVariableDataType implements Validatable {
+/**
+ * VariableAttributeType is used by {@link eu.chargetime.ocpp.model.basic.SetVariablesConfirmation}
+ */
+public class SetVariableResultType implements Validatable {
     private transient Validator<Object> requiredValidator = new RequiredValidator();
-    private transient Validator attributeValueValidator = new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string1000()).build();
 
     private AttributeEnumType attributeType;
-    private String attributeValue;
+    private SetVariableStatusEnumType attributeStatus;
     private ComponentType component;
     private VariableType variable;
 
-     /**
-     * Type of attribute: Actual, Target, MinSet, MaxSet. Default is Actual when omitted.
-     * @return {@link AttributeEnumType}
+    /**
+     * Type of attribute: Actual, Target, MinSet, MaxSet.
+     * Default is Actual when omitted.
+     * @return AttributeEnumType
      */
     public AttributeEnumType getAttributeType() {
         return attributeType;
     }
 
     /**
-     * Optional. Type of attribute: Actual, Target, MinSet, MaxSet. Default is Actual when omitted.
-     * @param attributeType {@link AttributeEnumType}
+     * Optional. Type of attribute: Actual, Target, MinSet, MaxSet.
+     * Default is Actual when omitted.
+     * @param attributeType AttributeEnumType
      */
     public void setAttributeType(AttributeEnumType attributeType) {
         this.attributeType = attributeType;
     }
 
     /**
-     * Value to be assigned to attribute of variable.
-     *
-     * @return string[0..1000]
+     * Result status of setting the variable.
+     * @return SetVariableStatusEnumType
      */
-    public String getAttributeValue() {
-        return attributeValue;
+    public SetVariableStatusEnumType getAttributeStatus() {
+        return attributeStatus;
     }
 
     /**
-     * Required. Value to be assigned to attribute of variable.
-     * The Configuration Variable ValueSize can be used to limit the VariableCharacteristicsType.
-     * ValueList and all AttributeValue fields.
-     * The max size of these values will always remain equal.
-     * The default max size is set to 1000.
-     *
-     * @param attributeValue string[0..1000]
+     * Required. Result status of setting the variable.
+     * @param attributeStatus SetVariableStatusEnumType
      */
-    public void setAttributeValue(String attributeValue) {
-        attributeValueValidator.validate(attributeValue);
-        this.attributeValue = attributeValue;
+    public void setAttributeStatus(SetVariableStatusEnumType attributeStatus) {
+        requiredValidator.validate(attributeStatus);
+        this.attributeStatus = attributeStatus;
     }
 
     /**
-     * The component for which the variable data is set.
-     * @return {@link ComponentType}
+     * The component for which result is returned.
+     * @return ComponentType
      */
     public ComponentType getComponent() {
         return component;
     }
 
     /**
-     * Required. The component for which the variable data is set.
-     * @param component {@link ComponentType}
+     * Required. The component for which result is returned.
+     * @param component ComponentType
      */
     public void setComponent(ComponentType component) {
         requiredValidator.validate(component);
-
         this.component = component;
     }
 
     /**
-     * Specifies the that needs to be set.
-     * @return {@link VariableType}
+     * The variable for which the result is returned.
+     * @return VariableType
      */
     public VariableType getVariable() {
         return variable;
     }
 
     /**
-     * Required. Specifies the that needs to be set.
-     * @param variable {@link VariableType}
+     * Required. The variable for which the result is returned.
+     * @param variable VariableType
      */
     public void setVariable(VariableType variable) {
         requiredValidator.validate(variable);
-
         this.variable = variable;
     }
 
     @Override
     public boolean validate() {
-        return attributeValueValidator.safeValidate(attributeValue) &&
+        return requiredValidator.safeValidate(attributeStatus) &&
                 requiredValidator.safeValidate(component) &&
                 requiredValidator.safeValidate(variable) &&
                 component.validate() &&
@@ -131,23 +126,23 @@ public class SetVariableDataType implements Validatable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SetVariableDataType that = (SetVariableDataType) o;
+        SetVariableResultType that = (SetVariableResultType) o;
         return Objects.equals(attributeType, that.attributeType) &&
-                Objects.equals(attributeValue, that.attributeValue) &&
+                Objects.equals(attributeStatus, that.attributeStatus) &&
                 Objects.equals(component, that.component) &&
                 Objects.equals(variable, that.variable);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(attributeType, attributeValue, component, variable);
+        return Objects.hash(attributeType, attributeStatus, component, variable);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("attributeType", attributeType)
-                .add("attributeValue", attributeValue)
+                .add("attributeStatus", attributeStatus)
                 .add("component", component)
                 .add("variable", variable)
                 .toString();

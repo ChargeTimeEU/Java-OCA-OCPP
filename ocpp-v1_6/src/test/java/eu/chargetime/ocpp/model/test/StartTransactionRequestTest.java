@@ -10,6 +10,7 @@ import org.junit.rules.ExpectedException;
 
 import java.util.Calendar;
 
+import static eu.chargetime.ocpp.utilities.TestUtilities.aString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -40,7 +41,7 @@ import static org.junit.Assert.assertThat;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class StartTransactionRequestTest extends TestUtilities {
+public class StartTransactionRequestTest {
 
     @Rule
     public ExpectedException thrownException = ExpectedException.none();
@@ -138,7 +139,7 @@ public class StartTransactionRequestTest extends TestUtilities {
         // When
         request.setTimestamp(now);
         // Then
-        assertThat(request.objTimestamp(), equalTo(now));
+        assertThat(request.getTimestamp(), equalTo(now));
     }
 
     @Test

@@ -95,7 +95,7 @@ public class ChangeAvailabilityRequestTest {
         request.setType(availabilityType);
 
         // Then
-        assertThat(request.objType(), equalTo(availabilityType));
+        assertThat(request.getType(), equalTo(availabilityType));
     }
 
     @Test

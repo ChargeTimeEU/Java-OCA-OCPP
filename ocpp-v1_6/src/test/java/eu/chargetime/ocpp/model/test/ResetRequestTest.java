@@ -52,7 +52,7 @@ public class ResetRequestTest {
         request.setType(resetType);
 
         // Then
-        assertThat(request.objType(), equalTo(resetType));
+        assertThat(request.getType(), equalTo(resetType));
     }
 
 

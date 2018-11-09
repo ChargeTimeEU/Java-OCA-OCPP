@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.features
+package eu.chargetime.ocpp.test;
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -25,6 +25,44 @@ package eu.chargetime.ocpp.test.features
     SOFTWARE.
  */
 
-class SetVariables {
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
 
+import java.util.UUID;
+
+public class FeatureTestDecorator implements Feature {
+
+    private final Feature decorated;
+    private final IRequestMonitor monitor;
+
+    public FeatureTestDecorator(Feature decorated, IRequestMonitor monitor) {
+        this.decorated = decorated;
+        this.monitor = monitor;
+    }
+
+    @Override
+    public Confirmation handleRequest(UUID sessionIndex, Request request) {
+        monitor.receivedRequest(request);
+        return decorated.handleRequest(sessionIndex, request);
+    }
+
+    @Override
+    public Class<? extends Request> getRequestType() {
+        return decorated.getRequestType();
+    }
+
+    @Override
+    public Class<? extends Confirmation> getConfirmationType() {
+        return decorated.getConfirmationType();
+    }
+
+    @Override
+    public String getAction() {
+        return decorated.getAction();
+    }
+
+    public interface IRequestMonitor {
+        void receivedRequest(Request request);
+    }
 }

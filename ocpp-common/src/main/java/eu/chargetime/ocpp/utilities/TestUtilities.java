@@ -29,7 +29,7 @@ package eu.chargetime.ocpp.utilities;
 /**
  * Utilities for tests. Used to quickly create usefull objects.
  */
-public class TestUtilities {
+public final class TestUtilities {
 
     /**
      * Create a string of a given length.
@@ -37,7 +37,7 @@ public class TestUtilities {
      * @param length the desired length.
      * @return A string of the desired length.
      */
-    protected String aString(int length) {
+    public static String aString(int length) {
         String lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus bibendum eros vitae sapien metusa.";
 
         if (lorem.length() < length) {
@@ -58,7 +58,7 @@ public class TestUtilities {
      * @param <T>       The type of the elements.
      * @return An array of the given elements.
      */
-    protected <T> T[] aList(T... objects) {
+    public static <T> T[] aList(T... objects) {
         return objects;
     }
 
@@ -69,7 +69,7 @@ public class TestUtilities {
      * @param array     The array to print.
      * @return Formatted string, with array values.
      */
-    protected String join(String delimiter, Object[] array) {
+    public static String join(String delimiter, Object[] array) {
         StringBuilder output = new StringBuilder();
 
         for (Object current: array)

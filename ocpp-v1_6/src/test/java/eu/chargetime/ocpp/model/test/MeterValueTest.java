@@ -11,6 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Calendar;
 
+import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -44,7 +45,7 @@ import static org.mockito.Mockito.when;
  * SOFTWARE.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class MeterValueTest extends TestUtilities {
+public class MeterValueTest {
 
     private MeterValue meterValue;
 
@@ -65,7 +66,7 @@ public class MeterValueTest extends TestUtilities {
         meterValue.setTimestamp(now);
 
         // Then
-        assertThat(meterValue.objTimestamp(), equalTo(now));
+        assertThat(meterValue.getTimestamp(), equalTo(now));
     }
 
     @Test

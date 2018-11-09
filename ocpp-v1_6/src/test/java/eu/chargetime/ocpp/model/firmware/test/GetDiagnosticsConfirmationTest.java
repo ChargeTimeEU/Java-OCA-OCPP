@@ -33,12 +33,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import static eu.chargetime.ocpp.utilities.TestUtilities.aString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class GetDiagnosticsConfirmationTest extends TestUtilities {
+public class GetDiagnosticsConfirmationTest {
 
     @Rule
     public ExpectedException thrownException = ExpectedException.none();

@@ -31,7 +31,6 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.TestConfirmation;
-import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,7 +45,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ClientTest extends TestUtilities {
+public class ClientTest {
     private Client client;
     private SessionEvents eventHandler;
 

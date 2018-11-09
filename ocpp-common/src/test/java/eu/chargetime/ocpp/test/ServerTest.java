@@ -43,7 +43,7 @@ import static org.mockito.Mockito.*;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class ServerTest extends TestUtilities {
+public class ServerTest {
 
     private static final String LOCALHOST = "localhost";
     private static final int PORT = 42;

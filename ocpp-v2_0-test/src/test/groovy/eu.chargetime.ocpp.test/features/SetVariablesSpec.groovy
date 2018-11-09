@@ -6,8 +6,8 @@ import spock.util.concurrent.PollingConditions
 
 class SetVariablesSpec extends BaseSpec
 {
-    def "Charge point sends Boot Notification and receives a response"() {
-        def conditions = new PollingConditions(timeout: 1)
+    def "The central system sends a Set Variables request and receives a response"() {
+        def conditions = new PollingConditions(timeout: 11)
 
         given:
         def tester = new SetVariables()
@@ -16,16 +16,16 @@ class SetVariablesSpec extends BaseSpec
         def request = tester.createRequest()
 
         when:
-        chargePoint.send(request)
+        centralSystem.send(request)
 
         then:
         conditions.eventually {
-            assert centralSystem.hasHandled(request)
+            assert chargePoint.hasHandled(request)
         }
 
         then:
         conditions.eventually {
-            assert chargePoint.recieved(tester.confirmation)
+            assert centralSystem.recieved(tester.confirmation)
         }
     }
 }

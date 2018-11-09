@@ -51,7 +51,7 @@ public class DataTransferConfirmationTest {
         confirmation.setStatus(dataTransferStatus);
 
         // Then
-        assertThat(confirmation.objStatus(), equalTo(dataTransferStatus));
+        assertThat(confirmation.getStatus(), equalTo(dataTransferStatus));
     }
 
     @Test

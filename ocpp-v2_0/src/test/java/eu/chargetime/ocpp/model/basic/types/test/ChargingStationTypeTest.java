@@ -28,14 +28,14 @@ package eu.chargetime.ocpp.model.basic.types.test;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.basic.types.ChargingStationType;
 import eu.chargetime.ocpp.model.basic.types.ModemType;
-import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Test;
 
+import static eu.chargetime.ocpp.utilities.TestUtilities.aString;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ChargingStationTypeTest extends TestUtilities {
+public class ChargingStationTypeTest {
 
     private ChargingStationType createSut() {
         return new ChargingStationType();
