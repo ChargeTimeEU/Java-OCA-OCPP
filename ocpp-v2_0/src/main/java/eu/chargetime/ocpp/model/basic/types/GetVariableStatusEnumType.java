@@ -26,26 +26,31 @@ package eu.chargetime.ocpp.model.basic.types;
  */
 
 /**
- * AttributeEnumType is used by {@link SetVariableDataType}, {@link GetVariableDataType}
+ * GetVariableStatusEnumType is used by {@link GetVariableResultType}
  */
-public enum AttributeEnumType {
+public enum GetVariableStatusEnumType {
     /**
-     * The actual value of the variable.
+     * Variable successfully set.
      */
-    Actual,
+    Accepted,
 
     /**
-     * The target value for this variable.
+     * Request is rejected.
      */
-    Target,
+    Rejected,
 
     /**
-     * The minimal allowed value for this variable.
+     * Component is not known.
      */
-    MinSet,
+    UnknownComponent,
 
     /**
-     * The maximum allowed value for this variable.
+     * Variable is not known.
      */
-    MaxSet
+    UnknownVariable,
+
+    /**
+     * The AttributeType is not supported.
+     */
+    NotSupportedAttributeType
 }

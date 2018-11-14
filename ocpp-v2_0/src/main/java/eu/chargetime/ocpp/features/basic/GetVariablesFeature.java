@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.basic.types;
+package eu.chargetime.ocpp.features.basic;
 /*
     ChargeTime.eu - Java-OCA-OCPP
     
@@ -25,27 +25,40 @@ package eu.chargetime.ocpp.model.basic.types;
     SOFTWARE.
  */
 
-/**
- * AttributeEnumType is used by {@link SetVariableDataType}, {@link GetVariableDataType}
- */
-public enum AttributeEnumType {
-    /**
-     * The actual value of the variable.
-     */
-    Actual,
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.features.basic.handlers.IClientGetVariablesRequestHandler;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.basic.GetVariablesConfirmation;
+import eu.chargetime.ocpp.model.basic.GetVariablesRequest;
 
-    /**
-     * The target value for this variable.
-     */
-    Target,
+import java.util.UUID;
 
-    /**
-     * The minimal allowed value for this variable.
-     */
-    MinSet,
+public class GetVariablesFeature implements Feature {
 
-    /**
-     * The maximum allowed value for this variable.
-     */
-    MaxSet
+    private final IClientGetVariablesRequestHandler handler;
+
+    public GetVariablesFeature(IClientGetVariablesRequestHandler handler) {
+        this.handler = handler;
+    }
+
+    @Override
+    public Confirmation handleRequest(UUID sessionIndex, Request request) {
+        return handler.handleGetVariablesRequest((GetVariablesRequest)request);
+    }
+
+    @Override
+    public Class<? extends Request> getRequestType() {
+        return GetVariablesRequest.class;
+    }
+
+    @Override
+    public Class<? extends Confirmation> getConfirmationType() {
+        return GetVariablesConfirmation.class;
+    }
+
+    @Override
+    public String getAction() {
+        return "GetVariables";
+    }
 }
