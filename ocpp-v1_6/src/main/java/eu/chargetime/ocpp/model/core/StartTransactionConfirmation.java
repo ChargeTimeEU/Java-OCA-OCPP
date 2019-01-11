@@ -49,6 +49,7 @@ public class StartTransactionConfirmation implements Confirmation {
         boolean valid = true;
         if (valid &= idTagInfo != null)
             valid &= idTagInfo.validate();
+        valid &= transactionId != null;
         return valid;
     }
 
