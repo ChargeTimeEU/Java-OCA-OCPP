@@ -77,7 +77,33 @@ public class StartTransactionConfirmationTest {
     }
 
     @Test
-    public void validate_idTagInfoAndTransactionIdIsSet_idTagInfoIsValidated() throws Exception {
+    public void validate_idTagInfoIsNotSetAndTransactionIdIsSet_returnFalse() {
+        // Given
+        confirmation.setTransactionId(42);
+
+        // When
+        boolean isValid = confirmation.validate();
+
+        // Then
+        assertThat(isValid, is(false));
+    }
+
+    @Test
+    public void validate_idTagInfoIsSetAndTransactionIdIsNotSet_returnFalse() {
+        // Given
+        IdTagInfo idTagInfo = mock(IdTagInfo.class);
+        when(idTagInfo.validate()).thenReturn(true);
+        confirmation.setIdTagInfo(idTagInfo);
+
+        // When
+        boolean isValid = confirmation.validate();
+
+        // Then
+        assertThat(isValid, is(false));
+    }
+
+    @Test
+    public void validate_idTagInfoAndTransactionIdIsSet_idTagInfoIsValidated() {
         // Given
         confirmation.setTransactionId(42);
         IdTagInfo idTagInfo = mock(IdTagInfo.class);
@@ -91,7 +117,7 @@ public class StartTransactionConfirmationTest {
     }
 
     @Test
-    public void validate_idTagInfoAndTransactionIdIsSet_returnTrue() throws Exception {
+    public void validate_idTagInfoAndTransactionIdIsSet_returnTrue() {
         // Given
         confirmation.setTransactionId(42);
         IdTagInfo idTagInfo = mock(IdTagInfo.class);

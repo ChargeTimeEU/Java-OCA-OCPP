@@ -111,6 +111,7 @@ public class DummyHandlers {
 
                 StartTransactionConfirmation confirmation = new StartTransactionConfirmation();
                 confirmation.setIdTagInfo(tagInfo);
+                confirmation.setTransactionId(42);
                 return failurePoint(confirmation);
             }
 
