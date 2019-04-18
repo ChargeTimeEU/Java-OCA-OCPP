@@ -31,17 +31,14 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class FeatureRepository implements IFeatureRepository {
 
-    private ArrayList<Feature> featureList;
-
-    public FeatureRepository() {
-        this.featureList = new ArrayList<>();
-    }
+    private final Map<String, Feature> actionMap = new HashMap<>();
+    private final Map<Class<?>, Feature> classMap = new HashMap<>();
 
     /**
      * Add {@link Profile} to support a group of features.
@@ -50,8 +47,9 @@ public class FeatureRepository implements IFeatureRepository {
      * @see Profile
      */
     public void addFeatureProfile(Profile profile) {
-        Feature[] features = profile.getFeatureList();
-        Collections.addAll(featureList, features);
+        for (Feature feature : profile.getFeatureList()) {
+            addFeature(feature);
+        }
     }
 
     /**
@@ -59,55 +57,41 @@ public class FeatureRepository implements IFeatureRepository {
      * @param feature supported {@link Feature}.
      */
     public void addFeature(Feature feature) {
-        featureList.add(feature);
+        actionMap.put(feature.getAction(), feature);
+        classMap.put(feature.getRequestType(), feature);
+        classMap.put(feature.getConfirmationType(), feature);
     }
 
     /**
      * Search for supported features added with the addProfile.
-     * If no supported feature is found, null is returned
+     * If no supported feature is found, {@link Optional#empty()} is returned
      * <p>
      * Can take multiple inputs:
      * {@link String}, search for the action name of the feature.
      * {@link Request}/{@link Confirmation}, search for a feature that matches.
-     * Anything else will return null.
+     * Anything else will return {@link Optional#empty()}.
      *
      * @param needle Object supports {@link String}, {@link Request} or {@link Confirmation}
      * @return Optional of instance of the supported Feature
      */
+    @Override
     public Optional<Feature> findFeature(Object needle) {
-        for (Feature feature : featureList) {
-            if (featureContains(feature, needle)) {
-                return Optional.of(feature);
-            }
+        if (needle instanceof String) {
+            return Optional.ofNullable(actionMap.get(needle));
+        }
+
+        if ((needle instanceof Request) || (needle instanceof Confirmation)) {
+            return Optional.ofNullable(classMap.get((needle.getClass())));
         }
 
         return Optional.empty();
     }
 
-    /**
-     * Tries to match {@link Feature} with an {@link Object}.
-     * Different outcome based on the type:
-     * {@link String}, matches the action name of the feature.
-     * {@link Request}, matches the request type of the feature.
-     * {@link Confirmation}, matches the confirmation type of the feature.
-     * Other wise returns false.
-     *
-     * @param feature to match
-     * @param object  to match with, supports {@link String}, {@link Request} or {@link Confirmation}
-     * @return true if the {@link Feature} matches the {@link Object}
-     */
-    private boolean featureContains(Feature feature, Object object) {
-        boolean contains = false;
-        contains |= object instanceof String && feature.getAction().equals(object);
-        contains |= object instanceof Request && feature.getRequestType() == object.getClass();
-        contains |= object instanceof Confirmation && feature.getConfirmationType() == object.getClass();
-        return contains;
-    }
-
     @Override
     public String toString() {
         return MoreObjects.toStringHelper("FeatureRepository")
-                          .add("featureList", featureList)
+                          .add("actionMap", actionMap)
+                          .add("classMap", classMap)
                           .toString();
     }
 }
