@@ -1,22 +1,20 @@
 package eu.chargetime.ocpp.feature.profile.test;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 import eu.chargetime.ocpp.feature.profile.ClientSmartChargingEventHandler;
 import eu.chargetime.ocpp.feature.profile.ClientSmartChargingProfile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
+import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.UUID;
-
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -47,39 +45,39 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class ClientSmartChargingProfileTest {
 
-    private static final UUID SESSION_NULL = null;
-    private ClientSmartChargingProfile smartCharging;
+  private static final UUID SESSION_NULL = null;
+  private ClientSmartChargingProfile smartCharging;
 
-    @Mock
-    private ClientSmartChargingEventHandler handler;
+  @Mock private ClientSmartChargingEventHandler handler;
 
-    @Before
-    public void setup() {
-        smartCharging = new ClientSmartChargingProfile(handler);
-    }
+  @Before
+  public void setup() {
+    smartCharging = new ClientSmartChargingProfile(handler);
+  }
 
-    @Test
-    public void handleRequest_SetChargingProfileRequest_callsHandleSetChargingProfileRequest() {
-        // Given
-        SetChargingProfileRequest request = new SetChargingProfileRequest();
+  @Test
+  public void handleRequest_SetChargingProfileRequest_callsHandleSetChargingProfileRequest() {
+    // Given
+    SetChargingProfileRequest request = new SetChargingProfileRequest();
 
-        // When
-        smartCharging.handleRequest(SESSION_NULL, request);
+    // When
+    smartCharging.handleRequest(SESSION_NULL, request);
 
-        // Then
-        verify(handler, times(1)).handleSetChargingProfileRequest(request);
-    }
+    // Then
+    verify(handler, times(1)).handleSetChargingProfileRequest(request);
+  }
 
-    @Test
-    public void handleRequest_SetChargingProfileRequest_returnsSetChargingProfileRequest() {
-        // Given
-        when(handler.handleSetChargingProfileRequest(any())).thenReturn(new SetChargingProfileConfirmation());
-        SetChargingProfileRequest request = new SetChargingProfileRequest();
+  @Test
+  public void handleRequest_SetChargingProfileRequest_returnsSetChargingProfileRequest() {
+    // Given
+    when(handler.handleSetChargingProfileRequest(any()))
+        .thenReturn(new SetChargingProfileConfirmation());
+    SetChargingProfileRequest request = new SetChargingProfileRequest();
 
-        // When
-        Confirmation conf = smartCharging.handleRequest(SESSION_NULL, request);
+    // When
+    Confirmation conf = smartCharging.handleRequest(SESSION_NULL, request);
 
-        // Then
-        assertThat(conf, instanceOf(SetChargingProfileConfirmation.class));
-    }
+    // Then
+    assertThat(conf, instanceOf(SetChargingProfileConfirmation.class));
+  }
 }

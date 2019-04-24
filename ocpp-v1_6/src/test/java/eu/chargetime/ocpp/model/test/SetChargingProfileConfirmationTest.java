@@ -1,16 +1,13 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.core.IdTagInfo;
-import eu.chargetime.ocpp.model.core.StartTransactionConfirmation;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import eu.chargetime.ocpp.model.smartcharging.ChargingProfileStatus;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -39,32 +36,31 @@ import static org.mockito.Mockito.mock;
  */
 
 public class SetChargingProfileConfirmationTest {
-    SetChargingProfileConfirmation confirmation;
+  SetChargingProfileConfirmation confirmation;
 
-    @Before
-    public void setUp() throws Exception {
-        confirmation = new SetChargingProfileConfirmation();
-    }
+  @Before
+  public void setUp() throws Exception {
+    confirmation = new SetChargingProfileConfirmation();
+  }
 
-    @Test
-    public void setIdTagInfo_aChargingProfileStatus_statusIsSet() {
-        // Given
-        ChargingProfileStatus status = ChargingProfileStatus.Accepted;
+  @Test
+  public void setIdTagInfo_aChargingProfileStatus_statusIsSet() {
+    // Given
+    ChargingProfileStatus status = ChargingProfileStatus.Accepted;
 
-        // When
-        confirmation.setStatus(status);
+    // When
+    confirmation.setStatus(status);
 
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(status));
-    }
+    // Then
+    assertThat(confirmation.getStatus(), equalTo(status));
+  }
 
-    @Test
-    public void validate_returnFalse() {
-        // When
-        boolean isValid = confirmation.validate();
+  @Test
+  public void validate_returnFalse() {
+    // When
+    boolean isValid = confirmation.validate();
 
-        // Then
-        assertThat(isValid, is(false));
-    }
-
+    // Then
+    assertThat(isValid, is(false));
+  }
 }

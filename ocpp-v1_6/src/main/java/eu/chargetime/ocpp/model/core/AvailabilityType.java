@@ -32,6 +32,6 @@ package eu.chargetime.ocpp.model.core;
  * @see ChangeAvailabilityRequest
  */
 public enum AvailabilityType {
-    Inoperative,
-    Operative
+  Inoperative,
+  Operative
 }

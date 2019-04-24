@@ -1,5 +1,9 @@
 package eu.chargetime.ocpp.feature.profile.test;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.TriggerMessageFeature;
 import eu.chargetime.ocpp.feature.profile.ServerRemoteTriggerProfile;
@@ -9,10 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -43,48 +43,49 @@ import static org.junit.Assert.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class ServerRemoteTriggerProfileTest extends ProfileTest {
 
-    private ServerRemoteTriggerProfile profile;
+  private ServerRemoteTriggerProfile profile;
 
-    @Before
-    public void setup() {
-        profile = new ServerRemoteTriggerProfile();
-    }
+  @Before
+  public void setup() {
+    profile = new ServerRemoteTriggerProfile();
+  }
 
-    @Test
-    public void getFeatureList_containsTriggerMessageFeature() {
-        // When
-        Feature[] features = profile.getFeatureList();
+  @Test
+  public void getFeatureList_containsTriggerMessageFeature() {
+    // When
+    Feature[] features = profile.getFeatureList();
 
-        // Then
-        assertThat(findFeature(features, "TriggerMessage"), is(instanceOf(TriggerMessageFeature.class)));
-    }
+    // Then
+    assertThat(
+        findFeature(features, "TriggerMessage"), is(instanceOf(TriggerMessageFeature.class)));
+  }
 
-    @Test
-    public void createTriggerMessageRequest_returnsValidTriggerMessageRequest() {
-        TriggerMessageRequestType type = TriggerMessageRequestType.DiagnosticsStatusNotification;
-        int connectorId = 1;
+  @Test
+  public void createTriggerMessageRequest_returnsValidTriggerMessageRequest() {
+    TriggerMessageRequestType type = TriggerMessageRequestType.DiagnosticsStatusNotification;
+    int connectorId = 1;
 
-        // When
-        TriggerMessageRequest result = profile.createTriggerMessageRequest(type, connectorId);
+    // When
+    TriggerMessageRequest result = profile.createTriggerMessageRequest(type, connectorId);
 
-        // Then
-        assertThat(result.validate(), is(true));
+    // Then
+    assertThat(result.validate(), is(true));
 
-        // When
-        result = profile.createTriggerMessageRequest(type, null);
+    // When
+    result = profile.createTriggerMessageRequest(type, null);
 
-        // Then
-        assertThat(result.validate(), is(true));
-    }
+    // Then
+    assertThat(result.validate(), is(true));
+  }
 
-    @Test
-    public void createTriggerMessageRequest_returnsValidTriggerMessageRequestNoConnectorId() {
-        TriggerMessageRequestType type = TriggerMessageRequestType.DiagnosticsStatusNotification;
+  @Test
+  public void createTriggerMessageRequest_returnsValidTriggerMessageRequestNoConnectorId() {
+    TriggerMessageRequestType type = TriggerMessageRequestType.DiagnosticsStatusNotification;
 
-        // When
-        TriggerMessageRequest result = profile.createTriggerMessageRequest(type);
+    // When
+    TriggerMessageRequest result = profile.createTriggerMessageRequest(type);
 
-        // Then
-        assertThat(result.validate(), is(true));
-    }
+    // Then
+    assertThat(result.validate(), is(true));
+  }
 }

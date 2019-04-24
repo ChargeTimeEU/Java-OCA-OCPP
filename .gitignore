@@ -1,5 +1,6 @@
 /.idea
 target
+build
 java-docs
 *.project
 *.settings/
@@ -8,3 +9,5 @@ java-docs
 # Should be ignored when using IDE-independent build system such as Maven or Gradle
 .idea/
 *.iml
+/.gradle
+*/build

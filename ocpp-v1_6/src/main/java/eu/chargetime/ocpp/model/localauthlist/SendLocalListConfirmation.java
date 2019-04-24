@@ -29,69 +29,66 @@ package eu.chargetime.ocpp.model.localauthlist;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-
 import java.util.Objects;
 
 public class SendLocalListConfirmation implements Confirmation {
 
-    private UpdateStatus status;
+  private UpdateStatus status;
 
-    public SendLocalListConfirmation() {
+  public SendLocalListConfirmation() {}
+
+  public SendLocalListConfirmation(UpdateStatus status) {
+    this.status = status;
+  }
+
+  /**
+   * This indicates whether the Charge Point has successfully received and applied the update of the
+   * local authorization list.
+   *
+   * @return UpdateStatus, status of localAuthList updating.
+   */
+  public UpdateStatus getStatus() {
+    return status;
+  }
+
+  /**
+   * Required. This indicates whether the Charge Point has successfully received and applied the
+   * update of the local authorization list.
+   *
+   * @param status {@link UpdateStatus}, status of localAuthList updating.
+   */
+  public void setStatus(UpdateStatus status) {
+    if (status == null) {
+      throw new PropertyConstraintException(null, "updateStatus must be present");
     }
 
-    public SendLocalListConfirmation(UpdateStatus status) {
-        this.status = status;
-    }
+    this.status = status;
+  }
 
-    /**
-     * This indicates whether the Charge Point has successfully received and applied the update of
-     * the local authorization list.
-     *
-     * @return UpdateStatus, status of localAuthList updating.
-     */
-    public UpdateStatus getStatus() {
-        return status;
-    }
+  @Override
+  public boolean validate() {
+    return status != null;
+  }
 
-    /**
-     * Required.
-     * This indicates whether the Charge Point has successfully received and applied the update of
-     * the local authorization list.
-     *
-     * @param status {@link UpdateStatus}, status of localAuthList updating.
-     */
-    public void setStatus(UpdateStatus status) {
-        if (status == null) {
-            throw new PropertyConstraintException(null, "updateStatus must be present");
-        }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    SendLocalListConfirmation that = (SendLocalListConfirmation) o;
+    return status == that.status;
+  }
 
-        this.status = status;
-    }
+  @Override
+  public int hashCode() {
 
-    @Override
-    public boolean validate() {
-        return status != null;
-    }
+    return Objects.hash(status);
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SendLocalListConfirmation that = (SendLocalListConfirmation) o;
-        return status == that.status;
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(status);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("status", status)
-                .add("isValid", validate())
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("status", status)
+        .add("isValid", validate())
+        .toString();
+  }
 }

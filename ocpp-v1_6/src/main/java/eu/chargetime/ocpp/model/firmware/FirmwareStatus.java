@@ -27,15 +27,13 @@ package eu.chargetime.ocpp.model.firmware;
  * SOFTWARE.
  */
 
-/**
- * Accepted values used with {@link FirmwareStatusNotificationRequest}.
- */
+/** Accepted values used with {@link FirmwareStatusNotificationRequest}. */
 public enum FirmwareStatus {
-    Downloaded,
-    DownloadFailed,
-    Downloading,
-    Idle,
-    InstallationFailed,
-    Installing,
-    Installed
+  Downloaded,
+  DownloadFailed,
+  Downloading,
+  Idle,
+  InstallationFailed,
+  Installing,
+  Installed
 }

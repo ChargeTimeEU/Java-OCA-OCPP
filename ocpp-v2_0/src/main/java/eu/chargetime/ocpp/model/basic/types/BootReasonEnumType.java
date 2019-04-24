@@ -27,52 +27,32 @@ package eu.chargetime.ocpp.model.basic.types;
 
 import eu.chargetime.ocpp.model.basic.BootNotificationRequest;
 
-/**
- * Accepted values used with {@link BootNotificationRequest}.
- */
+/** Accepted values used with {@link BootNotificationRequest}. */
 public enum BootReasonEnumType {
-    /**
-     * The Charging Station rebooted due to an application error.
-     */
-    ApplicationReset,
+  /** The Charging Station rebooted due to an application error. */
+  ApplicationReset,
 
-    /**
-     * The Charging Station rebooted due to a firmware update.
-     */
-    FirmwareUpdate,
+  /** The Charging Station rebooted due to a firmware update. */
+  FirmwareUpdate,
 
-    /**
-     * The Charging Station rebooted due to a local reset command.
-     */
-    LocalReset,
+  /** The Charging Station rebooted due to a local reset command. */
+  LocalReset,
 
-    /**
-     * The Charging Station powered up and registers itself with the CSMS.
-     */
-    PowerUp,
+  /** The Charging Station powered up and registers itself with the CSMS. */
+  PowerUp,
 
-    /**
-     * The Charging Station rebooted due to a remote reset command.
-     */
-    RemoteReset,
+  /** The Charging Station rebooted due to a remote reset command. */
+  RemoteReset,
 
-    /**
-     * The Charging Station rebooted due to a scheduled reset command.
-     */
-    ScheduledReset,
+  /** The Charging Station rebooted due to a scheduled reset command. */
+  ScheduledReset,
 
-    /**
-     * Requested by the CSMS via a TriggerMessage.
-     */
-    Triggered,
+  /** Requested by the CSMS via a TriggerMessage. */
+  Triggered,
 
-    /**
-     * The boot reason is unknown.
-     */
-    Unknown,
+  /** The boot reason is unknown. */
+  Unknown,
 
-    /**
-     * The Charging Station rebooted due to an elapsed watchdog timer.
-     */
-    Watchdog
+  /** The Charging Station rebooted due to an elapsed watchdog timer. */
+  Watchdog
 }

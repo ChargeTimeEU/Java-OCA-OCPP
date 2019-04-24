@@ -31,25 +31,24 @@ import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.DataTransferConfirmation;
 import eu.chargetime.ocpp.model.core.DataTransferRequest;
 
-
 public class DataTransferFeature extends ProfileFeature {
 
-    public DataTransferFeature(Profile ownerProfile) {
-        super(ownerProfile);
-    }
+  public DataTransferFeature(Profile ownerProfile) {
+    super(ownerProfile);
+  }
 
-    @Override
-    public Class<? extends Request> getRequestType() {
-        return DataTransferRequest.class;
-    }
+  @Override
+  public Class<? extends Request> getRequestType() {
+    return DataTransferRequest.class;
+  }
 
-    @Override
-    public Class<? extends Confirmation> getConfirmationType() {
-        return DataTransferConfirmation.class;
-    }
+  @Override
+  public Class<? extends Confirmation> getConfirmationType() {
+    return DataTransferConfirmation.class;
+  }
 
-    @Override
-    public String getAction() {
-        return "DataTransfer";
-    }
+  @Override
+  public String getAction() {
+    return "DataTransfer";
+  }
 }

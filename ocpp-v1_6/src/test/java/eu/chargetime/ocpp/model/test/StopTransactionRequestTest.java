@@ -1,18 +1,5 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.core.MeterValue;
-import eu.chargetime.ocpp.model.core.Reason;
-import eu.chargetime.ocpp.model.core.StopTransactionRequest;
-import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import java.util.Calendar;
-
 import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 import static eu.chargetime.ocpp.utilities.TestUtilities.aString;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -23,6 +10,17 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.core.MeterValue;
+import eu.chargetime.ocpp.model.core.Reason;
+import eu.chargetime.ocpp.model.core.StopTransactionRequest;
+import java.util.Calendar;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -51,156 +49,156 @@ import static org.mockito.Mockito.when;
  */
 public class StopTransactionRequestTest {
 
-    @Rule
-    public ExpectedException thrownException = ExpectedException.none();
+  @Rule public ExpectedException thrownException = ExpectedException.none();
 
-    private StopTransactionRequest request;
+  private StopTransactionRequest request;
 
-    @Before
-    public void setUp() {
-        request = new StopTransactionRequest();
-    }
+  @Before
+  public void setUp() {
+    request = new StopTransactionRequest();
+  }
 
-    @Test
-    public void setIdTag_anIdToken_idTagIsSet() {
-        // Given
-        String idTag = "xxx";
+  @Test
+  public void setIdTag_anIdToken_idTagIsSet() {
+    // Given
+    String idTag = "xxx";
 
-        // When
-        request.setIdTag(idTag);
+    // When
+    request.setIdTag(idTag);
 
-        // Then
-        assertThat(request.getIdTag(), equalTo(idTag));
-    }
+    // Then
+    assertThat(request.getIdTag(), equalTo(idTag));
+  }
 
-    @Test
-    public void setIdTag_moreThan20Chars_throwsPropertyConstraintException() {
-        thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo("Validation failed: [Exceeded limit of 20 chars]. Current Value: [42]"));
+  @Test
+  public void setIdTag_moreThan20Chars_throwsPropertyConstraintException() {
+    thrownException.expect(instanceOf(PropertyConstraintException.class));
+    thrownException.expectMessage(
+        equalTo("Validation failed: [Exceeded limit of 20 chars]. Current Value: [42]"));
 
-        request.setIdTag(aString(42));
-    }
+    request.setIdTag(aString(42));
+  }
 
-    @Test
-    public void setMeterStop_anInteger_meterStopIsSet() {
-        // Given
-        Integer anInteger = 42;
+  @Test
+  public void setMeterStop_anInteger_meterStopIsSet() {
+    // Given
+    Integer anInteger = 42;
 
-        // When
-        request.setMeterStop(anInteger);
+    // When
+    request.setMeterStop(anInteger);
 
-        // Then
-        assertThat(request.getMeterStop(), equalTo(anInteger));
-    }
+    // Then
+    assertThat(request.getMeterStop(), equalTo(anInteger));
+  }
 
-    @Test
-    public void setTimestamp_calendarNow_timestampIsSet() {
-        // Given
-        Calendar now = Calendar.getInstance();
+  @Test
+  public void setTimestamp_calendarNow_timestampIsSet() {
+    // Given
+    Calendar now = Calendar.getInstance();
 
-        // When
-        request.setTimestamp(now);
+    // When
+    request.setTimestamp(now);
 
-        // Then
-        assertThat(request.getTimestamp(), equalTo(now));
-    }
+    // Then
+    assertThat(request.getTimestamp(), equalTo(now));
+  }
 
-    @Test
-    public void setTransactionId_anInteger_transactionIdIsSet() {
-        // Given
-        Integer anInteger = 42;
+  @Test
+  public void setTransactionId_anInteger_transactionIdIsSet() {
+    // Given
+    Integer anInteger = 42;
 
-        // When
-        request.setTransactionId(anInteger);
+    // When
+    request.setTransactionId(anInteger);
 
-        // Then
-        assertThat(request.getTransactionId(), equalTo(anInteger));
-    }
+    // Then
+    assertThat(request.getTransactionId(), equalTo(anInteger));
+  }
 
-    @Test
-    public void setReason_reason_throwsPropertyConstraintException() {
-        // Given
-        Reason reason = Reason.DeAuthorized;
+  @Test
+  public void setReason_reason_throwsPropertyConstraintException() {
+    // Given
+    Reason reason = Reason.DeAuthorized;
 
-        // When
-        request.setReason(reason);
+    // When
+    request.setReason(reason);
 
-        // Then
-        assertThat(request.getReason(), equalTo(reason));
-    }
+    // Then
+    assertThat(request.getReason(), equalTo(reason));
+  }
 
-    @Test
-    public void setTransactionData_listOfMeterValues_transactionDataIsSet() {
-        // Given
-        MeterValue[] meterValues = aList(mock(MeterValue.class));
+  @Test
+  public void setTransactionData_listOfMeterValues_transactionDataIsSet() {
+    // Given
+    MeterValue[] meterValues = aList(mock(MeterValue.class));
 
-        // When
-        request.setTransactionData(meterValues);
+    // When
+    request.setTransactionData(meterValues);
 
-        // Then
-        assertThat(request.getTransactionData(), equalTo(meterValues));
-    }
+    // Then
+    assertThat(request.getTransactionData(), equalTo(meterValues));
+  }
 
-    @Test
-    public void validate_returnFalse() {
-        // When
-        boolean isValid = request.validate();
+  @Test
+  public void validate_returnFalse() {
+    // When
+    boolean isValid = request.validate();
 
-        // Then
-        assertThat(isValid, is(false));
-    }
+    // Then
+    assertThat(isValid, is(false));
+  }
 
-    @Test
-    public void validate_meterStopAndTimestampAndTransactionIdIsSet_returnTrue() {
-        // Given
-        request.setMeterStop(42);
-        request.setTimestamp(Calendar.getInstance());
-        request.setTransactionId(42);
+  @Test
+  public void validate_meterStopAndTimestampAndTransactionIdIsSet_returnTrue() {
+    // Given
+    request.setMeterStop(42);
+    request.setTimestamp(Calendar.getInstance());
+    request.setTransactionId(42);
 
-        // When
-        boolean isValid = request.validate();
+    // When
+    boolean isValid = request.validate();
 
-        // Then
-        assertThat(isValid, is(true));
-    }
+    // Then
+    assertThat(isValid, is(true));
+  }
 
-    @Test
-    public void validate_transactionDataIsSet_transactionDataIsValidated() {
-        // Given
-        MeterValue meterValue = mock(MeterValue.class);
-        request.setTransactionData(aList(meterValue));
+  @Test
+  public void validate_transactionDataIsSet_transactionDataIsValidated() {
+    // Given
+    MeterValue meterValue = mock(MeterValue.class);
+    request.setTransactionData(aList(meterValue));
 
-        // When
-        request.validate();
+    // When
+    request.validate();
 
-        // Then
-        verify(meterValue, times(1)).validate();
-    }
+    // Then
+    verify(meterValue, times(1)).validate();
+  }
 
-    @Test
-    public void validate_aMeterValueIsNotValid_returnFalse() {
-        // Given
-        request.setMeterStop(42);
-        request.setTimestamp(Calendar.getInstance());
-        request.setTransactionId(42);
+  @Test
+  public void validate_aMeterValueIsNotValid_returnFalse() {
+    // Given
+    request.setMeterStop(42);
+    request.setTimestamp(Calendar.getInstance());
+    request.setTransactionId(42);
 
-        MeterValue meterValue = mock(MeterValue.class);
-        request.setTransactionData(aList(meterValue));
+    MeterValue meterValue = mock(MeterValue.class);
+    request.setTransactionData(aList(meterValue));
 
-        // When
-        when(meterValue.validate()).thenReturn(false);
-        boolean isValid = request.validate();
+    // When
+    when(meterValue.validate()).thenReturn(false);
+    boolean isValid = request.validate();
 
-        // Then
-        assertThat(isValid, is(false));
-    }
+    // Then
+    assertThat(isValid, is(false));
+  }
 
-    @Test
-    public void isTransactionRelated_returnsFalse() {
-        // When
-        boolean isTransactionRelated = request.transactionRelated();
+  @Test
+  public void isTransactionRelated_returnsFalse() {
+    // When
+    boolean isTransactionRelated = request.transactionRelated();
 
-        // Then
-        Assert.assertThat(isTransactionRelated, is(true));
-    }
+    // Then
+    Assert.assertThat(isTransactionRelated, is(true));
+  }
 }

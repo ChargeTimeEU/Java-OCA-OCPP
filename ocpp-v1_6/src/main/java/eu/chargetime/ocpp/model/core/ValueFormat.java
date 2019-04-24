@@ -26,10 +26,8 @@ package eu.chargetime.ocpp.model.core;
  * SOFTWARE.
  */
 
-/**
- * Accepted values used with {@link SampledValue}.
- */
+/** Accepted values used with {@link SampledValue}. */
 public enum ValueFormat {
-    Raw,
-    SignedData
+  Raw,
+  SignedData
 }

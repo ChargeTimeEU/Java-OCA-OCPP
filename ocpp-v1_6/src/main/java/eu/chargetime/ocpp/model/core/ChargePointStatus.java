@@ -26,17 +26,15 @@ package eu.chargetime.ocpp.model.core;
  * SOFTWARE.
  */
 
-/**
- * Accepted values used with {@link StatusNotificationRequest}
- */
+/** Accepted values used with {@link StatusNotificationRequest} */
 public enum ChargePointStatus {
-    Available,
-    Preparing,
-    Charging,
-    SuspendedEVSE,
-    SuspendedEV,
-    Finishing,
-    Reserved,
-    Unavailable,
-    Faulted
+  Available,
+  Preparing,
+  Charging,
+  SuspendedEVSE,
+  SuspendedEV,
+  Finishing,
+  Reserved,
+  Unavailable,
+  Faulted
 }

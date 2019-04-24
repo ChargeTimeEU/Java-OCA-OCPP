@@ -1,14 +1,14 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.core.IdTagInfo;
-import eu.chargetime.ocpp.model.core.StopTransactionConfirmation;
-import org.junit.Before;
-import org.junit.Test;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
+
+import eu.chargetime.ocpp.model.core.IdTagInfo;
+import eu.chargetime.ocpp.model.core.StopTransactionConfirmation;
+import org.junit.Before;
+import org.junit.Test;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -36,58 +36,58 @@ import static org.mockito.Mockito.*;
  * SOFTWARE.
  */
 public class StopTransactionConfirmationTest {
-    StopTransactionConfirmation confirmation;
+  StopTransactionConfirmation confirmation;
 
-    @Before
-    public void setUp() throws Exception {
-        confirmation = new StopTransactionConfirmation();
-    }
+  @Before
+  public void setUp() throws Exception {
+    confirmation = new StopTransactionConfirmation();
+  }
 
-    @Test
-    public void setIdTagInfo_anIdTagInfo_idTagInfoIsSet() {
-        // Given
-        IdTagInfo idTagInfo = mock(IdTagInfo.class);
+  @Test
+  public void setIdTagInfo_anIdTagInfo_idTagInfoIsSet() {
+    // Given
+    IdTagInfo idTagInfo = mock(IdTagInfo.class);
 
-        // When
-        confirmation.setIdTagInfo(idTagInfo);
+    // When
+    confirmation.setIdTagInfo(idTagInfo);
 
-        // Then
-        assertThat(confirmation.getIdTagInfo(), equalTo(idTagInfo));
-    }
+    // Then
+    assertThat(confirmation.getIdTagInfo(), equalTo(idTagInfo));
+  }
 
-    @Test
-    public void validate_returnTrue() {
-        // When
-        boolean isValid = confirmation.validate();
+  @Test
+  public void validate_returnTrue() {
+    // When
+    boolean isValid = confirmation.validate();
 
-        // Then
-        assertThat(isValid, is(true));
-    }
+    // Then
+    assertThat(isValid, is(true));
+  }
 
-    @Test
-    public void validate_idTagInfoIsSet_idTagInfoIsValidated() {
-        // Given
-        IdTagInfo idTagInfo = mock(IdTagInfo.class);
-        confirmation.setIdTagInfo(idTagInfo);
+  @Test
+  public void validate_idTagInfoIsSet_idTagInfoIsValidated() {
+    // Given
+    IdTagInfo idTagInfo = mock(IdTagInfo.class);
+    confirmation.setIdTagInfo(idTagInfo);
 
-        // When
-        confirmation.validate();
+    // When
+    confirmation.validate();
 
-        // Then
-        verify(idTagInfo, times(1)).validate();
-    }
+    // Then
+    verify(idTagInfo, times(1)).validate();
+  }
 
-    @Test
-    public void validate_idTagInfoNotValid_returnFalse() {
-        // Given
-        IdTagInfo idTagInfo = mock(IdTagInfo.class);
-        confirmation.setIdTagInfo(idTagInfo);
+  @Test
+  public void validate_idTagInfoNotValid_returnFalse() {
+    // Given
+    IdTagInfo idTagInfo = mock(IdTagInfo.class);
+    confirmation.setIdTagInfo(idTagInfo);
 
-        // When
-        when(idTagInfo.validate()).thenReturn(false);
-        boolean isValid = confirmation.validate();
+    // When
+    when(idTagInfo.validate()).thenReturn(false);
+    boolean isValid = confirmation.validate();
 
-        // Then
-        assertThat(isValid, is(false));
-    }
+    // Then
+    assertThat(isValid, is(false));
+  }
 }

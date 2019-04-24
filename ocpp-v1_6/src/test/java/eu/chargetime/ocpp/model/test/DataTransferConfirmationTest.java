@@ -1,13 +1,13 @@
 package eu.chargetime.ocpp.model.test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import eu.chargetime.ocpp.model.core.DataTransferConfirmation;
 import eu.chargetime.ocpp.model.core.DataTransferStatus;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -35,56 +35,55 @@ import static org.junit.Assert.assertThat;
  * SOFTWARE.
  */
 public class DataTransferConfirmationTest {
-    DataTransferConfirmation confirmation;
+  DataTransferConfirmation confirmation;
 
-    @Before
-    public void setUp() throws Exception {
-        confirmation = new DataTransferConfirmation();
-    }
+  @Before
+  public void setUp() throws Exception {
+    confirmation = new DataTransferConfirmation();
+  }
 
-    @Test
-    public void setStatus_dataTransferStatus_statusIsSet() throws Exception {
-        // Given
-        DataTransferStatus dataTransferStatus = DataTransferStatus.Accepted;
+  @Test
+  public void setStatus_dataTransferStatus_statusIsSet() throws Exception {
+    // Given
+    DataTransferStatus dataTransferStatus = DataTransferStatus.Accepted;
 
-        // When
-        confirmation.setStatus(dataTransferStatus);
+    // When
+    confirmation.setStatus(dataTransferStatus);
 
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(dataTransferStatus));
-    }
+    // Then
+    assertThat(confirmation.getStatus(), equalTo(dataTransferStatus));
+  }
 
-    @Test
-    public void setData_aString_dataIsSet() {
-        // Given
-        String aString = "some string";
+  @Test
+  public void setData_aString_dataIsSet() {
+    // Given
+    String aString = "some string";
 
-        // When
-        confirmation.setData(aString);
+    // When
+    confirmation.setData(aString);
 
-        // Then
-        assertThat(confirmation.getData(), equalTo(aString));
-    }
+    // Then
+    assertThat(confirmation.getData(), equalTo(aString));
+  }
 
-    @Test
-    public void validate_statusIsSet_returnTrue() throws Exception {
-        // Given
-        confirmation.setStatus(DataTransferStatus.Accepted);
+  @Test
+  public void validate_statusIsSet_returnTrue() throws Exception {
+    // Given
+    confirmation.setStatus(DataTransferStatus.Accepted);
 
-        // When
-        boolean isValid = confirmation.validate();
+    // When
+    boolean isValid = confirmation.validate();
 
-        // Then
-        assertThat(isValid, is(true));
-    }
+    // Then
+    assertThat(isValid, is(true));
+  }
 
-    @Test
-    public void validate_returnFalse() {
-        // When
-        boolean isValid = confirmation.validate();
+  @Test
+  public void validate_returnFalse() {
+    // When
+    boolean isValid = confirmation.validate();
 
-        // Then
-        assertThat(isValid, is(false));
-    }
-
+    // Then
+    assertThat(isValid, is(false));
+  }
 }

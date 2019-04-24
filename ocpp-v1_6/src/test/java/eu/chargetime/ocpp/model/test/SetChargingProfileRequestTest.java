@@ -1,15 +1,15 @@
 package eu.chargetime.ocpp.model.test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertThat;
+
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertThat;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -39,48 +39,48 @@ import static org.junit.Assert.assertThat;
 
 public class SetChargingProfileRequestTest {
 
-    private static final String EXPECTED_ERROR_MESSAGE = "Validation failed: [connectorId must be >= 0]. Current Value: [%s]";
+  private static final String EXPECTED_ERROR_MESSAGE =
+      "Validation failed: [connectorId must be >= 0]. Current Value: [%s]";
 
-    @Rule
-    public ExpectedException thrownException = ExpectedException.none();
+  @Rule public ExpectedException thrownException = ExpectedException.none();
 
-    private SetChargingProfileRequest request;
+  private SetChargingProfileRequest request;
 
-    @Before
-    public void setUp() {
-        request = new SetChargingProfileRequest();
-    }
+  @Before
+  public void setUp() {
+    request = new SetChargingProfileRequest();
+  }
 
-    @Test
-    public void setConnectorId_negativeInteger_throwsPropertyConstraintException() {
-        testInvalidConnectorIdValue(-42);
-    }
+  @Test
+  public void setConnectorId_negativeInteger_throwsPropertyConstraintException() {
+    testInvalidConnectorIdValue(-42);
+  }
 
-    @Test
-    public void setConnectorId_asNull_throwsPropertyConstraintException() {
-        testInvalidConnectorIdValue(null);
-    }
+  @Test
+  public void setConnectorId_asNull_throwsPropertyConstraintException() {
+    testInvalidConnectorIdValue(null);
+  }
 
-    private void testInvalidConnectorIdValue(Integer invalidConnectorId) {
-        thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo(createExpectedErrorMessage(invalidConnectorId)));
+  private void testInvalidConnectorIdValue(Integer invalidConnectorId) {
+    thrownException.expect(instanceOf(PropertyConstraintException.class));
+    thrownException.expectMessage(equalTo(createExpectedErrorMessage(invalidConnectorId)));
 
-        request.setConnectorId(invalidConnectorId);
-    }
+    request.setConnectorId(invalidConnectorId);
+  }
 
-    private static String createExpectedErrorMessage(Integer invalidConnectorId) {
-        return String.format(EXPECTED_ERROR_MESSAGE, invalidConnectorId);
-    }
+  private static String createExpectedErrorMessage(Integer invalidConnectorId) {
+    return String.format(EXPECTED_ERROR_MESSAGE, invalidConnectorId);
+  }
 
-    @Test
-    public void setConnectorId_positiveInteger_connectorIdIsSet() {
-        // Given
-        Integer positive = 42;
+  @Test
+  public void setConnectorId_positiveInteger_connectorIdIsSet() {
+    // Given
+    Integer positive = 42;
 
-        // When
-        request.setConnectorId(positive);
+    // When
+    request.setConnectorId(positive);
 
-        // Then
-        assertThat(request.getConnectorId(), equalTo(positive));
-    }
+    // Then
+    assertThat(request.getConnectorId(), equalTo(positive));
+  }
 }

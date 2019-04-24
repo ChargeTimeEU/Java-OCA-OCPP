@@ -1,13 +1,13 @@
 package eu.chargetime.ocpp.model.test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import eu.chargetime.ocpp.model.core.AvailabilityStatus;
 import eu.chargetime.ocpp.model.core.ChangeAvailabilityConfirmation;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -35,44 +35,44 @@ import static org.junit.Assert.assertThat;
  * SOFTWARE.
  */
 public class ChangeAvailabilityConfirmationTest {
-    private ChangeAvailabilityConfirmation confirmation;
+  private ChangeAvailabilityConfirmation confirmation;
 
-    @Before
-    public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
 
-        confirmation = new ChangeAvailabilityConfirmation();
-    }
+    confirmation = new ChangeAvailabilityConfirmation();
+  }
 
-    @Test
-    public void setStatus_availabilityStatus_statusIsSet() throws Exception {
-        // Given
-        AvailabilityStatus availabilityStatus = AvailabilityStatus.Accepted;
+  @Test
+  public void setStatus_availabilityStatus_statusIsSet() throws Exception {
+    // Given
+    AvailabilityStatus availabilityStatus = AvailabilityStatus.Accepted;
 
-        // When
-        confirmation.setStatus(availabilityStatus);
+    // When
+    confirmation.setStatus(availabilityStatus);
 
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(availabilityStatus));
-    }
+    // Then
+    assertThat(confirmation.getStatus(), equalTo(availabilityStatus));
+  }
 
-    @Test
-    public void validate_statusIsSet_returnTrue() throws Exception {
-        // Given
-        confirmation.setStatus(AvailabilityStatus.Accepted);
+  @Test
+  public void validate_statusIsSet_returnTrue() throws Exception {
+    // Given
+    confirmation.setStatus(AvailabilityStatus.Accepted);
 
-        // When
-        boolean isValid = confirmation.validate();
+    // When
+    boolean isValid = confirmation.validate();
 
-        // Then
-        assertThat(isValid, is(true));
-    }
+    // Then
+    assertThat(isValid, is(true));
+  }
 
-    @Test
-    public void validate_statusIsNull_returnFalse() throws Exception {
-        // When
-        boolean isValid = confirmation.validate();
+  @Test
+  public void validate_statusIsNull_returnFalse() throws Exception {
+    // When
+    boolean isValid = confirmation.validate();
 
-        // Then
-        assertThat(isValid, is(false));
-    }
+    // Then
+    assertThat(isValid, is(false));
+  }
 }

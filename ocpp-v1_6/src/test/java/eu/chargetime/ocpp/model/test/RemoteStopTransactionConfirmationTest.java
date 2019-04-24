@@ -1,13 +1,13 @@
 package eu.chargetime.ocpp.model.test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import eu.chargetime.ocpp.model.core.RemoteStartStopStatus;
 import eu.chargetime.ocpp.model.core.RemoteStopTransactionConfirmation;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -35,44 +35,43 @@ import static org.junit.Assert.assertThat;
  * SOFTWARE.
  */
 public class RemoteStopTransactionConfirmationTest {
-    RemoteStopTransactionConfirmation confirmation;
+  RemoteStopTransactionConfirmation confirmation;
 
-    @Before
-    public void setUp() throws Exception {
-        confirmation = new RemoteStopTransactionConfirmation();
-    }
+  @Before
+  public void setUp() throws Exception {
+    confirmation = new RemoteStopTransactionConfirmation();
+  }
 
+  @Test
+  public void setStatus_remoteStartStopStatus_statusIsSet() throws Exception {
+    // Given
+    RemoteStartStopStatus remoteStartStopStatus = RemoteStartStopStatus.Accepted;
 
-    @Test
-    public void setStatus_remoteStartStopStatus_statusIsSet() throws Exception {
-        // Given
-        RemoteStartStopStatus remoteStartStopStatus = RemoteStartStopStatus.Accepted;
+    // When
+    confirmation.setStatus(remoteStartStopStatus);
 
-        // When
-        confirmation.setStatus(remoteStartStopStatus);
+    // Then
+    assertThat(confirmation.getStatus(), equalTo(remoteStartStopStatus));
+  }
 
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(remoteStartStopStatus));
-    }
+  @Test
+  public void validate_returnFalse() {
+    // When
+    boolean isValid = confirmation.validate();
 
-    @Test
-    public void validate_returnFalse() {
-        // When
-        boolean isValid = confirmation.validate();
+    // Then
+    assertThat(isValid, is(false));
+  }
 
-        // Then
-        assertThat(isValid, is(false));
-    }
+  @Test
+  public void validate_statusIsSet_returnTrue() throws Exception {
+    // Given
+    confirmation.setStatus(RemoteStartStopStatus.Accepted);
 
-    @Test
-    public void validate_statusIsSet_returnTrue() throws Exception {
-        // Given
-        confirmation.setStatus(RemoteStartStopStatus.Accepted);
+    // When
+    boolean isValid = confirmation.validate();
 
-        // When
-        boolean isValid = confirmation.validate();
-
-        // Then
-        assertThat(isValid, is(true));
-    }
+    // Then
+    assertThat(isValid, is(true));
+  }
 }

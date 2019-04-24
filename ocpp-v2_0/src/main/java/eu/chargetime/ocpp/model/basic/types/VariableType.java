@@ -1,113 +1,109 @@
 package eu.chargetime.ocpp.model.basic.types;
 /*
-    ChargeTime.eu - Java-OCA-OCPP
-    
-    MIT License
+   ChargeTime.eu - Java-OCA-OCPP
 
-    Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
+   MIT License
 
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
+   Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
 
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
+   Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal
+   in the Software without restriction, including without limitation the rights
+   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   copies of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
 
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
- */
+   The above copyright notice and this permission notice shall be included in all
+   copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+*/
 
 import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-
 import java.util.Objects;
 
-/**
- * Reference key to a component-variable.
- */
+/** Reference key to a component-variable. */
 public class VariableType implements Validatable {
-    private transient Validator nameValidator = new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string50()).build();
-    private transient Validator instanceValidator = new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string50()).build();
+  private transient Validator nameValidator =
+      new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string50()).build();
+  private transient Validator instanceValidator =
+      new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string50()).build();
 
-    private String name;
-    private String instance;
+  private String name;
+  private String instance;
 
-    /**
-     * Name of the variable.
-     * Name should be taken from the list of standardized variable names whenever possible.
-     * Case Insensitive. strongly advised to use Camel Case.
-     * @return string[0..50]
-     */
-    public String getName() {
-        return name;
-    }
+  /**
+   * Name of the variable. Name should be taken from the list of standardized variable names
+   * whenever possible. Case Insensitive. strongly advised to use Camel Case.
+   *
+   * @return string[0..50]
+   */
+  public String getName() {
+    return name;
+  }
 
-    /**
-     * Required. Name of the variable.
-     * Name should be taken from the list of standardized variable names whenever possible.
-     * Case Insensitive. strongly advised to use Camel Case.
-     * @param name string[0..50]
-     */
-    public void setName(String name) {
-        nameValidator.validate(name);
-        this.name = name;
-    }
+  /**
+   * Required. Name of the variable. Name should be taken from the list of standardized variable
+   * names whenever possible. Case Insensitive. strongly advised to use Camel Case.
+   *
+   * @param name string[0..50]
+   */
+  public void setName(String name) {
+    nameValidator.validate(name);
+    this.name = name;
+  }
 
-    /**
-     * Name of instance in case the variable exists as multiple instances.
-     * Case Insensitive. strongly advised to use Camel Case.
-     * @return string[0..50]
-     */
-    public String getInstance() {
-        return instance;
-    }
+  /**
+   * Name of instance in case the variable exists as multiple instances. Case Insensitive. strongly
+   * advised to use Camel Case.
+   *
+   * @return string[0..50]
+   */
+  public String getInstance() {
+    return instance;
+  }
 
-    /**
-     * Optional. Name of instance in case the variable exists as multiple instances.
-     * Case Insensitive. strongly advised to use Camel Case.
-     * @param instance string[0..50]
-     */
-    public void setInstance(String instance) {
-        instanceValidator.validate(instance);
-        this.instance = instance;
-    }
+  /**
+   * Optional. Name of instance in case the variable exists as multiple instances. Case Insensitive.
+   * strongly advised to use Camel Case.
+   *
+   * @param instance string[0..50]
+   */
+  public void setInstance(String instance) {
+    instanceValidator.validate(instance);
+    this.instance = instance;
+  }
 
-    @Override
-    public boolean validate() {
-        return nameValidator.safeValidate(name) &&
-                instanceValidator.safeValidate(instance);
-    }
+  @Override
+  public boolean validate() {
+    return nameValidator.safeValidate(name) && instanceValidator.safeValidate(instance);
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        VariableType that = (VariableType) o;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(instance, that.instance);
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    VariableType that = (VariableType) o;
+    return Objects.equals(name, that.name) && Objects.equals(instance, that.instance);
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, instance);
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, instance);
+  }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("name", name)
-                .add("instance", instance)
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this).add("name", name).add("instance", instance).toString();
+  }
 }

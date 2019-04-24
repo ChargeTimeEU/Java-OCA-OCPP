@@ -26,13 +26,11 @@ package eu.chargetime.ocpp.model.core;
  * SOFTWARE.
  */
 
-/**
- * Accepted values used with {@link SampledValue}.
- */
+/** Accepted values used with {@link SampledValue}. */
 public enum Location {
-    Body,
-    Cable,
-    EV,
-    Inlet,
-    Outlet
+  Body,
+  Cable,
+  EV,
+  Inlet,
+  Outlet
 }

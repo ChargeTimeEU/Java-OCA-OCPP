@@ -26,10 +26,8 @@ package eu.chargetime.ocpp.model.core;
  * SOFTWARE.
  */
 
-/**
- * Accepted values used with {@link ChargingProfile}.
- */
+/** Accepted values used with {@link ChargingProfile}. */
 public enum RecurrencyKindType {
-    Daily,
-    Weekly
+  Daily,
+  Weekly
 }

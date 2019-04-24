@@ -1,19 +1,17 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.core.ChargingRateUnitType;
-import eu.chargetime.ocpp.model.core.ChargingSchedule;
-import eu.chargetime.ocpp.model.core.ChargingSchedulePeriod;
-import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.Calendar;
-
 import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
+
+import eu.chargetime.ocpp.model.core.ChargingRateUnitType;
+import eu.chargetime.ocpp.model.core.ChargingSchedule;
+import eu.chargetime.ocpp.model.core.ChargingSchedulePeriod;
+import java.util.Calendar;
+import org.junit.Before;
+import org.junit.Test;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -41,109 +39,111 @@ import static org.mockito.Mockito.*;
  * SOFTWARE.
  */
 public class ChargingScheduleTest {
-    ChargingSchedule chargingSchedule;
+  ChargingSchedule chargingSchedule;
 
-    @Before
-    public void setUp() throws Exception {
-        chargingSchedule = new ChargingSchedule();
-    }
+  @Before
+  public void setUp() throws Exception {
+    chargingSchedule = new ChargingSchedule();
+  }
 
-    @Test
-    public void setDuration_anInteger_durationIsSet() {
-        // Given
-        Integer anInteger = 42;
+  @Test
+  public void setDuration_anInteger_durationIsSet() {
+    // Given
+    Integer anInteger = 42;
 
-        // When
-        chargingSchedule.setDuration(anInteger);
+    // When
+    chargingSchedule.setDuration(anInteger);
 
-        // Then
-        assertThat(chargingSchedule.getDuration(), equalTo(anInteger));
-    }
+    // Then
+    assertThat(chargingSchedule.getDuration(), equalTo(anInteger));
+  }
 
-    @Test
-    public void setStartSchedule_calendarNow_startScheduleIsSet() {
-        // Given
-        Calendar now = Calendar.getInstance();
+  @Test
+  public void setStartSchedule_calendarNow_startScheduleIsSet() {
+    // Given
+    Calendar now = Calendar.getInstance();
 
-        // When
-        chargingSchedule.setStartSchedule(now);
+    // When
+    chargingSchedule.setStartSchedule(now);
 
-        // Then
-        assertThat(chargingSchedule.getStartSchedule(), equalTo(now));
-    }
+    // Then
+    assertThat(chargingSchedule.getStartSchedule(), equalTo(now));
+  }
 
+  @Test
+  public void setChargingRateUnit_chargingRateUnitType_chargingRateUnitIsSet() throws Exception {
+    // Given
+    ChargingRateUnitType chargingRateUnitType = ChargingRateUnitType.A;
 
-    @Test
-    public void setChargingRateUnit_chargingRateUnitType_chargingRateUnitIsSet() throws Exception {
-        // Given
-        ChargingRateUnitType chargingRateUnitType = ChargingRateUnitType.A;
+    // When
+    chargingSchedule.setChargingRateUnit(chargingRateUnitType);
 
-        // When
-        chargingSchedule.setChargingRateUnit(chargingRateUnitType);
+    // Then
+    assertThat(chargingSchedule.getChargingRateUnit(), equalTo(chargingRateUnitType));
+  }
 
-        // Then
-        assertThat(chargingSchedule.getChargingRateUnit(), equalTo(chargingRateUnitType));
-    }
+  @Test
+  public void
+      setChargingSchedulePeriod_listOfChargingSchedulePeriods_chargingSchedulePeriodIsSet() {
+    // Given
+    ChargingSchedulePeriod[] chargingSchedulePeriod = aList(mock(ChargingSchedulePeriod.class));
 
-    @Test
-    public void setChargingSchedulePeriod_listOfChargingSchedulePeriods_chargingSchedulePeriodIsSet() {
-        // Given
-        ChargingSchedulePeriod[] chargingSchedulePeriod = aList(mock(ChargingSchedulePeriod.class));
+    // When
+    chargingSchedule.setChargingSchedulePeriod(chargingSchedulePeriod);
 
-        // When
-        chargingSchedule.setChargingSchedulePeriod(chargingSchedulePeriod);
+    // Then
+    assertThat(chargingSchedule.getChargingSchedulePeriod(), equalTo(chargingSchedulePeriod));
+  }
 
-        // Then
-        assertThat(chargingSchedule.getChargingSchedulePeriod(), equalTo(chargingSchedulePeriod));
-    }
+  @Test
+  public void setMinChargingRate_aDouble_minChargingRate() {
+    // Given
+    Double aDouble = 4.2;
 
-    @Test
-    public void setMinChargingRate_aDouble_minChargingRate() {
-        // Given
-        Double aDouble = 4.2;
+    // When
+    chargingSchedule.setMinChargingRate(aDouble);
 
-        // When
-        chargingSchedule.setMinChargingRate(aDouble);
+    // Then
+    assertThat(chargingSchedule.getMinChargingRate(), equalTo(aDouble));
+  }
 
-        // Then
-        assertThat(chargingSchedule.getMinChargingRate(), equalTo(aDouble));
-    }
+  @Test
+  public void validate_chargingSchedulePeriodIsSet_chargingSchedulePeriodIsValidated()
+      throws Exception {
+    // Given
+    chargingSchedule.setChargingRateUnit(ChargingRateUnitType.W);
+    ChargingSchedulePeriod chargingSchedulePeriod = mock(ChargingSchedulePeriod.class);
+    chargingSchedule.setChargingSchedulePeriod(aList(chargingSchedulePeriod));
 
-    @Test
-    public void validate_chargingSchedulePeriodIsSet_chargingSchedulePeriodIsValidated() throws Exception {
-        // Given
-        chargingSchedule.setChargingRateUnit(ChargingRateUnitType.W);
-        ChargingSchedulePeriod chargingSchedulePeriod = mock(ChargingSchedulePeriod.class);
-        chargingSchedule.setChargingSchedulePeriod(aList(chargingSchedulePeriod));
+    // When
+    chargingSchedule.validate();
 
-        // When
-        chargingSchedule.validate();
+    // Then
+    verify(chargingSchedulePeriod, times(1)).validate();
+  }
 
-        // Then
-        verify(chargingSchedulePeriod, times(1)).validate();
-    }
+  @Test
+  public void validate_chargingRateUnitAndChargingSchedulePeriodIsSet_returnTrue()
+      throws Exception {
+    // Given
+    ChargingSchedulePeriod chargingSchedulePeriod = mock(ChargingSchedulePeriod.class);
+    chargingSchedule.setChargingRateUnit(ChargingRateUnitType.W);
+    chargingSchedule.setChargingSchedulePeriod(aList(chargingSchedulePeriod));
+    when(chargingSchedulePeriod.validate()).thenReturn(true);
 
-    @Test
-    public void validate_chargingRateUnitAndChargingSchedulePeriodIsSet_returnTrue() throws Exception {
-        // Given
-        ChargingSchedulePeriod chargingSchedulePeriod = mock(ChargingSchedulePeriod.class);
-        chargingSchedule.setChargingRateUnit(ChargingRateUnitType.W);
-        chargingSchedule.setChargingSchedulePeriod(aList(chargingSchedulePeriod));
-        when(chargingSchedulePeriod.validate()).thenReturn(true);
+    // When
+    boolean isValid = chargingSchedule.validate();
 
-        // When
-        boolean isValid = chargingSchedule.validate();
+    // Then
+    assertThat(isValid, is(true));
+  }
 
-        // Then
-        assertThat(isValid, is(true));
-    }
+  @Test
+  public void validate_returnFalse() {
+    // When
+    boolean isValid = chargingSchedule.validate();
 
-    @Test
-    public void validate_returnFalse() {
-        // When
-        boolean isValid = chargingSchedule.validate();
-
-        // Then
-        assertThat(isValid, is(false));
-    }
+    // Then
+    assertThat(isValid, is(false));
+  }
 }

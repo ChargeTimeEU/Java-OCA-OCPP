@@ -26,10 +26,8 @@ package eu.chargetime.ocpp.model.core;
  * SOFTWARE.
  */
 
-/**
- * Accepted values used with {@link ResetRequest}.
- */
+/** Accepted values used with {@link ResetRequest}. */
 public enum ResetType {
-    Hard,
-    Soft
+  Hard,
+  Soft
 }

@@ -1,13 +1,13 @@
 package eu.chargetime.ocpp.model.test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import eu.chargetime.ocpp.model.core.ResetConfirmation;
 import eu.chargetime.ocpp.model.core.ResetStatus;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -35,43 +35,43 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * SOFTWARE.
  */
 public class ResetConfirmationTest {
-    ResetConfirmation confirmation;
+  ResetConfirmation confirmation;
 
-    @Before
-    public void setUp() throws Exception {
-        confirmation = new ResetConfirmation();
-    }
+  @Before
+  public void setUp() throws Exception {
+    confirmation = new ResetConfirmation();
+  }
 
-    @Test
-    public void setStatus_resetStatus_statusIsSet() throws Exception {
-        // Given
-        ResetStatus resetStatus = ResetStatus.Accepted;
+  @Test
+  public void setStatus_resetStatus_statusIsSet() throws Exception {
+    // Given
+    ResetStatus resetStatus = ResetStatus.Accepted;
 
-        // When
-        confirmation.setStatus(resetStatus);
+    // When
+    confirmation.setStatus(resetStatus);
 
-        // Then
-        assertThat(confirmation.getStatus(), equalTo(resetStatus));
-    }
+    // Then
+    assertThat(confirmation.getStatus(), equalTo(resetStatus));
+  }
 
-    @Test
-    public void validate_returnFalse() {
-        // When
-        boolean isValid = confirmation.validate();
+  @Test
+  public void validate_returnFalse() {
+    // When
+    boolean isValid = confirmation.validate();
 
-        // Then
-        assertThat(isValid, is(false));
-    }
+    // Then
+    assertThat(isValid, is(false));
+  }
 
-    @Test
-    public void validate_statusIsSet_returnTrue() throws Exception {
-        // Given
-        confirmation.setStatus(ResetStatus.Accepted);
+  @Test
+  public void validate_statusIsSet_returnTrue() throws Exception {
+    // Given
+    confirmation.setStatus(ResetStatus.Accepted);
 
-        // When
-        boolean isValid = confirmation.validate();
+    // When
+    boolean isValid = confirmation.validate();
 
-        // Then
-        assertThat(isValid, is(true));
-    }
+    // Then
+    assertThat(isValid, is(true));
+  }
 }

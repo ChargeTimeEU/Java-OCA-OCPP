@@ -29,67 +29,67 @@ package eu.chargetime.ocpp.model.reservation;
 
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-
+import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Objects;
 
 /**
- * Sent by the Charge Point to the Central System in response to an {@link CancelReservationRequest}.
+ * Sent by the Charge Point to the Central System in response to an {@link
+ * CancelReservationRequest}.
  */
 @XmlRootElement(name = "cancelReservationResponse")
 public class CancelReservationConfirmation implements Confirmation {
-    private CancelReservationStatus status;
+  private CancelReservationStatus status;
 
-    public CancelReservationConfirmation() { }
+  public CancelReservationConfirmation() {}
 
-    public CancelReservationConfirmation(CancelReservationStatus status) {
-        setStatus(status);
-    }
+  public CancelReservationConfirmation(CancelReservationStatus status) {
+    setStatus(status);
+  }
 
-    @Override
-    public boolean validate() {
-        return status != null;
-    }
+  @Override
+  public boolean validate() {
+    return status != null;
+  }
 
-    /**
-     * This indicates the success or failure of the cancelling of a reservation by Central System.
-     *
-     * @return CancelReservationStatus, status of the request.
-     */
-    public CancelReservationStatus getStatus() {
-        return status;
-    }
+  /**
+   * This indicates the success or failure of the cancelling of a reservation by Central System.
+   *
+   * @return CancelReservationStatus, status of the request.
+   */
+  public CancelReservationStatus getStatus() {
+    return status;
+  }
 
-    /**
-     * Required.
-     * This indicates the success or failure of the cancelling of a reservation by Central System.
-     *
-     * @param status CancelReservationStatus, status of the request.
-     */
-    @XmlElement
-    public void setStatus(CancelReservationStatus status) {
-        this.status = status;
-    }
+  /**
+   * Required. This indicates the success or failure of the cancelling of a reservation by Central
+   * System.
+   *
+   * @param status CancelReservationStatus, status of the request.
+   */
+  @XmlElement
+  public void setStatus(CancelReservationStatus status) {
+    this.status = status;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CancelReservationConfirmation that = (CancelReservationConfirmation) o;
-        return status == that.status;
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    CancelReservationConfirmation that = (CancelReservationConfirmation) o;
+    return status == that.status;
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(status);
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(status);
+  }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("status", status)
-                .add("isValid", validate())
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("status", status)
+        .add("isValid", validate())
+        .toString();
+  }
 }

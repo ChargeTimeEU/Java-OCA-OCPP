@@ -26,19 +26,17 @@ package eu.chargetime.ocpp.model.core;
  * SOFTWARE.
  */
 
-/**
- * Accepted values used with {@link StopTransactionRequest}.
- */
+/** Accepted values used with {@link StopTransactionRequest}. */
 public enum Reason {
-    EmergencyStop,
-    EVDisconnected,
-    HardReset,
-    Local,
-    Other,
-    PowerLoss,
-    Reboot,
-    Remote,
-    SoftReset,
-    UnlockCommand,
-    DeAuthorized
+  EmergencyStop,
+  EVDisconnected,
+  HardReset,
+  Local,
+  Other,
+  PowerLoss,
+  Reboot,
+  Remote,
+  SoftReset,
+  UnlockCommand,
+  DeAuthorized
 }

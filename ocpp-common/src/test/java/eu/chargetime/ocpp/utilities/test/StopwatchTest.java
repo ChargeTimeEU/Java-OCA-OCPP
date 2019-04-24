@@ -26,19 +26,16 @@ package eu.chargetime.ocpp.utilities.test;
  SOFTWARE.
 */
 
-
-import eu.chargetime.ocpp.utilities.Stopwatch;
-import org.junit.Test;
-
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
-
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import eu.chargetime.ocpp.utilities.Stopwatch;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+import org.junit.Test;
 
 /**
  * Unit test for {@link Stopwatch}.
@@ -47,109 +44,104 @@ import static org.mockito.Mockito.when;
  */
 public class StopwatchTest {
 
-    @Test
-    public void createUnstarted() {
-        Stopwatch stopwatch = Stopwatch.createUnstarted();
+  @Test
+  public void createUnstarted() {
+    Stopwatch stopwatch = Stopwatch.createUnstarted();
 
-        assertThat(stopwatch.isRunning(), is(false));
-        assertThat(stopwatch.elapsed(), is(Duration.ofNanos(0L)));
-    }
+    assertThat(stopwatch.isRunning(), is(false));
+    assertThat(stopwatch.elapsed(), is(Duration.ofNanos(0L)));
+  }
 
-    @Test
-    public void createStarted() {
-        Stopwatch stopwatch = Stopwatch.createStarted();
+  @Test
+  public void createStarted() {
+    Stopwatch stopwatch = Stopwatch.createStarted();
 
-        assertThat(stopwatch.isRunning(), is(true));
-        assertThat(stopwatch.elapsed(), greaterThan(Duration.ofNanos(0L)));
+    assertThat(stopwatch.isRunning(), is(true));
+    assertThat(stopwatch.elapsed(), greaterThan(Duration.ofNanos(0L)));
+  }
 
-    }
+  @Test
+  public void isRunningPositive() {
+    Stopwatch stopwatch = Stopwatch.createUnstarted();
+    stopwatch.start();
 
-    @Test
-    public void isRunningPositive() {
-        Stopwatch stopwatch = Stopwatch.createUnstarted();
-        stopwatch.start();
+    assertThat(stopwatch.isRunning(), is(true));
+  }
 
-        assertThat(stopwatch.isRunning(), is(true));
-    }
+  @Test
+  public void isRunningNegative() {
+    Stopwatch stopwatch = Stopwatch.createUnstarted();
+    stopwatch.start();
+    stopwatch.stop();
 
-    @Test
-    public void isRunningNegative() {
-        Stopwatch stopwatch = Stopwatch.createUnstarted();
-        stopwatch.start();
-        stopwatch.stop();
+    assertThat(stopwatch.isRunning(), is(false));
+  }
 
-        assertThat(stopwatch.isRunning(), is(false));
-    }
+  @Test(expected = IllegalStateException.class)
+  public void duplicateRun() {
+    Stopwatch stopwatch = Stopwatch.createUnstarted();
+    stopwatch.start();
+    stopwatch.start();
+  }
 
-    @Test(expected = IllegalStateException.class)
-    public void duplicateRun() {
-        Stopwatch stopwatch = Stopwatch.createUnstarted();
-        stopwatch.start();
-        stopwatch.start();
-    }
+  @Test(expected = IllegalStateException.class)
+  public void duplicateStop() {
+    Stopwatch stopwatch = Stopwatch.createUnstarted();
+    stopwatch.start();
+    stopwatch.stop();
+    stopwatch.stop();
+  }
 
-    @Test(expected = IllegalStateException.class)
-    public void duplicateStop() {
-        Stopwatch stopwatch = Stopwatch.createUnstarted();
-        stopwatch.start();
-        stopwatch.stop();
-        stopwatch.stop();
-    }
+  @Test
+  public void start() {
+    Stopwatch stopwatch = Stopwatch.createUnstarted();
+    stopwatch.start();
 
-    @Test
-    public void start() {
-        Stopwatch stopwatch = Stopwatch.createUnstarted();
-        stopwatch.start();
+    assertThat(stopwatch.isRunning(), is(true));
+    assertThat(stopwatch.elapsed(), greaterThan(Duration.ofNanos(0L)));
+  }
 
-        assertThat(stopwatch.isRunning(), is(true));
-        assertThat(stopwatch.elapsed(), greaterThan(Duration.ofNanos(0L)));
-    }
+  @Test
+  public void stop() {
+    Stopwatch stopwatch = Stopwatch.createUnstarted();
+    stopwatch.start();
+    stopwatch.stop();
 
-    @Test
-    public void stop() {
-        Stopwatch stopwatch = Stopwatch.createUnstarted();
-        stopwatch.start();
-        stopwatch.stop();
+    assertThat(stopwatch.isRunning(), is(false));
+    assertThat(stopwatch.elapsed(), greaterThan(Duration.ofNanos(0L)));
+  }
 
-        assertThat(stopwatch.isRunning(), is(false));
-        assertThat(stopwatch.elapsed(), greaterThan(Duration.ofNanos(0L)));
-    }
+  @Test
+  public void reset() {
+    Stopwatch stopwatch = Stopwatch.createUnstarted();
+    stopwatch.start();
+    stopwatch.reset();
 
-    @Test
-    public void reset() {
-        Stopwatch stopwatch = Stopwatch.createUnstarted();
-        stopwatch.start();
-        stopwatch.reset();
+    assertThat(stopwatch.isRunning(), is(false));
+    assertThat(stopwatch.elapsed(), is(Duration.ofNanos(0L)));
+  }
 
-        assertThat(stopwatch.isRunning(), is(false));
-        assertThat(stopwatch.elapsed(), is(Duration.ofNanos(0L)));
-    }
+  @Test
+  public void elapsed() {
+    Stopwatch.Ticker ticker = mock(Stopwatch.Ticker.class);
+    when(ticker.read()).thenReturn(1523889872515205L).thenReturn(1523889951575345L);
 
-    @Test
-    public void elapsed() {
-        Stopwatch.Ticker ticker = mock(Stopwatch.Ticker.class);
-        when(ticker.read())
-                .thenReturn(1523889872515205L)
-                .thenReturn(1523889951575345L);
+    Stopwatch stopwatch = new Stopwatch(ticker);
+    stopwatch.start();
+    stopwatch.stop();
 
-        Stopwatch stopwatch = new Stopwatch(ticker);
-        stopwatch.start();
-        stopwatch.stop();
+    assertThat(stopwatch.elapsed(), is(Duration.ofNanos(79060140L)));
+  }
 
-        assertThat(stopwatch.elapsed(), is(Duration.ofNanos(79060140L)));
-    }
+  @Test
+  public void elapsedWithUnitMs() {
+    Stopwatch.Ticker ticker = mock(Stopwatch.Ticker.class);
+    when(ticker.read()).thenReturn(1523889872515205L).thenReturn(1523889951575345L);
 
-    @Test
-    public void elapsedWithUnitMs() {
-        Stopwatch.Ticker ticker = mock(Stopwatch.Ticker.class);
-        when(ticker.read())
-                .thenReturn(1523889872515205L)
-                .thenReturn(1523889951575345L);
+    Stopwatch stopwatch = new Stopwatch(ticker);
+    stopwatch.start();
+    stopwatch.stop();
 
-        Stopwatch stopwatch = new Stopwatch(ticker);
-        stopwatch.start();
-        stopwatch.stop();
-
-        assertThat(stopwatch.elapsed(TimeUnit.MILLISECONDS), is(79L));
-    }
+    assertThat(stopwatch.elapsed(TimeUnit.MILLISECONDS), is(79L));
+  }
 }

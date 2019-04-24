@@ -25,50 +25,46 @@ package eu.chargetime.ocpp.wss;
  SOFTWARE.
 */
 
-
+import java.util.List;
+import javax.net.ssl.SSLContext;
 import org.java_websocket.WebSocketServerFactory;
 import org.java_websocket.server.DefaultSSLWebSocketServerFactory;
 
-import javax.net.ssl.SSLContext;
-import java.util.List;
-
-/**
- * Base implementation of WssFactoryBuilder.
- */
+/** Base implementation of WssFactoryBuilder. */
 public class BaseWssFactoryBuilder implements WssFactoryBuilder {
 
-    private SSLContext sslContext;
-    private List<String> ciphers;
+  private SSLContext sslContext;
+  private List<String> ciphers;
 
-    private BaseWssFactoryBuilder() {}
+  private BaseWssFactoryBuilder() {}
 
-    public static BaseWssFactoryBuilder builder() {
-        return new BaseWssFactoryBuilder();
+  public static BaseWssFactoryBuilder builder() {
+    return new BaseWssFactoryBuilder();
+  }
+
+  public BaseWssFactoryBuilder ciphers(List<String> ciphers) {
+    this.ciphers = ciphers;
+    return this;
+  }
+
+  public BaseWssFactoryBuilder sslContext(SSLContext sslContext) {
+    this.sslContext = sslContext;
+    return this;
+  }
+
+  @Override
+  public WebSocketServerFactory build() {
+    verify();
+
+    return ciphers == null
+        ? new DefaultSSLWebSocketServerFactory(sslContext)
+        : new CustomSSLWebSocketServerFactory(sslContext, ciphers);
+  }
+
+  @Override
+  public void verify() {
+    if (sslContext == null) {
+      throw new IllegalStateException("sslContext must be set");
     }
-
-    public BaseWssFactoryBuilder ciphers(List<String> ciphers) {
-        this.ciphers = ciphers;
-        return this;
-    }
-
-    public BaseWssFactoryBuilder sslContext(SSLContext sslContext) {
-        this.sslContext = sslContext;
-        return this;
-    }
-
-    @Override
-    public WebSocketServerFactory build() {
-        verify();
-
-        return ciphers == null
-                ? new DefaultSSLWebSocketServerFactory(sslContext)
-                : new CustomSSLWebSocketServerFactory(sslContext, ciphers);
-    }
-
-    @Override
-    public void verify() {
-        if(sslContext == null) {
-            throw new IllegalStateException("sslContext must be set");
-        }
-    }
+  }
 }

@@ -26,11 +26,9 @@ package eu.chargetime.ocpp.model.core;
  * SOFTWARE.
  */
 
-/**
- * Accepted values used with {@link UnlockConnectorConfirmation}.
- */
+/** Accepted values used with {@link UnlockConnectorConfirmation}. */
 public enum UnlockStatus {
-    Unlocked,
-    UnlockFailed,
-    NotSupported
+  Unlocked,
+  UnlockFailed,
+  NotSupported
 }

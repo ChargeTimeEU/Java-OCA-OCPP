@@ -1,5 +1,9 @@
 package eu.chargetime.ocpp.feature.profile.test;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import eu.chargetime.ocpp.feature.ClearChargingProfileFeature;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.feature.SetChargingProfileFeature;
@@ -11,10 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -45,71 +45,75 @@ import static org.junit.Assert.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class ServerSmartChargingProfileTest extends ProfileTest {
 
-    private ServerSmartChargingProfile smartCharging;
+  private ServerSmartChargingProfile smartCharging;
 
-    @Before
-    public void setup() {
-        smartCharging = new ServerSmartChargingProfile();
-    }
+  @Before
+  public void setup() {
+    smartCharging = new ServerSmartChargingProfile();
+  }
 
-    @Test
-    public void getFeatureList_containsSetChargingProfileFeature() {
-        // When
-        Feature[] features = smartCharging.getFeatureList();
+  @Test
+  public void getFeatureList_containsSetChargingProfileFeature() {
+    // When
+    Feature[] features = smartCharging.getFeatureList();
 
-        // Then
-        assertThat(findFeature(features, "SetChargingProfile"), is(instanceOf(SetChargingProfileFeature.class)));
-    }
+    // Then
+    assertThat(
+        findFeature(features, "SetChargingProfile"),
+        is(instanceOf(SetChargingProfileFeature.class)));
+  }
 
-    @Test
-    public void createSetChargingProfileRequest_returnsValidSetChargingProfileRequest() {
+  @Test
+  public void createSetChargingProfileRequest_returnsValidSetChargingProfileRequest() {
 
-        int connectorId = 123;
+    int connectorId = 123;
 
-        ChargingProfile profile = new ChargingProfile();
+    ChargingProfile profile = new ChargingProfile();
 
-        int profileId = 666;
-        profile.setChargingProfileId(profileId);
-        profile.setChargingProfilePurpose(ChargingProfilePurposeType.TxProfile);
-        profile.setStackLevel(42);
-        profile.setChargingProfileKind(ChargingProfileKindType.Absolute);
+    int profileId = 666;
+    profile.setChargingProfileId(profileId);
+    profile.setChargingProfilePurpose(ChargingProfilePurposeType.TxProfile);
+    profile.setStackLevel(42);
+    profile.setChargingProfileKind(ChargingProfileKindType.Absolute);
 
-        ChargingSchedule schedule = new ChargingSchedule();
-        schedule.setChargingRateUnit(ChargingRateUnitType.A);
-        ChargingSchedulePeriod period = new ChargingSchedulePeriod();
-        period.setStartPeriod(0);
-        period.setLimit(20.3);
-        period.setNumberPhases(1);
-        schedule.setChargingSchedulePeriod(new ChargingSchedulePeriod[]{period});
-        profile.setChargingSchedule(schedule);
+    ChargingSchedule schedule = new ChargingSchedule();
+    schedule.setChargingRateUnit(ChargingRateUnitType.A);
+    ChargingSchedulePeriod period = new ChargingSchedulePeriod();
+    period.setStartPeriod(0);
+    period.setLimit(20.3);
+    period.setNumberPhases(1);
+    schedule.setChargingSchedulePeriod(new ChargingSchedulePeriod[] {period});
+    profile.setChargingSchedule(schedule);
 
-        // When
-        SetChargingProfileRequest result = smartCharging.createSetChargingProfileRequest(connectorId, profile);
+    // When
+    SetChargingProfileRequest result =
+        smartCharging.createSetChargingProfileRequest(connectorId, profile);
 
-        // Then
-        assertThat(result.validate(), is(true));
-        assertThat(result.getConnectorId(), is(connectorId));
+    // Then
+    assertThat(result.validate(), is(true));
+    assertThat(result.getConnectorId(), is(connectorId));
 
-        ChargingProfile resultProfile = result.getCsChargingProfiles();
-        assertThat(profile, is(resultProfile));
+    ChargingProfile resultProfile = result.getCsChargingProfiles();
+    assertThat(profile, is(resultProfile));
+  }
 
-    }
+  @Test
+  public void getFeatureList_containsClearChargingProfileFeature() {
+    // When
+    Feature[] features = smartCharging.getFeatureList();
 
-    @Test
-    public void getFeatureList_containsClearChargingProfileFeature() {
-        // When
-        Feature[] features = smartCharging.getFeatureList();
+    // Then
+    assertThat(
+        findFeature(features, "ClearChargingProfile"),
+        is(instanceOf(ClearChargingProfileFeature.class)));
+  }
 
-        // Then
-        assertThat(findFeature(features, "ClearChargingProfile"), is(instanceOf(ClearChargingProfileFeature.class)));
-    }
+  @Test
+  public void createClearCacheRequest_returnsValidClearCacheRequest() {
+    // When
+    ClearChargingProfileRequest result = smartCharging.createClearChargingProfileRequest();
 
-    @Test
-    public void createClearCacheRequest_returnsValidClearCacheRequest() {
-        // When
-        ClearChargingProfileRequest result = smartCharging.createClearChargingProfileRequest();
-
-        // Then
-        assertThat(result.validate(), is(true));
-    }
+    // Then
+    assertThat(result.validate(), is(true));
+  }
 }

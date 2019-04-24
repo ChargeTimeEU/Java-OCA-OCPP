@@ -5,10 +5,9 @@ import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.ChargingProfile;
 import eu.chargetime.ocpp.model.core.ChargingProfilePurposeType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-
+import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Objects;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -38,97 +37,96 @@ import java.util.Objects;
 
 @XmlRootElement
 public class SetChargingProfileRequest implements Request {
-    private Integer connectorId;
-    private ChargingProfile csChargingProfiles;
+  private Integer connectorId;
+  private ChargingProfile csChargingProfiles;
 
-    public SetChargingProfileRequest() {
+  public SetChargingProfileRequest() {}
+
+  public SetChargingProfileRequest(Integer connectorId, ChargingProfile csChargingProfiles) {
+    this.connectorId = connectorId;
+    this.csChargingProfiles = csChargingProfiles;
+  }
+
+  /**
+   * This identifies which connector of the Charge Point is used.
+   *
+   * @return connector.
+   */
+  public Integer getConnectorId() {
+    return connectorId;
+  }
+
+  /**
+   * Required. This identifies which connector of the Charge Point is used.
+   *
+   * @param connectorId integer. value &gt; 0
+   */
+  @XmlElement
+  public void setConnectorId(Integer connectorId) {
+    if (connectorId == null || connectorId < 0) {
+      throw new PropertyConstraintException(connectorId, "connectorId must be >= 0");
     }
 
-    public SetChargingProfileRequest(Integer connectorId, ChargingProfile csChargingProfiles) {
-        this.connectorId = connectorId;
-        this.csChargingProfiles = csChargingProfiles;
+    this.connectorId = connectorId;
+  }
+
+  /**
+   * Charging Profile to be used by the Charge Point for the requested transaction.
+   *
+   * @return the {@link ChargingProfile}.
+   */
+  public ChargingProfile getCsChargingProfiles() {
+    return csChargingProfiles;
+  }
+
+  /**
+   * Optional. Charging Profile to be used by the Charge Point for the requested transaction. {@link
+   * ChargingProfile#setChargingProfilePurpose(ChargingProfilePurposeType)} MUST be set to
+   * TxProfile.
+   *
+   * @param csChargingProfiles the {@link ChargingProfile}.
+   */
+  @XmlElement(name = "csChargingProfiles")
+  public void setCsChargingProfiles(ChargingProfile csChargingProfiles) {
+    this.csChargingProfiles = csChargingProfiles;
+  }
+
+  @Override
+  public boolean transactionRelated() {
+    return false;
+  }
+
+  @Override
+  public boolean validate() {
+    boolean valid = connectorId != null && connectorId >= 0;
+
+    if (csChargingProfiles != null) {
+      valid &= csChargingProfiles.validate();
     }
 
-    /**
-     * This identifies which connector of the Charge Point is used.
-     *
-     * @return connector.
-     */
-    public Integer getConnectorId() {
-        return connectorId;
-    }
+    return valid;
+  }
 
-    /**
-     * Required. This identifies which connector of the Charge Point is used.
-     *
-     * @param connectorId integer. value &gt; 0
-     */
-    @XmlElement
-    public void setConnectorId(Integer connectorId) {
-        if (connectorId == null || connectorId < 0) {
-            throw new PropertyConstraintException(connectorId, "connectorId must be >= 0");
-        }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    SetChargingProfileRequest that = (SetChargingProfileRequest) o;
+    return Objects.equals(connectorId, that.connectorId)
+        && Objects.equals(csChargingProfiles, that.csChargingProfiles);
+  }
 
-        this.connectorId = connectorId;
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(connectorId, csChargingProfiles);
+  }
 
-    /**
-     * Charging Profile to be used by the Charge Point for the requested transaction.
-     *
-     * @return the {@link ChargingProfile}.
-     */
-    public ChargingProfile getCsChargingProfiles() {
-        return csChargingProfiles;
-    }
-
-    /**
-     * Optional. Charging Profile to be used by the Charge Point for the requested transaction.
-     * {@link ChargingProfile#setChargingProfilePurpose(ChargingProfilePurposeType)} MUST be set to TxProfile.
-     *
-     * @param csChargingProfiles the {@link ChargingProfile}.
-     */
-    @XmlElement(name = "csChargingProfiles")
-    public void setCsChargingProfiles(ChargingProfile csChargingProfiles) {
-        this.csChargingProfiles = csChargingProfiles;
-    }
-
-    @Override
-    public boolean transactionRelated() {
-        return false;
-    }
-
-    @Override
-    public boolean validate() {
-        boolean valid = connectorId != null && connectorId >= 0;
-
-        if (csChargingProfiles != null) {
-            valid &= csChargingProfiles.validate();
-        }
-
-        return valid;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SetChargingProfileRequest that = (SetChargingProfileRequest) o;
-        return Objects.equals(connectorId, that.connectorId) &&
-                Objects.equals(csChargingProfiles, that.csChargingProfiles);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(connectorId, csChargingProfiles);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("connectorId", connectorId)
-                .add("csChargingProfiles", csChargingProfiles)
-                .add("isValid", validate())
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("connectorId", connectorId)
+        .add("csChargingProfiles", csChargingProfiles)
+        .add("isValid", validate())
+        .toString();
+  }
 }

@@ -26,18 +26,15 @@ package eu.chargetime.ocpp.model;
  * SOFTWARE.
  */
 
-/**
- * Test implementation of the Request interface.
- * Used for tests.
- */
+/** Test implementation of the Request interface. Used for tests. */
 public class TestRequest implements Request {
-    @Override
-    public boolean validate() {
-        return true;
-    }
+  @Override
+  public boolean validate() {
+    return true;
+  }
 
-    @Override
-    public boolean transactionRelated() {
-        return false;
-    }
+  @Override
+  public boolean transactionRelated() {
+    return false;
+  }
 }

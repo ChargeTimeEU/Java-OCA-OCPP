@@ -30,133 +30,129 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.wss.BaseWssSocketBuilder;
 import eu.chargetime.ocpp.wss.WssSocketBuilder;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.concurrent.CompletionStage;
+import javax.net.ssl.SSLContext;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.protocols.Protocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import javax.net.ssl.SSLContext;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.concurrent.CompletionStage;
-
-/**
- * OCA OCPP version 2.0 JSON Web Socket implementation of the client.
- */
+/** OCA OCPP version 2.0 JSON Web Socket implementation of the client. */
 public class JSONClient implements IClientAPI {
 
-    private static final Logger logger = LoggerFactory.getLogger(JSONClient.class);
+  private static final Logger logger = LoggerFactory.getLogger(JSONClient.class);
 
-    public final Draft draftOcppOnly;
-    private final WebSocketTransmitter transmitter;
-    private final FeatureRepository featureRepository;
-    private final Client client;
-    private final String identity;
+  public final Draft draftOcppOnly;
+  private final WebSocketTransmitter transmitter;
+  private final FeatureRepository featureRepository;
+  private final Client client;
+  private final String identity;
 
-    public JSONClient() {
-        this(null);
-    }
+  public JSONClient() {
+    this(null);
+  }
 
-    /**
-     * Application composite root for a json client.
-     *
-     * @param identity      if set, will append identity to url.
-     * @param configuration network configuration for a json client.
-     */
-    public JSONClient(String identity, JSONConfiguration configuration) {
-        this.identity = identity;
-        draftOcppOnly = new Draft_6455(Collections.emptyList(),
-                Collections.singletonList(new Protocol("ocpp1.6")));
-        transmitter = new WebSocketTransmitter(configuration, draftOcppOnly);
-        JSONCommunicator communicator = new JSONCommunicator(transmitter);
-        featureRepository = new FeatureRepository();
-        ISession session = new SessionFactory(featureRepository).createSession(communicator);
-        client = new Client(session, featureRepository, new PromiseRepository());
-    }
+  /**
+   * Application composite root for a json client.
+   *
+   * @param identity if set, will append identity to url.
+   * @param configuration network configuration for a json client.
+   */
+  public JSONClient(String identity, JSONConfiguration configuration) {
+    this.identity = identity;
+    draftOcppOnly =
+        new Draft_6455(Collections.emptyList(), Collections.singletonList(new Protocol("ocpp1.6")));
+    transmitter = new WebSocketTransmitter(configuration, draftOcppOnly);
+    JSONCommunicator communicator = new JSONCommunicator(transmitter);
+    featureRepository = new FeatureRepository();
+    ISession session = new SessionFactory(featureRepository).createSession(communicator);
+    client = new Client(session, featureRepository, new PromiseRepository());
+  }
 
-    /**
-     * Application composite root for a json client.
-     *
-     * @param identity      if set, will append identity to url.
-     */
-    public JSONClient(String identity) {
-        this(identity, JSONConfiguration.get());
-    }
+  /**
+   * Application composite root for a json client.
+   *
+   * @param identity if set, will append identity to url.
+   */
+  public JSONClient(String identity) {
+    this(identity, JSONConfiguration.get());
+  }
 
-    /**
-     * Application composite root for a json client.
-     *
-     * @param identity      if set, will append identity to url.
-     * @param wssSocketBuilder to build {@link java.net.Socket} to support wss://.
-     * @param configuration network configuration for a json client.
-     */
-    public JSONClient(String identity, WssSocketBuilder wssSocketBuilder,
-                      JSONConfiguration configuration) {
-        this(identity, configuration);
-        enableWSS(wssSocketBuilder);
-    }
+  /**
+   * Application composite root for a json client.
+   *
+   * @param identity if set, will append identity to url.
+   * @param wssSocketBuilder to build {@link java.net.Socket} to support wss://.
+   * @param configuration network configuration for a json client.
+   */
+  public JSONClient(
+      String identity, WssSocketBuilder wssSocketBuilder, JSONConfiguration configuration) {
+    this(identity, configuration);
+    enableWSS(wssSocketBuilder);
+  }
 
-    /**
-     * Application composite root for a json client.
-     *
-     * @param identity      if set, will append identity to url.
-     * @param wssSocketBuilder to build {@link java.net.Socket} to support wss://.
-     *
-     */
-    public JSONClient(String identity, WssSocketBuilder wssSocketBuilder) {
-        this(identity, wssSocketBuilder, JSONConfiguration.get());
-    }
+  /**
+   * Application composite root for a json client.
+   *
+   * @param identity if set, will append identity to url.
+   * @param wssSocketBuilder to build {@link java.net.Socket} to support wss://.
+   */
+  public JSONClient(String identity, WssSocketBuilder wssSocketBuilder) {
+    this(identity, wssSocketBuilder, JSONConfiguration.get());
+  }
 
-    // To ensure the exposed API is backward compatible
-    public void enableWSS(SSLContext sslContext) throws IOException {
-        WssSocketBuilder wssSocketBuilder =
-                BaseWssSocketBuilder.builder().sslSocketFactory(sslContext.getSocketFactory());
-        enableWSS(wssSocketBuilder);
-    }
+  // To ensure the exposed API is backward compatible
+  public void enableWSS(SSLContext sslContext) throws IOException {
+    WssSocketBuilder wssSocketBuilder =
+        BaseWssSocketBuilder.builder().sslSocketFactory(sslContext.getSocketFactory());
+    enableWSS(wssSocketBuilder);
+  }
 
-    /**
-     * Enables WSS connection to the endpoint.
-     * The {@code wssSocketBuilder} must be initialized at that step
-     * (as required parameters set might vary depending on implementation the {@link eu.chargetime.ocpp.wss.WssSocketBuilder#verify()} is used to ensure initialization).
-     *
-     * @param wssSocketBuilder builder to provide SSL socket
-     * @return instance of {@link JSONClient}
-     * @throws IllegalStateException in case if the client is already connected
-     * @throws IllegalStateException in case {@code wssSocketBuilder} not initialized properly
-     */
-    public JSONClient enableWSS(WssSocketBuilder wssSocketBuilder) {
-        wssSocketBuilder.verify();
-        transmitter.enableWSS(wssSocketBuilder);
-        return this;
-    }
+  /**
+   * Enables WSS connection to the endpoint. The {@code wssSocketBuilder} must be initialized at
+   * that step (as required parameters set might vary depending on implementation the {@link
+   * eu.chargetime.ocpp.wss.WssSocketBuilder#verify()} is used to ensure initialization).
+   *
+   * @param wssSocketBuilder builder to provide SSL socket
+   * @return instance of {@link JSONClient}
+   * @throws IllegalStateException in case if the client is already connected
+   * @throws IllegalStateException in case {@code wssSocketBuilder} not initialized properly
+   */
+  public JSONClient enableWSS(WssSocketBuilder wssSocketBuilder) {
+    wssSocketBuilder.verify();
+    transmitter.enableWSS(wssSocketBuilder);
+    return this;
+  }
 
-    @Override
-    public void addFeature(Feature feature) {
-        featureRepository.addFeature(feature);
-    }
+  @Override
+  public void addFeature(Feature feature) {
+    featureRepository.addFeature(feature);
+  }
 
-    @Override
-    public void connect(String url, ClientEvents clientEvents) {
-        logger.debug("Feature repository: {}", featureRepository);
+  @Override
+  public void connect(String url, ClientEvents clientEvents) {
+    logger.debug("Feature repository: {}", featureRepository);
 
-        String identityUrl = (identity != null) ? String.format("%s/%s", url, identity) : url;
-        client.connect(identityUrl, clientEvents);
-    }
+    String identityUrl = (identity != null) ? String.format("%s/%s", url, identity) : url;
+    client.connect(identityUrl, clientEvents);
+  }
 
-    @Override
-    public CompletionStage<Confirmation> send(Request request) throws OccurenceConstraintException, UnsupportedFeatureException {
-        return client.send(request);
-    }
+  @Override
+  public CompletionStage<Confirmation> send(Request request)
+      throws OccurenceConstraintException, UnsupportedFeatureException {
+    return client.send(request);
+  }
 
-    @Override
-    public void disconnect() {
-        client.disconnect();
-    }
+  @Override
+  public void disconnect() {
+    client.disconnect();
+  }
 
-    @Override
-    public boolean isClosed() {
-        return transmitter.isClosed();
-    }
+  @Override
+  public boolean isClosed() {
+    return transmitter.isClosed();
+  }
 }

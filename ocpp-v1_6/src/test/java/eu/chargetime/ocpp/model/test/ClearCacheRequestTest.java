@@ -1,11 +1,11 @@
 package eu.chargetime.ocpp.model.test;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import eu.chargetime.ocpp.model.core.ClearCacheRequest;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -33,27 +33,28 @@ import static org.junit.Assert.assertThat;
  * SOFTWARE.
  */
 public class ClearCacheRequestTest {
-    ClearCacheRequest request;
-    @Before
-    public void setUp() throws Exception {
-        request = new ClearCacheRequest();
-    }
+  ClearCacheRequest request;
 
-    @Test
-    public void validate_returnTrue() {
-        // When
-        boolean isValid = request.validate();
+  @Before
+  public void setUp() throws Exception {
+    request = new ClearCacheRequest();
+  }
 
-        // Then
-        assertThat(isValid, is(true));
-    }
+  @Test
+  public void validate_returnTrue() {
+    // When
+    boolean isValid = request.validate();
 
-    @Test
-    public void isTransactionRelated_returnsFalse() {
-        // When
-        boolean isTransactionRelated = request.transactionRelated();
+    // Then
+    assertThat(isValid, is(true));
+  }
 
-        // Then
-        assertThat(isTransactionRelated, is(false));
-    }
+  @Test
+  public void isTransactionRelated_returnsFalse() {
+    // When
+    boolean isTransactionRelated = request.transactionRelated();
+
+    // Then
+    assertThat(isTransactionRelated, is(false));
+  }
 }

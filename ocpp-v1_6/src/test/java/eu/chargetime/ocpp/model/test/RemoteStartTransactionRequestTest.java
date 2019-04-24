@@ -1,14 +1,5 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.core.ChargingProfile;
-import eu.chargetime.ocpp.model.core.RemoteStartTransactionRequest;
-import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 import static eu.chargetime.ocpp.utilities.TestUtilities.aString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -17,6 +8,14 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.core.ChargingProfile;
+import eu.chargetime.ocpp.model.core.RemoteStartTransactionRequest;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -45,110 +44,108 @@ import static org.mockito.Mockito.verify;
  */
 public class RemoteStartTransactionRequestTest {
 
-    @Rule
-    public ExpectedException thrownException = ExpectedException.none();
+  @Rule public ExpectedException thrownException = ExpectedException.none();
 
-    private RemoteStartTransactionRequest request;
+  private RemoteStartTransactionRequest request;
 
-    @Before
-    public void setUp() {
-        request = new RemoteStartTransactionRequest();
-    }
+  @Before
+  public void setUp() {
+    request = new RemoteStartTransactionRequest();
+  }
 
-    @Test
-    public void setConnectorId_integerZero_throwsPropertyConstraintException() {
-        testInvalidConnectorIdValue(0);
-    }
+  @Test
+  public void setConnectorId_integerZero_throwsPropertyConstraintException() {
+    testInvalidConnectorIdValue(0);
+  }
 
-    @Test
-    public void setConnectorId_negativeInteger_throwsPropertyConstraintException() {
-        testInvalidConnectorIdValue(-42);
-    }
+  @Test
+  public void setConnectorId_negativeInteger_throwsPropertyConstraintException() {
+    testInvalidConnectorIdValue(-42);
+  }
 
-    private void testInvalidConnectorIdValue(int invalidValue) {
-        defineExpectedException("Validation failed: [connectorId must be > 0]. Current Value: [" + invalidValue + "]");
+  private void testInvalidConnectorIdValue(int invalidValue) {
+    defineExpectedException(
+        "Validation failed: [connectorId must be > 0]. Current Value: [" + invalidValue + "]");
 
-        request.setConnectorId(invalidValue);
-    }
+    request.setConnectorId(invalidValue);
+  }
 
-    @Test
-    public void setConnectorId_positiveInteger_connectorIdIsSet() {
-        // Given
-        int someInteger = 42;
+  @Test
+  public void setConnectorId_positiveInteger_connectorIdIsSet() {
+    // Given
+    int someInteger = 42;
 
-        // When
-        request.setConnectorId(someInteger);
+    // When
+    request.setConnectorId(someInteger);
 
-        // Then
-        assertThat(request.getConnectorId(), equalTo(someInteger));
-    }
+    // Then
+    assertThat(request.getConnectorId(), equalTo(someInteger));
+  }
 
-    @Test
-    public void setIdTag_string20_idTagIsSet() {
-        // Given
-        String idTag = aString(20);
+  @Test
+  public void setIdTag_string20_idTagIsSet() {
+    // Given
+    String idTag = aString(20);
 
-        // When
-        request.setIdTag(idTag);
+    // When
+    request.setIdTag(idTag);
 
-        // Then
-        assertThat(request.getIdTag(), equalTo(idTag));
-    }
+    // Then
+    assertThat(request.getIdTag(), equalTo(idTag));
+  }
 
-    @Test
-    public void setIdTag_exceeds20Chars_throwsPropertyConstraintException() {
-        defineExpectedException("Validation failed: [Exceeded limit of 20 chars]. Current Value: [21]");
+  @Test
+  public void setIdTag_exceeds20Chars_throwsPropertyConstraintException() {
+    defineExpectedException("Validation failed: [Exceeded limit of 20 chars]. Current Value: [21]");
 
-        request.setIdTag(aString(21));
-    }
+    request.setIdTag(aString(21));
+  }
 
-    private void defineExpectedException(String expectedExceptionMessage) {
-        thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo(expectedExceptionMessage));
-    }
+  private void defineExpectedException(String expectedExceptionMessage) {
+    thrownException.expect(instanceOf(PropertyConstraintException.class));
+    thrownException.expectMessage(equalTo(expectedExceptionMessage));
+  }
 
-    @Test
-    public void setChargingProfile_someChargingProfile_chargingProfileIsSet
-            () {
-        // Given
-        ChargingProfile chargingProfile = mock(ChargingProfile.class);
+  @Test
+  public void setChargingProfile_someChargingProfile_chargingProfileIsSet() {
+    // Given
+    ChargingProfile chargingProfile = mock(ChargingProfile.class);
 
-        // When
-        request.setChargingProfile(chargingProfile);
+    // When
+    request.setChargingProfile(chargingProfile);
 
-        // Then
-        assertThat(request.getChargingProfile(), equalTo(chargingProfile));
-    }
+    // Then
+    assertThat(request.getChargingProfile(), equalTo(chargingProfile));
+  }
 
-    @Test
-    public void validate_returnFalse() {
-        // When
-        boolean isValid = request.validate();
+  @Test
+  public void validate_returnFalse() {
+    // When
+    boolean isValid = request.validate();
 
-        // Then
-        assertThat(isValid, is(false));
-    }
+    // Then
+    assertThat(isValid, is(false));
+  }
 
-    @Test
-    public void validate_chargingProfileIsSet_chargingsProfileIsValidated() {
-        // Given
-        ChargingProfile chargingProfile = mock(ChargingProfile.class);
-        request.setChargingProfile(chargingProfile);
+  @Test
+  public void validate_chargingProfileIsSet_chargingsProfileIsValidated() {
+    // Given
+    ChargingProfile chargingProfile = mock(ChargingProfile.class);
+    request.setChargingProfile(chargingProfile);
 
-        // When
-        request.validate();
+    // When
+    request.validate();
 
-        // Then
-        verify(chargingProfile, times(1)).validate();
-    }
+    // Then
+    verify(chargingProfile, times(1)).validate();
+  }
 
+  @Test
+  public void isTransactionRelated_returnsFalse() {
+    // When
+    boolean isTransactionRelated = request.transactionRelated();
 
-    @Test
-    public void isTransactionRelated_returnsFalse() {
-        // When
-        boolean isTransactionRelated = request.transactionRelated();
-
-        // Then
-        assertThat(isTransactionRelated, is(false));
-    }
+    // Then
+    assertThat(isTransactionRelated, is(false));
+  }
 }

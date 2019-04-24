@@ -1,11 +1,11 @@
 package eu.chargetime.ocpp.model.test;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import eu.chargetime.ocpp.model.core.MeterValuesConfirmation;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -33,20 +33,19 @@ import static org.junit.Assert.assertThat;
  * SOFTWARE.
  */
 public class MeterValuesConfirmationTest {
-    MeterValuesConfirmation confirmation;
+  MeterValuesConfirmation confirmation;
 
-    @Before
-    public void setUp() throws Exception {
-        confirmation = new MeterValuesConfirmation();
-    }
+  @Before
+  public void setUp() throws Exception {
+    confirmation = new MeterValuesConfirmation();
+  }
 
-    @Test
-    public void validate_returnTrue() {
-        // When
-        boolean isValid = confirmation.validate();
+  @Test
+  public void validate_returnTrue() {
+    // When
+    boolean isValid = confirmation.validate();
 
-        // Then
-        assertThat(isValid, is(true));
-    }
-
+    // Then
+    assertThat(isValid, is(true));
+  }
 }

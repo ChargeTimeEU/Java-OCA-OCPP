@@ -32,7 +32,7 @@ package eu.chargetime.ocpp.model.core;
  * @see ChangeAvailabilityConfirmation
  */
 public enum AvailabilityStatus {
-    Accepted,
-    Rejected,
-    Scheduled
+  Accepted,
+  Rejected,
+  Scheduled
 }

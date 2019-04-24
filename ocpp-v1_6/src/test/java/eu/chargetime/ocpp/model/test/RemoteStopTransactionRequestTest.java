@@ -1,12 +1,12 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.core.RemoteStopTransactionRequest;
-import org.junit.Before;
-import org.junit.Test;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+
+import eu.chargetime.ocpp.model.core.RemoteStopTransactionRequest;
+import org.junit.Before;
+import org.junit.Test;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -34,52 +34,52 @@ import static org.junit.Assert.assertThat;
  * SOFTWARE.
  */
 public class RemoteStopTransactionRequestTest {
-    RemoteStopTransactionRequest request;
+  RemoteStopTransactionRequest request;
 
-    @Before
-    public void setUp() throws Exception {
-        request = new RemoteStopTransactionRequest();
-    }
+  @Before
+  public void setUp() throws Exception {
+    request = new RemoteStopTransactionRequest();
+  }
 
-    @Test
-    public void setTransactionId_anInteger_transactionIdIsSet() {
-        // Given
-        Integer anInteger = 42;
+  @Test
+  public void setTransactionId_anInteger_transactionIdIsSet() {
+    // Given
+    Integer anInteger = 42;
 
-        // When
-        request.setTransactionId(anInteger);
+    // When
+    request.setTransactionId(anInteger);
 
-        // Then
-        assertThat(request.getTransactionId(), equalTo(anInteger));
-    }
+    // Then
+    assertThat(request.getTransactionId(), equalTo(anInteger));
+  }
 
-    @Test
-    public void validate_returnFalse() {
-        // When
-        boolean isValid = request.validate();
+  @Test
+  public void validate_returnFalse() {
+    // When
+    boolean isValid = request.validate();
 
-        // Then
-        assertThat(isValid, is(false));
-    }
+    // Then
+    assertThat(isValid, is(false));
+  }
 
-    @Test
-    public void validate_transactionIdIsSet_returnTrue() {
-        // Given
-        request.setTransactionId(42);
+  @Test
+  public void validate_transactionIdIsSet_returnTrue() {
+    // Given
+    request.setTransactionId(42);
 
-        // When
-        boolean isValid = request.validate();
+    // When
+    boolean isValid = request.validate();
 
-        // Then
-        assertThat(isValid, is(true));
-    }
+    // Then
+    assertThat(isValid, is(true));
+  }
 
-    @Test
-    public void isTransactionRelated_returnsFalse() {
-        // When
-        boolean isTransactionRelated = request.transactionRelated();
+  @Test
+  public void isTransactionRelated_returnsFalse() {
+    // When
+    boolean isTransactionRelated = request.transactionRelated();
 
-        // Then
-        assertThat(isTransactionRelated, is(false));
-    }
+    // Then
+    assertThat(isTransactionRelated, is(false));
+  }
 }

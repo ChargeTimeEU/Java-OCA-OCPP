@@ -1,5 +1,10 @@
 package eu.chargetime.ocpp.model.test;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import eu.chargetime.ocpp.model.core.AuthorizeConfirmation;
 import eu.chargetime.ocpp.model.core.IdTagInfo;
 import org.junit.Before;
@@ -8,69 +13,62 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 /*
- ChargeTime.eu - Java-OCA-OCPP
- Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
+ChargeTime.eu - Java-OCA-OCPP
+Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
- MIT License
+MIT License
 
- Copyright (C) 2016-2018 Thomas Volden
+Copyright (C) 2016-2018 Thomas Volden
 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
- */
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 @RunWith(MockitoJUnitRunner.class)
 public class AuthorizeConfirmationTest {
-    AuthorizeConfirmation confirmation;
+  AuthorizeConfirmation confirmation;
 
-    @Mock
-    private IdTagInfo infoTag;
+  @Mock private IdTagInfo infoTag;
 
-    @Before
-    public void setup() throws Exception {
+  @Before
+  public void setup() throws Exception {
 
-        confirmation = new AuthorizeConfirmation();
-    }
+    confirmation = new AuthorizeConfirmation();
+  }
 
-    @Test
-    public void validate_idTagInfoIsNull_returnsFalse() {
-        // when
-        boolean isValid = confirmation.validate();
+  @Test
+  public void validate_idTagInfoIsNull_returnsFalse() {
+    // when
+    boolean isValid = confirmation.validate();
 
-        // Then
-        assertThat(isValid, is(false));
-    }
+    // Then
+    assertThat(isValid, is(false));
+  }
 
-    @Test
-    public void validate_idTagInfoSet_callsValidateOnIdTagInfo() {
-        // Given
-        confirmation.setIdTagInfo(infoTag);
+  @Test
+  public void validate_idTagInfoSet_callsValidateOnIdTagInfo() {
+    // Given
+    confirmation.setIdTagInfo(infoTag);
 
-        // When
-        confirmation.validate();
+    // When
+    confirmation.validate();
 
-        // Then
-        verify(infoTag, times(1)).validate();
-    }
-
+    // Then
+    verify(infoTag, times(1)).validate();
+  }
 }

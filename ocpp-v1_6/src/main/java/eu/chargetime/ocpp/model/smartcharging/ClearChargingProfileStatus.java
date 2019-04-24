@@ -27,10 +27,8 @@ package eu.chargetime.ocpp.model.smartcharging;
  * SOFTWARE.
  */
 
-/**
- * Accepted values used with {@link ClearChargingProfileStatus}.
- */
+/** Accepted values used with {@link ClearChargingProfileStatus}. */
 public enum ClearChargingProfileStatus {
-    Accepted,
-    Unknown
+  Accepted,
+  Unknown
 }

@@ -1,16 +1,16 @@
 package eu.chargetime.ocpp.model.test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.UnlockConnectorRequest;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -39,77 +39,78 @@ import static org.junit.Assert.assertThat;
  */
 public class UnlockConnectorRequestTest {
 
-    @Rule
-    public ExpectedException thrownException = ExpectedException.none();
+  @Rule public ExpectedException thrownException = ExpectedException.none();
 
-    private UnlockConnectorRequest request;
+  private UnlockConnectorRequest request;
 
-    @Before
-    public void setUp() {
-        request = new UnlockConnectorRequest();
-    }
+  @Before
+  public void setUp() {
+    request = new UnlockConnectorRequest();
+  }
 
-    @Test
-    public void setConnectorId_zeroInteger_throwsPropertyConstraintException() {
-        testInvalidConnectorId(0);
-    }
+  @Test
+  public void setConnectorId_zeroInteger_throwsPropertyConstraintException() {
+    testInvalidConnectorId(0);
+  }
 
-    @Test
-    public void setConnectorId_negativeInteger_throwsPropertyConstraintException() {
-        testInvalidConnectorId(-42);
-    }
+  @Test
+  public void setConnectorId_negativeInteger_throwsPropertyConstraintException() {
+    testInvalidConnectorId(-42);
+  }
 
-    @Test
-    public void setConnectorId_asNull_throwsPropertyConstraintException() {
-        testInvalidConnectorId(null);
-    }
+  @Test
+  public void setConnectorId_asNull_throwsPropertyConstraintException() {
+    testInvalidConnectorId(null);
+  }
 
-    private void testInvalidConnectorId(Integer invalidValue) {
-        thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo("Validation failed: [connectorId must be > 0]. Current Value: [" + invalidValue + "]"));
+  private void testInvalidConnectorId(Integer invalidValue) {
+    thrownException.expect(instanceOf(PropertyConstraintException.class));
+    thrownException.expectMessage(
+        equalTo(
+            "Validation failed: [connectorId must be > 0]. Current Value: [" + invalidValue + "]"));
 
-        request.setConnectorId(invalidValue);
-    }
+    request.setConnectorId(invalidValue);
+  }
 
-    @Test
-    public void setConnectorId_positiveInteger_connectorIdIsSet() {
-        // Given
-        Integer positive = 42;
+  @Test
+  public void setConnectorId_positiveInteger_connectorIdIsSet() {
+    // Given
+    Integer positive = 42;
 
-        // When
-        request.setConnectorId(positive);
+    // When
+    request.setConnectorId(positive);
 
-        // Then
-        assertThat(request.getConnectorId(), equalTo(positive));
-    }
+    // Then
+    assertThat(request.getConnectorId(), equalTo(positive));
+  }
 
-    @Test
-    public void validate_returnFalse() {
-        // When
-        boolean isValid = request.validate();
+  @Test
+  public void validate_returnFalse() {
+    // When
+    boolean isValid = request.validate();
 
-        // Then
-        assertThat(isValid, is(false));
-    }
+    // Then
+    assertThat(isValid, is(false));
+  }
 
-    @Test
-    public void validate_connectorIdIsSet_returnTrue() {
-        // Given
-        request.setConnectorId(42);
+  @Test
+  public void validate_connectorIdIsSet_returnTrue() {
+    // Given
+    request.setConnectorId(42);
 
-        // When
-        boolean isValid = request.validate();
+    // When
+    boolean isValid = request.validate();
 
-        // Then
-        assertThat(isValid, is(true));
-    }
+    // Then
+    assertThat(isValid, is(true));
+  }
 
-    @Test
-    public void isTransactionRelated_returnsFalse() {
-        // When
-        boolean isTransactionRelated = request.transactionRelated();
+  @Test
+  public void isTransactionRelated_returnsFalse() {
+    // When
+    boolean isTransactionRelated = request.transactionRelated();
 
-        // Then
-        assertThat(isTransactionRelated, is(false));
-    }
+    // Then
+    assertThat(isTransactionRelated, is(false));
+  }
 }

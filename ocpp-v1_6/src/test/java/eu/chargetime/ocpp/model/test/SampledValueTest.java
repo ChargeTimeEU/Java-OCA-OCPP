@@ -1,5 +1,10 @@
 package eu.chargetime.ocpp.model.test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.Location;
 import eu.chargetime.ocpp.model.core.SampledValue;
@@ -8,11 +13,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -41,833 +41,838 @@ import static org.junit.Assert.assertThat;
  */
 public class SampledValueTest {
 
-    @Rule
-    public ExpectedException thrownException = ExpectedException.none();
+  @Rule public ExpectedException thrownException = ExpectedException.none();
 
-    private SampledValue sampledValue;
+  private SampledValue sampledValue;
 
-    @Before
-    public void setUp() {
-        sampledValue = new SampledValue();
-    }
+  @Before
+  public void setUp() {
+    sampledValue = new SampledValue();
+  }
 
-    @Test
-    public void setValue_anyString_valueIsSet() {
-        // Given
-        String aString = "Some string";
+  @Test
+  public void setValue_anyString_valueIsSet() {
+    // Given
+    String aString = "Some string";
 
-        // When
-        sampledValue.setValue(aString);
+    // When
+    sampledValue.setValue(aString);
 
-        // Then
-        assertThat(sampledValue.getValue(), equalTo(aString));
-    }
+    // Then
+    assertThat(sampledValue.getValue(), equalTo(aString));
+  }
 
-    @Test
-    public void validate_valueIsSet_returnTrue() {
-        // Given
-        sampledValue.setValue("something");
+  @Test
+  public void validate_valueIsSet_returnTrue() {
+    // Given
+    sampledValue.setValue("something");
 
-        // When
-        boolean isValid = sampledValue.validate();
+    // When
+    boolean isValid = sampledValue.validate();
 
-        // Then
-        assertThat(isValid, is(true));
-    }
+    // Then
+    assertThat(isValid, is(true));
+  }
 
-    @Test
-    public void setContext_illegalValue_throwsPropertyConstraintException() {
-        thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo("Validation failed: [context is not properly defined]. Current Value: [some value]"));
+  @Test
+  public void setContext_illegalValue_throwsPropertyConstraintException() {
+    thrownException.expect(instanceOf(PropertyConstraintException.class));
+    thrownException.expectMessage(
+        equalTo(
+            "Validation failed: [context is not properly defined]. Current Value: [some value]"));
 
-        String illegalValue = "some value";
+    String illegalValue = "some value";
 
-        sampledValue.setContext(illegalValue);
-    }
+    sampledValue.setContext(illegalValue);
+  }
 
-    @Test
-    public void setContext_interruptionBegin_contextIsSet() {
-        // Given
-        String readingContext = "Interruption.Begin";
+  @Test
+  public void setContext_interruptionBegin_contextIsSet() {
+    // Given
+    String readingContext = "Interruption.Begin";
 
-        // When
-        sampledValue.setContext(readingContext);
+    // When
+    sampledValue.setContext(readingContext);
 
-        // Then
-        assertThat(sampledValue.getContext(), equalTo(readingContext));
-    }
+    // Then
+    assertThat(sampledValue.getContext(), equalTo(readingContext));
+  }
 
-    @Test
-    public void setContext_interruptionEnd_contextIsSet() {
-        // Given
-        String readingContext = "Interruption.End";
+  @Test
+  public void setContext_interruptionEnd_contextIsSet() {
+    // Given
+    String readingContext = "Interruption.End";
 
-        // When
-        sampledValue.setContext(readingContext);
+    // When
+    sampledValue.setContext(readingContext);
 
-        // Then
-        assertThat(sampledValue.getContext(), equalTo(readingContext));
-    }
+    // Then
+    assertThat(sampledValue.getContext(), equalTo(readingContext));
+  }
 
-    @Test
-    public void setContext_other_contextIsSet() {
-        // Given
-        String readingContext = "Other";
+  @Test
+  public void setContext_other_contextIsSet() {
+    // Given
+    String readingContext = "Other";
 
-        // When
-        sampledValue.setContext(readingContext);
+    // When
+    sampledValue.setContext(readingContext);
 
-        // Then
-        assertThat(sampledValue.getContext(), equalTo(readingContext));
-    }
+    // Then
+    assertThat(sampledValue.getContext(), equalTo(readingContext));
+  }
 
-    @Test
-    public void setContext_sampleClock_contextIsSet() {
-        // Given
-        String readingContext = "Sample.Clock";
+  @Test
+  public void setContext_sampleClock_contextIsSet() {
+    // Given
+    String readingContext = "Sample.Clock";
+
+    // When
+    sampledValue.setContext(readingContext);
 
-        // When
-        sampledValue.setContext(readingContext);
+    // Then
+    assertThat(sampledValue.getContext(), equalTo(readingContext));
+  }
 
-        // Then
-        assertThat(sampledValue.getContext(), equalTo(readingContext));
-    }
+  @Test
+  public void setContext_samplePeriodic_contextIsSet() {
+    // Given
+    String readingContext = "Sample.Periodic";
 
-    @Test
-    public void setContext_samplePeriodic_contextIsSet() {
-        // Given
-        String readingContext = "Sample.Periodic";
+    // When
+    sampledValue.setContext(readingContext);
 
-        // When
-        sampledValue.setContext(readingContext);
+    // Then
+    assertThat(sampledValue.getContext(), equalTo(readingContext));
+  }
 
-        // Then
-        assertThat(sampledValue.getContext(), equalTo(readingContext));
-    }
+  @Test
+  public void setContext_transactionBegin_contextIsSet() {
+    // Given
+    String readingContext = "Transaction.Begin";
 
-    @Test
-    public void setContext_transactionBegin_contextIsSet() {
-        // Given
-        String readingContext = "Transaction.Begin";
+    // When
+    sampledValue.setContext(readingContext);
 
-        // When
-        sampledValue.setContext(readingContext);
+    // Then
+    assertThat(sampledValue.getContext(), equalTo(readingContext));
+  }
 
-        // Then
-        assertThat(sampledValue.getContext(), equalTo(readingContext));
-    }
+  @Test
+  public void setContext_transactionEnd_contextIsSet() {
+    // Given
+    String readingContext = "Transaction.End";
 
-    @Test
-    public void setContext_transactionEnd_contextIsSet() {
-        // Given
-        String readingContext = "Transaction.End";
+    // When
+    sampledValue.setContext(readingContext);
 
-        // When
-        sampledValue.setContext(readingContext);
+    // Then
+    assertThat(sampledValue.getContext(), equalTo(readingContext));
+  }
 
-        // Then
-        assertThat(sampledValue.getContext(), equalTo(readingContext));
-    }
+  @Test
+  public void setContext_trigger_contextIsSet() {
+    // Given
+    String readingContext = "Trigger";
 
-    @Test
-    public void setContext_trigger_contextIsSet() {
-        // Given
-        String readingContext = "Trigger";
+    // When
+    sampledValue.setContext(readingContext);
 
-        // When
-        sampledValue.setContext(readingContext);
+    // Then
+    assertThat(sampledValue.getContext(), equalTo(readingContext));
+  }
 
-        // Then
-        assertThat(sampledValue.getContext(), equalTo(readingContext));
-    }
+  @Test
+  public void getContext_returnSamplePeriodic() {
+    // Given
+    String expected = "Sample.Periodic";
 
-    @Test
-    public void getContext_returnSamplePeriodic() {
-        // Given
-        String expected = "Sample.Periodic";
+    // When
+    String context = sampledValue.getContext();
 
-        // When
-        String context = sampledValue.getContext();
+    // Then
+    assertThat(context, equalTo(expected));
+  }
 
-        // Then
-        assertThat(context, equalTo(expected));
-    }
+  @Test
+  public void setFormat_valueFormat_formatIsSet() {
+    // Given
+    ValueFormat valueFormat = ValueFormat.Raw;
 
-    @Test
-    public void setFormat_valueFormat_formatIsSet() {
-        // Given
-        ValueFormat valueFormat = ValueFormat.Raw;
+    // When
+    sampledValue.setFormat(valueFormat);
 
-        // When
-        sampledValue.setFormat(valueFormat);
+    // Then
+    assertThat(sampledValue.getFormat(), equalTo(valueFormat));
+  }
 
-        // Then
-        assertThat(sampledValue.getFormat(), equalTo(valueFormat));
-    }
+  @Test
+  public void getFormat_returnRaw() {
+    // Given
+    ValueFormat expected = ValueFormat.Raw;
 
-    @Test
-    public void getFormat_returnRaw() {
-        // Given
-        ValueFormat expected = ValueFormat.Raw;
+    // When
+    ValueFormat format = sampledValue.getFormat();
 
-        // When
-        ValueFormat format = sampledValue.getFormat();
+    // Then
+    assertThat(format, equalTo(expected));
+  }
 
-        // Then
-        assertThat(format, equalTo(expected));
-    }
+  @Test
+  public void setMeasurand_illegalValue_throwsPropertyConstraintException() {
+    thrownException.expect(instanceOf(PropertyConstraintException.class));
+    thrownException.expectMessage(
+        equalTo(
+            "Validation failed: [measurand value is not properly defined]. Current Value: [some measurand]"));
 
-    @Test
-    public void setMeasurand_illegalValue_throwsPropertyConstraintException() {
-        thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo("Validation failed: [measurand value is not properly defined]. Current Value: [some measurand]"));
+    String illegalValue = "some measurand";
 
-        String illegalValue = "some measurand";
+    sampledValue.setMeasurand(illegalValue);
+  }
 
-        sampledValue.setMeasurand(illegalValue);
-    }
-
-    @Test
-    public void setMeasurand_currentExport_measurandIsSet() {
-        // Given
-        String measurand = "Current.Export";
+  @Test
+  public void setMeasurand_currentExport_measurandIsSet() {
+    // Given
+    String measurand = "Current.Export";
 
-        // When
-        sampledValue.setMeasurand(measurand);
-
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
-
-    @Test
-    public void setMeasurand_currentImport_measurandIsSet() {
-        // Given
-        String measurand = "Current.Import";
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // When
-        sampledValue.setMeasurand(measurand);
-
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
-
-    @Test
-    public void setMeasurand_currentOffered_measurandIsSet() {
-        // Given
-        String measurand = "Current.Offered";
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-        // When
-        sampledValue.setMeasurand(measurand);
-
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
-
-    @Test
-    public void setMeasurand_energyActiveExportRegister_measurandIsSet() {
-        // Given
-        String measurand = "Energy.Active.Export.Register";
+  @Test
+  public void setMeasurand_currentImport_measurandIsSet() {
+    // Given
+    String measurand = "Current.Import";
 
-        // When
-        sampledValue.setMeasurand(measurand);
-
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
-
-    @Test
-    public void setMeasurand_energyActiveImportRegister_measurandIsSet() {
-        // Given
-        String measurand = "Energy.Active.Import.Register";
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // When
-        sampledValue.setMeasurand(measurand);
-
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
-
-    @Test
-    public void setMeasurand_energyReactiveExportRegister_measurandIsSet() {
-        // Given
-        String measurand = "Energy.Reactive.Export.Register";
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-        // When
-        sampledValue.setMeasurand(measurand);
-
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
-
-    @Test
-    public void setMeasurand_energyReactiveImportRegister_measurandIsSet() {
-        // Given
-        String measurand = "Energy.Reactive.Import.Register";
+  @Test
+  public void setMeasurand_currentOffered_measurandIsSet() {
+    // Given
+    String measurand = "Current.Offered";
 
-        // When
-        sampledValue.setMeasurand(measurand);
-
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
-
-    @Test
-    public void setMeasurand_energyActiveExportInterval_measurandIsSet() {
-        // Given
-        String measurand = "Energy.Active.Export.Interval";
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // When
-        sampledValue.setMeasurand(measurand);
-
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
-
-    @Test
-    public void setMeasurand_energyActiveImportInterval_measurandIsSet() {
-        // Given
-        String measurand = "Energy.Active.Import.Interval";
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-        // When
-        sampledValue.setMeasurand(measurand);
-
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
-
-    @Test
-    public void setMeasurand_energyReactiveExportInterval_measurandIsSet() {
-        // Given
-        String measurand = "Energy.Reactive.Export.Interval";
+  @Test
+  public void setMeasurand_energyActiveExportRegister_measurandIsSet() {
+    // Given
+    String measurand = "Energy.Active.Export.Register";
 
-        // When
-        sampledValue.setMeasurand(measurand);
-
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
-
-    @Test
-    public void setMeasurand_energyReactiveImportInterval_measurandIsSet() {
-        // Given
-        String measurand = "Energy.Reactive.Import.Interval";
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // When
-        sampledValue.setMeasurand(measurand);
-
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
-
-    @Test
-    public void setMeasurand_frequency_measurandIsSet() {
-        // Given
-        String measurand = "Frequency";
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-        // When
-        sampledValue.setMeasurand(measurand);
-
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
-
-    @Test
-    public void setMeasurand_powerActiveExport_measurandIsSet() {
-        // Given
-        String measurand = "Power.Active.Export";
+  @Test
+  public void setMeasurand_energyActiveImportRegister_measurandIsSet() {
+    // Given
+    String measurand = "Energy.Active.Import.Register";
 
-        // When
-        sampledValue.setMeasurand(measurand);
-
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
-
-    @Test
-    public void setMeasurand_powerActiveImport_measurandIsSet() {
-        // Given
-        String measurand = "Power.Active.Import";
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // When
-        sampledValue.setMeasurand(measurand);
-
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
-
-    @Test
-    public void setMeasurand_powerFactor_measurandIsSet() {
-        // Given
-        String measurand = "Power.Factor";
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-        // When
-        sampledValue.setMeasurand(measurand);
-
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
-
-    @Test
-    public void setMeasurand_powerOffered_measurandIsSet() {
-        // Given
-        String measurand = "Power.Offered";
+  @Test
+  public void setMeasurand_energyReactiveExportRegister_measurandIsSet() {
+    // Given
+    String measurand = "Energy.Reactive.Export.Register";
 
-        // When
-        sampledValue.setMeasurand(measurand);
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-    @Test
-    public void setMeasurand_powerReactiveExport_measurandIsSet() {
-        // Given
-        String measurand = "Power.Reactive.Export";
+  @Test
+  public void setMeasurand_energyReactiveImportRegister_measurandIsSet() {
+    // Given
+    String measurand = "Energy.Reactive.Import.Register";
 
-        // When
-        sampledValue.setMeasurand(measurand);
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-    @Test
-    public void setMeasurand_powerReactiveImport_measurandIsSet() {
-        // Given
-        String measurand = "Power.Reactive.Import";
+  @Test
+  public void setMeasurand_energyActiveExportInterval_measurandIsSet() {
+    // Given
+    String measurand = "Energy.Active.Export.Interval";
 
-        // When
-        sampledValue.setMeasurand(measurand);
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-    @Test
-    public void setMeasurand_rpm_measurandIsSet() {
-        // Given
-        String measurand = "RPM";
+  @Test
+  public void setMeasurand_energyActiveImportInterval_measurandIsSet() {
+    // Given
+    String measurand = "Energy.Active.Import.Interval";
 
-        // When
-        sampledValue.setMeasurand(measurand);
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-    @Test
-    public void setMeasurand_soc_measurandIsSet() {
-        // Given
-        String measurand = "SoC";
+  @Test
+  public void setMeasurand_energyReactiveExportInterval_measurandIsSet() {
+    // Given
+    String measurand = "Energy.Reactive.Export.Interval";
 
-        // When
-        sampledValue.setMeasurand(measurand);
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-    @Test
-    public void setMeasurand_temperature_measurandIsSet() {
-        // Given
-        String measurand = "Temperature";
+  @Test
+  public void setMeasurand_energyReactiveImportInterval_measurandIsSet() {
+    // Given
+    String measurand = "Energy.Reactive.Import.Interval";
 
-        // When
-        sampledValue.setMeasurand(measurand);
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-    @Test
-    public void setMeasurand_voltage_measurandIsSet() {
-        // Given
-        String measurand = "Voltage";
+  @Test
+  public void setMeasurand_frequency_measurandIsSet() {
+    // Given
+    String measurand = "Frequency";
 
-        // When
-        sampledValue.setMeasurand(measurand);
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // Then
-        assertThat(sampledValue.getMeasurand(), equalTo(measurand));
-    }
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-    @Test
-    public void getMeasurand_returnEnergyActiveImportRegister() {
-        // Given
-        String expected = "Energy.Active.Import.Register";
+  @Test
+  public void setMeasurand_powerActiveExport_measurandIsSet() {
+    // Given
+    String measurand = "Power.Active.Export";
 
-        // When
-        String measurand = sampledValue.getMeasurand();
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // Then
-        assertThat(measurand, equalTo(expected));
-    }
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-    @Test
-    public void setPhase_illegalValue_throwsPropertyConstraintException() {
-        thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo("Validation failed: [phase is not properly defined]. Current Value: [some phase]"));
+  @Test
+  public void setMeasurand_powerActiveImport_measurandIsSet() {
+    // Given
+    String measurand = "Power.Active.Import";
 
-        String illegalValue = "some phase";
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        sampledValue.setPhase(illegalValue);
-    }
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-    @Test
-    public void setPhase_l1_phaseIsSet() {
-        // Given
-        String phase = "L1";
+  @Test
+  public void setMeasurand_powerFactor_measurandIsSet() {
+    // Given
+    String measurand = "Power.Factor";
 
-        // When
-        sampledValue.setPhase(phase);
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // Then
-        assertThat(sampledValue.getPhase(), equalTo(phase));
-    }
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-    @Test
-    public void setPhase_l2_phaseIsSet() {
-        // Given
-        String phase = "L2";
+  @Test
+  public void setMeasurand_powerOffered_measurandIsSet() {
+    // Given
+    String measurand = "Power.Offered";
 
-        // When
-        sampledValue.setPhase(phase);
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // Then
-        assertThat(sampledValue.getPhase(), equalTo(phase));
-    }
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-    @Test
-    public void setPhase_l3_phaseIsSet() {
-        // Given
-        String phase = "L3";
+  @Test
+  public void setMeasurand_powerReactiveExport_measurandIsSet() {
+    // Given
+    String measurand = "Power.Reactive.Export";
 
-        // When
-        sampledValue.setPhase(phase);
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // Then
-        assertThat(sampledValue.getPhase(), equalTo(phase));
-    }
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-    @Test
-    public void setPhase_n_phaseIsSet() {
-        // Given
-        String phase = "N";
+  @Test
+  public void setMeasurand_powerReactiveImport_measurandIsSet() {
+    // Given
+    String measurand = "Power.Reactive.Import";
 
-        // When
-        sampledValue.setPhase(phase);
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // Then
-        assertThat(sampledValue.getPhase(), equalTo(phase));
-    }
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-    @Test
-    public void setPhase_l1N_phaseIsSet() {
-        // Given
-        String phase = "L1-N";
+  @Test
+  public void setMeasurand_rpm_measurandIsSet() {
+    // Given
+    String measurand = "RPM";
 
-        // When
-        sampledValue.setPhase(phase);
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // Then
-        assertThat(sampledValue.getPhase(), equalTo(phase));
-    }
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-    @Test
-    public void setPhase_l2N_phaseIsSet() {
-        // Given
-        String phase = "L2-N";
+  @Test
+  public void setMeasurand_soc_measurandIsSet() {
+    // Given
+    String measurand = "SoC";
 
-        // When
-        sampledValue.setPhase(phase);
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // Then
-        assertThat(sampledValue.getPhase(), equalTo(phase));
-    }
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-    @Test
-    public void setPhase_l3N_phaseIsSet() {
-        // Given
-        String phase = "L3-N";
+  @Test
+  public void setMeasurand_temperature_measurandIsSet() {
+    // Given
+    String measurand = "Temperature";
 
-        // When
-        sampledValue.setPhase(phase);
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // Then
-        assertThat(sampledValue.getPhase(), equalTo(phase));
-    }
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-    @Test
-    public void setPhase_l1L2_phaseIsSet() {
-        // Given
-        String phase = "L1-L2";
+  @Test
+  public void setMeasurand_voltage_measurandIsSet() {
+    // Given
+    String measurand = "Voltage";
 
-        // When
-        sampledValue.setPhase(phase);
+    // When
+    sampledValue.setMeasurand(measurand);
 
-        // Then
-        assertThat(sampledValue.getPhase(), equalTo(phase));
-    }
+    // Then
+    assertThat(sampledValue.getMeasurand(), equalTo(measurand));
+  }
 
-    @Test
-    public void setPhase_l2L3_phaseIsSet() {
-        // Given
-        String phase = "L2-L3";
+  @Test
+  public void getMeasurand_returnEnergyActiveImportRegister() {
+    // Given
+    String expected = "Energy.Active.Import.Register";
 
-        // When
-        sampledValue.setPhase(phase);
+    // When
+    String measurand = sampledValue.getMeasurand();
 
-        // Then
-        assertThat(sampledValue.getPhase(), equalTo(phase));
-    }
+    // Then
+    assertThat(measurand, equalTo(expected));
+  }
 
-    @Test
-    public void setPhase_l3L1_phaseIsSet() {
-        // Given
-        String phase = "L3-L1";
+  @Test
+  public void setPhase_illegalValue_throwsPropertyConstraintException() {
+    thrownException.expect(instanceOf(PropertyConstraintException.class));
+    thrownException.expectMessage(
+        equalTo("Validation failed: [phase is not properly defined]. Current Value: [some phase]"));
 
-        // When
-        sampledValue.setPhase(phase);
+    String illegalValue = "some phase";
 
-        // Then
-        assertThat(sampledValue.getPhase(), equalTo(phase));
-    }
+    sampledValue.setPhase(illegalValue);
+  }
 
-    @Test
-    public void setLocation_location_locationIsSet() {
-        // Given
-        Location location = Location.Outlet;
+  @Test
+  public void setPhase_l1_phaseIsSet() {
+    // Given
+    String phase = "L1";
 
-        // When
-        sampledValue.setLocation(location);
+    // When
+    sampledValue.setPhase(phase);
 
-        // Then
-        assertThat(sampledValue.getLocation(), equalTo(location));
-    }
+    // Then
+    assertThat(sampledValue.getPhase(), equalTo(phase));
+  }
 
-    @Test
-    public void getLocation_returnOutlet() {
-        // Given
-        Location expected = Location.Outlet;
+  @Test
+  public void setPhase_l2_phaseIsSet() {
+    // Given
+    String phase = "L2";
 
-        // When
-        Location location = sampledValue.getLocation();
+    // When
+    sampledValue.setPhase(phase);
 
-        // Then
-        assertThat(location, equalTo(expected));
-    }
+    // Then
+    assertThat(sampledValue.getPhase(), equalTo(phase));
+  }
 
-    @Test
-    public void setUnit_illegalValue_throwsPropertyConstraintException() {
-        thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo("Validation failed: [unit is not properly defined]. Current Value: [Some unit]"));
+  @Test
+  public void setPhase_l3_phaseIsSet() {
+    // Given
+    String phase = "L3";
 
-        String illegalValue = "Some unit";
+    // When
+    sampledValue.setPhase(phase);
 
-        sampledValue.setUnit(illegalValue);
-    }
+    // Then
+    assertThat(sampledValue.getPhase(), equalTo(phase));
+  }
 
-    @Test
-    public void setUnit_wh_unitIsSet() {
-        // Given
-        String unitOfMeasure = "Wh";
+  @Test
+  public void setPhase_n_phaseIsSet() {
+    // Given
+    String phase = "N";
 
-        // When
-        sampledValue.setUnit(unitOfMeasure);
+    // When
+    sampledValue.setPhase(phase);
 
-        // Then
-        assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
-    }
+    // Then
+    assertThat(sampledValue.getPhase(), equalTo(phase));
+  }
 
-    @Test
-    public void setUnit_kwh_unitIsSet() {
-        // Given
-        String unitOfMeasure = "kWh";
+  @Test
+  public void setPhase_l1N_phaseIsSet() {
+    // Given
+    String phase = "L1-N";
 
-        // When
-        sampledValue.setUnit(unitOfMeasure);
+    // When
+    sampledValue.setPhase(phase);
 
-        // Then
-        assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
-    }
+    // Then
+    assertThat(sampledValue.getPhase(), equalTo(phase));
+  }
 
-    @Test
-    public void setUnit_varh_unitIsSet() {
-        // Given
-        String unitOfMeasure = "varh";
+  @Test
+  public void setPhase_l2N_phaseIsSet() {
+    // Given
+    String phase = "L2-N";
 
-        // When
-        sampledValue.setUnit(unitOfMeasure);
+    // When
+    sampledValue.setPhase(phase);
 
-        // Then
-        assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
-    }
+    // Then
+    assertThat(sampledValue.getPhase(), equalTo(phase));
+  }
 
-    @Test
-    public void setUnit_kvarh_unitIsSet() {
-        // Given
-        String unitOfMeasure = "kvarh";
+  @Test
+  public void setPhase_l3N_phaseIsSet() {
+    // Given
+    String phase = "L3-N";
 
-        // When
-        sampledValue.setUnit(unitOfMeasure);
+    // When
+    sampledValue.setPhase(phase);
 
-        // Then
-        assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
-    }
+    // Then
+    assertThat(sampledValue.getPhase(), equalTo(phase));
+  }
 
-    @Test
-    public void setUnit_w_unitIsSet() {
-        // Given
-        String unitOfMeasure = "W";
+  @Test
+  public void setPhase_l1L2_phaseIsSet() {
+    // Given
+    String phase = "L1-L2";
 
-        // When
-        sampledValue.setUnit(unitOfMeasure);
+    // When
+    sampledValue.setPhase(phase);
 
-        // Then
-        assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
-    }
+    // Then
+    assertThat(sampledValue.getPhase(), equalTo(phase));
+  }
 
-    @Test
-    public void setUnit_kw_unitIsSet() {
-        // Given
-        String unitOfMeasure = "kW";
+  @Test
+  public void setPhase_l2L3_phaseIsSet() {
+    // Given
+    String phase = "L2-L3";
 
-        // When
-        sampledValue.setUnit(unitOfMeasure);
+    // When
+    sampledValue.setPhase(phase);
 
-        // Then
-        assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
-    }
+    // Then
+    assertThat(sampledValue.getPhase(), equalTo(phase));
+  }
 
-    @Test
-    public void setUnit_va_unitIsSet() {
-        // Given
-        String unitOfMeasure = "VA";
+  @Test
+  public void setPhase_l3L1_phaseIsSet() {
+    // Given
+    String phase = "L3-L1";
 
-        // When
-        sampledValue.setUnit(unitOfMeasure);
+    // When
+    sampledValue.setPhase(phase);
 
-        // Then
-        assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
-    }
+    // Then
+    assertThat(sampledValue.getPhase(), equalTo(phase));
+  }
 
-    @Test
-    public void setUnit_kva_unitIsSet() {
-        // Given
-        String unitOfMeasure = "kVA";
+  @Test
+  public void setLocation_location_locationIsSet() {
+    // Given
+    Location location = Location.Outlet;
 
-        // When
-        sampledValue.setUnit(unitOfMeasure);
+    // When
+    sampledValue.setLocation(location);
 
-        // Then
-        assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
-    }
+    // Then
+    assertThat(sampledValue.getLocation(), equalTo(location));
+  }
 
-    @Test
-    public void setUnit_var_unitIsSet() {
-        // Given
-        String unitOfMeasure = "var";
+  @Test
+  public void getLocation_returnOutlet() {
+    // Given
+    Location expected = Location.Outlet;
 
-        // When
-        sampledValue.setUnit(unitOfMeasure);
+    // When
+    Location location = sampledValue.getLocation();
 
-        // Then
-        assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
-    }
+    // Then
+    assertThat(location, equalTo(expected));
+  }
 
-    @Test
-    public void setUnit_kvar_unitIsSet() {
-        // Given
-        String unitOfMeasure = "kvar";
+  @Test
+  public void setUnit_illegalValue_throwsPropertyConstraintException() {
+    thrownException.expect(instanceOf(PropertyConstraintException.class));
+    thrownException.expectMessage(
+        equalTo("Validation failed: [unit is not properly defined]. Current Value: [Some unit]"));
 
-        // When
-        sampledValue.setUnit(unitOfMeasure);
+    String illegalValue = "Some unit";
 
-        // Then
-        assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
-    }
+    sampledValue.setUnit(illegalValue);
+  }
 
-    @Test
-    public void setUnit_a_unitIsSet() {
-        // Given
-        String unitOfMeasure = "A";
+  @Test
+  public void setUnit_wh_unitIsSet() {
+    // Given
+    String unitOfMeasure = "Wh";
 
-        // When
-        sampledValue.setUnit(unitOfMeasure);
+    // When
+    sampledValue.setUnit(unitOfMeasure);
 
-        // Then
-        assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
-    }
+    // Then
+    assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
+  }
 
-    @Test
-    public void setUnit_v_unitIsSet() {
-        // Given
-        String unitOfMeasure = "V";
+  @Test
+  public void setUnit_kwh_unitIsSet() {
+    // Given
+    String unitOfMeasure = "kWh";
 
-        // When
-        sampledValue.setUnit(unitOfMeasure);
+    // When
+    sampledValue.setUnit(unitOfMeasure);
 
-        // Then
-        assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
-    }
+    // Then
+    assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
+  }
 
-    @Test
-    public void setUnit_celsius_unitIsSet() {
-        // Given
-        String unitOfMeasure = "Celsius";
+  @Test
+  public void setUnit_varh_unitIsSet() {
+    // Given
+    String unitOfMeasure = "varh";
 
-        // When
-        sampledValue.setUnit(unitOfMeasure);
+    // When
+    sampledValue.setUnit(unitOfMeasure);
 
-        // Then
-        assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
-    }
+    // Then
+    assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
+  }
 
-    @Test
-    public void setUnit_fahrenheit_unitIsSet() {
-        // Given
-        String unitOfMeasure = "Fahrenheit";
+  @Test
+  public void setUnit_kvarh_unitIsSet() {
+    // Given
+    String unitOfMeasure = "kvarh";
 
-        // When
-        sampledValue.setUnit(unitOfMeasure);
+    // When
+    sampledValue.setUnit(unitOfMeasure);
 
-        // Then
-        assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
-    }
+    // Then
+    assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
+  }
 
-    @Test
-    public void setUnit_k_unitIsSet() {
-        // Given
-        String unitOfMeasure = "K";
+  @Test
+  public void setUnit_w_unitIsSet() {
+    // Given
+    String unitOfMeasure = "W";
 
-        // When
-        sampledValue.setUnit(unitOfMeasure);
+    // When
+    sampledValue.setUnit(unitOfMeasure);
 
-        // Then
-        assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
-    }
+    // Then
+    assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
+  }
 
-    @Test
-    public void setUnit_percent_unitIsSet() {
-        // Given
-        String unitOfMeasure = "Percent";
+  @Test
+  public void setUnit_kw_unitIsSet() {
+    // Given
+    String unitOfMeasure = "kW";
 
-        // When
-        sampledValue.setUnit(unitOfMeasure);
+    // When
+    sampledValue.setUnit(unitOfMeasure);
 
-        // Then
-        assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
-    }
+    // Then
+    assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
+  }
 
-    @Test
-    public void getUnit_returnEnergy() {
-        // Given
-        String expected = "Wh";
+  @Test
+  public void setUnit_va_unitIsSet() {
+    // Given
+    String unitOfMeasure = "VA";
 
-        // When
-        String unit = sampledValue.getUnit();
+    // When
+    sampledValue.setUnit(unitOfMeasure);
 
-        // Then
-        assertThat(unit, equalTo(expected));
-    }
+    // Then
+    assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
+  }
+
+  @Test
+  public void setUnit_kva_unitIsSet() {
+    // Given
+    String unitOfMeasure = "kVA";
+
+    // When
+    sampledValue.setUnit(unitOfMeasure);
+
+    // Then
+    assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
+  }
+
+  @Test
+  public void setUnit_var_unitIsSet() {
+    // Given
+    String unitOfMeasure = "var";
+
+    // When
+    sampledValue.setUnit(unitOfMeasure);
+
+    // Then
+    assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
+  }
+
+  @Test
+  public void setUnit_kvar_unitIsSet() {
+    // Given
+    String unitOfMeasure = "kvar";
+
+    // When
+    sampledValue.setUnit(unitOfMeasure);
+
+    // Then
+    assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
+  }
+
+  @Test
+  public void setUnit_a_unitIsSet() {
+    // Given
+    String unitOfMeasure = "A";
+
+    // When
+    sampledValue.setUnit(unitOfMeasure);
+
+    // Then
+    assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
+  }
+
+  @Test
+  public void setUnit_v_unitIsSet() {
+    // Given
+    String unitOfMeasure = "V";
+
+    // When
+    sampledValue.setUnit(unitOfMeasure);
+
+    // Then
+    assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
+  }
+
+  @Test
+  public void setUnit_celsius_unitIsSet() {
+    // Given
+    String unitOfMeasure = "Celsius";
+
+    // When
+    sampledValue.setUnit(unitOfMeasure);
+
+    // Then
+    assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
+  }
+
+  @Test
+  public void setUnit_fahrenheit_unitIsSet() {
+    // Given
+    String unitOfMeasure = "Fahrenheit";
+
+    // When
+    sampledValue.setUnit(unitOfMeasure);
+
+    // Then
+    assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
+  }
+
+  @Test
+  public void setUnit_k_unitIsSet() {
+    // Given
+    String unitOfMeasure = "K";
+
+    // When
+    sampledValue.setUnit(unitOfMeasure);
+
+    // Then
+    assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
+  }
+
+  @Test
+  public void setUnit_percent_unitIsSet() {
+    // Given
+    String unitOfMeasure = "Percent";
+
+    // When
+    sampledValue.setUnit(unitOfMeasure);
+
+    // Then
+    assertThat(sampledValue.getUnit(), equalTo(unitOfMeasure));
+  }
+
+  @Test
+  public void getUnit_returnEnergy() {
+    // Given
+    String expected = "Wh";
+
+    // When
+    String unit = sampledValue.getUnit();
+
+    // Then
+    assertThat(unit, equalTo(expected));
+  }
 }

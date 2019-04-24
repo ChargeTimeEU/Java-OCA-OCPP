@@ -1,19 +1,18 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.core.GetConfigurationRequest;
-import eu.chargetime.ocpp.utilities.TestUtilities;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 import static eu.chargetime.ocpp.utilities.TestUtilities.aString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.core.GetConfigurationRequest;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -42,74 +41,75 @@ import static org.junit.Assert.assertThat;
  */
 public class GetConfigurationRequestTest {
 
-    @Rule
-    public ExpectedException thrownException = ExpectedException.none();
+  @Rule public ExpectedException thrownException = ExpectedException.none();
 
-    private GetConfigurationRequest request;
+  private GetConfigurationRequest request;
 
-    @Before
-    public void setUp() {
-        request = new GetConfigurationRequest();
-    }
+  @Before
+  public void setUp() {
+    request = new GetConfigurationRequest();
+  }
 
-    @Test
-    public void setKey_stringLength51_throwsPropertyConstraintException() {
-        thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo("Validation failed: [Exceeds limit of 50 chars]. Current Value: [51]"));
+  @Test
+  public void setKey_stringLength51_throwsPropertyConstraintException() {
+    thrownException.expect(instanceOf(PropertyConstraintException.class));
+    thrownException.expectMessage(
+        equalTo("Validation failed: [Exceeds limit of 50 chars]. Current Value: [51]"));
 
-        String[] aList = aList(aString(51));
-        request.setKey(aList);
-    }
+    String[] aList = aList(aString(51));
+    request.setKey(aList);
+  }
 
-    @Test
-    public void setKey_stringLength50_keyIsSet() {
-        // Given
-        String[] aList = aList(aString(50));
+  @Test
+  public void setKey_stringLength50_keyIsSet() {
+    // Given
+    String[] aList = aList(aString(50));
 
-        // When
-        request.setKey(aList);
+    // When
+    request.setKey(aList);
 
-        // Then
-        assertThat(request.getKey(), equalTo(aList));
-    }
+    // Then
+    assertThat(request.getKey(), equalTo(aList));
+  }
 
-    @Test
-    public void setKey_listWithOneStringLength51_throwsPropertyConstraintException() {
-        thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(equalTo("Validation failed: [Exceeds limit of 50 chars]. Current Value: [51]"));
+  @Test
+  public void setKey_listWithOneStringLength51_throwsPropertyConstraintException() {
+    thrownException.expect(instanceOf(PropertyConstraintException.class));
+    thrownException.expectMessage(
+        equalTo("Validation failed: [Exceeds limit of 50 chars]. Current Value: [51]"));
 
-        String[] aList = aList(aString(50), aString(51), aString(50));
+    String[] aList = aList(aString(50), aString(51), aString(50));
 
-        request.setKey(aList);
-    }
+    request.setKey(aList);
+  }
 
-    @Test
-    public void setKey_listWithStringLength50_keyIsSet() {
-        // Given
-        String[] aList = aList(aString(50), aString(50), aString(50));
+  @Test
+  public void setKey_listWithStringLength50_keyIsSet() {
+    // Given
+    String[] aList = aList(aString(50), aString(50), aString(50));
 
-        // When
-        request.setKey(aList);
+    // When
+    request.setKey(aList);
 
-        // Then
-        assertThat(request.getKey(), equalTo(aList));
-    }
+    // Then
+    assertThat(request.getKey(), equalTo(aList));
+  }
 
-    @Test
-    public void validate_returnTrue() {
-        // When
-        boolean isValid = request.validate();
+  @Test
+  public void validate_returnTrue() {
+    // When
+    boolean isValid = request.validate();
 
-        // Then
-        assertThat(isValid, is(true));
-    }
+    // Then
+    assertThat(isValid, is(true));
+  }
 
-    @Test
-    public void isTransactionRelated_returnsFalse() {
-        // When
-        boolean isTransactionRelated = request.transactionRelated();
+  @Test
+  public void isTransactionRelated_returnsFalse() {
+    // When
+    boolean isTransactionRelated = request.transactionRelated();
 
-        // Then
-        assertThat(isTransactionRelated, is(false));
-    }
+    // Then
+    assertThat(isTransactionRelated, is(false));
+  }
 }
