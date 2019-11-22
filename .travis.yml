@@ -10,16 +10,16 @@ notifications:
     on_start: never     # options: [always|never|change] default: always
 
 jobs:
-  script: "chmod +x gradlew"
   include:
     - stage: test
       jdk: openjdk8
+      script: "chmod +x gradlew"
       script: "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report -B"
       after_success:
         - bash <(curl -s https://codecov.io/bash)
     - stage: integration
       jdk: openjdk8
-      script: mvn integration-test -B
+      script: "mvn integration-test -B"
 
 #deploy:
 #  provider: script
