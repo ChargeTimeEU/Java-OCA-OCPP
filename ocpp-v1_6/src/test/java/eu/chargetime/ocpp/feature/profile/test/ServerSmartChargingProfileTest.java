@@ -110,8 +110,12 @@ public class ServerSmartChargingProfileTest extends ProfileTest {
 
   @Test
   public void createClearCacheRequest_returnsValidClearCacheRequest() {
+    Integer id = 1;
+    Integer connectorId = 3;
+    ChargingProfilePurposeType chargingProfilePurposeType = ChargingProfilePurposeType.TxProfile;
+    Integer stackLevel = 4;
     // When
-    ClearChargingProfileRequest result = smartCharging.createClearChargingProfileRequest();
+    ClearChargingProfileRequest result = smartCharging.createClearChargingProfileRequest(id, connectorId, chargingProfilePurposeType, stackLevel);
 
     // Then
     assertThat(result.validate(), is(true));

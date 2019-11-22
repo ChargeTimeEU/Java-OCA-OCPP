@@ -1,9 +1,6 @@
 package eu.chargetime.ocpp.feature.profile;
 
-import eu.chargetime.ocpp.feature.ClearChargingProfileFeature;
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.feature.ProfileFeature;
-import eu.chargetime.ocpp.feature.SetChargingProfileFeature;
+import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.smartcharging.ClearChargingProfileRequest;
@@ -47,6 +44,7 @@ public class ClientSmartChargingProfile implements Profile {
     eventHandler = handler;
 
     features.add(new SetChargingProfileFeature(this));
+    features.add(new GetCompositeSchedule(this));
     features.add(new ClearChargingProfileFeature(this));
   }
 

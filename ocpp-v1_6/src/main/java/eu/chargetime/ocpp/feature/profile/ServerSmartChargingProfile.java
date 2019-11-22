@@ -1,14 +1,15 @@
 package eu.chargetime.ocpp.feature.profile;
 
-import eu.chargetime.ocpp.feature.ClearChargingProfileFeature;
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.feature.ProfileFeature;
-import eu.chargetime.ocpp.feature.SetChargingProfileFeature;
+import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.ChargingProfile;
+import eu.chargetime.ocpp.model.core.ChargingProfilePurposeType;
+import eu.chargetime.ocpp.model.smartcharging.ChangingRateUnitType;
 import eu.chargetime.ocpp.model.smartcharging.ClearChargingProfileRequest;
+import eu.chargetime.ocpp.model.smartcharging.GetCompositeScheduleRequest;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
+
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -47,6 +48,7 @@ public class ServerSmartChargingProfile implements Profile {
   public ServerSmartChargingProfile() {
     features = new HashSet<>();
     features.add(new SetChargingProfileFeature(this));
+    features.add(new GetCompositeSchedule(this));
     features.add(new ClearChargingProfileFeature(this));
   }
 
@@ -61,14 +63,24 @@ public class ServerSmartChargingProfile implements Profile {
   }
 
   public SetChargingProfileRequest createSetChargingProfileRequest(
-      int connectorId, ChargingProfile profile) {
+      Integer connectorId, ChargingProfile profile) {
     SetChargingProfileRequest request = new SetChargingProfileRequest();
     request.setConnectorId(connectorId);
     request.setCsChargingProfiles(profile);
     return request;
   }
 
-  public ClearChargingProfileRequest createClearChargingProfileRequest() {
-    return new ClearChargingProfileRequest();
+  public ClearChargingProfileRequest createClearChargingProfileRequest(Integer id, Integer connectorId, ChargingProfilePurposeType chargingProfilePurposeType, Integer stackLevel) {
+    ClearChargingProfileRequest request = new ClearChargingProfileRequest();
+    request.setChargingProfilePurpose(chargingProfilePurposeType);
+    request.setConnectorId(connectorId);
+    request.setId(id);
+    request.setConnectorId(connectorId);
+
+    return request;
+  }
+
+  public GetCompositeScheduleRequest createGetCompositeSchedule(Integer connectorId, Integer duration, ChangingRateUnitType changingRateUnitType) {
+    return new GetCompositeScheduleRequest(connectorId, duration, changingRateUnitType);
   }
 }

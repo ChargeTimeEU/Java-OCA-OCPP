@@ -25,9 +25,17 @@ package eu.chargetime.ocpp.feature.profile;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.GetLocalListVersionFeature;
+import eu.chargetime.ocpp.feature.ProfileFeature;
+import eu.chargetime.ocpp.feature.SendLocalListFeature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.localauthlist.AuthorizationData;
+import eu.chargetime.ocpp.model.localauthlist.GetLocalListVersionRequest;
+import eu.chargetime.ocpp.model.localauthlist.SendLocalListRequest;
+import eu.chargetime.ocpp.model.localauthlist.UpdateType;
+
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -49,5 +57,15 @@ public class ServerLocalAuthListProfile implements Profile {
   @Override
   public Confirmation handleRequest(UUID sessionIndex, Request request) {
     return null;
+  }
+
+  public SendLocalListRequest createSendLocalListRequest(int listVersion, UpdateType updateType, AuthorizationData[] authorizationData) {
+    SendLocalListRequest sendLocalListRequest = new SendLocalListRequest(listVersion, updateType);
+    sendLocalListRequest.setLocalAuthorizationList(authorizationData);
+    return sendLocalListRequest;
+  }
+
+  public GetLocalListVersionRequest createGetLocalListVersionRequest() {
+    return new GetLocalListVersionRequest();
   }
 }

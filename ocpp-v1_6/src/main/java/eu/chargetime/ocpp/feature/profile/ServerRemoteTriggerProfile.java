@@ -7,6 +7,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
+
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -62,7 +63,7 @@ public class ServerRemoteTriggerProfile implements Profile {
   }
 
   public TriggerMessageRequest createTriggerMessageRequest(
-      TriggerMessageRequestType type, Integer connectorId) {
+          TriggerMessageRequestType type, Integer connectorId) {
     TriggerMessageRequest request = new TriggerMessageRequest(type);
     request.setConnectorId(connectorId);
     return request;
