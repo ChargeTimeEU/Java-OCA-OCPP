@@ -4,7 +4,9 @@ import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.ChargingProfile;
+import eu.chargetime.ocpp.model.smartcharging.ChangingRateUnitType;
 import eu.chargetime.ocpp.model.smartcharging.ClearChargingProfileRequest;
+import eu.chargetime.ocpp.model.smartcharging.GetCompositeScheduleRequest;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 
 import java.util.HashSet;
@@ -45,9 +47,9 @@ public class ServerSmartChargingProfile implements Profile {
 
     public ServerSmartChargingProfile() {
         features = new HashSet<>();
-        features.add(new SetChargingProfileFeature(this));
-        features.add(new GetCompositeScheduleFeature(this));
-        features.add(new ClearChargingProfileFeature(this));
+        features.add(new ClearChargingProfileFeature(null));
+        features.add(new GetCompositeScheduleFeature(null));
+        features.add(new SetChargingProfileFeature(null));
     }
 
     @Override
@@ -68,7 +70,12 @@ public class ServerSmartChargingProfile implements Profile {
         return request;
     }
 
-  public ClearChargingProfileRequest createClearChargingProfileRequest() {
-    return new ClearChargingProfileRequest();
-  }
+    public ClearChargingProfileRequest createClearChargingProfileRequest() {
+        return new ClearChargingProfileRequest();
+    }
+
+    public GetCompositeScheduleRequest createGetCompositeScheduleRequest(Integer connectorId, Integer duration, ChangingRateUnitType changingRateUnitType) {
+        return new GetCompositeScheduleRequest(connectorId, duration, changingRateUnitType);
+    }
+
 }
