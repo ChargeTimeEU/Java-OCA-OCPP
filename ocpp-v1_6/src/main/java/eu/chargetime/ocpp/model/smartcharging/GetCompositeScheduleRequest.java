@@ -36,20 +36,48 @@ import java.util.Objects;
 
 @XmlRootElement
 public class GetCompositeScheduleRequest implements Request {
+
     private Integer connectorId;
     private Integer duration;
     private ChangingRateUnitType changingRateUnitType;
 
-    public GetCompositeScheduleRequest(Integer connectorId, Integer duration, ChangingRateUnitType changingRateUnitType) {
-        this.connectorId = connectorId;
-        this.duration = duration;
-        this.changingRateUnitType = changingRateUnitType;
+    /**
+     * @deprecated use {@link #GetCompositeScheduleRequest(Integer, Integer)} to be sure to set required fields
+     */
+    @Deprecated
+    public GetCompositeScheduleRequest() {
+
     }
 
+    /**
+     * Handle required fields.
+     *
+     * @param connectorId Integer, see {@link #setConnectorId(Integer)}
+     * @param duration    Integer, see {@link #setDuration(Integer)}
+     */
+    public GetCompositeScheduleRequest(Integer connectorId, Integer duration) {
+        setConnectorId(connectorId);
+        setDuration(duration);
+    }
+
+    /**
+     * The ID of the Connector for which the schedule is
+     * requested. When ConnectorId=0, the Charge Point will calculate
+     * the expected consumption for the grid connection.
+     *
+     * @return ID of the connector.
+     */
     public Integer getConnectorId() {
         return connectorId;
     }
 
+    /**
+     * Required. The ID of the Connector for which the schedule is
+     * requested. When ConnectorId=0, the Charge Point will calculate
+     * the expected consumption for the grid connection.
+     *
+     * @param connectorId Integer
+     */
     @XmlElement
     public void setConnectorId(Integer connectorId) {
         if (connectorId == null || connectorId < 0) {
@@ -59,19 +87,39 @@ public class GetCompositeScheduleRequest implements Request {
         this.connectorId = connectorId;
     }
 
+    /**
+     * Time in seconds. length of requested schedule
+     *
+     * @return length of requested schedule
+     */
     public Integer getDuration() {
         return duration;
     }
 
+    /**
+     * Required. Time in seconds. length of requested schedule
+     *
+     * @param duration Integer
+     */
     @XmlElement
     public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
+    /**
+     * Can be used to force a power or current profile
+     *
+     * @return current profile
+     */
     public ChangingRateUnitType getChangingRateUnitType() {
         return changingRateUnitType;
     }
 
+    /**
+     * Optional. Can be used to force a power or current profile
+     *
+     * @param changingRateUnitType the {@link ChangingRateUnitType}
+     */
     @XmlElement
     public void setChangingRateUnitType(ChangingRateUnitType changingRateUnitType) {
         this.changingRateUnitType = changingRateUnitType;

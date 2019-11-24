@@ -7,16 +7,19 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
+
 import java.util.HashSet;
 import java.util.UUID;
 
 /*
 ChargeTime.eu - Java-OCA-OCPP
 Copyright (C) 2017 Emil Christopher Solli Melar <emil@iconsultable.no>
+Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
 MIT License
 
 Copyright (C) 2017 Emil Christopher Solli Melar
+Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -39,32 +42,49 @@ SOFTWARE.
 
 public class ServerRemoteTriggerProfile implements Profile {
 
-  private HashSet<Feature> features;
+    private HashSet<Feature> features;
 
-  public ServerRemoteTriggerProfile() {
+    public ServerRemoteTriggerProfile() {
 
-    features = new HashSet<>();
-    features.add(new TriggerMessageFeature(this));
-  }
+        features = new HashSet<>();
+        features.add(new TriggerMessageFeature(null));
+    }
 
-  @Override
-  public ProfileFeature[] getFeatureList() {
-    return features.toArray(new ProfileFeature[0]);
-  }
+    @Override
+    public ProfileFeature[] getFeatureList() {
+        return features.toArray(new ProfileFeature[0]);
+    }
 
-  @Override
-  public Confirmation handleRequest(UUID sessionIndex, Request request) {
-    return null;
-  }
+    @Override
+    public Confirmation handleRequest(UUID sessionIndex, Request request) {
+        return null;
+    }
 
-  public TriggerMessageRequest createTriggerMessageRequest(TriggerMessageRequestType type) {
-    return createTriggerMessageRequest(type, null);
-  }
+    /**
+     * Create a client {@link TriggerMessageRequest} with required values.
+     *
+     * @param triggerMessageRequestType {@link TriggerMessageRequestType}
+     * @return an instance of {@link TriggerMessageRequest}
+     * @see TriggerMessageRequest
+     * @see TriggerMessageFeature
+     */
+    public TriggerMessageRequest createTriggerMessageRequest(TriggerMessageRequestType triggerMessageRequestType) {
+        return createTriggerMessageRequest(triggerMessageRequestType, null);
+    }
 
-  public TriggerMessageRequest createTriggerMessageRequest(
-      TriggerMessageRequestType type, Integer connectorId) {
-    TriggerMessageRequest request = new TriggerMessageRequest(type);
-    request.setConnectorId(connectorId);
-    return request;
-  }
+    /**
+     * Create a client {@link TriggerMessageRequest} with required values.
+     *
+     * @param triggerMessageRequestType {@link TriggerMessageRequestType}
+     * @param connectorId               integer. value &gt; 0
+     * @return an instance of {@link TriggerMessageRequest}
+     * @see TriggerMessageRequest
+     * @see TriggerMessageFeature
+     */
+    public TriggerMessageRequest createTriggerMessageRequest(
+            TriggerMessageRequestType triggerMessageRequestType, Integer connectorId) {
+        TriggerMessageRequest request = new TriggerMessageRequest(triggerMessageRequestType);
+        request.setConnectorId(connectorId);
+        return request;
+    }
 }

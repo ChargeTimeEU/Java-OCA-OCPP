@@ -5,6 +5,7 @@ package eu.chargetime.ocpp.feature.profile;
    MIT License
 
    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+   Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -28,138 +29,178 @@ package eu.chargetime.ocpp.feature.profile;
 import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.core.AuthorizeRequest;
-import eu.chargetime.ocpp.model.core.AvailabilityType;
-import eu.chargetime.ocpp.model.core.BootNotificationRequest;
-import eu.chargetime.ocpp.model.core.ChangeAvailabilityRequest;
-import eu.chargetime.ocpp.model.core.ChangeConfigurationRequest;
-import eu.chargetime.ocpp.model.core.ClearCacheRequest;
-import eu.chargetime.ocpp.model.core.DataTransferRequest;
-import eu.chargetime.ocpp.model.core.GetConfigurationRequest;
-import eu.chargetime.ocpp.model.core.HeartbeatRequest;
-import eu.chargetime.ocpp.model.core.MeterValuesRequest;
-import eu.chargetime.ocpp.model.core.RemoteStartTransactionRequest;
-import eu.chargetime.ocpp.model.core.RemoteStopTransactionRequest;
-import eu.chargetime.ocpp.model.core.ResetRequest;
-import eu.chargetime.ocpp.model.core.ResetType;
-import eu.chargetime.ocpp.model.core.StartTransactionRequest;
-import eu.chargetime.ocpp.model.core.StatusNotificationRequest;
-import eu.chargetime.ocpp.model.core.StopTransactionRequest;
-import eu.chargetime.ocpp.model.core.UnlockConnectorRequest;
+import eu.chargetime.ocpp.model.core.*;
+
 import java.util.HashSet;
 import java.util.UUID;
 
 public class ServerCoreProfile implements Profile {
 
-  private ServerCoreEventHandler handler;
-  private HashSet<Feature> features;
+    private ServerCoreEventHandler handler;
+    private HashSet<Feature> features;
 
-  public ServerCoreProfile(ServerCoreEventHandler handler) {
-    this.handler = handler;
+    public ServerCoreProfile(ServerCoreEventHandler handler) {
+        this.handler = handler;
 
-    features = new HashSet<>();
-    features.add(new AuthorizeFeature(this));
-    features.add(new BootNotificationFeature(this));
-    features.add(new ChangeAvailabilityFeature(this));
-    features.add(new ChangeConfigurationFeature(this));
-    features.add(new ClearCacheFeature(this));
-    features.add(new DataTransferFeature(this));
-    features.add(new GetConfigurationFeature(this));
-    features.add(new HeartbeatFeature(this));
-    features.add(new MeterValuesFeature(this));
-    features.add(new RemoteStartTransactionFeature(this));
-    features.add(new RemoteStopTransactionFeature(this));
-    features.add(new ResetFeature(this));
-    features.add(new StartTransactionFeature(this));
-    features.add(new StatusNotificationFeature(this));
-    features.add(new StopTransactionFeature(this));
-    features.add(new UnlockConnectorFeature(this));
-  }
-
-  @Override
-  public ProfileFeature[] getFeatureList() {
-    return features.toArray(new ProfileFeature[0]);
-  }
-
-  @Override
-  public Confirmation handleRequest(UUID sessionIndex, Request request) {
-    Confirmation result = null;
-
-    if (request instanceof AuthorizeRequest) {
-      result = handler.handleAuthorizeRequest(sessionIndex, (AuthorizeRequest) request);
-    } else if (request instanceof BootNotificationRequest) {
-      result =
-          handler.handleBootNotificationRequest(sessionIndex, (BootNotificationRequest) request);
-    } else if (request instanceof DataTransferRequest) {
-      result = handler.handleDataTransferRequest(sessionIndex, (DataTransferRequest) request);
-    } else if (request instanceof HeartbeatRequest) {
-      result = handler.handleHeartbeatRequest(sessionIndex, (HeartbeatRequest) request);
-    } else if (request instanceof MeterValuesRequest) {
-      result = handler.handleMeterValuesRequest(sessionIndex, (MeterValuesRequest) request);
-    } else if (request instanceof StartTransactionRequest) {
-      result =
-          handler.handleStartTransactionRequest(sessionIndex, (StartTransactionRequest) request);
-    } else if (request instanceof StatusNotificationRequest) {
-      result =
-          handler.handleStatusNotificationRequest(
-              sessionIndex, (StatusNotificationRequest) request);
-    } else if (request instanceof StopTransactionRequest) {
-      result = handler.handleStopTransactionRequest(sessionIndex, (StopTransactionRequest) request);
+        features = new HashSet<>();
+        features.add(new AuthorizeFeature(this));
+        features.add(new BootNotificationFeature(this));
+        features.add(new ChangeAvailabilityFeature(null));
+        features.add(new ChangeConfigurationFeature(null));
+        features.add(new ClearCacheFeature(null));
+        features.add(new DataTransferFeature(null));
+        features.add(new GetConfigurationFeature(null));
+        features.add(new HeartbeatFeature(this));
+        features.add(new MeterValuesFeature(this));
+        features.add(new RemoteStartTransactionFeature(null));
+        features.add(new RemoteStopTransactionFeature(null));
+        features.add(new ResetFeature(null));
+        features.add(new StartTransactionFeature(this));
+        features.add(new StatusNotificationFeature(this));
+        features.add(new StopTransactionFeature(this));
+        features.add(new UnlockConnectorFeature(null));
     }
 
-    return result;
-  }
+    @Override
+    public ProfileFeature[] getFeatureList() {
+        return features.toArray(new ProfileFeature[0]);
+    }
 
-  public ChangeAvailabilityRequest createChangeAvailabilityRequest(
-      AvailabilityType type, int connectorId) {
-    ChangeAvailabilityRequest request = new ChangeAvailabilityRequest();
-    request.setType(type);
-    request.setConnectorId(connectorId);
-    return request;
-  }
+    @Override
+    public Confirmation handleRequest(UUID sessionIndex, Request request) {
+        Confirmation result = null;
 
-  public ChangeConfigurationRequest createChangeConfigurationRequest(String key, String value) {
-    ChangeConfigurationRequest request = new ChangeConfigurationRequest();
-    request.setKey(key);
-    request.setValue(value);
-    return request;
-  }
+        if (request instanceof AuthorizeRequest) {
+            result = handler.handleAuthorizeRequest(sessionIndex, (AuthorizeRequest) request);
+        } else if (request instanceof BootNotificationRequest) {
+            result =
+                    handler.handleBootNotificationRequest(sessionIndex, (BootNotificationRequest) request);
+        } else if (request instanceof DataTransferRequest) {
+            result = handler.handleDataTransferRequest(sessionIndex, (DataTransferRequest) request);
+        } else if (request instanceof HeartbeatRequest) {
+            result = handler.handleHeartbeatRequest(sessionIndex, (HeartbeatRequest) request);
+        } else if (request instanceof MeterValuesRequest) {
+            result = handler.handleMeterValuesRequest(sessionIndex, (MeterValuesRequest) request);
+        } else if (request instanceof StartTransactionRequest) {
+            result =
+                    handler.handleStartTransactionRequest(sessionIndex, (StartTransactionRequest) request);
+        } else if (request instanceof StatusNotificationRequest) {
+            result =
+                    handler.handleStatusNotificationRequest(
+                            sessionIndex, (StatusNotificationRequest) request);
+        } else if (request instanceof StopTransactionRequest) {
+            result = handler.handleStopTransactionRequest(sessionIndex, (StopTransactionRequest) request);
+        }
 
-  public ClearCacheRequest createClearCacheRequest() {
-    return new ClearCacheRequest();
-  }
+        return result;
+    }
 
-  public DataTransferRequest createDataTransferRequest(String vendorId) {
-    DataTransferRequest request = new DataTransferRequest();
-    request.setVendorId(vendorId);
-    return request;
-  }
+    /**
+     * Create a {@link ChangeAvailabilityRequest} with required values.
+     *
+     * @param connectorId integer, must be a non-negative number.
+     *                    * @param type the {@link AvailabilityType} of the connector.
+     * @return an instance of {@link ChangeAvailabilityRequest}.
+     * @see ChangeAvailabilityRequest
+     * @see ChangeAvailabilityFeature
+     */
+    public ChangeAvailabilityRequest createChangeAvailabilityRequest(
+            AvailabilityType type, int connectorId) {
+        return new ChangeAvailabilityRequest(connectorId, type);
+    }
 
-  public GetConfigurationRequest createGetConfigurationRequest() {
-    return new GetConfigurationRequest();
-  }
+    /**
+     * Create a client {@link ChangeConfigurationRequest} with required values.
+     *
+     * @param key   String, max 50 characters, case insensitive
+     * @param value String, max 500 characters, case insensitive
+     * @return an instance of {@link ChangeConfigurationRequest}
+     * @see ChangeConfigurationRequest
+     * @see ChangeConfigurationFeature
+     */
+    public ChangeConfigurationRequest createChangeConfigurationRequest(String key, String value) {
+        return new ChangeConfigurationRequest(key, value);
+    }
 
-  public RemoteStartTransactionRequest createRemoteStartTransactionRequest(String idToken) {
-    RemoteStartTransactionRequest request = new RemoteStartTransactionRequest();
-    request.setIdTag(idToken);
-    return request;
-  }
+    /**
+     * Create a client {@link ClearCacheRequest}.
+     *
+     * @return an instance of {@link ClearCacheRequest}
+     * @see ClearCacheRequest
+     * @see ClearCacheFeature
+     */
+    public ClearCacheRequest createClearCacheRequest() {
+        return new ClearCacheRequest();
+    }
 
-  public RemoteStopTransactionRequest createRemoteStopTransactionRequest(Integer transactionId) {
-    RemoteStopTransactionRequest request = new RemoteStopTransactionRequest();
-    request.setTransactionId(transactionId);
-    return request;
-  }
+    /**
+     * Create a client {@link DataTransferRequest} required values.
+     *
+     * @param vendorId Vendor identification.
+     * @return an instance of {@link DataTransferRequest}
+     * @see DataTransferRequest
+     * @see DataTransferFeature
+     */
+    public DataTransferRequest createDataTransferRequest(String vendorId) {
+        return new DataTransferRequest(vendorId);
+    }
 
-  public ResetRequest createResetRequest(ResetType type) {
-    ResetRequest request = new ResetRequest();
-    request.setType(type);
-    return request;
-  }
+    /**
+     * Create a client {@link GetConfigurationRequest}.
+     *
+     * @return an instance of {@link GetConfigurationRequest}
+     * @see GetConfigurationRequest
+     * @see GetConfigurationFeature
+     */
+    public GetConfigurationRequest createGetConfigurationRequest() {
+        return new GetConfigurationRequest();
+    }
 
-  public UnlockConnectorRequest createUnlockConnectorRequest(int connectorId) {
-    UnlockConnectorRequest request = new UnlockConnectorRequest();
-    request.setConnectorId(connectorId);
-    return request;
-  }
+    /**
+     * Create a client {@link RemoteStartTransactionRequest} with required values.
+     *
+     * @param idTag a String with max length 20
+     * @return an instance of {@link RemoteStartTransactionRequest}
+     * @see RemoteStartTransactionRequest
+     * @see RemoteStartTransactionFeature
+     */
+    public RemoteStartTransactionRequest createRemoteStartTransactionRequest(String idTag) {
+        return new RemoteStartTransactionRequest(idTag);
+    }
+
+    /**
+     * Create a client {@link RemoteStopTransactionRequest} with required values.
+     *
+     * @param transactionId integer, transaction id
+     * @return an instance of {@link RemoteStopTransactionRequest}
+     * @see RemoteStopTransactionRequest
+     * @see RemoteStartTransactionFeature
+     */
+    public RemoteStopTransactionRequest createRemoteStopTransactionRequest(Integer transactionId) {
+        return new RemoteStopTransactionRequest(transactionId);
+    }
+
+    /**
+     * Create a client {@link ResetRequest} with required values.
+     *
+     * @param type the {@link ResetType}
+     * @return an instance of {@link ResetRequest}
+     * @see ResetRequest
+     * @see ResetFeature
+     */
+    public ResetRequest createResetRequest(ResetType type) {
+        return new ResetRequest(type);
+    }
+
+    /**
+     * Create a client {@link UnlockConnectorRequest} with required values..
+     *
+     * @param connectorId integer, value &gt; 0
+     * @return an instance of {@link UnlockConnectorRequest}
+     * @see UnlockConnectorRequest
+     * @see UnlockConnectorFeature
+     */
+    public UnlockConnectorRequest createUnlockConnectorRequest(int connectorId) {
+        return new UnlockConnectorRequest(connectorId);
+    }
 }

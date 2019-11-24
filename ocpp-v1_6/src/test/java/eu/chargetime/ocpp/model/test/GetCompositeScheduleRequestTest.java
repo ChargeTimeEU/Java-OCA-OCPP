@@ -1,20 +1,17 @@
 package eu.chargetime.ocpp.model.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.core.MeterValue;
-import eu.chargetime.ocpp.model.core.MeterValuesRequest;
+import eu.chargetime.ocpp.model.smartcharging.ChangingRateUnitType;
+import eu.chargetime.ocpp.model.smartcharging.GetCompositeScheduleRequest;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -43,17 +40,15 @@ import static org.mockito.Mockito.*;
  * SOFTWARE.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class MeterValuesRequestTest {
+public class GetCompositeScheduleRequestTest {
 
     @Rule public ExpectedException thrownException = ExpectedException.none();
 
-    private MeterValuesRequest request;
-
-    @Mock private MeterValue meterValueMock;
+    private GetCompositeScheduleRequest request;
 
     @Before
     public void setUp() {
-        request = new MeterValuesRequest();
+        request = new GetCompositeScheduleRequest();
     }
 
     @Test
@@ -80,27 +75,27 @@ public class MeterValuesRequestTest {
     }
 
     @Test
-    public void setTransactionId_transactionIdIsSet() {
+    public void setDuration_zeroInteger_durationIsSet() {
         // Given
-        int anyValue = 42;
+        int zeroValue = 0;
 
         // When
-        request.setTransactionId(anyValue);
+        request.setDuration(zeroValue);
 
         // Then
-        assertThat(request.getTransactionId(), equalTo(anyValue));
+        assertThat(request.getDuration(), equalTo(zeroValue));
     }
 
     @Test
-    public void setMeterValue_aMeterValueArray_meterValueIsSet() {
+    public void setChangingRateUnitType_A_changingRateUnitTypeIsSet() {
         // Given
-        MeterValue[] listOfMeterValues = aList(new MeterValue());
+        ChangingRateUnitType chargingRateUnitType = ChangingRateUnitType.A;
 
         // When
-        request.setMeterValue(listOfMeterValues);
+        request.setChangingRateUnitType(chargingRateUnitType);
 
         // Then
-        assertThat(request.getMeterValue(), equalTo(listOfMeterValues));
+        assertThat(request.getChangingRateUnitType(), equalTo(chargingRateUnitType));
     }
 
     @Test
@@ -113,25 +108,11 @@ public class MeterValuesRequestTest {
     }
 
     @Test
-    public void validate_meterValueIsSet_validatesMeterValue() {
-        // Given
-        request.setMeterValue(aList(meterValueMock));
-        request.setConnectorId(1);
-        when(meterValueMock.validate()).thenReturn(true);
-
-        // When
-        request.validate();
-
-        // Then
-        verify(meterValueMock, times(1)).validate();
-    }
-
-    @Test
     public void validate_connectorIdAndMeterValueIsValid_returnTrue() {
         // Given
         request.setConnectorId(42);
-        request.setMeterValue(aList(meterValueMock));
-        when(meterValueMock.validate()).thenReturn(true);
+        request.setDuration(0);
+        request.setChangingRateUnitType(ChangingRateUnitType.A);
 
         // When
         boolean isValid = request.validate();
@@ -146,6 +127,6 @@ public class MeterValuesRequestTest {
         boolean isTransactionRelated = request.transactionRelated();
 
         // Then
-        assertThat(isTransactionRelated, is(true));
+        assertThat(isTransactionRelated, is(false));
     }
 }

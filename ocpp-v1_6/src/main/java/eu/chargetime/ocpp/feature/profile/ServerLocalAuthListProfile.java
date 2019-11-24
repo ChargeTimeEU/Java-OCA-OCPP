@@ -26,13 +26,15 @@ package eu.chargetime.ocpp.feature.profile;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.GetLocalListVersionFeature;
+import eu.chargetime.ocpp.feature.ProfileFeature;
+import eu.chargetime.ocpp.feature.SendLocalListFeature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.localauthlist.*;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.UUID;
 
 public class ServerLocalAuthListProfile implements Profile {
@@ -41,8 +43,8 @@ public class ServerLocalAuthListProfile implements Profile {
 
     public ServerLocalAuthListProfile() {
         featureList = new HashSet<>();
-        featureList.add(new GetLocalListVersionFeature(this));
-        featureList.add(new SendLocalListFeature(this));
+        featureList.add(new GetLocalListVersionFeature(null));
+        featureList.add(new SendLocalListFeature(null));
     }
 
     @Override
@@ -57,16 +59,14 @@ public class ServerLocalAuthListProfile implements Profile {
 
     /**
      * Create a client {@link SendLocalListRequest} with required values.
-     *import eu.chargetime.ocpp.model.core.AuthorizeRequest;
-
+     *
      * @param listVersion required, version number of the list.
-     * @param updateType required, type of update
+     * @param updateType  required, type of update
      * @return an instance of {@link SendLocalListConfirmation}.
      * @see SendLocalListRequest
      * @see SendLocalListFeature
      */
     public SendLocalListRequest createSendLocalListRequest(int listVersion, UpdateType updateType) {
-        assert Objects.nonNull(updateType);
         return new SendLocalListRequest(listVersion, updateType);
     }
 

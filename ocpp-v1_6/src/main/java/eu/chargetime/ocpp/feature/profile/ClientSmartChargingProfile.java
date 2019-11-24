@@ -61,14 +61,14 @@ public class ClientSmartChargingProfile implements Profile {
     public Confirmation handleRequest(UUID sessionIndex, Request request) {
         Confirmation result = null;
 
-        if (request instanceof SetChargingProfileRequest) {
-            result = eventHandler.handleSetChargingProfileRequest((SetChargingProfileRequest) request);
-        } else if (request instanceof ClearChargingProfileRequest) {
+        if (request instanceof ClearChargingProfileRequest) {
             result =
                     eventHandler.handleClearChargingProfileRequest((ClearChargingProfileRequest) request);
         } else if (request instanceof GetCompositeScheduleRequest) {
             result =
                     eventHandler.handleGetCompositeScheduleRequest((GetCompositeScheduleRequest) request);
+        } else if (request instanceof SetChargingProfileRequest) {
+            result = eventHandler.handleSetChargingProfileRequest((SetChargingProfileRequest) request);
         }
 
         return result;

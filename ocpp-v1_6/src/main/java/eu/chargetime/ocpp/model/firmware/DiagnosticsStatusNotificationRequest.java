@@ -6,6 +6,7 @@ package eu.chargetime.ocpp.model.firmware;
  *
  * Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
  * Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
+ * Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,78 +30,86 @@ package eu.chargetime.ocpp.model.firmware;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-import java.util.Objects;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
-/** Sent by the Charge Point to the Central System. */
+/**
+ * Sent by the Charge Point to the Central System.
+ */
 @XmlRootElement
 public class DiagnosticsStatusNotificationRequest implements Request {
 
-  private DiagnosticsStatus status;
+    private DiagnosticsStatus status;
 
-  public DiagnosticsStatusNotificationRequest() {}
-
-  /**
-   * Set required fields.
-   *
-   * @param status Diagnostics status, see {@link #setStatus(DiagnosticsStatus)}.
-   */
-  public DiagnosticsStatusNotificationRequest(DiagnosticsStatus status) {
-    this.status = status;
-  }
-
-  @Override
-  public boolean validate() {
-    return status != null;
-  }
-
-  /**
-   * This contains the status.
-   *
-   * @return connector.
-   */
-  public DiagnosticsStatus getStatus() {
-    return status;
-  }
-
-  /**
-   * Required. This contains the identifier of the status.
-   *
-   * @param status {@link DiagnosticsStatus}.
-   */
-  @XmlElement
-  public void setStatus(DiagnosticsStatus status) {
-    if (status == null) {
-      throw new PropertyConstraintException(null, "Diagnostic status must be present");
+    /**
+     * @deprecated use {@link #DiagnosticsStatusNotificationRequest(DiagnosticsStatus)} to be sure to set required fields
+     */
+    @Deprecated
+    public DiagnosticsStatusNotificationRequest() {
     }
 
-    this.status = status;
-  }
+    /**
+     * Set required fields.
+     *
+     * @param status Diagnostics status, see {@link #setStatus(DiagnosticsStatus)}.
+     */
+    public DiagnosticsStatusNotificationRequest(DiagnosticsStatus status) {
+        this.status = status;
+    }
 
-  @Override
-  public boolean transactionRelated() {
-    return false;
-  }
+    @Override
+    public boolean validate() {
+        return status != null;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    DiagnosticsStatusNotificationRequest that = (DiagnosticsStatusNotificationRequest) o;
-    return status == that.status;
-  }
+    /**
+     * This contains the status.
+     *
+     * @return connector.
+     */
+    public DiagnosticsStatus getStatus() {
+        return status;
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(status);
-  }
+    /**
+     * Required. This contains the identifier of the status.
+     *
+     * @param status {@link DiagnosticsStatus}.
+     */
+    @XmlElement
+    public void setStatus(DiagnosticsStatus status) {
+        if (status == null) {
+            throw new PropertyConstraintException(null, "Diagnostic status must be present");
+        }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("status", status)
-        .add("isValid", validate())
-        .toString();
-  }
+        this.status = status;
+    }
+
+    @Override
+    public boolean transactionRelated() {
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DiagnosticsStatusNotificationRequest that = (DiagnosticsStatusNotificationRequest) o;
+        return status == that.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(status);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("status", status)
+                .add("isValid", validate())
+                .toString();
+    }
 }

@@ -46,8 +46,8 @@ public class ServerReservationProfile implements Profile {
 
     public ServerReservationProfile() {
         features = new HashSet<>();
-        features.add(new ReserveNowFeature(this));
-        features.add(new CancelReservationFeature(this));
+        features.add(new ReserveNowFeature(null));
+        features.add(new CancelReservationFeature(null));
     }
 
     @Override
@@ -60,10 +60,29 @@ public class ServerReservationProfile implements Profile {
         return null;
     }
 
+    /**
+     * Create a client {@link CancelReservationRequest} with required values.
+     *
+     * @param reservationId Integer, id of the reservation
+     * @return an instance of {@link CancelReservationRequest}
+     * @see CancelReservationRequest
+     * @see CancelReservationFeature
+     */
     CancelReservationRequest createCancelReservationRequest(Integer reservationId) {
         return new CancelReservationRequest(reservationId);
     }
 
+    /**
+     * Create a client {@link ReserveNowRequest} with required values.
+     *
+     * @param connectorId   Integer, the destination connectorId
+     * @param expiryDate    Calendar, end of reservation
+     * @param idTag         String, the identifier
+     * @param reservationId Integer, id of reservation
+     * @return an instance of {@link ReserveNowRequest}
+     * @see ReserveNowRequest
+     * @see ReserveNowFeature
+     */
     ReserveNowRequest createReserveNowRequest(Integer connectorId, Calendar expiryDate, String idTag, Integer reservationId, String parentIdTag) {
         ReserveNowRequest request = new ReserveNowRequest(connectorId, expiryDate, idTag, reservationId);
         request.setParentIdTag(parentIdTag);

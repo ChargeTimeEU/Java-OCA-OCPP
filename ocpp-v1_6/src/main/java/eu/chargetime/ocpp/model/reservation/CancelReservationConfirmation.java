@@ -7,6 +7,7 @@ package eu.chargetime.ocpp.model.reservation;
  *
  * Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
  * Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
+ * Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,9 +30,10 @@ package eu.chargetime.ocpp.model.reservation;
 
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-import java.util.Objects;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 /**
  * Sent by the Charge Point to the Central System in response to an {@link
@@ -39,57 +41,68 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "cancelReservationResponse")
 public class CancelReservationConfirmation implements Confirmation {
-  private CancelReservationStatus status;
 
-  public CancelReservationConfirmation() {}
+    private CancelReservationStatus status;
 
-  public CancelReservationConfirmation(CancelReservationStatus status) {
-    setStatus(status);
-  }
+    /**
+     * @deprecated use {@link #CancelReservationConfirmation(CancelReservationStatus)}  to be sure to set required fields
+     */
+    @Deprecated
+    public CancelReservationConfirmation() {
+    }
 
-  @Override
-  public boolean validate() {
-    return status != null;
-  }
+    /**
+     * Handle required fields.
+     *
+     * @param status CancelReservationStatus, status of the request, see {@link #setStatus(CancelReservationStatus)}
+     */
+    public CancelReservationConfirmation(CancelReservationStatus status) {
+        setStatus(status);
+    }
 
-  /**
-   * This indicates the success or failure of the cancelling of a reservation by Central System.
-   *
-   * @return CancelReservationStatus, status of the request.
-   */
-  public CancelReservationStatus getStatus() {
-    return status;
-  }
+    @Override
+    public boolean validate() {
+        return status != null;
+    }
 
-  /**
-   * Required. This indicates the success or failure of the cancelling of a reservation by Central
-   * System.
-   *
-   * @param status CancelReservationStatus, status of the request.
-   */
-  @XmlElement
-  public void setStatus(CancelReservationStatus status) {
-    this.status = status;
-  }
+    /**
+     * This indicates the success or failure of the cancelling of a reservation by Central System.
+     *
+     * @return CancelReservationStatus, status of the request.
+     */
+    public CancelReservationStatus getStatus() {
+        return status;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    CancelReservationConfirmation that = (CancelReservationConfirmation) o;
-    return status == that.status;
-  }
+    /**
+     * Required. This indicates the success or failure of the cancelling of a reservation by Central
+     * System.
+     *
+     * @param status CancelReservationStatus, status of the request.
+     */
+    @XmlElement
+    public void setStatus(CancelReservationStatus status) {
+        this.status = status;
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(status);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CancelReservationConfirmation that = (CancelReservationConfirmation) o;
+        return status == that.status;
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("status", status)
-        .add("isValid", validate())
-        .toString();
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(status);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("status", status)
+                .add("isValid", validate())
+                .toString();
+    }
 }

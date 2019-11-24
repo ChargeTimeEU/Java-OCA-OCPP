@@ -7,6 +7,7 @@ package eu.chargetime.ocpp.model.firmware;
  *
  * Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
  * Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
+ * Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,155 +31,170 @@ package eu.chargetime.ocpp.model.firmware;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-import java.util.Calendar;
-import java.util.Objects;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Calendar;
+import java.util.Objects;
 
-/** Sent by the Central System to the Charge Point. */
+/**
+ * Sent by the Central System to the Charge Point.
+ */
 @XmlRootElement
 @XmlType(propOrder = {"location", "retries", "retrieveDate", "retryInterval"})
 public class UpdateFirmwareRequest implements Request {
-  private String location;
-  private Integer retries;
-  private Calendar retrieveDate;
-  private Integer retryInterval;
 
-  public UpdateFirmwareRequest() {}
+    private String location;
+    private Integer retries;
+    private Calendar retrieveDate;
+    private Integer retryInterval;
 
-  public UpdateFirmwareRequest(String location, Calendar retrieveDate) {
-    this.location = location;
-    this.retrieveDate = retrieveDate;
-  }
-
-  @Override
-  public boolean validate() {
-    return (location != null) && (retrieveDate != null);
-  }
-
-  /**
-   * This contains a string containing a URI pointing to a location from which to retrieve the
-   * firmware.
-   *
-   * @return String, a URI with the firmware.
-   */
-  public String getLocation() {
-    return location;
-  }
-
-  /**
-   * Required. This contains a string containing a URI pointing to a location from which to retrieve
-   * the firmware.
-   *
-   * @param location String, a URI with the firmware.
-   */
-  @XmlElement
-  public void setLocation(String location) {
-    this.location = location;
-  }
-
-  /**
-   * This specifies how many times Charge Point must try to download the firmware before giving up.
-   * If this field is not present, it is left to Charge Point to decide how many times it wants to
-   * retry.
-   *
-   * @return int, retry times.
-   */
-  public Integer getRetries() {
-    return retries;
-  }
-
-  /**
-   * Optional. This specifies how many times Charge Point must try to download the firmware before
-   * giving up. If this field is not present, it is left to Charge Point to decide how many times it
-   * wants to retry.
-   *
-   * @param retries int, retry times.
-   */
-  @XmlElement
-  public void setRetries(int retries) {
-    if (retries <= 0) {
-      throw new PropertyConstraintException(retries, "retries must be > 0");
+    /**
+     * @deprecated use {@link #UpdateFirmwareRequest(String, Calendar)} to be sure to set required fields
+     */
+    @Deprecated
+    public UpdateFirmwareRequest() {
     }
 
-    this.retries = retries;
-  }
-
-  /**
-   * This contains the date and time after which the Charge Point must retrieve the (new) firmware.
-   *
-   * @return Calendar, date and time of retrieving.
-   */
-  public Calendar getRetrieveDate() {
-    return retrieveDate;
-  }
-
-  /**
-   * Required. This contains the date and time after which the Charge Point must retrieve the (new)
-   * firmware.
-   *
-   * @param retrieveDate Calendar, date and time of retrieving.
-   */
-  @XmlElement
-  public void setRetrieveDate(Calendar retrieveDate) {
-    this.retrieveDate = retrieveDate;
-  }
-
-  /**
-   * The interval in seconds after which a retry may be attempted. If this field is not present, it
-   * is left to Charge Point to decide how long to wait between attempts.
-   *
-   * @return int, retry interval.
-   */
-  public Integer getRetryInterval() {
-    return retryInterval;
-  }
-
-  /**
-   * Optional. The interval in seconds after which a retry may be attempted. If this field is not
-   * present, it is left to Charge Point to decide how long to wait between attempts.
-   *
-   * @param retryInterval int, retry interval.
-   */
-  @XmlElement
-  public void setRetryInterval(int retryInterval) {
-    if (retryInterval <= 0) {
-      throw new PropertyConstraintException(retryInterval, "retryInterval must be > 0");
+    /**
+     * Handle required fields.
+     *
+     * @param location     String, a URI with the firmware, see {@link #setLocation(String)}
+     * @param retrieveDate Calendar, date and time of retrieving, see {@link #setRetrieveDate(Calendar)}
+     */
+    public UpdateFirmwareRequest(String location, Calendar retrieveDate) {
+        setLocation(location);
+        setRetrieveDate(retrieveDate);
     }
 
-    this.retryInterval = retryInterval;
-  }
+    @Override
+    public boolean validate() {
+        return (location != null) && (retrieveDate != null);
+    }
 
-  @Override
-  public boolean transactionRelated() {
-    return false;
-  }
+    /**
+     * This contains a string containing a URI pointing to a location from which to retrieve the
+     * firmware.
+     *
+     * @return String, a URI with the firmware.
+     */
+    public String getLocation() {
+        return location;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    UpdateFirmwareRequest that = (UpdateFirmwareRequest) o;
-    return retryInterval.equals(that.retryInterval)
-        && Objects.equals(location, that.location)
-        && Objects.equals(retries, that.retries)
-        && Objects.equals(retrieveDate, that.retrieveDate);
-  }
+    /**
+     * Required. This contains a string containing a URI pointing to a location from which to retrieve
+     * the firmware.
+     *
+     * @param location String, a URI with the firmware.
+     */
+    @XmlElement
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(location, retries, retrieveDate, retryInterval);
-  }
+    /**
+     * This specifies how many times Charge Point must try to download the firmware before giving up.
+     * If this field is not present, it is left to Charge Point to decide how many times it wants to
+     * retry.
+     *
+     * @return int, retry times.
+     */
+    public Integer getRetries() {
+        return retries;
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("location", location)
-        .add("retries", retries)
-        .add("retrieveDate", retrieveDate)
-        .add("retryInterval", retryInterval)
-        .add("isValid", validate())
-        .toString();
-  }
+    /**
+     * Optional. This specifies how many times Charge Point must try to download the firmware before
+     * giving up. If this field is not present, it is left to Charge Point to decide how many times it
+     * wants to retry.
+     *
+     * @param retries int, retry times.
+     */
+    @XmlElement
+    public void setRetries(int retries) {
+        if (retries <= 0) {
+            throw new PropertyConstraintException(retries, "retries must be > 0");
+        }
+
+        this.retries = retries;
+    }
+
+    /**
+     * This contains the date and time after which the Charge Point must retrieve the (new) firmware.
+     *
+     * @return Calendar, date and time of retrieving.
+     */
+    public Calendar getRetrieveDate() {
+        return retrieveDate;
+    }
+
+    /**
+     * Required. This contains the date and time after which the Charge Point must retrieve the (new)
+     * firmware.
+     *
+     * @param retrieveDate Calendar, date and time of retrieving.
+     */
+    @XmlElement
+    public void setRetrieveDate(Calendar retrieveDate) {
+        this.retrieveDate = retrieveDate;
+    }
+
+    /**
+     * The interval in seconds after which a retry may be attempted. If this field is not present, it
+     * is left to Charge Point to decide how long to wait between attempts.
+     *
+     * @return int, retry interval.
+     */
+    public Integer getRetryInterval() {
+        return retryInterval;
+    }
+
+    /**
+     * Optional. The interval in seconds after which a retry may be attempted. If this field is not
+     * present, it is left to Charge Point to decide how long to wait between attempts.
+     *
+     * @param retryInterval int, retry interval.
+     */
+    @XmlElement
+    public void setRetryInterval(int retryInterval) {
+        if (retryInterval <= 0) {
+            throw new PropertyConstraintException(retryInterval, "retryInterval must be > 0");
+        }
+
+        this.retryInterval = retryInterval;
+    }
+
+    @Override
+    public boolean transactionRelated() {
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UpdateFirmwareRequest that = (UpdateFirmwareRequest) o;
+        return retryInterval.equals(that.retryInterval)
+                && Objects.equals(location, that.location)
+                && Objects.equals(retries, that.retries)
+                && Objects.equals(retrieveDate, that.retrieveDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(location, retries, retrieveDate, retryInterval);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("location", location)
+                .add("retries", retries)
+                .add("retrieveDate", retrieveDate)
+                .add("retryInterval", retryInterval)
+                .add("isValid", validate())
+                .toString();
+    }
 }

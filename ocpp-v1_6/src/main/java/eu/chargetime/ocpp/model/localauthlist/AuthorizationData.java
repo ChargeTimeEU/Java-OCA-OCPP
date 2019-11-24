@@ -6,6 +6,7 @@ package eu.chargetime.ocpp.model.localauthlist;
  * MIT License
  *
  * Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+ * Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,59 +32,88 @@ import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.model.core.IdTagInfo;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+
 import java.util.Objects;
 
 public class AuthorizationData implements Validatable {
-  private String idTag;
-  private IdTagInfo idTagInfo;
 
-  public void setIdTag(String idTag) {
-    if (!ModelUtil.validate(idTag, 20)) {
-      throw new PropertyConstraintException(idTag, "Exceeds limit of 20 chars");
+    private String idTag;
+    private IdTagInfo idTagInfo;
+
+    /**
+     * @deprecated use {@link #AuthorizationData(String)} be sure to set required fields
+     */
+    @Deprecated
+    public AuthorizationData() {
+
     }
 
-    this.idTag = idTag;
-  }
-
-  public String getIdTag() {
-    return idTag;
-  }
-
-  public void setIdTagInfo(IdTagInfo idTagInfo) {
-    if (!idTagInfo.validate()) {
-      throw new PropertyConstraintException(idTagInfo, "Failed Validation");
+    /**
+     * Handle required fields.
+     *
+     * @param idTag String, the idTag, see {@link #setIdTag(String)}
+     */
+    public AuthorizationData(String idTag) {
+        setIdTag(idTag);
     }
 
-    this.idTagInfo = idTagInfo;
-  }
+    /**
+     * The identifier to which this authorization applies
+     *
+     * @return String the idTag
+     */
+    public String getIdTag() {
+        return idTag;
+    }
 
-  public IdTagInfo getIdTagInfo() {
-    return idTagInfo;
-  }
+    /**
+     * Required. The identifier to which this authorization applies
+     *
+     * @param idTag String, the idTag
+     */
+    public void setIdTag(String idTag) {
+        if (!ModelUtil.validate(idTag, 20)) {
+            throw new PropertyConstraintException(idTag, "Exceeds limit of 20 chars");
+        }
 
-  @Override
-  public boolean validate() {
-    return ModelUtil.validate(idTag, 20) && idTagInfo.validate();
-  }
+        this.idTag = idTag;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    AuthorizationData that = (AuthorizationData) o;
-    return Objects.equals(idTag, that.idTag) && Objects.equals(idTagInfo, that.idTagInfo);
-  }
+    public IdTagInfo getIdTagInfo() {
+        return idTagInfo;
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(idTag, idTagInfo);
-  }
+    public void setIdTagInfo(IdTagInfo idTagInfo) {
+        if (!idTagInfo.validate()) {
+            throw new PropertyConstraintException(idTagInfo, "Failed Validation");
+        }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("idTag", idTag)
-        .add("idTagInfo", idTagInfo)
-        .toString();
-  }
+        this.idTagInfo = idTagInfo;
+    }
+
+    @Override
+    public boolean validate() {
+        return ModelUtil.validate(idTag, 20) && idTagInfo.validate();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AuthorizationData that = (AuthorizationData) o;
+        return Objects.equals(idTag, that.idTag) && Objects.equals(idTagInfo, that.idTagInfo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idTag, idTagInfo);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("idTag", idTag)
+                .add("idTagInfo", idTagInfo)
+                .toString();
+    }
 }

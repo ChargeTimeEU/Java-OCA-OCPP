@@ -3,10 +3,12 @@ package eu.chargetime.ocpp.model.core;
 /*
 ChargeTime.eu - Java-OCA-OCPP
 Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
+Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
 MIT License
 
 Copyright (C) 2016-2018 Thomas Volden
+Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -29,67 +31,88 @@ SOFTWARE.
 
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-import java.util.Objects;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
-/** Returned from Charge Point to Central System */
+/**
+ * Returned from Charge Point to Central System
+ */
 @XmlRootElement(name = "changeConfigurationResponse")
 public class ChangeConfigurationConfirmation implements Confirmation {
-  private ConfigurationStatus status;
 
-  /**
-   * Returns whether configuration change has been accepted.
-   *
-   * @return String, the {@link ConfigurationStatus}.
-   */
-  public ConfigurationStatus getStatus() {
-    return status;
-  }
+    private ConfigurationStatus status;
 
-  /**
-   * Returns whether configuration change has been accepted.
-   *
-   * @return the {@link ConfigurationStatus}.
-   */
-  @Deprecated
-  public ConfigurationStatus objStatus() {
-    return status;
-  }
+    /**
+     * @deprecated use {@link #ChangeConfigurationConfirmation(ConfigurationStatus)} to be sure to set required fields
+     */
+    @Deprecated
+    public ChangeConfigurationConfirmation() {
 
-  /**
-   * Required. Returns whether configuration change has been accepted.
-   *
-   * @param status the {@link ConfigurationStatus}.
-   */
-  @XmlElement
-  public void setStatus(ConfigurationStatus status) {
-    this.status = status;
-  }
+    }
 
-  @Override
-  public boolean validate() {
-    return status != null;
-  }
+    /**
+     * Handle required fields.
+     *
+     * @param status the {@link ConfigurationStatus}, see {@link #setStatus(ConfigurationStatus)}
+     */
+    public ChangeConfigurationConfirmation(ConfigurationStatus status) {
+        setStatus(status);
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    ChangeConfigurationConfirmation that = (ChangeConfigurationConfirmation) o;
-    return status == that.status;
-  }
+    /**
+     * Returns whether configuration change has been accepted.
+     *
+     * @return String, the {@link ConfigurationStatus}.
+     */
+    public ConfigurationStatus getStatus() {
+        return status;
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(status);
-  }
+    /**
+     * Required. Returns whether configuration change has been accepted.
+     *
+     * @param status the {@link ConfigurationStatus}.
+     */
+    @XmlElement
+    public void setStatus(ConfigurationStatus status) {
+        this.status = status;
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("status", status)
-        .add("isValid", validate())
-        .toString();
-  }
+    /**
+     * Returns whether configuration change has been accepted.
+     *
+     * @return the {@link ConfigurationStatus}.
+     */
+    @Deprecated
+    public ConfigurationStatus objStatus() {
+        return status;
+    }
+
+    @Override
+    public boolean validate() {
+        return status != null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChangeConfigurationConfirmation that = (ChangeConfigurationConfirmation) o;
+        return status == that.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(status);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("status", status)
+                .add("isValid", validate())
+                .toString();
+    }
 }

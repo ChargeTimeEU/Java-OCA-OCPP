@@ -3,10 +3,12 @@ package eu.chargetime.ocpp.model.core;
 /*
 ChargeTime.eu - Java-OCA-OCPP
 Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
+Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
 MIT License
 
 Copyright (C) 2016-2018 Thomas Volden
+Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -30,11 +32,13 @@ SOFTWARE.
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-import java.util.Calendar;
-import java.util.Objects;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Objects;
 
 /**
  * Sent by the Central System to the Charge Point in response to a {@link BootNotificationRequest}.
@@ -45,126 +49,147 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(propOrder = {"status", "currentTime", "interval"})
 public class BootNotificationConfirmation implements Confirmation {
 
-  private Calendar currentTime;
-  private int interval;
-  private RegistrationStatus status;
+    private Calendar currentTime;
+    private Integer interval;
+    private RegistrationStatus status;
 
-  /**
-   * Central System's current time.
-   *
-   * @return an instance of Calendar.
-   */
-  public Calendar getCurrentTime() {
-    return currentTime;
-  }
+    /**
+     * @deprecated use {@link #BootNotificationConfirmation(Calendar, Integer, RegistrationStatus)} to be sure to set required fields
+     */
+    @Deprecated
+    public BootNotificationConfirmation() {
 
-  /**
-   * Central System's current time.
-   *
-   * @return an instance of Calendar.
-   */
-  @Deprecated
-  public Calendar objCurrentTime() {
-    return currentTime;
-  }
-
-  /**
-   * Required. This contains the Central System’s current time.
-   *
-   * @param currentTime Central System’s current time.
-   */
-  @XmlElement
-  public void setCurrentTime(Calendar currentTime) {
-    this.currentTime = currentTime;
-  }
-
-  /**
-   * When RegistrationStatus is Accepted, this contains the heartbeat interval in seconds. If the
-   * Central System returns something other than Accepted, the value of the interval field indicates
-   * the minimum wait time before sending a next BootNotification request.
-   *
-   * @return Heartbeat/delay interval in seconds.
-   */
-  public int getInterval() {
-    return interval;
-  }
-
-  /**
-   * Required. When RegistrationStatus is Accepted, this contains the heartbeat interval in seconds.
-   * If the Central System returns something other than Accepted, the value of the interval field
-   * indicates the minimum wait time before sending a next BootNotification request.
-   *
-   * @param interval heartbeat/delay interval in seconds. Min value 0.
-   */
-  @XmlElement
-  public void setInterval(int interval) {
-    if (interval <= 0) {
-      throw new PropertyConstraintException(interval, "interval be a positive value");
     }
 
-    this.interval = interval;
-  }
+    /**
+     * Handle required fields.
+     *
+     * @param currentTime Central System’s current time, see {@link #setCurrentTime(Calendar)}
+     * @param interval    heartbeat/delay interval in seconds. Min value 0, see {@link #setInterval(Integer)}
+     * @param status      Charge Points registration status, see {@link #setStatus(RegistrationStatus)}
+     */
+    public BootNotificationConfirmation(Calendar currentTime, Integer interval, RegistrationStatus status) {
+        setCurrentTime(currentTime);
+        setInterval(interval);
+        setStatus(status);
+    }
 
-  /**
-   * This contains whether the Charge Point has been registered within the System Central.
-   *
-   * @return Charge Points registration status as {@link RegistrationStatus}.
-   */
-  @Deprecated
-  public RegistrationStatus objStatus() {
-    return status;
-  }
+    /**
+     * Central System's current time.
+     *
+     * @return an instance of {@link Calendar}.
+     */
+    public Calendar getCurrentTime() {
+        return currentTime;
+    }
 
-  /**
-   * This contains whether the Charge Point has been registered within the System Central.
-   *
-   * @return Charge Points registration status as {@link RegistrationStatus}.
-   */
-  public RegistrationStatus getStatus() {
-    return status;
-  }
+    /**
+     * Required. This contains the Central System’s current time.
+     *
+     * @param currentTime Central System’s current time.
+     */
+    @XmlElement
+    public void setCurrentTime(Calendar currentTime) {
+        this.currentTime = currentTime;
+    }
 
-  /**
-   * Required. This contains whether the Charge Point has been registered within the System Central.
-   *
-   * @param status Charge Points registration status.
-   */
-  @XmlElement
-  public void setStatus(RegistrationStatus status) {
-    this.status = status;
-  }
+    /**
+     * Central System's current time.
+     *
+     * @return an instance of {@link LocalDateTime}.
+     */
+    @Deprecated
+    public Calendar objCurrentTime() {
+        return currentTime;
+    }
 
-  @Override
-  public boolean validate() {
-    boolean valid = status != null;
-    valid &= currentTime != null;
-    valid &= interval > 0;
+    /**
+     * When RegistrationStatus is Accepted, this contains the heartbeat interval in seconds. If the
+     * Central System returns something other than Accepted, the value of the interval field indicates
+     * the minimum wait time before sending a next BootNotification request.
+     *
+     * @return Heartbeat/delay interval in seconds.
+     */
+    public Integer getInterval() {
+        return interval;
+    }
 
-    return valid;
-  }
+    /**
+     * Required. When RegistrationStatus is Accepted, this contains the heartbeat interval in seconds.
+     * If the Central System returns something other than Accepted, the value of the interval field
+     * indicates the minimum wait time before sending a next BootNotification request.
+     *
+     * @param interval heartbeat/delay interval in seconds. Min value 0.
+     */
+    @XmlElement
+    public void setInterval(Integer interval) {
+        if (interval <= 0) {
+            throw new PropertyConstraintException(interval, "interval be a positive value");
+        }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    BootNotificationConfirmation that = (BootNotificationConfirmation) o;
-    return interval == that.interval
-        && Objects.equals(currentTime, that.currentTime)
-        && status == that.status;
-  }
+        this.interval = interval;
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(currentTime, interval, status);
-  }
+    /**
+     * This contains whether the Charge Point has been registered within the System Central.
+     *
+     * @return Charge Points registration status as {@link RegistrationStatus}.
+     */
+    @Deprecated
+    public RegistrationStatus objStatus() {
+        return status;
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("currentTime", currentTime)
-        .add("interval", interval)
-        .add("status", status)
-        .add("isValid", validate())
-        .toString();
-  }
+    /**
+     * This contains whether the Charge Point has been registered within the System Central.
+     *
+     * @return Charge Points registration status as {@link RegistrationStatus}.
+     */
+    public RegistrationStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * Required. This contains whether the Charge Point has been registered within the System Central.
+     *
+     * @param status Charge Points registration status.
+     */
+    @XmlElement
+    public void setStatus(RegistrationStatus status) {
+        this.status = status;
+    }
+
+    @Override
+    public boolean validate() {
+        boolean valid = status != null;
+        valid &= currentTime != null;
+        valid &= interval != null && interval > 0;
+
+        return valid;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BootNotificationConfirmation that = (BootNotificationConfirmation) o;
+        return interval == that.interval
+                && Objects.equals(currentTime, that.currentTime)
+                && status == that.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(currentTime, interval, status);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("currentTime", currentTime)
+                .add("interval", interval)
+                .add("status", status)
+                .add("isValid", validate())
+                .toString();
+    }
 }
