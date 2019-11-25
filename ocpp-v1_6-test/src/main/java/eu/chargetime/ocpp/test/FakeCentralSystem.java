@@ -6,6 +6,7 @@ Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 MIT License
 
 Copyright (C) 2016-2018 Thomas Volden
+Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -43,9 +44,10 @@ import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 import eu.chargetime.ocpp.test.FakeCentral.serverType;
-import java.util.Calendar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.ZonedDateTime;
 
 public class FakeCentralSystem {
   private static final Logger logger = LoggerFactory.getLogger(FakeCentralSystem.class);
@@ -309,13 +311,13 @@ public class FakeCentralSystem {
     send(request);
   }
 
-  public void sendUpdateFirmwareRequest(String location, Calendar retrieveDate) throws Exception {
+  public void sendUpdateFirmwareRequest(String location, ZonedDateTime retrieveDate) throws Exception {
     UpdateFirmwareRequest request = new UpdateFirmwareRequest(location, retrieveDate);
     send(request);
   }
 
   public void sendReserveNowRequest(
-      Integer connectorId, Calendar expiryDate, String idTag, Integer reservationId)
+          Integer connectorId, ZonedDateTime expiryDate, String idTag, Integer reservationId)
       throws Exception {
     ReserveNowRequest request =
         new ReserveNowRequest(connectorId, expiryDate, idTag, reservationId);

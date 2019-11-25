@@ -6,7 +6,6 @@ package eu.chargetime.ocpp.model.smartcharging;
    MIT License
 
    Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
-   Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -32,14 +31,14 @@ import eu.chargetime.ocpp.model.core.ChargingSchedule;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlElement;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 public class GetCompositeScheduleConfirmation implements Confirmation {
 
     private GetCompositeScheduleStatus status;
     private Integer connectorId;
-    private LocalDateTime scheduleStart;
+    private ZonedDateTime scheduleStart;
     private ChargingSchedule chargingSchedule;
 
     /**
@@ -111,9 +110,9 @@ public class GetCompositeScheduleConfirmation implements Confirmation {
      * relative to this point in time.
      * If status is "Rejected", this field may be absent.
      *
-     * @return {@link LocalDateTime} start of the schedule
+     * @return {@link ZonedDateTime} start of the schedule
      */
-    public LocalDateTime getScheduleStart() {
+    public ZonedDateTime getScheduleStart() {
         return scheduleStart;
     }
 
@@ -122,10 +121,10 @@ public class GetCompositeScheduleConfirmation implements Confirmation {
      * relative to this point in time.
      * If status is "Rejected", this field may be absent.
      *
-     * @param scheduleStart {@link LocalDateTime}
+     * @param scheduleStart {@link ZonedDateTime}
      */
     @XmlElement
-    public void setScheduleStart(final LocalDateTime scheduleStart) {
+    public void setScheduleStart(final ZonedDateTime scheduleStart) {
         this.scheduleStart = scheduleStart;
     }
 

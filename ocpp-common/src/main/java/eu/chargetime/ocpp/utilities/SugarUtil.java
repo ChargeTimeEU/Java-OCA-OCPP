@@ -6,6 +6,7 @@ package eu.chargetime.ocpp.utilities;
 
    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
+   Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +30,7 @@ package eu.chargetime.ocpp.utilities;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.transform.Transformer;
@@ -41,9 +41,9 @@ import org.w3c.dom.Document;
 
 public class SugarUtil {
 
-  public static String calendarToString(Calendar calendar) {
-    if (calendar == null) return "";
-    return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(calendar.getTime());
+  public static String zonedDateTimeToString(ZonedDateTime zonedDateTime) {
+    if (zonedDateTime == null) return "";
+    return zonedDateTime.toString();
   }
 
   public static String docToString(Document doc) {

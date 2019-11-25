@@ -4,6 +4,7 @@ package eu.chargetime.ocpp.utilities;
  * Copyright (C) 2014 The Guava Authors
  *
  * Modified by Evgeny Pakhomov <eugene.pakhomov@ubitricity.com>
+ * Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
  *
  * Changes:
  *  * Cut Guava specific annotations
@@ -22,6 +23,7 @@ package eu.chargetime.ocpp.utilities;
  * the License.
  */
 
+import java.time.ZonedDateTime;
 import java.util.*;
 
 /**
@@ -287,7 +289,7 @@ public final class MoreObjects {
      * @param value field value
      * @return ToStringHelper instance
      */
-    public ToStringHelper add(String name, Calendar value) {
+    public ToStringHelper add(String name, ZonedDateTime value) {
       helperImplementation.add(name, value);
       return this;
     }
@@ -736,7 +738,7 @@ public final class MoreObjects {
     }
 
     /** Adds a name/value pair to the formatted output in {@code name=value} format. */
-    public ToStringHelperImpl add(String name, Calendar value) {
+    public ToStringHelperImpl add(String name, ZonedDateTime value) {
       return addHolder(name, value);
     }
 
@@ -896,9 +898,9 @@ public final class MoreObjects {
       return this;
     }
 
-    private ToStringHelperImpl addHolder(String name, Calendar value) {
+    private ToStringHelperImpl addHolder(String name, ZonedDateTime value) {
       ValueHolder valueHolder = addHolder();
-      valueHolder.value = "\"" + SugarUtil.calendarToString(value) + "\"";
+      valueHolder.value = "\"" + SugarUtil.zonedDateTimeToString(value) + "\"";
       valueHolder.name = name;
       return this;
     }

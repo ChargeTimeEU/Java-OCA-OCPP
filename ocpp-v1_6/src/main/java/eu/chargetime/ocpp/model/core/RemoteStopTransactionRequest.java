@@ -39,6 +39,7 @@ import java.util.Objects;
  */
 @XmlRootElement
 public class RemoteStopTransactionRequest implements Request {
+
     private Integer transactionId;
 
     /**

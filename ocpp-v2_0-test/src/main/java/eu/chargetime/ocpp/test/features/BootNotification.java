@@ -5,6 +5,7 @@ package eu.chargetime.ocpp.test.features;
    MIT License
 
    Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
+   Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -33,45 +34,45 @@ import eu.chargetime.ocpp.model.basic.BootNotificationRequest;
 import eu.chargetime.ocpp.model.basic.types.BootReasonEnumType;
 import eu.chargetime.ocpp.model.basic.types.ChargingStationType;
 import eu.chargetime.ocpp.model.basic.types.RegistrationStatusEnumType;
-import java.util.Calendar;
+
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public class BootNotification implements IServerBootNotificationRequestHandler {
-  private BootNotificationFeature feature;
-  private BootNotificationConfirmation confirmation;
+    private BootNotificationFeature feature;
+    private BootNotificationConfirmation confirmation;
 
-  public BootNotification() {
-    feature = new BootNotificationFeature(this);
+    public BootNotification() {
+        feature = new BootNotificationFeature(this);
 
-    confirmation = new BootNotificationConfirmation();
-    Calendar calendar = Calendar.getInstance();
-    calendar.set(Calendar.MILLISECOND, 0); // Make it testable
-    confirmation.setCurrentTime(calendar);
-    confirmation.setInterval(42);
-    confirmation.setStatus(RegistrationStatusEnumType.Accepted);
-  }
+        confirmation = new BootNotificationConfirmation();
+        ZonedDateTime calendar = ZonedDateTime.now();
+        confirmation.setCurrentTime(calendar);
+        confirmation.setInterval(42);
+        confirmation.setStatus(RegistrationStatusEnumType.Accepted);
+    }
 
-  @Override
-  public BootNotificationConfirmation handleBootNotificationRequest(
-      UUID sessionIndex, BootNotificationRequest request) {
-    return confirmation;
-  }
+    @Override
+    public BootNotificationConfirmation handleBootNotificationRequest(
+            UUID sessionIndex, BootNotificationRequest request) {
+        return confirmation;
+    }
 
-  public BootNotificationConfirmation getConfirmation() {
-    return confirmation;
-  }
+    public BootNotificationConfirmation getConfirmation() {
+        return confirmation;
+    }
 
-  public BootNotificationRequest createRequest() {
-    BootNotificationRequest request = new BootNotificationRequest();
-    request.setReason(BootReasonEnumType.Unknown);
-    ChargingStationType chargingStationType = new ChargingStationType();
-    request.setChargingStation(chargingStationType);
-    chargingStationType.setVendorName("ChargeTimeEU");
-    chargingStationType.setModel("Test");
-    return request;
-  }
+    public BootNotificationRequest createRequest() {
+        BootNotificationRequest request = new BootNotificationRequest();
+        request.setReason(BootReasonEnumType.Unknown);
+        ChargingStationType chargingStationType = new ChargingStationType();
+        request.setChargingStation(chargingStationType);
+        chargingStationType.setVendorName("ChargeTimeEU");
+        chargingStationType.setModel("Test");
+        return request;
+    }
 
-  public Feature getFeature() {
-    return feature;
-  }
+    public Feature getFeature() {
+        return feature;
+    }
 }

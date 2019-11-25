@@ -33,8 +33,8 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Objects;
 
 /**
@@ -52,7 +52,7 @@ import java.util.Objects;
 public class ChargingSchedule implements Validatable {
 
     private Integer duration;
-    private Calendar startSchedule;
+    private ZonedDateTime startSchedule;
     private ChargingRateUnitType chargingRateUnit;
     private ChargingSchedulePeriod[] chargingSchedulePeriod;
     private Double minChargingRate;
@@ -111,7 +111,7 @@ public class ChargingSchedule implements Validatable {
      *
      * @return start time.
      */
-    public Calendar getStartSchedule() {
+    public ZonedDateTime getStartSchedule() {
         return startSchedule;
     }
 
@@ -119,10 +119,10 @@ public class ChargingSchedule implements Validatable {
      * Optional. Starting point of an absolute schedule. If absent the schedule will be relative to
      * start of charging.
      *
-     * @param startSchedule Calendar, start time.
+     * @param startSchedule ZonedDateTime, start time.
      */
     @XmlElement
-    public void setStartSchedule(Calendar startSchedule) {
+    public void setStartSchedule(ZonedDateTime startSchedule) {
         this.startSchedule = startSchedule;
     }
 
@@ -132,7 +132,7 @@ public class ChargingSchedule implements Validatable {
      * @return start time.
      */
     @Deprecated
-    public Calendar objStartSchedule() {
+    public ZonedDateTime objStartSchedule() {
         return startSchedule;
     }
 

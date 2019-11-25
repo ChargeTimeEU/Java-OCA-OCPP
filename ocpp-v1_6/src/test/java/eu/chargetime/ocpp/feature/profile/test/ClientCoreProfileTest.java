@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -100,7 +100,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     @Test
     public void createMeterValuesRequest_returnsMeterValuesRequest() {
         // When
-        Request result = core.createMeterValuesRequest(42, Calendar.getInstance(), "42");
+        Request result = core.createMeterValuesRequest(42, ZonedDateTime.now(), "42");
 
         // Then
         assertThat(result, instanceOf(MeterValuesRequest.class));
@@ -110,7 +110,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     public void createStartTransactionRequest_returnsStartTransactionRequest() {
         // When
         Request result =
-                core.createStartTransactionRequest(42, "some token", 42, Calendar.getInstance());
+                core.createStartTransactionRequest(42, "some token", 42, ZonedDateTime.now());
 
         // Then
         assertThat(result, instanceOf(StartTransactionRequest.class));
@@ -130,7 +130,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     @Test
     public void createStopTransactionRequest_returnsStopTransactionRequest() {
         // When
-        Request result = core.createStopTransactionRequest(42, Calendar.getInstance(), 42);
+        Request result = core.createStopTransactionRequest(42, ZonedDateTime.now(), 42);
 
         // Then
         assertThat(result, instanceOf(StopTransactionRequest.class));

@@ -36,8 +36,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.time.LocalDateTime;
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -49,12 +48,12 @@ import java.util.Objects;
 @XmlType(propOrder = {"status", "currentTime", "interval"})
 public class BootNotificationConfirmation implements Confirmation {
 
-    private Calendar currentTime;
+    private ZonedDateTime currentTime;
     private Integer interval;
     private RegistrationStatus status;
 
     /**
-     * @deprecated use {@link #BootNotificationConfirmation(Calendar, Integer, RegistrationStatus)} to be sure to set required fields
+     * @deprecated use {@link #BootNotificationConfirmation(ZonedDateTime, Integer, RegistrationStatus)} to be sure to set required fields
      */
     @Deprecated
     public BootNotificationConfirmation() {
@@ -64,11 +63,11 @@ public class BootNotificationConfirmation implements Confirmation {
     /**
      * Handle required fields.
      *
-     * @param currentTime Central System’s current time, see {@link #setCurrentTime(Calendar)}
+     * @param currentTime Central System’s current time, see {@link #setCurrentTime(ZonedDateTime)}
      * @param interval    heartbeat/delay interval in seconds. Min value 0, see {@link #setInterval(Integer)}
      * @param status      Charge Points registration status, see {@link #setStatus(RegistrationStatus)}
      */
-    public BootNotificationConfirmation(Calendar currentTime, Integer interval, RegistrationStatus status) {
+    public BootNotificationConfirmation(ZonedDateTime currentTime, Integer interval, RegistrationStatus status) {
         setCurrentTime(currentTime);
         setInterval(interval);
         setStatus(status);
@@ -77,9 +76,9 @@ public class BootNotificationConfirmation implements Confirmation {
     /**
      * Central System's current time.
      *
-     * @return an instance of {@link Calendar}.
+     * @return an instance of {@link ZonedDateTime}.
      */
-    public Calendar getCurrentTime() {
+    public ZonedDateTime getCurrentTime() {
         return currentTime;
     }
 
@@ -89,17 +88,17 @@ public class BootNotificationConfirmation implements Confirmation {
      * @param currentTime Central System’s current time.
      */
     @XmlElement
-    public void setCurrentTime(Calendar currentTime) {
+    public void setCurrentTime(ZonedDateTime currentTime) {
         this.currentTime = currentTime;
     }
 
     /**
      * Central System's current time.
      *
-     * @return an instance of {@link LocalDateTime}.
+     * @return an instance of {@link ZonedDateTime}.
      */
     @Deprecated
-    public Calendar objCurrentTime() {
+    public ZonedDateTime objCurrentTime() {
         return currentTime;
     }
 

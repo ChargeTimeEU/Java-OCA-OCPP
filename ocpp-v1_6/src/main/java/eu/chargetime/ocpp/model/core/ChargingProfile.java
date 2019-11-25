@@ -7,7 +7,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /*
@@ -56,12 +56,12 @@ public class ChargingProfile implements Validatable {
     private ChargingProfilePurposeType chargingProfilePurpose;
     private ChargingProfileKindType chargingProfileKind;
     private RecurrencyKindType recurrencyKind;
-    private Calendar validFrom;
-    private Calendar validTo;
+    private ZonedDateTime validFrom;
+    private ZonedDateTime validTo;
     private ChargingSchedule chargingSchedule;
 
     /**
-     * @deprecated use {@link #ChargingProfile(Integer, Integer, ChargingProfilePurposeType, ChargingProfileKindType)} to be sure to set required fields
+     * @deprecated use {@link #ChargingProfile(Integer, Integer, ChargingProfilePurposeType, ChargingProfileKindType, ChargingSchedule)} to be sure to set required fields
      */
     @Deprecated
     public ChargingProfile() {
@@ -96,7 +96,7 @@ public class ChargingProfile implements Validatable {
      * @param stackLevel             Integer, see {@link #setStackLevel(Integer)}
      * @param chargingProfilePurpose the {@link ChargingProfilePurposeType}, see {@link #setChargingProfilePurpose(ChargingProfilePurposeType)}
      * @param chargingProfileKind    the {@link ChargingProfileKindType}, see {@link #setChargingProfileKind(ChargingProfileKindType)}
-     * @deprecated use {@link #ChargingProfile(Integer, Integer, ChargingProfilePurposeType, ChargingProfileKindType)} to be sure to set required fields
+     * @deprecated use {@link #ChargingProfile(Integer, Integer, ChargingProfilePurposeType, ChargingProfileKindType, ChargingSchedule)} to be sure to set required fields
      */
     @Deprecated
     public ChargingProfile(
@@ -289,7 +289,7 @@ public class ChargingProfile implements Validatable {
      *
      * @return Point in time at which the profile starts to be valid
      */
-    public Calendar getValidFrom() {
+    public ZonedDateTime getValidFrom() {
         return validFrom;
     }
 
@@ -298,10 +298,10 @@ public class ChargingProfile implements Validatable {
      * absent, the profile is valid as soon as it is received by the Charge
      * Point.
      *
-     * @param validFrom the {@link Calendar}
+     * @param validFrom the {@link ZonedDateTime}
      */
     @XmlElement
-    public void setValidFrom(Calendar validFrom) {
+    public void setValidFrom(ZonedDateTime validFrom) {
         this.validFrom = validFrom;
     }
 
@@ -313,7 +313,7 @@ public class ChargingProfile implements Validatable {
      * @return Point in time at which the profile starts to be valid
      */
     @Deprecated
-    public Calendar objValidFrom() {
+    public ZonedDateTime objValidFrom() {
         return this.validFrom;
     }
 
@@ -323,7 +323,7 @@ public class ChargingProfile implements Validatable {
      *
      * @return Point in time at which the profile stops to be valid
      */
-    public Calendar getValidTo() {
+    public ZonedDateTime getValidTo() {
         return validTo;
     }
 
@@ -331,10 +331,10 @@ public class ChargingProfile implements Validatable {
      * Optional. Point in time at which the profile stops to be valid. If
      * absent, the profile is valid until it is replaced by another profile
      *
-     * @param validTo the {@link Calendar}
+     * @param validTo the {@link ZonedDateTime}
      */
     @XmlElement
-    public void setValidTo(Calendar validTo) {
+    public void setValidTo(ZonedDateTime validTo) {
         this.validTo = validTo;
     }
 
@@ -345,7 +345,7 @@ public class ChargingProfile implements Validatable {
      * @return Point in time at which the profile stops to be valid
      */
     @Deprecated
-    public Calendar objValidTo() {
+    public ZonedDateTime objValidTo() {
         return validTo;
     }
 

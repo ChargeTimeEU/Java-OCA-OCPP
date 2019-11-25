@@ -36,7 +36,7 @@ import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
 import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
 
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -76,14 +76,14 @@ public class ServerReservationProfile implements Profile {
      * Create a client {@link ReserveNowRequest} with required values.
      *
      * @param connectorId   Integer, the destination connectorId
-     * @param expiryDate    Calendar, end of reservation
+     * @param expiryDate    ZonedDateTime, end of reservation
      * @param idTag         String, the identifier
      * @param reservationId Integer, id of reservation
      * @return an instance of {@link ReserveNowRequest}
      * @see ReserveNowRequest
      * @see ReserveNowFeature
      */
-    ReserveNowRequest createReserveNowRequest(Integer connectorId, Calendar expiryDate, String idTag, Integer reservationId, String parentIdTag) {
+    ReserveNowRequest createReserveNowRequest(Integer connectorId, ZonedDateTime expiryDate, String idTag, Integer reservationId, String parentIdTag) {
         ReserveNowRequest request = new ReserveNowRequest(connectorId, expiryDate, idTag, reservationId);
         request.setParentIdTag(parentIdTag);
 

@@ -11,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.ZonedDateTime;
-import java.util.GregorianCalendar;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -353,7 +352,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     @Test
     public void handleRequest_aStartTransactionRequest_callsHandleStartTransactionRequest() {
         // Given
-        StartTransactionRequest request = new StartTransactionRequest(1, "idTag", 0, GregorianCalendar.from(ZonedDateTime.now()));
+        StartTransactionRequest request = new StartTransactionRequest(1, "idTag", 0, ZonedDateTime.now());
         UUID sessionId = UUID.randomUUID();
 
         // When
@@ -400,7 +399,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     @Test
     public void handleRequest_aStopTransactionRequest_callsHandleStopTransactionRequest() {
         // Given
-        StopTransactionRequest request = new StopTransactionRequest(0, GregorianCalendar.from(ZonedDateTime.now()), 0);
+        StopTransactionRequest request = new StopTransactionRequest(0, ZonedDateTime.now(), 0);
         UUID sessionId = UUID.randomUUID();
 
         // When

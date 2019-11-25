@@ -3,6 +3,8 @@ package eu.chargetime.ocpp.test.profiles.firmware.json
 import eu.chargetime.ocpp.test.base.json.JSONBaseSpec
 import spock.util.concurrent.PollingConditions
 
+import java.time.ZonedDateTime
+
 /*
     ChargeTime.eu - Java-OCA-OCPP
 
@@ -10,6 +12,7 @@ import spock.util.concurrent.PollingConditions
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
     Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
+    Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +43,7 @@ class JSONUpdateFirmwareSpec extends JSONBaseSpec {
         }
 
         when:
-        centralSystem.sendUpdateFirmwareRequest("URI", Calendar.getInstance())
+        centralSystem.sendUpdateFirmwareRequest("URI", ZonedDateTime.now())
 
         then:
         conditions.eventually {

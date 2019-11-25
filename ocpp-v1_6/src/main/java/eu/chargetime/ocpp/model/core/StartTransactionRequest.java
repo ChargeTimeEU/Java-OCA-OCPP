@@ -35,7 +35,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -53,10 +53,10 @@ public class StartTransactionRequest implements Request {
     private String idTag;
     private Integer meterStart;
     private Integer reservationId;
-    private Calendar timestamp;
+    private ZonedDateTime timestamp;
 
     /**
-     * @deprecated use {@link #StartTransactionRequest(Integer, String, Integer, Calendar)} to be sure to set required fields
+     * @deprecated use {@link #StartTransactionRequest(Integer, String, Integer, ZonedDateTime)} to be sure to set required fields
      */
     @Deprecated
     public StartTransactionRequest() {
@@ -69,9 +69,9 @@ public class StartTransactionRequest implements Request {
      * @param connectorId integer. value &gt; 0, see {@link #setConnectorId(Integer)}
      * @param idTag       a String with max length 20, see {@link #setIdTag(String)}
      * @param meterStart  integer, Wh at start, see {@link #setMeterStart(Integer)}
-     * @param timestamp   Calendar, start time, see {@link #setTimestamp(Calendar)}
+     * @param timestamp   ZonedDateTime, start time, see {@link #setTimestamp(ZonedDateTime)}
      */
-    public StartTransactionRequest(Integer connectorId, String idTag, Integer meterStart, Calendar timestamp) {
+    public StartTransactionRequest(Integer connectorId, String idTag, Integer meterStart, ZonedDateTime timestamp) {
         setConnectorId(connectorId);
         setIdTag(idTag);
         setMeterStart(meterStart);
@@ -177,17 +177,17 @@ public class StartTransactionRequest implements Request {
      *
      * @return start time.
      */
-    public Calendar getTimestamp() {
+    public ZonedDateTime getTimestamp() {
         return timestamp;
     }
 
     /**
      * Required. This contains the date and time on which the transaction is started.
      *
-     * @param timestamp Calendar, start time.
+     * @param timestamp ZonedDateTime, start time.
      */
     @XmlElement
-    public void setTimestamp(Calendar timestamp) {
+    public void setTimestamp(ZonedDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -197,7 +197,7 @@ public class StartTransactionRequest implements Request {
      * @return start time.
      */
     @Deprecated
-    public Calendar objTimestamp() {
+    public ZonedDateTime objTimestamp() {
         return timestamp;
     }
 

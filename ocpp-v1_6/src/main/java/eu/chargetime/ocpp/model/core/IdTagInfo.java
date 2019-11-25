@@ -35,7 +35,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -47,7 +47,7 @@ import java.util.Objects;
 @XmlRootElement
 @XmlType(propOrder = {"status", "expiryDate", "parentIdTag"})
 public class IdTagInfo implements Validatable {
-    private Calendar expiryDate;
+    private ZonedDateTime expiryDate;
     private String parentIdTag;
     private AuthorizationStatus status;
 
@@ -73,17 +73,17 @@ public class IdTagInfo implements Validatable {
      *
      * @return Expiry date.
      */
-    public Calendar getExpiryDate() {
+    public ZonedDateTime getExpiryDate() {
         return expiryDate;
     }
 
     /**
      * Optional. This contains the date at which idTag should be removed from the Authorization Cache.
      *
-     * @param expiryDate Calendar, expire date.
+     * @param expiryDate ZonedDateTime, expire date.
      */
     @XmlElement
-    public void setExpiryDate(Calendar expiryDate) {
+    public void setExpiryDate(ZonedDateTime expiryDate) {
         this.expiryDate = expiryDate;
     }
 
@@ -93,7 +93,7 @@ public class IdTagInfo implements Validatable {
      * @return Expiry date.
      */
     @Deprecated
-    public Calendar objExpiryDate() {
+    public ZonedDateTime objExpiryDate() {
         return expiryDate;
     }
 

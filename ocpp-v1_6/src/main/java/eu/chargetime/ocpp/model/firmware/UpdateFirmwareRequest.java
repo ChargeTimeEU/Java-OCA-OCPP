@@ -35,7 +35,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -47,11 +47,11 @@ public class UpdateFirmwareRequest implements Request {
 
     private String location;
     private Integer retries;
-    private Calendar retrieveDate;
+    private ZonedDateTime retrieveDate;
     private Integer retryInterval;
 
     /**
-     * @deprecated use {@link #UpdateFirmwareRequest(String, Calendar)} to be sure to set required fields
+     * @deprecated use {@link #UpdateFirmwareRequest(String, ZonedDateTime)} to be sure to set required fields
      */
     @Deprecated
     public UpdateFirmwareRequest() {
@@ -61,9 +61,9 @@ public class UpdateFirmwareRequest implements Request {
      * Handle required fields.
      *
      * @param location     String, a URI with the firmware, see {@link #setLocation(String)}
-     * @param retrieveDate Calendar, date and time of retrieving, see {@link #setRetrieveDate(Calendar)}
+     * @param retrieveDate ZonedDateTime, date and time of retrieving, see {@link #setRetrieveDate(ZonedDateTime)}
      */
-    public UpdateFirmwareRequest(String location, Calendar retrieveDate) {
+    public UpdateFirmwareRequest(String location, ZonedDateTime retrieveDate) {
         setLocation(location);
         setRetrieveDate(retrieveDate);
     }
@@ -124,9 +124,9 @@ public class UpdateFirmwareRequest implements Request {
     /**
      * This contains the date and time after which the Charge Point must retrieve the (new) firmware.
      *
-     * @return Calendar, date and time of retrieving.
+     * @return ZonedDateTime, date and time of retrieving.
      */
-    public Calendar getRetrieveDate() {
+    public ZonedDateTime getRetrieveDate() {
         return retrieveDate;
     }
 
@@ -134,10 +134,10 @@ public class UpdateFirmwareRequest implements Request {
      * Required. This contains the date and time after which the Charge Point must retrieve the (new)
      * firmware.
      *
-     * @param retrieveDate Calendar, date and time of retrieving.
+     * @param retrieveDate ZonedDateTime, date and time of retrieving.
      */
     @XmlElement
-    public void setRetrieveDate(Calendar retrieveDate) {
+    public void setRetrieveDate(ZonedDateTime retrieveDate) {
         this.retrieveDate = retrieveDate;
     }
 

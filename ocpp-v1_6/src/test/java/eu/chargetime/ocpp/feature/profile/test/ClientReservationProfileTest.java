@@ -41,7 +41,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.ZonedDateTime;
-import java.util.GregorianCalendar;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -85,7 +84,7 @@ public class ClientReservationProfileTest extends ProfileTest {
     @Test
     public void handleRequest_aReserveNowRequest_callsHandleReserveNowRequest() {
         // Given
-        ReserveNowRequest request = new ReserveNowRequest(0, GregorianCalendar.from(ZonedDateTime.now()), "idTag", 0);
+        ReserveNowRequest request = new ReserveNowRequest(0, ZonedDateTime.now(), "idTag", 0);
 
         // When
         profile.handleRequest(SESSION_NULL, request);

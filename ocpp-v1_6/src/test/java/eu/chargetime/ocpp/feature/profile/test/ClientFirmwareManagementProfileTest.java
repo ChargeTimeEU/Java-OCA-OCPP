@@ -37,7 +37,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.ZonedDateTime;
-import java.util.GregorianCalendar;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -116,7 +115,7 @@ public class ClientFirmwareManagementProfileTest extends ProfileTest {
     @Test
     public void handleRequest_aUpdateFirmwareRequest_callsHandleUpdateFirmwareRequest() {
         // Given
-        UpdateFirmwareRequest request = new UpdateFirmwareRequest("location", GregorianCalendar.from(ZonedDateTime.now()));
+        UpdateFirmwareRequest request = new UpdateFirmwareRequest("location", ZonedDateTime.now());
 
         // When
         profile.handleRequest(SESSION_NULL, request);

@@ -33,8 +33,8 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.UUID;
 
 /**
@@ -134,7 +134,7 @@ public class ClientCoreProfile implements Profile {
      * @see MeterValuesFeature
      */
     public MeterValuesRequest createMeterValuesRequest(
-            Integer connectorId, Calendar timestamp, String value) {
+            Integer connectorId, ZonedDateTime timestamp, String value) {
         SampledValue sampledValue = new SampledValue(value);
         return createMeterValuesRequest(connectorId, timestamp, sampledValue);
     }
@@ -151,7 +151,7 @@ public class ClientCoreProfile implements Profile {
      * @see MeterValuesFeature
      */
     public MeterValuesRequest createMeterValuesRequest(
-            Integer connectorId, Calendar timestamp, SampledValue... sampledValues) {
+            Integer connectorId, ZonedDateTime timestamp, SampledValue... sampledValues) {
         MeterValue meterValue = new MeterValue(timestamp, sampledValues);
         return createMeterValuesRequest(connectorId, meterValue);
     }
@@ -184,7 +184,7 @@ public class ClientCoreProfile implements Profile {
      * @see StartTransactionFeature
      */
     public StartTransactionRequest createStartTransactionRequest(
-            Integer connectorId, String idTag, Integer meterStart, Calendar timestamp) {
+            Integer connectorId, String idTag, Integer meterStart, ZonedDateTime timestamp) {
         return new StartTransactionRequest(connectorId, idTag, meterStart, timestamp);
     }
 
@@ -213,7 +213,7 @@ public class ClientCoreProfile implements Profile {
      * @return an instance of {@link StopTransactionRequest}.
      */
     public StopTransactionRequest createStopTransactionRequest(
-            int meterStop, Calendar timestamp, int transactionId) {
+            int meterStop, ZonedDateTime timestamp, int transactionId) {
         StopTransactionRequest request = new StopTransactionRequest(meterStop, timestamp, transactionId);
         return request;
     }

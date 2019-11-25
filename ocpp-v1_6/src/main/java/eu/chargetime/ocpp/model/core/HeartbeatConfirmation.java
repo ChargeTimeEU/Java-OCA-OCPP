@@ -32,7 +32,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -40,10 +40,10 @@ import java.util.Objects;
  */
 @XmlRootElement(name = "heartbeatResponse")
 public class HeartbeatConfirmation implements Confirmation {
-    private Calendar currentTime;
+    private ZonedDateTime currentTime;
 
     /**
-     * @deprecated use {@link #HeartbeatConfirmation(Calendar)} to be sure to set required fields
+     * @deprecated use {@link #HeartbeatConfirmation(ZonedDateTime)} to be sure to set required fields
      */
     @Deprecated
     public HeartbeatConfirmation() {
@@ -53,9 +53,9 @@ public class HeartbeatConfirmation implements Confirmation {
     /**
      * Handle required fields.
      *
-     * @param currentTime Calendar, current time, see {@link #setCurrentTime(Calendar)}
+     * @param currentTime ZonedDateTime, current time, see {@link #setCurrentTime(ZonedDateTime)}
      */
-    public HeartbeatConfirmation(Calendar currentTime) {
+    public HeartbeatConfirmation(ZonedDateTime currentTime) {
         setCurrentTime(currentTime);
     }
 
@@ -65,7 +65,7 @@ public class HeartbeatConfirmation implements Confirmation {
      * @return The current time.
      */
     @Deprecated
-    public Calendar objCurrentTime() {
+    public ZonedDateTime objCurrentTime() {
         return currentTime;
     }
 
@@ -74,17 +74,17 @@ public class HeartbeatConfirmation implements Confirmation {
      *
      * @return The current time.
      */
-    public Calendar getCurrentTime() {
+    public ZonedDateTime getCurrentTime() {
         return currentTime;
     }
 
     /**
      * Required. This contains the current time of the Central System.
      *
-     * @param currentTime Calendar, current time.
+     * @param currentTime ZonedDateTime, current time.
      */
     @XmlElement
-    public void setCurrentTime(Calendar currentTime) {
+    public void setCurrentTime(ZonedDateTime currentTime) {
         this.currentTime = currentTime;
     }
 

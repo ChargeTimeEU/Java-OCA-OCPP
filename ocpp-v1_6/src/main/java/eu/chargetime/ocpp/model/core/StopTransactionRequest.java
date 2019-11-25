@@ -35,8 +35,8 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Objects;
 
 /**
@@ -49,13 +49,13 @@ public class StopTransactionRequest implements Request {
 
     private String idTag;
     private Integer meterStop;
-    private Calendar timestamp;
+    private ZonedDateTime timestamp;
     private Integer transactionId;
     private Reason reason;
     private MeterValue[] transactionData;
 
     /**
-     * @deprecated use {@link #StopTransactionRequest(Integer, Calendar, Integer)} to be sure to set required fields
+     * @deprecated use {@link #StopTransactionRequest(Integer, ZonedDateTime, Integer)} to be sure to set required fields
      */
     @Deprecated
     public StopTransactionRequest() {
@@ -66,10 +66,10 @@ public class StopTransactionRequest implements Request {
      * Handle required fields.
      *
      * @param meterStop     integer, meter value in Wh, see {@link #setMeterStop(Integer)}
-     * @param timestamp     Calendar, stop time, see {@link #setTimestamp(Calendar)}
+     * @param timestamp     ZonedDateTime, stop time, see {@link #setTimestamp(ZonedDateTime)}
      * @param transactionId integer, transaction id, see {@link #setTransactionId(Integer)}
      */
-    public StopTransactionRequest(Integer meterStop, Calendar timestamp, Integer transactionId) {
+    public StopTransactionRequest(Integer meterStop, ZonedDateTime timestamp, Integer transactionId) {
         setMeterStop(meterStop);
         setTimestamp(timestamp);
         setTransactionId(transactionId);
@@ -138,17 +138,17 @@ public class StopTransactionRequest implements Request {
      *
      * @return stop time.
      */
-    public Calendar getTimestamp() {
+    public ZonedDateTime getTimestamp() {
         return timestamp;
     }
 
     /**
      * Required. This contains the date and time on which the transaction is stopped.
      *
-     * @param timestamp Calendar, stop time.
+     * @param timestamp ZonedDateTime, stop time.
      */
     @XmlElement
-    public void setTimestamp(Calendar timestamp) {
+    public void setTimestamp(ZonedDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -158,7 +158,7 @@ public class StopTransactionRequest implements Request {
      * @return stop time.
      */
     @Deprecated
-    public Calendar objTimestamp() {
+    public ZonedDateTime objTimestamp() {
         return timestamp;
     }
 

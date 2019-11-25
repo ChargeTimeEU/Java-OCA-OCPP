@@ -32,7 +32,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @XmlRootElement
@@ -42,8 +42,8 @@ public class GetDiagnosticsRequest implements Request {
     private String location;
     private Integer retries;
     private Integer retryInterval;
-    private Calendar startTime;
-    private Calendar stopTime;
+    private ZonedDateTime startTime;
+    private ZonedDateTime stopTime;
 
     /**
      * @deprecated use {@link #GetDiagnosticsRequest(String)} to be sure to set required fields
@@ -140,9 +140,9 @@ public class GetDiagnosticsRequest implements Request {
      * This contains the date and time of the oldest logging information to include in the
      * diagnostics.
      *
-     * @return Calendar, oldest log entry
+     * @return ZonedDateTime, oldest log entry
      */
-    public Calendar getStartTime() {
+    public ZonedDateTime getStartTime() {
         return startTime;
     }
 
@@ -150,10 +150,10 @@ public class GetDiagnosticsRequest implements Request {
      * Optional. This contains the date and time of the oldest logging information to include in the
      * diagnostics.
      *
-     * @param startTime Calendar, oldest log entry
+     * @param startTime ZonedDateTime, oldest log entry
      */
     @XmlElement
-    public void setStartTime(Calendar startTime) {
+    public void setStartTime(ZonedDateTime startTime) {
         this.startTime = startTime;
     }
 
@@ -161,9 +161,9 @@ public class GetDiagnosticsRequest implements Request {
      * This contains the date and time of the latest logging information to include in the
      * diagnostics.
      *
-     * @return Calendar, latest log entry
+     * @return ZonedDateTime, latest log entry
      */
-    public Calendar getStopTime() {
+    public ZonedDateTime getStopTime() {
         return stopTime;
     }
 
@@ -171,10 +171,10 @@ public class GetDiagnosticsRequest implements Request {
      * Optional. This contains the date and time of the latest logging information to include in the
      * diagnostics.
      *
-     * @param stopTime Calendar, latest log entry
+     * @param stopTime ZonedDateTime, latest log entry
      */
     @XmlElement
-    public void setStopTime(Calendar stopTime) {
+    public void setStopTime(ZonedDateTime stopTime) {
         this.stopTime = stopTime;
     }
 

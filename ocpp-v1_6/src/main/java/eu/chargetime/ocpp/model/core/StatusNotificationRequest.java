@@ -35,7 +35,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -60,7 +60,7 @@ public class StatusNotificationRequest implements Request {
     private ChargePointErrorCode errorCode;
     private String info;
     private ChargePointStatus status;
-    private Calendar timestamp;
+    private ZonedDateTime timestamp;
     private String vendorId;
     private String vendorErrorCode;
 
@@ -213,7 +213,7 @@ public class StatusNotificationRequest implements Request {
      *
      * @return status time.
      */
-    public Calendar getTimestamp() {
+    public ZonedDateTime getTimestamp() {
         return timestamp;
     }
 
@@ -221,10 +221,10 @@ public class StatusNotificationRequest implements Request {
      * Optional. The time for which the status is reported. If absent time of receipt of the message
      * will be assumed.
      *
-     * @param timestamp Calendar, status time.
+     * @param timestamp ZonedDateTime, status time.
      */
     @XmlElement
-    public void setTimestamp(Calendar timestamp) {
+    public void setTimestamp(ZonedDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -235,7 +235,7 @@ public class StatusNotificationRequest implements Request {
      * @return status time.
      */
     @Deprecated
-    public Calendar objTimestamp() {
+    public ZonedDateTime objTimestamp() {
         return timestamp;
     }
 

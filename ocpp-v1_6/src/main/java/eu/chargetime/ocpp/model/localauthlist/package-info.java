@@ -4,6 +4,7 @@
    MIT License
 
    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+   Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +24,18 @@
    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE.
 */
+@XmlJavaTypeAdapters({
+        @XmlJavaTypeAdapter(type = ZonedDateTime.class,
+                value = ZonedDateTimeAdapter.class),
+})
 @XmlSchema(
     elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED,
     namespace = "urn://Ocpp/Cs/2015/10/")
 package eu.chargetime.ocpp.model.localauthlist;
 
+import eu.chargetime.ocpp.ZonedDateTimeAdapter;
+
 import javax.xml.bind.annotation.XmlSchema;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
+import java.time.ZonedDateTime;

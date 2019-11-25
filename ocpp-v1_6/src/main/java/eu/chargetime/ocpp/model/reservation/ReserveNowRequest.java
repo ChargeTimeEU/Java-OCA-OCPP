@@ -8,7 +8,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /*
@@ -50,13 +50,13 @@ public class ReserveNowRequest implements Request {
     private static final String ERROR_MESSAGE = "Exceeded limit of " + ID_TAG_MAX_LENGTH + " chars";
 
     private Integer connectorId;
-    private Calendar expiryDate;
+    private ZonedDateTime expiryDate;
     private String idTag;
     private String parentIdTag;
     private Integer reservationId;
 
     /**
-     * @deprecated use {@link #ReserveNowRequest(Integer, Calendar, String, Integer)} to be sure to set required fields
+     * @deprecated use {@link #ReserveNowRequest(Integer, ZonedDateTime, String, Integer)} to be sure to set required fields
      */
     @Deprecated
     public ReserveNowRequest() {
@@ -66,12 +66,12 @@ public class ReserveNowRequest implements Request {
      * Handle required fields.
      *
      * @param connectorId   Integer, the destination connectorId, see {@link #setConnectorId(Integer)}
-     * @param expiryDate    Calendar, end of reservation, see {@link #setExpiryDate(Calendar)}
+     * @param expiryDate    ZonedDateTime, end of reservation, see {@link #setExpiryDate(ZonedDateTime)}
      * @param idTag         String, the identifier, see {@link #setIdTag(String)}
      * @param reservationId Integer, id of reservation, see {@link #setReservationId(Integer)}
      */
     public ReserveNowRequest(
-            Integer connectorId, Calendar expiryDate, String idTag, Integer reservationId) {
+            Integer connectorId, ZonedDateTime expiryDate, String idTag, Integer reservationId) {
         setConnectorId(connectorId);
         setExpiryDate(expiryDate);
         setIdTag(idTag);
@@ -115,19 +115,19 @@ public class ReserveNowRequest implements Request {
     /**
      * This contains the date and time when the reservation ends.
      *
-     * @return Calendar, end of reservation.
+     * @return ZonedDateTime, end of reservation.
      */
-    public Calendar getExpiryDate() {
+    public ZonedDateTime getExpiryDate() {
         return expiryDate;
     }
 
     /**
      * Required. This contains the date and time when the reservation ends.
      *
-     * @param expiryDate Calendar, end of reservation.
+     * @param expiryDate ZonedDateTime, end of reservation.
      */
     @XmlElement
-    public void setExpiryDate(Calendar expiryDate) {
+    public void setExpiryDate(ZonedDateTime expiryDate) {
         this.expiryDate = expiryDate;
     }
 

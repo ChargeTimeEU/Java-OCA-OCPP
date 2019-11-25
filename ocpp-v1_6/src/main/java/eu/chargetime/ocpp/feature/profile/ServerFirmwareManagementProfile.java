@@ -34,7 +34,7 @@ import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationRequest;
 import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
 import eu.chargetime.ocpp.model.firmware.UpdateFirmwareRequest;
 
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -90,12 +90,12 @@ public class ServerFirmwareManagementProfile implements Profile {
      * Create a client {@link UpdateFirmwareRequest} with required values.
      *
      * @param location String, a URI with the firmware
-     *                 * @param retrieveDate Calendar, date and time of retrieving
+     *                 * @param retrieveDate ZonedDateTime, date and time of retrieving
      * @return an instance of {@link UpdateFirmwareRequest}
      * @see UpdateFirmwareRequest
      * @see UpdateFirmwareFeature
      */
-    public UpdateFirmwareRequest createUpdateFirmwareRequest(String location, Calendar retrieveDate) {
+    public UpdateFirmwareRequest createUpdateFirmwareRequest(String location, ZonedDateTime retrieveDate) {
         return new UpdateFirmwareRequest(location, retrieveDate);
     }
 }
