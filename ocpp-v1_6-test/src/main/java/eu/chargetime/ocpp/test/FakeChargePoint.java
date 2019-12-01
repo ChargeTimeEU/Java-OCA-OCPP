@@ -161,7 +161,7 @@ public class FakeChargePoint {
 
         remoteTrigger =
                 new ClientRemoteTriggerProfile(
-                        new ClientRemoteTriggerHandler() {
+                        new ClientRemoteTriggerEventHandler() {
                             @Override
                             public TriggerMessageConfirmation handleTriggerMessageRequest(
                                     TriggerMessageRequest request) {

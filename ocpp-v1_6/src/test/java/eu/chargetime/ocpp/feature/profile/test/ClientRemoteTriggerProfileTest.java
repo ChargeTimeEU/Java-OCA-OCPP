@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.feature.profile.test;
 
-import eu.chargetime.ocpp.feature.profile.ClientRemoteTriggerHandler;
+import eu.chargetime.ocpp.feature.profile.ClientRemoteTriggerEventHandler;
 import eu.chargetime.ocpp.feature.profile.ClientRemoteTriggerProfile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageConfirmation;
@@ -52,7 +52,7 @@ public class ClientRemoteTriggerProfileTest {
     private static final UUID SESSION_NULL = null;
     private ClientRemoteTriggerProfile profile;
 
-    @Mock private ClientRemoteTriggerHandler handler;
+    @Mock private ClientRemoteTriggerEventHandler handler;
 
     @Before
     public void setup() {

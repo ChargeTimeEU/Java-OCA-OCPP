@@ -30,7 +30,7 @@ SOFTWARE.
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageConfirmation;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 
-public interface ClientRemoteTriggerHandler {
+public interface ClientRemoteTriggerEventHandler {
   /**
    * Handle a {@link TriggerMessageRequest} and return a {@link TriggerMessageConfirmation}.
    *
