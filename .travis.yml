@@ -13,7 +13,6 @@ jobs:
   include:
     - stage: test
       jdk: openjdk8
-      script: "chmod +x gradlew"
       script: "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report -B"
       after_success:
         - bash <(curl -s https://codecov.io/bash)
