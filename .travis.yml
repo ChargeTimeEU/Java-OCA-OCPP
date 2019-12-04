@@ -1,6 +1,7 @@
 language: java
 
-before_install: - chmod +x gradlew
+before_install: 
+  - chmod +x gradlew
 
 notifications:
   webhooks:
