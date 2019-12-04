@@ -1,4 +1,3 @@
-sudo: false # faster builds
 language: java
 
 notifications:
