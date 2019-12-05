@@ -48,7 +48,7 @@ public class ServerCoreProfile implements Profile {
         features.add(new ChangeAvailabilityFeature(null));
         features.add(new ChangeConfigurationFeature(null));
         features.add(new ClearCacheFeature(null));
-        features.add(new DataTransferFeature(null));
+        features.add(new DataTransferFeature(this));
         features.add(new GetConfigurationFeature(null));
         features.add(new HeartbeatFeature(this));
         features.add(new MeterValuesFeature(this));

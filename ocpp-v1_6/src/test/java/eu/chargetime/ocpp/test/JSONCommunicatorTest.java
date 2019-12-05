@@ -93,7 +93,7 @@ public class JSONCommunicatorTest {
         String aCalendar = "2016-04-28T07:16:11.988Z";
         String payload = "{\"calendarTest\":\"%s\"}";
 
-        ZonedDateTime someDate = ZonedDateTime.parse("2016.03.28T07:16:11.988Z");
+        ZonedDateTime someDate = ZonedDateTime.parse("2016-04-28T07:16:11.988Z");
 
         // When
         TestModel model =

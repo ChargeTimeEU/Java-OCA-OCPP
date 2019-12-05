@@ -61,7 +61,7 @@ public class DummyHandlers {
         AuthorizeConfirmation confirmation = new AuthorizeConfirmation();
         IdTagInfo tagInfo = new IdTagInfo();
         tagInfo.setStatus(AuthorizationStatus.Accepted);
-        ZonedDateTime calendar = ZonedDateTime.parse("2018.01.01T01:01:01");
+        ZonedDateTime calendar = ZonedDateTime.parse("2018-01-01T01:01:01.988Z");
         tagInfo.setExpiryDate(calendar);
         confirmation.setIdTagInfo(tagInfo);
         return failurePoint(confirmation);
