@@ -6,7 +6,7 @@ import spock.util.concurrent.PollingConditions
 
 /*
     ChargeTime.eu - Java-OCA-OCPP
-    
+
     MIT License
 
     Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
@@ -35,7 +35,7 @@ class OfflineTransactionSpec extends JSONBaseSpec {
     def "Disconnected during a transaction, stores and recovers transaction related commands"() {
         def conditions = new PollingConditions(timeout: 1)
         def acon = new AsyncConditions()
-        when: "Send BootNotificatonRequest"
+        when: "Send BootNotificationRequest"
         chargePoint.sendBootNotification("ChargeTimeEU", "UnstableCharger")
 
         then: "Received response"
