@@ -6,6 +6,7 @@ package eu.chargetime.ocpp.model.core;
  * MIT License
  *
  * Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+ * Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,68 +29,88 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-import java.util.Calendar;
-import java.util.Objects;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.time.ZonedDateTime;
+import java.util.Objects;
 
-/** Sent by the Central System to the Charge Point in response to a {@link HeartbeatRequest}. */
+/**
+ * Sent by the Central System to the Charge Point in response to a {@link HeartbeatRequest}.
+ */
 @XmlRootElement(name = "heartbeatResponse")
 public class HeartbeatConfirmation implements Confirmation {
-  private Calendar currentTime;
+    private ZonedDateTime currentTime;
 
-  /**
-   * This contains the current time of the Central System.
-   *
-   * @return The current time.
-   */
-  @Deprecated
-  public Calendar objCurrentTime() {
-    return currentTime;
-  }
+    /**
+     * @deprecated use {@link #HeartbeatConfirmation(ZonedDateTime)} to be sure to set required fields
+     */
+    @Deprecated
+    public HeartbeatConfirmation() {
 
-  /**
-   * This contains the current time of the Central System.
-   *
-   * @return The current time.
-   */
-  public Calendar getCurrentTime() {
-    return currentTime;
-  }
+    }
 
-  /**
-   * Required. This contains the current time of the Central System.
-   *
-   * @param currentTime Calendar, current time.
-   */
-  @XmlElement
-  public void setCurrentTime(Calendar currentTime) {
-    this.currentTime = currentTime;
-  }
+    /**
+     * Handle required fields.
+     *
+     * @param currentTime ZonedDateTime, current time, see {@link #setCurrentTime(ZonedDateTime)}
+     */
+    public HeartbeatConfirmation(ZonedDateTime currentTime) {
+        setCurrentTime(currentTime);
+    }
 
-  @Override
-  public boolean validate() {
-    return currentTime != null;
-  }
+    /**
+     * This contains the current time of the Central System.
+     *
+     * @return The current time.
+     */
+    @Deprecated
+    public ZonedDateTime objCurrentTime() {
+        return currentTime;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    HeartbeatConfirmation that = (HeartbeatConfirmation) o;
-    return Objects.equals(currentTime, that.currentTime);
-  }
+    /**
+     * This contains the current time of the Central System.
+     *
+     * @return The current time.
+     */
+    public ZonedDateTime getCurrentTime() {
+        return currentTime;
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(currentTime);
-  }
+    /**
+     * Required. This contains the current time of the Central System.
+     *
+     * @param currentTime ZonedDateTime, current time.
+     */
+    @XmlElement
+    public void setCurrentTime(ZonedDateTime currentTime) {
+        this.currentTime = currentTime;
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("currentTime", currentTime)
-        .add("isValid", validate())
-        .toString();
-  }
+    @Override
+    public boolean validate() {
+        return currentTime != null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HeartbeatConfirmation that = (HeartbeatConfirmation) o;
+        return Objects.equals(currentTime, that.currentTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(currentTime);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("currentTime", currentTime)
+                .add("isValid", validate())
+                .toString();
+    }
 }

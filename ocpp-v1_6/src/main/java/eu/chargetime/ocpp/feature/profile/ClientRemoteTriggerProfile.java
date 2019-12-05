@@ -38,10 +38,10 @@ SOFTWARE.
 
 /** Callback handler for client events of the Remote Trigger feature profile. */
 public class ClientRemoteTriggerProfile implements Profile {
-  private ClientRemoteTriggerHandler eventHandler;
+  private ClientRemoteTriggerEventHandler eventHandler;
   private ArrayList<Feature> features;
 
-  public ClientRemoteTriggerProfile(ClientRemoteTriggerHandler handler) {
+  public ClientRemoteTriggerProfile(ClientRemoteTriggerEventHandler handler) {
     features = new ArrayList<>();
     eventHandler = handler;
 

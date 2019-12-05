@@ -5,6 +5,7 @@ package eu.chargetime.ocpp.feature.profile.test;
    MIT License
 
    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+   Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +26,19 @@ package eu.chargetime.ocpp.feature.profile.test;
    SOFTWARE.
 */
 
+import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.feature.profile.ClientFirmwareManagementEventHandler;
+import eu.chargetime.ocpp.feature.profile.ClientFirmwareManagementProfile;
+import eu.chargetime.ocpp.model.firmware.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import java.time.ZonedDateTime;
+import java.util.UUID;
+
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -32,120 +46,109 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import eu.chargetime.ocpp.feature.*;
-import eu.chargetime.ocpp.feature.profile.ClientFirmwareManagementEventHandler;
-import eu.chargetime.ocpp.feature.profile.ClientFirmwareManagementProfile;
-import eu.chargetime.ocpp.model.firmware.*;
-import java.util.UUID;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
 @RunWith(MockitoJUnitRunner.class)
 public class ClientFirmwareManagementProfileTest extends ProfileTest {
-  private static final UUID SESSION_NULL = null;
-  ClientFirmwareManagementProfile profile;
+    private static final UUID SESSION_NULL = null;
+    ClientFirmwareManagementProfile profile;
 
-  @Mock private ClientFirmwareManagementEventHandler handler;
+    @Mock private ClientFirmwareManagementEventHandler handler;
 
-  @Before
-  public void setup() {
-    profile = new ClientFirmwareManagementProfile(handler);
-  }
+    @Before
+    public void setup() {
+        profile = new ClientFirmwareManagementProfile(handler);
+    }
 
-  @Test
-  public void getFeatureList_containsGetDiagnosticsFeature() {
-    // When
-    Feature[] features = profile.getFeatureList();
+    @Test
+    public void getFeatureList_containsGetDiagnosticsFeature() {
+        // When
+        Feature[] features = profile.getFeatureList();
 
-    // Then
-    assertThat(
-        findFeature(features, "GetDiagnostics"), is(instanceOf(GetDiagnosticsFeature.class)));
-  }
+        // Then
+        assertThat(
+                findFeature(features, "GetDiagnostics"), is(instanceOf(GetDiagnosticsFeature.class)));
+    }
 
-  @Test
-  public void getFeatureList_containsDiagnosticsStatusNotificationFeature() {
-    // When
-    Feature[] features = profile.getFeatureList();
+    @Test
+    public void getFeatureList_containsDiagnosticsStatusNotificationFeature() {
+        // When
+        Feature[] features = profile.getFeatureList();
 
-    // Then
-    assertThat(
-        findFeature(features, "DiagnosticsStatusNotification"),
-        is(instanceOf(DiagnosticsStatusNotificationFeature.class)));
-  }
+        // Then
+        assertThat(
+                findFeature(features, "DiagnosticsStatusNotification"),
+                is(instanceOf(DiagnosticsStatusNotificationFeature.class)));
+    }
 
-  @Test
-  public void getFeatureList_containsFirmwareStatusNotificationFeature() {
-    // When
-    Feature[] features = profile.getFeatureList();
+    @Test
+    public void getFeatureList_containsFirmwareStatusNotificationFeature() {
+        // When
+        Feature[] features = profile.getFeatureList();
 
-    // Then
-    assertThat(
-        findFeature(features, "FirmwareStatusNotification"),
-        is(instanceOf(FirmwareStatusNotificationFeature.class)));
-  }
+        // Then
+        assertThat(
+                findFeature(features, "FirmwareStatusNotification"),
+                is(instanceOf(FirmwareStatusNotificationFeature.class)));
+    }
 
-  @Test
-  public void getFeatureList_containsUpdateFirmwareFeature() {
-    // When
-    Feature[] features = profile.getFeatureList();
+    @Test
+    public void getFeatureList_containsUpdateFirmwareFeature() {
+        // When
+        Feature[] features = profile.getFeatureList();
 
-    // Then
-    assertThat(
-        findFeature(features, "UpdateFirmware"), is(instanceOf(UpdateFirmwareFeature.class)));
-  }
+        // Then
+        assertThat(
+                findFeature(features, "UpdateFirmware"), is(instanceOf(UpdateFirmwareFeature.class)));
+    }
 
-  @Test
-  public void handleRequest_aGetDiagnosticsRequest_callsHandleGetDiagnosticsRequest() {
-    // Given
-    GetDiagnosticsRequest request = new GetDiagnosticsRequest();
+    @Test
+    public void handleRequest_aGetDiagnosticsRequest_callsHandleGetDiagnosticsRequest() {
+        // Given
+        GetDiagnosticsRequest request = new GetDiagnosticsRequest("location");
 
-    // When
-    profile.handleRequest(SESSION_NULL, request);
+        // When
+        profile.handleRequest(SESSION_NULL, request);
 
-    // Then
-    verify(handler, times(1)).handleGetDiagnosticsRequest(eq(request));
-  }
+        // Then
+        verify(handler, times(1)).handleGetDiagnosticsRequest(eq(request));
+    }
 
-  @Test
-  public void handleRequest_aUpdateFirmwareRequest_callsHandleUpdateFirmwareRequest() {
-    // Given
-    UpdateFirmwareRequest request = new UpdateFirmwareRequest();
+    @Test
+    public void handleRequest_aUpdateFirmwareRequest_callsHandleUpdateFirmwareRequest() {
+        // Given
+        UpdateFirmwareRequest request = new UpdateFirmwareRequest("location", ZonedDateTime.now());
 
-    // When
-    profile.handleRequest(SESSION_NULL, request);
+        // When
+        profile.handleRequest(SESSION_NULL, request);
 
-    // Then
-    verify(handler, times(1)).handleUpdateFirmwareRequest(eq(request));
-  }
+        // Then
+        verify(handler, times(1)).handleUpdateFirmwareRequest(eq(request));
+    }
 
-  @Test
-  public void
-      createDiagnosticsStatusNotificationRequest_withStatus_returnsDiagnosticsStatusNotificationRequestWithStatus() {
-    // Given
-    DiagnosticsStatus status = DiagnosticsStatus.Idle;
+    @Test
+    public void
+    createDiagnosticsStatusNotificationRequest_withStatus_returnsDiagnosticsStatusNotificationRequestWithStatus() {
+        // Given
+        DiagnosticsStatus status = DiagnosticsStatus.Idle;
 
-    // When
-    DiagnosticsStatusNotificationRequest result =
-        profile.createDiagnosticsStatusNotificationRequest(status);
+        // When
+        DiagnosticsStatusNotificationRequest result =
+                profile.createDiagnosticsStatusNotificationRequest(status);
 
-    // Then
-    assertThat(result.getStatus(), is(status));
-  }
+        // Then
+        assertThat(result.getStatus(), is(status));
+    }
 
-  @Test
-  public void
-      createFirmwareStatusNotificationRequest_withStatus_returnsFirmwareStatusNotificationRequestWithStatus() {
-    // Given
-    FirmwareStatus status = FirmwareStatus.Idle;
+    @Test
+    public void
+    createFirmwareStatusNotificationRequest_withStatus_returnsFirmwareStatusNotificationRequestWithStatus() {
+        // Given
+        FirmwareStatus status = FirmwareStatus.Idle;
 
-    // When
-    FirmwareStatusNotificationRequest result =
-        profile.createFirmwareStatusNotificationRequest(status);
+        // When
+        FirmwareStatusNotificationRequest result =
+                profile.createFirmwareStatusNotificationRequest(status);
 
-    // Then
-    assertThat(result.getStatus(), is(status));
-  }
+        // Then
+        assertThat(result.getStatus(), is(status));
+    }
 }

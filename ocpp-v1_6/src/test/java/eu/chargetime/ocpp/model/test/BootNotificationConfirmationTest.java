@@ -8,7 +8,8 @@ import static org.junit.Assert.assertThat;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
 import eu.chargetime.ocpp.model.core.RegistrationStatus;
-import java.util.Calendar;
+
+import java.time.ZonedDateTime;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,10 +18,12 @@ import org.junit.rules.ExpectedException;
 /*
 ChargeTime.eu - Java-OCA-OCPP
 Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
+Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
 MIT License
 
 Copyright (C) 2016-2018 Thomas Volden
+Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -53,7 +56,7 @@ public class BootNotificationConfirmationTest {
   @Test
   public void setCurrentTime_now_currentTimeIsSet() {
     // Given
-    Calendar now = Calendar.getInstance();
+    ZonedDateTime now = ZonedDateTime.now();
 
     // When
     confirmation.setCurrentTime(now);
@@ -101,7 +104,7 @@ public class BootNotificationConfirmationTest {
   @Test
   public void validate_currentTimeAndIntervalAndStatusIsSet_returnTrue() {
     // Given
-    confirmation.setCurrentTime(Calendar.getInstance());
+    confirmation.setCurrentTime(ZonedDateTime.now());
     confirmation.setInterval(42);
     confirmation.setStatus(RegistrationStatus.Accepted);
 

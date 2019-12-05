@@ -6,6 +6,7 @@ package eu.chargetime.ocpp.model.core;
  * MIT License
  *
  * Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+ * Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,78 +29,87 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-import java.util.Objects;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
-/** sent from Charge Point to Central System. */
+/**
+ * sent from Charge Point to Central System.
+ */
 @XmlRootElement(name = "remoteStopTransactionResponse")
 public class RemoteStopTransactionConfirmation implements Confirmation {
-  private RemoteStartStopStatus status;
 
-  public RemoteStopTransactionConfirmation() {}
+    private RemoteStartStopStatus status;
 
-  /**
-   * Set required fields.
-   *
-   * @param status the {@link RemoteStartStopStatus}, see {@link #setStatus(RemoteStartStopStatus)}.
-   */
-  public RemoteStopTransactionConfirmation(RemoteStartStopStatus status) {
-    setStatus(status);
-  }
+    /**
+     * @deprecated use {@link #RemoteStopTransactionConfirmation(RemoteStartStopStatus)} to be sure to set required fields
+     */
+    @Deprecated
+    public RemoteStopTransactionConfirmation() {
+    }
 
-  @Override
-  public boolean validate() {
-    return status != null;
-  }
+    /**
+     * Handle required fields.
+     *
+     * @param status the {@link RemoteStartStopStatus}, see {@link #setStatus(RemoteStartStopStatus)}
+     */
+    public RemoteStopTransactionConfirmation(RemoteStartStopStatus status) {
+        setStatus(status);
+    }
 
-  /**
-   * Status indicating whether Charge Point accepts the request to stop a transaction.
-   *
-   * @return the {@link RemoteStartStopStatus}.
-   */
-  public RemoteStartStopStatus getStatus() {
-    return status;
-  }
+    @Override
+    public boolean validate() {
+        return status != null;
+    }
 
-  /**
-   * Status indicating whether Charge Point accepts the request to stop a transaction.
-   *
-   * @return the {@link RemoteStartStopStatus}.
-   */
-  @Deprecated
-  public RemoteStartStopStatus objStatus() {
-    return status;
-  }
+    /**
+     * Status indicating whether Charge Point accepts the request to stop a transaction.
+     *
+     * @return the {@link RemoteStartStopStatus}.
+     */
+    public RemoteStartStopStatus getStatus() {
+        return status;
+    }
 
-  /**
-   * Required. Status indicating whether Charge Point accepts the request to stop a transaction.
-   *
-   * @param status the {@link RemoteStartStopStatus}.
-   */
-  @XmlElement
-  public void setStatus(RemoteStartStopStatus status) {
-    this.status = status;
-  }
+    /**
+     * Required. Status indicating whether Charge Point accepts the request to stop a transaction.
+     *
+     * @param status the {@link RemoteStartStopStatus}.
+     */
+    @XmlElement
+    public void setStatus(RemoteStartStopStatus status) {
+        this.status = status;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    RemoteStopTransactionConfirmation that = (RemoteStopTransactionConfirmation) o;
-    return status == that.status;
-  }
+    /**
+     * Status indicating whether Charge Point accepts the request to stop a transaction.
+     *
+     * @return the {@link RemoteStartStopStatus}.
+     */
+    @Deprecated
+    public RemoteStartStopStatus objStatus() {
+        return status;
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(status);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RemoteStopTransactionConfirmation that = (RemoteStopTransactionConfirmation) o;
+        return status == that.status;
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("status", status)
-        .add("isValid", validate())
-        .toString();
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(status);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("status", status)
+                .add("isValid", validate())
+                .toString();
+    }
 }

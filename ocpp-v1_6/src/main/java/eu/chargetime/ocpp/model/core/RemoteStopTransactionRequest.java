@@ -6,6 +6,7 @@ package eu.chargetime.ocpp.model.core;
  * MIT License
  *
  * Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+ * Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,62 +29,83 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-import java.util.Objects;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
-/** sent to Charge Point by Central System. */
+/**
+ * sent to Charge Point by Central System.
+ */
 @XmlRootElement
 public class RemoteStopTransactionRequest implements Request {
-  private Integer transactionId;
 
-  @Override
-  public boolean validate() {
-    return transactionId != null;
-  }
+    private Integer transactionId;
 
-  /**
-   * The identifier of the transaction which Charge Point is requested to stop.
-   *
-   * @return transaction id.
-   */
-  public Integer getTransactionId() {
-    return transactionId;
-  }
+    /**
+     * @deprecated use {@link #RemoteStopTransactionRequest(Integer)} to be sure to set required fields
+     */
+    @Deprecated
+    public RemoteStopTransactionRequest() {
 
-  /**
-   * Required. The identifier of the transaction which Charge Point is requested to stop.
-   *
-   * @param transactionId integer, transaction id.
-   */
-  @XmlElement
-  public void setTransactionId(Integer transactionId) {
-    this.transactionId = transactionId;
-  }
+    }
 
-  @Override
-  public boolean transactionRelated() {
-    return false;
-  }
+    /**
+     * Handle required fields.
+     *
+     * @param transactionId integer, transaction id, see {@link #setTransactionId(Integer)}
+     */
+    public RemoteStopTransactionRequest(Integer transactionId) {
+        setTransactionId(transactionId);
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    RemoteStopTransactionRequest that = (RemoteStopTransactionRequest) o;
-    return Objects.equals(transactionId, that.transactionId);
-  }
+    @Override
+    public boolean validate() {
+        return transactionId != null;
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(transactionId);
-  }
+    /**
+     * The identifier of the transaction which Charge Point is requested to stop.
+     *
+     * @return transaction id.
+     */
+    public Integer getTransactionId() {
+        return transactionId;
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("transactionId", transactionId)
-        .add("isValid", validate())
-        .toString();
-  }
+    /**
+     * Required. The identifier of the transaction which Charge Point is requested to stop.
+     *
+     * @param transactionId integer, transaction id.
+     */
+    @XmlElement
+    public void setTransactionId(Integer transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    @Override
+    public boolean transactionRelated() {
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RemoteStopTransactionRequest that = (RemoteStopTransactionRequest) o;
+        return Objects.equals(transactionId, that.transactionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(transactionId);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("transactionId", transactionId)
+                .add("isValid", validate())
+                .toString();
+    }
 }

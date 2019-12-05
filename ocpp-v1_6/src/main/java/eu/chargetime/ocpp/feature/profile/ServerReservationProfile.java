@@ -6,6 +6,7 @@ package eu.chargetime.ocpp.feature.profile;
 
    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
    Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
+   Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -26,29 +27,66 @@ package eu.chargetime.ocpp.feature.profile;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.feature.CancelReservationFeature;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.ProfileFeature;
+import eu.chargetime.ocpp.feature.ReserveNowFeature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
+import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
+
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.UUID;
 
 public class ServerReservationProfile implements Profile {
 
-  private HashSet<Feature> features;
+    private HashSet<Feature> features;
 
-  public ServerReservationProfile() {
-    features = new HashSet<>();
-    features.add(new ReserveNowFeature(this));
-    features.add(new CancelReservationFeature(this));
-  }
+    public ServerReservationProfile() {
+        features = new HashSet<>();
+        features.add(new ReserveNowFeature(null));
+        features.add(new CancelReservationFeature(null));
+    }
 
-  @Override
-  public ProfileFeature[] getFeatureList() {
-    return features.toArray(new ProfileFeature[0]);
-  }
+    @Override
+    public ProfileFeature[] getFeatureList() {
+        return features.toArray(new ProfileFeature[0]);
+    }
 
-  @Override
-  public Confirmation handleRequest(UUID sessionIndex, Request request) {
-    return null;
-  }
+    @Override
+    public Confirmation handleRequest(UUID sessionIndex, Request request) {
+        return null;
+    }
+
+    /**
+     * Create a client {@link CancelReservationRequest} with required values.
+     *
+     * @param reservationId Integer, id of the reservation
+     * @return an instance of {@link CancelReservationRequest}
+     * @see CancelReservationRequest
+     * @see CancelReservationFeature
+     */
+    CancelReservationRequest createCancelReservationRequest(Integer reservationId) {
+        return new CancelReservationRequest(reservationId);
+    }
+
+    /**
+     * Create a client {@link ReserveNowRequest} with required values.
+     *
+     * @param connectorId   Integer, the destination connectorId
+     * @param expiryDate    ZonedDateTime, end of reservation
+     * @param idTag         String, the identifier
+     * @param reservationId Integer, id of reservation
+     * @return an instance of {@link ReserveNowRequest}
+     * @see ReserveNowRequest
+     * @see ReserveNowFeature
+     */
+    ReserveNowRequest createReserveNowRequest(Integer connectorId, ZonedDateTime expiryDate, String idTag, Integer reservationId, String parentIdTag) {
+        ReserveNowRequest request = new ReserveNowRequest(connectorId, expiryDate, idTag, reservationId);
+        request.setParentIdTag(parentIdTag);
+
+        return request;
+    }
 }

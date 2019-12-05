@@ -1,20 +1,23 @@
 package eu.chargetime.ocpp.feature.profile.test;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
-
-import eu.chargetime.ocpp.feature.profile.ClientRemoteTriggerHandler;
+import eu.chargetime.ocpp.feature.profile.ClientRemoteTriggerEventHandler;
 import eu.chargetime.ocpp.feature.profile.ClientRemoteTriggerProfile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageConfirmation;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
-import java.util.UUID;
+import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
+import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.UUID;
+
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -22,6 +25,7 @@ import org.mockito.runners.MockitoJUnitRunner;
  * MIT License
  *
  * Copyright (C) 2017 Emil Christopher Solli Melar <emil@iconsultable.no>
+ * Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,38 +49,38 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ClientRemoteTriggerProfileTest {
 
-  private static final UUID SESSION_NULL = null;
-  private ClientRemoteTriggerProfile profile;
+    private static final UUID SESSION_NULL = null;
+    private ClientRemoteTriggerProfile profile;
 
-  @Mock private ClientRemoteTriggerHandler handler;
+    @Mock private ClientRemoteTriggerEventHandler handler;
 
-  @Before
-  public void setup() {
-    profile = new ClientRemoteTriggerProfile(handler);
-  }
+    @Before
+    public void setup() {
+        profile = new ClientRemoteTriggerProfile(handler);
+    }
 
-  @Test
-  public void handleRequest_TriggerMessageReqest_callsHandleTriggerMessageReqestRequest() {
-    // Given
-    TriggerMessageRequest request = new TriggerMessageRequest();
+    @Test
+    public void handleRequest_TriggerMessageReqest_callsHandleTriggerMessageReqestRequest() {
+        // Given
+        TriggerMessageRequest request = new TriggerMessageRequest(TriggerMessageRequestType.BootNotification);
 
-    // When
-    profile.handleRequest(SESSION_NULL, request);
+        // When
+        profile.handleRequest(SESSION_NULL, request);
 
-    // Then
-    verify(handler, times(1)).handleTriggerMessageRequest(request);
-  }
+        // Then
+        verify(handler, times(1)).handleTriggerMessageRequest(request);
+    }
 
-  @Test
-  public void handleRequest_SetTriggerMessageRequest_returnsTriggerMessageRequest() {
-    // Given
-    when(handler.handleTriggerMessageRequest(any())).thenReturn(new TriggerMessageConfirmation());
-    TriggerMessageRequest request = new TriggerMessageRequest();
+    @Test
+    public void handleRequest_SetTriggerMessageRequest_returnsTriggerMessageRequest() {
+        // Given
+        when(handler.handleTriggerMessageRequest(any())).thenReturn(new TriggerMessageConfirmation(TriggerMessageStatus.Accepted));
+        TriggerMessageRequest request = new TriggerMessageRequest(TriggerMessageRequestType.BootNotification);
 
-    // When
-    Confirmation conf = profile.handleRequest(SESSION_NULL, request);
+        // When
+        Confirmation conf = profile.handleRequest(SESSION_NULL, request);
 
-    // Then
-    assertThat(conf, instanceOf(TriggerMessageConfirmation.class));
-  }
+        // Then
+        assertThat(conf, instanceOf(TriggerMessageConfirmation.class));
+    }
 }

@@ -6,6 +6,7 @@ package eu.chargetime.ocpp.model.core;
  * MIT License
  *
  * Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+ * Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +29,11 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-import java.util.Objects;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Objects;
 
 /**
  * Sent by the Charge Point to the Central System or vice versa in response to a {@link
@@ -41,81 +43,98 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(propOrder = {"status", "data"})
 public class DataTransferConfirmation implements Confirmation {
 
-  private DataTransferStatus status;
-  private String data;
+    private DataTransferStatus status;
+    private String data;
 
-  /**
-   * This indicates the success or failure of the data transfer.
-   *
-   * @return the {@link DataTransferStatus}.
-   */
-  public DataTransferStatus getStatus() {
-    return status;
-  }
+    /**
+     * @deprecated use {@link #DataTransferConfirmation(DataTransferStatus)} to be sure to set required fields
+     */
+    @Deprecated
+    public DataTransferConfirmation() {
 
-  /**
-   * This indicates the success or failure of the data transfer.
-   *
-   * @return the {@link DataTransferStatus}.
-   */
-  @Deprecated
-  public DataTransferStatus objStatus() {
-    return status;
-  }
+    }
 
-  /**
-   * Required. This indicates the success or failure of the data transfer.
-   *
-   * @param status the {@link DataTransferStatus}.
-   */
-  @XmlElement
-  public void setStatus(DataTransferStatus status) {
-    this.status = status;
-  }
+    /**
+     * Handle required fields.
+     *
+     * @param status the {@link DataTransferStatus}, see {@link #setStatus(DataTransferStatus)}
+     */
+    public DataTransferConfirmation(DataTransferStatus status) {
+        setStatus(status);
+    }
 
-  /**
-   * Optional. Data in response to request.
-   *
-   * @return data.
-   */
-  public String getData() {
-    return data;
-  }
+    /**
+     * This indicates the success or failure of the data transfer.
+     *
+     * @return the {@link DataTransferStatus}.
+     */
+    public DataTransferStatus getStatus() {
+        return status;
+    }
 
-  /**
-   * Optional. Data in response to request.
-   *
-   * @param data String, data
-   */
-  @XmlElement
-  public void setData(String data) {
-    this.data = data;
-  }
+    /**
+     * Required. This indicates the success or failure of the data transfer.
+     *
+     * @param status the {@link DataTransferStatus}.
+     */
+    @XmlElement
+    public void setStatus(DataTransferStatus status) {
+        this.status = status;
+    }
 
-  @Override
-  public boolean validate() {
-    return this.status != null;
-  }
+    /**
+     * This indicates the success or failure of the data transfer.
+     *
+     * @return the {@link DataTransferStatus}.
+     */
+    @Deprecated
+    public DataTransferStatus objStatus() {
+        return status;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    DataTransferConfirmation that = (DataTransferConfirmation) o;
-    return status == that.status && Objects.equals(data, that.data);
-  }
+    /**
+     * Optional. Data in response to request.
+     *
+     * @return data.
+     */
+    public String getData() {
+        return data;
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(status, data);
-  }
+    /**
+     * Optional. Data in response to request.
+     *
+     * @param data String, data
+     */
+    @XmlElement
+    public void setData(String data) {
+        this.data = data;
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("status", status)
-        .add("data", data)
-        .add("isValid", validate())
-        .toString();
-  }
+    @Override
+    public boolean validate() {
+        return this.status != null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DataTransferConfirmation that = (DataTransferConfirmation) o;
+        return status == that.status && Objects.equals(data, that.data);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(status, data);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("status", status)
+                .add("data", data)
+                .add("isValid", validate())
+                .toString();
+    }
 }

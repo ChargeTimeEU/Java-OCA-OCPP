@@ -2,9 +2,10 @@ package eu.chargetime.ocpp.model.reservation;
 
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-import java.util.Objects;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -13,6 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
  * Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
+ * Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,64 +35,77 @@ import javax.xml.bind.annotation.XmlRootElement;
  * SOFTWARE.
  */
 
-/** Sent by the Central System to the Charge Point. */
+/**
+ * Sent by the Central System to the Charge Point.
+ */
 @XmlRootElement
 public class CancelReservationRequest implements Request {
-  private Integer reservationId;
 
-  public CancelReservationRequest() {}
+    private Integer reservationId;
 
-  public CancelReservationRequest(Integer reservationId) {
-    this.reservationId = reservationId;
-  }
+    /**
+     * @deprecated use {@link #CancelReservationRequest(Integer)} to be sure to set required fields
+     */
+    @Deprecated
+    public CancelReservationRequest() {
+    }
 
-  @Override
-  public boolean validate() {
-    return reservationId != null;
-  }
+    /**
+     * Handle required fields.
+     *
+     * @param reservationId Integer, id of the reservation, see {@link #setReservationId(Integer)}
+     */
+    public CancelReservationRequest(Integer reservationId) {
+        setReservationId(reservationId);
+    }
 
-  /**
-   * Id of the reservation to cancel.
-   *
-   * @return Integer, id of the reservation.
-   */
-  public Integer getReservationId() {
-    return reservationId;
-  }
+    @Override
+    public boolean validate() {
+        return reservationId != null;
+    }
 
-  /**
-   * Required. Id of the reservation to cancel.
-   *
-   * @param reservationId Integer, id of the reservation.
-   */
-  @XmlElement
-  public void setReservationId(Integer reservationId) {
-    this.reservationId = reservationId;
-  }
+    /**
+     * Id of the reservation to cancel.
+     *
+     * @return Integer, id of the reservation.
+     */
+    public Integer getReservationId() {
+        return reservationId;
+    }
 
-  @Override
-  public boolean transactionRelated() {
-    return false;
-  }
+    /**
+     * Required. Id of the reservation to cancel.
+     *
+     * @param reservationId Integer, id of the reservation.
+     */
+    @XmlElement
+    public void setReservationId(Integer reservationId) {
+        this.reservationId = reservationId;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    CancelReservationRequest that = (CancelReservationRequest) o;
-    return Objects.equals(reservationId, that.reservationId);
-  }
+    @Override
+    public boolean transactionRelated() {
+        return false;
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(reservationId);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CancelReservationRequest that = (CancelReservationRequest) o;
+        return Objects.equals(reservationId, that.reservationId);
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("reservationId", reservationId)
-        .add("isValid", validate())
-        .toString();
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(reservationId);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("reservationId", reservationId)
+                .add("isValid", validate())
+                .toString();
+    }
 }

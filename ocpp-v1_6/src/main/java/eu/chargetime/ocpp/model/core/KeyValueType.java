@@ -3,10 +3,12 @@ package eu.chargetime.ocpp.model.core;
 /*
 ChargeTime.eu - Java-OCA-OCPP
 Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
+Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
 MIT License
 
 Copyright (C) 2016-2018 Thomas Volden
+Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -31,10 +33,11 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-import java.util.Objects;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Objects;
 
 /**
  * Contains information about a specific configuration key. It is returned in {@link
@@ -44,123 +47,142 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(propOrder = {"key", "readonly", "value"})
 public class KeyValueType implements Validatable {
 
-  private static final String ERROR_MESSAGE = "Exceeds limit of %s chars";
+    private static final String ERROR_MESSAGE = "Exceeds limit of %s chars";
 
-  private String key;
-  private Boolean readonly;
-  private String value;
+    private String key;
+    private Boolean readonly;
+    private String value;
 
-  /**
-   * Name of the key.
-   *
-   * @return key.
-   */
-  public String getKey() {
-    return key;
-  }
+    /**
+     * @deprecated use {@link #KeyValueType(String, Boolean)} to be sure to set required fields
+     */
+    @Deprecated
+    public KeyValueType() {
 
-  /**
-   * Required. Name of the key.
-   *
-   * @param key String, max 50 characters, case insensitive.
-   */
-  @XmlElement
-  public void setKey(String key) {
-    if (!isValidKey(key)) {
-      throw new PropertyConstraintException(key.length(), createErrorMessage(50));
     }
 
-    this.key = key;
-  }
-
-  private boolean isValidKey(String key) {
-    return ModelUtil.validate(key, 50);
-  }
-
-  /**
-   * False if the value can be set with a {@link ChangeConfigurationRequest}.
-   *
-   * @return Is configuration read only.
-   */
-  public Boolean getReadonly() {
-    return readonly;
-  }
-
-  /**
-   * Required. False if the value can be set with a {@link ChangeConfigurationRequest}.
-   *
-   * @param readonly Boolean, configuration is read only.
-   */
-  @XmlElement
-  public void setReadonly(Boolean readonly) {
-    if (!isValidReadonly(readonly)) {
-      throw new PropertyConstraintException(null, "readonly must be present");
+    /**
+     * Handle required fields.
+     *
+     * @param key      String, max 50 characters, case insensitive, see {@link #setKey(String)}
+     * @param readonly Boolean, configuration is read only, see {@link #setReadonly(Boolean)}
+     */
+    public KeyValueType(String key, Boolean readonly) {
+        setKey(key);
+        setReadonly(readonly);
     }
 
-    this.readonly = readonly;
-  }
-
-  private boolean isValidReadonly(Boolean readonly) {
-    return readonly != null;
-  }
-
-  /**
-   * If key is known but not set, this field may be absent.
-   *
-   * @return Value associated to the key.
-   */
-  public String getValue() {
-    return value;
-  }
-
-  /**
-   * Optional. If key is known but not set, this field may be absent.
-   *
-   * @param value String, max 500 characters, case insensitive.
-   */
-  @XmlElement
-  public void setValue(String value) {
-    if (!isValidValue(value)) {
-      throw new PropertyConstraintException(value.length(), createErrorMessage(500));
+    private static String createErrorMessage(int maxLength) {
+        return String.format(ERROR_MESSAGE, maxLength);
     }
 
-    this.value = value;
-  }
+    /**
+     * Name of the key.
+     *
+     * @return key.
+     */
+    public String getKey() {
+        return key;
+    }
 
-  private boolean isValidValue(String value) {
-    return ModelUtil.validate(value, 500);
-  }
+    /**
+     * Required. Name of the key.
+     *
+     * @param key String, max 50 characters, case insensitive.
+     */
+    @XmlElement
+    public void setKey(String key) {
+        if (!isValidKey(key)) {
+            throw new PropertyConstraintException(key.length(), createErrorMessage(50));
+        }
 
-  @Override
-  public boolean validate() {
-    return isValidKey(this.key) && isValidReadonly(this.readonly);
-  }
+        this.key = key;
+    }
 
-  private static String createErrorMessage(int maxLength) {
-    return String.format(ERROR_MESSAGE, maxLength);
-  }
+    private boolean isValidKey(String key) {
+        return ModelUtil.validate(key, 50);
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    KeyValueType that = (KeyValueType) o;
-    return Objects.equals(key, that.key)
-        && Objects.equals(readonly, that.readonly)
-        && Objects.equals(value, that.value);
-  }
+    /**
+     * False if the value can be set with a {@link ChangeConfigurationRequest}.
+     *
+     * @return Is configuration read only.
+     */
+    public Boolean getReadonly() {
+        return readonly;
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(key, readonly, value);
-  }
+    /**
+     * Required. False if the value can be set with a {@link ChangeConfigurationRequest}.
+     *
+     * @param readonly Boolean, configuration is read only.
+     */
+    @XmlElement
+    public void setReadonly(Boolean readonly) {
+        if (!isValidReadonly(readonly)) {
+            throw new PropertyConstraintException(null, "readonly must be present");
+        }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("key", key)
-        .add("readonly", readonly)
-        .add("value", value)
-        .toString();
-  }
+        this.readonly = readonly;
+    }
+
+    private boolean isValidReadonly(Boolean readonly) {
+        return readonly != null;
+    }
+
+    /**
+     * If key is known but not set, this field may be absent.
+     *
+     * @return Value associated to the key.
+     */
+    public String getValue() {
+        return value;
+    }
+
+    /**
+     * Optional. If key is known but not set, this field may be absent.
+     *
+     * @param value String, max 500 characters, case insensitive.
+     */
+    @XmlElement
+    public void setValue(String value) {
+        if (!isValidValue(value)) {
+            throw new PropertyConstraintException(value.length(), createErrorMessage(500));
+        }
+
+        this.value = value;
+    }
+
+    private boolean isValidValue(String value) {
+        return ModelUtil.validate(value, 500);
+    }
+
+    @Override
+    public boolean validate() {
+        return isValidKey(this.key) && isValidReadonly(this.readonly);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        KeyValueType that = (KeyValueType) o;
+        return Objects.equals(key, that.key)
+                && Objects.equals(readonly, that.readonly)
+                && Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key, readonly, value);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("key", key)
+                .add("readonly", readonly)
+                .add("value", value)
+                .toString();
+    }
 }

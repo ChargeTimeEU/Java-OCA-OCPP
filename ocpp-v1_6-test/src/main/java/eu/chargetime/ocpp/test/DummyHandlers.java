@@ -5,6 +5,7 @@ package eu.chargetime.ocpp.test;
    MIT License
 
    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+   Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +38,7 @@ import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
 import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationConfirmation;
 import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationRequest;
 import java.lang.reflect.Type;
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 
@@ -60,8 +61,7 @@ public class DummyHandlers {
         AuthorizeConfirmation confirmation = new AuthorizeConfirmation();
         IdTagInfo tagInfo = new IdTagInfo();
         tagInfo.setStatus(AuthorizationStatus.Accepted);
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2018, 1, 1, 1, 1, 1);
+        ZonedDateTime calendar = ZonedDateTime.parse("2018-01-01T01:01:01.988Z");
         tagInfo.setExpiryDate(calendar);
         confirmation.setIdTagInfo(tagInfo);
         return failurePoint(confirmation);
@@ -77,7 +77,7 @@ public class DummyHandlers {
         } catch (Exception e) {
           e.printStackTrace();
         }
-        confirmation.setCurrentTime(Calendar.getInstance());
+        confirmation.setCurrentTime(ZonedDateTime.now());
         confirmation.setStatus(RegistrationStatus.Accepted);
         return failurePoint(confirmation);
       }
@@ -96,7 +96,7 @@ public class DummyHandlers {
           UUID sessionIndex, HeartbeatRequest request) {
         receivedRequest = request;
         HeartbeatConfirmation confirmation = new HeartbeatConfirmation();
-        confirmation.setCurrentTime(Calendar.getInstance());
+        confirmation.setCurrentTime(ZonedDateTime.now());
         return failurePoint(confirmation);
       }
 

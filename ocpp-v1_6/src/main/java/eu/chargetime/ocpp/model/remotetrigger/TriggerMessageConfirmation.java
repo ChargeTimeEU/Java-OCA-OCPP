@@ -3,10 +3,12 @@ package eu.chargetime.ocpp.model.remotetrigger;
 /*
 ChargeTime.eu - Java-OCA-OCPP
 Copyright (C) 2017 Emil Christopher Solli Melar <emil@iconsultable.no>
+Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
 MIT License
 
 Copyright (C) 2017 Emil Christopher Solli Melar
+Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -29,67 +31,74 @@ SOFTWARE.
 
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-import java.util.Objects;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 @XmlRootElement(name = "triggerMessageResponse")
 public class TriggerMessageConfirmation implements Confirmation {
-  private TriggerMessageStatus status;
 
-  public TriggerMessageConfirmation() {}
+    private TriggerMessageStatus status;
 
-  /**
-   * Set required values.
-   *
-   * @param status the {@link TriggerMessageStatus}, see {@link #setStatus(TriggerMessageStatus)}.
-   */
-  public TriggerMessageConfirmation(TriggerMessageStatus status) {
-    setStatus(status);
-  }
+    /**
+     * @deprecated use {@link #TriggerMessageConfirmation(TriggerMessageStatus)} to be sure to set required fields
+     */
+    @Deprecated
+    public TriggerMessageConfirmation() {
+    }
 
-  /**
-   * This indicates the success or failure of the trigger message request.
-   *
-   * @return the {@link TriggerMessageStatus}.
-   */
-  public TriggerMessageStatus getStatus() {
-    return status;
-  }
+    /**
+     * Handle required fields.
+     *
+     * @param status the {@link TriggerMessageStatus}, see {@link #setStatus(TriggerMessageStatus)}.
+     */
+    public TriggerMessageConfirmation(TriggerMessageStatus status) {
+        setStatus(status);
+    }
 
-  /**
-   * Required. This indicates the success or failure of trigger message request.
-   *
-   * @param status the {@link TriggerMessageStatus}.
-   */
-  @XmlElement
-  public void setStatus(TriggerMessageStatus status) {
-    this.status = status;
-  }
+    /**
+     * This indicates the success or failure of the trigger message request.
+     *
+     * @return the {@link TriggerMessageStatus}.
+     */
+    public TriggerMessageStatus getStatus() {
+        return status;
+    }
 
-  @Override
-  public boolean validate() {
-    return this.status != null;
-  }
+    /**
+     * Required. This indicates the success or failure of trigger message request.
+     *
+     * @param status the {@link TriggerMessageStatus}.
+     */
+    @XmlElement
+    public void setStatus(TriggerMessageStatus status) {
+        this.status = status;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    TriggerMessageConfirmation that = (TriggerMessageConfirmation) o;
-    return status == that.status;
-  }
+    @Override
+    public boolean validate() {
+        return this.status != null;
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(status);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TriggerMessageConfirmation that = (TriggerMessageConfirmation) o;
+        return status == that.status;
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("status", status)
-        .add("isValid", validate())
-        .toString();
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(status);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("status", status)
+                .add("isValid", validate())
+                .toString();
+    }
 }

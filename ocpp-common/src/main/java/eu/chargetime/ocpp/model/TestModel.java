@@ -1,16 +1,18 @@
 package eu.chargetime.ocpp.model;
 
-import java.util.Calendar;
+import java.time.ZonedDateTime;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /*
 ChargeTime.eu - Java-OCA-OCPP
 Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
+Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
 MIT License
 
 Copyright (C) 2016-2018 Thomas Volden
+Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +37,7 @@ SOFTWARE.
 @XmlRootElement
 public class TestModel {
   private String stringTest;
-  private Calendar calendarTest;
+  private ZonedDateTime calendarTest;
   private Integer integerTest;
   private int intTest;
   private Long longTest;
@@ -137,12 +139,12 @@ public class TestModel {
     this.integerTest = integerTest;
   }
 
-  public Calendar getCalendarTest() {
+  public ZonedDateTime getCalendarTest() {
     return calendarTest;
   }
 
   @XmlElement
-  public void setCalendarTest(Calendar calendarTest) {
+  public void setCalendarTest(ZonedDateTime calendarTest) {
     this.calendarTest = calendarTest;
   }
 

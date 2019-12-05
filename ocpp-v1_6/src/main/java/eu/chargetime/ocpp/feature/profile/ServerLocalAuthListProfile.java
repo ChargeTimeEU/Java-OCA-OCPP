@@ -5,6 +5,7 @@ package eu.chargetime.ocpp.feature.profile;
    MIT License
 
    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+   Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -25,29 +26,58 @@ package eu.chargetime.ocpp.feature.profile;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.feature.*;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.GetLocalListVersionFeature;
+import eu.chargetime.ocpp.feature.ProfileFeature;
+import eu.chargetime.ocpp.feature.SendLocalListFeature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.localauthlist.*;
+
 import java.util.HashSet;
 import java.util.UUID;
 
 public class ServerLocalAuthListProfile implements Profile {
 
-  private HashSet<Feature> featureList;
+    private HashSet<Feature> featureList;
 
-  public ServerLocalAuthListProfile() {
-    featureList = new HashSet<>();
-    featureList.add(new GetLocalListVersionFeature(this));
-    featureList.add(new SendLocalListFeature(this));
-  }
+    public ServerLocalAuthListProfile() {
+        featureList = new HashSet<>();
+        featureList.add(new GetLocalListVersionFeature(null));
+        featureList.add(new SendLocalListFeature(null));
+    }
 
-  @Override
-  public ProfileFeature[] getFeatureList() {
-    return featureList.toArray(new ProfileFeature[0]);
-  }
+    @Override
+    public ProfileFeature[] getFeatureList() {
+        return featureList.toArray(new ProfileFeature[0]);
+    }
 
-  @Override
-  public Confirmation handleRequest(UUID sessionIndex, Request request) {
-    return null;
-  }
+    @Override
+    public Confirmation handleRequest(UUID sessionIndex, Request request) {
+        return null;
+    }
+
+    /**
+     * Create a client {@link SendLocalListRequest} with required values.
+     *
+     * @param listVersion required, version number of the list.
+     * @param updateType  required, type of update
+     * @return an instance of {@link SendLocalListConfirmation}.
+     * @see SendLocalListRequest
+     * @see SendLocalListFeature
+     */
+    public SendLocalListRequest createSendLocalListRequest(int listVersion, UpdateType updateType) {
+        return new SendLocalListRequest(listVersion, updateType);
+    }
+
+    /**
+     * Create a client {@link GetLocalListVersionRequest} with required values.
+     *
+     * @return an instance of {@link GetLocalListVersionConfirmation}.
+     * @see GetLocalListVersionRequest
+     * @see GetLocalListVersionFeature
+     */
+    public GetLocalListVersionRequest createGetLocalListVersionRequest() {
+        return new GetLocalListVersionRequest();
+    }
 }
