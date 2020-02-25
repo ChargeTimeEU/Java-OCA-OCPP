@@ -32,12 +32,12 @@ import java.time.ZonedDateTime;
 public class ZonedDateTimeAdapter extends XmlAdapter<String, ZonedDateTime> {
 
     @Override
-    public ZonedDateTime unmarshal(String s) throws Exception {
-        return ZonedDateTime.parse(s);
+    public ZonedDateTime unmarshal(String string) throws Exception {
+        return ZonedDateTime.parse(string);
     }
 
     @Override
-    public String marshal(ZonedDateTime ZonedDateTime) throws Exception {
-        return ZonedDateTime.toString();
+    public String marshal(ZonedDateTime zonedDateTime) throws Exception {
+        return zonedDateTime.toString();
     }
 }
