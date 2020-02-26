@@ -162,7 +162,7 @@ public class BootNotificationConfirmation implements Confirmation {
     public boolean validate() {
         boolean valid = status != null;
         valid &= currentTime != null;
-        valid &= interval != null && interval > 0;
+        valid &= interval != null && interval >= 0;
 
         return valid;
     }
