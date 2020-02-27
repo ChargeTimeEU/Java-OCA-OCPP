@@ -103,7 +103,8 @@ public class Client {
             if (promiseOptional.isPresent()) {
               promiseOptional
                   .get()
-                  .completeExceptionally(new CallErrorException(errorCode, errorCode, payload));
+                  .completeExceptionally(
+                      new CallErrorException(errorCode, errorDescription, payload));
               promiseRepository.removePromise(uniqueId);
             } else {
               logger.debug("Promise not found for error {}", errorDescription);
