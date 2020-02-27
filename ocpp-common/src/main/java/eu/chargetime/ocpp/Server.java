@@ -122,7 +122,7 @@ public class Server {
                     promiseOptional
                         .get()
                         .completeExceptionally(
-                            new CallErrorException(errorCode, errorCode, payload));
+                            new CallErrorException(errorCode, errorDescription, payload));
                     promiseRepository.removePromise(uniqueId);
                   } else {
                     logger.debug("Promise not found for error {}", errorDescription);
