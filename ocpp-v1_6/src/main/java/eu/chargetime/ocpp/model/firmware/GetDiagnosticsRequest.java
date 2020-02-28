@@ -28,182 +28,177 @@ package eu.chargetime.ocpp.model.firmware;
 
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-
+import java.time.ZonedDateTime;
+import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.time.ZonedDateTime;
-import java.util.Objects;
 
 @XmlRootElement
 @XmlType(propOrder = {"location", "startTime", "stopTime", "retries", "retryInterval"})
 public class GetDiagnosticsRequest implements Request {
 
-    private String location;
-    private Integer retries;
-    private Integer retryInterval;
-    private ZonedDateTime startTime;
-    private ZonedDateTime stopTime;
+  private String location;
+  private Integer retries;
+  private Integer retryInterval;
+  private ZonedDateTime startTime;
+  private ZonedDateTime stopTime;
 
-    /**
-     * @deprecated use {@link #GetDiagnosticsRequest(String)} to be sure to set required fields
-     */
-    @Deprecated
-    public GetDiagnosticsRequest() {
+  /** @deprecated use {@link #GetDiagnosticsRequest(String)} to be sure to set required fields */
+  @Deprecated
+  public GetDiagnosticsRequest() {}
 
-    }
+  /**
+   * Handle required fields.
+   *
+   * @param location String, the destination folder, see {@link #setLocation(String)}
+   */
+  public GetDiagnosticsRequest(String location) {
+    setLocation(location);
+  }
 
-    /**
-     * Handle required fields.
-     *
-     * @param location String, the destination folder, see {@link #setLocation(String)}
-     */
-    public GetDiagnosticsRequest(String location) {
-        setLocation(location);
-    }
+  @Override
+  public boolean transactionRelated() {
+    return false;
+  }
 
-    @Override
-    public boolean transactionRelated() {
-        return false;
-    }
+  @Override
+  public boolean validate() {
+    return location != null;
+  }
 
-    @Override
-    public boolean validate() {
-        return location != null;
-    }
+  /**
+   * This contains the location (directory) where the diagnostics file shall be uploaded to.
+   *
+   * @return String, the destination folder.
+   */
+  public String getLocation() {
+    return location;
+  }
 
-    /**
-     * This contains the location (directory) where the diagnostics file shall be uploaded to.
-     *
-     * @return String, the destination folder.
-     */
-    public String getLocation() {
-        return location;
-    }
+  /**
+   * Required. This contains the location (directory) where the diagnostics file shall be uploaded
+   * to.
+   *
+   * @param location String, the destination folder.
+   */
+  @XmlElement
+  public void setLocation(String location) {
+    this.location = location;
+  }
 
-    /**
-     * Required. This contains the location (directory) where the diagnostics file shall be uploaded
-     * to.
-     *
-     * @param location String, the destination folder.
-     */
-    @XmlElement
-    public void setLocation(String location) {
-        this.location = location;
-    }
+  /**
+   * This specifies how many times Charge Point must try to upload the diagnostics before giving up.
+   * If this field is not present, it is left to Charge Point to decide how many times it wants to
+   * retry.
+   *
+   * @return int, minimum number of tries.
+   */
+  public Integer getRetries() {
+    return retries;
+  }
 
-    /**
-     * This specifies how many times Charge Point must try to upload the diagnostics before giving up.
-     * If this field is not present, it is left to Charge Point to decide how many times it wants to
-     * retry.
-     *
-     * @return int, minimum number of tries.
-     */
-    public Integer getRetries() {
-        return retries;
-    }
+  /**
+   * Optional. This specifies how many times Charge Point must try to upload the diagnostics before
+   * giving up. If this field is not present, it is left to Charge Point to decide how many times it
+   * wants to retry.
+   *
+   * @param retries int, minimum number of tries.
+   */
+  @XmlElement
+  public void setRetries(Integer retries) {
+    this.retries = retries;
+  }
 
-    /**
-     * Optional. This specifies how many times Charge Point must try to upload the diagnostics before
-     * giving up. If this field is not present, it is left to Charge Point to decide how many times it
-     * wants to retry.
-     *
-     * @param retries int, minimum number of tries.
-     */
-    @XmlElement
-    public void setRetries(Integer retries) {
-        this.retries = retries;
-    }
+  /**
+   * The interval in seconds after which a retry may be attempted. If this field is not present, it
+   * is left to Charge Point to decide how long to wait between attempts.
+   *
+   * @return int, seconds
+   */
+  public Integer getRetryInterval() {
+    return retryInterval;
+  }
 
-    /**
-     * The interval in seconds after which a retry may be attempted. If this field is not present, it
-     * is left to Charge Point to decide how long to wait between attempts.
-     *
-     * @return int, seconds
-     */
-    public Integer getRetryInterval() {
-        return retryInterval;
-    }
+  /**
+   * Optional. The interval in seconds after which a retry may be attempted. If this field is not
+   * present, it is left to Charge Point to decide how long to wait between attempts.
+   *
+   * @param retryInterval int, seconds
+   */
+  @XmlElement
+  public void setRetryInterval(Integer retryInterval) {
+    this.retryInterval = retryInterval;
+  }
 
-    /**
-     * Optional. The interval in seconds after which a retry may be attempted. If this field is not
-     * present, it is left to Charge Point to decide how long to wait between attempts.
-     *
-     * @param retryInterval int, seconds
-     */
-    @XmlElement
-    public void setRetryInterval(Integer retryInterval) {
-        this.retryInterval = retryInterval;
-    }
+  /**
+   * This contains the date and time of the oldest logging information to include in the
+   * diagnostics.
+   *
+   * @return ZonedDateTime, oldest log entry
+   */
+  public ZonedDateTime getStartTime() {
+    return startTime;
+  }
 
-    /**
-     * This contains the date and time of the oldest logging information to include in the
-     * diagnostics.
-     *
-     * @return ZonedDateTime, oldest log entry
-     */
-    public ZonedDateTime getStartTime() {
-        return startTime;
-    }
+  /**
+   * Optional. This contains the date and time of the oldest logging information to include in the
+   * diagnostics.
+   *
+   * @param startTime ZonedDateTime, oldest log entry
+   */
+  @XmlElement
+  public void setStartTime(ZonedDateTime startTime) {
+    this.startTime = startTime;
+  }
 
-    /**
-     * Optional. This contains the date and time of the oldest logging information to include in the
-     * diagnostics.
-     *
-     * @param startTime ZonedDateTime, oldest log entry
-     */
-    @XmlElement
-    public void setStartTime(ZonedDateTime startTime) {
-        this.startTime = startTime;
-    }
+  /**
+   * This contains the date and time of the latest logging information to include in the
+   * diagnostics.
+   *
+   * @return ZonedDateTime, latest log entry
+   */
+  public ZonedDateTime getStopTime() {
+    return stopTime;
+  }
 
-    /**
-     * This contains the date and time of the latest logging information to include in the
-     * diagnostics.
-     *
-     * @return ZonedDateTime, latest log entry
-     */
-    public ZonedDateTime getStopTime() {
-        return stopTime;
-    }
+  /**
+   * Optional. This contains the date and time of the latest logging information to include in the
+   * diagnostics.
+   *
+   * @param stopTime ZonedDateTime, latest log entry
+   */
+  @XmlElement
+  public void setStopTime(ZonedDateTime stopTime) {
+    this.stopTime = stopTime;
+  }
 
-    /**
-     * Optional. This contains the date and time of the latest logging information to include in the
-     * diagnostics.
-     *
-     * @param stopTime ZonedDateTime, latest log entry
-     */
-    @XmlElement
-    public void setStopTime(ZonedDateTime stopTime) {
-        this.stopTime = stopTime;
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    GetDiagnosticsRequest that = (GetDiagnosticsRequest) o;
+    return retries == that.retries
+        && retryInterval == that.retryInterval
+        && Objects.equals(location, that.location)
+        && Objects.equals(startTime, that.startTime)
+        && Objects.equals(stopTime, that.stopTime);
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        GetDiagnosticsRequest that = (GetDiagnosticsRequest) o;
-        return retries == that.retries
-                && retryInterval == that.retryInterval
-                && Objects.equals(location, that.location)
-                && Objects.equals(startTime, that.startTime)
-                && Objects.equals(stopTime, that.stopTime);
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(location, retries, retryInterval, startTime, stopTime);
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(location, retries, retryInterval, startTime, stopTime);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("location", location)
-                .add("retries", retries)
-                .add("retryInterval", retryInterval)
-                .add("startTime", startTime)
-                .add("stopTime", stopTime)
-                .add("isValid", validate())
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("location", location)
+        .add("retries", retries)
+        .add("retryInterval", retryInterval)
+        .add("startTime", startTime)
+        .add("stopTime", stopTime)
+        .add("isValid", validate())
+        .toString();
+  }
 }

@@ -25,8 +25,7 @@
    SOFTWARE.
 */
 @XmlJavaTypeAdapters({
-        @XmlJavaTypeAdapter(type = ZonedDateTime.class,
-                value = ZonedDateTimeAdapter.class),
+  @XmlJavaTypeAdapter(type = ZonedDateTime.class, value = ZonedDateTimeAdapter.class),
 })
 @XmlSchema(elementFormDefault = XmlNsForm.QUALIFIED, namespace = "urn://Ocpp/Cs/2015/10/")
 package eu.chargetime.ocpp.model.core;

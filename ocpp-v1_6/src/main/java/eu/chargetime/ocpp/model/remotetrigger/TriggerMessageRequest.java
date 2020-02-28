@@ -32,110 +32,110 @@ SOFTWARE.
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-
+import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Objects;
 
 @XmlRootElement
 @XmlType(propOrder = {"requestedMessage", "connectorId"})
 public class TriggerMessageRequest implements Request {
 
-    private Integer connectorId;
-    private TriggerMessageRequestType requestedMessage;
+  private Integer connectorId;
+  private TriggerMessageRequestType requestedMessage;
 
-    /**
-     * @deprecated use {@link #TriggerMessageRequest(TriggerMessageRequestType)} to be sure to set required fields
-     */
-    @Deprecated
-    public TriggerMessageRequest() {
+  /**
+   * @deprecated use {@link #TriggerMessageRequest(TriggerMessageRequestType)} to be sure to set
+   *     required fields
+   */
+  @Deprecated
+  public TriggerMessageRequest() {}
+
+  /**
+   * Handle required fields.
+   *
+   * @param triggerMessageRequestType {@link TriggerMessageRequestType}, see {@link
+   *     #setRequestedMessage(TriggerMessageRequestType)}
+   */
+  public TriggerMessageRequest(TriggerMessageRequestType triggerMessageRequestType) {
+    this.requestedMessage = triggerMessageRequestType;
+  }
+
+  /**
+   * This identifies which connector of the Charge Point is used.
+   *
+   * @return connector.
+   */
+  public Integer getConnectorId() {
+    return connectorId;
+  }
+
+  /**
+   * Optional. This identifies which connector of the Charge Point is used.
+   *
+   * @param connectorId integer. value &gt; 0
+   */
+  @XmlElement
+  public void setConnectorId(Integer connectorId) {
+    if (connectorId != null && connectorId <= 0) {
+      throw new PropertyConstraintException(connectorId, "connectorId must be > 0");
     }
 
-    /**
-     * Handle required fields.
-     *
-     * @param triggerMessageRequestType {@link TriggerMessageRequestType}, see {@link #setRequestedMessage(TriggerMessageRequestType)}
-     */
-    public TriggerMessageRequest(TriggerMessageRequestType triggerMessageRequestType) {
-        this.requestedMessage = triggerMessageRequestType;
-    }
+    this.connectorId = connectorId;
+  }
 
-    /**
-     * This identifies which connector of the Charge Point is used.
-     *
-     * @return connector.
-     */
-    public Integer getConnectorId() {
-        return connectorId;
-    }
+  public TriggerMessageRequestType getRequestedMessage() {
+    return requestedMessage;
+  }
 
-    /**
-     * Optional. This identifies which connector of the Charge Point is used.
-     *
-     * @param connectorId integer. value &gt; 0
-     */
-    @XmlElement
-    public void setConnectorId(Integer connectorId) {
-        if (connectorId != null && connectorId <= 0) {
-            throw new PropertyConstraintException(connectorId, "connectorId must be > 0");
-        }
+  /**
+   * Required. This identifies which type of message you want to trigger.
+   *
+   * @param requestedMessage {@link TriggerMessageRequestType}.
+   */
+  @XmlElement
+  public void setRequestedMessage(TriggerMessageRequestType requestedMessage) {
+    this.requestedMessage = requestedMessage;
+  }
 
-        this.connectorId = connectorId;
-    }
+  /**
+   * This identifies which type of message you want to trigger.
+   *
+   * @return connector.
+   */
+  @Override
+  public boolean transactionRelated() {
+    return false;
+  }
 
-    public TriggerMessageRequestType getRequestedMessage() {
-        return requestedMessage;
-    }
+  @Override
+  public boolean validate() {
+    boolean valid = requestedMessage != null;
+    valid &= (connectorId == null || connectorId > 0);
 
-    /**
-     * Required. This identifies which type of message you want to trigger.
-     *
-     * @param requestedMessage {@link TriggerMessageRequestType}.
-     */
-    @XmlElement
-    public void setRequestedMessage(TriggerMessageRequestType requestedMessage) {
-        this.requestedMessage = requestedMessage;
-    }
+    return valid;
+  }
 
-    /**
-     * This identifies which type of message you want to trigger.
-     *
-     * @return connector.
-     */
-    @Override
-    public boolean transactionRelated() {
-        return false;
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    TriggerMessageRequest that = (TriggerMessageRequest) o;
+    return Objects.equals(connectorId, that.connectorId)
+        && requestedMessage == that.requestedMessage;
+  }
 
-    @Override
-    public boolean validate() {
-        boolean valid = requestedMessage != null;
-        valid &= (connectorId == null || connectorId > 0);
+  @Override
+  public int hashCode() {
+    return Objects.hash(connectorId, requestedMessage);
+  }
 
-        return valid;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TriggerMessageRequest that = (TriggerMessageRequest) o;
-        return Objects.equals(connectorId, that.connectorId)
-                && requestedMessage == that.requestedMessage;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(connectorId, requestedMessage);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("connectorId", connectorId)
-                .add("requestedMessage", requestedMessage)
-                .add("isValid", validate())
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("connectorId", connectorId)
+        .add("requestedMessage", requestedMessage)
+        .add("isValid", validate())
+        .toString();
+  }
 }

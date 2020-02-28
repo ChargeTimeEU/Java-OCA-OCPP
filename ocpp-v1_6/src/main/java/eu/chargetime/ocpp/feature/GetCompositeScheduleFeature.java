@@ -33,27 +33,27 @@ import eu.chargetime.ocpp.model.smartcharging.GetCompositeScheduleRequest;
 
 public class GetCompositeScheduleFeature extends ProfileFeature {
 
-    /**
-     * Creates link back to the {@link Profile}.
-     *
-     * @param ownerProfile the {@link Profile} that owns the function.
-     */
-    public GetCompositeScheduleFeature(Profile ownerProfile) {
-        super(ownerProfile);
-    }
+  /**
+   * Creates link back to the {@link Profile}.
+   *
+   * @param ownerProfile the {@link Profile} that owns the function.
+   */
+  public GetCompositeScheduleFeature(Profile ownerProfile) {
+    super(ownerProfile);
+  }
 
-    @Override
-    public Class<? extends Request> getRequestType() {
-        return GetCompositeScheduleRequest.class;
-    }
+  @Override
+  public Class<? extends Request> getRequestType() {
+    return GetCompositeScheduleRequest.class;
+  }
 
-    @Override
-    public Class<? extends Confirmation> getConfirmationType() {
-        return GetCompositeScheduleConfirmation.class;
-    }
+  @Override
+  public Class<? extends Confirmation> getConfirmationType() {
+    return GetCompositeScheduleConfirmation.class;
+  }
 
-    @Override
-    public String getAction() {
-        return "GetCompositeSchedule";
-    }
+  @Override
+  public String getAction() {
+    return "GetCompositeSchedule";
+  }
 }

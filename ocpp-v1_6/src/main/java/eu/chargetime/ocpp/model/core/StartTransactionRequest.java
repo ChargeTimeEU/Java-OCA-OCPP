@@ -31,207 +31,204 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-
+import java.time.ZonedDateTime;
+import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.time.ZonedDateTime;
-import java.util.Objects;
 
-/**
- * Sent by the Charge Point to the Central System.
- */
+/** Sent by the Charge Point to the Central System. */
 @XmlRootElement
 @XmlType(propOrder = {"connectorId", "idTag", "timestamp", "meterStart", "reservationId"})
 public class StartTransactionRequest implements Request {
 
-    private static final int IDTAG_MAX_LENGTH = 20;
-    private static final String IDTAG_ERROR_MESSAGE =
-            "Exceeded limit of " + IDTAG_MAX_LENGTH + " chars";
+  private static final int IDTAG_MAX_LENGTH = 20;
+  private static final String IDTAG_ERROR_MESSAGE =
+      "Exceeded limit of " + IDTAG_MAX_LENGTH + " chars";
 
-    private Integer connectorId;
-    private String idTag;
-    private Integer meterStart;
-    private Integer reservationId;
-    private ZonedDateTime timestamp;
+  private Integer connectorId;
+  private String idTag;
+  private Integer meterStart;
+  private Integer reservationId;
+  private ZonedDateTime timestamp;
 
-    /**
-     * @deprecated use {@link #StartTransactionRequest(Integer, String, Integer, ZonedDateTime)} to be sure to set required fields
-     */
-    @Deprecated
-    public StartTransactionRequest() {
+  /**
+   * @deprecated use {@link #StartTransactionRequest(Integer, String, Integer, ZonedDateTime)} to be
+   *     sure to set required fields
+   */
+  @Deprecated
+  public StartTransactionRequest() {}
 
+  /**
+   * Handle required fields.
+   *
+   * @param connectorId integer. value &gt; 0, see {@link #setConnectorId(Integer)}
+   * @param idTag a String with max length 20, see {@link #setIdTag(String)}
+   * @param meterStart integer, Wh at start, see {@link #setMeterStart(Integer)}
+   * @param timestamp ZonedDateTime, start time, see {@link #setTimestamp(ZonedDateTime)}
+   */
+  public StartTransactionRequest(
+      Integer connectorId, String idTag, Integer meterStart, ZonedDateTime timestamp) {
+    setConnectorId(connectorId);
+    setIdTag(idTag);
+    setMeterStart(meterStart);
+    setTimestamp(timestamp);
+  }
+
+  @Override
+  public boolean validate() {
+    boolean valid = connectorId != null && connectorId > 0;
+    valid &= ModelUtil.validate(idTag, 20);
+    valid &= meterStart != null;
+    valid &= timestamp != null;
+    return valid;
+  }
+
+  /**
+   * This identifies which connector of the Charge Point is used.
+   *
+   * @return connector.
+   */
+  public Integer getConnectorId() {
+    return connectorId;
+  }
+
+  /**
+   * Required. This identifies which connector of the Charge Point is used.
+   *
+   * @param connectorId integer. value &gt; 0
+   */
+  @XmlElement
+  public void setConnectorId(Integer connectorId) {
+    if (connectorId == null || connectorId <= 0) {
+      throw new PropertyConstraintException(connectorId, "connectorId must be > 0");
     }
 
-    /**
-     * Handle required fields.
-     *
-     * @param connectorId integer. value &gt; 0, see {@link #setConnectorId(Integer)}
-     * @param idTag       a String with max length 20, see {@link #setIdTag(String)}
-     * @param meterStart  integer, Wh at start, see {@link #setMeterStart(Integer)}
-     * @param timestamp   ZonedDateTime, start time, see {@link #setTimestamp(ZonedDateTime)}
-     */
-    public StartTransactionRequest(Integer connectorId, String idTag, Integer meterStart, ZonedDateTime timestamp) {
-        setConnectorId(connectorId);
-        setIdTag(idTag);
-        setMeterStart(meterStart);
-        setTimestamp(timestamp);
+    this.connectorId = connectorId;
+  }
+
+  /**
+   * This contains the identifier for which a transaction has to be started.
+   *
+   * @return the IdToken.
+   */
+  public String getIdTag() {
+    return idTag;
+  }
+
+  /**
+   * Required. This contains the identifier for which a transaction has to be started.
+   *
+   * @param idTag a String with max length 20
+   */
+  @XmlElement
+  public void setIdTag(String idTag) {
+    if (!ModelUtil.validate(idTag, IDTAG_MAX_LENGTH)) {
+      throw new PropertyConstraintException(idTag.length(), IDTAG_ERROR_MESSAGE);
     }
 
-    @Override
-    public boolean validate() {
-        boolean valid = connectorId != null && connectorId > 0;
-        valid &= ModelUtil.validate(idTag, 20);
-        valid &= meterStart != null;
-        valid &= timestamp != null;
-        return valid;
-    }
+    this.idTag = idTag;
+  }
 
-    /**
-     * This identifies which connector of the Charge Point is used.
-     *
-     * @return connector.
-     */
-    public Integer getConnectorId() {
-        return connectorId;
-    }
+  /**
+   * This contains the meter value in Wh for the connector at start of the transaction.
+   *
+   * @return Wh at start.
+   */
+  public Integer getMeterStart() {
+    return meterStart;
+  }
 
-    /**
-     * Required. This identifies which connector of the Charge Point is used.
-     *
-     * @param connectorId integer. value &gt; 0
-     */
-    @XmlElement
-    public void setConnectorId(Integer connectorId) {
-        if (connectorId == null || connectorId <= 0) {
-            throw new PropertyConstraintException(connectorId, "connectorId must be > 0");
-        }
+  /**
+   * Required. This contains the meter value in Wh for the connector at start of the transaction.
+   *
+   * @param meterStart integer, Wh at start.
+   */
+  @XmlElement
+  public void setMeterStart(Integer meterStart) {
+    this.meterStart = meterStart;
+  }
 
-        this.connectorId = connectorId;
-    }
+  /**
+   * This contains the id of the reservation that terminates as a result of this transaction.
+   *
+   * @return reservation.
+   */
+  public Integer getReservationId() {
+    return reservationId;
+  }
 
-    /**
-     * This contains the identifier for which a transaction has to be started.
-     *
-     * @return the IdToken.
-     */
-    public String getIdTag() {
-        return idTag;
-    }
+  /**
+   * Optional. This contains the id of the reservation that terminates as a result of this
+   * transaction.
+   *
+   * @param reservationId integer, reservation.
+   */
+  @XmlElement
+  public void setReservationId(Integer reservationId) {
+    this.reservationId = reservationId;
+  }
 
-    /**
-     * Required. This contains the identifier for which a transaction has to be started.
-     *
-     * @param idTag a String with max length 20
-     */
-    @XmlElement
-    public void setIdTag(String idTag) {
-        if (!ModelUtil.validate(idTag, IDTAG_MAX_LENGTH)) {
-            throw new PropertyConstraintException(idTag.length(), IDTAG_ERROR_MESSAGE);
-        }
+  /**
+   * This contains the date and time on which the transaction is started.
+   *
+   * @return start time.
+   */
+  public ZonedDateTime getTimestamp() {
+    return timestamp;
+  }
 
-        this.idTag = idTag;
-    }
+  /**
+   * Required. This contains the date and time on which the transaction is started.
+   *
+   * @param timestamp ZonedDateTime, start time.
+   */
+  @XmlElement
+  public void setTimestamp(ZonedDateTime timestamp) {
+    this.timestamp = timestamp;
+  }
 
-    /**
-     * This contains the meter value in Wh for the connector at start of the transaction.
-     *
-     * @return Wh at start.
-     */
-    public Integer getMeterStart() {
-        return meterStart;
-    }
+  /**
+   * This contains the date and time on which the transaction is started.
+   *
+   * @return start time.
+   */
+  @Deprecated
+  public ZonedDateTime objTimestamp() {
+    return timestamp;
+  }
 
-    /**
-     * Required. This contains the meter value in Wh for the connector at start of the transaction.
-     *
-     * @param meterStart integer, Wh at start.
-     */
-    @XmlElement
-    public void setMeterStart(Integer meterStart) {
-        this.meterStart = meterStart;
-    }
+  @Override
+  public boolean transactionRelated() {
+    return true;
+  }
 
-    /**
-     * This contains the id of the reservation that terminates as a result of this transaction.
-     *
-     * @return reservation.
-     */
-    public Integer getReservationId() {
-        return reservationId;
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    StartTransactionRequest that = (StartTransactionRequest) o;
+    return Objects.equals(connectorId, that.connectorId)
+        && Objects.equals(idTag, that.idTag)
+        && Objects.equals(meterStart, that.meterStart)
+        && Objects.equals(reservationId, that.reservationId)
+        && Objects.equals(timestamp, that.timestamp);
+  }
 
-    /**
-     * Optional. This contains the id of the reservation that terminates as a result of this
-     * transaction.
-     *
-     * @param reservationId integer, reservation.
-     */
-    @XmlElement
-    public void setReservationId(Integer reservationId) {
-        this.reservationId = reservationId;
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(connectorId, idTag, meterStart, reservationId, timestamp);
+  }
 
-    /**
-     * This contains the date and time on which the transaction is started.
-     *
-     * @return start time.
-     */
-    public ZonedDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    /**
-     * Required. This contains the date and time on which the transaction is started.
-     *
-     * @param timestamp ZonedDateTime, start time.
-     */
-    @XmlElement
-    public void setTimestamp(ZonedDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    /**
-     * This contains the date and time on which the transaction is started.
-     *
-     * @return start time.
-     */
-    @Deprecated
-    public ZonedDateTime objTimestamp() {
-        return timestamp;
-    }
-
-    @Override
-    public boolean transactionRelated() {
-        return true;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        StartTransactionRequest that = (StartTransactionRequest) o;
-        return Objects.equals(connectorId, that.connectorId)
-                && Objects.equals(idTag, that.idTag)
-                && Objects.equals(meterStart, that.meterStart)
-                && Objects.equals(reservationId, that.reservationId)
-                && Objects.equals(timestamp, that.timestamp);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(connectorId, idTag, meterStart, reservationId, timestamp);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("connectorId", connectorId)
-                .add("idTag", idTag)
-                .add("meterStart", meterStart)
-                .add("reservationId", reservationId)
-                .add("timestamp", timestamp)
-                .add("isValid", validate())
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("connectorId", connectorId)
+        .add("idTag", idTag)
+        .add("meterStart", meterStart)
+        .add("reservationId", reservationId)
+        .add("timestamp", timestamp)
+        .add("isValid", validate())
+        .toString();
+  }
 }

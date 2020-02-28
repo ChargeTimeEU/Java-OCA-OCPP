@@ -27,6 +27,6 @@ package eu.chargetime.ocpp.model.smartcharging;
 */
 
 public enum GetCompositeScheduleStatus {
-    Accepted,
-    Rejected
+  Accepted,
+  Rejected
 }

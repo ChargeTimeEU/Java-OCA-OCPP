@@ -25,8 +25,7 @@
    SOFTWARE.
 */
 @XmlJavaTypeAdapters({
-        @XmlJavaTypeAdapter(type = ZonedDateTime.class,
-                value = ZonedDateTimeAdapter.class),
+  @XmlJavaTypeAdapter(type = ZonedDateTime.class, value = ZonedDateTimeAdapter.class),
 })
 @XmlSchema(
     elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED,

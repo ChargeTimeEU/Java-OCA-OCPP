@@ -31,150 +31,146 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-
+import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Objects;
 
-/**
- * Sent to Charge Point by Central System.
- */
+/** Sent to Charge Point by Central System. */
 @XmlRootElement
 @XmlType(propOrder = {"connectorId", "idTag", "chargingProfile"})
 public class RemoteStartTransactionRequest implements Request {
 
-    private Integer connectorId;
-    private String idTag;
-    private ChargingProfile chargingProfile;
+  private Integer connectorId;
+  private String idTag;
+  private ChargingProfile chargingProfile;
 
-    /**
-     * @deprecated use {@link #RemoteStartTransactionRequest(String)} to be sure to set required fields
-     */
-    @Deprecated
-    public RemoteStartTransactionRequest() {
+  /**
+   * @deprecated use {@link #RemoteStartTransactionRequest(String)} to be sure to set required
+   *     fields
+   */
+  @Deprecated
+  public RemoteStartTransactionRequest() {}
 
+  /**
+   * Handle required fields.
+   *
+   * @param idTag a String with max length 20, see {@link #setIdTag(String)}
+   */
+  public RemoteStartTransactionRequest(String idTag) {
+    setIdTag(idTag);
+  }
+
+  @Override
+  public boolean validate() {
+    boolean valid = ModelUtil.validate(idTag, 20);
+
+    if (chargingProfile != null) {
+      valid &= chargingProfile.validate();
     }
 
-    /**
-     * Handle required fields.
-     *
-     * @param idTag a String with max length 20, see {@link #setIdTag(String)}
-     */
-    public RemoteStartTransactionRequest(String idTag) {
-        setIdTag(idTag);
+    if (connectorId != null) {
+      valid &= connectorId > 0;
     }
 
-    @Override
-    public boolean validate() {
-        boolean valid = ModelUtil.validate(idTag, 20);
+    return valid;
+  }
 
-        if (chargingProfile != null) {
-            valid &= chargingProfile.validate();
-        }
+  /**
+   * Number of the connector on which to start the transaction. connectorId SHALL be &gt; 0.
+   *
+   * @return Connector.
+   */
+  public Integer getConnectorId() {
+    return connectorId;
+  }
 
-        if (connectorId != null) {
-            valid &= connectorId > 0;
-        }
-
-        return valid;
+  /**
+   * Optional. Number of the connector on which to start the transaction. connectorId SHALL be &gt;
+   * 0.
+   *
+   * @param connectorId integer, connector
+   */
+  @XmlElement
+  public void setConnectorId(Integer connectorId) {
+    if (connectorId <= 0) {
+      throw new PropertyConstraintException(connectorId, "connectorId must be > 0");
     }
 
-    /**
-     * Number of the connector on which to start the transaction. connectorId SHALL be &gt; 0.
-     *
-     * @return Connector.
-     */
-    public Integer getConnectorId() {
-        return connectorId;
+    this.connectorId = connectorId;
+  }
+
+  /**
+   * The identifier that Charge Point must use to start a transaction.
+   *
+   * @return an IdToken.
+   */
+  public String getIdTag() {
+    return idTag;
+  }
+
+  /**
+   * Required. The identifier that Charge Point must use to start a transaction.
+   *
+   * @param idTag a String with max length 20
+   */
+  @XmlElement
+  public void setIdTag(String idTag) {
+    if (!ModelUtil.validate(idTag, 20)) {
+      throw new PropertyConstraintException(idTag.length(), "Exceeded limit of 20 chars");
     }
 
-    /**
-     * Optional. Number of the connector on which to start the transaction. connectorId SHALL be &gt;
-     * 0.
-     *
-     * @param connectorId integer, connector
-     */
-    @XmlElement
-    public void setConnectorId(Integer connectorId) {
-        if (connectorId <= 0) {
-            throw new PropertyConstraintException(connectorId, "connectorId must be > 0");
-        }
+    this.idTag = idTag;
+  }
 
-        this.connectorId = connectorId;
-    }
+  /**
+   * Charging Profile to be used by the Charge Point for the requested transaction.
+   *
+   * @return the {@link ChargingProfile}.
+   */
+  public ChargingProfile getChargingProfile() {
+    return chargingProfile;
+  }
 
-    /**
-     * The identifier that Charge Point must use to start a transaction.
-     *
-     * @return an IdToken.
-     */
-    public String getIdTag() {
-        return idTag;
-    }
+  /**
+   * Optional. Charging Profile to be used by the Charge Point for the requested transaction. {@link
+   * ChargingProfile#setChargingProfilePurpose(ChargingProfilePurposeType)} MUST be set to
+   * TxProfile.
+   *
+   * @param chargingProfile the {@link ChargingProfile}.
+   */
+  @XmlElement
+  public void setChargingProfile(ChargingProfile chargingProfile) {
+    this.chargingProfile = chargingProfile;
+  }
 
-    /**
-     * Required. The identifier that Charge Point must use to start a transaction.
-     *
-     * @param idTag a String with max length 20
-     */
-    @XmlElement
-    public void setIdTag(String idTag) {
-        if (!ModelUtil.validate(idTag, 20)) {
-            throw new PropertyConstraintException(idTag.length(), "Exceeded limit of 20 chars");
-        }
+  @Override
+  public boolean transactionRelated() {
+    return false;
+  }
 
-        this.idTag = idTag;
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    RemoteStartTransactionRequest that = (RemoteStartTransactionRequest) o;
+    return Objects.equals(connectorId, that.connectorId)
+        && Objects.equals(idTag, that.idTag)
+        && Objects.equals(chargingProfile, that.chargingProfile);
+  }
 
-    /**
-     * Charging Profile to be used by the Charge Point for the requested transaction.
-     *
-     * @return the {@link ChargingProfile}.
-     */
-    public ChargingProfile getChargingProfile() {
-        return chargingProfile;
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(connectorId, idTag, chargingProfile);
+  }
 
-    /**
-     * Optional. Charging Profile to be used by the Charge Point for the requested transaction. {@link
-     * ChargingProfile#setChargingProfilePurpose(ChargingProfilePurposeType)} MUST be set to
-     * TxProfile.
-     *
-     * @param chargingProfile the {@link ChargingProfile}.
-     */
-    @XmlElement
-    public void setChargingProfile(ChargingProfile chargingProfile) {
-        this.chargingProfile = chargingProfile;
-    }
-
-    @Override
-    public boolean transactionRelated() {
-        return false;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RemoteStartTransactionRequest that = (RemoteStartTransactionRequest) o;
-        return Objects.equals(connectorId, that.connectorId)
-                && Objects.equals(idTag, that.idTag)
-                && Objects.equals(chargingProfile, that.chargingProfile);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(connectorId, idTag, chargingProfile);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("connectorId", connectorId)
-                .add("idTag", idTag)
-                .add("chargingProfile", chargingProfile)
-                .add("isValid", validate())
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("connectorId", connectorId)
+        .add("idTag", idTag)
+        .add("chargingProfile", chargingProfile)
+        .add("isValid", validate())
+        .toString();
+  }
 }

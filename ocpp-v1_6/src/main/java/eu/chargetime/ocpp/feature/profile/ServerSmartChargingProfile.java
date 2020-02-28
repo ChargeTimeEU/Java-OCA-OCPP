@@ -7,7 +7,6 @@ import eu.chargetime.ocpp.model.core.ChargingProfile;
 import eu.chargetime.ocpp.model.smartcharging.ClearChargingProfileRequest;
 import eu.chargetime.ocpp.model.smartcharging.GetCompositeScheduleRequest;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
-
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -42,61 +41,61 @@ import java.util.UUID;
 
 public class ServerSmartChargingProfile implements Profile {
 
-    private HashSet<Feature> features;
+  private HashSet<Feature> features;
 
-    public ServerSmartChargingProfile() {
-        features = new HashSet<>();
-        features.add(new ClearChargingProfileFeature(null));
-        features.add(new GetCompositeScheduleFeature(null));
-        features.add(new SetChargingProfileFeature(null));
-    }
+  public ServerSmartChargingProfile() {
+    features = new HashSet<>();
+    features.add(new ClearChargingProfileFeature(null));
+    features.add(new GetCompositeScheduleFeature(null));
+    features.add(new SetChargingProfileFeature(null));
+  }
 
-    @Override
-    public ProfileFeature[] getFeatureList() {
-        return features.toArray(new ProfileFeature[0]);
-    }
+  @Override
+  public ProfileFeature[] getFeatureList() {
+    return features.toArray(new ProfileFeature[0]);
+  }
 
-    @Override
-    public Confirmation handleRequest(UUID sessionIndex, Request request) {
-        return null;
-    }
+  @Override
+  public Confirmation handleRequest(UUID sessionIndex, Request request) {
+    return null;
+  }
 
-    /**
-     * Create a client {@link SetChargingProfileRequest} with required values.
-     *
-     * @param connectorId     integer. value &gt; 0
-     * @param chargingProfile the {@link ChargingProfile}
-     * @return an instance of {@link SetChargingProfileRequest}
-     * @see SetChargingProfileRequest
-     * @see SetChargingProfileFeature
-     */
-    public SetChargingProfileRequest createSetChargingProfileRequest(
-            Integer connectorId, ChargingProfile chargingProfile) {
-        return new SetChargingProfileRequest(connectorId, chargingProfile);
-    }
+  /**
+   * Create a client {@link SetChargingProfileRequest} with required values.
+   *
+   * @param connectorId integer. value &gt; 0
+   * @param chargingProfile the {@link ChargingProfile}
+   * @return an instance of {@link SetChargingProfileRequest}
+   * @see SetChargingProfileRequest
+   * @see SetChargingProfileFeature
+   */
+  public SetChargingProfileRequest createSetChargingProfileRequest(
+      Integer connectorId, ChargingProfile chargingProfile) {
+    return new SetChargingProfileRequest(connectorId, chargingProfile);
+  }
 
-    /**
-     * Create a client {@link ClearChargingProfileRequest}.
-     *
-     * @return an instance of {@link ClearChargingProfileRequest}
-     * @see ClearChargingProfileRequest
-     * @see ClearChargingProfileFeature
-     */
-    public ClearChargingProfileRequest createClearChargingProfileRequest() {
-        return new ClearChargingProfileRequest();
-    }
+  /**
+   * Create a client {@link ClearChargingProfileRequest}.
+   *
+   * @return an instance of {@link ClearChargingProfileRequest}
+   * @see ClearChargingProfileRequest
+   * @see ClearChargingProfileFeature
+   */
+  public ClearChargingProfileRequest createClearChargingProfileRequest() {
+    return new ClearChargingProfileRequest();
+  }
 
-    /**
-     * Create a client {@link GetCompositeScheduleRequest} with required values.
-     *
-     * @param connectorId Integer
-     * @param duration    Integer
-     * @return an instance of {@link GetCompositeScheduleRequest}
-     * @see GetCompositeScheduleRequest
-     * @see GetCompositeScheduleFeature
-     */
-    public GetCompositeScheduleRequest createGetCompositeScheduleRequest(Integer connectorId, Integer duration) {
-        return new GetCompositeScheduleRequest(connectorId, duration);
-    }
-
+  /**
+   * Create a client {@link GetCompositeScheduleRequest} with required values.
+   *
+   * @param connectorId Integer
+   * @param duration Integer
+   * @return an instance of {@link GetCompositeScheduleRequest}
+   * @see GetCompositeScheduleRequest
+   * @see GetCompositeScheduleFeature
+   */
+  public GetCompositeScheduleRequest createGetCompositeScheduleRequest(
+      Integer connectorId, Integer duration) {
+    return new GetCompositeScheduleRequest(connectorId, duration);
+  }
 }

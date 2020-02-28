@@ -30,31 +30,31 @@ import eu.chargetime.ocpp.model.smartcharging.*;
  */
 
 public interface ClientSmartChargingEventHandler {
-    /**
-     * Handle a {@link SetChargingProfileRequest} and return a {@link SetChargingProfileConfirmation}.
-     *
-     * @param request incoming {@link SetChargingProfileRequest} to handle.
-     * @return outgoing {@link SetChargingProfileConfirmation} to reply with.
-     */
-    SetChargingProfileConfirmation handleSetChargingProfileRequest(SetChargingProfileRequest request);
+  /**
+   * Handle a {@link SetChargingProfileRequest} and return a {@link SetChargingProfileConfirmation}.
+   *
+   * @param request incoming {@link SetChargingProfileRequest} to handle.
+   * @return outgoing {@link SetChargingProfileConfirmation} to reply with.
+   */
+  SetChargingProfileConfirmation handleSetChargingProfileRequest(SetChargingProfileRequest request);
 
-    /**
-     * Handle a {@link ClearChargingProfileRequest} and return a {@link
-     * ClearChargingProfileConfirmation}.
-     *
-     * @param request incoming {@link ClearChargingProfileRequest} to handle.
-     * @return outgoing {@link ClearChargingProfileConfirmation} to reply with.
-     */
-    ClearChargingProfileConfirmation handleClearChargingProfileRequest(
-            ClearChargingProfileRequest request);
+  /**
+   * Handle a {@link ClearChargingProfileRequest} and return a {@link
+   * ClearChargingProfileConfirmation}.
+   *
+   * @param request incoming {@link ClearChargingProfileRequest} to handle.
+   * @return outgoing {@link ClearChargingProfileConfirmation} to reply with.
+   */
+  ClearChargingProfileConfirmation handleClearChargingProfileRequest(
+      ClearChargingProfileRequest request);
 
-    /**
-     * Handle a {@link GetCompositeScheduleRequest} and return a {@link
-     * GetCompositeScheduleConfirmation}.
-     *
-     * @param request incoming {@link GetCompositeScheduleRequest} to handle.
-     * @return outgoing {@link GetCompositeScheduleConfirmation} to reply with.
-     */
-    GetCompositeScheduleConfirmation handleGetCompositeScheduleRequest(
-            GetCompositeScheduleRequest request);
+  /**
+   * Handle a {@link GetCompositeScheduleRequest} and return a {@link
+   * GetCompositeScheduleConfirmation}.
+   *
+   * @param request incoming {@link GetCompositeScheduleRequest} to handle.
+   * @return outgoing {@link GetCompositeScheduleConfirmation} to reply with.
+   */
+  GetCompositeScheduleConfirmation handleGetCompositeScheduleRequest(
+      GetCompositeScheduleRequest request);
 }

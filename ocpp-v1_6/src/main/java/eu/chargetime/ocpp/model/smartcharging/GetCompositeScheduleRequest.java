@@ -29,128 +29,124 @@ package eu.chargetime.ocpp.model.smartcharging;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-
+import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Objects;
 
 @XmlRootElement
 public class GetCompositeScheduleRequest implements Request {
 
-    private Integer connectorId;
-    private Integer duration;
-    private ChangingRateUnitType changingRateUnitType;
+  private Integer connectorId;
+  private Integer duration;
+  private ChangingRateUnitType changingRateUnitType;
 
-    /**
-     * @deprecated use {@link #GetCompositeScheduleRequest(Integer, Integer)} to be sure to set required fields
-     */
-    @Deprecated
-    public GetCompositeScheduleRequest() {
+  /**
+   * @deprecated use {@link #GetCompositeScheduleRequest(Integer, Integer)} to be sure to set
+   *     required fields
+   */
+  @Deprecated
+  public GetCompositeScheduleRequest() {}
 
+  /**
+   * Handle required fields.
+   *
+   * @param connectorId Integer, see {@link #setConnectorId(Integer)}
+   * @param duration Integer, see {@link #setDuration(Integer)}
+   */
+  public GetCompositeScheduleRequest(Integer connectorId, Integer duration) {
+    setConnectorId(connectorId);
+    setDuration(duration);
+  }
+
+  /**
+   * The ID of the Connector for which the schedule is requested. When ConnectorId=0, the Charge
+   * Point will calculate the expected consumption for the grid connection.
+   *
+   * @return ID of the connector.
+   */
+  public Integer getConnectorId() {
+    return connectorId;
+  }
+
+  /**
+   * Required. The ID of the Connector for which the schedule is requested. When ConnectorId=0, the
+   * Charge Point will calculate the expected consumption for the grid connection.
+   *
+   * @param connectorId Integer
+   */
+  @XmlElement
+  public void setConnectorId(Integer connectorId) {
+    if (connectorId == null || connectorId < 0) {
+      throw new PropertyConstraintException(connectorId, "connectorId must be >= 0");
     }
 
-    /**
-     * Handle required fields.
-     *
-     * @param connectorId Integer, see {@link #setConnectorId(Integer)}
-     * @param duration    Integer, see {@link #setDuration(Integer)}
-     */
-    public GetCompositeScheduleRequest(Integer connectorId, Integer duration) {
-        setConnectorId(connectorId);
-        setDuration(duration);
-    }
+    this.connectorId = connectorId;
+  }
 
-    /**
-     * The ID of the Connector for which the schedule is
-     * requested. When ConnectorId=0, the Charge Point will calculate
-     * the expected consumption for the grid connection.
-     *
-     * @return ID of the connector.
-     */
-    public Integer getConnectorId() {
-        return connectorId;
-    }
+  /**
+   * Time in seconds. length of requested schedule
+   *
+   * @return length of requested schedule
+   */
+  public Integer getDuration() {
+    return duration;
+  }
 
-    /**
-     * Required. The ID of the Connector for which the schedule is
-     * requested. When ConnectorId=0, the Charge Point will calculate
-     * the expected consumption for the grid connection.
-     *
-     * @param connectorId Integer
-     */
-    @XmlElement
-    public void setConnectorId(Integer connectorId) {
-        if (connectorId == null || connectorId < 0) {
-            throw new PropertyConstraintException(connectorId, "connectorId must be >= 0");
-        }
+  /**
+   * Required. Time in seconds. length of requested schedule
+   *
+   * @param duration Integer
+   */
+  @XmlElement
+  public void setDuration(Integer duration) {
+    this.duration = duration;
+  }
 
-        this.connectorId = connectorId;
-    }
+  /**
+   * Can be used to force a power or current profile
+   *
+   * @return current profile
+   */
+  public ChangingRateUnitType getChangingRateUnitType() {
+    return changingRateUnitType;
+  }
 
-    /**
-     * Time in seconds. length of requested schedule
-     *
-     * @return length of requested schedule
-     */
-    public Integer getDuration() {
-        return duration;
-    }
+  /**
+   * Optional. Can be used to force a power or current profile
+   *
+   * @param changingRateUnitType the {@link ChangingRateUnitType}
+   */
+  @XmlElement
+  public void setChangingRateUnitType(ChangingRateUnitType changingRateUnitType) {
+    this.changingRateUnitType = changingRateUnitType;
+  }
 
-    /**
-     * Required. Time in seconds. length of requested schedule
-     *
-     * @param duration Integer
-     */
-    @XmlElement
-    public void setDuration(Integer duration) {
-        this.duration = duration;
-    }
+  @Override
+  public boolean validate() {
+    boolean valid = connectorId != null && connectorId >= 0;
+    valid &= duration != null;
+    valid &= changingRateUnitType != null;
 
-    /**
-     * Can be used to force a power or current profile
-     *
-     * @return current profile
-     */
-    public ChangingRateUnitType getChangingRateUnitType() {
-        return changingRateUnitType;
-    }
+    return valid;
+  }
 
-    /**
-     * Optional. Can be used to force a power or current profile
-     *
-     * @param changingRateUnitType the {@link ChangingRateUnitType}
-     */
-    @XmlElement
-    public void setChangingRateUnitType(ChangingRateUnitType changingRateUnitType) {
-        this.changingRateUnitType = changingRateUnitType;
-    }
+  @Override
+  public boolean transactionRelated() {
+    return false;
+  }
 
-    @Override
-    public boolean validate() {
-        boolean valid = connectorId != null && connectorId >= 0;
-        valid &= duration != null;
-        valid &= changingRateUnitType != null;
+  @Override
+  public int hashCode() {
+    return Objects.hash(connectorId, duration, changingRateUnitType);
+  }
 
-        return valid;
-    }
-
-    @Override
-    public boolean transactionRelated() {
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(connectorId, duration, changingRateUnitType);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("connectorId", connectorId)
-                .add("duration", duration)
-                .add("changingRateUnitType", changingRateUnitType)
-                .add("isValid", validate())
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("connectorId", connectorId)
+        .add("duration", duration)
+        .add("changingRateUnitType", changingRateUnitType)
+        .add("isValid", validate())
+        .toString();
+  }
 }
