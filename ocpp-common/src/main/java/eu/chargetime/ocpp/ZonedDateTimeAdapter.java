@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.time.ZonedDateTime;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -31,13 +31,13 @@ import java.time.ZonedDateTime;
 
 public class ZonedDateTimeAdapter extends XmlAdapter<String, ZonedDateTime> {
 
-    @Override
-    public ZonedDateTime unmarshal(String string) throws Exception {
-        return ZonedDateTime.parse(string);
-    }
+  @Override
+  public ZonedDateTime unmarshal(String string) throws Exception {
+    return ZonedDateTime.parse(string);
+  }
 
-    @Override
-    public String marshal(ZonedDateTime zonedDateTime) throws Exception {
-        return zonedDateTime.toString();
-    }
+  @Override
+  public String marshal(ZonedDateTime zonedDateTime) throws Exception {
+    return zonedDateTime.toString();
+  }
 }
