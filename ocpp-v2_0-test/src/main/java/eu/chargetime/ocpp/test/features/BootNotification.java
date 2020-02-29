@@ -34,45 +34,44 @@ import eu.chargetime.ocpp.model.basic.BootNotificationRequest;
 import eu.chargetime.ocpp.model.basic.types.BootReasonEnumType;
 import eu.chargetime.ocpp.model.basic.types.ChargingStationType;
 import eu.chargetime.ocpp.model.basic.types.RegistrationStatusEnumType;
-
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public class BootNotification implements IServerBootNotificationRequestHandler {
-    private BootNotificationFeature feature;
-    private BootNotificationConfirmation confirmation;
+  private BootNotificationFeature feature;
+  private BootNotificationConfirmation confirmation;
 
-    public BootNotification() {
-        feature = new BootNotificationFeature(this);
+  public BootNotification() {
+    feature = new BootNotificationFeature(this);
 
-        confirmation = new BootNotificationConfirmation();
-        ZonedDateTime calendar = ZonedDateTime.now();
-        confirmation.setCurrentTime(calendar);
-        confirmation.setInterval(42);
-        confirmation.setStatus(RegistrationStatusEnumType.Accepted);
-    }
+    confirmation = new BootNotificationConfirmation();
+    ZonedDateTime calendar = ZonedDateTime.now();
+    confirmation.setCurrentTime(calendar);
+    confirmation.setInterval(42);
+    confirmation.setStatus(RegistrationStatusEnumType.Accepted);
+  }
 
-    @Override
-    public BootNotificationConfirmation handleBootNotificationRequest(
-            UUID sessionIndex, BootNotificationRequest request) {
-        return confirmation;
-    }
+  @Override
+  public BootNotificationConfirmation handleBootNotificationRequest(
+      UUID sessionIndex, BootNotificationRequest request) {
+    return confirmation;
+  }
 
-    public BootNotificationConfirmation getConfirmation() {
-        return confirmation;
-    }
+  public BootNotificationConfirmation getConfirmation() {
+    return confirmation;
+  }
 
-    public BootNotificationRequest createRequest() {
-        BootNotificationRequest request = new BootNotificationRequest();
-        request.setReason(BootReasonEnumType.Unknown);
-        ChargingStationType chargingStationType = new ChargingStationType();
-        request.setChargingStation(chargingStationType);
-        chargingStationType.setVendorName("ChargeTimeEU");
-        chargingStationType.setModel("Test");
-        return request;
-    }
+  public BootNotificationRequest createRequest() {
+    BootNotificationRequest request = new BootNotificationRequest();
+    request.setReason(BootReasonEnumType.Unknown);
+    ChargingStationType chargingStationType = new ChargingStationType();
+    request.setChargingStation(chargingStationType);
+    chargingStationType.setVendorName("ChargeTimeEU");
+    chargingStationType.setModel("Test");
+    return request;
+  }
 
-    public Feature getFeature() {
-        return feature;
-    }
+  public Feature getFeature() {
+    return feature;
+  }
 }
