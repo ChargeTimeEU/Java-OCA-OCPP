@@ -8,7 +8,6 @@ import static org.junit.Assert.assertThat;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
 import eu.chargetime.ocpp.model.core.RegistrationStatus;
-
 import java.time.ZonedDateTime;
 import org.junit.Before;
 import org.junit.Rule;

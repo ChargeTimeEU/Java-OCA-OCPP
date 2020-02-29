@@ -1,14 +1,13 @@
 package eu.chargetime.ocpp.model.test;
 
-import eu.chargetime.ocpp.model.core.HeartbeatConfirmation;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.time.ZonedDateTime;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+
+import eu.chargetime.ocpp.model.core.HeartbeatConfirmation;
+import java.time.ZonedDateTime;
+import org.junit.Before;
+import org.junit.Test;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -37,43 +36,43 @@ import static org.junit.Assert.assertThat;
  * SOFTWARE.
  */
 public class HeartbeatConfirmationTest {
-    HeartbeatConfirmation confirmation;
+  HeartbeatConfirmation confirmation;
 
-    @Before
-    public void setUp() throws Exception {
-        confirmation = new HeartbeatConfirmation();
-    }
+  @Before
+  public void setUp() throws Exception {
+    confirmation = new HeartbeatConfirmation();
+  }
 
-    @Test
-    public void setCurrentTime_now_currentTimeIsSet() {
-        // Given
-        ZonedDateTime now = ZonedDateTime.now();
+  @Test
+  public void setCurrentTime_now_currentTimeIsSet() {
+    // Given
+    ZonedDateTime now = ZonedDateTime.now();
 
-        // When
-        confirmation.setCurrentTime(now);
+    // When
+    confirmation.setCurrentTime(now);
 
-        // Then
-        assertThat(confirmation.getCurrentTime(), equalTo(now));
-    }
+    // Then
+    assertThat(confirmation.getCurrentTime(), equalTo(now));
+  }
 
-    @Test
-    public void validate_currentTimeIsSet_returnsTrue() {
-        // Given
-        confirmation.setCurrentTime(ZonedDateTime.now());
+  @Test
+  public void validate_currentTimeIsSet_returnsTrue() {
+    // Given
+    confirmation.setCurrentTime(ZonedDateTime.now());
 
-        // When
-        boolean isValid = confirmation.validate();
+    // When
+    boolean isValid = confirmation.validate();
 
-        // Then
-        assertThat(isValid, is(true));
-    }
+    // Then
+    assertThat(isValid, is(true));
+  }
 
-    @Test
-    public void validate_returnFalse() {
-        // When
-        boolean isValid = confirmation.validate();
+  @Test
+  public void validate_returnFalse() {
+    // When
+    boolean isValid = confirmation.validate();
 
-        // Then
-        assertThat(isValid, is(false));
-    }
+    // Then
+    assertThat(isValid, is(false));
+  }
 }

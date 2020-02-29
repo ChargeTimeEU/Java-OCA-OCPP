@@ -33,342 +33,339 @@ import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-
+import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Objects;
 
-/**
- * Sent by the Charge Point to the Central System.
- */
+/** Sent by the Charge Point to the Central System. */
 @XmlRootElement
 @XmlType(
-        propOrder = {
-                "chargePointVendor",
-                "chargePointModel",
-                "chargePointSerialNumber",
-                "chargeBoxSerialNumber",
-                "firmwareVersion",
-                "iccid",
-                "imsi",
-                "meterType",
-                "meterSerialNumber"
-        })
+    propOrder = {
+      "chargePointVendor",
+      "chargePointModel",
+      "chargePointSerialNumber",
+      "chargeBoxSerialNumber",
+      "firmwareVersion",
+      "iccid",
+      "imsi",
+      "meterType",
+      "meterSerialNumber"
+    })
 public class BootNotificationRequest implements Request {
 
-    private static final int STRING_20_CHAR_MAX_LENGTH = 20;
-    private static final int STRING_25_CHAR_MAX_LENGTH = 25;
-    private static final int STRING_50_CHAR_MAX_LENGTH = 50;
-    private static final String ERROR_MESSAGE = "Exceeded limit of %s chars";
+  private static final int STRING_20_CHAR_MAX_LENGTH = 20;
+  private static final int STRING_25_CHAR_MAX_LENGTH = 25;
+  private static final int STRING_50_CHAR_MAX_LENGTH = 50;
+  private static final String ERROR_MESSAGE = "Exceeded limit of %s chars";
 
-    private String chargePointVendor;
-    private String chargePointModel;
-    private String chargeBoxSerialNumber;
-    private String chargePointSerialNumber;
-    private String firmwareVersion;
-    private String iccid;
-    private String imsi;
-    private String meterSerialNumber;
-    private String meterType;
+  private String chargePointVendor;
+  private String chargePointModel;
+  private String chargeBoxSerialNumber;
+  private String chargePointSerialNumber;
+  private String firmwareVersion;
+  private String iccid;
+  private String imsi;
+  private String meterSerialNumber;
+  private String meterType;
 
-    /**
-     * @deprecated use {@link #BootNotificationRequest(String, String)} to be sure to set required fields
-     */
-    @Deprecated
-    public BootNotificationRequest() {
+  /**
+   * @deprecated use {@link #BootNotificationRequest(String, String)} to be sure to set required
+   *     fields
+   */
+  @Deprecated
+  public BootNotificationRequest() {}
+
+  /**
+   * Handle required fields.
+   *
+   * @param chargePointVendor Charge Point vendor, see {@link #setChargePointVendor(String)}.
+   * @param chargePointModel Charge Point model, see {@link #setChargePointModel(String)}.
+   */
+  public BootNotificationRequest(String chargePointVendor, String chargePointModel) {
+    setChargePointModel(chargePointModel);
+    setChargePointVendor(chargePointVendor);
+  }
+
+  private static String validationErrorMessage(int maxAllowedLength) {
+    return String.format(ERROR_MESSAGE, maxAllowedLength);
+  }
+
+  /**
+   * This contains a value that identifies the vendor of the ChargePoint.
+   *
+   * @return Vendor of the Charge Point.
+   */
+  public String getChargePointVendor() {
+    return chargePointVendor;
+  }
+
+  /**
+   * Required. This contains a value that identifies the vendor of the ChargePoint.
+   *
+   * @param chargePointVendor String, max 20 characters, case insensitive.
+   */
+  @XmlElement
+  public void setChargePointVendor(String chargePointVendor) {
+    if (!ModelUtil.validate(chargePointVendor, STRING_20_CHAR_MAX_LENGTH)) {
+      throw new PropertyConstraintException(
+          chargePointVendor.length(), validationErrorMessage(STRING_20_CHAR_MAX_LENGTH));
     }
 
-    /**
-     * Handle required fields.
-     *
-     * @param chargePointVendor Charge Point vendor, see {@link #setChargePointVendor(String)}.
-     * @param chargePointModel  Charge Point model, see {@link #setChargePointModel(String)}.
-     */
-    public BootNotificationRequest(String chargePointVendor, String chargePointModel) {
-        setChargePointModel(chargePointModel);
-        setChargePointVendor(chargePointVendor);
+    this.chargePointVendor = chargePointVendor;
+  }
+
+  /**
+   * This contains a value that identifies the model of the ChargePoint.
+   *
+   * @return Model of the Charge Point.
+   */
+  public String getChargePointModel() {
+    return chargePointModel;
+  }
+
+  /**
+   * Required. This contains a value that identifies the model of the ChargePoint.
+   *
+   * @param chargePointModel String, max 20 characters, case insensitive.
+   */
+  @XmlElement
+  public void setChargePointModel(String chargePointModel) {
+    if (!ModelUtil.validate(chargePointModel, STRING_20_CHAR_MAX_LENGTH)) {
+      throw new PropertyConstraintException(
+          chargePointModel.length(), validationErrorMessage(STRING_20_CHAR_MAX_LENGTH));
     }
 
-    private static String validationErrorMessage(int maxAllowedLength) {
-        return String.format(ERROR_MESSAGE, maxAllowedLength);
+    this.chargePointModel = chargePointModel;
+  }
+
+  /**
+   * This contains a value that identifies the serial number of the Charge Box inside the Charge
+   * Point.
+   *
+   * @return Serial Number of the Charge Point.
+   * @deprecated will be removed in future version. See {@link #getChargePointSerialNumber()}.
+   */
+  @Deprecated()
+  public String getChargeBoxSerialNumber() {
+    return chargeBoxSerialNumber;
+  }
+
+  /**
+   * Optional. This contains a value that identifies the serial number of the Charge Box inside the
+   * Charge Point.
+   *
+   * @param chargeBoxSerialNumber String, max 25 characters, case insensitive.
+   * @deprecated will be removed in future version. See {@link #setChargePointSerialNumber(String)}.
+   */
+  @Deprecated()
+  public void setChargeBoxSerialNumber(String chargeBoxSerialNumber) {
+    if (!ModelUtil.validate(chargeBoxSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
+      throw new PropertyConstraintException(
+          chargeBoxSerialNumber.length(), validationErrorMessage(STRING_25_CHAR_MAX_LENGTH));
     }
 
-    /**
-     * This contains a value that identifies the vendor of the ChargePoint.
-     *
-     * @return Vendor of the Charge Point.
-     */
-    public String getChargePointVendor() {
-        return chargePointVendor;
+    this.chargeBoxSerialNumber = chargeBoxSerialNumber;
+  }
+
+  /**
+   * This contains a value that identifies the serial number of the Charge Point.
+   *
+   * @return Serial Number of the Charge Point.
+   */
+  public String getChargePointSerialNumber() {
+    return chargePointSerialNumber;
+  }
+
+  /**
+   * Optional. This contains a value that identifies the serial number of the Charge Point.
+   *
+   * @param chargePointSerialNumber String, max 25 characters, case insensitive.
+   */
+  @XmlElement
+  public void setChargePointSerialNumber(String chargePointSerialNumber) {
+    if (!ModelUtil.validate(chargePointSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
+      throw new PropertyConstraintException(
+          chargePointSerialNumber.length(), validationErrorMessage(STRING_25_CHAR_MAX_LENGTH));
     }
 
-    /**
-     * Required. This contains a value that identifies the vendor of the ChargePoint.
-     *
-     * @param chargePointVendor String, max 20 characters, case insensitive.
-     */
-    @XmlElement
-    public void setChargePointVendor(String chargePointVendor) {
-        if (!ModelUtil.validate(chargePointVendor, STRING_20_CHAR_MAX_LENGTH)) {
-            throw new PropertyConstraintException(
-                    chargePointVendor.length(), validationErrorMessage(STRING_20_CHAR_MAX_LENGTH));
-        }
+    this.chargePointSerialNumber = chargePointSerialNumber;
+  }
 
-        this.chargePointVendor = chargePointVendor;
+  /**
+   * This contains the firmware version of the Charge Point.
+   *
+   * @return Firmware version of Charge Point.
+   */
+  public String getFirmwareVersion() {
+    return firmwareVersion;
+  }
+
+  /**
+   * Optional. This contains the firmware version of the Charge Point.
+   *
+   * @param firmwareVersion String, max 50 characters, case insensitive.
+   */
+  @XmlElement
+  public void setFirmwareVersion(String firmwareVersion) {
+    if (!ModelUtil.validate(firmwareVersion, STRING_50_CHAR_MAX_LENGTH)) {
+      throw new PropertyConstraintException(
+          firmwareVersion.length(), validationErrorMessage(STRING_50_CHAR_MAX_LENGTH));
     }
 
-    /**
-     * This contains a value that identifies the model of the ChargePoint.
-     *
-     * @return Model of the Charge Point.
-     */
-    public String getChargePointModel() {
-        return chargePointModel;
+    this.firmwareVersion = firmwareVersion;
+  }
+
+  /**
+   * This contains the ICCID of the modem’s SIM card.
+   *
+   * @return ICCID of SIM card.
+   */
+  public String getIccid() {
+    return iccid;
+  }
+
+  /**
+   * Optional. This contains the ICCID of the modem’s SIM card.
+   *
+   * @param iccid String, max 20 characters, case insensitive.
+   */
+  @XmlElement
+  public void setIccid(String iccid) {
+    if (!ModelUtil.validate(iccid, STRING_20_CHAR_MAX_LENGTH)) {
+      throw new PropertyConstraintException(
+          iccid.length(), validationErrorMessage(STRING_20_CHAR_MAX_LENGTH));
     }
 
-    /**
-     * Required. This contains a value that identifies the model of the ChargePoint.
-     *
-     * @param chargePointModel String, max 20 characters, case insensitive.
-     */
-    @XmlElement
-    public void setChargePointModel(String chargePointModel) {
-        if (!ModelUtil.validate(chargePointModel, STRING_20_CHAR_MAX_LENGTH)) {
-            throw new PropertyConstraintException(
-                    chargePointModel.length(), validationErrorMessage(STRING_20_CHAR_MAX_LENGTH));
-        }
+    this.iccid = iccid;
+  }
 
-        this.chargePointModel = chargePointModel;
+  /**
+   * This contains the IMSI of the modem’s SIM card.
+   *
+   * @return IMSI of SIM card.
+   */
+  public String getImsi() {
+    return imsi;
+  }
+
+  /**
+   * Optional. This contains the IMSI of the modem’s SIM card.
+   *
+   * @param imsi String, max 20 characters, case insensitive.
+   */
+  @XmlElement
+  public void setImsi(String imsi) {
+    if (!ModelUtil.validate(imsi, STRING_20_CHAR_MAX_LENGTH)) {
+      throw new PropertyConstraintException(
+          imsi.length(), validationErrorMessage(STRING_20_CHAR_MAX_LENGTH));
     }
 
-    /**
-     * This contains a value that identifies the serial number of the Charge Box inside the Charge
-     * Point.
-     *
-     * @return Serial Number of the Charge Point.
-     * @deprecated will be removed in future version. See {@link #getChargePointSerialNumber()}.
-     */
-    @Deprecated()
-    public String getChargeBoxSerialNumber() {
-        return chargeBoxSerialNumber;
+    this.imsi = imsi;
+  }
+
+  /**
+   * This contains the serial number of the main power meter of the Charge Point.
+   *
+   * @return Serial number of the meter.
+   */
+  public String getMeterSerialNumber() {
+    return meterSerialNumber;
+  }
+
+  /**
+   * Optional. This contains the serial number of the main power meter of the Charge Point.
+   *
+   * @param meterSerialNumber String, max 25 characters, case insensitive.
+   */
+  @XmlElement
+  public void setMeterSerialNumber(String meterSerialNumber) {
+    if (!ModelUtil.validate(meterSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
+      throw new PropertyConstraintException(
+          meterSerialNumber.length(), validationErrorMessage(STRING_25_CHAR_MAX_LENGTH));
     }
 
-    /**
-     * Optional. This contains a value that identifies the serial number of the Charge Box inside the
-     * Charge Point.
-     *
-     * @param chargeBoxSerialNumber String, max 25 characters, case insensitive.
-     * @deprecated will be removed in future version. See {@link #setChargePointSerialNumber(String)}.
-     */
-    @Deprecated()
-    public void setChargeBoxSerialNumber(String chargeBoxSerialNumber) {
-        if (!ModelUtil.validate(chargeBoxSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
-            throw new PropertyConstraintException(
-                    chargeBoxSerialNumber.length(), validationErrorMessage(STRING_25_CHAR_MAX_LENGTH));
-        }
+    this.meterSerialNumber = meterSerialNumber;
+  }
 
-        this.chargeBoxSerialNumber = chargeBoxSerialNumber;
+  /**
+   * This contains the type of the main power meter of the Charge Point.
+   *
+   * @return Type of main power meter.
+   */
+  public String getMeterType() {
+    return meterType;
+  }
+
+  /**
+   * Optional. This contains the type of the main power meter of the Charge Point.
+   *
+   * @param meterType String, max 25 characters, case insensitive.
+   */
+  @XmlElement
+  public void setMeterType(String meterType) {
+    if (!ModelUtil.validate(meterType, STRING_25_CHAR_MAX_LENGTH)) {
+      throw new PropertyConstraintException(
+          meterType.length(), validationErrorMessage(STRING_25_CHAR_MAX_LENGTH));
     }
 
-    /**
-     * This contains a value that identifies the serial number of the Charge Point.
-     *
-     * @return Serial Number of the Charge Point.
-     */
-    public String getChargePointSerialNumber() {
-        return chargePointSerialNumber;
-    }
+    this.meterType = meterType;
+  }
 
-    /**
-     * Optional. This contains a value that identifies the serial number of the Charge Point.
-     *
-     * @param chargePointSerialNumber String, max 25 characters, case insensitive.
-     */
-    @XmlElement
-    public void setChargePointSerialNumber(String chargePointSerialNumber) {
-        if (!ModelUtil.validate(chargePointSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
-            throw new PropertyConstraintException(
-                    chargePointSerialNumber.length(), validationErrorMessage(STRING_25_CHAR_MAX_LENGTH));
-        }
+  @Override
+  public boolean validate() {
+    return ModelUtil.validate(chargePointModel, STRING_20_CHAR_MAX_LENGTH)
+        && ModelUtil.validate(chargePointVendor, STRING_20_CHAR_MAX_LENGTH);
+  }
 
-        this.chargePointSerialNumber = chargePointSerialNumber;
-    }
+  @Override
+  public boolean transactionRelated() {
+    return false;
+  }
 
-    /**
-     * This contains the firmware version of the Charge Point.
-     *
-     * @return Firmware version of Charge Point.
-     */
-    public String getFirmwareVersion() {
-        return firmwareVersion;
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    BootNotificationRequest that = (BootNotificationRequest) o;
+    return Objects.equals(chargePointVendor, that.chargePointVendor)
+        && Objects.equals(chargePointModel, that.chargePointModel)
+        && Objects.equals(chargeBoxSerialNumber, that.chargeBoxSerialNumber)
+        && Objects.equals(chargePointSerialNumber, that.chargePointSerialNumber)
+        && Objects.equals(firmwareVersion, that.firmwareVersion)
+        && Objects.equals(iccid, that.iccid)
+        && Objects.equals(imsi, that.imsi)
+        && Objects.equals(meterSerialNumber, that.meterSerialNumber)
+        && Objects.equals(meterType, that.meterType);
+  }
 
-    /**
-     * Optional. This contains the firmware version of the Charge Point.
-     *
-     * @param firmwareVersion String, max 50 characters, case insensitive.
-     */
-    @XmlElement
-    public void setFirmwareVersion(String firmwareVersion) {
-        if (!ModelUtil.validate(firmwareVersion, STRING_50_CHAR_MAX_LENGTH)) {
-            throw new PropertyConstraintException(
-                    firmwareVersion.length(), validationErrorMessage(STRING_50_CHAR_MAX_LENGTH));
-        }
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+        chargePointVendor,
+        chargePointModel,
+        chargeBoxSerialNumber,
+        chargePointSerialNumber,
+        firmwareVersion,
+        iccid,
+        imsi,
+        meterSerialNumber,
+        meterType);
+  }
 
-        this.firmwareVersion = firmwareVersion;
-    }
-
-    /**
-     * This contains the ICCID of the modem’s SIM card.
-     *
-     * @return ICCID of SIM card.
-     */
-    public String getIccid() {
-        return iccid;
-    }
-
-    /**
-     * Optional. This contains the ICCID of the modem’s SIM card.
-     *
-     * @param iccid String, max 20 characters, case insensitive.
-     */
-    @XmlElement
-    public void setIccid(String iccid) {
-        if (!ModelUtil.validate(iccid, STRING_20_CHAR_MAX_LENGTH)) {
-            throw new PropertyConstraintException(
-                    iccid.length(), validationErrorMessage(STRING_20_CHAR_MAX_LENGTH));
-        }
-
-        this.iccid = iccid;
-    }
-
-    /**
-     * This contains the IMSI of the modem’s SIM card.
-     *
-     * @return IMSI of SIM card.
-     */
-    public String getImsi() {
-        return imsi;
-    }
-
-    /**
-     * Optional. This contains the IMSI of the modem’s SIM card.
-     *
-     * @param imsi String, max 20 characters, case insensitive.
-     */
-    @XmlElement
-    public void setImsi(String imsi) {
-        if (!ModelUtil.validate(imsi, STRING_20_CHAR_MAX_LENGTH)) {
-            throw new PropertyConstraintException(
-                    imsi.length(), validationErrorMessage(STRING_20_CHAR_MAX_LENGTH));
-        }
-
-        this.imsi = imsi;
-    }
-
-    /**
-     * This contains the serial number of the main power meter of the Charge Point.
-     *
-     * @return Serial number of the meter.
-     */
-    public String getMeterSerialNumber() {
-        return meterSerialNumber;
-    }
-
-    /**
-     * Optional. This contains the serial number of the main power meter of the Charge Point.
-     *
-     * @param meterSerialNumber String, max 25 characters, case insensitive.
-     */
-    @XmlElement
-    public void setMeterSerialNumber(String meterSerialNumber) {
-        if (!ModelUtil.validate(meterSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
-            throw new PropertyConstraintException(
-                    meterSerialNumber.length(), validationErrorMessage(STRING_25_CHAR_MAX_LENGTH));
-        }
-
-        this.meterSerialNumber = meterSerialNumber;
-    }
-
-    /**
-     * This contains the type of the main power meter of the Charge Point.
-     *
-     * @return Type of main power meter.
-     */
-    public String getMeterType() {
-        return meterType;
-    }
-
-    /**
-     * Optional. This contains the type of the main power meter of the Charge Point.
-     *
-     * @param meterType String, max 25 characters, case insensitive.
-     */
-    @XmlElement
-    public void setMeterType(String meterType) {
-        if (!ModelUtil.validate(meterType, STRING_25_CHAR_MAX_LENGTH)) {
-            throw new PropertyConstraintException(
-                    meterType.length(), validationErrorMessage(STRING_25_CHAR_MAX_LENGTH));
-        }
-
-        this.meterType = meterType;
-    }
-
-    @Override
-    public boolean validate() {
-        return ModelUtil.validate(chargePointModel, STRING_20_CHAR_MAX_LENGTH)
-                && ModelUtil.validate(chargePointVendor, STRING_20_CHAR_MAX_LENGTH);
-    }
-
-    @Override
-    public boolean transactionRelated() {
-        return false;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BootNotificationRequest that = (BootNotificationRequest) o;
-        return Objects.equals(chargePointVendor, that.chargePointVendor)
-                && Objects.equals(chargePointModel, that.chargePointModel)
-                && Objects.equals(chargeBoxSerialNumber, that.chargeBoxSerialNumber)
-                && Objects.equals(chargePointSerialNumber, that.chargePointSerialNumber)
-                && Objects.equals(firmwareVersion, that.firmwareVersion)
-                && Objects.equals(iccid, that.iccid)
-                && Objects.equals(imsi, that.imsi)
-                && Objects.equals(meterSerialNumber, that.meterSerialNumber)
-                && Objects.equals(meterType, that.meterType);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(
-                chargePointVendor,
-                chargePointModel,
-                chargeBoxSerialNumber,
-                chargePointSerialNumber,
-                firmwareVersion,
-                iccid,
-                imsi,
-                meterSerialNumber,
-                meterType);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("chargePointVendor", chargePointVendor)
-                .add("chargePointModel", chargePointModel)
-                .add("chargeBoxSerialNumber", chargeBoxSerialNumber)
-                .add("chargePointSerialNumber", chargePointSerialNumber)
-                .add("firmwareVersion", firmwareVersion)
-                .add("iccid", iccid)
-                .add("imsi", imsi)
-                .add("meterSerialNumber", meterSerialNumber)
-                .add("meterType", meterType)
-                .add("isValid", validate())
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("chargePointVendor", chargePointVendor)
+        .add("chargePointModel", chargePointModel)
+        .add("chargeBoxSerialNumber", chargeBoxSerialNumber)
+        .add("chargePointSerialNumber", chargePointSerialNumber)
+        .add("firmwareVersion", firmwareVersion)
+        .add("iccid", iccid)
+        .add("imsi", imsi)
+        .add("meterSerialNumber", meterSerialNumber)
+        .add("meterType", meterType)
+        .add("isValid", validate())
+        .toString();
+  }
 }
