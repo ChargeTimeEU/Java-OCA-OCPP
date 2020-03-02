@@ -129,7 +129,6 @@ public class GetCompositeScheduleRequest implements Request {
     public boolean validate() {
         boolean valid = connectorId != null && connectorId >= 0;
         valid &= duration != null;
-        valid &= changingRateUnitType != null;
 
         return valid;
     }
