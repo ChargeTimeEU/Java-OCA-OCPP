@@ -59,28 +59,30 @@ public class GetCompositeScheduleRequest implements Request {
   }
 
   /**
-   * The ID of the Connector for which the schedule is requested. When ConnectorId=0, the Charge
-   * Point will calculate the expected consumption for the grid connection.
+   * The ID of the Connector for which the schedule is
+   * requested. When ConnectorId=0, the Charge Point will calculate
+   * the expected consumption for the grid connection.
    *
    * @return ID of the connector.
    */
   public Integer getConnectorId() {
-    return connectorId;
+      return connectorId;
   }
 
   /**
-   * Required. The ID of the Connector for which the schedule is requested. When ConnectorId=0, the
-   * Charge Point will calculate the expected consumption for the grid connection.
+   * Required. The ID of the Connector for which the schedule is
+   * requested. When ConnectorId=0, the Charge Point will calculate
+   * the expected consumption for the grid connection.
    *
    * @param connectorId Integer
    */
   @XmlElement
   public void setConnectorId(Integer connectorId) {
-    if (connectorId == null || connectorId < 0) {
-      throw new PropertyConstraintException(connectorId, "connectorId must be >= 0");
-    }
+      if (connectorId == null || connectorId < 0) {
+          throw new PropertyConstraintException(connectorId, "connectorId must be >= 0");
+      }
 
-    this.connectorId = connectorId;
+      this.connectorId = connectorId;
   }
 
   /**
@@ -89,9 +91,9 @@ public class GetCompositeScheduleRequest implements Request {
    * @return length of requested schedule
    */
   public Integer getDuration() {
-    return duration;
+      return duration;
   }
-
+  
   /**
    * Required. Time in seconds. length of requested schedule
    *
@@ -99,16 +101,16 @@ public class GetCompositeScheduleRequest implements Request {
    */
   @XmlElement
   public void setDuration(Integer duration) {
-    this.duration = duration;
+      this.duration = duration;
   }
-
+  
   /**
    * Can be used to force a power or current profile
    *
    * @return current profile
    */
   public ChangingRateUnitType getChangingRateUnitType() {
-    return changingRateUnitType;
+      return changingRateUnitType;
   }
 
   /**
@@ -118,35 +120,34 @@ public class GetCompositeScheduleRequest implements Request {
    */
   @XmlElement
   public void setChangingRateUnitType(ChangingRateUnitType changingRateUnitType) {
-    this.changingRateUnitType = changingRateUnitType;
+      this.changingRateUnitType = changingRateUnitType;
   }
-
+  
   @Override
   public boolean validate() {
-    boolean valid = connectorId != null && connectorId >= 0;
-    valid &= duration != null;
-    valid &= changingRateUnitType != null;
+      boolean valid = connectorId != null && connectorId >= 0;
+      valid &= duration != null;
 
-    return valid;
+      return valid;
   }
-
+  
   @Override
   public boolean transactionRelated() {
-    return false;
+      return false;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(connectorId, duration, changingRateUnitType);
+      return Objects.hash(connectorId, duration, changingRateUnitType);
   }
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("connectorId", connectorId)
-        .add("duration", duration)
-        .add("changingRateUnitType", changingRateUnitType)
-        .add("isValid", validate())
-        .toString();
+      return MoreObjects.toStringHelper(this)
+              .add("connectorId", connectorId)
+              .add("duration", duration)
+              .add("changingRateUnitType", changingRateUnitType)
+              .add("isValid", validate())
+              .toString();
   }
 }
