@@ -81,7 +81,7 @@ public class JSONCommunicator extends Communicator {
     @Override
     public JsonElement serialize(
         ZonedDateTime zonedDateTime, Type type, JsonSerializationContext jsonSerializationContext) {
-      return new JsonPrimitive(zonedDateTime.toString());
+      return new JsonPrimitive(zonedDateTime.toOffsetDateTime().toString());
     }
   }
 
