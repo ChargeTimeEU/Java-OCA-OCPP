@@ -26,6 +26,12 @@ package eu.chargetime.ocpp.feature.profile.test;
    SOFTWARE.
 */
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import eu.chargetime.ocpp.feature.*;
 import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementEventHandler;
 import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementProfile;
@@ -33,6 +39,7 @@ import eu.chargetime.ocpp.model.firmware.DiagnosticsStatus;
 import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
 import eu.chargetime.ocpp.model.firmware.FirmwareStatus;
 import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationRequest;
+import java.util.UUID;
 import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,93 +47,87 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.UUID;
-
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 @RunWith(MockitoJUnitRunner.class)
 public class ServerFirmwareManagementProfileTest extends ProfileTest {
-    ServerFirmwareManagementProfile profile;
+  ServerFirmwareManagementProfile profile;
 
-    @Mock private ServerFirmwareManagementEventHandler handler;
+  @Mock private ServerFirmwareManagementEventHandler handler;
 
-    @Before
-    public void setup() {
-        profile = new ServerFirmwareManagementProfile(handler);
-    }
+  @Before
+  public void setup() {
+    profile = new ServerFirmwareManagementProfile(handler);
+  }
 
-    @Test
-    public void getFeatureList_containsGetDiagnosticsFeature() {
-        // When
-        Feature[] features = profile.getFeatureList();
+  @Test
+  public void getFeatureList_containsGetDiagnosticsFeature() {
+    // When
+    Feature[] features = profile.getFeatureList();
 
-        // Then
-        assertThat(
-                findFeature(features, "GetDiagnostics"), Is.is(instanceOf(GetDiagnosticsFeature.class)));
-    }
+    // Then
+    assertThat(
+        findFeature(features, "GetDiagnostics"), Is.is(instanceOf(GetDiagnosticsFeature.class)));
+  }
 
-    @Test
-    public void getFeatureList_containsDiagnosticsStatusNotificationFeature() {
-        // When
-        Feature[] features = profile.getFeatureList();
+  @Test
+  public void getFeatureList_containsDiagnosticsStatusNotificationFeature() {
+    // When
+    Feature[] features = profile.getFeatureList();
 
-        // Then
-        assertThat(
-                findFeature(features, "DiagnosticsStatusNotification"),
-                Is.is(instanceOf(DiagnosticsStatusNotificationFeature.class)));
-    }
+    // Then
+    assertThat(
+        findFeature(features, "DiagnosticsStatusNotification"),
+        Is.is(instanceOf(DiagnosticsStatusNotificationFeature.class)));
+  }
 
-    @Test
-    public void getFeatureList_containsFirmwareStatusNotificationFeature() {
-        // When
-        Feature[] features = profile.getFeatureList();
+  @Test
+  public void getFeatureList_containsFirmwareStatusNotificationFeature() {
+    // When
+    Feature[] features = profile.getFeatureList();
 
-        // Then
-        assertThat(
-                findFeature(features, "FirmwareStatusNotification"),
-                Is.is(instanceOf(FirmwareStatusNotificationFeature.class)));
-    }
+    // Then
+    assertThat(
+        findFeature(features, "FirmwareStatusNotification"),
+        Is.is(instanceOf(FirmwareStatusNotificationFeature.class)));
+  }
 
-    @Test
-    public void getFeatureList_containsUpdateFirmwareFeature() {
-        // When
-        Feature[] features = profile.getFeatureList();
+  @Test
+  public void getFeatureList_containsUpdateFirmwareFeature() {
+    // When
+    Feature[] features = profile.getFeatureList();
 
-        // Then
-        assertThat(
-                findFeature(features, "UpdateFirmware"), Is.is(instanceOf(UpdateFirmwareFeature.class)));
-    }
+    // Then
+    assertThat(
+        findFeature(features, "UpdateFirmware"), Is.is(instanceOf(UpdateFirmwareFeature.class)));
+  }
 
-    @Test
-    public void
-    handleRequest_aDiagnosticsStatusNotificationRequest_callsHandleDiagnosticsStatusNotificationRequest() {
-        // Given
-        DiagnosticsStatusNotificationRequest request = new DiagnosticsStatusNotificationRequest(DiagnosticsStatus.Idle);
-        UUID sessionId = UUID.randomUUID();
+  @Test
+  public void
+      handleRequest_aDiagnosticsStatusNotificationRequest_callsHandleDiagnosticsStatusNotificationRequest() {
+    // Given
+    DiagnosticsStatusNotificationRequest request =
+        new DiagnosticsStatusNotificationRequest(DiagnosticsStatus.Idle);
+    UUID sessionId = UUID.randomUUID();
 
-        // When
-        profile.handleRequest(sessionId, request);
+    // When
+    profile.handleRequest(sessionId, request);
 
-        // Then
-        verify(handler, times(1))
-                .handleDiagnosticsStatusNotificationRequest(eq(sessionId), eq(request));
-    }
+    // Then
+    verify(handler, times(1))
+        .handleDiagnosticsStatusNotificationRequest(eq(sessionId), eq(request));
+  }
 
-    @Test
-    public void
-    handleRequest_aFirmwareStatusNotificationRequest_callsHandleFirmwareStatusNotificationRequest() {
-        // Given
-        FirmwareStatusNotificationRequest request = new FirmwareStatusNotificationRequest(FirmwareStatus.Downloaded);
-        UUID sessionId = UUID.randomUUID();
+  @Test
+  public void
+      handleRequest_aFirmwareStatusNotificationRequest_callsHandleFirmwareStatusNotificationRequest() {
+    // Given
+    FirmwareStatusNotificationRequest request =
+        new FirmwareStatusNotificationRequest(FirmwareStatus.Downloaded);
+    UUID sessionId = UUID.randomUUID();
 
-        // When
-        profile.handleRequest(sessionId, request);
+    // When
+    profile.handleRequest(sessionId, request);
 
-        // Then
-        verify(handler, times(1)).handleFirmwareStatusNotificationRequest(eq(sessionId), eq(request));
-    }
+    // Then
+    verify(handler, times(1)).handleFirmwareStatusNotificationRequest(eq(sessionId), eq(request));
+  }
 }

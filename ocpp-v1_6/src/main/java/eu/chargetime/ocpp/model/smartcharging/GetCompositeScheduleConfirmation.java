@@ -29,141 +29,133 @@ package eu.chargetime.ocpp.model.smartcharging;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.core.ChargingSchedule;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-
-import javax.xml.bind.annotation.XmlElement;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+import javax.xml.bind.annotation.XmlElement;
 
 public class GetCompositeScheduleConfirmation implements Confirmation {
 
-    private GetCompositeScheduleStatus status;
-    private Integer connectorId;
-    private ZonedDateTime scheduleStart;
-    private ChargingSchedule chargingSchedule;
+  private GetCompositeScheduleStatus status;
+  private Integer connectorId;
+  private ZonedDateTime scheduleStart;
+  private ChargingSchedule chargingSchedule;
 
-    /**
-     * @deprecated use {@link #GetCompositeScheduleConfirmation(GetCompositeScheduleStatus)} to be sure to set required fields
-     */
-    @Deprecated
-    public GetCompositeScheduleConfirmation() {
+  /**
+   * @deprecated use {@link #GetCompositeScheduleConfirmation(GetCompositeScheduleStatus)} to be
+   *     sure to set required fields
+   */
+  @Deprecated
+  public GetCompositeScheduleConfirmation() {}
 
-    }
+  /**
+   * Handle required fields.
+   *
+   * @param status {@link GetCompositeScheduleStatus}, see {@link
+   *     #setStatus(GetCompositeScheduleStatus)}
+   */
+  public GetCompositeScheduleConfirmation(GetCompositeScheduleStatus status) {
+    setStatus(status);
+  }
 
-    /**
-     * Handle required fields.
-     *
-     * @param status {@link GetCompositeScheduleStatus}, see {@link #setStatus(GetCompositeScheduleStatus)}
-     */
-    public GetCompositeScheduleConfirmation(GetCompositeScheduleStatus status) {
-        setStatus(status);
-    }
+  @Override
+  public boolean validate() {
+    return this.status != null;
+  }
 
-    @Override
-    public boolean validate() {
-        return this.status != null;
-    }
+  /**
+   * Status of the request. The Charge Point will indicate if it was able to process the request
+   *
+   * @return status of the request
+   */
+  public GetCompositeScheduleStatus getStatus() {
+    return status;
+  }
 
-    /**
-     * Status of the request. The Charge Point will indicate if it
-     * was able to process the request
-     *
-     * @return status of the request
-     */
-    public GetCompositeScheduleStatus getStatus() {
-        return status;
-    }
+  /**
+   * Required. Status of the request. The Charge Point will indicate if it was able to process the
+   * request
+   *
+   * @param status {@link GetCompositeScheduleStatus}
+   */
+  @XmlElement
+  public void setStatus(final GetCompositeScheduleStatus status) {
+    this.status = status;
+  }
 
-    /**
-     * Required. Status of the request. The Charge Point will indicate if it
-     * was able to process the request
-     *
-     * @param status {@link GetCompositeScheduleStatus}
-     */
-    @XmlElement
-    public void setStatus(final GetCompositeScheduleStatus status) {
-        this.status = status;
-    }
+  /**
+   * The charging schedule contained in this notification applies to a Connector.
+   *
+   * @return Integer ID of the connector
+   */
+  public Integer getConnectorId() {
+    return connectorId;
+  }
 
-    /**
-     * The charging schedule contained in this notification
-     * applies to a Connector.
-     *
-     * @return Integer ID of the connector
-     */
-    public Integer getConnectorId() {
-        return connectorId;
-    }
+  /**
+   * Optional. The charging schedule contained in this notification applies to a Connector.
+   *
+   * @param connectorId Integer
+   */
+  @XmlElement
+  public void setConnectorId(final Integer connectorId) {
+    this.connectorId = connectorId;
+  }
 
-    /**
-     * Optional. The charging schedule contained in this notification
-     * applies to a Connector.
-     *
-     * @param connectorId Integer
-     */
-    @XmlElement
-    public void setConnectorId(final Integer connectorId) {
-        this.connectorId = connectorId;
-    }
+  /**
+   * Time. Periods contained in the charging profile are relative to this point in time. If status
+   * is "Rejected", this field may be absent.
+   *
+   * @return {@link ZonedDateTime} start of the schedule
+   */
+  public ZonedDateTime getScheduleStart() {
+    return scheduleStart;
+  }
 
-    /**
-     * Time. Periods contained in the charging profile are
-     * relative to this point in time.
-     * If status is "Rejected", this field may be absent.
-     *
-     * @return {@link ZonedDateTime} start of the schedule
-     */
-    public ZonedDateTime getScheduleStart() {
-        return scheduleStart;
-    }
+  /**
+   * Optional. Time. Periods contained in the charging profile are relative to this point in time.
+   * If status is "Rejected", this field may be absent.
+   *
+   * @param scheduleStart {@link ZonedDateTime}
+   */
+  @XmlElement
+  public void setScheduleStart(final ZonedDateTime scheduleStart) {
+    this.scheduleStart = scheduleStart;
+  }
 
-    /**
-     * Optional. Time. Periods contained in the charging profile are
-     * relative to this point in time.
-     * If status is "Rejected", this field may be absent.
-     *
-     * @param scheduleStart {@link ZonedDateTime}
-     */
-    @XmlElement
-    public void setScheduleStart(final ZonedDateTime scheduleStart) {
-        this.scheduleStart = scheduleStart;
-    }
+  /**
+   * Planned Composite Charging Schedule, the energy consumption over time. Always relative to
+   * ScheduleStart. If status is "Rejected", this field may be absent.
+   *
+   * @return {@link ChargingSchedule} planned charging schedule
+   */
+  public ChargingSchedule getChargingSchedule() {
+    return chargingSchedule;
+  }
 
-    /**
-     * Planned Composite Charging Schedule, the energy
-     * consumption over time. Always relative to ScheduleStart.
-     * If status is "Rejected", this field may be absent.
-     *
-     * @return {@link ChargingSchedule} planned charging schedule
-     */
-    public ChargingSchedule getChargingSchedule() {
-        return chargingSchedule;
-    }
+  /**
+   * Optional. Planned Composite Charging Schedule, the energy consumption over time. Always
+   * relative to ScheduleStart. If status is "Rejected", this field may be absent.
+   *
+   * @param chargingSchedule {@link ChargingSchedule}
+   */
+  @XmlElement
+  public void setChargingSchedule(final ChargingSchedule chargingSchedule) {
+    this.chargingSchedule = chargingSchedule;
+  }
 
-    /**
-     * Optional. Planned Composite Charging Schedule, the energy
-     * consumption over time. Always relative to ScheduleStart.
-     * If status is "Rejected", this field may be absent.
-     *
-     * @param chargingSchedule {@link ChargingSchedule}
-     */
-    @XmlElement
-    public void setChargingSchedule(final ChargingSchedule chargingSchedule) {
-        this.chargingSchedule = chargingSchedule;
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(status, connectorId, scheduleStart, chargingSchedule);
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(status, connectorId, scheduleStart, chargingSchedule);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("compositeScheduleStatus", status)
-                .add("connectorId", connectorId)
-                .add("scheduleStart", scheduleStart)
-                .add("chargingSchedule", chargingSchedule)
-                .add("isValid", validate())
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("compositeScheduleStatus", status)
+        .add("connectorId", connectorId)
+        .add("scheduleStart", scheduleStart)
+        .add("chargingSchedule", chargingSchedule)
+        .add("isValid", validate())
+        .toString();
+  }
 }

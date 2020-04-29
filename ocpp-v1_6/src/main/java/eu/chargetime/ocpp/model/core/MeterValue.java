@@ -2,13 +2,12 @@ package eu.chargetime.ocpp.model.core;
 
 import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Objects;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -45,108 +44,107 @@ import java.util.Objects;
 @XmlType(propOrder = {"timestamp", "sampledValue"})
 public class MeterValue implements Validatable {
 
-    private ZonedDateTime timestamp;
-    private SampledValue[] sampledValue;
+  private ZonedDateTime timestamp;
+  private SampledValue[] sampledValue;
 
-    /**
-     * @deprecated use {@link #MeterValue(ZonedDateTime, SampledValue[])} to be sure to set required fields
-     */
-    @Deprecated
-    public MeterValue() {
+  /**
+   * @deprecated use {@link #MeterValue(ZonedDateTime, SampledValue[])} to be sure to set required
+   *     fields
+   */
+  @Deprecated
+  public MeterValue() {}
 
+  /**
+   * Handle required fields.
+   *
+   * @param timestamp {@link ZonedDateTime} timestamp, see {@link #setTimestamp(ZonedDateTime)}
+   * @param sampledValue Array of {@link SampledValue}, see {@link #setSampledValue(SampledValue[])}
+   */
+  public MeterValue(ZonedDateTime timestamp, SampledValue[] sampledValue) {
+    setTimestamp(timestamp);
+    setSampledValue(sampledValue);
+  }
+
+  @Override
+  public boolean validate() {
+    boolean valid = timestamp != null && sampledValue != null;
+
+    if (valid) {
+      for (SampledValue value : sampledValue) {
+        valid &= value.validate();
+      }
     }
+    return valid;
+  }
 
-    /**
-     * Handle required fields.
-     *
-     * @param timestamp    {@link ZonedDateTime} timestamp, see {@link #setTimestamp(ZonedDateTime)}
-     * @param sampledValue Array of {@link SampledValue}, see {@link #setSampledValue(SampledValue[])}
-     */
-    public MeterValue(ZonedDateTime timestamp, SampledValue[] sampledValue) {
-        setTimestamp(timestamp);
-        setSampledValue(sampledValue);
-    }
+  /**
+   * Timestamp for measured value(s).
+   *
+   * @return original timestamp.
+   */
+  public ZonedDateTime getTimestamp() {
+    return timestamp;
+  }
 
-    @Override
-    public boolean validate() {
-        boolean valid = timestamp != null && sampledValue != null;
+  /**
+   * Required. Timestamp for measured value(s).
+   *
+   * @param timestamp {@link ZonedDateTime} timestamp
+   */
+  @XmlElement
+  public void setTimestamp(ZonedDateTime timestamp) {
+    this.timestamp = timestamp;
+  }
 
-        if (valid) {
-            for (SampledValue value : sampledValue) {
-                valid &= value.validate();
-            }
-        }
-        return valid;
-    }
+  /**
+   * Timestamp for measured value(s).
+   *
+   * @return original timestamp.
+   */
+  @Deprecated
+  public ZonedDateTime objTimestamp() {
+    return timestamp;
+  }
 
-    /**
-     * Timestamp for measured value(s).
-     *
-     * @return original timestamp.
-     */
-    public ZonedDateTime getTimestamp() {
-        return timestamp;
-    }
+  /**
+   * One or more measured values.
+   *
+   * @return Array of {@link SampledValue}.
+   */
+  public SampledValue[] getSampledValue() {
+    return sampledValue;
+  }
 
-    /**
-     * Required. Timestamp for measured value(s).
-     *
-     * @param timestamp {@link ZonedDateTime} timestamp
-     */
-    @XmlElement
-    public void setTimestamp(ZonedDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
+  /**
+   * Required. One or more measured values.
+   *
+   * @param sampledValue Array of {@link SampledValue}.
+   */
+  @XmlElement
+  public void setSampledValue(SampledValue[] sampledValue) {
+    this.sampledValue = sampledValue;
+  }
 
-    /**
-     * Timestamp for measured value(s).
-     *
-     * @return original timestamp.
-     */
-    @Deprecated
-    public ZonedDateTime objTimestamp() {
-        return timestamp;
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    MeterValue that = (MeterValue) o;
+    return Objects.equals(timestamp, that.timestamp)
+        && Arrays.equals(sampledValue, that.sampledValue);
+  }
 
-    /**
-     * One or more measured values.
-     *
-     * @return Array of {@link SampledValue}.
-     */
-    public SampledValue[] getSampledValue() {
-        return sampledValue;
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(timestamp, sampledValue);
+  }
 
-    /**
-     * Required. One or more measured values.
-     *
-     * @param sampledValue Array of {@link SampledValue}.
-     */
-    @XmlElement
-    public void setSampledValue(SampledValue[] sampledValue) {
-        this.sampledValue = sampledValue;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MeterValue that = (MeterValue) o;
-        return Objects.equals(timestamp, that.timestamp)
-                && Arrays.equals(sampledValue, that.sampledValue);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(timestamp, sampledValue);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("timestamp", timestamp)
-                .add("sampledValue", sampledValue)
-                .add("isValid", validate())
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("timestamp", timestamp)
+        .add("sampledValue", sampledValue)
+        .add("isValid", validate())
+        .toString();
+  }
 }

@@ -36,37 +36,36 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
 import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
-
 import java.util.HashSet;
 import java.util.UUID;
 
 public class ClientReservationProfile implements Profile {
 
-    private HashSet<Feature> features;
-    private ClientReservationEventHandler eventHandler;
+  private HashSet<Feature> features;
+  private ClientReservationEventHandler eventHandler;
 
-    public ClientReservationProfile(ClientReservationEventHandler eventHandler) {
-        this.eventHandler = eventHandler;
-        features = new HashSet<>();
-        features.add(new CancelReservationFeature(this));
-        features.add(new ReserveNowFeature(this));
+  public ClientReservationProfile(ClientReservationEventHandler eventHandler) {
+    this.eventHandler = eventHandler;
+    features = new HashSet<>();
+    features.add(new CancelReservationFeature(this));
+    features.add(new ReserveNowFeature(this));
+  }
+
+  @Override
+  public ProfileFeature[] getFeatureList() {
+    return features.toArray(new ProfileFeature[0]);
+  }
+
+  @Override
+  public Confirmation handleRequest(UUID sessionIndex, Request request) {
+    Confirmation result = null;
+
+    if (request instanceof CancelReservationRequest) {
+      result = eventHandler.handleCancelReservationRequest((CancelReservationRequest) request);
+    } else if (request instanceof ReserveNowRequest) {
+      result = eventHandler.handleReserveNowRequest((ReserveNowRequest) request);
     }
 
-    @Override
-    public ProfileFeature[] getFeatureList() {
-        return features.toArray(new ProfileFeature[0]);
-    }
-
-    @Override
-    public Confirmation handleRequest(UUID sessionIndex, Request request) {
-        Confirmation result = null;
-
-        if (request instanceof CancelReservationRequest) {
-            result = eventHandler.handleCancelReservationRequest((CancelReservationRequest) request);
-        } else if (request instanceof ReserveNowRequest) {
-            result = eventHandler.handleReserveNowRequest((ReserveNowRequest) request);
-        }
-
-        return result;
-    }
+    return result;
+  }
 }

@@ -31,88 +31,84 @@ SOFTWARE.
 
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-
+import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Objects;
 
-/**
- * Sent by the Charge Point to the Central System in response to a {@link ClearCacheRequest}.
- */
+/** Sent by the Charge Point to the Central System in response to a {@link ClearCacheRequest}. */
 @XmlRootElement(name = "clearCacheResponse")
 public class ClearCacheConfirmation implements Confirmation {
 
-    private ClearCacheStatus status;
+  private ClearCacheStatus status;
 
-    /**
-     * @deprecated use {@link #ClearCacheConfirmation(ClearCacheStatus)} to be sure to set required fields
-     */
-    @Deprecated
-    public ClearCacheConfirmation() {
+  /**
+   * @deprecated use {@link #ClearCacheConfirmation(ClearCacheStatus)} to be sure to set required
+   *     fields
+   */
+  @Deprecated
+  public ClearCacheConfirmation() {}
 
-    }
+  /**
+   * Handle required fields.
+   *
+   * @param status the {@link ClearCacheStatus}, see {@link #setStatus(ClearCacheStatus)}
+   */
+  public ClearCacheConfirmation(ClearCacheStatus status) {
+    setStatus(status);
+  }
 
-    /**
-     * Handle required fields.
-     *
-     * @param status the {@link ClearCacheStatus}, see {@link #setStatus(ClearCacheStatus)}
-     */
-    public ClearCacheConfirmation(ClearCacheStatus status) {
-        setStatus(status);
-    }
+  /**
+   * Accepted if the Charge Point has executed the request, otherwise rejected.
+   *
+   * @return the {@link ClearCacheStatus}.
+   */
+  public ClearCacheStatus getStatus() {
+    return status;
+  }
 
-    /**
-     * Accepted if the Charge Point has executed the request, otherwise rejected.
-     *
-     * @return the {@link ClearCacheStatus}.
-     */
-    public ClearCacheStatus getStatus() {
-        return status;
-    }
+  /**
+   * Required. Accepted if the Charge Point has executed the request, otherwise rejected.
+   *
+   * @param status the {@link ClearCacheStatus}.
+   */
+  @XmlElement
+  public void setStatus(ClearCacheStatus status) {
+    this.status = status;
+  }
 
-    /**
-     * Required. Accepted if the Charge Point has executed the request, otherwise rejected.
-     *
-     * @param status the {@link ClearCacheStatus}.
-     */
-    @XmlElement
-    public void setStatus(ClearCacheStatus status) {
-        this.status = status;
-    }
+  /**
+   * Accepted if the Charge Point has executed the request, otherwise rejected.
+   *
+   * @return the {@link ClearCacheStatus}.
+   */
+  @Deprecated
+  public ClearCacheStatus objStatus() {
+    return status;
+  }
 
-    /**
-     * Accepted if the Charge Point has executed the request, otherwise rejected.
-     *
-     * @return the {@link ClearCacheStatus}.
-     */
-    @Deprecated
-    public ClearCacheStatus objStatus() {
-        return status;
-    }
+  @Override
+  public boolean validate() {
+    return this.status != null;
+  }
 
-    @Override
-    public boolean validate() {
-        return this.status != null;
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ClearCacheConfirmation that = (ClearCacheConfirmation) o;
+    return status == that.status;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ClearCacheConfirmation that = (ClearCacheConfirmation) o;
-        return status == that.status;
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(status);
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(status);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("status", status)
-                .add("isValid", validate())
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("status", status)
+        .add("isValid", validate())
+        .toString();
+  }
 }

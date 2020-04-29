@@ -30,12 +30,11 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-
+import java.util.Arrays;
+import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Arrays;
-import java.util.Objects;
 
 /**
  * Sent by the Charge Point to the Central System.
@@ -46,130 +45,126 @@ import java.util.Objects;
 @XmlType(propOrder = {"connectorId", "transactionId", "meterValue"})
 public class MeterValuesRequest implements Request {
 
-    private Integer connectorId;
-    private Integer transactionId;
-    private MeterValue[] meterValue;
+  private Integer connectorId;
+  private Integer transactionId;
+  private MeterValue[] meterValue;
 
-    /**
-     * @deprecated use {@link #MeterValuesRequest(Integer)} to be sure to set required fields
-     */
-    @Deprecated
-    public MeterValuesRequest() {
+  /** @deprecated use {@link #MeterValuesRequest(Integer)} to be sure to set required fields */
+  @Deprecated
+  public MeterValuesRequest() {}
 
+  /**
+   * Handle required fields.
+   *
+   * @param connectorId integer, connector, see {@link #setConnectorId(Integer)}
+   */
+  public MeterValuesRequest(Integer connectorId) {
+    setConnectorId(connectorId);
+  }
+
+  @Override
+  public boolean validate() {
+    boolean valid = this.connectorId != null && this.connectorId >= 0 && this.meterValue != null;
+
+    if (valid) {
+      for (MeterValue current : this.meterValue) {
+        valid &= (current != null && current.validate());
+      }
     }
 
-    /**
-     * Handle required fields.
-     *
-     * @param connectorId integer, connector, see {@link #setConnectorId(Integer)}
-     */
-    public MeterValuesRequest(Integer connectorId) {
-        setConnectorId(connectorId);
+    return valid;
+  }
+
+  /**
+   * This contains a number (&gt;0) designating a connector of the Charge Point. ‘0’ (zero) is used
+   * to designate the main power meter.
+   *
+   * @return Connector
+   */
+  public Integer getConnectorId() {
+    return connectorId;
+  }
+
+  /**
+   * Required. This contains a number (&gt;0) designating a connector of the Charge Point. ‘0’
+   * (zero) is used to designate the main power meter.
+   *
+   * @param connectorId integer, connector
+   */
+  @XmlElement
+  public void setConnectorId(Integer connectorId) {
+    if (connectorId < 0) {
+      throw new PropertyConstraintException(connectorId, "connectorId must be >= 0");
     }
 
-    @Override
-    public boolean validate() {
-        boolean valid = this.connectorId != null && this.connectorId >= 0 && this.meterValue != null;
+    this.connectorId = connectorId;
+  }
 
-        if (valid) {
-            for (MeterValue current : this.meterValue) {
-                valid &= (current != null && current.validate());
-            }
-        }
+  /**
+   * The transaction to which these meter samples are related.
+   *
+   * @return transaction id.
+   */
+  public Integer getTransactionId() {
+    return transactionId;
+  }
 
-        return valid;
-    }
+  /**
+   * Optional. The transaction to which these meter samples are related.
+   *
+   * @param transactionId integer, transaction id.
+   */
+  @XmlElement
+  public void setTransactionId(Integer transactionId) {
+    this.transactionId = transactionId;
+  }
 
-    /**
-     * This contains a number (&gt;0) designating a connector of the Charge Point. ‘0’ (zero) is used
-     * to designate the main power meter.
-     *
-     * @return Connector
-     */
-    public Integer getConnectorId() {
-        return connectorId;
-    }
+  /**
+   * The sampled meter values with timestamps.
+   *
+   * @return Array of {@link MeterValue}.
+   */
+  public MeterValue[] getMeterValue() {
+    return meterValue;
+  }
 
-    /**
-     * Required. This contains a number (&gt;0) designating a connector of the Charge Point. ‘0’
-     * (zero) is used to designate the main power meter.
-     *
-     * @param connectorId integer, connector
-     */
-    @XmlElement
-    public void setConnectorId(Integer connectorId) {
-        if (connectorId < 0) {
-            throw new PropertyConstraintException(connectorId, "connectorId must be >= 0");
-        }
+  /**
+   * Required. The sampled meter values with timestamps.
+   *
+   * @param meterValue Array of {@link MeterValue}.
+   */
+  @XmlElement
+  public void setMeterValue(MeterValue[] meterValue) {
+    this.meterValue = meterValue;
+  }
 
-        this.connectorId = connectorId;
-    }
+  @Override
+  public boolean transactionRelated() {
+    return true;
+  }
 
-    /**
-     * The transaction to which these meter samples are related.
-     *
-     * @return transaction id.
-     */
-    public Integer getTransactionId() {
-        return transactionId;
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    MeterValuesRequest that = (MeterValuesRequest) o;
+    return connectorId == that.connectorId
+        && transactionId == that.transactionId
+        && Arrays.equals(meterValue, that.meterValue);
+  }
 
-    /**
-     * Optional. The transaction to which these meter samples are related.
-     *
-     * @param transactionId integer, transaction id.
-     */
-    @XmlElement
-    public void setTransactionId(Integer transactionId) {
-        this.transactionId = transactionId;
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(connectorId, transactionId, meterValue);
+  }
 
-    /**
-     * The sampled meter values with timestamps.
-     *
-     * @return Array of {@link MeterValue}.
-     */
-    public MeterValue[] getMeterValue() {
-        return meterValue;
-    }
-
-    /**
-     * Required. The sampled meter values with timestamps.
-     *
-     * @param meterValue Array of {@link MeterValue}.
-     */
-    @XmlElement
-    public void setMeterValue(MeterValue[] meterValue) {
-        this.meterValue = meterValue;
-    }
-
-    @Override
-    public boolean transactionRelated() {
-        return true;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MeterValuesRequest that = (MeterValuesRequest) o;
-        return connectorId == that.connectorId
-                && transactionId == that.transactionId
-                && Arrays.equals(meterValue, that.meterValue);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(connectorId, transactionId, meterValue);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("connectorId", connectorId)
-                .add("transactionId", transactionId)
-                .add("meterValue", meterValue)
-                .add("isValid", validate())
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("connectorId", connectorId)
+        .add("transactionId", transactionId)
+        .add("meterValue", meterValue)
+        .add("isValid", validate())
+        .toString();
+  }
 }

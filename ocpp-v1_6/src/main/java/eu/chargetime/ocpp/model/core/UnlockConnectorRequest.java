@@ -30,87 +30,80 @@ package eu.chargetime.ocpp.model.core;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-
+import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Objects;
 
-/**
- * Sent by the Central System to the Charge Point.
- */
+/** Sent by the Central System to the Charge Point. */
 @XmlRootElement
 public class UnlockConnectorRequest implements Request {
 
-    private Integer connectorId;
+  private Integer connectorId;
 
-    /**
-     * @deprecated use {@link #UnlockConnectorRequest(Integer)} to be sure to set required fields
-     */
-    @Deprecated
-    public UnlockConnectorRequest() {
+  /** @deprecated use {@link #UnlockConnectorRequest(Integer)} to be sure to set required fields */
+  @Deprecated
+  public UnlockConnectorRequest() {}
 
+  /**
+   * Handle required fields.
+   *
+   * @param connectorId integer, value &gt; 0, see {@link #setConnectorId(Integer)}
+   */
+  public UnlockConnectorRequest(Integer connectorId) {
+    setConnectorId(connectorId);
+  }
+
+  @Override
+  public boolean validate() {
+    return connectorId != null && connectorId > 0;
+  }
+
+  /**
+   * This contains the identifier of the connector to be unlocked.
+   *
+   * @return connector.
+   */
+  public Integer getConnectorId() {
+    return connectorId;
+  }
+
+  /**
+   * Required. This contains the identifier of the connector to be unlocked.
+   *
+   * @param connectorId integer, value &gt; 0.
+   */
+  @XmlElement
+  public void setConnectorId(Integer connectorId) {
+    if (connectorId == null || connectorId <= 0) {
+      throw new PropertyConstraintException(connectorId, "connectorId must be > 0");
     }
 
-    /**
-     * Handle required fields.
-     *
-     * @param connectorId integer, value &gt; 0, see {@link #setConnectorId(Integer)}
-     */
-    public UnlockConnectorRequest(Integer connectorId) {
-        setConnectorId(connectorId);
-    }
+    this.connectorId = connectorId;
+  }
 
-    @Override
-    public boolean validate() {
-        return connectorId != null && connectorId > 0;
-    }
+  @Override
+  public boolean transactionRelated() {
+    return false;
+  }
 
-    /**
-     * This contains the identifier of the connector to be unlocked.
-     *
-     * @return connector.
-     */
-    public Integer getConnectorId() {
-        return connectorId;
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    UnlockConnectorRequest that = (UnlockConnectorRequest) o;
+    return Objects.equals(connectorId, that.connectorId);
+  }
 
-    /**
-     * Required. This contains the identifier of the connector to be unlocked.
-     *
-     * @param connectorId integer, value &gt; 0.
-     */
-    @XmlElement
-    public void setConnectorId(Integer connectorId) {
-        if (connectorId == null || connectorId <= 0) {
-            throw new PropertyConstraintException(connectorId, "connectorId must be > 0");
-        }
+  @Override
+  public int hashCode() {
+    return Objects.hash(connectorId);
+  }
 
-        this.connectorId = connectorId;
-    }
-
-    @Override
-    public boolean transactionRelated() {
-        return false;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UnlockConnectorRequest that = (UnlockConnectorRequest) o;
-        return Objects.equals(connectorId, that.connectorId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(connectorId);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("connectorId", connectorId)
-                .add("isValid", validate())
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("connectorId", connectorId)
+        .add("isValid", validate())
+        .toString();
+  }
 }

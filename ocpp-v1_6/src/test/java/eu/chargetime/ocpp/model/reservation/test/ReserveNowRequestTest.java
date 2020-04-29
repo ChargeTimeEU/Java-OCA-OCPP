@@ -27,98 +27,97 @@ package eu.chargetime.ocpp.model.reservation.test;
    SOFTWARE.
 */
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
+
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
+import java.time.ZonedDateTime;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.time.ZonedDateTime;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
-
 public class ReserveNowRequestTest {
 
-    @Rule public ExpectedException thrownException = ExpectedException.none();
+  @Rule public ExpectedException thrownException = ExpectedException.none();
 
-    private ReserveNowRequest request;
+  private ReserveNowRequest request;
 
-    @Before
-    public void setup() {
-        request = new ReserveNowRequest();
-    }
+  @Before
+  public void setup() {
+    request = new ReserveNowRequest();
+  }
 
-    @Test
-    public void validate_statusIsNotSet_returnsFalse() {
-        // When
-        boolean result = request.validate();
+  @Test
+  public void validate_statusIsNotSet_returnsFalse() {
+    // When
+    boolean result = request.validate();
 
-        // Then
-        assertThat(result, is(false));
-    }
+    // Then
+    assertThat(result, is(false));
+  }
 
-    @Test
-    public void validate_requiredFieldsAreSet_returnTrue() {
-        // Given
-        Integer connectorId = 0;
-        ZonedDateTime expiryDate = ZonedDateTime.now();
-        String idTag = "row";
-        Integer reservationId = 2;
+  @Test
+  public void validate_requiredFieldsAreSet_returnTrue() {
+    // Given
+    Integer connectorId = 0;
+    ZonedDateTime expiryDate = ZonedDateTime.now();
+    String idTag = "row";
+    Integer reservationId = 2;
 
-        request.setConnectorId(connectorId);
-        request.setExpiryDate(expiryDate);
-        request.setIdTag(idTag);
-        request.setReservationId(reservationId);
+    request.setConnectorId(connectorId);
+    request.setExpiryDate(expiryDate);
+    request.setIdTag(idTag);
+    request.setReservationId(reservationId);
 
-        // When
-        boolean result = request.validate();
+    // When
+    boolean result = request.validate();
 
-        // Then
-        assertThat(result, is(true));
-    }
+    // Then
+    assertThat(result, is(true));
+  }
 
-    @Test
-    public void setIdTag_withMoreThan20Chars_throwsPropertyConstraintException() {
-        thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(
-                equalTo("Validation failed: [Exceeded limit of 20 chars]. Current Value: [26]"));
+  @Test
+  public void setIdTag_withMoreThan20Chars_throwsPropertyConstraintException() {
+    thrownException.expect(instanceOf(PropertyConstraintException.class));
+    thrownException.expectMessage(
+        equalTo("Validation failed: [Exceeded limit of 20 chars]. Current Value: [26]"));
 
-        request.setIdTag("abcdefghijklmnopqrstuvwxyz");
-    }
+    request.setIdTag("abcdefghijklmnopqrstuvwxyz");
+  }
 
-    @Test
-    public void setParentIdTag_withMoreThan20Chars_throwsPropertyConstraintException() {
-        thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(
-                equalTo("Validation failed: [Exceeded limit of 20 chars]. Current Value: [26]"));
+  @Test
+  public void setParentIdTag_withMoreThan20Chars_throwsPropertyConstraintException() {
+    thrownException.expect(instanceOf(PropertyConstraintException.class));
+    thrownException.expectMessage(
+        equalTo("Validation failed: [Exceeded limit of 20 chars]. Current Value: [26]"));
 
-        request.setParentIdTag("abcdefghijklmnopqrstuvwxyz");
-    }
+    request.setParentIdTag("abcdefghijklmnopqrstuvwxyz");
+  }
 
-    @Test
-    public void setConnectorId_asNegative_throwsPropertyConstraintException() {
-        thrownException.expect(instanceOf(PropertyConstraintException.class));
-        thrownException.expectMessage(
-                equalTo("Validation failed: [connectorId must be >= 0]. Current Value: [-42]"));
+  @Test
+  public void setConnectorId_asNegative_throwsPropertyConstraintException() {
+    thrownException.expect(instanceOf(PropertyConstraintException.class));
+    thrownException.expectMessage(
+        equalTo("Validation failed: [connectorId must be >= 0]. Current Value: [-42]"));
 
-        request.setConnectorId(-42);
-    }
+    request.setConnectorId(-42);
+  }
 
-    @Test
-    public void setConnectorId_asPositive_isValid() {
-        testValidConnectorId(42);
-    }
+  @Test
+  public void setConnectorId_asPositive_isValid() {
+    testValidConnectorId(42);
+  }
 
-    @Test
-    public void setConnectorId_asZero_isValid() {
-        testValidConnectorId(0);
-    }
+  @Test
+  public void setConnectorId_asZero_isValid() {
+    testValidConnectorId(0);
+  }
 
-    private void testValidConnectorId(int validConnectorId) {
-        request.setConnectorId(validConnectorId);
+  private void testValidConnectorId(int validConnectorId) {
+    request.setConnectorId(validConnectorId);
 
-        assertThat(request.getConnectorId(), equalTo(validConnectorId));
-    }
+    assertThat(request.getConnectorId(), equalTo(validConnectorId));
+  }
 }

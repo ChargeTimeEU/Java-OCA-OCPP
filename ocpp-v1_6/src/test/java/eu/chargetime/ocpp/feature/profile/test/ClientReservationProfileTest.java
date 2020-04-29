@@ -27,22 +27,6 @@ package eu.chargetime.ocpp.feature.profile.test;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.feature.CancelReservationFeature;
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.feature.ReserveNowFeature;
-import eu.chargetime.ocpp.feature.profile.ClientReservationEventHandler;
-import eu.chargetime.ocpp.feature.profile.ClientReservationProfile;
-import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
-import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.time.ZonedDateTime;
-import java.util.UUID;
-
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -50,58 +34,73 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import eu.chargetime.ocpp.feature.CancelReservationFeature;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.feature.ReserveNowFeature;
+import eu.chargetime.ocpp.feature.profile.ClientReservationEventHandler;
+import eu.chargetime.ocpp.feature.profile.ClientReservationProfile;
+import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
+import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
+import java.time.ZonedDateTime;
+import java.util.UUID;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
 @RunWith(MockitoJUnitRunner.class)
 public class ClientReservationProfileTest extends ProfileTest {
-    private static final UUID SESSION_NULL = null;
-    ClientReservationProfile profile;
+  private static final UUID SESSION_NULL = null;
+  ClientReservationProfile profile;
 
-    @Mock private ClientReservationEventHandler handler;
+  @Mock private ClientReservationEventHandler handler;
 
-    @Before
-    public void setup() {
-        profile = new ClientReservationProfile(handler);
-    }
+  @Before
+  public void setup() {
+    profile = new ClientReservationProfile(handler);
+  }
 
-    @Test
-    public void getFeatureList_containsReserveNowFeature() {
-        // When
-        Feature[] features = profile.getFeatureList();
+  @Test
+  public void getFeatureList_containsReserveNowFeature() {
+    // When
+    Feature[] features = profile.getFeatureList();
 
-        // Then
-        assertThat(findFeature(features, "ReserveNow"), is(instanceOf(ReserveNowFeature.class)));
-    }
+    // Then
+    assertThat(findFeature(features, "ReserveNow"), is(instanceOf(ReserveNowFeature.class)));
+  }
 
-    @Test
-    public void getFeatureList_containsCancelReservationFeature() {
-        // When
-        Feature[] features = profile.getFeatureList();
+  @Test
+  public void getFeatureList_containsCancelReservationFeature() {
+    // When
+    Feature[] features = profile.getFeatureList();
 
-        // Then
-        assertThat(
-                findFeature(features, "CancelReservation"), is(instanceOf(CancelReservationFeature.class)));
-    }
+    // Then
+    assertThat(
+        findFeature(features, "CancelReservation"), is(instanceOf(CancelReservationFeature.class)));
+  }
 
-    @Test
-    public void handleRequest_aReserveNowRequest_callsHandleReserveNowRequest() {
-        // Given
-        ReserveNowRequest request = new ReserveNowRequest(0, ZonedDateTime.now(), "idTag", 0);
+  @Test
+  public void handleRequest_aReserveNowRequest_callsHandleReserveNowRequest() {
+    // Given
+    ReserveNowRequest request = new ReserveNowRequest(0, ZonedDateTime.now(), "idTag", 0);
 
-        // When
-        profile.handleRequest(SESSION_NULL, request);
+    // When
+    profile.handleRequest(SESSION_NULL, request);
 
-        // Then
-        verify(handler, times(1)).handleReserveNowRequest(eq(request));
-    }
+    // Then
+    verify(handler, times(1)).handleReserveNowRequest(eq(request));
+  }
 
-    @Test
-    public void handleRequest_aCancelReservationRequest_callsHandleCancelReservationRequest() {
-        // Given
-        CancelReservationRequest request = new CancelReservationRequest(0);
+  @Test
+  public void handleRequest_aCancelReservationRequest_callsHandleCancelReservationRequest() {
+    // Given
+    CancelReservationRequest request = new CancelReservationRequest(0);
 
-        // When
-        profile.handleRequest(SESSION_NULL, request);
+    // When
+    profile.handleRequest(SESSION_NULL, request);
 
-        // Then
-        verify(handler, times(1)).handleCancelReservationRequest(eq(request));
-    }
+    // Then
+    verify(handler, times(1)).handleCancelReservationRequest(eq(request));
+  }
 }

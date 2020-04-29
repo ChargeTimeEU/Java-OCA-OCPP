@@ -31,87 +31,83 @@ SOFTWARE.
 
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-
+import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Objects;
 
-/**
- * return by Charge Point to Central System.
- */
+/** return by Charge Point to Central System. */
 @XmlRootElement(name = "changeAvailabilityResponse")
 public class ChangeAvailabilityConfirmation implements Confirmation {
 
-    private AvailabilityStatus status;
+  private AvailabilityStatus status;
 
-    /**
-     * @deprecated use {@link #ChangeAvailabilityConfirmation(AvailabilityStatus)} to be sure to set required fields
-     */
-    public ChangeAvailabilityConfirmation() {
+  /**
+   * @deprecated use {@link #ChangeAvailabilityConfirmation(AvailabilityStatus)} to be sure to set
+   *     required fields
+   */
+  public ChangeAvailabilityConfirmation() {}
 
-    }
+  /**
+   * Handle required fields.
+   *
+   * @param status the {@link AvailabilityStatus}, see {@link #setStatus(AvailabilityStatus)}
+   */
+  public ChangeAvailabilityConfirmation(AvailabilityStatus status) {
+    setStatus(status);
+  }
 
-    /**
-     * Handle required fields.
-     *
-     * @param status the {@link AvailabilityStatus}, see {@link #setStatus(AvailabilityStatus)}
-     */
-    public ChangeAvailabilityConfirmation(AvailabilityStatus status) {
-        setStatus(status);
-    }
+  /**
+   * This indicates whether the Charge Point is able to perform the availability change.
+   *
+   * @return The {@link AvailabilityStatus} of the connector.
+   */
+  public AvailabilityStatus getStatus() {
+    return status;
+  }
 
-    /**
-     * This indicates whether the Charge Point is able to perform the availability change.
-     *
-     * @return The {@link AvailabilityStatus} of the connector.
-     */
-    public AvailabilityStatus getStatus() {
-        return status;
-    }
+  /**
+   * Required. This indicates whether the Charge Point is able to perform the availability change.
+   *
+   * @param status the {@link AvailabilityStatus} of connector.
+   */
+  @XmlElement
+  public void setStatus(AvailabilityStatus status) {
+    this.status = status;
+  }
 
-    /**
-     * Required. This indicates whether the Charge Point is able to perform the availability change.
-     *
-     * @param status the {@link AvailabilityStatus} of connector.
-     */
-    @XmlElement
-    public void setStatus(AvailabilityStatus status) {
-        this.status = status;
-    }
+  /**
+   * This indicates whether the Charge Point is able to perform the availability change.
+   *
+   * @return The {@link AvailabilityStatus} of the connector.
+   */
+  @Deprecated
+  public AvailabilityStatus objStatus() {
+    return status;
+  }
 
-    /**
-     * This indicates whether the Charge Point is able to perform the availability change.
-     *
-     * @return The {@link AvailabilityStatus} of the connector.
-     */
-    @Deprecated
-    public AvailabilityStatus objStatus() {
-        return status;
-    }
+  @Override
+  public boolean validate() {
+    return this.status != null;
+  }
 
-    @Override
-    public boolean validate() {
-        return this.status != null;
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ChangeAvailabilityConfirmation that = (ChangeAvailabilityConfirmation) o;
+    return status == that.status;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ChangeAvailabilityConfirmation that = (ChangeAvailabilityConfirmation) o;
-        return status == that.status;
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(status);
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(status);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("status", status)
-                .add("isValid", validate())
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("status", status)
+        .add("isValid", validate())
+        .toString();
+  }
 }
