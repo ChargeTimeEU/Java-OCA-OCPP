@@ -82,13 +82,16 @@ public class WebServiceTransmitter extends SOAPSyncHelper implements Transmitter
     if (!connected) throw new NotConnectedException();
     Thread thread =
         new Thread(
-            () -> {
-              try {
-                SOAPMessage response = soapConnection.call(message, url);
-                events.receivedMessage(response);
-              } catch (SOAPException e) {
-                logger.warn("sendRequest() failed", e);
-                disconnect();
+            new Runnable() {
+              @Override
+              public void run() {
+                try {
+                  SOAPMessage response = soapConnection.call(message, url);
+                  events.receivedMessage(response);
+                } catch (SOAPException e) {
+                  logger.warn("sendRequest() failed", e);
+                  disconnect();
+                }
               }
             });
     thread.start();

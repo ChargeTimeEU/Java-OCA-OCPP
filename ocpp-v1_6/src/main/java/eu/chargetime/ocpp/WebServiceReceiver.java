@@ -89,11 +89,14 @@ public class WebServiceReceiver extends SOAPSyncHelper implements Receiver {
     if (!connected) throw new NotConnectedException();
 
     new Thread(
-            () -> {
-              try {
-                events.receivedMessage(soapConnection.call(message, url));
-              } catch (SOAPException e) {
-                disconnect();
+            new Runnable() {
+              @Override
+              public void run() {
+                try {
+                  events.receivedMessage(soapConnection.call(message, url));
+                } catch (SOAPException e) {
+                  disconnect();
+                }
               }
             })
         .start();

@@ -28,6 +28,7 @@ package eu.chargetime.ocpp;
 import com.sun.net.httpserver.HttpServer;
 import eu.chargetime.ocpp.model.SOAPHostInfo;
 import eu.chargetime.ocpp.model.SessionInformation;
+import eu.chargetime.ocpp.utilities.TimeoutHandler;
 import eu.chargetime.ocpp.utilities.TimeoutTimer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -121,9 +122,12 @@ public class WebServiceListener implements Listener {
         TimeoutTimer timeoutTimer =
             new TimeoutTimer(
                 INITIAL_TIMEOUT,
-                () -> {
-                  session.close();
-                  chargeBoxes.remove(identity);
+                new TimeoutHandler() {
+                  @Override
+                  public void timeout() {
+                    session.close();
+                    chargeBoxes.remove(identity);
+                  }
                 });
 
         // TODO: Decorator created but not used
