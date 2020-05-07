@@ -36,7 +36,14 @@ public class AsyncPromiseFulfillerDecorator implements PromiseFulfiller {
   @Override
   public void fulfill(
       CompletableFuture<Confirmation> promise, SessionEvents eventHandler, Request request) {
-    new Thread(() -> promiseFulfiller.fulfill(promise, eventHandler, request)).start();
+    new Thread(
+            new Runnable() {
+              @Override
+              public void run() {
+                promiseFulfiller.fulfill(promise, eventHandler, request);
+              }
+            })
+        .start();
   }
 
   public AsyncPromiseFulfillerDecorator(PromiseFulfiller promiseFulfiller) {
