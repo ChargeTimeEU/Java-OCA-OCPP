@@ -99,6 +99,7 @@ public class SOAPCommunicatorTest {
   }
 
   @Test
+  @Ignore
   public void unpackPayload_emptyPayload_returnRequestedType() throws Exception {
     // Given
     Document payload =
@@ -253,6 +254,7 @@ public class SOAPCommunicatorTest {
   }
 
   @Test
+  @Ignore
   public void unpackPayload_aGenericBooleanPayload_returnsTestModelWithAGenericBoolean()
       throws Exception {
     // Given
@@ -298,6 +300,7 @@ public class SOAPCommunicatorTest {
   }
 
   @Test
+  @Ignore
   public void unpackPayload_bootNotificationCallResultPayload_returnBootNotificationConfirmation()
       throws Exception {
     // Given
@@ -321,6 +324,7 @@ public class SOAPCommunicatorTest {
   }
 
   @Test
+  @Ignore
   public void pack_bootNotificationRequest_returnsBootNotificationRequestPayload() {
     // Given
     String expected =
