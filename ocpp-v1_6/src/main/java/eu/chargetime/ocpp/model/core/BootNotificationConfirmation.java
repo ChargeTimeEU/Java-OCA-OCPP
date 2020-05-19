@@ -122,7 +122,7 @@ public class BootNotificationConfirmation implements Confirmation {
    */
   @XmlElement
   public void setInterval(Integer interval) {
-    if (interval <= 0) {
+    if (interval < 0) {
       throw new PropertyConstraintException(interval, "interval be a positive value");
     }
 
