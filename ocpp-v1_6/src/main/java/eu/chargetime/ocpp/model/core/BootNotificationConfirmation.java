@@ -172,7 +172,7 @@ public class BootNotificationConfirmation implements Confirmation {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     BootNotificationConfirmation that = (BootNotificationConfirmation) o;
-    return interval == that.interval
+    return Objects.equals(interval, that.interval)
         && Objects.equals(currentTime, that.currentTime)
         && status == that.status;
   }

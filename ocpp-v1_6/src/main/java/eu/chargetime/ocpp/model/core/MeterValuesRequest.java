@@ -148,8 +148,8 @@ public class MeterValuesRequest implements Request {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     MeterValuesRequest that = (MeterValuesRequest) o;
-    return connectorId == that.connectorId
-        && transactionId == that.transactionId
+    return Objects.equals(connectorId, that.connectorId)
+        && Objects.equals(transactionId, that.transactionId)
         && Arrays.equals(meterValue, that.meterValue);
   }
 

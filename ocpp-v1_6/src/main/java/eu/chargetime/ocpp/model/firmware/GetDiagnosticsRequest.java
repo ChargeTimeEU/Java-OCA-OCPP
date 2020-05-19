@@ -178,8 +178,8 @@ public class GetDiagnosticsRequest implements Request {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     GetDiagnosticsRequest that = (GetDiagnosticsRequest) o;
-    return retries == that.retries
-        && retryInterval == that.retryInterval
+    return Objects.equals(retries, that.retries)
+        && Objects.equals(retryInterval, that.retryInterval)
         && Objects.equals(location, that.location)
         && Objects.equals(startTime, that.startTime)
         && Objects.equals(stopTime, that.stopTime);
