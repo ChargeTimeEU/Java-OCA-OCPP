@@ -122,7 +122,7 @@ public class BootNotificationConfirmation implements Confirmation {
    */
   @XmlElement
   public void setInterval(Integer interval) {
-    if (interval <= 0) {
+    if (interval < 0) {
       throw new PropertyConstraintException(interval, "interval be a positive value");
     }
 
@@ -172,7 +172,7 @@ public class BootNotificationConfirmation implements Confirmation {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     BootNotificationConfirmation that = (BootNotificationConfirmation) o;
-    return interval == that.interval
+    return Objects.equals(interval, that.interval)
         && Objects.equals(currentTime, that.currentTime)
         && status == that.status;
   }

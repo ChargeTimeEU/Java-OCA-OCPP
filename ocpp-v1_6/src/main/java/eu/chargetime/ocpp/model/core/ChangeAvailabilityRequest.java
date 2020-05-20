@@ -131,7 +131,7 @@ public class ChangeAvailabilityRequest implements Request {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ChangeAvailabilityRequest that = (ChangeAvailabilityRequest) o;
-    return connectorId == that.connectorId && type == that.type;
+    return Objects.equals(connectorId, that.connectorId) && type == that.type;
   }
 
   @Override
