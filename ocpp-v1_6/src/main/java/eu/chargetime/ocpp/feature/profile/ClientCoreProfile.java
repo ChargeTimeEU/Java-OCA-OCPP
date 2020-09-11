@@ -60,7 +60,7 @@ public class ClientCoreProfile implements Profile {
     features.add(new ChangeAvailabilityFeature(this));
     features.add(new ChangeConfigurationFeature(this));
     features.add(new ClearCacheFeature(this));
-    features.add(new DataTransferFeature(null));
+    features.add(new DataTransferFeature(this));
     features.add(new GetConfigurationFeature(this));
     features.add(new HeartbeatFeature(null));
     features.add(new MeterValuesFeature(null));
