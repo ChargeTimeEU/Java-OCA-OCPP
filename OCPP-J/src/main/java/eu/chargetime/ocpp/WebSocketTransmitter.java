@@ -31,6 +31,10 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Proxy;
 import java.net.URI;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
@@ -63,8 +67,17 @@ public class WebSocketTransmitter implements Transmitter {
   public void connect(String uri, RadioEvents events) {
     final URI resource = URI.create(uri);
 
+    Map<String,String> httpHeaders = new HashMap<>();
+    String username = configuration.getParameter(JSONConfiguration.USERNAME_PARAMETER);
+    String password = configuration.getParameter(JSONConfiguration.PASSWORD_PARAMETER);
+    if (username != null && password != null) {
+      String credentials = username + ":" + password;
+      byte[] base64Credentials = Base64.getEncoder().encode(credentials.getBytes());
+      httpHeaders.put("Authorization", "Basic " + new String(base64Credentials));
+    }
+
     client =
-        new WebSocketClient(resource, draft) {
+        new WebSocketClient(resource, draft, httpHeaders) {
           @Override
           public void onOpen(ServerHandshake serverHandshake) {
             logger.debug("On connection open (HTTP status: {})", serverHandshake.getHttpStatus());
