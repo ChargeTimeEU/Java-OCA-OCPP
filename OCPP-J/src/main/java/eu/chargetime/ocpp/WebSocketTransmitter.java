@@ -34,7 +34,6 @@ import java.net.URI;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
@@ -67,7 +66,7 @@ public class WebSocketTransmitter implements Transmitter {
   public void connect(String uri, RadioEvents events) {
     final URI resource = URI.create(uri);
 
-    Map<String,String> httpHeaders = new HashMap<>();
+    Map<String, String> httpHeaders = new HashMap<>();
     String username = configuration.getParameter(JSONConfiguration.USERNAME_PARAMETER);
     String password = configuration.getParameter(JSONConfiguration.PASSWORD_PARAMETER);
     if (username != null && password != null) {
