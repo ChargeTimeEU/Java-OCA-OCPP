@@ -53,17 +53,7 @@ public class SampledValue implements Validatable {
 
   /** @deprecated use {@link #SampledValue(String)} to be sure to set required fields */
   @Deprecated
-  public SampledValue() {
-    try {
-      setContext("Sample.Periodic");
-      setFormat(ValueFormat.Raw);
-      setMeasurand("Energy.Active.Import.Register");
-      setLocation(Location.Outlet);
-      setUnit("Wh");
-    } catch (PropertyConstraintException ex) {
-      logger.error("constructor of SampledValue failed", ex);
-    }
-  }
+  public SampledValue() {}
 
   /**
    * Handle required fields.
@@ -73,11 +63,6 @@ public class SampledValue implements Validatable {
   public SampledValue(String value) {
     try {
       setValue(value);
-      setContext("Sample.Periodic");
-      setFormat(ValueFormat.Raw);
-      setMeasurand("Energy.Active.Import.Register");
-      setLocation(Location.Outlet);
-      setUnit("Wh");
     } catch (PropertyConstraintException ex) {
       logger.error("constructor of SampledValue failed", ex);
     }
@@ -117,7 +102,7 @@ public class SampledValue implements Validatable {
    * @return enum value for context.
    */
   public String getContext() {
-    return context;
+    return context == null ? "Sample.Periodic" : context;
   }
 
   /**
@@ -132,7 +117,7 @@ public class SampledValue implements Validatable {
   // TODO: Change to enum, solve format issue and change exception message.
   @XmlElement
   public void setContext(String context) {
-    if (!isValidContext(context)) {
+    if (context != null && !isValidContext(context)) {
       throw new PropertyConstraintException(context, "context is not properly defined");
     }
 
@@ -159,7 +144,7 @@ public class SampledValue implements Validatable {
    * @return the {@link ValueFormat}.
    */
   public ValueFormat getFormat() {
-    return format;
+    return format == null ? ValueFormat.Raw : format;
   }
 
   /**
@@ -179,7 +164,7 @@ public class SampledValue implements Validatable {
    */
   @Deprecated
   public ValueFormat objFormat() {
-    return format;
+    return format == null ? ValueFormat.Raw : format;
   }
 
   /**
@@ -188,7 +173,7 @@ public class SampledValue implements Validatable {
    * @return enum value of measurand.
    */
   public String getMeasurand() {
-    return measurand;
+    return measurand == null ? "Energy.Active.Import.Register" : measurand;
   }
 
   /**
@@ -208,7 +193,7 @@ public class SampledValue implements Validatable {
   // TODO: Change to enum, solve format issue and change exception message.
   @XmlElement
   public void setMeasurand(String measurand) {
-    if (!isValidMeasurand(measurand))
+    if (measurand != null && !isValidMeasurand(measurand))
       throw new PropertyConstraintException(measurand, "measurand value is not properly defined");
 
     this.measurand = measurand;
@@ -265,7 +250,7 @@ public class SampledValue implements Validatable {
   // TODO: Change to enum, solve format issue and change exception message.
   @XmlElement
   public void setPhase(String phase) {
-    if (!isValidPhase(phase)) {
+    if (phase != null && !isValidPhase(phase)) {
       throw new PropertyConstraintException(phase, "phase is not properly defined");
     }
 
@@ -283,7 +268,7 @@ public class SampledValue implements Validatable {
    * @return the {@link Location}.
    */
   public Location getLocation() {
-    return location;
+    return location == null ? Location.Outlet : location;
   }
 
   /**
@@ -303,7 +288,7 @@ public class SampledValue implements Validatable {
    */
   @Deprecated
   public Location objLocation() {
-    return location;
+    return location == null ? Location.Outlet : location;
   }
 
   /**
@@ -312,7 +297,7 @@ public class SampledValue implements Validatable {
    * @return Unit of Measure.
    */
   public String getUnit() {
-    return unit;
+    return unit == null && getMeasurand().startsWith("Energy") ? "Wh" : unit;
   }
 
   /**
@@ -328,7 +313,7 @@ public class SampledValue implements Validatable {
   // TODO: Change to enum, solve format issue and change exception message.
   @XmlElement
   public void setUnit(String unit) {
-    if (!isValidUnit(unit)) {
+    if (unit != null && !isValidUnit(unit)) {
       throw new PropertyConstraintException(unit, "unit is not properly defined");
     }
 
