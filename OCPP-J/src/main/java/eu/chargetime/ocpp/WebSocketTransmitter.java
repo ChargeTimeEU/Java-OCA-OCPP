@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Proxy;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,10 +69,18 @@ public class WebSocketTransmitter implements Transmitter {
 
     Map<String, String> httpHeaders = new HashMap<>();
     String username = configuration.getParameter(JSONConfiguration.USERNAME_PARAMETER);
-    String password = configuration.getParameter(JSONConfiguration.PASSWORD_PARAMETER);
+    Object password = configuration.getParameter(JSONConfiguration.PASSWORD_PARAMETER);
+    byte[] credentials = null;
     if (username != null && password != null) {
-      String credentials = username + ":" + password;
-      byte[] base64Credentials = Base64.getEncoder().encode(credentials.getBytes());
+      if (password instanceof String) {
+        credentials = (username + ":" + password).getBytes(StandardCharsets.UTF_8);
+      } else if (password instanceof byte[]) {
+        credentials =
+            joinByteArrays((username + ":").getBytes(StandardCharsets.UTF_8), (byte[]) password);
+      }
+    }
+    if (credentials != null) {
+      byte[] base64Credentials = Base64.getEncoder().encode(credentials);
       httpHeaders.put("Authorization", "Basic " + new String(base64Credentials));
     }
 
@@ -130,6 +139,13 @@ public class WebSocketTransmitter implements Transmitter {
     } catch (Exception ex) {
       logger.warn("client.connectBlocking() failed", ex);
     }
+  }
+
+  byte[] joinByteArrays(byte[] a, byte[] b) {
+    byte[] result = new byte[a.length + b.length];
+    System.arraycopy(a, 0, result, 0, a.length);
+    System.arraycopy(b, 0, result, a.length, b.length);
+    return result;
   }
 
   void configure() {
