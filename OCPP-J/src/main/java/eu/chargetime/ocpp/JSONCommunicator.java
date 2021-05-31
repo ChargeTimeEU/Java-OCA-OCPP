@@ -7,6 +7,7 @@ import eu.chargetime.ocpp.model.CallResultMessage;
 import eu.chargetime.ocpp.model.Message;
 import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,7 +82,7 @@ public class JSONCommunicator extends Communicator {
     @Override
     public JsonElement serialize(
         ZonedDateTime zonedDateTime, Type type, JsonSerializationContext jsonSerializationContext) {
-      return new JsonPrimitive(zonedDateTime.toString());
+      return new JsonPrimitive(zonedDateTime.format(DateTimeFormatter.ISO_INSTANT));
     }
   }
 
