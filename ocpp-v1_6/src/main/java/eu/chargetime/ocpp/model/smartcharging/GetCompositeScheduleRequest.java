@@ -38,7 +38,7 @@ public class GetCompositeScheduleRequest implements Request {
 
   private Integer connectorId;
   private Integer duration;
-  private ChangingRateUnitType changingRateUnitType;
+  private ChargingRateUnitType chargingRateUnit;
 
   /**
    * @deprecated use {@link #GetCompositeScheduleRequest(Integer, Integer)} to be sure to set
@@ -107,18 +107,18 @@ public class GetCompositeScheduleRequest implements Request {
    *
    * @return current profile
    */
-  public ChangingRateUnitType getChangingRateUnitType() {
-    return changingRateUnitType;
+  public ChargingRateUnitType getChargingRateUnit() {
+    return chargingRateUnit;
   }
 
   /**
    * Optional. Can be used to force a power or current profile
    *
-   * @param changingRateUnitType the {@link ChangingRateUnitType}
+   * @param chargingRateUnit the {@link ChargingRateUnitType}
    */
   @XmlElement
-  public void setChangingRateUnitType(ChangingRateUnitType changingRateUnitType) {
-    this.changingRateUnitType = changingRateUnitType;
+  public void setChargingRateUnit(ChargingRateUnitType chargingRateUnit) {
+    this.chargingRateUnit = chargingRateUnit;
   }
 
   @Override
@@ -136,7 +136,7 @@ public class GetCompositeScheduleRequest implements Request {
 
   @Override
   public int hashCode() {
-    return Objects.hash(connectorId, duration, changingRateUnitType);
+    return Objects.hash(connectorId, duration, chargingRateUnit);
   }
 
   @Override
@@ -144,7 +144,7 @@ public class GetCompositeScheduleRequest implements Request {
     return MoreObjects.toStringHelper(this)
         .add("connectorId", connectorId)
         .add("duration", duration)
-        .add("changingRateUnitType", changingRateUnitType)
+        .add("chargingRateUnit", chargingRateUnit)
         .add("isValid", validate())
         .toString();
   }

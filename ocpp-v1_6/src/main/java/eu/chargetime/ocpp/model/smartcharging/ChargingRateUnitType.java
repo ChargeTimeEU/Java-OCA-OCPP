@@ -25,7 +25,7 @@ package eu.chargetime.ocpp.model.smartcharging;
    SOFTWARE.
 */
 
-public enum ChangingRateUnitType {
+public enum ChargingRateUnitType {
   W,
   A
 }

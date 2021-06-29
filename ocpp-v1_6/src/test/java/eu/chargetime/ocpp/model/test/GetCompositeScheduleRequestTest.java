@@ -4,7 +4,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.smartcharging.ChangingRateUnitType;
+import eu.chargetime.ocpp.model.smartcharging.ChargingRateUnitType;
 import eu.chargetime.ocpp.model.smartcharging.GetCompositeScheduleRequest;
 import org.junit.Before;
 import org.junit.Rule;
@@ -87,15 +87,15 @@ public class GetCompositeScheduleRequestTest {
   }
 
   @Test
-  public void setChangingRateUnitType_A_changingRateUnitTypeIsSet() {
+  public void setChargingRateUnitType_A_chargingRateUnitTypeIsSet() {
     // Given
-    ChangingRateUnitType chargingRateUnitType = ChangingRateUnitType.A;
+    ChargingRateUnitType chargingRateUnit = ChargingRateUnitType.A;
 
     // When
-    request.setChangingRateUnitType(chargingRateUnitType);
+    request.setChargingRateUnit(chargingRateUnit);
 
     // Then
-    assertThat(request.getChangingRateUnitType(), equalTo(chargingRateUnitType));
+    assertThat(request.getChargingRateUnit(), equalTo(chargingRateUnit));
   }
 
   @Test
@@ -112,7 +112,7 @@ public class GetCompositeScheduleRequestTest {
     // Given
     request.setConnectorId(42);
     request.setDuration(0);
-    request.setChangingRateUnitType(ChangingRateUnitType.A);
+    request.setChargingRateUnit(ChargingRateUnitType.A);
 
     // When
     boolean isValid = request.validate();
