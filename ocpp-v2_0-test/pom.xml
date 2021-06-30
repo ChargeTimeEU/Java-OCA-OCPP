@@ -5,12 +5,12 @@
     <parent>
         <artifactId>all</artifactId>
         <groupId>eu.chargetime.ocpp</groupId>
-        <version>0.5-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>v2_0-test</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>1.0</version>
 
     <name>Java-OCA-OCPP v2.0 - Integration test</name>
     <description>Integration test of OCA OCPP version 2.0</description>
@@ -53,12 +53,12 @@
         <dependency>
             <groupId>eu.chargetime.ocpp</groupId>
             <artifactId>common</artifactId>
-            <version>0.5-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>eu.chargetime.ocpp</groupId>
             <artifactId>v2_0</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

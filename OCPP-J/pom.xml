@@ -5,12 +5,12 @@
     <parent>
         <artifactId>all</artifactId>
         <groupId>eu.chargetime.ocpp</groupId>
-        <version>0.5-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>OCPP-J</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>1.0</version>
 
     <name>Java-OCA-OCPP OCPP-J</name>
     <description>Implementation of Open Charge-Point Protocols OCPP-J</description>
@@ -53,7 +53,7 @@
         <dependency>
             <groupId>eu.chargetime.ocpp</groupId>
             <artifactId>common</artifactId>
-            <version>0.5-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>

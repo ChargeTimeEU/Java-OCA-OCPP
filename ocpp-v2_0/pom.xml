@@ -5,12 +5,12 @@
     <parent>
         <artifactId>all</artifactId>
         <groupId>eu.chargetime.ocpp</groupId>
-        <version>0.5-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>v2_0</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>1.0</version>
 
     <name>Java-OCA-OCPP v2.0</name>
     <description>Implementation of Open Charge-Point Protocol version 2.0.</description>
@@ -54,12 +54,12 @@
         <dependency>
             <groupId>eu.chargetime.ocpp</groupId>
             <artifactId>common</artifactId>
-            <version>0.5-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>eu.chargetime.ocpp</groupId>
             <artifactId>OCPP-J</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.java-websocket</groupId>
