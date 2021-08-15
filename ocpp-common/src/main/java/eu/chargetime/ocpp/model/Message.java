@@ -27,6 +27,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+import eu.chargetime.ocpp.utilities.MoreObjects;
+
 /** Wrapper class for a message */
 public class Message {
   private String id;
@@ -85,5 +87,14 @@ public class Message {
    */
   public void setAction(String action) {
     this.action = action;
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("id", id)
+        .add("payload", payload)
+        .add("action", action)
+        .toString();
   }
 }
