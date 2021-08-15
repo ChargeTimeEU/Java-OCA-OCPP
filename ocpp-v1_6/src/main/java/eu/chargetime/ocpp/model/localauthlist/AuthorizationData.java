@@ -88,7 +88,7 @@ public class AuthorizationData implements Validatable {
 
   @Override
   public boolean validate() {
-    return ModelUtil.validate(idTag, 20) && idTagInfo.validate();
+    return ModelUtil.validate(idTag, 20) && (idTagInfo == null || idTagInfo.validate());
   }
 
   @Override

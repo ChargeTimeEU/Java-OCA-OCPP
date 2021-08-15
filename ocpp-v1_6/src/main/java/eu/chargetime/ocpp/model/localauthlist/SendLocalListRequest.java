@@ -127,6 +127,10 @@ public class SendLocalListRequest implements Request {
     if (localAuthorizationList != null) {
       for (AuthorizationData data : localAuthorizationList) {
         valid &= data.validate();
+
+        if (updateType == UpdateType.Full) {
+          valid &= data.getIdTagInfo() != null;
+        }
       }
     }
 

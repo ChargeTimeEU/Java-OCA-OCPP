@@ -4,8 +4,13 @@ import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.core.AuthorizationStatus;
+import eu.chargetime.ocpp.model.core.IdTagInfo;
 import eu.chargetime.ocpp.model.localauthlist.AuthorizationData;
 import eu.chargetime.ocpp.model.localauthlist.SendLocalListRequest;
 import eu.chargetime.ocpp.model.localauthlist.UpdateType;
@@ -106,5 +111,48 @@ public class SendLocalListRequestTest {
     request.setLocalAuthorizationList(aList(data));
     // Then
     assertThat(request.validate(), equalTo(false));
+  }
+
+  @Test
+  public void validate_updateTypeFullWithTagInfo_isValid() {
+    // When
+    request.setListVersion(42);
+    request.setUpdateType(UpdateType.Full);
+    request.setLocalAuthorizationList(aList(data));
+
+    when(data.validate()).thenReturn(true);
+    when(data.getIdTagInfo()).thenReturn(new IdTagInfo(AuthorizationStatus.Accepted));
+
+    // Then
+    assertThat(request.validate(), equalTo(true));
+    verify(data, times(1)).getIdTagInfo();
+    verify(data, times(1)).validate();
+  }
+
+  @Test
+  public void validate_updateTypeFullEmptyTagInfo_isNotValid() {
+    // When
+    request.setListVersion(42);
+    request.setUpdateType(UpdateType.Full);
+    request.setLocalAuthorizationList(aList(data));
+
+    when(data.validate()).thenReturn(true);
+    when(data.getIdTagInfo()).thenReturn(null);
+
+    // Then
+    assertThat(request.validate(), equalTo(false));
+  }
+
+  @Test
+  public void validate_updateTypeDifferentialEmptyIdTagInfo_isValid() {
+    // When
+    request.setListVersion(42);
+    request.setUpdateType(UpdateType.Differential);
+    request.setLocalAuthorizationList(aList(data));
+
+    when(data.validate()).thenReturn(true);
+
+    // Then
+    assertThat(request.validate(), equalTo(true));
   }
 }
