@@ -2,15 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>all</artifactId>
-        <groupId>eu.chargetime.ocpp</groupId>
-        <version>1.0</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>eu.chargetime.ocpp</groupId>
     <artifactId>OCPP-J</artifactId>
     <version>1.0</version>
+    <packaging>jar</packaging>
 
     <name>Java-OCA-OCPP OCPP-J</name>
     <description>Implementation of Open Charge-Point Protocols OCPP-J</description>
