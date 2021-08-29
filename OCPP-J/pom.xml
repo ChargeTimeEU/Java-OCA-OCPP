@@ -6,7 +6,7 @@
 
     <groupId>eu.chargetime.ocpp</groupId>
     <artifactId>OCPP-J</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>Java-OCA-OCPP OCPP-J</name>
