@@ -6,7 +6,7 @@
 
     <groupId>eu.chargetime.ocpp</groupId>
     <artifactId>common</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
 
     <name>Java-OCA-OCPP common</name>
     <description>Implementation of Open Charge-Point Protocol common library.</description>
@@ -67,6 +67,7 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- Tests -->
