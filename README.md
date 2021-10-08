@@ -39,6 +39,9 @@ To use version 1.6 you need the following libraries:
 * [com.google.code.gson](https://github.com/google/gson)
 * [org.java_websocket](https://github.com/TooTallNate/Java-WebSocket)
 
+**NOTE : **
+Our project uses the SLF4J logging facade and does not ship with any logging dependencies (i.e. logback, log4j, etc.). Therefore, you have to add the logging dependency (i.e. logback, log4j, etc.) in your pom.xml file when using our library.
+
 License
 =======
 
