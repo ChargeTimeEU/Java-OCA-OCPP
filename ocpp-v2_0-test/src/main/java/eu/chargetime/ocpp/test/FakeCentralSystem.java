@@ -25,7 +25,13 @@ package eu.chargetime.ocpp.test;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.IServerAPI;
+import eu.chargetime.ocpp.JSONConfiguration;
+import eu.chargetime.ocpp.JSONServer;
+import eu.chargetime.ocpp.NotConnectedException;
+import eu.chargetime.ocpp.OccurenceConstraintException;
+import eu.chargetime.ocpp.ServerEvents;
+import eu.chargetime.ocpp.UnsupportedFeatureException;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
@@ -43,7 +49,7 @@ public class FakeCentralSystem {
   private IServerAPI server;
   private boolean isStarted;
   private UUID currentSession;
-  private Request handletReuqest = null;
+  private Request handlerRequest = null;
   private Confirmation receivedConfirmation;
 
   public FakeCentralSystem() {
@@ -55,7 +61,7 @@ public class FakeCentralSystem {
 
   public void addFeature(Feature feature) {
     FeatureTestDecorator monitoredFeature =
-        new FeatureTestDecorator(feature, request -> handletReuqest = request);
+        new FeatureTestDecorator(feature, request -> handlerRequest = request);
     server.addFeature(monitoredFeature);
   }
 
@@ -86,7 +92,7 @@ public class FakeCentralSystem {
   }
 
   public boolean hasHandled(Request request) {
-    if (handletReuqest != null && request != null) return handletReuqest.equals(request);
+    if (handlerRequest != null && request != null) return handlerRequest.equals(request);
     return false;
   }
 
@@ -96,7 +102,7 @@ public class FakeCentralSystem {
     send.whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
   }
 
-  public boolean recieved(Confirmation confirmation) {
+  public boolean received(Confirmation confirmation) {
     if (receivedConfirmation != null && confirmation != null)
       return receivedConfirmation.equals(confirmation);
     return false;

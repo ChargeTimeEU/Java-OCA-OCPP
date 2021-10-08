@@ -25,21 +25,21 @@ package eu.chargetime.ocpp.model.validation;
    SOFTWARE.
 */
 
-public class OCPP2PrimDatatypes {
+import eu.chargetime.ocpp.PropertyConstraintException;
 
-  public static IValidationRule string50() {
-    return new StringMaxLengthValidationRule(50);
+public class StringMaxLengthValidationRule implements IValidationRule {
+
+  private static final String ERROR_MESSAGE = "Exceeded limit of %s chars";
+  private final int maxLength;
+
+  public StringMaxLengthValidationRule(int maxLength) {
+    this.maxLength = maxLength;
   }
 
-  public static IValidationRule string20() {
-    return new StringMaxLengthValidationRule(20);
-  }
-
-  public static IValidationRule string1000() {
-    return new StringMaxLengthValidationRule(1000);
-  }
-
-  public static IValidationRule identifierString() {
-    return new IdentifierStringValidationRule();
+  @Override
+  public void validate(String value) throws PropertyConstraintException {
+    if (value.length() > maxLength)
+      throw new PropertyConstraintException(
+          value.length(), String.format(ERROR_MESSAGE, maxLength));
   }
 }

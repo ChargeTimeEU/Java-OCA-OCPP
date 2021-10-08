@@ -1,10 +1,10 @@
-package eu.chargetime.ocpp.model.validation;
+package eu.chargetime.ocpp.model.basic;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
    MIT License
 
-   Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
+   Copyright (C) 2021 John Michael Luy <johnmichael.luy@gmail.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -25,21 +25,29 @@ package eu.chargetime.ocpp.model.validation;
    SOFTWARE.
 */
 
-public class OCPP2PrimDatatypes {
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.utilities.MoreObjects;
+import java.util.Objects;
 
-  public static IValidationRule string50() {
-    return new StringMaxLengthValidationRule(50);
+public class StatusNotificationConfirmation implements Confirmation {
+
+  @Override
+  public boolean validate() {
+    return true;
   }
 
-  public static IValidationRule string20() {
-    return new StringMaxLengthValidationRule(20);
+  @Override
+  public boolean equals(Object o) {
+    return this == o || (o != null && getClass() == o.getClass());
   }
 
-  public static IValidationRule string1000() {
-    return new StringMaxLengthValidationRule(1000);
+  @Override
+  public int hashCode() {
+    return Objects.hash(StatusNotificationConfirmation.class);
   }
 
-  public static IValidationRule identifierString() {
-    return new IdentifierStringValidationRule();
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this).add("isValid", validate()).toString();
   }
 }

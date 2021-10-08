@@ -1,10 +1,10 @@
-package eu.chargetime.ocpp.model.validation;
+package eu.chargetime.ocpp.features.basic.handlers;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
    MIT License
 
-   Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
+   Copyright (C) 2021 John Michael Luy <johnmichael.luy@gmail.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -25,21 +25,12 @@ package eu.chargetime.ocpp.model.validation;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.basic.StatusNotificationConfirmation;
+import eu.chargetime.ocpp.model.basic.StatusNotificationRequest;
+import java.util.UUID;
 
-public class StringMaxLenghtValidationRule implements IValidationRule {
-
-  private static final String ERROR_MESSAGE = "Exceeded limit of %s chars";
-  private final int maxLenght;
-
-  public StringMaxLenghtValidationRule(int maxLength) {
-    this.maxLenght = maxLength;
-  }
-
-  @Override
-  public void validate(String value) throws PropertyConstraintException {
-    if (value.length() > maxLenght)
-      throw new PropertyConstraintException(
-          value.length(), String.format(ERROR_MESSAGE, maxLenght));
-  }
+/** Central system handler of {@link StatusNotificationRequest}s. */
+public interface IServerStatusNotificationRequestHandler {
+  StatusNotificationConfirmation handleStatusNotificationRequest(
+      UUID sessionIndex, StatusNotificationRequest request);
 }
