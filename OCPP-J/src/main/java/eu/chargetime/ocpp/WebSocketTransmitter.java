@@ -84,8 +84,11 @@ public class WebSocketTransmitter implements Transmitter {
       httpHeaders.put("Authorization", "Basic " + new String(base64Credentials));
     }
 
+    int connectTimeout =
+        this.configuration.getParameter(JSONConfiguration.CONNECT_TIMEOUT_IN_MS_PARAMETER, 0);
+
     client =
-        new WebSocketClient(resource, draft, httpHeaders) {
+        new WebSocketClient(resource, draft, httpHeaders, connectTimeout) {
           @Override
           public void onOpen(ServerHandshake serverHandshake) {
             logger.debug("On connection open (HTTP status: {})", serverHandshake.getHttpStatus());
