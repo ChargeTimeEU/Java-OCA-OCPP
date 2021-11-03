@@ -50,7 +50,8 @@ public class WebSocketListener implements Listener {
 
   private static final int TIMEOUT_IN_MILLIS = 10000;
 
-  private static final int OCPPJ_CP_PASSWORD_LENGTH = 20;
+  private static final int OCPPJ_CP_MIN_PASSWORD_LENGTH = 16;
+  private static final int OCPPJ_CP_MAX_PASSWORD_LENGTH = 20;
 
   private final ISessionFactory sessionFactory;
   private final List<Draft> drafts;
@@ -124,7 +125,8 @@ public class WebSocketListener implements Listener {
                             .InternetAddress(webSocket.getRemoteSocketAddress())
                             .build();
 
-            byte[] username = null, password = null;
+            String username = null;
+            byte[] password = null;
             if (clientHandshake.hasFieldValue("Authorization")) {
               String authorization = clientHandshake.getFieldValue("Authorization");
               if (authorization != null && authorization.toLowerCase().startsWith("basic")) {
@@ -134,7 +136,7 @@ public class WebSocketListener implements Listener {
                 // split credentials on username and password
                 for (int i = 0; i < credDecoded.length; i++) {
                   if (credDecoded[i] == ':') {
-                    username = Arrays.copyOfRange(credDecoded, 0, i);
+                    username = new String(Arrays.copyOfRange(credDecoded, 0, i), StandardCharsets.UTF_8);
                     if (i != credDecoded.length - 1) {
                       password = Arrays.copyOfRange(credDecoded, i + 1, credDecoded.length);
                     }
@@ -142,7 +144,8 @@ public class WebSocketListener implements Listener {
                   }
                 }
               }
-              if (password == null || password.length != OCPPJ_CP_PASSWORD_LENGTH) throw new InvalidDataException(401, "Invalid password length");
+              if (password == null || password.length < OCPPJ_CP_MIN_PASSWORD_LENGTH || password.length > OCPPJ_CP_MAX_PASSWORD_LENGTH)
+                throw new InvalidDataException(401, "Invalid password length");
             }
 
             try {
