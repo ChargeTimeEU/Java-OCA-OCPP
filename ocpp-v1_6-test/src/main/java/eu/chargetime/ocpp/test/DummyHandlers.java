@@ -26,7 +26,6 @@ package eu.chargetime.ocpp.test;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.AuthenticationException;
 import eu.chargetime.ocpp.ServerEvents;
 import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementEventHandler;
