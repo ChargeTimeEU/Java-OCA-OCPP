@@ -50,6 +50,8 @@ public class WebSocketListener implements Listener {
 
   private static final int TIMEOUT_IN_MILLIS = 10000;
 
+  private static final int OCPPJ_CP_PASSWORD_LENGTH = 20;
+
   private final ISessionFactory sessionFactory;
   private final List<Draft> drafts;
 
@@ -122,19 +124,25 @@ public class WebSocketListener implements Listener {
                             .InternetAddress(webSocket.getRemoteSocketAddress())
                             .build();
 
-            String username = null, password = null;
+            byte[] username = null, password = null;
             if (clientHandshake.hasFieldValue("Authorization")) {
               String authorization = clientHandshake.getFieldValue("Authorization");
               if (authorization != null && authorization.toLowerCase().startsWith("basic")) {
                 // Authorization: Basic base64credentials
                 String base64Credentials = authorization.substring("Basic".length()).trim();
                 byte[] credDecoded = Base64.getDecoder().decode(base64Credentials);
-                String credentials = new String(credDecoded, StandardCharsets.UTF_8);
-                // credentials = username:password
-                final String[] values = credentials.split(":", 2);
-                if (values.length >= 1) username = values[0];
-                if (values.length >= 2) password = values[1];
+                // split credentials on username and password
+                for (int i = 0; i < credDecoded.length; i++) {
+                  if (credDecoded[i] == ':') {
+                    username = Arrays.copyOfRange(credDecoded, 0, i);
+                    if (i != credDecoded.length - 1) {
+                      password = Arrays.copyOfRange(credDecoded, i + 1, credDecoded.length);
+                    }
+                    break;
+                  }
+                }
               }
+              if (password == null || password.length != OCPPJ_CP_PASSWORD_LENGTH) throw new InvalidDataException(401, "Invalid password length");
             }
 
             try {

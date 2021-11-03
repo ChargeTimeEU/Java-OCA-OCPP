@@ -26,6 +26,7 @@ package eu.chargetime.ocpp.test;
    SOFTWARE.
 */
 
+import eu.chargetime.ocpp.AuthenticationException;
 import eu.chargetime.ocpp.ServerEvents;
 import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementEventHandler;
@@ -162,6 +163,9 @@ public class DummyHandlers {
 
   public ServerEvents generateServerEventsHandler() {
     return new ServerEvents() {
+      @Override
+      public void authenticateSession(SessionInformation information, byte[] username, byte[] password) throws AuthenticationException {}
+
       @Override
       public void newSession(UUID sessionIndex, SessionInformation information) {
         currentSessionIndex = sessionIndex;

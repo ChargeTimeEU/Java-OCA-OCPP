@@ -83,7 +83,7 @@ public class Server {
         new ListenerEvents() {
 
           @Override
-          public void authenticateSession(SessionInformation information, String username, String password) throws AuthenticationException {
+          public void authenticateSession(SessionInformation information, byte[] username, byte[] password) throws AuthenticationException {
             serverEvents.authenticateSession(information, username, password);
           }
 
