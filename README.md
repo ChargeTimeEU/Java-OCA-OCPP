@@ -23,6 +23,11 @@ See the project plan here:
 !! If you have an implementation for 0.4 or earlier, please read:  
 https://github.com/ChargeTimeEU/Java-OCA-OCPP/wiki/External-interface-change-from-version-0.4-to-0.5
 
+Maven
+=====
+
+Find the maven repo here: https://mvnrepository.com/artifact/eu.chargetime.ocpp
+
 Dependencies
 ============
 
