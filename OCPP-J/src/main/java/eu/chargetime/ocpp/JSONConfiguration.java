@@ -36,6 +36,7 @@ public class JSONConfiguration {
   public static final String PING_INTERVAL_PARAMETER = "PING_INTERVAL";
   public static final String USERNAME_PARAMETER = "USERNAME";
   public static final String PASSWORD_PARAMETER = "PASSWORD";
+  public static final String CONNECT_TIMEOUT_IN_MS_PARAMETER = "CONNECT_TIMEOUT_IN_MS";
 
   private final HashMap<String, Object> parameters = new HashMap<>();
 
