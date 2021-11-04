@@ -30,13 +30,17 @@ import eu.chargetime.ocpp.wss.WssFactoryBuilder;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
+import org.java_websocket.exceptions.InvalidDataException;
 import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.handshake.ServerHandshakeBuilder;
 import org.java_websocket.server.WebSocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +49,9 @@ public class WebSocketListener implements Listener {
   private static final Logger logger = LoggerFactory.getLogger(WebSocketListener.class);
 
   private static final int TIMEOUT_IN_MILLIS = 10000;
+
+  private static final int OCPPJ_CP_MIN_PASSWORD_LENGTH = 16;
+  private static final int OCPPJ_CP_MAX_PASSWORD_LENGTH = 20;
 
   private final ISessionFactory sessionFactory;
   private final List<Draft> drafts;
@@ -107,6 +114,50 @@ public class WebSocketListener implements Listener {
 
             handler.newSession(
                 sessionFactory.createSession(new JSONCommunicator(receiver)), information);
+          }
+
+          @Override
+          public ServerHandshakeBuilder onWebsocketHandshakeReceivedAsServer(WebSocket webSocket, Draft draft,
+                                                                             ClientHandshake clientHandshake) throws InvalidDataException {
+            SessionInformation information =
+                    new SessionInformation.Builder()
+                            .Identifier(clientHandshake.getResourceDescriptor())
+                            .InternetAddress(webSocket.getRemoteSocketAddress())
+                            .build();
+
+            String username = null;
+            byte[] password = null;
+            if (clientHandshake.hasFieldValue("Authorization")) {
+              String authorization = clientHandshake.getFieldValue("Authorization");
+              if (authorization != null && authorization.toLowerCase().startsWith("basic")) {
+                // Authorization: Basic base64credentials
+                String base64Credentials = authorization.substring("Basic".length()).trim();
+                byte[] credDecoded = Base64.getDecoder().decode(base64Credentials);
+                // split credentials on username and password
+                for (int i = 0; i < credDecoded.length; i++) {
+                  if (credDecoded[i] == ':') {
+                    username = new String(Arrays.copyOfRange(credDecoded, 0, i), StandardCharsets.UTF_8);
+                    if (i + 1 < credDecoded.length) {
+                      password = Arrays.copyOfRange(credDecoded, i + 1, credDecoded.length);
+                    }
+                    break;
+                  }
+                }
+              }
+              if (password == null || password.length < OCPPJ_CP_MIN_PASSWORD_LENGTH || password.length > OCPPJ_CP_MAX_PASSWORD_LENGTH)
+                throw new InvalidDataException(401, "Invalid password length");
+            }
+
+            try {
+              handler.authenticateSession(information, username, password);
+            }
+            catch (AuthenticationException e) {
+              throw new InvalidDataException(e.getErrorCode(), e.getMessage());
+            }
+            catch (Exception e) {
+              throw new InvalidDataException(401, e.getMessage());
+            }
+            return super.onWebsocketHandshakeReceivedAsServer(webSocket, draft, clientHandshake);
           }
 
           @Override
