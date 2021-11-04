@@ -137,7 +137,7 @@ public class WebSocketListener implements Listener {
                 for (int i = 0; i < credDecoded.length; i++) {
                   if (credDecoded[i] == ':') {
                     username = new String(Arrays.copyOfRange(credDecoded, 0, i), StandardCharsets.UTF_8);
-                    if (i != credDecoded.length - 1) {
+                    if (i + 1 < credDecoded.length) {
                       password = Arrays.copyOfRange(credDecoded, i + 1, credDecoded.length);
                     }
                     break;
