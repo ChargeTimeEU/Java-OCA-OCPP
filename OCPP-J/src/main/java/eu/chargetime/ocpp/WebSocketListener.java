@@ -48,6 +48,7 @@ import org.slf4j.LoggerFactory;
 public class WebSocketListener implements Listener {
   private static final Logger logger = LoggerFactory.getLogger(WebSocketListener.class);
 
+  private static final int DEFAULT_WEBSOCKET_WORKER_COUNT = 4;
   private static final int TIMEOUT_IN_MILLIS = 10000;
 
   private static final int OCPPJ_CP_MIN_PASSWORD_LENGTH = 16;
@@ -78,7 +79,10 @@ public class WebSocketListener implements Listener {
   @Override
   public void open(String hostname, int port, ListenerEvents handler) {
     server =
-        new WebSocketServer(new InetSocketAddress(hostname, port), drafts) {
+        new WebSocketServer(
+                new InetSocketAddress(hostname, port),
+                configuration.getParameter(JSONConfiguration.WEBSOCKET_WORKER_COUNT, DEFAULT_WEBSOCKET_WORKER_COUNT),
+                drafts) {
           @Override
           public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
             logger.debug(

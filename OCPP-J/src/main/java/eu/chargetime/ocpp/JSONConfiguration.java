@@ -37,6 +37,7 @@ public class JSONConfiguration {
   public static final String USERNAME_PARAMETER = "USERNAME";
   public static final String PASSWORD_PARAMETER = "PASSWORD";
   public static final String CONNECT_TIMEOUT_IN_MS_PARAMETER = "CONNECT_TIMEOUT_IN_MS";
+  public static final String WEBSOCKET_WORKER_COUNT = "WEBSOCKET_WORKER_COUNT";
 
   private final HashMap<String, Object> parameters = new HashMap<>();
 
