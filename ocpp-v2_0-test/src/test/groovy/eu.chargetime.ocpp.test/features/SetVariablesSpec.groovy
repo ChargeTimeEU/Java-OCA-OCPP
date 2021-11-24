@@ -1,7 +1,6 @@
 package eu.chargetime.ocpp.test.features
 
 import eu.chargetime.ocpp.test.base.json.BaseSpec
-import eu.chargetime.ocpp.test.features.BootNotification
 import spock.util.concurrent.PollingConditions
 
 class SetVariablesSpec extends BaseSpec
@@ -25,7 +24,7 @@ class SetVariablesSpec extends BaseSpec
 
         then:
         conditions.eventually {
-            assert centralSystem.recieved(tester.confirmation)
+            assert centralSystem.received(tester.confirmation)
         }
     }
 }

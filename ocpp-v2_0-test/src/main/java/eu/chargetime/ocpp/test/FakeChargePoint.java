@@ -35,7 +35,7 @@ public class FakeChargePoint {
   private final String url = "ws://127.0.0.1:8887";
   private IClientAPI client;
   private Confirmation receivedConfirmation = null;
-  private Request handletReuqest;
+  private Request handlerRequest;
 
   public FakeChargePoint() {
     client = new JSONClient();
@@ -55,7 +55,7 @@ public class FakeChargePoint {
 
   public void addFeature(Feature feature) {
     FeatureTestDecorator monitoredFeature =
-        new FeatureTestDecorator(feature, request -> handletReuqest = request);
+        new FeatureTestDecorator(feature, request -> handlerRequest = request);
     client.addFeature(monitoredFeature);
   }
 
@@ -69,14 +69,14 @@ public class FakeChargePoint {
     send.whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
   }
 
-  public boolean recieved(Confirmation confirmation) {
+  public boolean received(Confirmation confirmation) {
     if (receivedConfirmation != null && confirmation != null)
       return receivedConfirmation.equals(confirmation);
     return false;
   }
 
   public boolean hasHandled(Request request) {
-    if (handletReuqest != null && request != null) return handletReuqest.equals(request);
+    if (handlerRequest != null && request != null) return handlerRequest.equals(request);
     return false;
   }
 }

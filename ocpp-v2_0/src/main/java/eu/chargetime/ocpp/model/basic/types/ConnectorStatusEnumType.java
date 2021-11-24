@@ -1,10 +1,10 @@
-package eu.chargetime.ocpp.model.validation;
+package eu.chargetime.ocpp.model.basic.types;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
    MIT License
 
-   Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
+   Copyright (C) 2021 John Michael Luy <johnmichael.luy@gmail.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -25,21 +25,10 @@ package eu.chargetime.ocpp.model.validation;
    SOFTWARE.
 */
 
-public class OCPP2PrimDatatypes {
-
-  public static IValidationRule string50() {
-    return new StringMaxLengthValidationRule(50);
-  }
-
-  public static IValidationRule string20() {
-    return new StringMaxLengthValidationRule(20);
-  }
-
-  public static IValidationRule string1000() {
-    return new StringMaxLengthValidationRule(1000);
-  }
-
-  public static IValidationRule identifierString() {
-    return new IdentifierStringValidationRule();
-  }
+public enum ConnectorStatusEnumType {
+  Available,
+  Occupied,
+  Reserved,
+  Unavailable,
+  Faulted
 }

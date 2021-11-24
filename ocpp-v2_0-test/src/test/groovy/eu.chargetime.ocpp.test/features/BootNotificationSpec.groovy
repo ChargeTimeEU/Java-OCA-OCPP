@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.profiles.core.json
+package eu.chargetime.ocpp.test.features
 
 import eu.chargetime.ocpp.test.base.json.BaseSpec
 import eu.chargetime.ocpp.test.features.BootNotification
@@ -25,7 +25,7 @@ class BootNotificationSpec extends BaseSpec
 
         then:
         conditions.eventually {
-            assert chargePoint.recieved(tester.confirmation)
+            assert chargePoint.received(tester.confirmation)
         }
     }
 }
