@@ -53,6 +53,8 @@ public class WebSocketListener implements Listener {
   private static final int OCPPJ_CP_MIN_PASSWORD_LENGTH = 16;
   private static final int OCPPJ_CP_MAX_PASSWORD_LENGTH = 20;
 
+  private static final String HTTP_HEADER_PROXIED_ADDRESS = "X-Forwarded-For";
+
   private final ISessionFactory sessionFactory;
   private final List<Draft> drafts;
 
@@ -106,10 +108,18 @@ public class WebSocketListener implements Listener {
 
             sockets.put(webSocket, receiver);
 
+            String proxiedAddress = clientHandshake.getFieldValue(HTTP_HEADER_PROXIED_ADDRESS);
+
+            logger.debug(
+                    "New web-socket connection opened from address: {} proxied for: {}",
+                    webSocket.getRemoteSocketAddress(),
+                    proxiedAddress);
+
             SessionInformation information =
                 new SessionInformation.Builder()
                     .Identifier(clientHandshake.getResourceDescriptor())
                     .InternetAddress(webSocket.getRemoteSocketAddress())
+                    .ProxiedAddress(proxiedAddress)
                     .build();
 
             handler.newSession(

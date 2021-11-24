@@ -31,6 +31,7 @@ public class SessionInformation {
   private String identifier;
   private InetSocketAddress address;
   private String SOAPtoURL;
+  private String proxiedAddress;
 
   public String getIdentifier() {
     return identifier;
@@ -44,11 +45,16 @@ public class SessionInformation {
     return SOAPtoURL;
   }
 
+  public String getProxiedAddress() {
+    return proxiedAddress;
+  }
+
   public static class Builder {
 
     private String identifier;
     private InetSocketAddress address;
     private String SOAPtoURL;
+    private String proxiedAddress;
 
     public Builder Identifier(String identifier) {
       this.identifier = identifier;
@@ -60,11 +66,17 @@ public class SessionInformation {
       return this;
     }
 
+    public Builder ProxiedAddress(String proxiedAddress) {
+      this.proxiedAddress = proxiedAddress;
+      return this;
+    }
+
     public SessionInformation build() {
       SessionInformation sessionInformation = new SessionInformation();
       sessionInformation.identifier = this.identifier;
       sessionInformation.address = this.address;
       sessionInformation.SOAPtoURL = this.SOAPtoURL;
+      sessionInformation.proxiedAddress = this.proxiedAddress;
       return sessionInformation;
     }
 
