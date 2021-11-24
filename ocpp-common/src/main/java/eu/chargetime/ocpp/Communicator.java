@@ -330,6 +330,7 @@ public abstract class Communicator {
       Object call;
       try {
         while ((call = getRetryMessage()) != null) {
+          failedFlag = false;
           radio.send(call);
           Thread.sleep(DELAY_IN_MILLISECONDS);
           if (!hasFailed()) popRetryMessage();
