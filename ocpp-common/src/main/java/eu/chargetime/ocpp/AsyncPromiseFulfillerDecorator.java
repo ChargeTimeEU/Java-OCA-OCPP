@@ -28,22 +28,23 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AsyncPromiseFulfillerDecorator implements PromiseFulfiller {
 
   private final PromiseFulfiller promiseFulfiller;
 
+  private static ExecutorService executor = Executors.newCachedThreadPool();
+
+  public static void setExecutor(ExecutorService newExecutor) {
+    executor = newExecutor;
+  }
+
   @Override
   public void fulfill(
-      CompletableFuture<Confirmation> promise, SessionEvents eventHandler, Request request) {
-    new Thread(
-            new Runnable() {
-              @Override
-              public void run() {
-                promiseFulfiller.fulfill(promise, eventHandler, request);
-              }
-            })
-        .start();
+    CompletableFuture<Confirmation> promise, SessionEvents eventHandler, Request request) {
+      executor.submit(() -> promiseFulfiller.fulfill(promise, eventHandler, request));
   }
 
   public AsyncPromiseFulfillerDecorator(PromiseFulfiller promiseFulfiller) {
