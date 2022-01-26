@@ -44,20 +44,20 @@ public class ServerCoreProfile implements Profile {
     features = new HashSet<>();
     features.add(new AuthorizeFeature(this));
     features.add(new BootNotificationFeature(this));
-    features.add(new ChangeAvailabilityFeature(null));
-    features.add(new ChangeConfigurationFeature(null));
-    features.add(new ClearCacheFeature(null));
+    features.add(new ChangeAvailabilityFeature(this));
+    features.add(new ChangeConfigurationFeature(this));
+    features.add(new ClearCacheFeature(this));
     features.add(new DataTransferFeature(this));
-    features.add(new GetConfigurationFeature(null));
+    features.add(new GetConfigurationFeature(this));
     features.add(new HeartbeatFeature(this));
     features.add(new MeterValuesFeature(this));
-    features.add(new RemoteStartTransactionFeature(null));
-    features.add(new RemoteStopTransactionFeature(null));
-    features.add(new ResetFeature(null));
+    features.add(new RemoteStartTransactionFeature(this));
+    features.add(new RemoteStopTransactionFeature(this));
+    features.add(new ResetFeature(this));
     features.add(new StartTransactionFeature(this));
     features.add(new StatusNotificationFeature(this));
     features.add(new StopTransactionFeature(this));
-    features.add(new UnlockConnectorFeature(null));
+    features.add(new UnlockConnectorFeature(this));
   }
 
   @Override

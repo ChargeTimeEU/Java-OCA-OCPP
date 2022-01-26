@@ -46,7 +46,7 @@ public class ServerRemoteTriggerProfile implements Profile {
   public ServerRemoteTriggerProfile() {
 
     features = new HashSet<>();
-    features.add(new TriggerMessageFeature(null));
+    features.add(new TriggerMessageFeature(this));
   }
 
   @Override

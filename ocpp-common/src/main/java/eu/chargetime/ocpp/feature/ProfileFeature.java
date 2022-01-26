@@ -40,6 +40,9 @@ public abstract class ProfileFeature implements Feature {
    * @param ownerProfile the {@link Profile} that owns the function.
    */
   public ProfileFeature(Profile ownerProfile) {
+    if (ownerProfile == null) {
+      throw new IllegalArgumentException("need non-null profile");
+    }
     profile = ownerProfile;
   }
 

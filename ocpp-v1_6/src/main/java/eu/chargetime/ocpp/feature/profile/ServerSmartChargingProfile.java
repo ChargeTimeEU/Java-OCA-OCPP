@@ -45,9 +45,9 @@ public class ServerSmartChargingProfile implements Profile {
 
   public ServerSmartChargingProfile() {
     features = new HashSet<>();
-    features.add(new ClearChargingProfileFeature(null));
-    features.add(new GetCompositeScheduleFeature(null));
-    features.add(new SetChargingProfileFeature(null));
+    features.add(new ClearChargingProfileFeature(this));
+    features.add(new GetCompositeScheduleFeature(this));
+    features.add(new SetChargingProfileFeature(this));
   }
 
   @Override
