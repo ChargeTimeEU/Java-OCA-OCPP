@@ -41,8 +41,6 @@ public class ClientFirmwareManagementProfile implements Profile {
   public ClientFirmwareManagementProfile(ClientFirmwareManagementEventHandler eventHandler) {
     this.eventHandler = eventHandler;
     features = new HashSet<>();
-    features.add(new DiagnosticsStatusNotificationFeature(this));
-    features.add(new FirmwareStatusNotificationFeature(this));
     features.add(new GetDiagnosticsFeature(this));
     features.add(new UpdateFirmwareFeature(this));
   }

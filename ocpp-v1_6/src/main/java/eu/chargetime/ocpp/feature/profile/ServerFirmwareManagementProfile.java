@@ -45,10 +45,8 @@ public class ServerFirmwareManagementProfile implements Profile {
   public ServerFirmwareManagementProfile(ServerFirmwareManagementEventHandler eventHandler) {
     this.eventHandler = eventHandler;
     features = new HashSet<>();
-    features.add(new GetDiagnosticsFeature(this));
     features.add(new DiagnosticsStatusNotificationFeature(this));
     features.add(new FirmwareStatusNotificationFeature(this));
-    features.add(new UpdateFirmwareFeature(this));
   }
 
   @Override
