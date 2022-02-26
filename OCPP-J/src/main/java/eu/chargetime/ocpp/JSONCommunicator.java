@@ -77,38 +77,37 @@ public class JSONCommunicator extends Communicator {
     super(radio);
   }
 
-  private class ZonedDateTimeSerializer implements JsonSerializer<ZonedDateTime> {
+  private static class ZonedDateTimeSerializer implements JsonSerializer<ZonedDateTime>, JsonDeserializer<ZonedDateTime> {
 
     @Override
     public JsonElement serialize(
         ZonedDateTime zonedDateTime, Type type, JsonSerializationContext jsonSerializationContext) {
       return new JsonPrimitive(zonedDateTime.format(DateTimeFormatter.ISO_INSTANT));
     }
-  }
-
-  public class ZonedDateTimeDeserializer implements JsonDeserializer<ZonedDateTime> {
 
     @Override
     public ZonedDateTime deserialize(
-        JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)
-        throws JsonParseException {
+            JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)
+            throws JsonParseException {
       return ZonedDateTime.parse(jsonElement.getAsJsonPrimitive().getAsString());
     }
   }
 
+  private static Gson gson;
+
+  static {
+    GsonBuilder builder = new GsonBuilder();
+    builder.registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeSerializer());
+    gson = builder.create();
+  }
+
   @Override
   public <T> T unpackPayload(Object payload, Class<T> type) throws Exception {
-    GsonBuilder builder = new GsonBuilder();
-    builder.registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeDeserializer());
-    Gson gson = builder.create();
     return gson.fromJson(payload.toString(), type);
   }
 
   @Override
   public Object packPayload(Object payload) {
-    GsonBuilder builder = new GsonBuilder();
-    builder.registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeSerializer());
-    Gson gson = builder.create();
     return gson.toJson(payload);
   }
 
