@@ -59,16 +59,6 @@ public class ServerFirmwareManagementProfileTest extends ProfileTest {
   }
 
   @Test
-  public void getFeatureList_containsGetDiagnosticsFeature() {
-    // When
-    Feature[] features = profile.getFeatureList();
-
-    // Then
-    assertThat(
-        findFeature(features, "GetDiagnostics"), Is.is(instanceOf(GetDiagnosticsFeature.class)));
-  }
-
-  @Test
   public void getFeatureList_containsDiagnosticsStatusNotificationFeature() {
     // When
     Feature[] features = profile.getFeatureList();
@@ -88,16 +78,6 @@ public class ServerFirmwareManagementProfileTest extends ProfileTest {
     assertThat(
         findFeature(features, "FirmwareStatusNotification"),
         Is.is(instanceOf(FirmwareStatusNotificationFeature.class)));
-  }
-
-  @Test
-  public void getFeatureList_containsUpdateFirmwareFeature() {
-    // When
-    Feature[] features = profile.getFeatureList();
-
-    // Then
-    assertThat(
-        findFeature(features, "UpdateFirmware"), Is.is(instanceOf(UpdateFirmwareFeature.class)));
   }
 
   @Test
