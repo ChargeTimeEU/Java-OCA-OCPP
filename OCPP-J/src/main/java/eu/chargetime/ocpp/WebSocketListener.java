@@ -262,7 +262,7 @@ public class WebSocketListener implements Listener {
       // Do second try
       try {
         server.stop();
-      } catch (IOException | InterruptedException ex) {
+      } catch (InterruptedException ex) {
         logger.error("Failed to close listener", ex);
       }
     } finally {
