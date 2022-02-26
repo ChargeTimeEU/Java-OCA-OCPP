@@ -42,8 +42,8 @@ public class ServerLocalAuthListProfile implements Profile {
 
   public ServerLocalAuthListProfile() {
     featureList = new HashSet<>();
-    featureList.add(new GetLocalListVersionFeature(null));
-    featureList.add(new SendLocalListFeature(null));
+    featureList.add(new GetLocalListVersionFeature(this));
+    featureList.add(new SendLocalListFeature(this));
   }
 
   @Override
