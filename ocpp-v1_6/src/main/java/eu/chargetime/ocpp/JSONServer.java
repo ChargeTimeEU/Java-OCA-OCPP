@@ -69,7 +69,7 @@ public class JSONServer implements IServerAPI {
     protocols.add(new Protocol(""));
     draftOcppOnly = new Draft_6455(Collections.emptyList(), protocols);
 
-    this.listener = new WebSocketListener(sessionFactory, configuration, draftOcppOnly);
+    this.listener = new WebSocketListener(sessionFactory, configuration, draftOcppOnly, new HttpHealthCheckDraft());
     server = new Server(this.listener, featureRepository, new PromiseRepository());
     featureRepository.addFeatureProfile(coreProfile);
   }
