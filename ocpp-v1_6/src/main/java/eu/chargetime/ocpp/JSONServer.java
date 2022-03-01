@@ -68,7 +68,7 @@ public class JSONServer implements IServerAPI {
     protocols.add(new Protocol("ocpp1.6"));
     protocols.add(new Protocol(""));
     draftOcppOnly = new Draft_6455(Collections.emptyList(), protocols);
-
+    logger.info("JSONServer 1.6 with HttpHealthCheckDraft");
     this.listener = new WebSocketListener(sessionFactory, configuration, draftOcppOnly, new HttpHealthCheckDraft());
     server = new Server(this.listener, featureRepository, new PromiseRepository());
     featureRepository.addFeatureProfile(coreProfile);
