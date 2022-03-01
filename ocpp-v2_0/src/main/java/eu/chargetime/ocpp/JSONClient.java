@@ -32,6 +32,7 @@ import eu.chargetime.ocpp.wss.BaseWssSocketBuilder;
 import eu.chargetime.ocpp.wss.WssSocketBuilder;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.UUID;
 import java.util.concurrent.CompletionStage;
 import javax.net.ssl.SSLContext;
 import org.java_websocket.drafts.Draft;
@@ -154,5 +155,10 @@ public class JSONClient implements IClientAPI {
   @Override
   public boolean isClosed() {
     return transmitter.isClosed();
+  }
+
+  @Override
+  public UUID getSessionId() {
+    return client.getSessionId();
   }
 }

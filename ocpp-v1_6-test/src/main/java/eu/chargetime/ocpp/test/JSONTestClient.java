@@ -31,6 +31,7 @@ import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import java.util.Collections;
+import java.util.UUID;
 import java.util.concurrent.CompletionStage;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
@@ -87,5 +88,10 @@ public class JSONTestClient implements IClientAPI {
   @Override
   public boolean isClosed() {
     return transmitter.isClosed();
+  }
+
+  @Override
+  public UUID getSessionId() {
+    return client.getSessionId();
   }
 }

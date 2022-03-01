@@ -35,6 +35,7 @@ import eu.chargetime.ocpp.model.SOAPHostInfo;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URL;
+import java.util.UUID;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -114,6 +115,11 @@ public class SOAPTestClient implements IClientAPI {
   @Override
   public boolean isClosed() {
     return transmitter.isClosed();
+  }
+
+  @Override
+  public UUID getSessionId() {
+    return client.getSessionId();
   }
 
   private int getPort() {

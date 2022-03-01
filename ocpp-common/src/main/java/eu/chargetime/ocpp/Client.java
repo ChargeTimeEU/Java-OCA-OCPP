@@ -30,6 +30,7 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,7 +90,7 @@ public class Client {
           public Confirmation handleRequest(Request request) throws UnsupportedFeatureException {
             Optional<Feature> featureOptional = featureRepository.findFeature(request);
             if (featureOptional.isPresent()) {
-              return featureOptional.get().handleRequest(null, request);
+              return featureOptional.get().handleRequest(getSessionId(), request);
             } else {
               throw new UnsupportedFeatureException();
             }
@@ -159,5 +160,9 @@ public class Client {
 
     session.sendRequest(featureOptional.get().getAction(), request, id);
     return promise;
+  }
+
+  public UUID getSessionId() {
+      return this.session.getSessionId();
   }
 }
