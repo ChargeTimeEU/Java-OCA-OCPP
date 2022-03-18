@@ -163,6 +163,6 @@ public class Client {
   }
 
   public UUID getSessionId() {
-      return this.session.getSessionId();
+    return this.session.getSessionId();
   }
 }

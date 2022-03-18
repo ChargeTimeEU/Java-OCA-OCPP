@@ -163,8 +163,8 @@ public class DummyHandlers {
   public ServerEvents generateServerEventsHandler() {
     return new ServerEvents() {
       @Override
-      public void authenticateSession(SessionInformation information, String username, byte[] password) {
-      }
+      public void authenticateSession(
+          SessionInformation information, String username, byte[] password) {}
 
       @Override
       public void newSession(UUID sessionIndex, SessionInformation information) {
