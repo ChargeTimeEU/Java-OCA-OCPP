@@ -1,5 +1,7 @@
 package eu.chargetime.ocpp;
-
+/*
+ * Based ON https://github.com/TooTallNate/Java-WebSocket/issues/1077
+ */
 import org.java_websocket.WebSocketImpl;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.enums.CloseHandshakeType;
@@ -14,9 +16,11 @@ import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.List;
 
-class HttpHealthCheckDraft extends Draft {
+class Draft_HttpHealthCheck extends Draft {
 
-    private Boolean isHttp(ClientHandshake handshakedata) {
+    static final int HTTP_HEALTH_CHECK_CLOSE_CODE = 10200;
+
+    static Boolean isHttp(ClientHandshake handshakedata) {
         String upgradeField = handshakedata.getFieldValue("Upgrade");
         return upgradeField == null || upgradeField == "";
     }
@@ -28,7 +32,7 @@ class HttpHealthCheckDraft extends Draft {
                 "HTTP/1.0 200 OK\r\n" +
                         "Mime-Version: 1.0\r\n" +
                         "Content-Type: text/html\r\n" +
-                        "Content-Length: ${content.size}\r\n" +
+                        "Content-Length: " + content.length + " \r\n" +
                         "Connection: close\r\n" +
                         "\r\n"
         );
