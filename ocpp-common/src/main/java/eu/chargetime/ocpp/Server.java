@@ -216,6 +216,10 @@ public class Server {
     return promise;
   }
 
+  public boolean isSessionOpen(UUID sessionIndex) {
+    return sessions.containsKey(sessionIndex);
+  }
+
   /**
    * Close connection to a client
    *
