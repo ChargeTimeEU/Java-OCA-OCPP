@@ -34,6 +34,7 @@ import eu.chargetime.ocpp.model.basic.BootNotificationRequest;
 import eu.chargetime.ocpp.model.basic.types.BootReasonEnumType;
 import eu.chargetime.ocpp.model.basic.types.ChargingStationType;
 import eu.chargetime.ocpp.model.basic.types.RegistrationStatusEnumType;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -45,7 +46,7 @@ public class BootNotification implements IServerBootNotificationRequestHandler {
     feature = new BootNotificationFeature(this);
 
     confirmation = new BootNotificationConfirmation();
-    ZonedDateTime calendar = ZonedDateTime.now();
+    ZonedDateTime calendar = ZonedDateTime.now(ZoneOffset.UTC);
     confirmation.setCurrentTime(calendar);
     confirmation.setInterval(42);
     confirmation.setStatus(RegistrationStatusEnumType.Accepted);
