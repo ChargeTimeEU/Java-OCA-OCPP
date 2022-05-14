@@ -77,7 +77,8 @@ public class JSONCommunicator extends Communicator {
     super(radio);
   }
 
-  private static class ZonedDateTimeSerializer implements JsonSerializer<ZonedDateTime>, JsonDeserializer<ZonedDateTime> {
+  private static class ZonedDateTimeSerializer
+      implements JsonSerializer<ZonedDateTime>, JsonDeserializer<ZonedDateTime> {
 
     @Override
     public JsonElement serialize(
@@ -87,8 +88,8 @@ public class JSONCommunicator extends Communicator {
 
     @Override
     public ZonedDateTime deserialize(
-            JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)
-            throws JsonParseException {
+        JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)
+        throws JsonParseException {
       return ZonedDateTime.parse(jsonElement.getAsJsonPrimitive().getAsString());
     }
   }

@@ -70,6 +70,11 @@ public class JSONTestServer implements IServerAPI {
   }
 
   @Override
+  public boolean isSessionOpen(UUID session) {
+    return server.isSessionOpen(session);
+  }
+
+  @Override
   public void closeSession(UUID session) {
     server.closeSession(session);
   }

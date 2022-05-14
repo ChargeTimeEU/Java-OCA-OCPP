@@ -34,6 +34,8 @@ import java.util.concurrent.CompletionStage;
 public interface IServerAPI {
   void addFeature(Feature feature);
 
+  boolean isSessionOpen(UUID session);
+
   void closeSession(UUID session);
 
   void open(String host, int port, ServerEvents serverEvents);

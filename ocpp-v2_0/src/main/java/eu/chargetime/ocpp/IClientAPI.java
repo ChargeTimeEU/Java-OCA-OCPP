@@ -28,7 +28,6 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
 
