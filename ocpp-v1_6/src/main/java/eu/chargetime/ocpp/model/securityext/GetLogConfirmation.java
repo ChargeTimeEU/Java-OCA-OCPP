@@ -26,18 +26,16 @@ package eu.chargetime.ocpp.model.securityext;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.securityext.types.LogStatusEnumType;
-import eu.chargetime.ocpp.model.validation.OCPPSecurityExtDatatypes;
 import eu.chargetime.ocpp.model.validation.StringMaxLengthValidationRule;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
-import eu.chargetime.ocpp.utilities.ModelUtil;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class GetLogConfirmation implements Request {
+public class GetLogConfirmation implements Confirmation {
 
   private static final transient Validator filenameValidator =
     new ValidatorBuilder()
@@ -95,11 +93,6 @@ public class GetLogConfirmation implements Request {
   public void setFilename(String filename) {
     filenameValidator.validate(filename);
     this.filename = filename;
-  }
-
-  @Override
-  public boolean transactionRelated() {
-    return false;
   }
 
   @Override

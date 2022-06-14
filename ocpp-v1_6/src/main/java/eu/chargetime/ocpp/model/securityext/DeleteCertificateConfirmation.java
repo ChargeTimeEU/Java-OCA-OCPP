@@ -26,13 +26,13 @@ package eu.chargetime.ocpp.model.securityext;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.securityext.types.DeleteCertificateStatusEnumType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class DeleteCertificateConfirmation implements Request {
+public class DeleteCertificateConfirmation implements Confirmation {
 
   private DeleteCertificateStatusEnumType status;
 
@@ -61,11 +61,6 @@ public class DeleteCertificateConfirmation implements Request {
    */
   public void setStatus(DeleteCertificateStatusEnumType status) {
     this.status = status;
-  }
-
-  @Override
-  public boolean transactionRelated() {
-    return false;
   }
 
   @Override

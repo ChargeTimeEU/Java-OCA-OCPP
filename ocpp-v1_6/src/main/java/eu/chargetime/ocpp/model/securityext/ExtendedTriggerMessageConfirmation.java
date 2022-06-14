@@ -26,13 +26,13 @@ package eu.chargetime.ocpp.model.securityext;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.securityext.types.TriggerMessageStatusEnumType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class ExtendedTriggerMessageConfirmation implements Request {
+public class ExtendedTriggerMessageConfirmation implements Confirmation {
 
   private TriggerMessageStatusEnumType status;
 
@@ -61,11 +61,6 @@ public class ExtendedTriggerMessageConfirmation implements Request {
    */
   public void setStatus(TriggerMessageStatusEnumType status) {
     this.status = status;
-  }
-
-  @Override
-  public boolean transactionRelated() {
-    return false;
   }
 
   @Override

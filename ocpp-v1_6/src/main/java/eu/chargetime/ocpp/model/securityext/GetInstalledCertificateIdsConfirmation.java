@@ -26,7 +26,7 @@ package eu.chargetime.ocpp.model.securityext;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.securityext.types.CertificateHashDataType;
 import eu.chargetime.ocpp.model.securityext.types.GetInstalledCertificateStatusEnumType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
@@ -34,7 +34,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class GetInstalledCertificateIdsConfirmation implements Request {
+public class GetInstalledCertificateIdsConfirmation implements Confirmation {
 
   private GetInstalledCertificateStatusEnumType status;
   private CertificateHashDataType[] certificateHashData;
@@ -82,11 +82,6 @@ public class GetInstalledCertificateIdsConfirmation implements Request {
    */
   public void setCertificateHashData(CertificateHashDataType[] certificateHashData) {
     this.certificateHashData = certificateHashData;
-  }
-
-  @Override
-  public boolean transactionRelated() {
-    return false;
   }
 
   @Override

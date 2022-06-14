@@ -26,17 +26,12 @@ package eu.chargetime.ocpp.model.securityext;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class LogStatusNotificationConfirmation implements Request {
-
-  @Override
-  public boolean transactionRelated() {
-    return false;
-  }
+public class LogStatusNotificationConfirmation implements Confirmation {
 
   @Override
   public boolean validate() {

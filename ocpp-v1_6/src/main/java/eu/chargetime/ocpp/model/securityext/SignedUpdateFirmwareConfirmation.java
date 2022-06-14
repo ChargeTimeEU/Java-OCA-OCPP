@@ -26,13 +26,13 @@ package eu.chargetime.ocpp.model.securityext;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.securityext.types.UpdateFirmwareStatusEnumType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class SignedUpdateFirmwareConfirmation implements Request {
+public class SignedUpdateFirmwareConfirmation implements Confirmation {
 
   private UpdateFirmwareStatusEnumType status;
 
@@ -61,11 +61,6 @@ public class SignedUpdateFirmwareConfirmation implements Request {
    */
   public void setStatus(UpdateFirmwareStatusEnumType status) {
     this.status = status;
-  }
-
-  @Override
-  public boolean transactionRelated() {
-    return false;
   }
 
   @Override
