@@ -1,10 +1,10 @@
-package eu.chargetime.ocpp.model.validation;
+package eu.chargetime.ocpp.model.securityext.test;
+
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
    MIT License
 
-   Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
    Copyright (C) 2022 Mathias Oben <mathias.oben@enervalis.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,29 +26,48 @@ package eu.chargetime.ocpp.model.validation;
    SOFTWARE.
 */
 
-public class OCPPSecurityExtDatatypes {
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.securityext.SignCertificateRequest;
+import eu.chargetime.ocpp.utilities.TestUtilities;
+import org.junit.Test;
 
-  public static IValidationRule string50() {
-    return new StringMaxLengthValidationRule(50);
+import static org.junit.Assert.assertTrue;
+
+public class SignCertificateRequestTest {
+
+  @Test
+  public void validate_constructor_returnsTrue() {
+    // Given
+    String csr = givenCsr();
+    SignCertificateRequest request = new SignCertificateRequest(csr);
+
+    // When
+    boolean actual = request.validate();
+
+    // Then
+    assertTrue(actual);
   }
 
-  public static IValidationRule string20() {
-    return new StringMaxLengthValidationRule(20);
+  @Test(expected = PropertyConstraintException.class)
+  public void constructor_nullCsr_throwsPropertyConstraintException() {
+    // When
+    new SignCertificateRequest(null);
+
+    // Then throws
   }
 
-  public static IValidationRule string40() {
-    return new StringMaxLengthValidationRule(40);
+  @Test(expected = PropertyConstraintException.class)
+  public void setCsr_exceedingLengthString_throwsPropertyConstraintException() {
+    // Given
+    String csr = TestUtilities.aString(5501);
+
+    // When
+    new SignCertificateRequest(csr);
+
+    // Then throws
   }
 
-  public static IValidationRule string512() {
-    return new StringMaxLengthValidationRule(512);
-  }
-
-  public static IValidationRule string1000() {
-    return new StringMaxLengthValidationRule(1000);
-  }
-
-  public static IValidationRule identifierString() {
-    return new IdentifierStringValidationRule();
+  private String givenCsr() {
+    return "A Certificate Signing Request (CSR) as described in RFC 2986 and then PEM encoded";
   }
 }

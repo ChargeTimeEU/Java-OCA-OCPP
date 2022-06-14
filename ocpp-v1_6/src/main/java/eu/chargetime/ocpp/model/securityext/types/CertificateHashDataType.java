@@ -28,6 +28,7 @@ package eu.chargetime.ocpp.model.securityext.types;
 
 import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.model.validation.OCPPSecurityExtDatatypes;
+import eu.chargetime.ocpp.model.validation.StringMaxLengthValidationRule;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
@@ -35,14 +36,14 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 
 public class CertificateHashDataType implements Validatable {
-  private final transient Validator identifierString128Validator =
+  private static final transient Validator identifierString128Validator =
     new ValidatorBuilder()
       .addRule(OCPPSecurityExtDatatypes.identifierString())
-      .addRule(OCPPSecurityExtDatatypes.string20())
+      .addRule(new StringMaxLengthValidationRule(128))
       .setRequired(true)
       .build();
 
-  private final transient Validator serialNumberValidator =
+  private static final transient Validator serialNumberValidator =
     new ValidatorBuilder()
       .addRule(OCPPSecurityExtDatatypes.string40())
       .setRequired(true)
@@ -72,21 +73,22 @@ public class CertificateHashDataType implements Validatable {
   }
 
   /**
-   * Required. Hashed value of the IssuerName.
-   *
-   * @param issuerNameHash identifierString[0..128]
-   */
-  public void setHashAlgorithm(String issuerNameHash) {
-    this.issuerNameHash = issuerNameHash;
-  }
-
-  /**
    * Hashed value of the IssuerName.
    *
    * @return identifierString[0..128]
    */
   public String getIssuerNameHash() {
     return issuerNameHash;
+  }
+
+  /**
+   * Required. Hashed value of the IssuerName.
+   *
+   * @param issuerNameHash identifierString[0..128]
+   */
+  public void setIssuerNameHash(String issuerNameHash) {
+    identifierString128Validator.validate(issuerNameHash);
+    this.issuerNameHash = issuerNameHash;
   }
 
   /**
@@ -104,6 +106,7 @@ public class CertificateHashDataType implements Validatable {
    * @param issuerKeyHash String
    */
   public void setIssuerKeyHash(String issuerKeyHash) {
+    identifierString128Validator.validate(issuerKeyHash);
     this.issuerKeyHash = issuerKeyHash;
   }
 
@@ -122,6 +125,7 @@ public class CertificateHashDataType implements Validatable {
    * @param serialNumber string[0..40]
    */
   public void setSerialNumber(String serialNumber) {
+    serialNumberValidator.validate(serialNumber);
     this.serialNumber = serialNumber;
   }
 

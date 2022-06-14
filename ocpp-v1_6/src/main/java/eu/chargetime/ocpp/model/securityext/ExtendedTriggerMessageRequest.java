@@ -26,6 +26,7 @@ package eu.chargetime.ocpp.model.securityext;
    SOFTWARE.
 */
 
+import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.securityext.types.MessageTriggerEnumType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
@@ -79,6 +80,9 @@ public class ExtendedTriggerMessageRequest implements Request {
    * @param connectorId Integer connectorId &gt; 0
    */
   public void setConnectorId(Integer connectorId) {
+    if (connectorId != null && connectorId <= 0) {
+      throw new PropertyConstraintException(connectorId, "connectorId must be > 0");
+    }
     this.connectorId = connectorId;
   }
 

@@ -46,12 +46,12 @@ public class GetLogRequest implements Request {
    *
    * @param logType   LogEnumType. See {@link #setLogType(LogEnumType)}
    * @param requestId Integer. See {@link #setRequestId(Integer)}
-   * @param log       LogParametersType. See {@link #setLogParametersType(LogParametersType)}
+   * @param log       LogParametersType. See {@link #setLog(LogParametersType)}
    */
   public GetLogRequest(LogEnumType logType, Integer requestId, LogParametersType log) {
     setLogType(logType);
     setRequestId(requestId);
-    setLogParametersType(log);
+    setLog(log);
   }
 
   /**
@@ -140,7 +140,7 @@ public class GetLogRequest implements Request {
    *
    * @return {@link LogParametersType}
    */
-  public LogParametersType getLogParametersType() {
+  public LogParametersType getLog() {
     return log;
   }
 
@@ -150,7 +150,7 @@ public class GetLogRequest implements Request {
    *
    * @param log {@link LogParametersType}
    */
-  public void setLogParametersType(LogParametersType log) {
+  public void setLog(LogParametersType log) {
     this.log = log;
   }
 
@@ -161,7 +161,7 @@ public class GetLogRequest implements Request {
 
   @Override
   public boolean validate() {
-    return logType != null && log != null;
+    return logType != null && requestId != null && log != null && log.validate();
   }
 
   @Override

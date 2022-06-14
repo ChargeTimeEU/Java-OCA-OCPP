@@ -137,7 +137,7 @@ public class SignedUpdateFirmwareRequest implements Request {
 
   @Override
   public boolean validate() {
-    return requestId != null && firmware != null;
+    return requestId != null && firmware != null && firmware.validate();
   }
 
   @Override

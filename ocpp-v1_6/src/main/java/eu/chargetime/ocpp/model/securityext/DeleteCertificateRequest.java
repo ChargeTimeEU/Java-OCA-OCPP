@@ -70,7 +70,7 @@ public class DeleteCertificateRequest implements Request {
 
   @Override
   public boolean validate() {
-    return certificateHashData != null;
+    return certificateHashData != null && certificateHashData.validate();
   }
 
   @Override

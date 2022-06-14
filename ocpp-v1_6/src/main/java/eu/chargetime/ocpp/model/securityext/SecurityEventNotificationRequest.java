@@ -27,12 +27,26 @@ package eu.chargetime.ocpp.model.securityext;
 */
 
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.validation.StringMaxLengthValidationRule;
+import eu.chargetime.ocpp.model.validation.Validator;
+import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
 public class SecurityEventNotificationRequest implements Request {
+
+  private static final transient Validator typeValidator =
+    new ValidatorBuilder()
+      .addRule(new StringMaxLengthValidationRule(50))
+      .setRequired(true)
+      .build();
+
+  private static final transient Validator techInfoValidator =
+    new ValidatorBuilder()
+      .addRule(new StringMaxLengthValidationRule(255))
+      .build();
 
   private String type;
   private ZonedDateTime timestamp;
@@ -64,6 +78,7 @@ public class SecurityEventNotificationRequest implements Request {
    * @param type String
    */
   public void setType(String type) {
+    typeValidator.validate(type);
     this.type = type;
   }
 
@@ -100,6 +115,7 @@ public class SecurityEventNotificationRequest implements Request {
    * @param techInfo String
    */
   public void setTechInfo(String techInfo) {
+    techInfoValidator.validate(techInfo);
     this.techInfo = techInfo;
   }
 
@@ -110,7 +126,9 @@ public class SecurityEventNotificationRequest implements Request {
 
   @Override
   public boolean validate() {
-    return type != null && timestamp != null;
+    return typeValidator.safeValidate(type)
+      && timestamp != null
+      && techInfoValidator.safeValidate(techInfo);
   }
 
   @Override

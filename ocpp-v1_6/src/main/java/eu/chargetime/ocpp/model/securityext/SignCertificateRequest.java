@@ -27,14 +27,20 @@ package eu.chargetime.ocpp.model.securityext;
 */
 
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.utilities.ModelUtil;
+import eu.chargetime.ocpp.model.validation.StringMaxLengthValidationRule;
+import eu.chargetime.ocpp.model.validation.Validator;
+import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
 public class SignCertificateRequest implements Request {
 
-  private static final int STRING_5500_CHAR_MAX_LENGTH = 5500;
+  private static final transient Validator csrValidator =
+    new ValidatorBuilder()
+      .addRule(new StringMaxLengthValidationRule(5500))
+      .setRequired(true)
+      .build();
 
   private String csr;
 
@@ -66,6 +72,7 @@ public class SignCertificateRequest implements Request {
    * @param csr string[0..5500]
    */
   public void setCsr(String csr) {
+    csrValidator.validate(csr);
     this.csr = csr;
   }
 
@@ -76,7 +83,7 @@ public class SignCertificateRequest implements Request {
 
   @Override
   public boolean validate() {
-    return ModelUtil.validate(csr, STRING_5500_CHAR_MAX_LENGTH);
+    return csrValidator.safeValidate(csr);
   }
 
   @Override

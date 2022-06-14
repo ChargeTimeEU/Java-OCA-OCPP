@@ -91,7 +91,19 @@ public class GetInstalledCertificateIdsConfirmation implements Request {
 
   @Override
   public boolean validate() {
-    return status != null;
+    return status != null && validateCertificateHashData();
+  }
+
+  private boolean validateCertificateHashData() {
+    if (certificateHashData == null) {
+      return true;
+    }
+    for (CertificateHashDataType chd : certificateHashData) {
+      if (!chd.validate()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @Override

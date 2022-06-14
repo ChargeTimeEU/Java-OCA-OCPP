@@ -28,14 +28,20 @@ package eu.chargetime.ocpp.model.securityext;
 
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.securityext.types.CertificateUseEnumType;
-import eu.chargetime.ocpp.utilities.ModelUtil;
+import eu.chargetime.ocpp.model.validation.StringMaxLengthValidationRule;
+import eu.chargetime.ocpp.model.validation.Validator;
+import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
 public class InstallCertificateRequest implements Request {
 
-  private static final int STRING_5500_CHAR_MAX_LENGTH = 5500;
+  private static final transient Validator certificateValidator =
+    new ValidatorBuilder()
+      .addRule(new StringMaxLengthValidationRule(5500))
+      .setRequired(true)
+      .build();
 
   private CertificateUseEnumType certificateType;
   private String certificate;
@@ -84,6 +90,7 @@ public class InstallCertificateRequest implements Request {
    * @param certificate string[0..5500]
    */
   public void setCertificate(String certificate) {
+    certificateValidator.validate(certificate);
     this.certificate = certificate;
   }
 
@@ -94,8 +101,7 @@ public class InstallCertificateRequest implements Request {
 
   @Override
   public boolean validate() {
-    return certificateType != null
-      && ModelUtil.validate(certificate, STRING_5500_CHAR_MAX_LENGTH);
+    return certificateType != null && certificateValidator.safeValidate(certificate);
   }
 
   @Override

@@ -27,14 +27,20 @@ package eu.chargetime.ocpp.model.securityext;
 */
 
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.utilities.ModelUtil;
+import eu.chargetime.ocpp.model.validation.StringMaxLengthValidationRule;
+import eu.chargetime.ocpp.model.validation.Validator;
+import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
 public class CertificateSignedRequest implements Request {
 
-  private static final int STRING_10000_CHAR_MAX_LENGTH = 10000;
+  private static final transient Validator certificateChainValidator =
+    new ValidatorBuilder()
+      .addRule(new StringMaxLengthValidationRule(10000))
+      .setRequired(true)
+      .build();
 
   private String certificateChain;
 
@@ -66,6 +72,7 @@ public class CertificateSignedRequest implements Request {
    * @param certificateChain string[0..10000]
    */
   public void setCertificateChain(String certificateChain) {
+    certificateChainValidator.validate(certificateChain);
     this.certificateChain = certificateChain;
   }
 
@@ -76,7 +83,7 @@ public class CertificateSignedRequest implements Request {
 
   @Override
   public boolean validate() {
-    return ModelUtil.validate(certificateChain, STRING_10000_CHAR_MAX_LENGTH);
+    return certificateChainValidator.safeValidate(certificateChain);
   }
 
   @Override

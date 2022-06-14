@@ -42,19 +42,19 @@ import java.util.Objects;
  * FirmwareType is used by {@link SignedUpdateFirmwareRequest}
  */
 public class FirmwareType implements Validatable {
-  private final transient Validator locationValidator =
+  private static final transient Validator locationValidator =
     new ValidatorBuilder()
       .addRule(OCPPSecurityExtDatatypes.string512())
       .setRequired(true)
       .build();
 
-  private final transient Validator signingCertificateValidator =
+  private static final transient Validator signingCertificateValidator =
     new ValidatorBuilder()
       .addRule(new StringMaxLengthValidationRule(5500))
       .setRequired(true)
       .build();
 
-  private final transient Validator signatureValidator =
+  private static final transient Validator signatureValidator =
     new ValidatorBuilder()
       .addRule(new StringMaxLengthValidationRule(800))
       .setRequired(true)
@@ -81,6 +81,7 @@ public class FirmwareType implements Validatable {
    * @param location string[0..512]
    */
   public void setLocation(String location) {
+    locationValidator.validate(location);
     this.location = location;
   }
 
@@ -135,6 +136,7 @@ public class FirmwareType implements Validatable {
    * @param signingCertificate string[0..5500]
    */
   public void setSigningCertificate(String signingCertificate) {
+    signatureValidator.validate(signingCertificate);
     this.signingCertificate = signingCertificate;
   }
 
@@ -153,6 +155,7 @@ public class FirmwareType implements Validatable {
    * @param signature string[0..800]
    */
   public void setSignature(String signature) {
+    signatureValidator.validate(signature);
     this.signature = signature;
   }
 

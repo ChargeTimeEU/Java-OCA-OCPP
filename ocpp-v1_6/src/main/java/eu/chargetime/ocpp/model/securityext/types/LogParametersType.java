@@ -36,7 +36,7 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 
 public class LogParametersType implements Validatable {
-  private final transient Validator remoteLocationValidator =
+  private static final transient Validator remoteLocationValidator =
     new ValidatorBuilder()
       .addRule(OCPPSecurityExtDatatypes.identifierString())
       .addRule(OCPPSecurityExtDatatypes.string512())
@@ -62,6 +62,7 @@ public class LogParametersType implements Validatable {
    * @param remoteLocation String
    */
   public void setRemoteLocation(String remoteLocation) {
+    remoteLocationValidator.validate(remoteLocation);
     this.remoteLocation = remoteLocation;
   }
 

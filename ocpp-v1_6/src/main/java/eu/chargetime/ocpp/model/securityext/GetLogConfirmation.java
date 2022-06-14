@@ -28,6 +28,10 @@ package eu.chargetime.ocpp.model.securityext;
 
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.securityext.types.LogStatusEnumType;
+import eu.chargetime.ocpp.model.validation.OCPPSecurityExtDatatypes;
+import eu.chargetime.ocpp.model.validation.StringMaxLengthValidationRule;
+import eu.chargetime.ocpp.model.validation.Validator;
+import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
@@ -35,7 +39,10 @@ import java.util.Objects;
 
 public class GetLogConfirmation implements Request {
 
-  private static final int STRING_255_CHAR_MAX_LENGTH = 255;
+  private static final transient Validator filenameValidator =
+    new ValidatorBuilder()
+      .addRule(new StringMaxLengthValidationRule(255))
+      .build();
 
   private LogStatusEnumType status;
   private String filename;
@@ -86,6 +93,7 @@ public class GetLogConfirmation implements Request {
    * @param filename string[0..255]
    */
   public void setFilename(String filename) {
+    filenameValidator.validate(filename);
     this.filename = filename;
   }
 
@@ -96,8 +104,7 @@ public class GetLogConfirmation implements Request {
 
   @Override
   public boolean validate() {
-    return status != null
-      && (filename == null || ModelUtil.validate(filename, STRING_255_CHAR_MAX_LENGTH));
+    return status != null && filenameValidator.safeValidate(filename);
   }
 
   @Override
