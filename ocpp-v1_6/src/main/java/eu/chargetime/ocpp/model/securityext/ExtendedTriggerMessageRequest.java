@@ -68,7 +68,7 @@ public class ExtendedTriggerMessageRequest implements Request {
   /**
    * Only filled in when request applies to a specific connector.
    *
-   * @return Integer connectorId > 0
+   * @return Integer connectorId &gt; 0
    */
   public Integer getConnectorId() {
     return connectorId;
