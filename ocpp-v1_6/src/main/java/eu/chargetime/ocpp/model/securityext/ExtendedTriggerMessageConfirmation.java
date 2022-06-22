@@ -37,6 +37,12 @@ public class ExtendedTriggerMessageConfirmation implements Confirmation {
   private TriggerMessageStatusEnumType status;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private ExtendedTriggerMessageConfirmation() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param status TriggerMessageStatusEnumType. See {@link #setStatus(TriggerMessageStatusEnumType)}

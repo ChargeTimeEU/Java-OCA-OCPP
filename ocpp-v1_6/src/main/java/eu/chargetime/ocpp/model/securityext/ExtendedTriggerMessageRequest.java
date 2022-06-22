@@ -39,6 +39,12 @@ public class ExtendedTriggerMessageRequest implements Request {
   private Integer connectorId;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private ExtendedTriggerMessageRequest() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param requestedMessage MessageTriggerEnumType. See {@link #setRequestedMessage(MessageTriggerEnumType)}

@@ -45,6 +45,12 @@ public class SignCertificateRequest implements Request {
   private String csr;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private SignCertificateRequest() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param csr String. See {@link #setCsr(String)}

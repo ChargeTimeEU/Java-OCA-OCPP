@@ -38,7 +38,6 @@ import java.util.Objects;
 public class LogParametersType implements Validatable {
   private static final transient Validator remoteLocationValidator =
     new ValidatorBuilder()
-      .addRule(OCPPSecurityExtDatatypes.identifierString())
       .addRule(OCPPSecurityExtDatatypes.string512())
       .setRequired(true)
       .build();

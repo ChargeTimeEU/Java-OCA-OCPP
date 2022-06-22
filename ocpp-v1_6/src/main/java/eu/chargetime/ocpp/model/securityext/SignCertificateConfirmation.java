@@ -37,6 +37,12 @@ public class SignCertificateConfirmation implements Confirmation {
   private GenericStatusEnumType status;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private SignCertificateConfirmation() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param status GenericStatusEnumType. See {@link #setStatus(GenericStatusEnumType)}

@@ -37,6 +37,12 @@ public class GetInstalledCertificateIdsRequest implements Request {
   private CertificateUseEnumType certificateType;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private GetInstalledCertificateIdsRequest() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param certificateType CertificateUseEnumType. See {@link #setCertificateType(CertificateUseEnumType)}

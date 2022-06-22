@@ -136,7 +136,7 @@ public class FirmwareType implements Validatable {
    * @param signingCertificate string[0..5500]
    */
   public void setSigningCertificate(String signingCertificate) {
-    signatureValidator.validate(signingCertificate);
+    signingCertificateValidator.validate(signingCertificate);
     this.signingCertificate = signingCertificate;
   }
 

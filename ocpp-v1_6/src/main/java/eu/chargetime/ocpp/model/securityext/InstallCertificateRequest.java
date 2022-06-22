@@ -47,6 +47,12 @@ public class InstallCertificateRequest implements Request {
   private String certificate;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private InstallCertificateRequest() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param certificateType CertificateUseEnumType. See {@link #setCertificateType(CertificateUseEnumType)}

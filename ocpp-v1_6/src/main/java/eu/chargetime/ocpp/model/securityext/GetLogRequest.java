@@ -42,6 +42,12 @@ public class GetLogRequest implements Request {
   private LogParametersType log;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private GetLogRequest() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param logType   LogEnumType. See {@link #setLogType(LogEnumType)}

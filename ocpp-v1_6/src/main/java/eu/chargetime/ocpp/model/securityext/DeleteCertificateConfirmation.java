@@ -37,6 +37,12 @@ public class DeleteCertificateConfirmation implements Confirmation {
   private DeleteCertificateStatusEnumType status;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private DeleteCertificateConfirmation() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param status DeleteCertificateStatusEnumType. See {@link #setStatus(DeleteCertificateStatusEnumType)}

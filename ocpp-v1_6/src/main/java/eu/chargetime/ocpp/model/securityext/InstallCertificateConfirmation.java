@@ -37,6 +37,12 @@ public class InstallCertificateConfirmation implements Confirmation {
   private CertificateStatusEnumType status;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private InstallCertificateConfirmation() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param status CertificateStatusEnumType. See {@link #setStatus(CertificateStatusEnumType)}

@@ -46,6 +46,12 @@ public class GetLogConfirmation implements Confirmation {
   private String filename;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private GetLogConfirmation() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param status LogStatusEnumType. See {@link #setStatus(LogStatusEnumType)}

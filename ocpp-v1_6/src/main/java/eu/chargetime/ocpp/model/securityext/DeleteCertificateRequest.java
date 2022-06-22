@@ -37,6 +37,12 @@ public class DeleteCertificateRequest implements Request {
   private CertificateHashDataType certificateHashData;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private DeleteCertificateRequest() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param certificateHashData String. See {@link #setCertificateHashData(CertificateHashDataType)}

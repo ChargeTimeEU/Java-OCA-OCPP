@@ -45,6 +45,12 @@ public class CertificateSignedRequest implements Request {
   private String certificateChain;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private CertificateSignedRequest() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param certificateChain String. See {@link #setCertificateChain(String)}

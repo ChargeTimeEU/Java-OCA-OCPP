@@ -40,6 +40,12 @@ public class SignedUpdateFirmwareRequest implements Request {
   private FirmwareType firmware;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private SignedUpdateFirmwareRequest() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param requestId Integer. See {@link #setRequestId(Integer)}

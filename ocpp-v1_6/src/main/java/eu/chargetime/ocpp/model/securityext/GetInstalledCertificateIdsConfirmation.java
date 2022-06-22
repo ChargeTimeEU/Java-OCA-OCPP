@@ -40,6 +40,12 @@ public class GetInstalledCertificateIdsConfirmation implements Confirmation {
   private CertificateHashDataType[] certificateHashData;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private GetInstalledCertificateIdsConfirmation() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param status GetInstalledCertificateStatusEnumType. See {@link #setStatus(GetInstalledCertificateStatusEnumType)}

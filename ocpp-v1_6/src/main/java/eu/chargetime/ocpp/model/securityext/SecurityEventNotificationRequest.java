@@ -53,6 +53,12 @@ public class SecurityEventNotificationRequest implements Request {
   private String techInfo;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private SecurityEventNotificationRequest() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param type      String. See {@link #setType(String)}

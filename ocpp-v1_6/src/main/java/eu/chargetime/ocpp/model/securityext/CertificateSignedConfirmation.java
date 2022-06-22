@@ -37,6 +37,12 @@ public class CertificateSignedConfirmation implements Confirmation {
   private CertificateSignedStatusEnumType status;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private CertificateSignedConfirmation() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param status CertificateSignedStatusEnumType. See {@link #setStatus(CertificateSignedStatusEnumType)}

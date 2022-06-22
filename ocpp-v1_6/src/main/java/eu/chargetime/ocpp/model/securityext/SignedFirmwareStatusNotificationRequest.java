@@ -39,6 +39,12 @@ public class SignedFirmwareStatusNotificationRequest implements Request {
   private Integer requestId;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private SignedFirmwareStatusNotificationRequest() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param status FirmwareStatusEnumType. See {@link #setStatus(FirmwareStatusEnumType)}

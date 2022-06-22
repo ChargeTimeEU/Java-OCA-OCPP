@@ -38,6 +38,12 @@ public class LogStatusNotificationRequest implements Request {
   private Integer requestId;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private LogStatusNotificationRequest() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param status UploadLogStatusEnumType. See {@link #setStatus(UploadLogStatusEnumType)}

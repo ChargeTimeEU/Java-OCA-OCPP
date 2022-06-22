@@ -37,6 +37,12 @@ public class SignedUpdateFirmwareConfirmation implements Confirmation {
   private UpdateFirmwareStatusEnumType status;
 
   /**
+   * Private default constructor for serialization purposes.
+   */
+  private SignedUpdateFirmwareConfirmation() {
+  }
+
+  /**
    * Handle required fields.
    *
    * @param status Integer. See {@link #setStatus(UpdateFirmwareStatusEnumType)}

@@ -113,7 +113,7 @@ public class CertificateHashDataType implements Validatable {
   /**
    * The serial number of the certificate.
    *
-   * @return identifierString[0..128]
+   * @return string[0..40]
    */
   public String getSerialNumber() {
     return serialNumber;
