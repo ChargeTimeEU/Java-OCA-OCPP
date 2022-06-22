@@ -25,6 +25,7 @@ package eu.chargetime.ocpp.test;
    SOFTWARE.
 */
 
+import eu.chargetime.ocpp.AuthenticationException;
 import eu.chargetime.ocpp.IServerAPI;
 import eu.chargetime.ocpp.JSONConfiguration;
 import eu.chargetime.ocpp.JSONServer;
@@ -73,7 +74,7 @@ public class FakeCentralSystem {
           new ServerEvents() {
             @Override
             public void authenticateSession(
-                SessionInformation information, String username, byte[] password) {}
+                SessionInformation information, String username, byte[] password) throws AuthenticationException {}
 
             @Override
             public void newSession(UUID sessionIndex, SessionInformation information) {
