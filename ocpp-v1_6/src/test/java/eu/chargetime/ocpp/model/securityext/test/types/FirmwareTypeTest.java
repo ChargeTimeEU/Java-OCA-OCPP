@@ -71,6 +71,18 @@ public class FirmwareTypeTest {
     assertTrue(actual);
   }
 
+  @Test
+  public void setLocation_maximumLengthString_nothingThrown() {
+    // Given
+    String location = TestUtilities.aString(512);
+    FirmwareType type = new FirmwareType();
+
+    // When
+    type.setLocation(location);
+
+    // Then nothing thrown
+  }
+
   @Test(expected = PropertyConstraintException.class)
   public void setLocation_exceedingLengthString_throwsPropertyConstraintException() {
     // Given
@@ -83,6 +95,18 @@ public class FirmwareTypeTest {
     // Then throws
   }
 
+  @Test
+  public void setSigningCertificate_maximumLengthString_nothingThrown() {
+    // Given
+    String signingCertificate = TestUtilities.aString(5500);
+    FirmwareType type = new FirmwareType();
+
+    // When
+    type.setSigningCertificate(signingCertificate);
+
+    // Then nothing thrown
+  }
+
   @Test(expected = PropertyConstraintException.class)
   public void setSigningCertificate_exceedingLengthString_throwsPropertyConstraintException() {
     // Given
@@ -93,6 +117,18 @@ public class FirmwareTypeTest {
     type.setSigningCertificate(signingCertificate);
 
     // Then throws
+  }
+
+  @Test
+  public void setSignature_maximumLengthString_nothingThrown() {
+    // Given
+    String signature = TestUtilities.aString(800);
+    FirmwareType type = new FirmwareType();
+
+    // When
+    type.setSignature(signature);
+
+    // Then nothing thrown
   }
 
   @Test(expected = PropertyConstraintException.class)
@@ -108,11 +144,11 @@ public class FirmwareTypeTest {
   }
 
   private String givenSigningCertificate() {
-    return "an-identifier-string";
+    return "PEM encoded X.509 certificate";
   }
 
   private String givenSignature() {
-    return "PEM encoded X.509 certificate";
+    return "Base64 encoded firmware signature";
   }
 
   private String givenLocation() {

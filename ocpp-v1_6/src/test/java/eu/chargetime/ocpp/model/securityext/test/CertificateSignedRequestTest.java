@@ -56,6 +56,17 @@ public class CertificateSignedRequestTest {
     // Then throws
   }
 
+  @Test
+  public void setCertificateChain_maximumLengthString_nothingThrown() {
+    // Given
+    String certificateChain = TestUtilities.aString(10000);
+
+    // When
+    new CertificateSignedRequest(certificateChain);
+
+    // Then nothing thrown
+  }
+
   @Test(expected = PropertyConstraintException.class)
   public void setCertificateChain_exceedingLengthString_throwsPropertyConstraintException() {
     // Given

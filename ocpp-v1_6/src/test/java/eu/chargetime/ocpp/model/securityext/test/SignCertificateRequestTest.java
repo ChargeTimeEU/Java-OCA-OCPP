@@ -56,6 +56,17 @@ public class SignCertificateRequestTest {
     // Then throws
   }
 
+  @Test
+  public void setType_maximumLengthString_nothingThrown() {
+    // Given
+    String csr = TestUtilities.aString(5500);
+
+    // When
+    new SignCertificateRequest(csr);
+
+    // Then nothing thrown
+  }
+
   @Test(expected = PropertyConstraintException.class)
   public void setCsr_exceedingLengthString_throwsPropertyConstraintException() {
     // Given

@@ -76,6 +76,18 @@ public class SecurityEventNotificationRequestTest {
     assertFalse(actual);
   }
 
+  @Test
+  public void setType_maximumLengthString_nothingThrown() {
+    // Given
+    String type = TestUtilities.aString(50);
+    ZonedDateTime timestamp = ZonedDateTime.now();
+
+    // When
+    new SecurityEventNotificationRequest(type, timestamp);
+
+    // Then nothing thrown
+  }
+
   @Test(expected = PropertyConstraintException.class)
   public void setType_exceedingLengthString_throwsPropertyConstraintException() {
     // Given
@@ -86,6 +98,20 @@ public class SecurityEventNotificationRequestTest {
     new SecurityEventNotificationRequest(type, timestamp);
 
     // Then throws
+  }
+
+  @Test
+  public void setTechInfo_maximumLengthString_nothingThrown() {
+    // Given
+    String type = givenType();
+    ZonedDateTime timestamp = ZonedDateTime.now();
+    String techInfo = TestUtilities.aString(255);
+    SecurityEventNotificationRequest request = new SecurityEventNotificationRequest(type, timestamp);
+
+    // When
+    request.setTechInfo(techInfo);
+
+    // Then nothing thrown
   }
 
   @Test(expected = PropertyConstraintException.class)

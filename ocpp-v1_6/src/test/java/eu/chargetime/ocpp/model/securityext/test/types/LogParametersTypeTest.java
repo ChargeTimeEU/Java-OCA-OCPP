@@ -84,6 +84,18 @@ public class LogParametersTypeTest {
     assertTrue(actual);
   }
 
+  @Test
+  public void setLocation_maximumLengthString_nothingThrown() {
+    // Given
+    String location = TestUtilities.aString(512);
+    LogParametersType type = new LogParametersType();
+
+    // When
+    type.setRemoteLocation(location);
+
+    // Then nothing thrown
+  }
+
   @Test(expected = PropertyConstraintException.class)
   public void setLocation_exceedingLengthString_throwsPropertyConstraintException() {
     // Given

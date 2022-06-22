@@ -61,14 +61,24 @@ public class InstallCertificateRequestTest {
     // Then throws
   }
 
+  @Test
+  public void setCertificate_maximumLengthString_nothingThrown() {
+    // Given
+    String certificate = TestUtilities.aString(5500);
+
+    // When
+    new InstallCertificateRequest(null, certificate);
+
+    // Then nothing thrown
+  }
+
   @Test(expected = PropertyConstraintException.class)
   public void setCertificate_exceedingLengthString_throwsPropertyConstraintException() {
     // Given
     String certificate = TestUtilities.aString(5501);
-    InstallCertificateRequest request = new InstallCertificateRequest(null, null);
 
     // When
-    request.setCertificate(certificate);
+    new InstallCertificateRequest(null, certificate);
 
     // Then throws
   }

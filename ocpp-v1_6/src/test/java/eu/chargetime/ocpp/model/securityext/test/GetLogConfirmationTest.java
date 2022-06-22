@@ -28,6 +28,7 @@ package eu.chargetime.ocpp.model.securityext.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.securityext.GetLogConfirmation;
+import eu.chargetime.ocpp.model.securityext.types.CertificateHashDataType;
 import eu.chargetime.ocpp.model.securityext.types.LogStatusEnumType;
 import eu.chargetime.ocpp.utilities.TestUtilities;
 import org.junit.Test;
@@ -90,6 +91,18 @@ public class GetLogConfirmationTest {
 
     // Then
     assertTrue(actual);
+  }
+
+  @Test
+  public void setFilename_maximumLengthString_nothingThrown() {
+    // Given
+    String filename = TestUtilities.aString(255);
+    GetLogConfirmation confirmation = new GetLogConfirmation(null);
+
+    // When
+    confirmation.setFilename(filename);
+
+    // Then nothing thrown
   }
 
   @Test(expected = PropertyConstraintException.class)

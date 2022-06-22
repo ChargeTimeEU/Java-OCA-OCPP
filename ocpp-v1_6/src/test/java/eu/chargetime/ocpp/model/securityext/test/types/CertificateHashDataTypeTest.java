@@ -94,6 +94,18 @@ public class CertificateHashDataTypeTest {
     // Then throws
   }
 
+  @Test
+  public void setSerialNumber_maximumLengthString_nothingThrown() {
+    // Given
+    String serialNumber = TestUtilities.aString(40);
+    CertificateHashDataType dataType = new CertificateHashDataType();
+
+    // When
+    dataType.setSerialNumber(serialNumber);
+
+    // Then nothing thrown
+  }
+
   @Test(expected = PropertyConstraintException.class)
   public void setSerialNumber_exceedingLengthString_throwsPropertyConstraintException() {
     // Given
