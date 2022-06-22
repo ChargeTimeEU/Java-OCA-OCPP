@@ -7,6 +7,7 @@ MIT License
 
 Copyright (C) 2016-2018 Thomas Volden
 Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
+Copyright (C) 2022 Mathias Oben <mathias.oben@enervalis.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -31,6 +32,7 @@ import eu.chargetime.ocpp.IServerAPI;
 import eu.chargetime.ocpp.JSONConfiguration;
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.feature.profile.*;
+import eu.chargetime.ocpp.feature.profile.securityext.ServerSecurityExtProfile;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
 import eu.chargetime.ocpp.model.firmware.*;
@@ -41,6 +43,8 @@ import eu.chargetime.ocpp.model.reservation.CancelReservationConfirmation;
 import eu.chargetime.ocpp.model.reservation.CancelReservationRequest;
 import eu.chargetime.ocpp.model.reservation.ReserveNowConfirmation;
 import eu.chargetime.ocpp.model.reservation.ReserveNowRequest;
+import eu.chargetime.ocpp.model.securityext.*;
+import eu.chargetime.ocpp.model.securityext.types.*;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileConfirmation;
 import eu.chargetime.ocpp.model.smartcharging.SetChargingProfileRequest;
 import eu.chargetime.ocpp.test.FakeCentral.serverType;
@@ -91,6 +95,11 @@ public class FakeCentralSystem {
 
     ServerReservationProfile serverReservationProfile = new ServerReservationProfile();
     server.addFeatureProfile(serverReservationProfile);
+
+    ServerSecurityExtProfile serverSecurityExtProfile = new ServerSecurityExtProfile(
+      dummyHandlers.createServerSecurityExtEventHandler()
+    );
+    server.addFeatureProfile(serverSecurityExtProfile);
   }
 
   public boolean isClosed() {
@@ -141,7 +150,7 @@ public class FakeCentralSystem {
   public boolean hasHandledBootNotification(String vendor, String model) {
     boolean result = false;
     BootNotificationRequest request =
-        dummyHandlers.getReceivedRequest(new BootNotificationRequest());
+        dummyHandlers.getReceivedRequest(BootNotificationRequest.class);
     if (request != null) {
       result = request.getChargePointVendor().equals(vendor);
       result &= request.getChargePointModel().equals(model);
@@ -188,7 +197,7 @@ public class FakeCentralSystem {
   public boolean hasReceivedChangeAvailabilityConfirmation(String status) {
     boolean result = false;
     ChangeAvailabilityConfirmation confirmation =
-        dummyHandlers.getReceivedConfirmation(new ChangeAvailabilityConfirmation());
+        dummyHandlers.getReceivedConfirmation(ChangeAvailabilityConfirmation.class);
     if (confirmation != null) result = confirmation.getStatus().toString().equals(status);
     return result;
   }
@@ -279,7 +288,7 @@ public class FakeCentralSystem {
   public boolean hasReceivedRemoteStartTransactionConfirmation(String status) {
     boolean result = false;
     RemoteStartTransactionConfirmation confirmation =
-        dummyHandlers.getReceivedConfirmation(new RemoteStartTransactionConfirmation());
+        dummyHandlers.getReceivedConfirmation(RemoteStartTransactionConfirmation.class);
     if (confirmation != null) result = confirmation.getStatus().toString().equals(status);
     return result;
   }
@@ -293,7 +302,7 @@ public class FakeCentralSystem {
   public boolean hasReceivedRemoteStopTransactionConfirmation(String status) {
     boolean result = false;
     RemoteStopTransactionConfirmation confirmation =
-        dummyHandlers.getReceivedConfirmation(new RemoteStopTransactionConfirmation());
+        dummyHandlers.getReceivedConfirmation(RemoteStopTransactionConfirmation.class);
     if (confirmation != null) result = confirmation.getStatus().toString().equals(status);
     return result;
   }
@@ -348,7 +357,7 @@ public class FakeCentralSystem {
 
   public boolean hasReceivedResetConfirmation(String status) {
     boolean result = false;
-    ResetConfirmation confirmation = dummyHandlers.getReceivedConfirmation(new ResetConfirmation());
+    ResetConfirmation confirmation = dummyHandlers.getReceivedConfirmation(ResetConfirmation.class);
     if (confirmation != null) result = confirmation.getStatus().toString().equals(status);
     return result;
   }
@@ -374,9 +383,102 @@ public class FakeCentralSystem {
   public boolean hasReceivedUnlockConnectorConfirmation(String status) {
     boolean result = false;
     UnlockConnectorConfirmation confirmation =
-        dummyHandlers.getReceivedConfirmation(new UnlockConnectorConfirmation());
+        dummyHandlers.getReceivedConfirmation(UnlockConnectorConfirmation.class);
     if (confirmation != null) result = confirmation.getStatus().toString().equals(status);
     return result;
+  }
+
+  public void sendCertificateSignedRequest(String certificateChain) throws Exception {
+    Request request = new CertificateSignedRequest(certificateChain);
+    send(request);
+  }
+
+  public boolean hasReceivedCertificateSignedConfirmation(String status) {
+    CertificateSignedConfirmation confirmation =
+      dummyHandlers.getReceivedConfirmation(CertificateSignedConfirmation.class);
+    return confirmation != null && confirmation.getStatus().toString().equals(status);
+  }
+
+  public void sendDeleteCertificateRequest(CertificateHashDataType certificateHashDataType) throws Exception {
+    Request request = new DeleteCertificateRequest(certificateHashDataType);
+    send(request);
+  }
+
+  public boolean hasReceivedDeleteCertificateConfirmation(String status) {
+    DeleteCertificateConfirmation confirmation =
+      dummyHandlers.getReceivedConfirmation(DeleteCertificateConfirmation.class);
+    return confirmation != null && confirmation.getStatus().toString().equals(status);
+  }
+
+  public void sendExtendedTriggerMessageRequest(MessageTriggerEnumType requestedMessage) throws Exception {
+    Request request = new ExtendedTriggerMessageRequest(requestedMessage);
+    send(request);
+  }
+
+  public boolean hasReceivedExtendedTriggerMessageConfirmation(String status) {
+    ExtendedTriggerMessageConfirmation confirmation =
+      dummyHandlers.getReceivedConfirmation(ExtendedTriggerMessageConfirmation.class);
+    return confirmation != null && confirmation.getStatus().toString().equals(status);
+  }
+
+  public void sendGetInstalledCertificateIdsRequest(CertificateUseEnumType certificateType) throws Exception {
+    Request request = new GetInstalledCertificateIdsRequest(certificateType);
+    send(request);
+  }
+
+  public boolean hasReceivedGetInstalledCertificateIdsConfirmation(String status) {
+    GetInstalledCertificateIdsConfirmation confirmation =
+      dummyHandlers.getReceivedConfirmation(GetInstalledCertificateIdsConfirmation.class);
+    return confirmation != null && confirmation.getStatus().toString().equals(status);
+  }
+
+  public void sendGetLogRequest(LogEnumType logType, Integer requestId, LogParametersType log) throws Exception {
+    Request request = new GetLogRequest(logType, requestId, log);
+    send(request);
+  }
+
+  public boolean hasReceivedGetLogConfirmation(String status) {
+    GetLogConfirmation confirmation =
+      dummyHandlers.getReceivedConfirmation(GetLogConfirmation.class);
+    return confirmation != null && confirmation.getStatus().toString().equals(status);
+  }
+
+  public void sendInstallCertificateRequest(CertificateUseEnumType certificateType, String certificate) throws Exception {
+    Request request = new InstallCertificateRequest(certificateType, certificate);
+    send(request);
+  }
+
+  public boolean hasReceivedInstallCertificateConfirmation(String status) {
+    InstallCertificateConfirmation confirmation =
+      dummyHandlers.getReceivedConfirmation(InstallCertificateConfirmation.class);
+    return confirmation != null && confirmation.getStatus().toString().equals(status);
+  }
+
+  public boolean hasHandledLogStatusNotificationRequest() {
+    return dummyHandlers.wasLatestRequest(LogStatusNotificationRequest.class);
+  }
+
+  public boolean hasHandledSecurityEventNotificationRequest() {
+    return dummyHandlers.wasLatestRequest(SecurityEventNotificationRequest.class);
+  }
+
+  public boolean hasHandledSignCertificateRequest() {
+    return dummyHandlers.wasLatestRequest(SignCertificateRequest.class);
+  }
+
+  public boolean hasHandledSignedFirmwareStatusNotificationRequest() {
+    return dummyHandlers.wasLatestRequest(SignedFirmwareStatusNotificationRequest.class);
+  }
+
+  public void sendSignedUpdateFirmwareRequest(Integer requestId, FirmwareType firmware) throws Exception {
+    Request request = new SignedUpdateFirmwareRequest(requestId, firmware);
+    send(request);
+  }
+
+  public boolean hasReceivedSignedUpdateFirmwareConfirmation(String status) {
+    SignedUpdateFirmwareConfirmation confirmation =
+      dummyHandlers.getReceivedConfirmation(SignedUpdateFirmwareConfirmation.class);
+    return confirmation != null && confirmation.getStatus().toString().equals(status);
   }
 
   public void rigNextRequestToFail() {
