@@ -8,6 +8,7 @@ MIT License
 
 Copyright (C) 2016-2018 Thomas Volden
 Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
+Copyright (C) 2022 Mathias Oben <mathias.oben@enervalis.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +31,8 @@ SOFTWARE.
 
 import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.profile.*;
+import eu.chargetime.ocpp.feature.profile.securityext.ClientSecurityExtEventHandler;
+import eu.chargetime.ocpp.feature.profile.securityext.ClientSecurityExtProfile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.*;
@@ -39,6 +42,8 @@ import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageConfirmation;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageStatus;
 import eu.chargetime.ocpp.model.reservation.*;
+import eu.chargetime.ocpp.model.securityext.*;
+import eu.chargetime.ocpp.model.securityext.types.*;
 import eu.chargetime.ocpp.model.smartcharging.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -51,6 +56,7 @@ public class FakeChargePoint {
   private final ClientFirmwareManagementProfile firmware;
   private final ClientLocalAuthListProfile localAuthList;
   private final ClientReservationProfile reservation;
+  private final ClientSecurityExtProfile securityExt;
   private IClientAPI client;
   private Confirmation receivedConfirmation;
   private Request receivedRequest;
@@ -223,6 +229,51 @@ public class FakeChargePoint {
               }
             });
 
+    securityExt =
+      new ClientSecurityExtProfile(new ClientSecurityExtEventHandler() {
+        @Override
+        public CertificateSignedConfirmation handleCertificateSignedRequest(CertificateSignedRequest request) {
+          receivedRequest = request;
+          return new CertificateSignedConfirmation(CertificateSignedStatusEnumType.Accepted);
+        }
+
+        @Override
+        public DeleteCertificateConfirmation handleDeleteCertificateRequest(DeleteCertificateRequest request) {
+          receivedRequest = request;
+          return new DeleteCertificateConfirmation(DeleteCertificateStatusEnumType.Accepted);
+        }
+
+        @Override
+        public ExtendedTriggerMessageConfirmation handleExtendedTriggerMessageRequest(ExtendedTriggerMessageRequest request) {
+          receivedRequest = request;
+          return new ExtendedTriggerMessageConfirmation(TriggerMessageStatusEnumType.Accepted);
+        }
+
+        @Override
+        public GetInstalledCertificateIdsConfirmation handleGetInstalledCertificateIdsRequest(GetInstalledCertificateIdsRequest request) {
+          receivedRequest = request;
+          return new GetInstalledCertificateIdsConfirmation(GetInstalledCertificateStatusEnumType.Accepted);
+        }
+
+        @Override
+        public GetLogConfirmation handleGetLogRequest(GetLogRequest request) {
+          receivedRequest = request;
+          return new GetLogConfirmation(LogStatusEnumType.Accepted);
+        }
+
+        @Override
+        public InstallCertificateConfirmation handleInstallCertificateRequest(InstallCertificateRequest request) {
+          receivedRequest = request;
+          return new InstallCertificateConfirmation(CertificateStatusEnumType.Accepted);
+        }
+
+        @Override
+        public SignedUpdateFirmwareConfirmation handleSignedUpdateFirmwareRequest(SignedUpdateFirmwareRequest request) {
+          receivedRequest = request;
+          return new SignedUpdateFirmwareConfirmation(UpdateFirmwareStatusEnumType.Accepted);
+        }
+      });
+
     switch (type) {
       case JSON:
         client = new JSONTestClient(core);
@@ -239,6 +290,7 @@ public class FakeChargePoint {
     client.addFeatureProfile(firmware);
     client.addFeatureProfile(localAuthList);
     client.addFeatureProfile(reservation);
+    client.addFeatureProfile(securityExt);
   }
 
   public enum clientType {
@@ -338,6 +390,26 @@ public class FakeChargePoint {
     send(request);
   }
 
+  public void sendLogStatusNotificationRequest(UploadLogStatusEnumType uploadLogStatusEnumType) throws Exception {
+    LogStatusNotificationRequest request = securityExt.createLogStatusNotificationRequest(uploadLogStatusEnumType);
+    send(request);
+  }
+
+  public void sendSecurityEventNotificationRequest(String type, ZonedDateTime timestamp) throws Exception {
+    SecurityEventNotificationRequest request = securityExt.createSecurityEventNotificationRequest(type, timestamp);
+    send(request);
+  }
+
+  public void sendSignCertificateRequest(String csr) throws Exception {
+    SignCertificateRequest request = securityExt.createSignCertificateRequest(csr);
+    send(request);
+  }
+
+  public void sendSignedFirmwareStatusNotificationRequest(FirmwareStatusEnumType status) throws Exception {
+    SignedFirmwareStatusNotificationRequest request = securityExt.createSignedFirmwareStatusNotificationRequest(status);
+    send(request);
+  }
+
   public void clearMemory() {
     receivedConfirmation = null;
     receivedException = null;
@@ -414,6 +486,22 @@ public class FakeChargePoint {
     return (receivedConfirmation instanceof StopTransactionConfirmation);
   }
 
+  public boolean hasReceivedLogStatusNotificationConfirmation() {
+    return receivedConfirmation instanceof LogStatusNotificationConfirmation;
+  }
+
+  public boolean hasReceivedSecurityEventNotificationConfirmation() {
+    return receivedConfirmation instanceof SecurityEventNotificationConfirmation;
+  }
+
+  public boolean hasReceivedSignCertificateConfirmation() {
+    return receivedConfirmation instanceof SignCertificateConfirmation;
+  }
+
+  public boolean hasReceivedSignedFirmwareStatusNotificationConfirmation() {
+    return receivedConfirmation instanceof SignedFirmwareStatusNotificationConfirmation;
+  }
+
   public void disconnect() {
     client.disconnect();
   }
@@ -480,6 +568,34 @@ public class FakeChargePoint {
 
   public boolean hasHandledUnlockConnectorRequest() {
     return receivedRequest instanceof UnlockConnectorRequest;
+  }
+
+  public boolean hasHandledCertificateSignedRequest() {
+    return receivedRequest instanceof CertificateSignedRequest;
+  }
+
+  public boolean hasHandledDeleteCertificateRequest() {
+    return receivedRequest instanceof DeleteCertificateRequest;
+  }
+
+  public boolean hasHandledExtendedTriggerMessageRequest() {
+    return receivedRequest instanceof ExtendedTriggerMessageRequest;
+  }
+
+  public boolean hasHandledGetInstalledCertificateIdsRequest() {
+    return receivedRequest instanceof GetInstalledCertificateIdsRequest;
+  }
+
+  public boolean hasHandledGetLogRequest() {
+    return receivedRequest instanceof GetLogRequest;
+  }
+
+  public boolean hasHandledInstallCertificateRequest() {
+    return receivedRequest instanceof InstallCertificateRequest;
+  }
+
+  public boolean hasHandledSignedUpdateFirmwareRequest() {
+    return receivedRequest instanceof SignedUpdateFirmwareRequest;
   }
 
   public boolean hasReceivedError() {

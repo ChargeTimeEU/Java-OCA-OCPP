@@ -6,6 +6,7 @@ package eu.chargetime.ocpp.test;
 
    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
    Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
+   Copyright (C) 2022 Mathias Oben <mathias.oben@enervalis.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +30,7 @@ package eu.chargetime.ocpp.test;
 import eu.chargetime.ocpp.ServerEvents;
 import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementEventHandler;
+import eu.chargetime.ocpp.feature.profile.securityext.ServerSecurityExtEventHandler;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.SessionInformation;
@@ -37,6 +39,9 @@ import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationConfirmati
 import eu.chargetime.ocpp.model.firmware.DiagnosticsStatusNotificationRequest;
 import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationConfirmation;
 import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationRequest;
+import eu.chargetime.ocpp.model.securityext.*;
+import eu.chargetime.ocpp.model.securityext.types.GenericStatusEnumType;
+
 import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -160,6 +165,39 @@ public class DummyHandlers {
     };
   }
 
+  public ServerSecurityExtEventHandler createServerSecurityExtEventHandler() {
+    return new ServerSecurityExtEventHandler() {
+
+      @Override
+      public LogStatusNotificationConfirmation handleLogStatusNotificationRequest(UUID sessionIndex, LogStatusNotificationRequest request) {
+        receivedRequest = request;
+        LogStatusNotificationConfirmation confirmation = new LogStatusNotificationConfirmation();
+        return failurePoint(confirmation);
+      }
+
+      @Override
+      public SecurityEventNotificationConfirmation handleSecurityEventNotificationRequest(UUID sessionIndex, SecurityEventNotificationRequest request) {
+        receivedRequest = request;
+        SecurityEventNotificationConfirmation confirmation = new SecurityEventNotificationConfirmation();
+        return failurePoint(confirmation);
+      }
+
+      @Override
+      public SignCertificateConfirmation handleSignCertificateRequest(UUID sessionIndex, SignCertificateRequest request) {
+        receivedRequest = request;
+        SignCertificateConfirmation confirmation = new SignCertificateConfirmation(GenericStatusEnumType.Accepted);
+        return failurePoint(confirmation);
+      }
+
+      @Override
+      public SignedFirmwareStatusNotificationConfirmation handleSignedFirmwareStatusNotificationRequest(UUID sessionIndex, SignedFirmwareStatusNotificationRequest request) {
+        receivedRequest = request;
+        SignedFirmwareStatusNotificationConfirmation confirmation = new SignedFirmwareStatusNotificationConfirmation();
+        return failurePoint(confirmation);
+      }
+    };
+  }
+
   public ServerEvents generateServerEventsHandler() {
     return new ServerEvents() {
       @Override
@@ -201,9 +239,8 @@ public class DummyHandlers {
         && requestType.equals(receivedRequest.getClass());
   }
 
-  public <T extends Request> T getReceivedRequest(T requestType) {
-    if (wasLatestRequest(requestType.getClass())) return (T) receivedRequest;
-    return null;
+  public <T extends Request> T getReceivedRequest(Class<T> clazz) {
+    return wasLatestRequest(clazz) ? (T) receivedRequest : null;
   }
 
   public boolean wasLatestConfirmation(Type confirmationType) {
@@ -212,9 +249,8 @@ public class DummyHandlers {
         && confirmationType.equals(receivedConfirmation.getClass());
   }
 
-  public <T extends Confirmation> T getReceivedConfirmation(T confirmationType) {
-    if (wasLatestConfirmation(confirmationType.getClass())) return (T) receivedConfirmation;
-    return null;
+  public <T extends Confirmation> T getReceivedConfirmation(Class<T> clazz) {
+    return wasLatestConfirmation(clazz) ? (T) receivedConfirmation : null;
   }
 
   public void setRiggedToFail(boolean riggedToFail) {
