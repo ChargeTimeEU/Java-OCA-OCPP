@@ -74,8 +74,8 @@ public class SendLocalListRequest implements Request {
    * @param listVersion, the version number of the list
    */
   public void setListVersion(Integer listVersion) {
-    if (listVersion < 1) {
-      throw new PropertyConstraintException(listVersion, "listVersion must be > 0");
+    if (listVersion < 0) {
+      throw new PropertyConstraintException(listVersion, "listVersion must be >= 0");
     }
     this.listVersion = listVersion;
   }
@@ -122,7 +122,7 @@ public class SendLocalListRequest implements Request {
 
   @Override
   public boolean validate() {
-    boolean valid = listVersion != null && (listVersion >= 1) && (updateType != null);
+    boolean valid = listVersion != null && (listVersion >= 0) && (updateType != null);
 
     if (localAuthorizationList != null) {
       for (AuthorizationData data : localAuthorizationList) {
