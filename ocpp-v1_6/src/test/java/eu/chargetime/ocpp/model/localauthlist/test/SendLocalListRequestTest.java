@@ -38,19 +38,14 @@ public class SendLocalListRequestTest {
 
   @Test
   public void setListVersion_asNegative_throwsPropertyConstraintException() {
-    testInvalidListVersion(-20);
-  }
-
-  @Test
-  public void setListVersion_asZero_throwsPropertyConstraintException() {
-    testInvalidListVersion(0);
+    testInvalidListVersion(-1);
   }
 
   private void testInvalidListVersion(int invalidVersion) {
     thrownException.expect(instanceOf(PropertyConstraintException.class));
     thrownException.expectMessage(
         equalTo(
-            "Validation failed: [listVersion must be > 0]. Current Value: ["
+            "Validation failed: [listVersion must be >= 0]. Current Value: ["
                 + invalidVersion
                 + "]"));
 
@@ -58,8 +53,8 @@ public class SendLocalListRequestTest {
   }
 
   @Test
-  public void setListVersion_isNonZeroPostive_isCorrect() {
-    for (int i = 1; i <= 10; i++) {
+  public void setListVersion_isNotNegative_isCorrect() {
+    for (int i = 0; i <= 10; i++) {
       // When
       request.setListVersion(i);
       // Then
