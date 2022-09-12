@@ -99,7 +99,7 @@ public class JSONCommunicator extends Communicator {
   static {
     GsonBuilder builder = new GsonBuilder();
     builder.registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeSerializer());
-    gson = builder.create();
+    gson = builder.disableHtmlEscaping().create();
   }
 
   @Override
