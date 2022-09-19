@@ -171,7 +171,7 @@ public class Server {
   }
 
   private Optional<UUID> getSessionID(ISession session) {
-    if (!sessions.containsValue(session)) {
+    if (!sessions.containsKey(session.getSessionId())) {
       return Optional.empty();
     }
 
