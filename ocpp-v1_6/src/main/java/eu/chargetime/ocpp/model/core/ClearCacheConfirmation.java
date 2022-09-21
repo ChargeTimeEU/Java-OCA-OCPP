@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /** Sent by the Charge Point to the Central System in response to a {@link ClearCacheRequest}. */
 @XmlRootElement(name = "clearCacheResponse")
-public class ClearCacheConfirmation implements Confirmation {
+public class ClearCacheConfirmation extends Confirmation {
 
   private ClearCacheStatus status;
 

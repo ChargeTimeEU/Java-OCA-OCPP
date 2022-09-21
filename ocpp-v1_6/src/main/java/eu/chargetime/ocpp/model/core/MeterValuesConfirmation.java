@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /** */
 @XmlRootElement(name = "meterValuesResponse")
-public class MeterValuesConfirmation implements Confirmation {
+public class MeterValuesConfirmation extends Confirmation {
   @Override
   public boolean validate() {
     return true;

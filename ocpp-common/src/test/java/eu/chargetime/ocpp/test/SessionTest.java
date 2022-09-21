@@ -119,7 +119,12 @@ public class SessionTest {
   @Test
   public void sendConfirmation_sendsConfirmationToCommunicator() {
     // Given
-    Confirmation conf = () -> false;
+    Confirmation conf = new Confirmation() {
+      @Override
+      public boolean validate() {
+        return false;
+      }
+    };
     String someUniqueId = "Some id";
     String action = "Some action";
 
@@ -162,7 +167,13 @@ public class SessionTest {
   public void onCall_handledCallback_callSendCallResult() throws Exception {
     // Given
     String someId = "Some id";
-    Confirmation aConfirmation = () -> true;
+    Confirmation aConfirmation = new Confirmation() {
+      @Override
+      public boolean validate() {
+        return false;
+      }
+    };
+
     doAnswer(
             invocation ->
                 invocation.getArgumentAt(0, CompletableFuture.class).complete(aConfirmation))

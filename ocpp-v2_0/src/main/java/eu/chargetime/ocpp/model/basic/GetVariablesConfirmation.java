@@ -31,7 +31,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class GetVariablesConfirmation implements Confirmation {
+public class GetVariablesConfirmation extends Confirmation {
 
   private GetVariableResultType[] getVariableResult;
 

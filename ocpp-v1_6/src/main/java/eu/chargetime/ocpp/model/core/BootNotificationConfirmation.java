@@ -45,7 +45,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement(name = "bootNotificationResponse")
 @XmlType(propOrder = {"status", "currentTime", "interval"})
-public class BootNotificationConfirmation implements Confirmation {
+public class BootNotificationConfirmation extends Confirmation {
 
   private ZonedDateTime currentTime;
   private Integer interval;

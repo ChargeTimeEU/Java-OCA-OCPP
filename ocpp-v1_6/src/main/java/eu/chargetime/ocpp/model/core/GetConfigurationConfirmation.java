@@ -42,7 +42,7 @@ SOFTWARE.
  */
 @XmlRootElement(name = "getConfigurationResponse")
 @XmlType(propOrder = {"configurationKey", "unknownKey"})
-public class GetConfigurationConfirmation implements Confirmation {
+public class GetConfigurationConfirmation extends Confirmation {
 
   private static final String ERROR_MESSAGE = "Exceeds limit of %s chars";
 

@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /** Sent by the Central System to the Charge Point in response to a {@link AuthorizeRequest}. */
 @XmlRootElement(name = "authorizeResponse")
-public class AuthorizeConfirmation implements Confirmation {
+public class AuthorizeConfirmation extends Confirmation {
 
   private IdTagInfo idTagInfo;
 

@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement(name = "startTransactionResponse")
 @XmlType(propOrder = {"transactionId", "idTagInfo"})
-public class StartTransactionConfirmation implements Confirmation {
+public class StartTransactionConfirmation extends Confirmation {
 
   private IdTagInfo idTagInfo;
   private Integer transactionId;

@@ -29,7 +29,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 
-public class StatusNotificationConfirmation implements Confirmation {
+public class StatusNotificationConfirmation extends Confirmation {
 
   @Override
   public boolean validate() {

@@ -31,7 +31,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class LogStatusNotificationConfirmation implements Confirmation {
+public class LogStatusNotificationConfirmation extends Confirmation {
 
   @Override
   public boolean validate() {

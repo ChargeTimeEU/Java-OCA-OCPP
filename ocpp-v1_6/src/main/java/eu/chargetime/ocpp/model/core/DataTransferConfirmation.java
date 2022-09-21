@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement(name = "dataTransferResponse")
 @XmlType(propOrder = {"status", "data"})
-public class DataTransferConfirmation implements Confirmation {
+public class DataTransferConfirmation extends Confirmation {
 
   private DataTransferStatus status;
   private String data;

@@ -31,7 +31,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class SignedFirmwareStatusNotificationConfirmation implements Confirmation {
+public class SignedFirmwareStatusNotificationConfirmation extends Confirmation {
 
   @Override
   public boolean validate() {

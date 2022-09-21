@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * CancelReservationRequest}.
  */
 @XmlRootElement(name = "cancelReservationResponse")
-public class CancelReservationConfirmation implements Confirmation {
+public class CancelReservationConfirmation extends Confirmation {
 
   private CancelReservationStatus status;
 

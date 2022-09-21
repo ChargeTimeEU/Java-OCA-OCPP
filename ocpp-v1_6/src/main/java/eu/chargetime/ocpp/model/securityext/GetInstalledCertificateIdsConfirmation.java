@@ -34,7 +34,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class GetInstalledCertificateIdsConfirmation implements Confirmation {
+public class GetInstalledCertificateIdsConfirmation extends Confirmation {
 
   private GetInstalledCertificateStatusEnumType status;
   private CertificateHashDataType[] certificateHashData;

@@ -32,7 +32,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class CertificateSignedConfirmation implements Confirmation {
+public class CertificateSignedConfirmation extends Confirmation {
 
   private CertificateSignedStatusEnumType status;
 

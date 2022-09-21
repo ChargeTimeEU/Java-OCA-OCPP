@@ -28,4 +28,14 @@ SOFTWARE.
 */
 
 /** Interface used to flag a Model as a Confirmation payload. */
-public interface Confirmation extends Validatable {}
+public abstract class Confirmation implements Validatable {
+    private transient ConfirmationCompletedHandler completedHandler;
+
+    public ConfirmationCompletedHandler getCompletedHandler() {
+        return completedHandler;
+    }
+    public void setCompletedHandler(ConfirmationCompletedHandler completedHandler) {
+        this.completedHandler = completedHandler;
+    }
+}
+

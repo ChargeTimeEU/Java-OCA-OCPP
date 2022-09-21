@@ -33,7 +33,7 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
 
-public class GetCompositeScheduleConfirmation implements Confirmation {
+public class GetCompositeScheduleConfirmation extends Confirmation {
 
   private GetCompositeScheduleStatus status;
   private Integer connectorId;

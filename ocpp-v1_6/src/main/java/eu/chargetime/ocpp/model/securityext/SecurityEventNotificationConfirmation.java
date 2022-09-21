@@ -31,7 +31,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class SecurityEventNotificationConfirmation implements Confirmation {
+public class SecurityEventNotificationConfirmation extends Confirmation {
 
   @Override
   public boolean validate() {

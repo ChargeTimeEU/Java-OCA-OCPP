@@ -32,7 +32,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class ExtendedTriggerMessageConfirmation implements Confirmation {
+public class ExtendedTriggerMessageConfirmation extends Confirmation {
 
   private TriggerMessageStatusEnumType status;
 

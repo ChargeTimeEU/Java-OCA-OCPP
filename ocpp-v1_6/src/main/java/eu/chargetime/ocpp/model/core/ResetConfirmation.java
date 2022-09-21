@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /** Sent by the Charge Point to the Central System in response to a {@link ResetRequest}. */
 @XmlRootElement
-public class ResetConfirmation implements Confirmation {
+public class ResetConfirmation extends Confirmation {
 
   private ResetStatus status;
 

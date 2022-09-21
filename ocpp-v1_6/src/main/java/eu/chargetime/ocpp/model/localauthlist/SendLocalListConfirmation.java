@@ -32,7 +32,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 
-public class SendLocalListConfirmation implements Confirmation {
+public class SendLocalListConfirmation extends Confirmation {
 
   private UpdateStatus status;
 

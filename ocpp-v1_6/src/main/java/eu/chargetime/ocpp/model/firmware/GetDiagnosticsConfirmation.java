@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "getDiagnosticsResponse")
-public class GetDiagnosticsConfirmation implements Confirmation {
+public class GetDiagnosticsConfirmation extends Confirmation {
   private String fileName;
 
   @Override

@@ -32,7 +32,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 
-public class GetLocalListVersionConfirmation implements Confirmation {
+public class GetLocalListVersionConfirmation extends Confirmation {
 
   private Integer listVersion = -2;
 

@@ -2,11 +2,11 @@ package eu.chargetime.ocpp.model;
 
 /*
 ChargeTime.eu - Java-OCA-OCPP
-Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
+Copyright (C) 2015-2022 Thomas Volden <tv@chargetime.eu>
 
 MIT License
 
-Copyright (C) 2016-2018 Thomas Volden
+Copyright (C) 2016-2022 Thomas Volden
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -27,10 +27,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-/** Test implementation of the Confirmation interface. Used for tests. */
-public class TestConfirmation extends Confirmation {
-  @Override
-  public boolean validate() {
-    return true;
-  }
+
+/**
+ * Callback that can perform actions after the confirmation is sent back to the Charge Point
+ */
+public interface ConfirmationCompletedHandler {
+    void onConfirmationCompleted();
 }

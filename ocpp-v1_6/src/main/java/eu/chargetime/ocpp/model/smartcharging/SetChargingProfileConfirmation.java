@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "setChargingProfileResponse")
-public class SetChargingProfileConfirmation implements Confirmation {
+public class SetChargingProfileConfirmation extends Confirmation {
 
   private ChargingProfileStatus status;
 

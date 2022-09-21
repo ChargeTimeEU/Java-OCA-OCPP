@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "clearChargingProfileResponse")
-public class ClearChargingProfileConfirmation implements Confirmation {
+public class ClearChargingProfileConfirmation extends Confirmation {
 
   private ClearChargingProfileStatus status;
 

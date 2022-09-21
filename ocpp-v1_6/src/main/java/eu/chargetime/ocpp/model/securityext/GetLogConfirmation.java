@@ -35,7 +35,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class GetLogConfirmation implements Confirmation {
+public class GetLogConfirmation extends Confirmation {
 
   private static final transient Validator filenameValidator =
     new ValidatorBuilder()

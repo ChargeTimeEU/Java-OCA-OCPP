@@ -32,7 +32,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class DeleteCertificateConfirmation implements Confirmation {
+public class DeleteCertificateConfirmation extends Confirmation {
 
   private DeleteCertificateStatusEnumType status;
 

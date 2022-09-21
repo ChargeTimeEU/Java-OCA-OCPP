@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Sent by the Charge Point to the Central System in response to an {@link UnlockConnectorRequest}.
  */
 @XmlRootElement(name = "unlockConnectorResponse")
-public class UnlockConnectorConfirmation implements Confirmation {
+public class UnlockConnectorConfirmation extends Confirmation {
 
   private UnlockStatus status;
 

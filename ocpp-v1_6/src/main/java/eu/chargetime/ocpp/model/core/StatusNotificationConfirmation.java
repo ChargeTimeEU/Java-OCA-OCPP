@@ -32,7 +32,7 @@ import java.util.Objects;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "statusNotificationResponse")
-public class StatusNotificationConfirmation implements Confirmation {
+public class StatusNotificationConfirmation extends Confirmation {
   @Override
   public boolean validate() {
     return true;

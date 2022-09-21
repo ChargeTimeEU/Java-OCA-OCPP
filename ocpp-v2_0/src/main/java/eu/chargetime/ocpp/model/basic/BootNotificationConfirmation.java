@@ -34,7 +34,7 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /** sent by the CSMS to the Charging Station in response to a {@link BootNotificationRequest}. */
-public class BootNotificationConfirmation implements Confirmation {
+public class BootNotificationConfirmation extends Confirmation {
   private transient RequiredValidator validator = new RequiredValidator();
 
   private ZonedDateTime currentTime;

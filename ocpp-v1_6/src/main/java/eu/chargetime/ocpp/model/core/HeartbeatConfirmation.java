@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /** Sent by the Central System to the Charge Point in response to a {@link HeartbeatRequest}. */
 @XmlRootElement(name = "heartbeatResponse")
-public class HeartbeatConfirmation implements Confirmation {
+public class HeartbeatConfirmation extends Confirmation {
   private ZonedDateTime currentTime;
 
   /**

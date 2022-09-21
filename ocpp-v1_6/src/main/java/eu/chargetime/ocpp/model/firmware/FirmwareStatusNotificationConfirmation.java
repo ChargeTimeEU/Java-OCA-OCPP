@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * FirmwareStatusNotificationRequest}.
  */
 @XmlRootElement(name = "firmwareStatusNotificationResponse")
-public class FirmwareStatusNotificationConfirmation implements Confirmation {
+public class FirmwareStatusNotificationConfirmation extends Confirmation {
 
   public FirmwareStatusNotificationConfirmation() {}
 

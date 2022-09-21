@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /** Sent by the Charge Point to the Central System in response to an {@link ReserveNowRequest}. */
 @XmlRootElement(name = "reserveNowResponse")
-public class ReserveNowConfirmation implements Confirmation {
+public class ReserveNowConfirmation extends Confirmation {
 
   private ReservationStatus status;
 

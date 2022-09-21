@@ -37,7 +37,7 @@ import java.util.Objects;
  * This contains the field definition of the SetVariablesResponse PDU sent by the Charging Station
  * to the CSMS in response to a SetVariablesRequest.
  */
-public class SetVariablesConfirmation implements Confirmation {
+public class SetVariablesConfirmation extends Confirmation {
   private transient Validator<Object> requiredValidator = new RequiredValidator();
 
   private SetVariableResultType[] setVariableResult;

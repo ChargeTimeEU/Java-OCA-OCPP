@@ -32,7 +32,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class SignedUpdateFirmwareConfirmation implements Confirmation {
+public class SignedUpdateFirmwareConfirmation extends Confirmation {
 
   private UpdateFirmwareStatusEnumType status;
 

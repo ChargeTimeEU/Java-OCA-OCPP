@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "triggerMessageResponse")
-public class TriggerMessageConfirmation implements Confirmation {
+public class TriggerMessageConfirmation extends Confirmation {
 
   private TriggerMessageStatus status;
 

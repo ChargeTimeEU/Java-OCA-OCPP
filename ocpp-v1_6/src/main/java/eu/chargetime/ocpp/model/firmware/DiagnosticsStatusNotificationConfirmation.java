@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * DiagnosticsStatusNotificationRequest}.
  */
 @XmlRootElement(name = "diagnosticsStatusNotificationResponse")
-public class DiagnosticsStatusNotificationConfirmation implements Confirmation {
+public class DiagnosticsStatusNotificationConfirmation extends Confirmation {
 
   public DiagnosticsStatusNotificationConfirmation() {}
 
