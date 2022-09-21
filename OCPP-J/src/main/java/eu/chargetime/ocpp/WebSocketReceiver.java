@@ -37,7 +37,7 @@ public class WebSocketReceiver implements Receiver {
   @Override
   public void disconnect() {
     receiverEvents.close();
-    handler.disconnected();
+    handler.disconnected(0, "disconnect() method called");
   }
 
   void relay(String message) {

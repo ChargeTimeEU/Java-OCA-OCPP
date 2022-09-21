@@ -123,8 +123,8 @@ public class TimeoutSessionDecorator implements ISession {
       }
 
       @Override
-      public void handleConnectionClosed() {
-        eventHandler.handleConnectionClosed();
+      public void handleConnectionClosed(int code, String reason) {
+        eventHandler.handleConnectionClosed(code, reason);
         stopTimer();
       }
 

@@ -113,8 +113,8 @@ public class Client {
           }
 
           @Override
-          public void handleConnectionClosed() {
-            if (events != null) events.connectionClosed();
+          public void handleConnectionClosed(int code, String reason) {
+            if (events != null) events.connectionClosed(code, reason);
           }
 
           @Override

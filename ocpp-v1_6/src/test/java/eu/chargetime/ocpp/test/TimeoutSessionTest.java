@@ -76,7 +76,7 @@ public class TimeoutSessionTest {
     session.open(null, sessionEvents);
 
     // When
-    sessionEvents.handleConnectionClosed();
+    sessionEvents.handleConnectionClosed(0, null);
 
     // Then
     verify(timeoutTimer, times(1)).end();
@@ -100,7 +100,7 @@ public class TimeoutSessionTest {
     session.accept(sessionEvents);
 
     // When
-    sessionEvents.handleConnectionClosed();
+    sessionEvents.handleConnectionClosed(0, null);
 
     // Then
     verify(timeoutTimer, times(1)).end();

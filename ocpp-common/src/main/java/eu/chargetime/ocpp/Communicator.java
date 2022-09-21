@@ -302,8 +302,8 @@ public abstract class Communicator {
     }
 
     @Override
-    public void disconnected() {
-      events.onDisconnected();
+    public void disconnected(int code, String reason) {
+      events.onDisconnected(code, reason);
     }
   }
 

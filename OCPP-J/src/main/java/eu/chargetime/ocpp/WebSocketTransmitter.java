@@ -105,7 +105,7 @@ public class WebSocketTransmitter implements Transmitter {
             logger.debug(
                 "On connection close (code: {}, reason: {}, remote: {})", code, reason, remote);
 
-            events.disconnected();
+            events.disconnected(code, reason);
           }
 
           @Override

@@ -39,6 +39,8 @@ public interface RadioEvents {
    */
   void receivedMessage(Object message);
 
-  /** Disconnected from node. */
-  void disconnected();
+  /** Disconnected from node.
+   * @param code
+   * @param reason*/
+  void disconnected(int code, String reason);
 }

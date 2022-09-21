@@ -66,8 +66,10 @@ public interface CommunicatorEvents {
    */
   void onError(String id, String errorCode, String errorDescription, Object payload);
 
-  /** The connection was disconnected. */
-  void onDisconnected();
+  /** The connection was disconnected.
+   * @param code
+   * @param reason*/
+  void onDisconnected(int code, String reason);
 
   /** A connection was established. */
   void onConnected();

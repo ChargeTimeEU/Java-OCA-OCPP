@@ -59,8 +59,10 @@ public interface SessionEvents {
    */
   void handleError(String uniqueId, String errorCode, String errorDescription, Object payload);
 
-  /** Handle a closed connection. */
-  void handleConnectionClosed();
+  /** Handle a closed connection.
+   * @param code
+   * @param reason*/
+  void handleConnectionClosed(int code, String reason);
 
   /** Handle a opened connection. */
   void handleConnectionOpened();

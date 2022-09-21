@@ -143,7 +143,7 @@ public class Server {
                   }
 
                   @Override
-                  public void handleConnectionClosed() {
+                  public void handleConnectionClosed(int code, String reason) {
                     Optional<UUID> sessionIdOptional = getSessionID(session);
                     if (sessionIdOptional.isPresent()) {
                       serverEvents.lostSession(sessionIdOptional.get());

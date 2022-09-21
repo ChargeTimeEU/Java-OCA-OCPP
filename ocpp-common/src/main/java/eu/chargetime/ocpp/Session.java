@@ -221,8 +221,8 @@ public class Session implements ISession {
     }
 
     @Override
-    public void onDisconnected() {
-      events.handleConnectionClosed();
+    public void onDisconnected(int code, String reason) {
+      events.handleConnectionClosed(code, reason);
     }
 
     @Override

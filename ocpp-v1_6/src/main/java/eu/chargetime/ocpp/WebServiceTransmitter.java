@@ -55,7 +55,7 @@ public class WebServiceTransmitter extends SOAPSyncHelper implements Transmitter
         logger.info("disconnect() failed", e);
       }
     }
-    events.disconnected();
+    events.disconnected(0, "disconnect() method called");
   }
 
   @Override

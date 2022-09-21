@@ -30,5 +30,5 @@ SOFTWARE.
 public interface ClientEvents {
   void connectionOpened();
 
-  void connectionClosed();
+  void connectionClosed(int code, String reason);
 }

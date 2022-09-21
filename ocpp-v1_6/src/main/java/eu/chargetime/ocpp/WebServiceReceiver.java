@@ -57,7 +57,7 @@ public class WebServiceReceiver extends SOAPSyncHelper implements Receiver {
         logger.info("disconnect() failed", e);
       }
     }
-    events.disconnected();
+    events.disconnected(0, "disconnect() method called");
     receiverEvents.disconnect();
   }
 

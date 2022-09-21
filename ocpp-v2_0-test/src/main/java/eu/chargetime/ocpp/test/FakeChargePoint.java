@@ -49,7 +49,7 @@ public class FakeChargePoint {
           public void connectionOpened() {}
 
           @Override
-          public void connectionClosed() {}
+          public void connectionClosed(int code, String reason) {}
         });
   }
 
