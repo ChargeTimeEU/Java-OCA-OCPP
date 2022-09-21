@@ -7,6 +7,7 @@ package eu.chargetime.ocpp.model.firmware;
  *
  * Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
  * Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
+ * Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Sent by the Charge Point to the Central System in response to an {@link UpdateFirmwareRequest}.
  */
 @XmlRootElement(name = "updateFirmwareResponse")
-public class UpdateFirmwareConfirmation implements Confirmation {
+public class UpdateFirmwareConfirmation extends Confirmation {
 
   public UpdateFirmwareConfirmation() {}
 

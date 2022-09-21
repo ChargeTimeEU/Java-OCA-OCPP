@@ -7,6 +7,7 @@ package eu.chargetime.ocpp.model.localauthlist;
  *
  * Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
  * Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
+ * Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +33,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 
-public class SendLocalListConfirmation implements Confirmation {
+public class SendLocalListConfirmation extends Confirmation {
 
   private UpdateStatus status;
 

@@ -5,6 +5,7 @@ package eu.chargetime.ocpp.model.basic;
    MIT License
 
    Copyright (C) 2021 John Michael Luy <johnmichael.luy@gmail.com>
+   Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +30,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 
-public class StatusNotificationConfirmation implements Confirmation {
+public class StatusNotificationConfirmation extends Confirmation {
 
   @Override
   public boolean validate() {

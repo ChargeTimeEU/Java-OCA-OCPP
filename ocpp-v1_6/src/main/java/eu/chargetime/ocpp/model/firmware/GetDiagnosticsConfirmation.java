@@ -5,6 +5,7 @@ package eu.chargetime.ocpp.model.firmware;
    MIT License
 
    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+   Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +35,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "getDiagnosticsResponse")
-public class GetDiagnosticsConfirmation implements Confirmation {
+public class GetDiagnosticsConfirmation extends Confirmation {
   private String fileName;
 
   @Override

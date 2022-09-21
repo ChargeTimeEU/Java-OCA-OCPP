@@ -6,6 +6,7 @@ package eu.chargetime.ocpp.model.securityext;
    MIT License
 
    Copyright (C) 2022 Mathias Oben <mathias.oben@enervalis.com>
+   Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +32,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class SignedFirmwareStatusNotificationConfirmation implements Confirmation {
+public class SignedFirmwareStatusNotificationConfirmation extends Confirmation {
 
   @Override
   public boolean validate() {

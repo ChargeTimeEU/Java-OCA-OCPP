@@ -4,6 +4,7 @@ package eu.chargetime.ocpp.model.core;
 ChargeTime.eu - Java-OCA-OCPP
 Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
+Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
 
 MIT License
 
@@ -45,7 +46,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement(name = "bootNotificationResponse")
 @XmlType(propOrder = {"status", "currentTime", "interval"})
-public class BootNotificationConfirmation implements Confirmation {
+public class BootNotificationConfirmation extends Confirmation {
 
   private ZonedDateTime currentTime;
   private Integer interval;

@@ -4,6 +4,7 @@ package eu.chargetime.ocpp.model.core;
 ChargeTime.eu - Java-OCA-OCPP
 Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
+Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
 
 MIT License
 
@@ -37,7 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /** Sent by the Central System to the Charge Point in response to a {@link AuthorizeRequest}. */
 @XmlRootElement(name = "authorizeResponse")
-public class AuthorizeConfirmation implements Confirmation {
+public class AuthorizeConfirmation extends Confirmation {
 
   private IdTagInfo idTagInfo;
 
