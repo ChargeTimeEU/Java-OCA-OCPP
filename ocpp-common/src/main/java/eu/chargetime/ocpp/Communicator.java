@@ -2,6 +2,7 @@ package eu.chargetime.ocpp;
 /*
 ChargeTime.eu - Java-OCA-OCPP
 Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
+Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
 
 MIT License
 
@@ -203,6 +204,16 @@ public abstract class Communicator {
   public void sendCallResult(String uniqueId, String action, Confirmation confirmation) {
     try {
       radio.send(makeCallResult(uniqueId, action, packPayload(confirmation)));
+
+      ConfirmationCompletedHandler completedHandler = confirmation.getCompletedHandler();
+
+      if (completedHandler != null) {
+        try {
+          completedHandler.onConfirmationCompleted();
+        } catch (Throwable e) {
+          events.onError(uniqueId, "ConfirmationCompletedHandlerFailed", "The confirmation completed callback handler failed with exception " + e.toString(), confirmation);
+        }
+      }
     } catch (NotConnectedException ex) {
       logger.warn("sendCallResult() failed", ex);
       events.onError(

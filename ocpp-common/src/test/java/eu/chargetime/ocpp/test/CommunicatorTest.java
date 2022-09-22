@@ -4,6 +4,8 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.ConfirmationCompletedHandler;
 import eu.chargetime.ocpp.model.Message;
 import eu.chargetime.ocpp.model.Request;
 import org.junit.Before;
@@ -18,6 +20,7 @@ import org.mockito.runners.MockitoJUnitRunner;
    MIT License
 
    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+   Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -194,5 +197,44 @@ public class CommunicatorTest {
 
     // Then
     verify(receiver, times(3)).send(eq(uniqueId));
+  }
+
+  @Test
+  public void confirmationCallback_Handler() {
+    // Given
+    Confirmation conf = new Confirmation() {
+      @Override
+      public boolean validate() {
+        return true;
+      }
+    };
+
+    ConfirmationCompletedHandler handler = mock(ConfirmationCompletedHandler.class);
+    conf.setCompletedHandler(handler);
+
+    String uniqueId = "some id";
+    String action = "some action";
+
+    // When
+    communicator.sendCallResult(uniqueId, action, conf);
+
+    // Then
+    verify(handler, times(1)).onConfirmationCompleted();
+  }
+
+  @Test
+  public void confirmationCallback_noHandler() {
+    // Make sure it's not crashing because it has no handler set
+
+    Confirmation conf = new Confirmation() {
+      @Override
+      public boolean validate() {
+        return true;
+      }
+    };
+
+    String uniqueId = "some id";
+    String action = "some action";
+    communicator.sendCallResult(uniqueId, action, conf);
   }
 }

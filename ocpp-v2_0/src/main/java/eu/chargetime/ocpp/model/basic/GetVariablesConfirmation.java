@@ -5,6 +5,7 @@ package eu.chargetime.ocpp.model.basic;
    MIT License
 
    Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
+   Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +32,7 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class GetVariablesConfirmation implements Confirmation {
+public class GetVariablesConfirmation extends Confirmation {
 
   private GetVariableResultType[] getVariableResult;
 

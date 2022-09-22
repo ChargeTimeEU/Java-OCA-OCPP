@@ -7,6 +7,7 @@ package eu.chargetime.ocpp.model.core;
  *
  * Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
  * Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
+ * Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /** Sent by the Charge Point to the Central System in response to a {@link ResetRequest}. */
 @XmlRootElement
-public class ResetConfirmation implements Confirmation {
+public class ResetConfirmation extends Confirmation {
 
   private ResetStatus status;
 

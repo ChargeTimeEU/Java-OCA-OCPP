@@ -2,11 +2,9 @@ package eu.chargetime.ocpp.model;
 
 /*
 ChargeTime.eu - Java-OCA-OCPP
-Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
 MIT License
 
-Copyright (C) 2016-2018 Thomas Volden
 Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,15 +26,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-/** Interface used to flag a Model as a Confirmation payload. */
-public abstract class Confirmation implements Validatable {
-    private transient ConfirmationCompletedHandler completedHandler;
 
-    public ConfirmationCompletedHandler getCompletedHandler() {
-        return completedHandler;
-    }
-    public void setCompletedHandler(ConfirmationCompletedHandler completedHandler) {
-        this.completedHandler = completedHandler;
-    }
+/**
+ * Callback that can perform actions after the confirmation is sent back to the Charge Point
+ */
+public interface ConfirmationCompletedHandler {
+    void onConfirmationCompleted();
 }
-

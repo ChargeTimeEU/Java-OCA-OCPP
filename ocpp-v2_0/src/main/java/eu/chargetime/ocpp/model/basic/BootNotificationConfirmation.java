@@ -6,6 +6,7 @@ package eu.chargetime.ocpp.model.basic;
 
    Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
    Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
+   Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +35,7 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /** sent by the CSMS to the Charging Station in response to a {@link BootNotificationRequest}. */
-public class BootNotificationConfirmation implements Confirmation {
+public class BootNotificationConfirmation extends Confirmation {
   private transient RequiredValidator validator = new RequiredValidator();
 
   private ZonedDateTime currentTime;

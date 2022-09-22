@@ -9,6 +9,7 @@ MIT License
 
 Copyright (C) 2016-2018 Thomas Volden
 Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
+Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /** Returned from Charge Point to Central System */
 @XmlRootElement(name = "changeConfigurationResponse")
-public class ChangeConfigurationConfirmation implements Confirmation {
+public class ChangeConfigurationConfirmation extends Confirmation {
 
   private ConfigurationStatus status;
 

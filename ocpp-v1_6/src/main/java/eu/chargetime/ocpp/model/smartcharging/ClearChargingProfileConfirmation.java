@@ -8,6 +8,7 @@ package eu.chargetime.ocpp.model.smartcharging;
  * Copyright (C) 2018 Fabian Röhr <fabian.roehr@netlight.com>
  * Copyright (C) 2018 Robin Roscher <r.roscher@ee-mobility.com>
  * Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
+ * Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +36,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "clearChargingProfileResponse")
-public class ClearChargingProfileConfirmation implements Confirmation {
+public class ClearChargingProfileConfirmation extends Confirmation {
 
   private ClearChargingProfileStatus status;
 

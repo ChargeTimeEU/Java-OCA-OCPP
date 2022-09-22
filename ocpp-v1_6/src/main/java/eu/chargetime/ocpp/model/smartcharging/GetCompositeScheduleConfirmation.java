@@ -6,6 +6,7 @@ package eu.chargetime.ocpp.model.smartcharging;
    MIT License
 
    Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
+   Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +34,7 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
 
-public class GetCompositeScheduleConfirmation implements Confirmation {
+public class GetCompositeScheduleConfirmation extends Confirmation {
 
   private GetCompositeScheduleStatus status;
   private Integer connectorId;

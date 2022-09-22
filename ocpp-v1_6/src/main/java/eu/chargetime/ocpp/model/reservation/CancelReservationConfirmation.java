@@ -8,6 +8,7 @@ package eu.chargetime.ocpp.model.reservation;
  * Copyright (C) 2016 Thomas Volden <tv@chargetime.eu>
  * Copyright (C) 2018 Mikhail Kladkevich <kladmv@ecp-share.com>
  * Copyright (C) 2019 Kevin Raddatz <kevin.raddatz@valtech-mobility.com>
+ * Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * CancelReservationRequest}.
  */
 @XmlRootElement(name = "cancelReservationResponse")
-public class CancelReservationConfirmation implements Confirmation {
+public class CancelReservationConfirmation extends Confirmation {
 
   private CancelReservationStatus status;
 
