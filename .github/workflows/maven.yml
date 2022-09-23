@@ -25,4 +25,4 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Test With Maven
-      run: mvn -B integration-test --file pom.xml
+      run: mvn integration-test -B
