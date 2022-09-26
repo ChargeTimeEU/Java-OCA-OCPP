@@ -27,7 +27,7 @@ package eu.chargetime.ocpp.model.core;
  * SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /** sent to Charge Point by Central System. */
 @XmlRootElement
-public class RemoteStopTransactionRequest implements Request {
+public class RemoteStopTransactionRequest extends RequestWithId {
 
   private Integer transactionId;
 

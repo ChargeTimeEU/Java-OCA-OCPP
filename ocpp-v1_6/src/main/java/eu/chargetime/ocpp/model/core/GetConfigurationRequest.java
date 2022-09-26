@@ -28,7 +28,7 @@ SOFTWARE.
 */
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Arrays;
@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /** Sent by the the Central System to the Charge Point. */
 @XmlRootElement
-public class GetConfigurationRequest implements Request {
+public class GetConfigurationRequest extends RequestWithId {
 
   private String[] key;
 

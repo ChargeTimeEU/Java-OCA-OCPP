@@ -28,7 +28,7 @@ package eu.chargetime.ocpp.model.core;
  */
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Arrays;
 import java.util.Objects;
@@ -43,7 +43,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement
 @XmlType(propOrder = {"connectorId", "transactionId", "meterValue"})
-public class MeterValuesRequest implements Request {
+public class MeterValuesRequest extends RequestWithId {
 
   private Integer connectorId;
   private Integer transactionId;

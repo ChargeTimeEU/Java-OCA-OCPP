@@ -26,14 +26,14 @@ package eu.chargetime.ocpp.model.securityext;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.securityext.types.FirmwareStatusEnumType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class SignedFirmwareStatusNotificationRequest implements Request {
+public class SignedFirmwareStatusNotificationRequest extends RequestWithId {
 
   private FirmwareStatusEnumType status;
   private Integer requestId;

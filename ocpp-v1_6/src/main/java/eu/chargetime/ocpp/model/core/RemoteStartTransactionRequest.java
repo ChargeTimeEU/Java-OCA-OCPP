@@ -28,7 +28,7 @@ package eu.chargetime.ocpp.model.core;
  */
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlType;
 /** Sent to Charge Point by Central System. */
 @XmlRootElement
 @XmlType(propOrder = {"connectorId", "idTag", "chargingProfile"})
-public class RemoteStartTransactionRequest implements Request {
+public class RemoteStartTransactionRequest extends RequestWithId {
 
   private Integer connectorId;
   private String idTag;

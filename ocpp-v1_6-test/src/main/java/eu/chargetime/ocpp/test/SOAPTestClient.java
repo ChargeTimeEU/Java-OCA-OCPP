@@ -98,6 +98,11 @@ public class SOAPTestClient implements IClientAPI {
     return client.send(request);
   }
 
+  @Override
+  public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException {
+    return client.asyncCompleteRequest(uniqueId, confirmation);
+  }
+
   /** Disconnect from server Closes down local callback service. */
   public void disconnect() {
     this.client.disconnect();

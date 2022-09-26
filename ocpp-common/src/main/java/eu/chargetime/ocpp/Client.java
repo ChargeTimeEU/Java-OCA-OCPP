@@ -97,6 +97,11 @@ public class Client {
           }
 
           @Override
+          public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException {
+            return session.completePendingPromise(uniqueId, confirmation);
+          }
+
+          @Override
           public void handleError(
               String uniqueId, String errorCode, String errorDescription, Object payload) {
             Optional<CompletableFuture<Confirmation>> promiseOptional =
@@ -164,5 +169,9 @@ public class Client {
 
   public UUID getSessionId() {
     return this.session.getSessionId();
+  }
+
+  public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException {
+    return session.completePendingPromise(uniqueId, confirmation);
   }
 }

@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.reservation;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.time.ZonedDateTime;
@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlType;
 /** Sent by the Central System to the Charge Point. */
 @XmlRootElement
 @XmlType(propOrder = {"connectorId", "expiryDate", "idTag", "parentIdTag", "reservationId"})
-public class ReserveNowRequest implements Request {
+public class ReserveNowRequest extends RequestWithId {
 
   private static final int ID_TAG_MAX_LENGTH = 20;
   private static final String ERROR_MESSAGE = "Exceeded limit of " + ID_TAG_MAX_LENGTH + " chars";

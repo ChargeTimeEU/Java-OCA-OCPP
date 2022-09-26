@@ -1,10 +1,8 @@
 package eu.chargetime.ocpp;
 
 import com.google.gson.*;
-import eu.chargetime.ocpp.model.CallErrorMessage;
-import eu.chargetime.ocpp.model.CallMessage;
-import eu.chargetime.ocpp.model.CallResultMessage;
-import eu.chargetime.ocpp.model.Message;
+import eu.chargetime.ocpp.model.*;
+
 import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -99,6 +97,18 @@ public class JSONCommunicator extends Communicator {
   static {
     GsonBuilder builder = new GsonBuilder();
     builder.registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeSerializer());
+    builder.addSerializationExclusionStrategy(new ExclusionStrategy() {
+      @Override
+      public boolean shouldSkipClass(Class<?> clazz) {
+        return false;
+      }
+
+      @Override
+      public boolean shouldSkipField(FieldAttributes field) {
+        return field.getAnnotation(Exclude.class) != null;
+      }
+    });
+
     gson = builder.disableHtmlEscaping().create();
   }
 

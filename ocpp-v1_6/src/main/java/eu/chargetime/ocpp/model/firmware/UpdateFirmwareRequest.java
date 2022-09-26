@@ -29,7 +29,7 @@ package eu.chargetime.ocpp.model.firmware;
  */
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlType;
 /** Sent by the Central System to the Charge Point. */
 @XmlRootElement
 @XmlType(propOrder = {"location", "retries", "retrieveDate", "retryInterval"})
-public class UpdateFirmwareRequest implements Request {
+public class UpdateFirmwareRequest extends RequestWithId {
 
   private String location;
   private Integer retries;

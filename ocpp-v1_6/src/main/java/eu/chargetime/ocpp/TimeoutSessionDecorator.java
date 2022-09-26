@@ -88,6 +88,11 @@ public class TimeoutSessionDecorator implements ISession {
   }
 
   @Override
+  public boolean completePendingPromise(String id, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException {
+    return this.session.completePendingPromise(id, confirmation);
+  }
+
+  @Override
   public void close() {
     this.session.close();
   }
@@ -114,6 +119,11 @@ public class TimeoutSessionDecorator implements ISession {
           }
         }
         return confirmation;
+      }
+
+      @Override
+      public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException {
+        return eventHandler.asyncCompleteRequest(uniqueId, confirmation);
       }
 
       @Override

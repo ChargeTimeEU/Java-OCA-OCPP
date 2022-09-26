@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.smartcharging;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.model.core.ChargingProfile;
 import eu.chargetime.ocpp.model.core.ChargingProfilePurposeType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 @XmlRootElement
-public class SetChargingProfileRequest implements Request {
+public class SetChargingProfileRequest extends RequestWithId {
 
   private Integer connectorId;
   private ChargingProfile csChargingProfiles;

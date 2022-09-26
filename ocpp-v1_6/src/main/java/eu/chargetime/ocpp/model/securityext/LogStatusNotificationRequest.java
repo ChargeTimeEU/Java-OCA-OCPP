@@ -26,13 +26,13 @@ package eu.chargetime.ocpp.model.securityext;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.model.securityext.types.UploadLogStatusEnumType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class LogStatusNotificationRequest implements Request {
+public class LogStatusNotificationRequest extends RequestWithId {
 
   private UploadLogStatusEnumType status;
   private Integer requestId;

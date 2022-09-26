@@ -173,4 +173,9 @@ public class JSONServer implements IServerAPI {
       throws OccurenceConstraintException, UnsupportedFeatureException, NotConnectedException {
     return server.send(session, request);
   }
+
+  @Override
+  public boolean asyncCompleteRequest(UUID sessionIndex, String uniqueId, Confirmation confirmation) throws NotConnectedException, UnsupportedFeatureException, OccurenceConstraintException {
+    return server.asyncCompleteRequest(sessionIndex, uniqueId, confirmation);
+  }
 }

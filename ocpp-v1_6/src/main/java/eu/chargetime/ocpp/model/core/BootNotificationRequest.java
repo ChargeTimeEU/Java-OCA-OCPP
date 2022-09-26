@@ -30,7 +30,7 @@ SOFTWARE.
 */
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
@@ -52,7 +52,7 @@ import javax.xml.bind.annotation.XmlType;
       "meterType",
       "meterSerialNumber"
     })
-public class BootNotificationRequest implements Request {
+public class BootNotificationRequest extends RequestWithId {
 
   private static final int STRING_20_CHAR_MAX_LENGTH = 20;
   private static final int STRING_25_CHAR_MAX_LENGTH = 25;

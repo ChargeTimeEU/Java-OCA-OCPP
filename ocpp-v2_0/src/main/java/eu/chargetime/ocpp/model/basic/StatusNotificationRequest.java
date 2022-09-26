@@ -25,14 +25,14 @@ package eu.chargetime.ocpp.model.basic;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.model.basic.types.ConnectorStatusEnumType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
-public class StatusNotificationRequest implements Request {
+public class StatusNotificationRequest extends RequestWithId {
 
   private transient RequiredValidator validator = new RequiredValidator();
 
