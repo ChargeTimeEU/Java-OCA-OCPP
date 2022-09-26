@@ -28,7 +28,7 @@ package eu.chargetime.ocpp.model.core;
  */
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.time.ZonedDateTime;
@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlType;
 /** Sent by the Charge Point to the Central System. */
 @XmlRootElement
 @XmlType(propOrder = {"connectorId", "idTag", "timestamp", "meterStart", "reservationId"})
-public class StartTransactionRequest implements Request {
+public class StartTransactionRequest extends RequestWithId {
 
   private static final int IDTAG_MAX_LENGTH = 20;
   private static final String IDTAG_ERROR_MESSAGE =

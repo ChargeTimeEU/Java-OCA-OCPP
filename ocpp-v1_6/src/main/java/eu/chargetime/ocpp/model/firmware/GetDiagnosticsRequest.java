@@ -26,7 +26,7 @@ package eu.chargetime.ocpp.model.firmware;
   SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement
 @XmlType(propOrder = {"location", "startTime", "stopTime", "retries", "retryInterval"})
-public class GetDiagnosticsRequest implements Request {
+public class GetDiagnosticsRequest extends RequestWithId {
 
   private String location;
   private Integer retries;

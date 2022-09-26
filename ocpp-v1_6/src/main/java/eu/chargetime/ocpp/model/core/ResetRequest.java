@@ -27,7 +27,7 @@ package eu.chargetime.ocpp.model.core;
  * SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /** Sent by the Central System to the Charge Point. */
 @XmlRootElement
-public class ResetRequest implements Request {
+public class ResetRequest extends RequestWithId {
 
   private ResetType type;
 

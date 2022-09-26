@@ -26,13 +26,13 @@ package eu.chargetime.ocpp.model.securityext;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.model.securityext.types.CertificateUseEnumType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class GetInstalledCertificateIdsRequest implements Request {
+public class GetInstalledCertificateIdsRequest extends RequestWithId {
 
   private CertificateUseEnumType certificateType;
 

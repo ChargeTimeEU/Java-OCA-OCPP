@@ -27,13 +27,13 @@ package eu.chargetime.ocpp.model.securityext;
 */
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.model.securityext.types.MessageTriggerEnumType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class ExtendedTriggerMessageRequest implements Request {
+public class ExtendedTriggerMessageRequest extends RequestWithId {
 
   private MessageTriggerEnumType requestedMessage;
   private Integer connectorId;

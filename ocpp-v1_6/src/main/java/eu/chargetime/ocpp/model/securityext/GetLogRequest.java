@@ -26,14 +26,14 @@ package eu.chargetime.ocpp.model.securityext;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.model.securityext.types.LogEnumType;
 import eu.chargetime.ocpp.model.securityext.types.LogParametersType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class GetLogRequest implements Request {
+public class GetLogRequest extends RequestWithId {
 
   private LogEnumType logType;
   private Integer requestId;

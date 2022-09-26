@@ -38,10 +38,8 @@ public class RequestDispatcher implements IRequestDispactcher {
     this.fulfiller = fulfiller;
   }
 
-  public CompletableFuture<Confirmation> handleRequest(Request request) {
-    CompletableFuture<Confirmation> promise = new CompletableFuture<>();
+  public void handleRequest(CompletableFuture<Confirmation> promise, Request request) {
     fulfiller.fulfill(promise, eventHandler, request);
-    return promise;
   }
 
   public void setEventHandler(SessionEvents eventHandler) {

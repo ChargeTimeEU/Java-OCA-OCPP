@@ -26,13 +26,13 @@ package eu.chargetime.ocpp.model.securityext;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.model.securityext.types.CertificateHashDataType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 
 import java.util.Objects;
 
-public class DeleteCertificateRequest implements Request {
+public class DeleteCertificateRequest extends RequestWithId {
 
   private CertificateHashDataType certificateHashData;
 

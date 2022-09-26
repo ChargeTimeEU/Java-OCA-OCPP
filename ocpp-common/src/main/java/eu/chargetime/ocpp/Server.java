@@ -127,6 +127,11 @@ public class Server {
                   }
 
                   @Override
+                  public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException {
+                    return session.completePendingPromise(uniqueId, confirmation);
+                  }
+
+                  @Override
                   public void handleError(
                       String uniqueId, String errorCode, String errorDescription, Object payload) {
                     Optional<CompletableFuture<Confirmation>> promiseOptional =
@@ -218,6 +223,29 @@ public class Server {
     session.sendRequest(featureOptional.get().getAction(), request, id);
     return promise;
   }
+
+  /**
+   * Indicate completion of a pending request.
+   *
+   * @param sessionIndex Session index of the client.
+   * @param uniqueId the unique id used for the original {@link Request}.
+   * @param confirmation the {@link Confirmation} to the original {@link Request}.
+   * @return a boolean indicating if pending request was found.
+   * @throws NotConnectedException Thrown if session with passed sessionIndex is not found
+   */
+  public boolean asyncCompleteRequest(UUID sessionIndex, String uniqueId, Confirmation confirmation) throws NotConnectedException, UnsupportedFeatureException, OccurenceConstraintException {
+    ISession session = sessions.get(sessionIndex);
+
+    if (session == null) {
+      logger.warn("Session not found by index: {}", sessionIndex);
+
+      // No session found means client disconnected and request should be cancelled
+      throw new NotConnectedException();
+    }
+
+    return session.completePendingPromise(uniqueId, confirmation);
+  }
+
 
   public boolean isSessionOpen(UUID sessionIndex) {
     return sessions.containsKey(sessionIndex);

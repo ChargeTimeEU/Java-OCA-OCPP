@@ -26,11 +26,11 @@ package eu.chargetime.ocpp.model.localauthlist;
  * SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 
-public class GetLocalListVersionRequest implements Request {
+public class GetLocalListVersionRequest extends RequestWithId {
 
   @Override
   public boolean validate() {
