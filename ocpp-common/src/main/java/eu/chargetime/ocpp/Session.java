@@ -30,8 +30,11 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-
-import java.util.*;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.AbstractMap;
 import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

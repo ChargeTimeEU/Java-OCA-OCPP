@@ -1,7 +1,11 @@
 package eu.chargetime.ocpp;
 
 import com.google.gson.*;
-import eu.chargetime.ocpp.model.*;
+import eu.chargetime.ocpp.model.CallErrorMessage;
+import eu.chargetime.ocpp.model.CallMessage;
+import eu.chargetime.ocpp.model.CallResultMessage;
+import eu.chargetime.ocpp.model.Message;
+import eu.chargetime.ocpp.model.Exclude;
 
 import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
