@@ -27,7 +27,7 @@ package eu.chargetime.ocpp.model;
  */
 
 /** Test implementation of the Request interface. Used for tests. */
-public class TestRequest implements Request {
+public class TestRequest extends RequestWithId {
   @Override
   public boolean validate() {
     return true;

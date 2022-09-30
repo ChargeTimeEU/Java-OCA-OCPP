@@ -50,6 +50,15 @@ public interface SessionEvents {
   Confirmation handleRequest(Request request) throws UnsupportedFeatureException;
 
   /**
+   * Completes a pending request {@link Request}.
+   *
+   * @param uniqueId the unique id used for the {@link Request}.
+   * @param confirmation the {@link Confirmation} to the {@link Request}.
+   * @return a boolean indicating if pending request was found.
+   */
+  boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException;
+
+  /**
    * Handle a error to a {@link Request}.
    *
    * @param uniqueId the unique identifier for the {@link Request}.

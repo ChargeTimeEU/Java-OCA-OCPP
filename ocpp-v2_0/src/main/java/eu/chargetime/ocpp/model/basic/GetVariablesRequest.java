@@ -25,13 +25,13 @@ package eu.chargetime.ocpp.model.basic;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.model.basic.types.GetVariableDataType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class GetVariablesRequest implements Request {
+public class GetVariablesRequest extends RequestWithId {
 
   private GetVariableDataType[] getVariableData;
 

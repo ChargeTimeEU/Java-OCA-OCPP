@@ -1,5 +1,6 @@
 package eu.chargetime.ocpp;
 
+import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import java.util.UUID;
 
@@ -38,6 +39,8 @@ public interface ISession {
   String storeRequest(Request payload);
 
   void sendRequest(String action, Request payload, String uuid);
+
+  boolean completePendingPromise(String id, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException;
 
   void close();
 }

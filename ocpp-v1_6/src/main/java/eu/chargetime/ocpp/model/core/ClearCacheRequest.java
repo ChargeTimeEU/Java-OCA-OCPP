@@ -27,14 +27,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /** Sent by the Central System to the Charge Point. Request holds no values and is always valid. */
 @XmlRootElement
-public class ClearCacheRequest implements Request {
+public class ClearCacheRequest extends RequestWithId {
   @Override
   public boolean validate() {
     return true;

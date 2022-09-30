@@ -28,7 +28,7 @@ SOFTWARE.
 */
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.utilities.ModelUtil;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
@@ -44,7 +44,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement
 @XmlType(propOrder = {"key", "value"})
-public class ChangeConfigurationRequest implements Request {
+public class ChangeConfigurationRequest extends RequestWithId {
 
   private static final String ERROR_MESSAGE = "Exceeded limit of %s chars";
   private static final int KEY_MAX_LENGTH = 50;

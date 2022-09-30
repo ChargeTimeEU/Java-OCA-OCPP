@@ -39,7 +39,10 @@ public class SimplePromiseFulfiller implements PromiseFulfiller {
       CompletableFuture<Confirmation> promise, SessionEvents eventHandler, Request request) {
     try {
       Confirmation conf = eventHandler.handleRequest(request);
-      promise.complete(conf);
+      // Confirmation may be null, in this case asynchronous execution is assumed
+      if (conf != null) {
+        eventHandler.asyncCompleteRequest(request.getOcppMessageId(), conf);
+      }
     } catch (Exception ex) {
       logger.warn("fulfillPromis() failed", ex);
       promise.completeExceptionally(ex);

@@ -32,6 +32,9 @@ import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.AbstractMap;
 import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +53,7 @@ public class Session implements ISession {
   private final RequestDispatcher dispatcher;
   private final IFeatureRepository featureRepository;
   private SessionEvents events;
+  private final Map<String, AbstractMap.SimpleImmutableEntry<String, CompletableFuture<Confirmation>>> pendingPromises = new HashMap<>();
 
   /**
    * Handles required injections.
@@ -198,9 +202,12 @@ public class Session implements ISession {
         try {
           Request request =
               communicator.unpackPayload(payload, featureOptional.get().getRequestType());
+          request.setOcppMessageId(id);
           if (request.validate()) {
-            CompletableFuture<Confirmation> promise = dispatcher.handleRequest(request);
+            CompletableFuture<Confirmation> promise = new CompletableFuture<>();
             promise.whenComplete(new ConfirmationHandler(id, action, communicator));
+            addPendingPromise(id, action, promise);
+            dispatcher.handleRequest(promise, request);
           } else {
             communicator.sendCallError(
                 id, action, "OccurenceConstraintViolation", OCCURENCE_CONSTRAINT_VIOLATION);
@@ -229,6 +236,36 @@ public class Session implements ISession {
     public void onConnected() {
       events.handleConnectionOpened();
     }
+  }
+
+  private void addPendingPromise(String id, String action, CompletableFuture<Confirmation> promise) {
+    synchronized (pendingPromises) {
+      pendingPromises.put(id, new AbstractMap.SimpleImmutableEntry<>(action, promise));
+    }
+  }
+
+  @Override
+  public boolean completePendingPromise(String id, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException {
+    AbstractMap.SimpleImmutableEntry<String, CompletableFuture<Confirmation>> promiseAction = null;
+    // synchronization prevents from confirming one promise more than once, as we remove found promise
+    synchronized (pendingPromises) {
+      promiseAction = pendingPromises.get(id);
+      if (promiseAction == null) return false;
+      // remove promise from store
+      pendingPromises.remove(id);
+    }
+    // check confirmation type, it has to correspond to original request type
+    Optional<Feature> featureOptional = featureRepository.findFeature(promiseAction.getKey());
+    if (featureOptional.isPresent()) {
+      if (!featureOptional.get().getConfirmationType().isInstance(confirmation)) {
+        throw new OccurenceConstraintException();
+      }
+    } else {
+      logger.debug("Feature for confirmation with id: {} not found in session: {}", id, this);
+      throw new UnsupportedFeatureException("Error with getting confirmation type by request id = " + id);
+    }
+    promiseAction.getValue().complete(confirmation);
+    return true;
   }
 
   @Override
