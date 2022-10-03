@@ -45,8 +45,8 @@ public interface IServerAPI {
   boolean isClosed();
 
   CompletionStage<Confirmation> send(UUID sessionIndex, Request request)
-      throws OccurenceConstraintException, UnsupportedFeatureException, NotConnectedException;
+      throws OccurrenceConstraintException, UnsupportedFeatureException, NotConnectedException;
 
   boolean asyncCompleteRequest(UUID sessionIndex, String uniqueId, Confirmation confirmation)
-      throws NotConnectedException, UnsupportedFeatureException, OccurenceConstraintException;
+      throws NotConnectedException, UnsupportedFeatureException, OccurrenceConstraintException;
 }

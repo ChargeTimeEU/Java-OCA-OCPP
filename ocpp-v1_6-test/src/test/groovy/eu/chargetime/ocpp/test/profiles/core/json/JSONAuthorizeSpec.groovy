@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.test.profiles.core.json
 
-import eu.chargetime.ocpp.OccurenceConstraintException
+import eu.chargetime.ocpp.OccurrenceConstraintException
 import eu.chargetime.ocpp.test.base.json.JSONBaseSpec
 import spock.util.concurrent.PollingConditions
 
@@ -27,7 +27,7 @@ class JSONAuthorizeSpec extends JSONBaseSpec {
         chargePoint.sendIncompleteAuthorizeRequest()
 
         then:
-        thrown OccurenceConstraintException
+        thrown OccurrenceConstraintException
     }
 
     def "Send Authorize request to a server that's rigged to fail"() {

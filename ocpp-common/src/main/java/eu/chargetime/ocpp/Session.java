@@ -156,8 +156,8 @@ public class Session implements ISession {
   }
 
   private class CommunicatorEventHandler implements CommunicatorEvents {
-    private static final String OCCURENCE_CONSTRAINT_VIOLATION =
-        "Payload for Action is syntactically correct but at least one of the fields violates occurence constraints";
+    private static final String OCCURRENCE_CONSTRAINT_VIOLATION =
+        "Payload for Action is syntactically correct but at least one of the fields violates occurrence constraints";
     private static final String INTERNAL_ERROR =
         "An internal error occurred and the receiver was not able to process the requested Action successfully";
     private static final String UNABLE_TO_PROCESS = "Unable to process action";
@@ -174,7 +174,7 @@ public class Session implements ISession {
             events.handleConfirmation(id, confirmation);
           } else {
             communicator.sendCallError(
-                id, action, "OccurenceConstraintViolation", OCCURENCE_CONSTRAINT_VIOLATION);
+                id, action, "OccurrenceConstraintViolation", OCCURRENCE_CONSTRAINT_VIOLATION);
           }
         } else {
           logger.warn(INTERNAL_ERROR);
@@ -210,7 +210,7 @@ public class Session implements ISession {
             dispatcher.handleRequest(promise, request);
           } else {
             communicator.sendCallError(
-                id, action, "OccurenceConstraintViolation", OCCURENCE_CONSTRAINT_VIOLATION);
+                id, action, "OccurrenceConstraintViolation", OCCURRENCE_CONSTRAINT_VIOLATION);
           }
         } catch (PropertyConstraintException ex) {
           logger.warn(ex.getMessage(), ex);
@@ -245,7 +245,7 @@ public class Session implements ISession {
   }
 
   @Override
-  public boolean completePendingPromise(String id, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException {
+  public boolean completePendingPromise(String id, Confirmation confirmation) throws UnsupportedFeatureException, OccurrenceConstraintException {
     AbstractMap.SimpleImmutableEntry<String, CompletableFuture<Confirmation>> promiseAction = null;
     // synchronization prevents from confirming one promise more than once, as we remove found promise
     synchronized (pendingPromises) {
@@ -258,7 +258,7 @@ public class Session implements ISession {
     Optional<Feature> featureOptional = featureRepository.findFeature(promiseAction.getKey());
     if (featureOptional.isPresent()) {
       if (!featureOptional.get().getConfirmationType().isInstance(confirmation)) {
-        throw new OccurenceConstraintException();
+        throw new OccurrenceConstraintException();
       }
     } else {
       logger.debug("Feature for confirmation with id: {} not found in session: {}", id, this);

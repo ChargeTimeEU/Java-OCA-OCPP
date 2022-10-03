@@ -37,9 +37,9 @@ public interface IClientAPI {
   void connect(String url, ClientEvents clientEvents);
 
   CompletionStage<Confirmation> send(Request request)
-      throws OccurenceConstraintException, UnsupportedFeatureException;
+      throws OccurrenceConstraintException, UnsupportedFeatureException;
 
-  boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException;
+  boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurrenceConstraintException;
 
   void disconnect();
 

@@ -76,12 +76,12 @@ public class JSONTestClient implements IClientAPI {
 
   @Override
   public CompletionStage<Confirmation> send(Request request)
-      throws OccurenceConstraintException, UnsupportedFeatureException {
+      throws OccurrenceConstraintException, UnsupportedFeatureException {
     return client.send(request);
   }
 
   @Override
-  public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException {
+  public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurrenceConstraintException {
     return client.asyncCompleteRequest(uniqueId, confirmation);
   }
 

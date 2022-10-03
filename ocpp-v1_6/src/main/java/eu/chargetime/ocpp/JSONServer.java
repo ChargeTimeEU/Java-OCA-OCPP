@@ -170,12 +170,12 @@ public class JSONServer implements IServerAPI {
 
   @Override
   public CompletionStage<Confirmation> send(UUID session, Request request)
-      throws OccurenceConstraintException, UnsupportedFeatureException, NotConnectedException {
+      throws OccurrenceConstraintException, UnsupportedFeatureException, NotConnectedException {
     return server.send(session, request);
   }
 
   @Override
-  public boolean asyncCompleteRequest(UUID sessionIndex, String uniqueId, Confirmation confirmation) throws NotConnectedException, UnsupportedFeatureException, OccurenceConstraintException {
+  public boolean asyncCompleteRequest(UUID sessionIndex, String uniqueId, Confirmation confirmation) throws NotConnectedException, UnsupportedFeatureException, OccurrenceConstraintException {
     return server.asyncCompleteRequest(sessionIndex, uniqueId, confirmation);
   }
 }

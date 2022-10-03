@@ -30,7 +30,7 @@ import eu.chargetime.ocpp.IServerAPI;
 import eu.chargetime.ocpp.JSONConfiguration;
 import eu.chargetime.ocpp.JSONServer;
 import eu.chargetime.ocpp.NotConnectedException;
-import eu.chargetime.ocpp.OccurenceConstraintException;
+import eu.chargetime.ocpp.OccurrenceConstraintException;
 import eu.chargetime.ocpp.ServerEvents;
 import eu.chargetime.ocpp.UnsupportedFeatureException;
 import eu.chargetime.ocpp.feature.Feature;
@@ -102,7 +102,7 @@ public class FakeCentralSystem {
   }
 
   public void send(Request request)
-      throws NotConnectedException, OccurenceConstraintException, UnsupportedFeatureException {
+      throws NotConnectedException, OccurrenceConstraintException, UnsupportedFeatureException {
     CompletionStage<Confirmation> send = server.send(currentSession, request);
     send.whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
   }

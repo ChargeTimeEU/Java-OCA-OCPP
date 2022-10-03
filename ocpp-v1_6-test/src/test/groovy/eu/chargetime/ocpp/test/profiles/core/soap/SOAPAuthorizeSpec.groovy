@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.test.profiles.core.soap
 
-import eu.chargetime.ocpp.OccurenceConstraintException
+import eu.chargetime.ocpp.OccurrenceConstraintException
 import eu.chargetime.ocpp.test.base.soap.SOAPBaseSpec
 import spock.util.concurrent.PollingConditions
 
@@ -27,7 +27,7 @@ class SOAPAuthorizeSpec extends SOAPBaseSpec
         chargePoint.sendIncompleteAuthorizeRequest()
 
         then:
-        thrown OccurenceConstraintException
+        thrown OccurrenceConstraintException
     }
 
     def "Send Authorize request to a server that's rigged to fail"() {
