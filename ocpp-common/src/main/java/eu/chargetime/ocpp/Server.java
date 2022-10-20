@@ -117,8 +117,8 @@ public class Server {
                             .handleRequest(sessionIdOptional.get(), request);
                       } else {
                         logger.error(
-                            "Unable to handle request ({}), the active session was not found.",
-                            request);
+                            "Unable to handle request ({}), the active session was not found for {}.",
+                            request, session.getSessionId());
                         throw new IllegalStateException("Active session not found");
                       }
                     } else {
@@ -154,7 +154,7 @@ public class Server {
                       serverEvents.lostSession(sessionIdOptional.get());
                       sessions.remove(sessionIdOptional.get());
                     } else {
-                      logger.warn("Active session not found");
+                      logger.warn("Active session not found for {}", session.getSessionId());
                     }
                   }
 
