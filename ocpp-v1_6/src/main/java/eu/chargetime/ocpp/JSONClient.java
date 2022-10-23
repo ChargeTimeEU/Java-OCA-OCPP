@@ -144,6 +144,14 @@ public class JSONClient implements IClientAPI {
     return this;
   }
 
+  /**
+   * Applies JSONConfiguration changes when already connected. Specifically, the WebSocket ping
+   * interval can be changed without reconnecting by calling this method.
+   */
+  public void reconfigure() {
+    transmitter.configure();
+  }
+
   @Override
   public void addFeatureProfile(Profile profile) {
     featureRepository.addFeatureProfile(profile);

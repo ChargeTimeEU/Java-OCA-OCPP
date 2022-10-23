@@ -152,6 +152,9 @@ public class WebSocketTransmitter implements Transmitter {
   }
 
   void configure() {
+    if (client == null) {
+      return;
+    }
     client.setReuseAddr(configuration.getParameter(JSONConfiguration.REUSE_ADDR_PARAMETER, false));
     client.setTcpNoDelay(
         configuration.getParameter(JSONConfiguration.TCP_NO_DELAY_PARAMETER, false));
