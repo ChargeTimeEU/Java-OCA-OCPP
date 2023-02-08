@@ -160,7 +160,7 @@ public class BootNotificationRequest extends RequestWithId {
    */
   @Deprecated()
   public void setChargeBoxSerialNumber(String chargeBoxSerialNumber) {
-    if (!ModelUtil.validate(chargeBoxSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
+    if (chargeBoxSerialNumber != null && !ModelUtil.validate(chargeBoxSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
       throw new PropertyConstraintException(
           chargeBoxSerialNumber.length(), validationErrorMessage(STRING_25_CHAR_MAX_LENGTH));
     }
@@ -184,7 +184,7 @@ public class BootNotificationRequest extends RequestWithId {
    */
   @XmlElement
   public void setChargePointSerialNumber(String chargePointSerialNumber) {
-    if (!ModelUtil.validate(chargePointSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
+    if (chargePointSerialNumber != null && !ModelUtil.validate(chargePointSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
       throw new PropertyConstraintException(
           chargePointSerialNumber.length(), validationErrorMessage(STRING_25_CHAR_MAX_LENGTH));
     }
@@ -208,7 +208,7 @@ public class BootNotificationRequest extends RequestWithId {
    */
   @XmlElement
   public void setFirmwareVersion(String firmwareVersion) {
-    if (!ModelUtil.validate(firmwareVersion, STRING_50_CHAR_MAX_LENGTH)) {
+    if (firmwareVersion != null && !ModelUtil.validate(firmwareVersion, STRING_50_CHAR_MAX_LENGTH)) {
       throw new PropertyConstraintException(
           firmwareVersion.length(), validationErrorMessage(STRING_50_CHAR_MAX_LENGTH));
     }
@@ -232,7 +232,7 @@ public class BootNotificationRequest extends RequestWithId {
    */
   @XmlElement
   public void setIccid(String iccid) {
-    if (!ModelUtil.validate(iccid, STRING_20_CHAR_MAX_LENGTH)) {
+    if (iccid != null && !ModelUtil.validate(iccid, STRING_20_CHAR_MAX_LENGTH)) {
       throw new PropertyConstraintException(
           iccid.length(), validationErrorMessage(STRING_20_CHAR_MAX_LENGTH));
     }
@@ -256,7 +256,7 @@ public class BootNotificationRequest extends RequestWithId {
    */
   @XmlElement
   public void setImsi(String imsi) {
-    if (!ModelUtil.validate(imsi, STRING_20_CHAR_MAX_LENGTH)) {
+    if (imsi != null && !ModelUtil.validate(imsi, STRING_20_CHAR_MAX_LENGTH)) {
       throw new PropertyConstraintException(
           imsi.length(), validationErrorMessage(STRING_20_CHAR_MAX_LENGTH));
     }
@@ -280,7 +280,7 @@ public class BootNotificationRequest extends RequestWithId {
    */
   @XmlElement
   public void setMeterSerialNumber(String meterSerialNumber) {
-    if (!ModelUtil.validate(meterSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
+    if (meterSerialNumber != null && !ModelUtil.validate(meterSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
       throw new PropertyConstraintException(
           meterSerialNumber.length(), validationErrorMessage(STRING_25_CHAR_MAX_LENGTH));
     }
@@ -304,7 +304,7 @@ public class BootNotificationRequest extends RequestWithId {
    */
   @XmlElement
   public void setMeterType(String meterType) {
-    if (!ModelUtil.validate(meterType, STRING_25_CHAR_MAX_LENGTH)) {
+    if (meterType != null && !ModelUtil.validate(meterType, STRING_25_CHAR_MAX_LENGTH)) {
       throw new PropertyConstraintException(
           meterType.length(), validationErrorMessage(STRING_25_CHAR_MAX_LENGTH));
     }
