@@ -97,7 +97,7 @@ public class Client {
           }
 
           @Override
-          public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException {
+          public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurrenceConstraintException {
             return session.completePendingPromise(uniqueId, confirmation);
           }
 
@@ -144,11 +144,11 @@ public class Client {
    * @param request outgoing request
    * @return call back object, will be fulfilled with confirmation when received
    * @throws UnsupportedFeatureException trying to send a request from an unsupported feature
-   * @throws OccurenceConstraintException Thrown if the request isn't valid.
+   * @throws OccurrenceConstraintException Thrown if the request isn't valid.
    * @see CompletableFuture
    */
   public CompletableFuture<Confirmation> send(Request request)
-      throws UnsupportedFeatureException, OccurenceConstraintException {
+      throws UnsupportedFeatureException, OccurrenceConstraintException {
     Optional<Feature> featureOptional = featureRepository.findFeature(request);
     if (!featureOptional.isPresent()) {
       logger.error("Can't send request: unsupported feature. Payload: {}", request);
@@ -157,7 +157,7 @@ public class Client {
 
     if (!request.validate()) {
       logger.error("Can't send request: not validated. Payload {}: ", request);
-      throw new OccurenceConstraintException();
+      throw new OccurrenceConstraintException();
     }
 
     String id = session.storeRequest(request);
@@ -171,7 +171,7 @@ public class Client {
     return this.session.getSessionId();
   }
 
-  public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException {
+  public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurrenceConstraintException {
     return session.completePendingPromise(uniqueId, confirmation);
   }
 }

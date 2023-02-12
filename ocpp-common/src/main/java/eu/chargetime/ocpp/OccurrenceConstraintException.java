@@ -25,4 +25,4 @@ package eu.chargetime.ocpp; /*
                             */
 
 /** Exception thrown when trying to send a request that isn't valid. */
-public class OccurenceConstraintException extends Exception {}
+public class OccurrenceConstraintException extends Exception {}

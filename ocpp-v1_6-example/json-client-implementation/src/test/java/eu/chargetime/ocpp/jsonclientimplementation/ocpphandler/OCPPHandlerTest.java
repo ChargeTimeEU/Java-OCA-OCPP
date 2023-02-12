@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.jsonclientimplementation.ocpphandler;
 
 import eu.chargetime.ocpp.JSONClient;
-import eu.chargetime.ocpp.OccurenceConstraintException;
+import eu.chargetime.ocpp.OccurrenceConstraintException;
 import eu.chargetime.ocpp.UnsupportedFeatureException;
 import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
 import eu.chargetime.ocpp.jsonclientimplementation.config.ApiConfigurations;
@@ -47,7 +47,7 @@ public class OCPPHandlerTest {
                     .toCompletableFuture().get();
             assertTrue(true);
             assertEquals(AuthorizationStatus.Accepted,authorizeConfirmation.getIdTagInfo().getStatus());
-        } catch (OccurenceConstraintException | UnsupportedFeatureException
+        } catch (OccurrenceConstraintException | UnsupportedFeatureException
                 | ExecutionException | InterruptedException e) {
             log.error("Exception occurred: " + e);
             log.error("Test will fail");

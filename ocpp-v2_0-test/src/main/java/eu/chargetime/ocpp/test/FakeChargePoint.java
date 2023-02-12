@@ -64,7 +64,7 @@ public class FakeChargePoint {
   }
 
   public void send(Request request)
-      throws OccurenceConstraintException, UnsupportedFeatureException {
+      throws OccurrenceConstraintException, UnsupportedFeatureException {
     CompletionStage<Confirmation> send = client.send(request);
     send.whenComplete((confirmation, throwable) -> receivedConfirmation = confirmation);
   }

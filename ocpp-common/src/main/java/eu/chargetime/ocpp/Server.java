@@ -127,7 +127,7 @@ public class Server {
                   }
 
                   @Override
-                  public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException {
+                  public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurrenceConstraintException {
                     return session.completePendingPromise(uniqueId, confirmation);
                   }
 
@@ -196,17 +196,18 @@ public class Server {
    * @return Callback handler for when the client responds.
    * @throws UnsupportedFeatureException Thrown if the feature isn't among the list of supported
    *     featured.
-   * @throws OccurenceConstraintException Thrown if the request isn't valid.
+   * @throws OccurrenceConstraintException Thrown if the request isn't valid.
+   * @throws NotConnectedException Thrown if session with passed sessionIndex is not found
    */
   public CompletableFuture<Confirmation> send(UUID sessionIndex, Request request)
-      throws UnsupportedFeatureException, OccurenceConstraintException, NotConnectedException {
+      throws UnsupportedFeatureException, OccurrenceConstraintException, NotConnectedException {
     Optional<Feature> featureOptional = featureRepository.findFeature(request);
     if (!featureOptional.isPresent()) {
       throw new UnsupportedFeatureException();
     }
 
     if (!request.validate()) {
-      throw new OccurenceConstraintException();
+      throw new OccurrenceConstraintException();
     }
 
     ISession session = sessions.get(sessionIndex);
@@ -232,8 +233,11 @@ public class Server {
    * @param confirmation the {@link Confirmation} to the original {@link Request}.
    * @return a boolean indicating if pending request was found.
    * @throws NotConnectedException Thrown if session with passed sessionIndex is not found
+   * @throws UnsupportedFeatureException Thrown if the feature isn't among the list of supported
+   *     featured.
+   * @throws OccurrenceConstraintException Thrown if type of confirmation does not match type of request.
    */
-  public boolean asyncCompleteRequest(UUID sessionIndex, String uniqueId, Confirmation confirmation) throws NotConnectedException, UnsupportedFeatureException, OccurenceConstraintException {
+  public boolean asyncCompleteRequest(UUID sessionIndex, String uniqueId, Confirmation confirmation) throws NotConnectedException, UnsupportedFeatureException, OccurrenceConstraintException {
     ISession session = sessions.get(sessionIndex);
 
     if (session == null) {
