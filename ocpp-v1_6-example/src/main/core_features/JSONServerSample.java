@@ -1,11 +1,11 @@
 package core_features;
 
-import eu.chargetime.ocpp.JSONServer;
-import eu.chargetime.ocpp.ServerEvents;
-import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
-import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
-import eu.chargetime.ocpp.model.SessionInformation;
-import eu.chargetime.ocpp.model.core.*;
+import eu.chargetime.ocpp2.JSONServer;
+import eu.chargetime.ocpp2.ServerEvents;
+import eu.chargetime.ocpp2.feature.profile.ServerCoreEventHandler;
+import eu.chargetime.ocpp2.feature.profile.ServerCoreProfile;
+import eu.chargetime.ocpp2.model.SessionInformation;
+import eu.chargetime.ocpp2.model.core.*;
 
 import java.util.UUID;
 

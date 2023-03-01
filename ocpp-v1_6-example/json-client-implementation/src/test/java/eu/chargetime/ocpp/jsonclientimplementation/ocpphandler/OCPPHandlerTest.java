@@ -1,13 +1,13 @@
-package eu.chargetime.ocpp.jsonclientimplementation.ocpphandler;
+package eu.chargetime.ocpp2.jsonclientimplementation.ocpphandler;
 
-import eu.chargetime.ocpp.JSONClient;
-import eu.chargetime.ocpp.OccurrenceConstraintException;
-import eu.chargetime.ocpp.UnsupportedFeatureException;
-import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
-import eu.chargetime.ocpp.jsonclientimplementation.config.ApiConfigurations;
-import eu.chargetime.ocpp.model.core.AuthorizationStatus;
-import eu.chargetime.ocpp.model.core.AuthorizeConfirmation;
-import eu.chargetime.ocpp.model.core.AuthorizeRequest;
+import eu.chargetime.ocpp2.JSONClient;
+import eu.chargetime.ocpp2.OccurrenceConstraintException;
+import eu.chargetime.ocpp2.UnsupportedFeatureException;
+import eu.chargetime.ocpp2.feature.profile.ClientCoreProfile;
+import eu.chargetime.ocpp2.jsonclientimplementation.config.ApiConfigurations;
+import eu.chargetime.ocpp2.model.core.AuthorizationStatus;
+import eu.chargetime.ocpp2.model.core.AuthorizeConfirmation;
+import eu.chargetime.ocpp2.model.core.AuthorizeRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;

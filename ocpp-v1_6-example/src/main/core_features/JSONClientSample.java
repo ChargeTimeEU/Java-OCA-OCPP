@@ -1,11 +1,11 @@
 package core_features;
 
-import eu.chargetime.ocpp.IClientAPI;
-import eu.chargetime.ocpp.JSONClient;
-import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
-import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.core.*;
+import eu.chargetime.ocpp2.IClientAPI;
+import eu.chargetime.ocpp2.JSONClient;
+import eu.chargetime.ocpp2.feature.profile.ClientCoreEventHandler;
+import eu.chargetime.ocpp2.feature.profile.ClientCoreProfile;
+import eu.chargetime.ocpp2.model.Request;
+import eu.chargetime.ocpp2.model.core.*;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP

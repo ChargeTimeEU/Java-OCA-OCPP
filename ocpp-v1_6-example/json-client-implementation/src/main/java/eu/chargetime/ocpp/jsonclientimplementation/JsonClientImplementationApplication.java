@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.jsonclientimplementation;
+package eu.chargetime.ocpp2.jsonclientimplementation;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

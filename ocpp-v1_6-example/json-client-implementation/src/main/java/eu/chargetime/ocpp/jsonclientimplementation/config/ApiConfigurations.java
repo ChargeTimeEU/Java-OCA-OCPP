@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.jsonclientimplementation.config;
+package eu.chargetime.ocpp2.jsonclientimplementation.config;
 
 import lombok.Getter;
 import lombok.Setter;

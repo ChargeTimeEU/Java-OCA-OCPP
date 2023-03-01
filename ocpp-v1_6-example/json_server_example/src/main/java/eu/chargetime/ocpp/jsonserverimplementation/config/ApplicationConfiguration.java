@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.jsonserverimplementation.config;
+package eu.chargetime.ocpp2.jsonserverimplementation.config;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
