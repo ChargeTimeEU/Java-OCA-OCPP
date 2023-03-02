@@ -1,7 +1,7 @@
-package eu.chargetime.ocpp2.jsonserverimplementation.config;
+package eu.chargetime.ocpp.jsonserverimplementation.config;
 
-import eu.chargetime.ocpp2.ServerEvents;
-import eu.chargetime.ocpp2.model.SessionInformation;
+import eu.chargetime.ocpp.ServerEvents;
+import eu.chargetime.ocpp.model.SessionInformation;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

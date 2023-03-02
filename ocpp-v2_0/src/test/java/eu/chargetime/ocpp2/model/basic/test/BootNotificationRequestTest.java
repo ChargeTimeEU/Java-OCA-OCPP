@@ -28,7 +28,7 @@ package eu.chargetime.ocpp2.model.basic.test;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-import eu.chargetime.ocpp2.PropertyConstraintException;
+import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp2.model.basic.BootNotificationRequest;
 import eu.chargetime.ocpp2.model.basic.types.BootReasonEnumType;
 import eu.chargetime.ocpp2.model.basic.types.ChargingStationType;

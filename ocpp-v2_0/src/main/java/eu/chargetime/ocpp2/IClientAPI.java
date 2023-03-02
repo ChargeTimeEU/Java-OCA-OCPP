@@ -25,9 +25,12 @@ package eu.chargetime.ocpp2;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp2.feature.Feature;
-import eu.chargetime.ocpp2.model.Confirmation;
-import eu.chargetime.ocpp2.model.Request;
+import eu.chargetime.ocpp.OccurrenceConstraintException;
+import eu.chargetime.ocpp.ClientEvents;
+import eu.chargetime.ocpp.UnsupportedFeatureException;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
 

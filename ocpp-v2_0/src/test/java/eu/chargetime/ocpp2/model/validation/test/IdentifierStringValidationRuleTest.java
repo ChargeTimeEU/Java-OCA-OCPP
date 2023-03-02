@@ -25,7 +25,7 @@ package eu.chargetime.ocpp2.model.validation.test;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp2.PropertyConstraintException;
+import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp2.model.validation.IdentifierStringValidationRule;
 import org.junit.Test;
 

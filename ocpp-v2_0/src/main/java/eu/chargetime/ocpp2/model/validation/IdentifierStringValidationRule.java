@@ -25,7 +25,9 @@ package eu.chargetime.ocpp2.model.validation;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp2.PropertyConstraintException;
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.validation.IValidationRule;
+
 import java.util.regex.Pattern;
 
 public class IdentifierStringValidationRule implements IValidationRule {

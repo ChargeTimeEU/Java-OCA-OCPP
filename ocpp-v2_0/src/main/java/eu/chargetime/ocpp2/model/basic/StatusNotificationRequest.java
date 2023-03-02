@@ -25,10 +25,10 @@ package eu.chargetime.ocpp2.model.basic;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp2.model.RequestWithId;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp2.model.basic.types.ConnectorStatusEnumType;
-import eu.chargetime.ocpp2.model.validation.RequiredValidator;
-import eu.chargetime.ocpp2.utilities.MoreObjects;
+import eu.chargetime.ocpp.model.validation.RequiredValidator;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 

@@ -26,9 +26,9 @@ package eu.chargetime.ocpp2.model.basic;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp2.model.Confirmation;
+import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp2.model.basic.types.GetVariableResultType;
-import eu.chargetime.ocpp2.utilities.MoreObjects;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Arrays;
 import java.util.Objects;
 

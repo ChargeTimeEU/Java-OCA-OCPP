@@ -1,8 +1,8 @@
-package eu.chargetime.ocpp2.jsonserverimplementation.server;
+package eu.chargetime.ocpp.jsonserverimplementation.server;
 
-import eu.chargetime.ocpp2.JSONServer;
-import eu.chargetime.ocpp2.ServerEvents;
-import eu.chargetime.ocpp2.jsonserverimplementation.config.ApplicationConfiguration;
+import eu.chargetime.ocpp.JSONServer;
+import eu.chargetime.ocpp.ServerEvents;
+import eu.chargetime.ocpp.jsonserverimplementation.config.ApplicationConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

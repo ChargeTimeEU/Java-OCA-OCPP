@@ -25,6 +25,8 @@ package eu.chargetime.ocpp2.model.validation;
    SOFTWARE.
 */
 
+import eu.chargetime.ocpp.model.validation.IValidationRule;
+
 public class OCPP2PrimDatatypes {
 
   public static IValidationRule string50() {

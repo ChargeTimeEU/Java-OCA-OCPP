@@ -25,18 +25,18 @@ package eu.chargetime.ocpp2.test;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp2.AuthenticationException;
+import eu.chargetime.ocpp.AuthenticationException;
 import eu.chargetime.ocpp2.IServerAPI;
-import eu.chargetime.ocpp2.JSONConfiguration;
+import eu.chargetime.ocpp.JSONConfiguration;
 import eu.chargetime.ocpp2.JSONServer;
-import eu.chargetime.ocpp2.NotConnectedException;
-import eu.chargetime.ocpp2.OccurrenceConstraintException;
-import eu.chargetime.ocpp2.ServerEvents;
-import eu.chargetime.ocpp2.UnsupportedFeatureException;
-import eu.chargetime.ocpp2.feature.Feature;
-import eu.chargetime.ocpp2.model.Confirmation;
-import eu.chargetime.ocpp2.model.Request;
-import eu.chargetime.ocpp2.model.SessionInformation;
+import eu.chargetime.ocpp.NotConnectedException;
+import eu.chargetime.ocpp.OccurrenceConstraintException;
+import eu.chargetime.ocpp.ServerEvents;
+import eu.chargetime.ocpp.UnsupportedFeatureException;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.SessionInformation;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
 import org.slf4j.Logger;

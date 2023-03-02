@@ -25,9 +25,9 @@ package eu.chargetime.ocpp2.model.basic.types;
    SOFTWARE.
 */
 
-import static eu.chargetime.ocpp2.utilities.TestUtilities.aString;
+import static eu.chargetime.ocpp.utilities.TestUtilities.aString;
 
-import eu.chargetime.ocpp2.PropertyConstraintException;
+import eu.chargetime.ocpp.PropertyConstraintException;
 import org.junit.Assert;
 import org.junit.Test;
 

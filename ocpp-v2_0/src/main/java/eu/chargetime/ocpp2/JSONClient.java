@@ -25,11 +25,12 @@ package eu.chargetime.ocpp2;
  * SOFTWARE.
  */
 
-import eu.chargetime.ocpp2.feature.Feature;
-import eu.chargetime.ocpp2.model.Confirmation;
-import eu.chargetime.ocpp2.model.Request;
-import eu.chargetime.ocpp2.wss.BaseWssSocketBuilder;
-import eu.chargetime.ocpp2.wss.WssSocketBuilder;
+import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.wss.BaseWssSocketBuilder;
+import eu.chargetime.ocpp.wss.WssSocketBuilder;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.UUID;
@@ -115,7 +116,7 @@ public class JSONClient implements IClientAPI {
   /**
    * Enables WSS connection to the endpoint. The {@code wssSocketBuilder} must be initialized at
    * that step (as required parameters set might vary depending on implementation the {@link
-   * eu.chargetime.ocpp2.wss.WssSocketBuilder#verify()} is used to ensure initialization).
+   * eu.chargetime.ocpp.wss.WssSocketBuilder#verify()} is used to ensure initialization).
    *
    * @param wssSocketBuilder builder to provide SSL socket
    * @return instance of {@link JSONClient}

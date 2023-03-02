@@ -1,11 +1,11 @@
-package eu.chargetime.ocpp2.jsonserverimplementation.handler;
+package eu.chargetime.ocpp.jsonserverimplementation.handler;
 
-import eu.chargetime.ocpp2.feature.profile.ServerCoreEventHandler;
-import eu.chargetime.ocpp2.jsonserverimplementation.config.TestServerCoreProfileConfig;
-import eu.chargetime.ocpp2.jsonserverimplementation.config.TestServerEventConfig;
-import eu.chargetime.ocpp2.model.core.AuthorizationStatus;
-import eu.chargetime.ocpp2.model.core.AuthorizeConfirmation;
-import eu.chargetime.ocpp2.model.core.AuthorizeRequest;
+import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
+import eu.chargetime.ocpp.jsonserverimplementation.config.TestServerCoreProfileConfig;
+import eu.chargetime.ocpp.jsonserverimplementation.config.TestServerEventConfig;
+import eu.chargetime.ocpp.model.core.AuthorizationStatus;
+import eu.chargetime.ocpp.model.core.AuthorizeConfirmation;
+import eu.chargetime.ocpp.model.core.AuthorizeRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;

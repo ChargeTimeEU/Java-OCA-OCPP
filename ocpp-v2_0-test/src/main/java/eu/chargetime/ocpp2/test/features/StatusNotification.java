@@ -25,7 +25,7 @@ package eu.chargetime.ocpp2.test.features;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp2.feature.Feature;
+import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp2.features.basic.StatusNotificationFeature;
 import eu.chargetime.ocpp2.features.basic.handlers.IServerStatusNotificationRequestHandler;
 import eu.chargetime.ocpp2.model.basic.StatusNotificationConfirmation;

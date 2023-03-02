@@ -25,10 +25,10 @@ package eu.chargetime.ocpp2.model.basic.types;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp2.model.Validatable;
-import eu.chargetime.ocpp2.model.validation.RequiredValidator;
-import eu.chargetime.ocpp2.model.validation.Validator;
-import eu.chargetime.ocpp2.utilities.MoreObjects;
+import eu.chargetime.ocpp.model.Validatable;
+import eu.chargetime.ocpp.model.validation.RequiredValidator;
+import eu.chargetime.ocpp.model.validation.Validator;
+import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 
 public class GetVariableDataType implements Validatable {

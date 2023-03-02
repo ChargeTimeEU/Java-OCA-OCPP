@@ -25,11 +25,11 @@ package eu.chargetime.ocpp2.model.basic.test;
    SOFTWARE.
 */
 
-import static eu.chargetime.ocpp2.utilities.TestUtilities.aList;
+import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import eu.chargetime.ocpp2.PropertyConstraintException;
+import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp2.model.basic.SetVariablesRequest;
 import eu.chargetime.ocpp2.model.basic.types.SetVariableDataType;
 import org.junit.Assert;

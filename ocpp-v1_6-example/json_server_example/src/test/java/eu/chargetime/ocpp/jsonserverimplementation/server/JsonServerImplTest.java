@@ -1,12 +1,12 @@
-package eu.chargetime.ocpp2.jsonserverimplementation.server;
+package eu.chargetime.ocpp.jsonserverimplementation.server;
 
-import eu.chargetime.ocpp2.JSONServer;
-import eu.chargetime.ocpp2.ServerEvents;
-import eu.chargetime.ocpp2.feature.profile.ServerCoreProfile;
-import eu.chargetime.ocpp2.jsonserverimplementation.config.ApplicationConfiguration;
-import eu.chargetime.ocpp2.jsonserverimplementation.config.TestJsonServerConfig;
-import eu.chargetime.ocpp2.jsonserverimplementation.config.TestServerCoreProfileConfig;
-import eu.chargetime.ocpp2.jsonserverimplementation.config.TestServerEventConfig;
+import eu.chargetime.ocpp.JSONServer;
+import eu.chargetime.ocpp.ServerEvents;
+import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
+import eu.chargetime.ocpp.jsonserverimplementation.config.ApplicationConfiguration;
+import eu.chargetime.ocpp.jsonserverimplementation.config.TestJsonServerConfig;
+import eu.chargetime.ocpp.jsonserverimplementation.config.TestServerCoreProfileConfig;
+import eu.chargetime.ocpp.jsonserverimplementation.config.TestServerEventConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;

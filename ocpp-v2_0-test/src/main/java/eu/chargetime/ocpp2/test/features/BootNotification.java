@@ -26,7 +26,7 @@ package eu.chargetime.ocpp2.test.features;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp2.feature.Feature;
+import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp2.features.basic.BootNotificationFeature;
 import eu.chargetime.ocpp2.features.basic.handlers.IServerBootNotificationRequestHandler;
 import eu.chargetime.ocpp2.model.basic.BootNotificationConfirmation;

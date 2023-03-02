@@ -25,7 +25,7 @@ package eu.chargetime.ocpp2.model.basic.test;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp2.PropertyConstraintException;
+import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp2.model.basic.StatusNotificationRequest;
 import eu.chargetime.ocpp2.model.basic.types.ConnectorStatusEnumType;
 import java.time.ZonedDateTime;

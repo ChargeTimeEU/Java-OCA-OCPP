@@ -25,10 +25,10 @@ package eu.chargetime.ocpp2.features.basic;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp2.feature.Feature;
+import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp2.features.basic.handlers.IClientGetVariablesRequestHandler;
-import eu.chargetime.ocpp2.model.Confirmation;
-import eu.chargetime.ocpp2.model.Request;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp2.model.basic.GetVariablesConfirmation;
 import eu.chargetime.ocpp2.model.basic.GetVariablesRequest;
 import java.util.UUID;

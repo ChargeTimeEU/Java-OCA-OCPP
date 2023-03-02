@@ -25,7 +25,7 @@ package eu.chargetime.ocpp2.test.features;
    SOFTWARE.
 */
 
-import static eu.chargetime.ocpp2.utilities.TestUtilities.aList;
+import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 
 import eu.chargetime.ocpp2.features.basic.GetVariablesFeature;
 import eu.chargetime.ocpp2.features.basic.handlers.IClientGetVariablesRequestHandler;

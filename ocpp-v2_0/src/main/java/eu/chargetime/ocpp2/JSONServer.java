@@ -25,11 +25,12 @@ package eu.chargetime.ocpp2;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp2.feature.Feature;
-import eu.chargetime.ocpp2.model.Confirmation;
-import eu.chargetime.ocpp2.model.Request;
-import eu.chargetime.ocpp2.wss.BaseWssFactoryBuilder;
-import eu.chargetime.ocpp2.wss.WssFactoryBuilder;
+import eu.chargetime.ocpp.*;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.wss.BaseWssFactoryBuilder;
+import eu.chargetime.ocpp.wss.WssFactoryBuilder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;

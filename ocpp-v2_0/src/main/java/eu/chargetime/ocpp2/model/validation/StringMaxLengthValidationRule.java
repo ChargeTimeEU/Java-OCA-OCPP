@@ -25,7 +25,8 @@ package eu.chargetime.ocpp2.model.validation;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp2.PropertyConstraintException;
+import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.validation.IValidationRule;
 
 public class StringMaxLengthValidationRule implements IValidationRule {
 

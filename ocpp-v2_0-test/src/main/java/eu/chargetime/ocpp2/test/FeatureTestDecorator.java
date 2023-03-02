@@ -25,9 +25,9 @@ package eu.chargetime.ocpp2.test;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp2.feature.Feature;
-import eu.chargetime.ocpp2.model.Confirmation;
-import eu.chargetime.ocpp2.model.Request;
+import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
 import java.util.UUID;
 
 public class FeatureTestDecorator implements Feature {
