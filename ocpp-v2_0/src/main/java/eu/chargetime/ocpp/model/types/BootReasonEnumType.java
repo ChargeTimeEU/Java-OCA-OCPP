@@ -25,34 +25,63 @@ package eu.chargetime.ocpp.model.types;
  * SOFTWARE.
  */
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import eu.chargetime.ocpp.model.request.BootNotificationRequest;
+
+import static eu.chargetime.ocpp.util.EnumUtil.findByField;
 
 /** Accepted values used with {@link BootNotificationRequest}. */
 public enum BootReasonEnumType {
   /** The Charging Station rebooted due to an application error. */
-  ApplicationReset,
+  APPLICATION_RESET("ApplicationReset"),
 
   /** The Charging Station rebooted due to a firmware update. */
-  FirmwareUpdate,
+  FIRMWARE_UPDATE("FirmwareUpdate"),
 
   /** The Charging Station rebooted due to a local reset command. */
-  LocalReset,
+  LOCAL_RESET("LocalReset"),
 
   /** The Charging Station powered up and registers itself with the CSMS. */
-  PowerUp,
+  POWER_UP("PowerUp"),
 
   /** The Charging Station rebooted due to a remote reset command. */
-  RemoteReset,
+  REMOTE_RESET("RemoteReset"),
 
   /** The Charging Station rebooted due to a scheduled reset command. */
-  ScheduledReset,
+  SCHEDULED_RESET("ScheduledReset"),
 
   /** Requested by the CSMS via a TriggerMessage. */
-  Triggered,
+  TRIGGERED("Triggered"),
 
   /** The boot reason is unknown. */
-  Unknown,
+  UNKNOWN("Unknown"),
 
   /** The Charging Station rebooted due to an elapsed watchdog timer. */
-  Watchdog
+  WATCHDOG("Watchdog");
+
+  private final String value;
+
+  BootReasonEnumType(String value) {
+    this.value = value;
+  }
+
+  @Override
+  public String toString() {
+    return this.value;
+  }
+
+  @JsonValue
+  public String value() {
+    return this.value;
+  }
+
+  @JsonCreator
+  public static BootReasonEnumType fromValue(String value) {
+    return findByField(
+            BootReasonEnumType.class,
+            BootReasonEnumType::value,
+            value
+    );
+  }
 }
