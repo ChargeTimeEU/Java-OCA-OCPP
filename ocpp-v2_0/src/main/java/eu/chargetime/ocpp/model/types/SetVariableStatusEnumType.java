@@ -25,7 +25,11 @@ package eu.chargetime.ocpp.model.types;
    SOFTWARE.
 */
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import eu.chargetime.ocpp.model.confirmation.SetVariablesConfirmation;
+
+import static eu.chargetime.ocpp.util.EnumUtil.findByField;
 
 /**
  * SetVariableStatusEnumType is used by {@link
@@ -34,26 +38,51 @@ import eu.chargetime.ocpp.model.confirmation.SetVariablesConfirmation;
 public enum SetVariableStatusEnumType {
 
   /** Variable successfully set. */
-  Accepted,
+  ACCEPTED("Accepted"),
 
   /** Request is rejected. */
-  Rejected,
+  REJECTED("Rejected"),
 
   /** Value has invalid format for the variable. */
-  InvalidValue,
+  INVALID_VALUE("InvalidValue"),
 
   /** Component is not known. */
-  UnknownComponent,
+  UNKNOWN_COMPONENT("UnknownComponent"),
 
   /** Variable is not known. */
-  UnknownVariable,
+  UNKNOWN_VARIABLE("UnknownVariable"),
 
   /** The AttributeType is not supported. */
-  NotSupportedAttributeType,
+  NOT_SUPPORTED_ATTRIBUTE_TYPE("NotSupportedAttributeType"),
 
   /** Value is out of range defined in VariableCharacteristics. */
-  OutOfRange,
+  OUT_OF_RANGE("OutOfRange"),
 
   /** A reboot is required. */
-  RebootRequired
+  REBOOT_REQUIRED("RebootRequired");
+
+  private final String value;
+
+  SetVariableStatusEnumType(String value) {
+    this.value = value;
+  }
+
+  @Override
+  public String toString() {
+    return this.value;
+  }
+
+  @JsonValue
+  public String value() {
+    return this.value;
+  }
+
+  @JsonCreator
+  public static SetVariableStatusEnumType fromValue(String value) {
+    return findByField(
+            SetVariableStatusEnumType.class,
+            SetVariableStatusEnumType::value,
+            value
+    );
+  }
 }
