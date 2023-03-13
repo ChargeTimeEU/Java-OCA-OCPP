@@ -25,10 +25,40 @@ package eu.chargetime.ocpp.model.types;
    SOFTWARE.
 */
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+import static eu.chargetime.ocpp.util.EnumUtil.findByField;
+
 public enum ConnectorStatusEnumType {
-  Available,
-  Occupied,
-  Reserved,
-  Unavailable,
-  Faulted
+  AVAILABLE("Available"),
+  OCCUPIED("Occupied"),
+  RESERVED("Reserved"),
+  UNAVAILABLE("Unavailable"),
+  FAULTED("Faulted");
+
+  private final String value;
+
+  ConnectorStatusEnumType(String value) {
+    this.value = value;
+  }
+
+  @Override
+  public String toString() {
+    return this.value;
+  }
+
+  @JsonValue
+  public String value() {
+    return this.value;
+  }
+
+  @JsonCreator
+  public static ConnectorStatusEnumType fromValue(String value) {
+    return findByField(
+            ConnectorStatusEnumType.class,
+            ConnectorStatusEnumType::value,
+            value
+    );
+  }
 }

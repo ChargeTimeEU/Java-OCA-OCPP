@@ -58,7 +58,7 @@ public class StatusNotification implements IServerStatusNotificationRequestHandl
   public StatusNotificationRequest createRequest() {
     StatusNotificationRequest request = new StatusNotificationRequest();
     request.setTimestamp(ZonedDateTime.now());
-    request.setConnectorStatus(ConnectorStatusEnumType.Available);
+    request.setConnectorStatus(ConnectorStatusEnumType.AVAILABLE);
     request.setEvseId(1);
     request.setConnectorId(1);
     return request;

@@ -78,7 +78,7 @@ public class StatusNotificationRequestTest {
 
     StatusNotificationRequest sut = new StatusNotificationRequest();
     sut.setTimestamp(ZonedDateTime.now());
-    sut.setConnectorStatus(ConnectorStatusEnumType.Available);
+    sut.setConnectorStatus(ConnectorStatusEnumType.AVAILABLE);
     sut.setEvseId(1);
     sut.setConnectorId(1);
 
