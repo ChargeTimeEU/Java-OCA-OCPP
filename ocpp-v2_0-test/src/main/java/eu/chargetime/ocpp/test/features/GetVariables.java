@@ -51,7 +51,7 @@ public class GetVariables implements IClientGetVariablesRequestHandler {
     componentType.setName("A name");
 
     GetVariableResultType getVariableResultType = new GetVariableResultType();
-    getVariableResultType.setAttributeStatus(GetVariableStatusEnumType.Accepted);
+    getVariableResultType.setAttributeStatus(GetVariableStatusEnumType.ACCEPTED);
     getVariableResultType.setAttributeValue("Some value");
     getVariableResultType.setComponent(componentType);
     getVariableResultType.setVariable(variableType);

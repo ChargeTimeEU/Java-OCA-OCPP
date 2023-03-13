@@ -51,7 +51,7 @@ public class GetVariableResultTypeTest {
   public void validate_requiredSetAndStatusNotAccepted_returnTrue() {
     boolean expected = true;
     GetVariableResultType sut = createSut();
-    sut.setAttributeStatus(GetVariableStatusEnumType.Rejected);
+    sut.setAttributeStatus(GetVariableStatusEnumType.REJECTED);
 
     boolean result = sut.validate();
 
@@ -62,7 +62,7 @@ public class GetVariableResultTypeTest {
   public void validate_StatusAcceptedValueNull_returnFalse() {
     boolean expected = false;
     GetVariableResultType sut = createSut();
-    sut.setAttributeStatus(GetVariableStatusEnumType.Accepted);
+    sut.setAttributeStatus(GetVariableStatusEnumType.ACCEPTED);
 
     boolean result = sut.validate();
 
@@ -73,7 +73,7 @@ public class GetVariableResultTypeTest {
   public void validate_StatusAcceptedValueSet_returnTrue() {
     boolean expected = true;
     GetVariableResultType sut = createSut();
-    sut.setAttributeStatus(GetVariableStatusEnumType.Accepted);
+    sut.setAttributeStatus(GetVariableStatusEnumType.ACCEPTED);
     sut.setAttributeValue("Some value");
 
     boolean result = sut.validate();
