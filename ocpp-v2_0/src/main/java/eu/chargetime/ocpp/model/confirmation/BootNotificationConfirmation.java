@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.basic;
+package eu.chargetime.ocpp.model.confirmation;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -28,7 +28,8 @@ package eu.chargetime.ocpp.model.basic;
 */
 
 import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.basic.types.RegistrationStatusEnumType;
+import eu.chargetime.ocpp.model.request.BootNotificationRequest;
+import eu.chargetime.ocpp.model.types.RegistrationStatusEnumType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.time.ZonedDateTime;

@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.basic.types;
+package eu.chargetime.ocpp.model.types;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -33,18 +33,39 @@ import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 
-public class SetVariableDataType implements Validatable {
+public class GetVariableResultType implements Validatable {
   private transient Validator<Object> requiredValidator = new RequiredValidator();
   private transient Validator attributeValueValidator =
       new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string1000()).build();
 
+  private GetVariableStatusEnumType attributeStatus;
   private AttributeEnumType attributeType;
   private String attributeValue;
   private ComponentType component;
   private VariableType variable;
 
   /**
-   * Type of attribute: Actual, Target, MinSet, MaxSet. Default is Actual when omitted.
+   * Result status of getting the variable.
+   *
+   * @return {@link GetVariableStatusEnumType}
+   */
+  public GetVariableStatusEnumType getAttributeStatus() {
+    return attributeStatus;
+  }
+
+  /**
+   * Required. Result status of getting the variable.
+   *
+   * @param attributeStatus {@link GetVariableStatusEnumType}
+   */
+  public void setAttributeStatus(GetVariableStatusEnumType attributeStatus) {
+    requiredValidator.validate(attributeStatus);
+
+    this.attributeStatus = attributeStatus;
+  }
+
+  /**
+   * Attribute type for which value is requested. When absent, default Actual is assumed.
    *
    * @return {@link AttributeEnumType}
    */
@@ -53,7 +74,7 @@ public class SetVariableDataType implements Validatable {
   }
 
   /**
-   * Optional. Type of attribute: Actual, Target, MinSet, MaxSet. Default is Actual when omitted.
+   * Optional. Attribute type for which value is requested. When absent, default Actual is assumed.
    *
    * @param attributeType {@link AttributeEnumType}
    */
@@ -62,28 +83,32 @@ public class SetVariableDataType implements Validatable {
   }
 
   /**
-   * Value to be assigned to attribute of variable.
+   * Value of requested attribute type of componentvariable.
    *
-   * @return string[0..1000]
+   * @return String[0..1000]
    */
   public String getAttributeValue() {
     return attributeValue;
   }
 
   /**
-   * Required. Value to be assigned to attribute of variable. The Configuration Variable ValueSize
-   * can be used to limit the VariableCharacteristicsType. ValueList and all AttributeValue fields.
-   * The max size of these values will always remain equal. The default max size is set to 1000.
+   * Optional. Value of requested attribute type of componentvariable. This field can only be empty
+   * when the given status is NOT accepted.
    *
-   * @param attributeValue string[0..1000]
+   * <p>The Configuration Variable ValueSize can be used to limit the
+   * VariableCharacteristicsType.ValueList and all AttributeValue fields. The max size of these
+   * values will always remain equal. The default max size is set to 1000.
+   *
+   * @param attributeValue String[0..1000]
    */
   public void setAttributeValue(String attributeValue) {
     attributeValueValidator.validate(attributeValue);
+
     this.attributeValue = attributeValue;
   }
 
   /**
-   * The component for which the variable data is set.
+   * Component for which the Variable is requested.
    *
    * @return {@link ComponentType}
    */
@@ -92,18 +117,17 @@ public class SetVariableDataType implements Validatable {
   }
 
   /**
-   * Required. The component for which the variable data is set.
+   * Required. Component for which the Variable is requested.
    *
    * @param component {@link ComponentType}
    */
   public void setComponent(ComponentType component) {
     requiredValidator.validate(component);
-
     this.component = component;
   }
 
   /**
-   * Specifies the that needs to be set.
+   * Variable for which the attribute value is requested.
    *
    * @return {@link VariableType}
    */
@@ -112,19 +136,20 @@ public class SetVariableDataType implements Validatable {
   }
 
   /**
-   * Required. Specifies the that needs to be set.
+   * Required. Variable for which the attribute value is requested.
    *
    * @param variable {@link VariableType}
    */
   public void setVariable(VariableType variable) {
     requiredValidator.validate(variable);
-
     this.variable = variable;
   }
 
   @Override
   public boolean validate() {
-    return attributeValueValidator.safeValidate(attributeValue)
+    return requiredValidator.safeValidate(attributeStatus)
+        && (attributeStatus != GetVariableStatusEnumType.Accepted
+            || requiredValidator.safeValidate(attributeValue))
         && requiredValidator.safeValidate(component)
         && requiredValidator.safeValidate(variable)
         && component.validate()
@@ -135,8 +160,9 @@ public class SetVariableDataType implements Validatable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    SetVariableDataType that = (SetVariableDataType) o;
+    GetVariableResultType that = (GetVariableResultType) o;
     return Objects.equals(attributeType, that.attributeType)
+        && Objects.equals(attributeStatus, that.attributeStatus)
         && Objects.equals(attributeValue, that.attributeValue)
         && Objects.equals(component, that.component)
         && Objects.equals(variable, that.variable);
@@ -144,13 +170,14 @@ public class SetVariableDataType implements Validatable {
 
   @Override
   public int hashCode() {
-    return Objects.hash(attributeType, attributeValue, component, variable);
+    return Objects.hash(attributeType, attributeStatus, attributeValue, component, variable);
   }
 
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
         .add("attributeType", attributeType)
+        .add("attributeStatus", attributeStatus)
         .add("attributeValue", attributeValue)
         .add("component", component)
         .add("variable", variable)

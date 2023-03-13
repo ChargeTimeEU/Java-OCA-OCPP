@@ -25,8 +25,8 @@ package eu.chargetime.ocpp.features.basic.handlers;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.basic.StatusNotificationConfirmation;
-import eu.chargetime.ocpp.model.basic.StatusNotificationRequest;
+import eu.chargetime.ocpp.model.confirmation.StatusNotificationConfirmation;
+import eu.chargetime.ocpp.model.request.StatusNotificationRequest;
 import java.util.UUID;
 
 /** Central system handler of {@link StatusNotificationRequest}s. */

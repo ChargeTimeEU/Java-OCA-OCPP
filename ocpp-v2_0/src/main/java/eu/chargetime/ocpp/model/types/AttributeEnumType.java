@@ -1,10 +1,10 @@
-package eu.chargetime.ocpp.model.basic.types;
+package eu.chargetime.ocpp.model.types;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
    MIT License
 
-   Copyright (C) 2021 John Michael Luy <johnmichael.luy@gmail.com>
+   Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,17 @@ package eu.chargetime.ocpp.model.basic.types;
    SOFTWARE.
 */
 
-public enum ConnectorStatusEnumType {
-  Available,
-  Occupied,
-  Reserved,
-  Unavailable,
-  Faulted
+/** AttributeEnumType is used by {@link SetVariableDataType}, {@link GetVariableDataType} */
+public enum AttributeEnumType {
+  /** The actual value of the variable. */
+  Actual,
+
+  /** The target value for this variable. */
+  Target,
+
+  /** The minimal allowed value for this variable. */
+  MinSet,
+
+  /** The maximum allowed value for this variable. */
+  MaxSet
 }

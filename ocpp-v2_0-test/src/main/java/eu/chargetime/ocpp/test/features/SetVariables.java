@@ -29,9 +29,10 @@ import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 
 import eu.chargetime.ocpp.features.basic.SetVariablesFeature;
 import eu.chargetime.ocpp.features.basic.handlers.IClientSetVariablesRequestHandler;
-import eu.chargetime.ocpp.model.basic.SetVariablesConfirmation;
-import eu.chargetime.ocpp.model.basic.SetVariablesRequest;
+import eu.chargetime.ocpp.model.confirmation.SetVariablesConfirmation;
+import eu.chargetime.ocpp.model.request.SetVariablesRequest;
 import eu.chargetime.ocpp.model.basic.types.*;
+import eu.chargetime.ocpp.model.types.*;
 
 public class SetVariables implements IClientSetVariablesRequestHandler {
   private SetVariablesFeature feature;

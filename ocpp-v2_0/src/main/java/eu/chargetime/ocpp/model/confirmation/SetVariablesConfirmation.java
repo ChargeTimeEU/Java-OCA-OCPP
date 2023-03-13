@@ -1,10 +1,11 @@
-package eu.chargetime.ocpp.model.basic;
+package eu.chargetime.ocpp.model.confirmation;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
    MIT License
 
    Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
+   Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +26,8 @@ package eu.chargetime.ocpp.model.basic;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.RequestWithId;
-import eu.chargetime.ocpp.model.basic.types.SetVariableDataType;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.types.SetVariableResultType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
@@ -34,60 +35,56 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * This contains the field definition of the SetVariablesRequest PDU sent by the CSMS to the
- * Charging Station.
+ * This contains the field definition of the SetVariablesResponse PDU sent by the Charging Station
+ * to the CSMS in response to a SetVariablesRequest.
  */
-public class SetVariablesRequest extends RequestWithId {
+public class SetVariablesConfirmation extends Confirmation {
   private transient Validator<Object> requiredValidator = new RequiredValidator();
-  private SetVariableDataType[] setVariableData;
 
-  @Override
-  public boolean transactionRelated() {
-    return false;
+  private SetVariableResultType[] setVariableResult;
+
+  /**
+   * List of result statuses per Component-Variable.
+   *
+   * @return SetVariableResultType[]
+   */
+  public SetVariableResultType[] getSetVariableResult() {
+    return setVariableResult;
+  }
+
+  /**
+   * Required. List of result statuses per Component-Variable.
+   *
+   * @param setVariableResult SetVariableResultType[]
+   */
+  public void setSetVariableResult(SetVariableResultType[] setVariableResult) {
+    requiredValidator.validate(setVariableResult);
+    this.setVariableResult = setVariableResult;
   }
 
   @Override
   public boolean validate() {
-    return setVariableData != null
-        && setVariableData.length > 0
-        && Arrays.stream(setVariableData)
-            .allMatch(setVariableDataType -> setVariableDataType.validate());
-  }
-
-  /**
-   * List of Component-Variable pairs and attribute values to set.
-   *
-   * @param setVariableData {@link SetVariableDataType}
-   */
-  public void setSetVariableData(SetVariableDataType[] setVariableData) {
-    requiredValidator.validate(setVariableData);
-    this.setVariableData = setVariableData;
-  }
-
-  /**
-   * Required. List of Component-Variable pairs and attribute values to set.
-   *
-   * @return {@link SetVariableDataType}
-   */
-  public SetVariableDataType[] getSetVariableData() {
-    return this.setVariableData;
+    return setVariableResult != null
+        && setVariableResult.length > 0
+        && Arrays.stream(setVariableResult)
+            .allMatch(setVariableResult -> setVariableResult.validate());
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    SetVariablesRequest that = (SetVariablesRequest) o;
-    return Arrays.equals(setVariableData, that.setVariableData);
+    SetVariablesConfirmation that = (SetVariablesConfirmation) o;
+    return Arrays.equals(setVariableResult, that.setVariableResult);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(setVariableData);
+    return Objects.hash(setVariableResult);
   }
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("setVariableData", setVariableData).toString();
+    return MoreObjects.toStringHelper(this).add("setVariableResult", setVariableResult).toString();
   }
 }

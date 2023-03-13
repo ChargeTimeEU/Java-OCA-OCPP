@@ -1,11 +1,10 @@
-package eu.chargetime.ocpp.model.basic;
+package eu.chargetime.ocpp.model.types;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
    MIT License
 
    Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
-   Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -26,65 +25,81 @@ package eu.chargetime.ocpp.model.basic;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.basic.types.SetVariableResultType;
-import eu.chargetime.ocpp.model.validation.RequiredValidator;
+import eu.chargetime.ocpp.model.Validatable;
+import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.Validator;
+import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-import java.util.Arrays;
 import java.util.Objects;
 
-/**
- * This contains the field definition of the SetVariablesResponse PDU sent by the Charging Station
- * to the CSMS in response to a SetVariablesRequest.
- */
-public class SetVariablesConfirmation extends Confirmation {
-  private transient Validator<Object> requiredValidator = new RequiredValidator();
+public class ModemType implements Validatable {
+  private transient Validator validator =
+      new ValidatorBuilder()
+          .addRule(OCPP2PrimDatatypes.identifierString())
+          .addRule(OCPP2PrimDatatypes.string20())
+          .build();
 
-  private SetVariableResultType[] setVariableResult;
+  private String iccid;
+  private String imsi;
 
   /**
-   * List of result statuses per Component-Variable.
+   * This contains the ICCID of the modem’s SIM card.
    *
-   * @return SetVariableResultType[]
+   * @return identifierString[0..20]
    */
-  public SetVariableResultType[] getSetVariableResult() {
-    return setVariableResult;
+  public String getIccid() {
+    return iccid;
   }
 
   /**
-   * Required. List of result statuses per Component-Variable.
+   * Optional. This contains the ICCID of the modem’s SIM card.
    *
-   * @param setVariableResult SetVariableResultType[]
+   * @param iccid identifierString[0..20]
    */
-  public void setSetVariableResult(SetVariableResultType[] setVariableResult) {
-    requiredValidator.validate(setVariableResult);
-    this.setVariableResult = setVariableResult;
+  public void setIccid(String iccid) {
+    validator.validate(iccid);
+    this.iccid = iccid;
+  }
+
+  /**
+   * This contains the IMSI of the modem’s SIM card.
+   *
+   * @return identifierString[0..20]
+   */
+  public String getImsi() {
+    return imsi;
+  }
+
+  /**
+   * Optional. This contains the IMSI of the modem’s SIM card.
+   *
+   * @param imsi identifierString[0..20]
+   */
+  public void setImsi(String imsi) {
+    validator.validate(imsi);
+    this.imsi = imsi;
   }
 
   @Override
   public boolean validate() {
-    return setVariableResult != null
-        && setVariableResult.length > 0
-        && Arrays.stream(setVariableResult)
-            .allMatch(setVariableResult -> setVariableResult.validate());
+    return validator.safeValidate(iccid) && validator.safeValidate(imsi);
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    SetVariablesConfirmation that = (SetVariablesConfirmation) o;
-    return Arrays.equals(setVariableResult, that.setVariableResult);
+    ModemType that = (ModemType) o;
+    return Objects.equals(iccid, that.iccid) && Objects.equals(imsi, that.imsi);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(setVariableResult);
+    return Objects.hash(iccid, imsi);
   }
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("setVariableResult", setVariableResult).toString();
+    return MoreObjects.toStringHelper(this).add("iccid", iccid).add("imsi", imsi).toString();
   }
 }

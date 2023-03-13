@@ -29,9 +29,9 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.basic.BootNotificationRequest;
-import eu.chargetime.ocpp.model.basic.types.BootReasonEnumType;
-import eu.chargetime.ocpp.model.basic.types.ChargingStationType;
+import eu.chargetime.ocpp.model.request.BootNotificationRequest;
+import eu.chargetime.ocpp.model.types.BootReasonEnumType;
+import eu.chargetime.ocpp.model.types.ChargingStationType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

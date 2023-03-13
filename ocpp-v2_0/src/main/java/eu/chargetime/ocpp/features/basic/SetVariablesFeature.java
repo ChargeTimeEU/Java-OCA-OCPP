@@ -29,8 +29,8 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.features.basic.handlers.IClientSetVariablesRequestHandler;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.basic.SetVariablesConfirmation;
-import eu.chargetime.ocpp.model.basic.SetVariablesRequest;
+import eu.chargetime.ocpp.model.confirmation.SetVariablesConfirmation;
+import eu.chargetime.ocpp.model.request.SetVariablesRequest;
 import java.util.UUID;
 
 public class SetVariablesFeature implements Feature {

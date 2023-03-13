@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.basic.types;
+package eu.chargetime.ocpp.model.types;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -32,8 +32,8 @@ import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 
-/** A physical or logical component. */
-public class ComponentType implements Validatable {
+/** Reference key to a component-variable. */
+public class VariableType implements Validatable {
   private transient Validator nameValidator =
       new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string50()).build();
   private transient Validator instanceValidator =
@@ -41,10 +41,9 @@ public class ComponentType implements Validatable {
 
   private String name;
   private String instance;
-  private EVSEType evse;
 
   /**
-   * Name of the component. Name should be taken from the list of standardized component names
+   * Name of the variable. Name should be taken from the list of standardized variable names
    * whenever possible. Case Insensitive. strongly advised to use Camel Case.
    *
    * @return string[0..50]
@@ -54,19 +53,18 @@ public class ComponentType implements Validatable {
   }
 
   /**
-   * Required. Name of the component. Name should be taken from the list of standardized component
+   * Required. Name of the variable. Name should be taken from the list of standardized variable
    * names whenever possible. Case Insensitive. strongly advised to use Camel Case.
    *
    * @param name string[0..50]
    */
   public void setName(String name) {
     nameValidator.validate(name);
-
     this.name = name;
   }
 
   /**
-   * Name of instance in case the component exists as multiple instances. Case Insensitive. strongly
+   * Name of instance in case the variable exists as multiple instances. Case Insensitive. strongly
    * advised to use Camel Case.
    *
    * @return string[0..50]
@@ -76,65 +74,36 @@ public class ComponentType implements Validatable {
   }
 
   /**
-   * Optional. Name of instance in case the component exists as multiple instances. Case
-   * Insensitive. strongly advised to use Camel Case.
+   * Optional. Name of instance in case the variable exists as multiple instances. Case Insensitive.
+   * strongly advised to use Camel Case.
    *
    * @param instance string[0..50]
    */
   public void setInstance(String instance) {
     instanceValidator.validate(instance);
-
     this.instance = instance;
-  }
-
-  /**
-   * Specifies the EVSE when component is located at EVSE level, also specifies the connector when
-   * component is located at Connector level.
-   *
-   * @return {@link EVSEType}
-   */
-  public EVSEType getEvse() {
-    return evse;
-  }
-
-  /**
-   * Optional. Specifies the EVSE when component is located at EVSE level, also specifies the
-   * connector when component is located at Connector level.
-   *
-   * @param evse {@link EVSEType}
-   */
-  public void setEvse(EVSEType evse) {
-    this.evse = evse;
   }
 
   @Override
   public boolean validate() {
-    return nameValidator.safeValidate(name)
-        && instanceValidator.safeValidate(instance)
-        && (evse == null || evse.validate());
+    return nameValidator.safeValidate(name) && instanceValidator.safeValidate(instance);
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    ComponentType that = (ComponentType) o;
-    return Objects.equals(name, that.name)
-        && Objects.equals(instance, that.instance)
-        && Objects.equals(evse, that.evse);
+    VariableType that = (VariableType) o;
+    return Objects.equals(name, that.name) && Objects.equals(instance, that.instance);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, instance, evse);
+    return Objects.hash(name, instance);
   }
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("name", name)
-        .add("instance", instance)
-        .add("evse", evse)
-        .toString();
+    return MoreObjects.toStringHelper(this).add("name", name).add("instance", instance).toString();
   }
 }

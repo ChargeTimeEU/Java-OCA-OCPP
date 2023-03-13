@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.basic.types;
+package eu.chargetime.ocpp.model.types;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -25,17 +25,35 @@ package eu.chargetime.ocpp.model.basic.types;
    SOFTWARE.
 */
 
-/** AttributeEnumType is used by {@link SetVariableDataType}, {@link GetVariableDataType} */
-public enum AttributeEnumType {
-  /** The actual value of the variable. */
-  Actual,
+import eu.chargetime.ocpp.model.confirmation.SetVariablesConfirmation;
 
-  /** The target value for this variable. */
-  Target,
+/**
+ * SetVariableStatusEnumType is used by {@link
+ * SetVariablesConfirmation}
+ */
+public enum SetVariableStatusEnumType {
 
-  /** The minimal allowed value for this variable. */
-  MinSet,
+  /** Variable successfully set. */
+  Accepted,
 
-  /** The maximum allowed value for this variable. */
-  MaxSet
+  /** Request is rejected. */
+  Rejected,
+
+  /** Value has invalid format for the variable. */
+  InvalidValue,
+
+  /** Component is not known. */
+  UnknownComponent,
+
+  /** Variable is not known. */
+  UnknownVariable,
+
+  /** The AttributeType is not supported. */
+  NotSupportedAttributeType,
+
+  /** Value is out of range defined in VariableCharacteristics. */
+  OutOfRange,
+
+  /** A reboot is required. */
+  RebootRequired
 }

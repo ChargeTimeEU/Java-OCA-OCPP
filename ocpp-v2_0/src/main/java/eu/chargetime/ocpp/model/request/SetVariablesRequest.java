@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.basic;
+package eu.chargetime.ocpp.model.request;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -26,32 +26,20 @@ package eu.chargetime.ocpp.model.basic;
 */
 
 import eu.chargetime.ocpp.model.RequestWithId;
-import eu.chargetime.ocpp.model.basic.types.GetVariableDataType;
+import eu.chargetime.ocpp.model.types.SetVariableDataType;
+import eu.chargetime.ocpp.model.validation.RequiredValidator;
+import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class GetVariablesRequest extends RequestWithId {
-
-  private GetVariableDataType[] getVariableData;
-
-  /**
-   * List of requested variables.
-   *
-   * @return {@link GetVariableDataType}[]
-   */
-  public GetVariableDataType[] getGetVariableData() {
-    return getVariableData;
-  }
-
-  /**
-   * Required. List of requested variables.
-   *
-   * @param getVariableData {@link GetVariableDataType}[]
-   */
-  public void setGetVariableData(GetVariableDataType[] getVariableData) {
-    this.getVariableData = getVariableData;
-  }
+/**
+ * This contains the field definition of the SetVariablesRequest PDU sent by the CSMS to the
+ * Charging Station.
+ */
+public class SetVariablesRequest extends RequestWithId {
+  private transient Validator<Object> requiredValidator = new RequiredValidator();
+  private SetVariableDataType[] setVariableData;
 
   @Override
   public boolean transactionRelated() {
@@ -60,26 +48,46 @@ public class GetVariablesRequest extends RequestWithId {
 
   @Override
   public boolean validate() {
-    return getVariableData != null
-        && getVariableData.length > 0
-        && Arrays.stream(getVariableData).allMatch(getVariableData -> getVariableData.validate());
+    return setVariableData != null
+        && setVariableData.length > 0
+        && Arrays.stream(setVariableData)
+            .allMatch(setVariableDataType -> setVariableDataType.validate());
+  }
+
+  /**
+   * List of Component-Variable pairs and attribute values to set.
+   *
+   * @param setVariableData {@link SetVariableDataType}
+   */
+  public void setSetVariableData(SetVariableDataType[] setVariableData) {
+    requiredValidator.validate(setVariableData);
+    this.setVariableData = setVariableData;
+  }
+
+  /**
+   * Required. List of Component-Variable pairs and attribute values to set.
+   *
+   * @return {@link SetVariableDataType}
+   */
+  public SetVariableDataType[] getSetVariableData() {
+    return this.setVariableData;
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    GetVariablesRequest that = (GetVariablesRequest) o;
-    return Arrays.equals(getVariableData, that.getVariableData);
+    SetVariablesRequest that = (SetVariablesRequest) o;
+    return Arrays.equals(setVariableData, that.setVariableData);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getVariableData);
+    return Objects.hash(setVariableData);
   }
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("getVariableData", getVariableData).toString();
+    return MoreObjects.toStringHelper(this).add("setVariableData", setVariableData).toString();
   }
 }

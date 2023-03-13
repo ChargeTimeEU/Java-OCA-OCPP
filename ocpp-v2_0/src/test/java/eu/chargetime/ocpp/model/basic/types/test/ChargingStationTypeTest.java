@@ -31,8 +31,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.basic.types.ChargingStationType;
-import eu.chargetime.ocpp.model.basic.types.ModemType;
+import eu.chargetime.ocpp.model.types.ChargingStationType;
+import eu.chargetime.ocpp.model.types.ModemType;
 import org.junit.Test;
 
 public class ChargingStationTypeTest {

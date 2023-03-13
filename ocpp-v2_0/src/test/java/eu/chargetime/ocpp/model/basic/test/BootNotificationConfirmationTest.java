@@ -26,7 +26,7 @@ package eu.chargetime.ocpp.model.basic.test;
 */
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.basic.BootNotificationConfirmation;
+import eu.chargetime.ocpp.model.confirmation.BootNotificationConfirmation;
 import org.junit.Test;
 
 public class BootNotificationConfirmationTest {

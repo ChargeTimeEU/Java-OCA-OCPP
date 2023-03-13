@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.basic;
+package eu.chargetime.ocpp.model.request;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -26,8 +26,8 @@ package eu.chargetime.ocpp.model.basic;
 */
 
 import eu.chargetime.ocpp.model.RequestWithId;
-import eu.chargetime.ocpp.model.basic.types.BootReasonEnumType;
-import eu.chargetime.ocpp.model.basic.types.ChargingStationType;
+import eu.chargetime.ocpp.model.types.BootReasonEnumType;
+import eu.chargetime.ocpp.model.types.ChargingStationType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;

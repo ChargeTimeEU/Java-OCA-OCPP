@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.basic;
+package eu.chargetime.ocpp.model.request;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -26,7 +26,7 @@ package eu.chargetime.ocpp.model.basic;
 */
 
 import eu.chargetime.ocpp.model.RequestWithId;
-import eu.chargetime.ocpp.model.basic.types.ConnectorStatusEnumType;
+import eu.chargetime.ocpp.model.types.ConnectorStatusEnumType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.time.ZonedDateTime;

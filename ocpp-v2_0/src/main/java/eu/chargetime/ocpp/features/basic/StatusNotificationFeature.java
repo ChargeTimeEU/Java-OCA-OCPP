@@ -29,8 +29,8 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.features.basic.handlers.IServerStatusNotificationRequestHandler;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.basic.StatusNotificationConfirmation;
-import eu.chargetime.ocpp.model.basic.StatusNotificationRequest;
+import eu.chargetime.ocpp.model.confirmation.StatusNotificationConfirmation;
+import eu.chargetime.ocpp.model.request.StatusNotificationRequest;
 import java.util.UUID;
 
 public class StatusNotificationFeature implements Feature {

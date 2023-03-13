@@ -28,9 +28,9 @@ package eu.chargetime.ocpp.test.features;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.features.basic.StatusNotificationFeature;
 import eu.chargetime.ocpp.features.basic.handlers.IServerStatusNotificationRequestHandler;
-import eu.chargetime.ocpp.model.basic.StatusNotificationConfirmation;
-import eu.chargetime.ocpp.model.basic.StatusNotificationRequest;
-import eu.chargetime.ocpp.model.basic.types.ConnectorStatusEnumType;
+import eu.chargetime.ocpp.model.confirmation.StatusNotificationConfirmation;
+import eu.chargetime.ocpp.model.request.StatusNotificationRequest;
+import eu.chargetime.ocpp.model.types.ConnectorStatusEnumType;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 

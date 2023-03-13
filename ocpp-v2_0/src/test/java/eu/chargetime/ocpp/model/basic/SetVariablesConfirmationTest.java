@@ -30,7 +30,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.basic.types.SetVariableResultType;
+import eu.chargetime.ocpp.model.confirmation.SetVariablesConfirmation;
+import eu.chargetime.ocpp.model.types.SetVariableResultType;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.basic.types;
+package eu.chargetime.ocpp.model.types;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -26,80 +26,73 @@ package eu.chargetime.ocpp.model.basic.types;
 */
 
 import eu.chargetime.ocpp.model.Validatable;
-import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
-import eu.chargetime.ocpp.model.validation.Validator;
-import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 
-public class ModemType implements Validatable {
-  private transient Validator validator =
-      new ValidatorBuilder()
-          .addRule(OCPP2PrimDatatypes.identifierString())
-          .addRule(OCPP2PrimDatatypes.string20())
-          .build();
-
-  private String iccid;
-  private String imsi;
+/** Electric Vehicle Supply Equipment */
+public class EVSEType implements Validatable {
+  private int id;
+  private Integer connectorId;
 
   /**
-   * This contains the ICCID of the modem’s SIM card.
+   * EVSE Identifier. When 0, the ID references the Charging Station as a whole.
    *
-   * @return identifierString[0..20]
+   * @return integer
    */
-  public String getIccid() {
-    return iccid;
+  public int getId() {
+    return id;
   }
 
   /**
-   * Optional. This contains the ICCID of the modem’s SIM card.
+   * Required. EVSE Identifier. When 0, the ID references the Charging Station as a whole.
    *
-   * @param iccid identifierString[0..20]
+   * @param id integer
    */
-  public void setIccid(String iccid) {
-    validator.validate(iccid);
-    this.iccid = iccid;
+  public void setId(int id) {
+    this.id = id;
   }
 
   /**
-   * This contains the IMSI of the modem’s SIM card.
+   * An id to designate a specific connector (on an EVSE) by connector index number.
    *
-   * @return identifierString[0..20]
+   * @return integer
    */
-  public String getImsi() {
-    return imsi;
+  public Integer getConnectorId() {
+    return connectorId;
   }
 
   /**
-   * Optional. This contains the IMSI of the modem’s SIM card.
+   * Optional. An id to designate a specific connector (on an EVSE) by connector index number.
    *
-   * @param imsi identifierString[0..20]
+   * @param connectorId integer
    */
-  public void setImsi(String imsi) {
-    validator.validate(imsi);
-    this.imsi = imsi;
+  public void setConnectorId(Integer connectorId) {
+    this.connectorId = connectorId;
   }
 
   @Override
   public boolean validate() {
-    return validator.safeValidate(iccid) && validator.safeValidate(imsi);
+    return true;
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    ModemType that = (ModemType) o;
-    return Objects.equals(iccid, that.iccid) && Objects.equals(imsi, that.imsi);
+    EVSEType that = (EVSEType) o;
+    return Objects.equals(id, that.id) && Objects.equals(connectorId, that.connectorId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(iccid, imsi);
+    return Objects.hash(id, connectorId);
   }
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("iccid", iccid).add("imsi", imsi).toString();
+    return MoreObjects.toStringHelper(this)
+        .add("id", id)
+        .add("connectorId", connectorId)
+        .toString();
   }
 }

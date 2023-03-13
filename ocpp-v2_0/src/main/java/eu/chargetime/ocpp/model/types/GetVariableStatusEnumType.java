@@ -1,11 +1,10 @@
-package eu.chargetime.ocpp.model.basic;
+package eu.chargetime.ocpp.model.types;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
    MIT License
 
-   Copyright (C) 2021 John Michael Luy <johnmichael.luy@gmail.com>
-   Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
+   Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -26,29 +25,20 @@ package eu.chargetime.ocpp.model.basic;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.utilities.MoreObjects;
-import java.util.Objects;
+/** GetVariableStatusEnumType is used by {@link GetVariableResultType} */
+public enum GetVariableStatusEnumType {
+  /** Variable successfully set. */
+  Accepted,
 
-public class StatusNotificationConfirmation extends Confirmation {
+  /** Request is rejected. */
+  Rejected,
 
-  @Override
-  public boolean validate() {
-    return true;
-  }
+  /** Component is not known. */
+  UnknownComponent,
 
-  @Override
-  public boolean equals(Object o) {
-    return this == o || (o != null && getClass() == o.getClass());
-  }
+  /** Variable is not known. */
+  UnknownVariable,
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(StatusNotificationConfirmation.class);
-  }
-
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this).add("isValid", validate()).toString();
-  }
+  /** The AttributeType is not supported. */
+  NotSupportedAttributeType
 }

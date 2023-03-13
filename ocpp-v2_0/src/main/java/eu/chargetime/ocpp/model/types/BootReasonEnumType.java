@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.basic.types;
+package eu.chargetime.ocpp.model.types;
 /*
  * ChargeTime.eu - Java-OCA-OCPP
  *
@@ -25,7 +25,7 @@ package eu.chargetime.ocpp.model.basic.types;
  * SOFTWARE.
  */
 
-import eu.chargetime.ocpp.model.basic.BootNotificationRequest;
+import eu.chargetime.ocpp.model.request.BootNotificationRequest;
 
 /** Accepted values used with {@link BootNotificationRequest}. */
 public enum BootReasonEnumType {

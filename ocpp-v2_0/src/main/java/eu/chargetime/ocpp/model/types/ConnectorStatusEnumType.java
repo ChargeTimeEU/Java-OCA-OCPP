@@ -1,10 +1,10 @@
-package eu.chargetime.ocpp.model.basic.types;
+package eu.chargetime.ocpp.model.types;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
    MIT License
 
-   Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
+   Copyright (C) 2021 John Michael Luy <johnmichael.luy@gmail.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -25,20 +25,10 @@ package eu.chargetime.ocpp.model.basic.types;
    SOFTWARE.
 */
 
-/** GetVariableStatusEnumType is used by {@link GetVariableResultType} */
-public enum GetVariableStatusEnumType {
-  /** Variable successfully set. */
-  Accepted,
-
-  /** Request is rejected. */
-  Rejected,
-
-  /** Component is not known. */
-  UnknownComponent,
-
-  /** Variable is not known. */
-  UnknownVariable,
-
-  /** The AttributeType is not supported. */
-  NotSupportedAttributeType
+public enum ConnectorStatusEnumType {
+  Available,
+  Occupied,
+  Reserved,
+  Unavailable,
+  Faulted
 }

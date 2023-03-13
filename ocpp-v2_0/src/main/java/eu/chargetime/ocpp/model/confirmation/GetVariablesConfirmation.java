@@ -1,10 +1,11 @@
-package eu.chargetime.ocpp.model.basic.types;
+package eu.chargetime.ocpp.model.confirmation;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
    MIT License
 
    Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
+   Copyright (C) 2022 Emil Melar <emil@iconsultable.no>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -25,74 +26,57 @@ package eu.chargetime.ocpp.model.basic.types;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.Validatable;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.types.GetVariableResultType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+import java.util.Arrays;
 import java.util.Objects;
 
-/** Electric Vehicle Supply Equipment */
-public class EVSEType implements Validatable {
-  private int id;
-  private Integer connectorId;
+public class GetVariablesConfirmation extends Confirmation {
+
+  private GetVariableResultType[] getVariableResult;
 
   /**
-   * EVSE Identifier. When 0, the ID references the Charging Station as a whole.
+   * List of requested variables and their values.
    *
-   * @return integer
+   * @return {@link GetVariableResultType}
    */
-  public int getId() {
-    return id;
+  public GetVariableResultType[] getGetVariableResult() {
+    return getVariableResult;
   }
 
   /**
-   * Required. EVSE Identifier. When 0, the ID references the Charging Station as a whole.
+   * Required. List of requested variables and their values.
    *
-   * @param id integer
+   * @param getVariableResult {@link GetVariableResultType}
    */
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  /**
-   * An id to designate a specific connector (on an EVSE) by connector index number.
-   *
-   * @return integer
-   */
-  public Integer getConnectorId() {
-    return connectorId;
-  }
-
-  /**
-   * Optional. An id to designate a specific connector (on an EVSE) by connector index number.
-   *
-   * @param connectorId integer
-   */
-  public void setConnectorId(Integer connectorId) {
-    this.connectorId = connectorId;
+  public void setGetVariableResult(GetVariableResultType[] getVariableResult) {
+    this.getVariableResult = getVariableResult;
   }
 
   @Override
   public boolean validate() {
-    return true;
+    return getVariableResult != null
+        && getVariableResult.length > 0
+        && Arrays.stream(getVariableResult)
+            .allMatch(getVariableResult -> getVariableResult.validate());
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    EVSEType that = (EVSEType) o;
-    return Objects.equals(id, that.id) && Objects.equals(connectorId, that.connectorId);
+    GetVariablesConfirmation that = (GetVariablesConfirmation) o;
+    return Arrays.equals(getVariableResult, that.getVariableResult);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, connectorId);
+    return Objects.hash(getVariableResult);
   }
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("id", id)
-        .add("connectorId", connectorId)
-        .toString();
+    return MoreObjects.toStringHelper(this).add("getVariableResult", getVariableResult).toString();
   }
 }

@@ -28,6 +28,7 @@ package eu.chargetime.ocpp.model.basic.types;
 import static eu.chargetime.ocpp.utilities.TestUtilities.aString;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.types.VariableType;
 import org.junit.Assert;
 import org.junit.Test;
 

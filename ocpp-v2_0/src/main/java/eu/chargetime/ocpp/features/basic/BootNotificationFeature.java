@@ -29,8 +29,8 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.features.basic.handlers.IServerBootNotificationRequestHandler;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.basic.BootNotificationConfirmation;
-import eu.chargetime.ocpp.model.basic.BootNotificationRequest;
+import eu.chargetime.ocpp.model.confirmation.BootNotificationConfirmation;
+import eu.chargetime.ocpp.model.request.BootNotificationRequest;
 import java.util.UUID;
 
 public class BootNotificationFeature implements Feature {

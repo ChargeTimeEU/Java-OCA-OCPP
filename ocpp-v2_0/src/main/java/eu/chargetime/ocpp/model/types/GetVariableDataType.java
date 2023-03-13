@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.basic.types;
+package eu.chargetime.ocpp.model.types;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -31,67 +31,44 @@ import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 
-/**
- * VariableAttributeType is used by {@link eu.chargetime.ocpp.model.basic.SetVariablesConfirmation}
- */
-public class SetVariableResultType implements Validatable {
+public class GetVariableDataType implements Validatable {
   private transient Validator<Object> requiredValidator = new RequiredValidator();
 
   private AttributeEnumType attributeType;
-  private SetVariableStatusEnumType attributeStatus;
   private ComponentType component;
   private VariableType variable;
 
   /**
-   * Type of attribute: Actual, Target, MinSet, MaxSet. Default is Actual when omitted.
+   * Attribute type for which value is requested. When absent, default Actual is assumed.
    *
-   * @return AttributeEnumType
+   * @return {@link AttributeEnumType}
    */
   public AttributeEnumType getAttributeType() {
     return attributeType;
   }
 
   /**
-   * Optional. Type of attribute: Actual, Target, MinSet, MaxSet. Default is Actual when omitted.
+   * Optional. Attribute type for which value is requested. When absent, default Actual is assumed.
    *
-   * @param attributeType AttributeEnumType
+   * @param attributeType {@link AttributeEnumType}
    */
   public void setAttributeType(AttributeEnumType attributeType) {
     this.attributeType = attributeType;
   }
 
   /**
-   * Result status of setting the variable.
+   * Component for which the Variable is requested.
    *
-   * @return SetVariableStatusEnumType
-   */
-  public SetVariableStatusEnumType getAttributeStatus() {
-    return attributeStatus;
-  }
-
-  /**
-   * Required. Result status of setting the variable.
-   *
-   * @param attributeStatus SetVariableStatusEnumType
-   */
-  public void setAttributeStatus(SetVariableStatusEnumType attributeStatus) {
-    requiredValidator.validate(attributeStatus);
-    this.attributeStatus = attributeStatus;
-  }
-
-  /**
-   * The component for which result is returned.
-   *
-   * @return ComponentType
+   * @return {@link ComponentType}
    */
   public ComponentType getComponent() {
     return component;
   }
 
   /**
-   * Required. The component for which result is returned.
+   * Required. Component for which the Variable is requested.
    *
-   * @param component ComponentType
+   * @param component {@link ComponentType}
    */
   public void setComponent(ComponentType component) {
     requiredValidator.validate(component);
@@ -99,18 +76,18 @@ public class SetVariableResultType implements Validatable {
   }
 
   /**
-   * The variable for which the result is returned.
+   * Variable for which the attribute value is requested.
    *
-   * @return VariableType
+   * @return {@link VariableType}
    */
   public VariableType getVariable() {
     return variable;
   }
 
   /**
-   * Required. The variable for which the result is returned.
+   * Required. Variable for which the attribute value is requested.
    *
-   * @param variable VariableType
+   * @param variable {@link VariableType}
    */
   public void setVariable(VariableType variable) {
     requiredValidator.validate(variable);
@@ -119,8 +96,7 @@ public class SetVariableResultType implements Validatable {
 
   @Override
   public boolean validate() {
-    return requiredValidator.safeValidate(attributeStatus)
-        && requiredValidator.safeValidate(component)
+    return requiredValidator.safeValidate(component)
         && requiredValidator.safeValidate(variable)
         && component.validate()
         && variable.validate();
@@ -130,23 +106,21 @@ public class SetVariableResultType implements Validatable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    SetVariableResultType that = (SetVariableResultType) o;
+    GetVariableDataType that = (GetVariableDataType) o;
     return Objects.equals(attributeType, that.attributeType)
-        && Objects.equals(attributeStatus, that.attributeStatus)
         && Objects.equals(component, that.component)
         && Objects.equals(variable, that.variable);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(attributeType, attributeStatus, component, variable);
+    return Objects.hash(attributeType, component, variable);
   }
 
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
         .add("attributeType", attributeType)
-        .add("attributeStatus", attributeStatus)
         .add("component", component)
         .add("variable", variable)
         .toString();

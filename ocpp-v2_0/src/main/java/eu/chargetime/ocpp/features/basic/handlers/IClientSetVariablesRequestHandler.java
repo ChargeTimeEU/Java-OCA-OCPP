@@ -25,8 +25,8 @@ package eu.chargetime.ocpp.features.basic.handlers;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.basic.SetVariablesConfirmation;
-import eu.chargetime.ocpp.model.basic.SetVariablesRequest;
+import eu.chargetime.ocpp.model.confirmation.SetVariablesConfirmation;
+import eu.chargetime.ocpp.model.request.SetVariablesRequest;
 
 /** Charging Station handler of {@link SetVariablesRequest} */
 public interface IClientSetVariablesRequestHandler {

@@ -25,8 +25,8 @@ package eu.chargetime.ocpp.features.basic.handlers;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.basic.BootNotificationConfirmation;
-import eu.chargetime.ocpp.model.basic.BootNotificationRequest;
+import eu.chargetime.ocpp.model.confirmation.BootNotificationConfirmation;
+import eu.chargetime.ocpp.model.request.BootNotificationRequest;
 import java.util.UUID;
 
 /** Central system handler of {@link BootNotificationRequest}s. */
