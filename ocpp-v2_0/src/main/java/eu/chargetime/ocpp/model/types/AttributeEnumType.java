@@ -25,17 +25,47 @@ package eu.chargetime.ocpp.model.types;
    SOFTWARE.
 */
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+import static eu.chargetime.ocpp.util.EnumUtil.findByField;
+
 /** AttributeEnumType is used by {@link SetVariableDataType}, {@link GetVariableDataType} */
 public enum AttributeEnumType {
   /** The actual value of the variable. */
-  Actual,
+  ACTUAL("Actual"),
 
   /** The target value for this variable. */
-  Target,
+  TARGET("Target"),
 
   /** The minimal allowed value for this variable. */
-  MinSet,
+  MIN_SET("MinSet"),
 
   /** The maximum allowed value for this variable. */
-  MaxSet
+  MAX_SET("MaxSet");
+
+  private final String value;
+
+  AttributeEnumType(String value) {
+    this.value = value;
+  }
+
+  @Override
+  public String toString() {
+    return this.value;
+  }
+
+  @JsonValue
+  public String value() {
+    return this.value;
+  }
+
+  @JsonCreator
+  public static AttributeEnumType fromValue(String value) {
+    return findByField(
+            AttributeEnumType.class,
+            AttributeEnumType::value,
+            value
+    );
+  }
 }
