@@ -82,6 +82,19 @@ public class OCSPRequestData implements Validatable {
     @JsonProperty("responderURL")
     public String responderURL;
 
+    public OCSPRequestData(HashAlgorithmEnumType hashAlgorithm, String issuerNameHash, String issuerKeyHash, String serialNumber, String responderURL) {
+        requiredValidator.validate(hashAlgorithm);
+        issuerNameHashValidator.validate(issuerNameHash);
+        issuerKeyHashValidator.validate(issuerKeyHash);
+        serialNumberValidator.validate(serialNumber);
+        responderURLValidator.validate(responderURL);
+        this.hashAlgorithm = hashAlgorithm;
+        this.issuerNameHash = issuerNameHash;
+        this.issuerKeyHash = issuerKeyHash;
+        this.serialNumber = serialNumber;
+        this.responderURL = responderURL;
+    }
+
     public void setCustomData(CustomData customData) {
         this.customData = customData;
     }

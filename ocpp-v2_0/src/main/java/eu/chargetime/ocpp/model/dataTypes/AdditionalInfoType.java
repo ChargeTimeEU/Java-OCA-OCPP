@@ -55,6 +55,13 @@ public class AdditionalInfoType implements Validatable {
     @JsonProperty("type")
     public String type;
 
+    public AdditionalInfoType(String additionalIdToken, String type) {
+        additionalIdTokenValidator.validate(additionalIdToken);
+        typeValidator.validate(type);
+        this.additionalIdToken = additionalIdToken;
+        this.type = type;
+    }
+
     public void setCustomData(CustomData customData) {
         this.customData = customData;
     }

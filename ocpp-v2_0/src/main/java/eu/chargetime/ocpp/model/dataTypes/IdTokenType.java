@@ -61,6 +61,13 @@ public class IdTokenType implements Validatable {
     @JsonProperty("type")
     public IdTokenEnum type;
 
+    public IdTokenType(String idToken, IdTokenEnum type) {
+        idTokenValidator.validate(idToken);
+        requiredValidator.validate(type);
+        this.idToken = idToken;
+        this.type = type;
+    }
+
     public void setCustomData(CustomData customData) {
         this.customData = customData;
     }
