@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.model.types.HashAlgorithmEnumType;
 import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
+import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import lombok.Getter;
@@ -22,8 +23,7 @@ import lombok.Getter;
 @Getter
 public class OCSPRequestData implements Validatable {
 
-    private final transient Validator hasAlgorithmValidator =
-            new ValidatorBuilder().setRequired(true).build();
+    private transient Validator<Object> requiredValidator = new RequiredValidator();
     private final transient Validator issuerNameHashValidator =
             new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string128()).build();
     private final transient Validator issuerKeyHashValidator =
@@ -87,7 +87,7 @@ public class OCSPRequestData implements Validatable {
     }
 
     public void setHashAlgorithm(HashAlgorithmEnumType hashAlgorithm) {
-        hasAlgorithmValidator.validate(hashAlgorithm);
+        requiredValidator.validate(hashAlgorithm);
         this.hashAlgorithm = hashAlgorithm;
     }
 
@@ -115,7 +115,7 @@ public class OCSPRequestData implements Validatable {
     public boolean validate() {
         return issuerNameHashValidator.safeValidate(issuerNameHash)
                 &&issuerKeyHashValidator.safeValidate(issuerKeyHash)
-                &&hasAlgorithmValidator.safeValidate(hashAlgorithm)
+                &&requiredValidator.safeValidate(hashAlgorithm)
                 &&serialNumberValidator.safeValidate(serialNumber)
                 &&responderURLValidator.safeValidate(responderURL);
     }
