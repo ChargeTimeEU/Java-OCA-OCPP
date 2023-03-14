@@ -46,7 +46,7 @@ public class IdTokenType implements Validatable {
     @JsonProperty("customData")
     public CustomData customData;
     @JsonProperty("additionalInfo")
-    public List<AdditionalInfoType> additionalInfoType = null;
+    public List<AdditionalInfoType> additionalInfoType;
     /**
      * IdToken is case insensitive. Might hold the hidden id of an RFID tag, but can for example also contain a UUID.
      *
