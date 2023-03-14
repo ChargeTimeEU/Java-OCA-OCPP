@@ -30,8 +30,11 @@ import eu.chargetime.ocpp.model.types.BootReasonEnumType;
 import eu.chargetime.ocpp.model.types.ChargingStationType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+import lombok.Getter;
+
 import java.util.Objects;
 
+@Getter
 /** Sent by the Charging Station to the CSMS. */
 public class BootNotificationRequest extends RequestWithId {
   private transient RequiredValidator validator = new RequiredValidator();
@@ -42,15 +45,6 @@ public class BootNotificationRequest extends RequestWithId {
   public BootNotificationRequest() {}
 
   /**
-   * This contains the reason for sending this message to the CSMS.
-   *
-   * @return {@link BootReasonEnumType}
-   */
-  public BootReasonEnumType getReason() {
-    return reason;
-  }
-
-  /**
    * Required. This contains the reason for sending this message to the CSMS.
    *
    * @param reason {@link BootReasonEnumType}
@@ -58,15 +52,6 @@ public class BootNotificationRequest extends RequestWithId {
   public void setReason(BootReasonEnumType reason) {
     validator.validate(reason);
     this.reason = reason;
-  }
-
-  /**
-   * Identifies the Charging Station.
-   *
-   * @return {@link ChargingStationType}
-   */
-  public ChargingStationType getChargingStation() {
-    return chargingStation;
   }
 
   /**
