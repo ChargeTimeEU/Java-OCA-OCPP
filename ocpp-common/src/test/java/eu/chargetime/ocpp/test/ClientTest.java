@@ -63,8 +63,9 @@ public class ClientTest {
         .when(session)
         .open(any(), any());
 
-    client = new Client(session, featureRepository, promiseRepository);
     when(featureRepository.findFeature(any())).thenReturn(Optional.of(feature));
+    when(session.getFeatureRepository()).thenReturn(featureRepository);
+    client = new Client(session, promiseRepository);
   }
 
   @Test

@@ -50,18 +50,18 @@ import java.net.URL;
 import java.time.ZonedDateTime;
 
 public class FakeChargePoint {
-  private final ClientCoreProfile core;
-  private final ClientSmartChargingProfile smartCharging;
-  private final ClientRemoteTriggerProfile remoteTrigger;
-  private final ClientFirmwareManagementProfile firmware;
-  private final ClientLocalAuthListProfile localAuthList;
-  private final ClientReservationProfile reservation;
-  private final ClientSecurityExtProfile securityExt;
-  private IClientAPI client;
-  private Confirmation receivedConfirmation;
-  private Request receivedRequest;
-  private Throwable receivedException;
-  private String url;
+  final ClientCoreProfile core;
+  final ClientSmartChargingProfile smartCharging;
+  final ClientRemoteTriggerProfile remoteTrigger;
+  final ClientFirmwareManagementProfile firmware;
+  final ClientLocalAuthListProfile localAuthList;
+  final ClientReservationProfile reservation;
+  final ClientSecurityExtProfile securityExt;
+  IClientAPI client;
+  Confirmation receivedConfirmation;
+  Request receivedRequest;
+  Throwable receivedException;
+  String url;
 
   public FakeChargePoint() throws MalformedURLException {
     this(clientType.JSON);

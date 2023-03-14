@@ -43,7 +43,7 @@ public class SOAPServer implements IServerAPI {
     featureRepository = new FeatureRepository();
     SessionFactory sessionFactory = new SessionFactory(featureRepository);
     this.listener = new WebServiceListener(sessionFactory);
-    server = new Server(this.listener, featureRepository, new PromiseRepository());
+    server = new Server(this.listener, new PromiseRepository());
     featureRepository.addFeatureProfile(coreProfile);
   }
 

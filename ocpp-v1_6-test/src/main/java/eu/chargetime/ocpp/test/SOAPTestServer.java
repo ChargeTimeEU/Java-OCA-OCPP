@@ -43,7 +43,7 @@ public class SOAPTestServer implements IServerAPI {
     featureRepository = new FeatureRepository();
     ISessionFactory sessionFactory = new TestSessionFactory(featureRepository);
     this.listener = new WebServiceListener(sessionFactory);
-    server = new Server(this.listener, featureRepository, new PromiseRepository());
+    server = new Server(this.listener, new PromiseRepository());
     featureRepository.addFeatureProfile(coreProfile);
   }
 

@@ -72,7 +72,7 @@ public class SOAPTestClient implements IClientAPI {
     this.communicator = new SOAPCommunicator(hostInfo, transmitter);
     featureRepository = new FeatureRepository();
     ISession session = new TestSessionFactory(featureRepository).createSession(communicator);
-    this.client = new Client(session, featureRepository, new PromiseRepository());
+    this.client = new Client(session, new PromiseRepository());
     featureRepository.addFeatureProfile(coreProfile);
   }
 

@@ -36,8 +36,22 @@ import java.util.Optional;
 
 public class FeatureRepository implements IFeatureRepository {
 
+  private final ProtocolVersion protocolVersion;
   private final Map<String, Feature> actionMap = new HashMap<>();
   private final Map<Class<?>, Feature> classMap = new HashMap<>();
+
+  public FeatureRepository() {
+    this(ProtocolVersion.OCPP1_6);
+  }
+
+  public FeatureRepository(ProtocolVersion protocolVersion) {
+    this.protocolVersion = protocolVersion;
+  }
+
+  @Override
+  public ProtocolVersion getProtocolVersion() {
+    return protocolVersion;
+  }
 
   /**
    * Add {@link Profile} to support a group of features.
@@ -89,6 +103,7 @@ public class FeatureRepository implements IFeatureRepository {
   @Override
   public String toString() {
     return MoreObjects.toStringHelper("FeatureRepository")
+        .add("protocolVersion", protocolVersion)
         .add("actionMap", actionMap)
         .add("classMap", classMap)
         .toString();

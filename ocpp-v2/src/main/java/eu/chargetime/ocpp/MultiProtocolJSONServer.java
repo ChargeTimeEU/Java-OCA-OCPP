@@ -1,10 +1,10 @@
-package eu.chargetime.ocpp;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
    MIT License
 
    Copyright (C) 2016-2018 Thomas Volden <tv@chargetime.eu>
+ * Copyright (C) 2023 Robert Schlabbach <robert.schlabbach@ubitricity.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,10 @@ package eu.chargetime.ocpp;
    SOFTWARE.
 */
 
+package eu.chargetime.ocpp;
+
+import eu.chargetime.ocpp.feature.function.Function;
 import eu.chargetime.ocpp.feature.profile.Profile;
-import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.wss.BaseWssFactoryBuilder;
@@ -34,6 +36,7 @@ import eu.chargetime.ocpp.wss.WssFactoryBuilder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
 import javax.net.ssl.SSLContext;
@@ -44,75 +47,78 @@ import org.java_websocket.protocols.Protocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JSONServer implements IServerAPI {
+/** multiple protocol versions capable JSON Web Socket implementation of the server. */
+public class MultiProtocolJSONServer implements IMultiProtocolServerAPI {
 
-  private static final Logger logger = LoggerFactory.getLogger(JSONServer.class);
+  private static final Logger logger = LoggerFactory.getLogger(MultiProtocolJSONServer.class);
 
-  public final Draft draftOcppOnly;
-  private final WebSocketListener listener;
+  private final MultiProtocolWebSocketListener listener;
   private final Server server;
-  private final FeatureRepository featureRepository;
-  private JSONConfiguration jsonConfiguration;
+  private final MultiProtocolFeatureRepository featureRepository;
 
   /**
-   * The core feature profile is required as a minimum. The constructor creates WS-ready server.
+   * The constructor creates WS-ready server.
    *
-   * @param coreProfile implementation of the core feature profile.
+   * @param protocolVersions list of protocol versions to accept.
    * @param configuration network configuration for a json server.
    */
-  public JSONServer(ServerCoreProfile coreProfile, JSONConfiguration configuration) {
-    featureRepository = new FeatureRepository();
-    SessionFactory sessionFactory = new SessionFactory(featureRepository);
+  public MultiProtocolJSONServer(
+      List<ProtocolVersion> protocolVersions, JSONConfiguration configuration) {
+    featureRepository = new MultiProtocolFeatureRepository(protocolVersions);
+    MultiProtocolSessionFactory sessionFactory = new MultiProtocolSessionFactory(featureRepository);
 
-    ArrayList<IProtocol> protocols = new ArrayList<>();
-    protocols.add(new Protocol("ocpp1.6"));
-    protocols.add(new Protocol(""));
-    draftOcppOnly = new Draft_6455(Collections.emptyList(), protocols);
-
-    if(configuration.getParameter("HTTP_HEALTH_CHECK_ENABLED", true)) {
-      logger.info("JSONServer 1.6 with HttpHealthCheckDraft");
-      this.listener = new WebSocketListener(sessionFactory, configuration, draftOcppOnly, new Draft_HttpHealthCheck());
-    } else {
-      this.listener = new WebSocketListener(sessionFactory, configuration, draftOcppOnly);
+    List<IProtocol> protocols = new ArrayList<>(protocolVersions.size());
+    for (ProtocolVersion protocolVersion : protocolVersions) {
+      protocols.add(new Protocol(protocolVersion.getSubProtocolName()));
     }
-    server = new Server(this.listener, new PromiseRepository());
-    featureRepository.addFeatureProfile(coreProfile);
+    Draft draft = new Draft_6455(Collections.emptyList(), protocols);
+
+    if (configuration.getParameter("HTTP_HEALTH_CHECK_ENABLED", true)) {
+      logger.info("JSONServer with HttpHealthCheckDraft");
+      listener =
+          new MultiProtocolWebSocketListener(
+              sessionFactory, configuration, draft, new Draft_HttpHealthCheck());
+    } else {
+      listener = new MultiProtocolWebSocketListener(sessionFactory, configuration, draft);
+    }
+    server = new Server(listener, new PromiseRepository());
   }
 
   /**
-   * The core feature profile is required as a minimum. The constructor creates WS-ready server.
+   * The constructor creates WS-ready server.
    *
-   * @param coreProfile implementation of the core feature profile.
+   * @param protocolVersions list of protocol versions to accept.
    */
-  public JSONServer(ServerCoreProfile coreProfile) {
-    this(coreProfile, JSONConfiguration.get());
+  public MultiProtocolJSONServer(List<ProtocolVersion> protocolVersions) {
+    this(protocolVersions, JSONConfiguration.get());
   }
 
   /**
-   * The core feature profile is required as a minimum. The constructor creates WSS-ready server.
+   * The constructor creates WSS-ready server.
    *
-   * @param coreProfile implementation of the core feature profile.
+   * @param protocolVersions list of protocol versions to accept.
    * @param wssFactoryBuilder to build {@link org.java_websocket.WebSocketServerFactory} to support
    *     wss://.
    * @param configuration network configuration for a json server.
    */
-  public JSONServer(
-      ServerCoreProfile coreProfile,
+  public MultiProtocolJSONServer(
+      List<ProtocolVersion> protocolVersions,
       WssFactoryBuilder wssFactoryBuilder,
       JSONConfiguration configuration) {
-    this(coreProfile, configuration);
+    this(protocolVersions, configuration);
     enableWSS(wssFactoryBuilder);
   }
 
   /**
-   * The core feature profile is required as a minimum. The constructor creates WSS-ready server.
+   * The constructor creates WSS-ready server.
    *
-   * @param coreProfile implementation of the core feature profile.
+   * @param protocolVersions list of protocol versions to accept.
    * @param wssFactoryBuilder to build {@link org.java_websocket.WebSocketServerFactory} to support
    *     wss://.
    */
-  public JSONServer(ServerCoreProfile coreProfile, WssFactoryBuilder wssFactoryBuilder) {
-    this(coreProfile, wssFactoryBuilder, JSONConfiguration.get());
+  public MultiProtocolJSONServer(
+      List<ProtocolVersion> protocolVersions, WssFactoryBuilder wssFactoryBuilder) {
+    this(protocolVersions, wssFactoryBuilder, JSONConfiguration.get());
   }
 
   // To ensure the exposed API is backward compatible
@@ -124,14 +130,14 @@ public class JSONServer implements IServerAPI {
   /**
    * Enables server to accept WSS connections. The {@code wssFactoryBuilder} must be initialized at
    * that step (as required parameters set might vary depending on implementation the {@link
-   * eu.chargetime.ocpp.wss.WssFactoryBuilder#verify()} is used to ensure initialization).
+   * WssFactoryBuilder#verify()} is used to ensure initialization).
    *
    * @param wssFactoryBuilder builder to provide WebSocketServerFactory
-   * @return instance of {@link JSONServer}
+   * @return instance of {@link MultiProtocolJSONServer}
    * @throws IllegalStateException in case if the server is already connected
    * @throws IllegalStateException in case {@code wssFactoryBuilder} not initialized properly
    */
-  public JSONServer enableWSS(WssFactoryBuilder wssFactoryBuilder) {
+  public MultiProtocolJSONServer enableWSS(WssFactoryBuilder wssFactoryBuilder) {
     wssFactoryBuilder.verify();
     listener.enableWSS(wssFactoryBuilder);
     return this;
@@ -139,7 +145,22 @@ public class JSONServer implements IServerAPI {
 
   @Override
   public void addFeatureProfile(Profile profile) {
-    featureRepository.addFeatureProfile(profile);
+    addFeatureProfile(ProtocolVersion.OCPP1_6, profile);
+  }
+
+  @Override
+  public void addFeatureProfile(ProtocolVersion protocolVersion, Profile profile) {
+    featureRepository.addFeatureProfile(protocolVersion, profile);
+  }
+
+  @Override
+  public void addFunction(ProtocolVersion protocolVersion, Function function) {
+    featureRepository.addFeatureFunction(protocolVersion, function);
+  }
+
+  @Override
+  public int getPort() {
+    return listener.getPort();
   }
 
   @Override
@@ -175,7 +196,8 @@ public class JSONServer implements IServerAPI {
   }
 
   @Override
-  public boolean asyncCompleteRequest(UUID sessionIndex, String uniqueId, Confirmation confirmation) throws NotConnectedException, UnsupportedFeatureException, OccurenceConstraintException {
+  public boolean asyncCompleteRequest(UUID sessionIndex, String uniqueId, Confirmation confirmation)
+      throws NotConnectedException, UnsupportedFeatureException, OccurenceConstraintException {
     return server.asyncCompleteRequest(sessionIndex, uniqueId, confirmation);
   }
 }

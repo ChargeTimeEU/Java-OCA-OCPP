@@ -61,6 +61,11 @@ public class TimeoutSessionDecorator implements ISession {
   }
 
   @Override
+  public IFeatureRepository getFeatureRepository() {
+    return session.getFeatureRepository();
+  }
+
+  @Override
   public UUID getSessionId() {
     return session.getSessionId();
   }

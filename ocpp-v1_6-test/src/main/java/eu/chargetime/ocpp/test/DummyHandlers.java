@@ -226,7 +226,7 @@ public class DummyHandlers {
     return (confirmation, throwable) -> receivedConfirmation = confirmation;
   }
 
-  private <T extends Confirmation> T failurePoint(T confirmation) {
+  <T extends Confirmation> T failurePoint(T confirmation) {
     if (riggedToFail) {
       riggedToFail = false;
       throw new RuntimeException();

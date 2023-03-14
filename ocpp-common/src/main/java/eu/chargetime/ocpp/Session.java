@@ -73,6 +73,16 @@ public class Session implements ISession {
   }
 
   /**
+   * Get the {@link FeatureRepository} used in this session
+   *
+   * @return the {@link FeatureRepository} used in this session
+   */
+  @Override
+  public IFeatureRepository getFeatureRepository() {
+    return featureRepository;
+  }
+
+  /**
    * Get a unique session {@link UUID} identifier.
    *
    * @return the unique session {@link UUID} identifier
