@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.chargetime.ocpp.model.Validatable;
-import eu.chargetime.ocpp.model.dataTypes.enums.IdTokenEnum;
+import eu.chargetime.ocpp.model.dataTypes.enums.IdTokenEnumType;
 import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
@@ -32,7 +32,10 @@ import java.util.List;
 public class IdTokenType implements Validatable {
 
     private transient Validator idTokenValidator =
-            new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string36()).build();
+            new ValidatorBuilder().setRequired(true)
+                    .addRule(OCPP2PrimDatatypes.string36())
+                    .addRule(OCPP2PrimDatatypes.identifierString())
+                    .build();
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();
 
@@ -59,9 +62,9 @@ public class IdTokenType implements Validatable {
      *
      */
     @JsonProperty("type")
-    public IdTokenEnum type;
+    public IdTokenEnumType type;
 
-    public IdTokenType(String idToken, IdTokenEnum type) {
+    public IdTokenType(String idToken, IdTokenEnumType type) {
         idTokenValidator.validate(idToken);
         requiredValidator.validate(type);
         this.idToken = idToken;
@@ -81,7 +84,7 @@ public class IdTokenType implements Validatable {
         this.idToken = idToken;
     }
 
-    public void setType(IdTokenEnum type) {
+    public void setType(IdTokenEnumType type) {
         requiredValidator.validate(type);
         this.type = type;
     }
