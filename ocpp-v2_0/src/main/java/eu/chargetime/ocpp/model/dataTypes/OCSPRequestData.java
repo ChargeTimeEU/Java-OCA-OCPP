@@ -8,6 +8,7 @@ import eu.chargetime.ocpp.model.types.HashAlgorithmEnumType;
 import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
+import lombok.Getter;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -18,6 +19,7 @@ import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
         "serialNumber",
         "responderURL"
 })
+@Getter
 public class OCSPRequestData implements Validatable {
 
     private final transient Validator hasAlgorithmValidator =
@@ -80,16 +82,8 @@ public class OCSPRequestData implements Validatable {
     @JsonProperty("responderURL")
     public String responderURL;
 
-    public CustomData getCustomData() {
-        return customData;
-    }
-
     public void setCustomData(CustomData customData) {
         this.customData = customData;
-    }
-
-    public HashAlgorithmEnumType getHashAlgorithm() {
-        return hashAlgorithm;
     }
 
     public void setHashAlgorithm(HashAlgorithmEnumType hashAlgorithm) {
@@ -97,17 +91,9 @@ public class OCSPRequestData implements Validatable {
         this.hashAlgorithm = hashAlgorithm;
     }
 
-    public String getIssuerNameHash() {
-        return issuerNameHash;
-    }
-
     public void setIssuerNameHash(String issuerNameHash) {
         issuerNameHashValidator.validate(issuerNameHash);
         this.issuerNameHash = issuerNameHash;
-    }
-
-    public String getIssuerKeyHash() {
-        return issuerKeyHash;
     }
 
     public void setIssuerKeyHash(String issuerKeyHash) {
@@ -115,17 +101,9 @@ public class OCSPRequestData implements Validatable {
         this.issuerKeyHash = issuerKeyHash;
     }
 
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
     public void setSerialNumber(String serialNumber) {
         serialNumberValidator.validate(serialNumber);
         this.serialNumber = serialNumber;
-    }
-
-    public String getResponderURL() {
-        return responderURL;
     }
 
     public void setResponderURL(String responderURL) {
