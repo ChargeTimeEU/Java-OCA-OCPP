@@ -55,6 +55,10 @@ public class OCPP2PrimDatatypes {
     return new StringMaxLengthValidationRule(1000);
   }
 
+  public static IValidationRule string5500() {
+    return new StringMaxLengthValidationRule(5500);
+  }
+
   public static IValidationRule identifierString() {
     return new IdentifierStringValidationRule();
   }
