@@ -26,7 +26,7 @@ package eu.chargetime.ocpp.model.request;
 */
 
 import eu.chargetime.ocpp.model.RequestWithId;
-import eu.chargetime.ocpp.model.types.SetVariableDataType;
+import eu.chargetime.ocpp.model.dataTypes.SetVariableDataType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.utilities.MoreObjects;

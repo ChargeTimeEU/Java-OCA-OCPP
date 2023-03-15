@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.chargetime.ocpp.model.Validatable;
-import eu.chargetime.ocpp.model.types.HashAlgorithmEnumType;
+import eu.chargetime.ocpp.model.dataTypes.enums.HashAlgorithmEnumType;
 import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;

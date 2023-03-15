@@ -30,9 +30,10 @@ import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 import eu.chargetime.ocpp.features.basic.SetVariablesFeature;
 import eu.chargetime.ocpp.features.basic.handlers.IClientSetVariablesRequestHandler;
 import eu.chargetime.ocpp.model.confirmation.SetVariablesConfirmation;
+import eu.chargetime.ocpp.model.dataTypes.*;
+import eu.chargetime.ocpp.model.dataTypes.enums.SetVariableStatusEnumType;
 import eu.chargetime.ocpp.model.request.SetVariablesRequest;
 import eu.chargetime.ocpp.model.basic.types.*;
-import eu.chargetime.ocpp.model.types.*;
 
 public class SetVariables implements IClientSetVariablesRequestHandler {
   private SetVariablesFeature feature;
@@ -51,7 +52,7 @@ public class SetVariables implements IClientSetVariablesRequestHandler {
     componentType.setName("A name");
 
     SetVariableResultType setVariableResultType = new SetVariableResultType();
-    setVariableResultType.setAttributeStatus(SetVariableStatusEnumType.Accepted);
+    setVariableResultType.setAttributeStatus(SetVariableStatusEnumType.ACCEPTED);
     setVariableResultType.setComponent(componentType);
     setVariableResultType.setVariable(variableType);
 

@@ -30,7 +30,7 @@ import eu.chargetime.ocpp.features.basic.StatusNotificationFeature;
 import eu.chargetime.ocpp.features.basic.handlers.IServerStatusNotificationRequestHandler;
 import eu.chargetime.ocpp.model.confirmation.StatusNotificationConfirmation;
 import eu.chargetime.ocpp.model.request.StatusNotificationRequest;
-import eu.chargetime.ocpp.model.types.ConnectorStatusEnumType;
+import eu.chargetime.ocpp.model.dataTypes.enums.ConnectorStatusEnumType;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 

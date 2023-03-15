@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.types;
+package eu.chargetime.ocpp.model.dataTypes;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -26,6 +26,7 @@ package eu.chargetime.ocpp.model.types;
 */
 
 import eu.chargetime.ocpp.model.Validatable;
+import eu.chargetime.ocpp.model.dataTypes.enums.AttributeEnumType;
 import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;

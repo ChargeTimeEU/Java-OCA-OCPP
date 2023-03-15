@@ -26,8 +26,8 @@ package eu.chargetime.ocpp.model.request;
 */
 
 import eu.chargetime.ocpp.model.RequestWithId;
-import eu.chargetime.ocpp.model.types.BootReasonEnumType;
-import eu.chargetime.ocpp.model.types.ChargingStationType;
+import eu.chargetime.ocpp.model.dataTypes.ChargingStationType;
+import eu.chargetime.ocpp.model.dataTypes.enums.BootReasonEnumType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.types;
+package eu.chargetime.ocpp.model.dataTypes;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 

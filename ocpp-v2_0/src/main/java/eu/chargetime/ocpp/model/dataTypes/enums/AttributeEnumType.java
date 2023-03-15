@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.types;
+package eu.chargetime.ocpp.model.dataTypes.enums;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -27,6 +27,8 @@ package eu.chargetime.ocpp.model.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import eu.chargetime.ocpp.model.dataTypes.GetVariableDataType;
+import eu.chargetime.ocpp.model.dataTypes.SetVariableDataType;
 
 import static eu.chargetime.ocpp.util.EnumUtil.findByField;
 

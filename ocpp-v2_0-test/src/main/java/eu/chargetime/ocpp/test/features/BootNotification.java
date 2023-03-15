@@ -30,10 +30,11 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.features.basic.BootNotificationFeature;
 import eu.chargetime.ocpp.features.basic.handlers.IServerBootNotificationRequestHandler;
 import eu.chargetime.ocpp.model.confirmation.BootNotificationConfirmation;
+import eu.chargetime.ocpp.model.dataTypes.enums.BootReasonEnumType;
+import eu.chargetime.ocpp.model.dataTypes.enums.RegistrationStatusEnumType;
 import eu.chargetime.ocpp.model.request.BootNotificationRequest;
-import eu.chargetime.ocpp.model.types.BootReasonEnumType;
-import eu.chargetime.ocpp.model.types.ChargingStationType;
-import eu.chargetime.ocpp.model.types.RegistrationStatusEnumType;
+import eu.chargetime.ocpp.model.dataTypes.ChargingStationType;
+
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -49,7 +50,7 @@ public class BootNotification implements IServerBootNotificationRequestHandler {
     ZonedDateTime calendar = ZonedDateTime.now(ZoneOffset.UTC);
     confirmation.setCurrentTime(calendar);
     confirmation.setInterval(42);
-    confirmation.setStatus(RegistrationStatusEnumType.Accepted);
+    confirmation.setStatus(RegistrationStatusEnumType.ACCEPTED);
   }
 
   @Override
@@ -64,7 +65,7 @@ public class BootNotification implements IServerBootNotificationRequestHandler {
 
   public BootNotificationRequest createRequest() {
     BootNotificationRequest request = new BootNotificationRequest();
-    request.setReason(BootReasonEnumType.Unknown);
+    request.setReason(BootReasonEnumType.UNKNOWN);
     ChargingStationType chargingStationType = new ChargingStationType();
     request.setChargingStation(chargingStationType);
     chargingStationType.setVendorName("ChargeTimeEU");

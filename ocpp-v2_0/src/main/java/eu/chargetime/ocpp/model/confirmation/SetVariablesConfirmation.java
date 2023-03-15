@@ -27,7 +27,7 @@ package eu.chargetime.ocpp.model.confirmation;
 */
 
 import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.types.SetVariableResultType;
+import eu.chargetime.ocpp.model.dataTypes.SetVariableResultType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.utilities.MoreObjects;

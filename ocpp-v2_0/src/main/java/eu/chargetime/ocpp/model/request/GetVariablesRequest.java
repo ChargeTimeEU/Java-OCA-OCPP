@@ -26,7 +26,7 @@ package eu.chargetime.ocpp.model.request;
 */
 
 import eu.chargetime.ocpp.model.RequestWithId;
-import eu.chargetime.ocpp.model.types.GetVariableDataType;
+import eu.chargetime.ocpp.model.dataTypes.GetVariableDataType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Arrays;
 import java.util.Objects;

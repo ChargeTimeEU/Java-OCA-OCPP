@@ -30,9 +30,10 @@ import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 import eu.chargetime.ocpp.features.basic.GetVariablesFeature;
 import eu.chargetime.ocpp.features.basic.handlers.IClientGetVariablesRequestHandler;
 import eu.chargetime.ocpp.model.confirmation.GetVariablesConfirmation;
+import eu.chargetime.ocpp.model.dataTypes.*;
+import eu.chargetime.ocpp.model.dataTypes.enums.GetVariableStatusEnumType;
 import eu.chargetime.ocpp.model.request.GetVariablesRequest;
 import eu.chargetime.ocpp.model.basic.types.*;
-import eu.chargetime.ocpp.model.types.*;
 
 public class GetVariables implements IClientGetVariablesRequestHandler {
   private GetVariablesFeature feature;

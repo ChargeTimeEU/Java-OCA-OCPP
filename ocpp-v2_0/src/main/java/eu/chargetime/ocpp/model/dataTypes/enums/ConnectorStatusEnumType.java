@@ -1,10 +1,10 @@
-package eu.chargetime.ocpp.model.types;
+package eu.chargetime.ocpp.model.dataTypes.enums;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
    MIT License
 
-   Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
+   Copyright (C) 2021 John Michael Luy <johnmichael.luy@gmail.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -27,43 +27,19 @@ package eu.chargetime.ocpp.model.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import eu.chargetime.ocpp.model.confirmation.SetVariablesConfirmation;
 
 import static eu.chargetime.ocpp.util.EnumUtil.findByField;
 
-/**
- * SetVariableStatusEnumType is used by {@link
- * SetVariablesConfirmation}
- */
-public enum SetVariableStatusEnumType {
-
-  /** Variable successfully set. */
-  ACCEPTED("Accepted"),
-
-  /** Request is rejected. */
-  REJECTED("Rejected"),
-
-  /** Value has invalid format for the variable. */
-  INVALID_VALUE("InvalidValue"),
-
-  /** Component is not known. */
-  UNKNOWN_COMPONENT("UnknownComponent"),
-
-  /** Variable is not known. */
-  UNKNOWN_VARIABLE("UnknownVariable"),
-
-  /** The AttributeType is not supported. */
-  NOT_SUPPORTED_ATTRIBUTE_TYPE("NotSupportedAttributeType"),
-
-  /** Value is out of range defined in VariableCharacteristics. */
-  OUT_OF_RANGE("OutOfRange"),
-
-  /** A reboot is required. */
-  REBOOT_REQUIRED("RebootRequired");
+public enum ConnectorStatusEnumType {
+  AVAILABLE("Available"),
+  OCCUPIED("Occupied"),
+  RESERVED("Reserved"),
+  UNAVAILABLE("Unavailable"),
+  FAULTED("Faulted");
 
   private final String value;
 
-  SetVariableStatusEnumType(String value) {
+  ConnectorStatusEnumType(String value) {
     this.value = value;
   }
 
@@ -78,10 +54,10 @@ public enum SetVariableStatusEnumType {
   }
 
   @JsonCreator
-  public static SetVariableStatusEnumType fromValue(String value) {
+  public static ConnectorStatusEnumType fromValue(String value) {
     return findByField(
-            SetVariableStatusEnumType.class,
-            SetVariableStatusEnumType::value,
+            ConnectorStatusEnumType.class,
+            ConnectorStatusEnumType::value,
             value
     );
   }

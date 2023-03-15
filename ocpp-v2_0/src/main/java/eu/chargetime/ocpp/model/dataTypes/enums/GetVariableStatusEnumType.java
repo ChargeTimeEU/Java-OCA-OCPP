@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.types;
+package eu.chargetime.ocpp.model.dataTypes.enums;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -27,28 +27,29 @@ package eu.chargetime.ocpp.model.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import eu.chargetime.ocpp.model.dataTypes.GetVariableResultType;
 
 import static eu.chargetime.ocpp.util.EnumUtil.findByField;
 
-public enum RegistrationStatusEnumType {
-  /** Charging Station is accepted by the CSMS. */
+/** GetVariableStatusEnumType is used by {@link GetVariableResultType} */
+public enum GetVariableStatusEnumType {
+  /** Variable successfully set. */
   ACCEPTED("Accepted"),
 
-  /**
-   * CSMS is not yet ready to accept the Charging Station. CSMS may send messages to retrieve
-   * information or prepare the Charging Station.
-   */
-  PENDING("Pending"),
+  /** Request is rejected. */
+  REJECTED("Rejected"),
+  /** Component is not known. */
+  UNKNOWN_COMPONENT("UnknownComponent"),
 
-  /**
-   * Charging Station is not accepted by CSMS. This may happen when the Charging Station id is not
-   * known by CSMS.
-   */
-  REJECTED("Rejected");
+  /** Variable is not known. */
+  UNKNOWN_VARIABLE("UnknownVariable"),
+
+  /** The AttributeType is not supported. */
+  NOT_SUPPORTED_ATTRIBUTE_TYPE("NotSupportedAttributeType");
 
   private final String value;
 
-  RegistrationStatusEnumType(String value) {
+  GetVariableStatusEnumType(String value) {
     this.value = value;
   }
 
@@ -63,10 +64,10 @@ public enum RegistrationStatusEnumType {
   }
 
   @JsonCreator
-  public static RegistrationStatusEnumType fromValue(String value) {
+  public static GetVariableStatusEnumType fromValue(String value) {
     return findByField(
-            RegistrationStatusEnumType.class,
-            RegistrationStatusEnumType::value,
+            GetVariableStatusEnumType.class,
+            GetVariableStatusEnumType::value,
             value
     );
   }

@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.types;
+package eu.chargetime.ocpp.model.dataTypes.enums;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -27,16 +27,25 @@ package eu.chargetime.ocpp.model.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import eu.chargetime.ocpp.model.confirmation.SetVariablesConfirmation;
 
 import static eu.chargetime.ocpp.util.EnumUtil.findByField;
 
-/** GetVariableStatusEnumType is used by {@link GetVariableResultType} */
-public enum GetVariableStatusEnumType {
+/**
+ * SetVariableStatusEnumType is used by {@link
+ * SetVariablesConfirmation}
+ */
+public enum SetVariableStatusEnumType {
+
   /** Variable successfully set. */
   ACCEPTED("Accepted"),
 
   /** Request is rejected. */
   REJECTED("Rejected"),
+
+  /** Value has invalid format for the variable. */
+  INVALID_VALUE("InvalidValue"),
+
   /** Component is not known. */
   UNKNOWN_COMPONENT("UnknownComponent"),
 
@@ -44,11 +53,17 @@ public enum GetVariableStatusEnumType {
   UNKNOWN_VARIABLE("UnknownVariable"),
 
   /** The AttributeType is not supported. */
-  NOT_SUPPORTED_ATTRIBUTE_TYPE("NotSupportedAttributeType");
+  NOT_SUPPORTED_ATTRIBUTE_TYPE("NotSupportedAttributeType"),
+
+  /** Value is out of range defined in VariableCharacteristics. */
+  OUT_OF_RANGE("OutOfRange"),
+
+  /** A reboot is required. */
+  REBOOT_REQUIRED("RebootRequired");
 
   private final String value;
 
-  GetVariableStatusEnumType(String value) {
+  SetVariableStatusEnumType(String value) {
     this.value = value;
   }
 
@@ -63,10 +78,10 @@ public enum GetVariableStatusEnumType {
   }
 
   @JsonCreator
-  public static GetVariableStatusEnumType fromValue(String value) {
+  public static SetVariableStatusEnumType fromValue(String value) {
     return findByField(
-            GetVariableStatusEnumType.class,
-            GetVariableStatusEnumType::value,
+            SetVariableStatusEnumType.class,
+            SetVariableStatusEnumType::value,
             value
     );
   }
