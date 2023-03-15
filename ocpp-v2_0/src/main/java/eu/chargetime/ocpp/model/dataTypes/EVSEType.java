@@ -25,23 +25,48 @@ package eu.chargetime.ocpp.model.dataTypes;
    SOFTWARE.
 */
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+import lombok.Getter;
+
 import java.util.Objects;
 
 /** Electric Vehicle Supply Equipment */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+        "customData",
+        "id",
+        "connectorId"
+})
+@Getter
 public class EVSEType implements Validatable {
+
+  /**
+   * Identified_ Object. MRID. Numeric_ Identifier
+   * urn:x-enexis:ecdm:uid:1:569198
+   * EVSE Identifier. This contains a number (&gt; 0) designating an EVSE of the Charging Station.
+   *
+   * (Required)
+   *
+   */
   private int id;
+
+  /**
+   * An id to designate a specific connector (on an EVSE) by connector index number.
+   *
+   *
+   */
   private Integer connectorId;
 
   /**
-   * EVSE Identifier. When 0, the ID references the Charging Station as a whole.
+   * This class does not get 'AdditionalProperties = false' in the schema generation, so it can be extended with arbitrary JSON properties to allow adding custom data.
    *
-   * @return integer
    */
-  public int getId() {
-    return id;
-  }
+  @JsonProperty("customData")
+  public CustomData customData;
 
   /**
    * Required. EVSE Identifier. When 0, the ID references the Charging Station as a whole.
@@ -50,15 +75,6 @@ public class EVSEType implements Validatable {
    */
   public void setId(int id) {
     this.id = id;
-  }
-
-  /**
-   * An id to designate a specific connector (on an EVSE) by connector index number.
-   *
-   * @return integer
-   */
-  public Integer getConnectorId() {
-    return connectorId;
   }
 
   /**
