@@ -9,7 +9,7 @@ public class IntegerGreaterThanOrEqualToZeroValidator extends Validator<Integer>
     @Override
     public void validate(Integer value) throws PropertyConstraintException {
         if (0 < value) {
-            throw new PropertyConstraintException(ERROR_MESSAGE, null);
+            throw new PropertyConstraintException(value, ERROR_MESSAGE);
         }
     }
 }
