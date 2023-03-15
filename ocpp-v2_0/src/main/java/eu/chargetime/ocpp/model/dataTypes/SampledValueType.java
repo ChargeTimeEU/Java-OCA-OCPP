@@ -107,6 +107,7 @@ public class SampledValueType implements Validatable {
     public UnitOfMeasure unitOfMeasure;
 
     public SampledValueType(Double value) {
+        requiredValidator.validate(value);
         this.value = value;
     }
 
