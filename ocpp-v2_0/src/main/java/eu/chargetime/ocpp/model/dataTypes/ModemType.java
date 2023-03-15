@@ -25,13 +25,25 @@ package eu.chargetime.ocpp.model.dataTypes;
    SOFTWARE.
 */
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+import lombok.Getter;
+
 import java.util.Objects;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+        "customData",
+        "iccid",
+        "imsi"
+})
+@Getter
 public class ModemType implements Validatable {
   private transient Validator validator =
       new ValidatorBuilder()
@@ -39,17 +51,32 @@ public class ModemType implements Validatable {
           .addRule(OCPP2PrimDatatypes.string20())
           .build();
 
-  private String iccid;
-  private String imsi;
+  /**
+   * This class does not get 'AdditionalProperties = false' in the schema generation, so it can be extended with arbitrary JSON properties to allow adding custom data.
+   *
+   */
+  @JsonProperty("customData")
+  public CustomData customData;
 
   /**
+   * Wireless_ Communication_ Module. ICCID. CI20_ Text
+   * urn:x-oca:ocpp:uid:1:569327
    * This contains the ICCID of the modem’s SIM card.
    *
-   * @return identifierString[0..20]
+   *
    */
-  public String getIccid() {
-    return iccid;
-  }
+  @JsonProperty("iccid")
+  private String iccid;
+
+  /**
+   * Wireless_ Communication_ Module. IMSI. CI20_ Text
+   * urn:x-oca:ocpp:uid:1:569328
+   * This contains the IMSI of the modem’s SIM card.
+   *
+   *
+   */
+  @JsonProperty("imsi")
+  private String imsi;
 
   /**
    * Optional. This contains the ICCID of the modem’s SIM card.
@@ -59,15 +86,6 @@ public class ModemType implements Validatable {
   public void setIccid(String iccid) {
     validator.validate(iccid);
     this.iccid = iccid;
-  }
-
-  /**
-   * This contains the IMSI of the modem’s SIM card.
-   *
-   * @return identifierString[0..20]
-   */
-  public String getImsi() {
-    return imsi;
   }
 
   /**
