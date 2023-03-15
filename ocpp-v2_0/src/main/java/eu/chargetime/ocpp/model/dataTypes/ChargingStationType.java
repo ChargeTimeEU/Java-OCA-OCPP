@@ -30,8 +30,11 @@ import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+import lombok.Getter;
+
 import java.util.Objects;
 
+@Getter
 public class ChargingStationType implements Validatable {
   private transient Validator serialNumberValidator =
       new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string20()).build();
@@ -49,32 +52,13 @@ public class ChargingStationType implements Validatable {
   private ModemType modem;
 
   /**
-   * Vendor-specific device identifier.
-   *
-   * @return string[0..20]
-   */
-  public String getSerialNumber() {
-    return serialNumber;
-  }
-
-  /**
    * Optional. Vendor-specific device identifier.
    *
    * @param serialNumber string[0..20]
    */
   public void setSerialNumber(String serialNumber) {
     serialNumberValidator.validate(serialNumber);
-
     this.serialNumber = serialNumber;
-  }
-
-  /**
-   * Defines the model of the device.
-   *
-   * @return string[0..20]
-   */
-  public String getModel() {
-    return model;
   }
 
   /**
@@ -84,17 +68,7 @@ public class ChargingStationType implements Validatable {
    */
   public void setModel(String model) {
     modelValidator.validate(model);
-
     this.model = model;
-  }
-
-  /**
-   * Identifies the vendor (not necessarily in a unique manner).
-   *
-   * @return string[0..50]
-   */
-  public String getVendorName() {
-    return vendorName;
   }
 
   /**
@@ -104,17 +78,7 @@ public class ChargingStationType implements Validatable {
    */
   public void setVendorName(String vendorName) {
     vendorNameValidator.validate(vendorName);
-
     this.vendorName = vendorName;
-  }
-
-  /**
-   * This contains the firmware version of the Charging Station.
-   *
-   * @return string[0..50]
-   */
-  public String getFirmwareVersion() {
-    return firmwareVersion;
   }
 
   /**
@@ -124,17 +88,7 @@ public class ChargingStationType implements Validatable {
    */
   public void setFirmwareVersion(String firmwareVersion) {
     firmwareVersionValidator.validate(firmwareVersion);
-
     this.firmwareVersion = firmwareVersion;
-  }
-
-  /**
-   * Defines the functional parameters of a communication link.
-   *
-   * @return {@link ModemType}
-   */
-  public ModemType getModem() {
-    return modem;
   }
 
   /**
