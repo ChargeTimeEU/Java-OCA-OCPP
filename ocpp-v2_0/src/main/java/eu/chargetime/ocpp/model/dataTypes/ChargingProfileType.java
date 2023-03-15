@@ -127,7 +127,7 @@ public class ChargingProfileType implements Validatable {
      *
      */
     @JsonProperty("chargingSchedule")
-    private List<ChargingSchedule> chargingSchedule;
+    private List<ChargingScheduleType> chargingScheduleType;
     /**
      * SHALL only be included if ChargingProfilePurpose is set to TxProfile. The transactionId is used to match the profile to a specific transaction.
      *
@@ -140,17 +140,17 @@ public class ChargingProfileType implements Validatable {
                                Integer stackLevel,
                                ChargingProfilePurposeEnumType chargingProfilePurpose,
                                ChargingProfileKindEnumType chargingProfileKind,
-                               List<ChargingSchedule> chargingSchedule) {
+                               List<ChargingScheduleType> chargingScheduleType) {
         requiredValidator.validate(id);
         requiredValidator.validate(stackLevel);
         requiredValidator.validate(chargingProfilePurpose);
         requiredValidator.validate(chargingProfileKind);
-        requiredValidator.validate(chargingSchedule);
+        requiredValidator.validate(chargingScheduleType);
         this.id = id;
         this.stackLevel = stackLevel;
         this.chargingProfilePurpose = chargingProfilePurpose;
         this.chargingProfileKind = chargingProfileKind;
-        this.chargingSchedule = chargingSchedule;
+        this.chargingScheduleType = chargingScheduleType;
     }
 
     public void setCustomData(CustomData customData) {
@@ -189,9 +189,9 @@ public class ChargingProfileType implements Validatable {
         this.validTo = validTo;
     }
 
-    public void setChargingSchedule(List<ChargingSchedule> chargingSchedule) {
-        requiredValidator.validate(chargingSchedule);
-        this.chargingSchedule = chargingSchedule;
+    public void setChargingScheduleType(List<ChargingScheduleType> chargingScheduleType) {
+        requiredValidator.validate(chargingScheduleType);
+        this.chargingScheduleType = chargingScheduleType;
     }
 
     public void setTransactionId(String transactionId) {
@@ -205,6 +205,6 @@ public class ChargingProfileType implements Validatable {
                 &&requiredValidator.safeValidate(stackLevel)
                 &&requiredValidator.safeValidate(chargingProfilePurpose)
                 &&requiredValidator.safeValidate(chargingProfileKind)
-                &&requiredValidator.safeValidate(chargingSchedule);
+                &&requiredValidator.safeValidate(chargingScheduleType);
     }
 }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 
@@ -22,6 +23,7 @@ import lombok.Getter;
         "duration"
 })
 @Getter
+@EqualsAndHashCode
 public class RelativeTimeIntervalType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();
