@@ -27,6 +27,10 @@ package eu.chargetime.ocpp.model.validation;
 
 public class OCPP2PrimDatatypes {
 
+  public static IValidationRule string8() {
+    return new StringMaxLengthValidationRule(8);
+  }
+
   public static IValidationRule string20() {
     return new StringMaxLengthValidationRule(20);
   }
