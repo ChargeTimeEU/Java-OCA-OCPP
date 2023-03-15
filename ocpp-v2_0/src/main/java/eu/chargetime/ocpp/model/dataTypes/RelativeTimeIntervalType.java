@@ -33,7 +33,7 @@ public class RelativeTimeIntervalType implements Validatable {
      *
      */
     @JsonProperty("customData")
-    private CustomData customData;
+    private CustomDataType customDataType;
     /**
      * Relative_ Timer_ Interval. Start. Elapsed_ Time
      * urn:x-oca:ocpp:uid:1:569279
@@ -59,8 +59,8 @@ public class RelativeTimeIntervalType implements Validatable {
         this.start = start;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setStart(Integer start) {

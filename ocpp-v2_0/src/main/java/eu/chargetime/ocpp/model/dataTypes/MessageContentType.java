@@ -47,7 +47,7 @@ public class MessageContentType implements Validatable {
      *
      */
     @JsonProperty("customData")
-    public CustomData customData;
+    public CustomDataType customDataType;
     /**
      * Message_ Content. Format. Message_ Format_ Code
      * urn:x-enexis:ecdm:uid:1:570848
@@ -86,8 +86,8 @@ public class MessageContentType implements Validatable {
         this.content = content;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setFormat(MessageFormatEnumType format) {

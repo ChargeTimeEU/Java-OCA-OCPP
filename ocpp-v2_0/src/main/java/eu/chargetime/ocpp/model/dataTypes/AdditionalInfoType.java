@@ -37,7 +37,7 @@ public class AdditionalInfoType implements Validatable {
      *
      */
     @JsonProperty("customData")
-    public CustomData customData;
+    public CustomDataType customDataType;
     /**
      * This field specifies the additional IdToken.
      *
@@ -62,8 +62,8 @@ public class AdditionalInfoType implements Validatable {
         this.type = type;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setAdditionalIdToken(String additionalIdToken) {

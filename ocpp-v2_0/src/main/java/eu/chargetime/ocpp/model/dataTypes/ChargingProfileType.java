@@ -53,7 +53,7 @@ public class ChargingProfileType implements Validatable {
      *
      */
     @JsonProperty("customData")
-    private CustomData customData;
+    private CustomDataType customDataType;
     /**
      * Identified_ Object. MRID. Numeric_ Identifier
      * urn:x-enexis:ecdm:uid:1:569198
@@ -153,8 +153,8 @@ public class ChargingProfileType implements Validatable {
         this.chargingScheduleType = chargingScheduleType;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setId(Integer id) {

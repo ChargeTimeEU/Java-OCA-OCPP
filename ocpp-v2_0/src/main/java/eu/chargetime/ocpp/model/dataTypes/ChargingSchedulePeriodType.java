@@ -36,7 +36,7 @@ public class ChargingSchedulePeriodType implements Validatable {
      *
      */
     @JsonProperty("customData")
-    private CustomData customData;
+    private CustomDataType customDataType;
     /**
      * Charging_ Schedule_ Period. Start_ Period. Elapsed_ Time
      * urn:x-oca:ocpp:uid:1:569240
@@ -82,8 +82,8 @@ public class ChargingSchedulePeriodType implements Validatable {
         this.limit = limit;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setStartPeriod(Integer startPeriod) {

@@ -30,7 +30,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class Transaction implements Validatable {
+public class TransactionType implements Validatable {
 
     private transient Validator transactionIdValidator =
             new ValidatorBuilder()
@@ -44,7 +44,7 @@ public class Transaction implements Validatable {
      *
      */
     @JsonProperty("customData")
-    public CustomData customData;
+    public CustomDataType customDataType;
     /**
      * This contains the Id of the transaction.
      *
@@ -89,13 +89,13 @@ public class Transaction implements Validatable {
     @JsonProperty("remoteStartId")
     public Integer remoteStartId;
 
-    public Transaction(String transactionId) {
+    public TransactionType(String transactionId) {
         transactionIdValidator.validate(transactionId);
         this.transactionId = transactionId;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setTransactionId(String transactionId) {

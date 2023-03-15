@@ -4,14 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.chargetime.ocpp.model.RequestWithId;
-import eu.chargetime.ocpp.model.dataTypes.CustomData;
+import eu.chargetime.ocpp.model.dataTypes.CustomDataType;
 import eu.chargetime.ocpp.model.dataTypes.IdTokenType;
-import eu.chargetime.ocpp.model.dataTypes.OCSPRequestData;
+import eu.chargetime.ocpp.model.dataTypes.OCSPRequestDataType;
 import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
-import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
@@ -36,7 +35,7 @@ public class AuthorizeRequest extends RequestWithId {
      *
      */
     @JsonProperty("customData")
-    public CustomData customData;
+    public CustomDataType customDataType;
     /**
      * Contains a case insensitive identifier to use for the authorization and the type of authorization to support multiple forms of identifiers.
      *
@@ -54,15 +53,15 @@ public class AuthorizeRequest extends RequestWithId {
     public String certificate;
 
     @JsonProperty("iso15118CertificateHashData")
-    public List<OCSPRequestData> iso15118CertificateHashData;
+    public List<OCSPRequestDataType> iso15118CertificateHashData;
 
     @Override
     public boolean transactionRelated() {
         return false;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setIdTokenType(IdTokenType idTokenType) {
@@ -74,7 +73,7 @@ public class AuthorizeRequest extends RequestWithId {
         this.certificate = certificate;
     }
 
-    public void setIso15118CertificateHashData(List<OCSPRequestData> iso15118CertificateHashData) {
+    public void setIso15118CertificateHashData(List<OCSPRequestDataType> iso15118CertificateHashData) {
         this.iso15118CertificateHashData = iso15118CertificateHashData;
     }
 

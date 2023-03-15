@@ -4,11 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.chargetime.ocpp.model.Validatable;
-import eu.chargetime.ocpp.model.dataTypes.CustomData;
 import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -28,7 +26,7 @@ import java.util.Objects;
 })
 @Getter
 @EqualsAndHashCode
-public class UnitOfMeasure implements Validatable {
+public class UnitOfMeasureType implements Validatable {
 
     private transient Validator unitValidator =
             new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string20()).build();
@@ -38,7 +36,7 @@ public class UnitOfMeasure implements Validatable {
      *
      */
     @JsonProperty("customData")
-    public CustomData customData;
+    public CustomDataType customDataType;
     /**
      * Unit of the value. Default = "Wh" if the (default) measurand is an "Energy" type.
      * This field SHALL use a value from the list Standardized Units of Measurements in Part 2 Appendices.
@@ -56,8 +54,8 @@ public class UnitOfMeasure implements Validatable {
     @JsonProperty("multiplier")
     public Integer multiplier = 0;
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setUnit(String unit) {

@@ -56,7 +56,7 @@ public class ModemType implements Validatable {
    *
    */
   @JsonProperty("customData")
-  public CustomData customData;
+  public CustomDataType customDataType;
 
   /**
    * Wireless_ Communication_ Module. ICCID. CI20_ Text

@@ -66,7 +66,7 @@ public class EVSEType implements Validatable {
    *
    */
   @JsonProperty("customData")
-  public CustomData customData;
+  public CustomDataType customDataType;
 
   /**
    * Required. EVSE Identifier. When 0, the ID references the Charging Station as a whole.

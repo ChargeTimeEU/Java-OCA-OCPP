@@ -38,7 +38,7 @@ import java.util.List;
 })
 @Getter
 @EqualsAndHashCode
-public class IdTokenInfo implements Validatable {
+public class IdTokenInfoType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();
     private transient Validator language1Validator = new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string8()).build();
@@ -49,7 +49,7 @@ public class IdTokenInfo implements Validatable {
      *
      */
     @JsonProperty("customData")
-    public CustomData customData;
+    public CustomDataType customDataType;
     /**
      * ID_ Token. Status. Authorization_ Status
      * urn:x-oca:ocpp:uid:1:569372
@@ -121,13 +121,13 @@ public class IdTokenInfo implements Validatable {
     @JsonProperty("personalMessage")
     public MessageContentType personalMessage;
 
-    public IdTokenInfo(AuthorizationStatusEnumType status) {
+    public IdTokenInfoType(AuthorizationStatusEnumType status) {
         requiredValidator.validate(status);
         this.status = status;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setStatus(AuthorizationStatusEnumType status) {

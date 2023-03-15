@@ -21,7 +21,7 @@ import java.util.Map;
 })
 @Getter
 @EqualsAndHashCode
-public class CustomData {
+public class CustomDataType {
 
     /**
      *

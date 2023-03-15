@@ -35,7 +35,7 @@ public class CostType implements Validatable {
      *
      */
     @JsonProperty("customData")
-    private CustomData customData;
+    private CustomDataType customDataType;
     /**
      * Cost. Cost_ Kind. Cost_ Kind_ Code
      * urn:x-oca:ocpp:uid:1:569243
@@ -71,8 +71,8 @@ public class CostType implements Validatable {
         this.amount = amount;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setCostKind(CostKindEnumType costKind) {

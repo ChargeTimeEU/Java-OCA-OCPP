@@ -38,7 +38,7 @@ public class SalesTariffEntryType implements Validatable {
      *
      */
     @JsonProperty("customData")
-    private CustomData customData;
+    private CustomDataType customDataType;
     /**
      * Relative_ Timer_ Interval
      * urn:x-oca:ocpp:uid:2:233270
@@ -58,15 +58,15 @@ public class SalesTariffEntryType implements Validatable {
     @JsonProperty("ePriceLevel")
     private Integer ePriceLevel;
     @JsonProperty("consumptionCost")
-    private List<ConsumptionCost> consumptionCost;
+    private List<ConsumptionCostType> consumptionCostType;
 
     public SalesTariffEntryType(RelativeTimeIntervalType relativeTimeIntervalType) {
         requiredValidator.validate(relativeTimeIntervalType);
         this.relativeTimeIntervalType = relativeTimeIntervalType;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setRelativeTimeIntervalType(RelativeTimeIntervalType relativeTimeIntervalType) {
@@ -79,8 +79,8 @@ public class SalesTariffEntryType implements Validatable {
         this.ePriceLevel = ePriceLevel;
     }
 
-    public void setConsumptionCost(List<ConsumptionCost> consumptionCost) {
-        this.consumptionCost = consumptionCost;
+    public void setConsumptionCostType(List<ConsumptionCostType> consumptionCostType) {
+        this.consumptionCostType = consumptionCostType;
     }
 
     @Override

@@ -44,7 +44,7 @@ public class IdTokenType implements Validatable {
      *
      */
     @JsonProperty("customData")
-    public CustomData customData;
+    public CustomDataType customDataType;
     @JsonProperty("additionalInfo")
     public List<AdditionalInfoType> additionalInfoType;
     /**
@@ -71,8 +71,8 @@ public class IdTokenType implements Validatable {
         this.type = type;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setAdditionalInfoType(List<AdditionalInfoType> additionalInfoType) {

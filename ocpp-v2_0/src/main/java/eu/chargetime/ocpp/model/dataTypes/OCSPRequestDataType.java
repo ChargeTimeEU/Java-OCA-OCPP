@@ -23,7 +23,7 @@ import lombok.Getter;
 })
 @Getter
 @EqualsAndHashCode
-public class OCSPRequestData implements Validatable {
+public class OCSPRequestDataType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();
     private final transient Validator issuerNameHashValidator =
@@ -40,7 +40,7 @@ public class OCSPRequestData implements Validatable {
      *
      */
     @JsonProperty("customData")
-    public CustomData customData;
+    public CustomDataType customDataType;
     /**
      * Used algorithms for the hashes provided.
      *
@@ -84,7 +84,7 @@ public class OCSPRequestData implements Validatable {
     @JsonProperty("responderURL")
     public String responderURL;
 
-    public OCSPRequestData(HashAlgorithmEnumType hashAlgorithm, String issuerNameHash, String issuerKeyHash, String serialNumber, String responderURL) {
+    public OCSPRequestDataType(HashAlgorithmEnumType hashAlgorithm, String issuerNameHash, String issuerKeyHash, String serialNumber, String responderURL) {
         requiredValidator.validate(hashAlgorithm);
         issuerNameHashValidator.validate(issuerNameHash);
         issuerKeyHashValidator.validate(issuerKeyHash);
@@ -97,8 +97,8 @@ public class OCSPRequestData implements Validatable {
         this.responderURL = responderURL;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setHashAlgorithm(HashAlgorithmEnumType hashAlgorithm) {

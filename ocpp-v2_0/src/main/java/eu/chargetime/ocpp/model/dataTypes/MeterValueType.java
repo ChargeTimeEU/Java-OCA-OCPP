@@ -37,7 +37,7 @@ public class MeterValueType implements Validatable {
      *
      */
     @JsonProperty("customData")
-    public CustomData customData;
+    public CustomDataType customDataType;
     /**
      *
      * (Required)
@@ -63,8 +63,8 @@ public class MeterValueType implements Validatable {
         this.timestamp = timestamp;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setSampledValueType(List<SampledValueType> sampledValueType) {

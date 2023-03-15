@@ -43,7 +43,7 @@ public class ChargingScheduleType implements Validatable {
      *
      */
     @JsonProperty("customData")
-    private CustomData customData;
+    private CustomDataType customDataType;
     /**
      * Identifies the ChargingSchedule.
      *
@@ -104,7 +104,7 @@ public class ChargingScheduleType implements Validatable {
      *
      */
     @JsonProperty("salesTariff")
-    private SalesTariff salesTariff;
+    private SalesTariffType salesTariffType;
 
     public ChargingScheduleType(Integer id,
                                 ChargingRateUnitEnumType chargingRateUnit,
@@ -115,8 +115,8 @@ public class ChargingScheduleType implements Validatable {
         this.chargingSchedulePeriodType = chargingSchedulePeriodType;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setId(Integer id) {
@@ -146,8 +146,8 @@ public class ChargingScheduleType implements Validatable {
         this.minChargingRate = minChargingRate;
     }
 
-    public void setSalesTariff(SalesTariff salesTariff) {
-        this.salesTariff = salesTariff;
+    public void setSalesTariffType(SalesTariffType salesTariffType) {
+        this.salesTariffType = salesTariffType;
     }
 
     @Override

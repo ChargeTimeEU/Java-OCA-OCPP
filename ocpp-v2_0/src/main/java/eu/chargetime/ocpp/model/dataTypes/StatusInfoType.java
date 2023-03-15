@@ -35,7 +35,7 @@ public class StatusInfoType implements Validatable {
      *
      */
     @JsonProperty("customData")
-    private CustomData customData;
+    private CustomDataType customDataType;
     /**
      * A predefined code for the reason why the status is returned in this response. The string is case-insensitive.
      *
@@ -57,8 +57,8 @@ public class StatusInfoType implements Validatable {
         this.reasonCode = reasonCode;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setReasonCode(String reasonCode) {

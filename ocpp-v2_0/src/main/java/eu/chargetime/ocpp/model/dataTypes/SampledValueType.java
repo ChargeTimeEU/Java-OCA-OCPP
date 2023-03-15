@@ -42,7 +42,7 @@ public class SampledValueType implements Validatable {
      *
      */
     @JsonProperty("customData")
-    public CustomData customData;
+    public CustomDataType customDataType;
     /**
      * Sampled_ Value. Value. Measure
      * urn:x-oca:ocpp:uid:1:569260
@@ -97,22 +97,22 @@ public class SampledValueType implements Validatable {
      *
      */
     @JsonProperty("signedMeterValue")
-    public SignedMeterValue signedMeterValue;
+    public SignedMeterValueType signedMeterValueType;
     /**
      * Represents a UnitOfMeasure with a multiplier
      *
      *
      */
     @JsonProperty("unitOfMeasure")
-    public UnitOfMeasure unitOfMeasure;
+    public UnitOfMeasureType unitOfMeasureType;
 
     public SampledValueType(Double value) {
         requiredValidator.validate(value);
         this.value = value;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setValue(Double value) {
@@ -136,12 +136,12 @@ public class SampledValueType implements Validatable {
         this.location = location;
     }
 
-    public void setSignedMeterValue(SignedMeterValue signedMeterValue) {
-        this.signedMeterValue = signedMeterValue;
+    public void setSignedMeterValueType(SignedMeterValueType signedMeterValueType) {
+        this.signedMeterValueType = signedMeterValueType;
     }
 
-    public void setUnitOfMeasure(UnitOfMeasure unitOfMeasure) {
-        this.unitOfMeasure = unitOfMeasure;
+    public void setUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
+        this.unitOfMeasureType = unitOfMeasureType;
     }
 
     @Override

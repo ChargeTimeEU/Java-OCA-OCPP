@@ -26,7 +26,7 @@ import java.util.List;
 })
 @Getter
 @EqualsAndHashCode
-public class ConsumptionCost implements Validatable {
+public class ConsumptionCostType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();
 
@@ -35,7 +35,7 @@ public class ConsumptionCost implements Validatable {
      *
      */
     @JsonProperty("customData")
-    private CustomData customData;
+    private CustomDataType customDataType;
     /**
      * Consumption_ Cost. Start_ Value. Numeric
      * urn:x-oca:ocpp:uid:1:569246
@@ -54,13 +54,13 @@ public class ConsumptionCost implements Validatable {
     @JsonProperty("cost")
     private List<CostType> costType;
 
-    public ConsumptionCost(Double startValue, List<CostType> costType) {
+    public ConsumptionCostType(Double startValue, List<CostType> costType) {
         this.startValue = startValue;
         this.costType = costType;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setStartValue(Double startValue) {

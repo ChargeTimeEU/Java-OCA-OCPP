@@ -7,7 +7,6 @@ import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -27,7 +26,7 @@ import lombok.Getter;
 })
 @Getter
 @EqualsAndHashCode
-public class SignedMeterValue implements Validatable {
+public class SignedMeterValueType implements Validatable {
 
     private transient Validator signedMeterDataValidator =
             new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string2500()).build();
@@ -46,7 +45,7 @@ public class SignedMeterValue implements Validatable {
      *
      */
     @JsonProperty("customData")
-    public CustomData customData;
+    public CustomDataType customDataType;
     /**
      * Base64 encoded, contains the signed data which might contain more then just the meter value. It can contain information like timestamps, reference to a customer etc.
      *
@@ -80,7 +79,7 @@ public class SignedMeterValue implements Validatable {
     @JsonProperty("publicKey")
     public String publicKey;
 
-    public SignedMeterValue(String signedMeterData, String signingMethod, String encodingMethod, String publicKey) {
+    public SignedMeterValueType(String signedMeterData, String signingMethod, String encodingMethod, String publicKey) {
         signedMeterDataValidator.validate(signedMeterData);
         signingMethodValidator.validate(signingMethod);
         encodingMethodValidator.validate(encodingMethod);
@@ -91,8 +90,8 @@ public class SignedMeterValue implements Validatable {
         this.publicKey = publicKey;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setSignedMeterData(String signedMeterData) {

@@ -29,7 +29,7 @@ import java.util.List;
 })
 @Getter
 @EqualsAndHashCode
-public class SalesTariff implements Validatable {
+public class SalesTariffType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();
 
@@ -38,7 +38,7 @@ public class SalesTariff implements Validatable {
      *
      */
     @JsonProperty("customData")
-    private CustomData customData;
+    private CustomDataType customDataType;
     /**
      * Identified_ Object. MRID. Numeric_ Identifier
      * urn:x-enexis:ecdm:uid:1:569198
@@ -75,13 +75,13 @@ public class SalesTariff implements Validatable {
     @JsonProperty("salesTariffEntry")
     private List<SalesTariffEntryType> salesTariffEntryType;
 
-    public SalesTariff(Integer id, List<SalesTariffEntryType> salesTariffEntryType) {
+    public SalesTariffType(Integer id, List<SalesTariffEntryType> salesTariffEntryType) {
         this.id = id;
         this.salesTariffEntryType = salesTariffEntryType;
     }
 
-    public void setCustomData(CustomData customData) {
-        this.customData = customData;
+    public void setCustomDataType(CustomDataType customDataType) {
+        this.customDataType = customDataType;
     }
 
     public void setId(Integer id) {
