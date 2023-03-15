@@ -30,16 +30,16 @@ import lombok.Getter;
 public class SignedMeterValue implements Validatable {
 
     private transient Validator signedMeterDataValidator =
-            new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string2500()).build();
+            new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string2500()).build();
 
     private transient Validator signingMethodValidator =
-            new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string50()).build();
+            new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string50()).build();
 
     private transient Validator encodingMethodValidator =
-            new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string50()).build();
+            new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string50()).build();
 
     private transient Validator publicKeyValidator =
-            new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string2500()).build();
+            new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string2500()).build();
 
     /**
      * This class does not get 'AdditionalProperties = false' in the schema generation, so it can be extended with arbitrary JSON properties to allow adding custom data.
