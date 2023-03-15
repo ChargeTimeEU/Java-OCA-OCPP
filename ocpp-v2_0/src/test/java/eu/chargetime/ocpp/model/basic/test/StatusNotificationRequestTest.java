@@ -27,7 +27,7 @@ package eu.chargetime.ocpp.model.basic.test;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.request.StatusNotificationRequest;
-import eu.chargetime.ocpp.model.types.ConnectorStatusEnumType;
+import eu.chargetime.ocpp.model.dataTypes.enums.ConnectorStatusEnumType;
 import java.time.ZonedDateTime;
 import org.junit.Assert;
 import org.junit.Test;

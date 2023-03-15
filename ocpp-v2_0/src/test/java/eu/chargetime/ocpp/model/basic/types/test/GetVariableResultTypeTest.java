@@ -28,10 +28,10 @@ package eu.chargetime.ocpp.model.basic.types.test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import eu.chargetime.ocpp.model.types.ComponentType;
-import eu.chargetime.ocpp.model.types.GetVariableResultType;
-import eu.chargetime.ocpp.model.types.GetVariableStatusEnumType;
-import eu.chargetime.ocpp.model.types.VariableType;
+import eu.chargetime.ocpp.model.dataTypes.ComponentType;
+import eu.chargetime.ocpp.model.dataTypes.GetVariableResultType;
+import eu.chargetime.ocpp.model.dataTypes.enums.GetVariableStatusEnumType;
+import eu.chargetime.ocpp.model.dataTypes.VariableType;
 import org.junit.Assert;
 import org.junit.Test;
 

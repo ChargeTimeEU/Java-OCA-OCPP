@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.request.SetVariablesRequest;
-import eu.chargetime.ocpp.model.types.SetVariableDataType;
+import eu.chargetime.ocpp.model.dataTypes.SetVariableDataType;
 import org.junit.Assert;
 import org.junit.Test;
 

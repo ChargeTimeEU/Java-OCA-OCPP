@@ -29,9 +29,9 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.dataTypes.enums.BootReasonEnumType;
 import eu.chargetime.ocpp.model.request.BootNotificationRequest;
-import eu.chargetime.ocpp.model.types.BootReasonEnumType;
-import eu.chargetime.ocpp.model.types.ChargingStationType;
+import eu.chargetime.ocpp.model.dataTypes.ChargingStationType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -64,7 +64,7 @@ public class BootNotificationRequestTest {
   public void validate_reasonAndChargingStationSet_returnsTrue() {
     boolean expected = true;
     BootNotificationRequest sut = createSut();
-    sut.setReason(BootReasonEnumType.ApplicationReset);
+    sut.setReason(BootReasonEnumType.APPLICATION_RESET);
     when(chargingStationStub.validate()).thenReturn(true);
     sut.setChargingStation(chargingStationStub);
 
