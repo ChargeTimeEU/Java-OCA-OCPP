@@ -1,0 +1,78 @@
+package eu.chargetime.ocpp.model.dataTypes;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import eu.chargetime.ocpp.model.Validatable;
+import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
+import eu.chargetime.ocpp.model.validation.Validator;
+import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
+import lombok.Getter;
+
+
+/**
+ * Element providing more information about the status.
+ *
+ *
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+        "customData",
+        "reasonCode",
+        "additionalInfo"
+})
+@Getter
+public class StatusInfoType implements Validatable {
+
+    private transient Validator reasonCodeValidator =
+            new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string20()).build();
+
+    private transient Validator additionalInfoValidator =
+            new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string512()).build();
+
+    /**
+     * This class does not get 'AdditionalProperties = false' in the schema generation, so it can be extended with arbitrary JSON properties to allow adding custom data.
+     *
+     */
+    @JsonProperty("customData")
+    private CustomData customData;
+    /**
+     * A predefined code for the reason why the status is returned in this response. The string is case-insensitive.
+     *
+     * (Required)
+     *
+     */
+    @JsonProperty("reasonCode")
+    private String reasonCode;
+    /**
+     * Additional text to provide detailed information.
+     *
+     *
+     */
+    @JsonProperty("additionalInfo")
+    private String additionalInfo;
+
+    public StatusInfoType(String reasonCode) {
+        reasonCodeValidator.validate(reasonCode);
+        this.reasonCode = reasonCode;
+    }
+
+    public void setCustomData(CustomData customData) {
+        this.customData = customData;
+    }
+
+    public void setReasonCode(String reasonCode) {
+        reasonCodeValidator.validate(reasonCode);
+        this.reasonCode = reasonCode;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        additionalInfoValidator.validate(additionalInfo);
+        this.additionalInfo = additionalInfo;
+    }
+
+    @Override
+    public boolean validate() {
+        return reasonCodeValidator.safeValidate(reasonCode);
+    }
+}
