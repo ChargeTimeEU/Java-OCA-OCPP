@@ -11,6 +11,7 @@ import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ import java.util.List;
 })
 @Getter
 @EqualsAndHashCode
+@ToString
 public class IdTokenType implements Validatable {
 
     private transient Validator idTokenValidator =

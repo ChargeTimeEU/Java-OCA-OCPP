@@ -8,6 +8,7 @@ import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ import java.util.List;
 })
 @Getter
 @EqualsAndHashCode
+@ToString
 public class ConsumptionCostType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();

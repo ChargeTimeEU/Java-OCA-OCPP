@@ -32,11 +32,14 @@ import eu.chargetime.ocpp.model.dataTypes.enums.SetVariableStatusEnumType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+import lombok.Getter;
+
 import java.util.Objects;
 
 /**
  * VariableAttributeType is used by {@link SetVariablesConfirmation}
  */
+@Getter
 public class SetVariableResultType implements Validatable {
   private transient Validator<Object> requiredValidator = new RequiredValidator();
 
@@ -46,30 +49,12 @@ public class SetVariableResultType implements Validatable {
   private VariableType variable;
 
   /**
-   * Type of attribute: Actual, Target, MinSet, MaxSet. Default is Actual when omitted.
-   *
-   * @return AttributeEnumType
-   */
-  public AttributeEnumType getAttributeType() {
-    return attributeType;
-  }
-
-  /**
    * Optional. Type of attribute: Actual, Target, MinSet, MaxSet. Default is Actual when omitted.
    *
    * @param attributeType AttributeEnumType
    */
   public void setAttributeType(AttributeEnumType attributeType) {
     this.attributeType = attributeType;
-  }
-
-  /**
-   * Result status of setting the variable.
-   *
-   * @return SetVariableStatusEnumType
-   */
-  public SetVariableStatusEnumType getAttributeStatus() {
-    return attributeStatus;
   }
 
   /**
@@ -83,15 +68,6 @@ public class SetVariableResultType implements Validatable {
   }
 
   /**
-   * The component for which result is returned.
-   *
-   * @return ComponentType
-   */
-  public ComponentType getComponent() {
-    return component;
-  }
-
-  /**
    * Required. The component for which result is returned.
    *
    * @param component ComponentType
@@ -99,15 +75,6 @@ public class SetVariableResultType implements Validatable {
   public void setComponent(ComponentType component) {
     requiredValidator.validate(component);
     this.component = component;
-  }
-
-  /**
-   * The variable for which the result is returned.
-   *
-   * @return VariableType
-   */
-  public VariableType getVariable() {
-    return variable;
   }
 
   /**

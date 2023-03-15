@@ -30,23 +30,19 @@ import eu.chargetime.ocpp.model.dataTypes.enums.AttributeEnumType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
 import java.util.Objects;
 
+@Getter
 public class GetVariableDataType implements Validatable {
   private transient Validator<Object> requiredValidator = new RequiredValidator();
 
   private AttributeEnumType attributeType;
   private ComponentType component;
   private VariableType variable;
-
-  /**
-   * Attribute type for which value is requested. When absent, default Actual is assumed.
-   *
-   * @return {@link AttributeEnumType}
-   */
-  public AttributeEnumType getAttributeType() {
-    return attributeType;
-  }
 
   /**
    * Optional. Attribute type for which value is requested. When absent, default Actual is assumed.
@@ -58,15 +54,6 @@ public class GetVariableDataType implements Validatable {
   }
 
   /**
-   * Component for which the Variable is requested.
-   *
-   * @return {@link ComponentType}
-   */
-  public ComponentType getComponent() {
-    return component;
-  }
-
-  /**
    * Required. Component for which the Variable is requested.
    *
    * @param component {@link ComponentType}
@@ -74,15 +61,6 @@ public class GetVariableDataType implements Validatable {
   public void setComponent(ComponentType component) {
     requiredValidator.validate(component);
     this.component = component;
-  }
-
-  /**
-   * Variable for which the attribute value is requested.
-   *
-   * @return {@link VariableType}
-   */
-  public VariableType getVariable() {
-    return variable;
   }
 
   /**

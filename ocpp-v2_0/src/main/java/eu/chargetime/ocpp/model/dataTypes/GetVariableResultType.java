@@ -33,8 +33,11 @@ import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+import lombok.Getter;
+
 import java.util.Objects;
 
+@Getter
 public class GetVariableResultType implements Validatable {
   private transient Validator<Object> requiredValidator = new RequiredValidator();
   private transient Validator attributeValueValidator =
@@ -45,15 +48,6 @@ public class GetVariableResultType implements Validatable {
   private String attributeValue;
   private ComponentType component;
   private VariableType variable;
-
-  /**
-   * Result status of getting the variable.
-   *
-   * @return {@link GetVariableStatusEnumType}
-   */
-  public GetVariableStatusEnumType getAttributeStatus() {
-    return attributeStatus;
-  }
 
   /**
    * Required. Result status of getting the variable.
@@ -67,30 +61,12 @@ public class GetVariableResultType implements Validatable {
   }
 
   /**
-   * Attribute type for which value is requested. When absent, default Actual is assumed.
-   *
-   * @return {@link AttributeEnumType}
-   */
-  public AttributeEnumType getAttributeType() {
-    return attributeType;
-  }
-
-  /**
    * Optional. Attribute type for which value is requested. When absent, default Actual is assumed.
    *
    * @param attributeType {@link AttributeEnumType}
    */
   public void setAttributeType(AttributeEnumType attributeType) {
     this.attributeType = attributeType;
-  }
-
-  /**
-   * Value of requested attribute type of componentvariable.
-   *
-   * @return String[0..1000]
-   */
-  public String getAttributeValue() {
-    return attributeValue;
   }
 
   /**
@@ -110,15 +86,6 @@ public class GetVariableResultType implements Validatable {
   }
 
   /**
-   * Component for which the Variable is requested.
-   *
-   * @return {@link ComponentType}
-   */
-  public ComponentType getComponent() {
-    return component;
-  }
-
-  /**
    * Required. Component for which the Variable is requested.
    *
    * @param component {@link ComponentType}
@@ -126,15 +93,6 @@ public class GetVariableResultType implements Validatable {
   public void setComponent(ComponentType component) {
     requiredValidator.validate(component);
     this.component = component;
-  }
-
-  /**
-   * Variable for which the attribute value is requested.
-   *
-   * @return {@link VariableType}
-   */
-  public VariableType getVariable() {
-    return variable;
   }
 
   /**

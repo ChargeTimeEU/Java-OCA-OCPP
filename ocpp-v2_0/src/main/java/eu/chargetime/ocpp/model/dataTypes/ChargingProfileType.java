@@ -11,7 +11,9 @@ import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Date;
 import java.util.List;
@@ -38,6 +40,8 @@ import java.util.List;
         "transactionId"
 })
 @Getter
+@ToString
+@EqualsAndHashCode
 public class ChargingProfileType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();

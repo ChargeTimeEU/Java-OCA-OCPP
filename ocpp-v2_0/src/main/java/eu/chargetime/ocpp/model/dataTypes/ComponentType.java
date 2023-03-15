@@ -30,9 +30,14 @@ import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
 import java.util.Objects;
 
 /** A physical or logical component. */
+@Getter
 public class ComponentType implements Validatable {
   private transient Validator nameValidator =
       new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string50()).build();
@@ -66,16 +71,6 @@ public class ComponentType implements Validatable {
   }
 
   /**
-   * Name of instance in case the component exists as multiple instances. Case Insensitive. strongly
-   * advised to use Camel Case.
-   *
-   * @return string[0..50]
-   */
-  public String getInstance() {
-    return instance;
-  }
-
-  /**
    * Optional. Name of instance in case the component exists as multiple instances. Case
    * Insensitive. strongly advised to use Camel Case.
    *
@@ -85,16 +80,6 @@ public class ComponentType implements Validatable {
     instanceValidator.validate(instance);
 
     this.instance = instance;
-  }
-
-  /**
-   * Specifies the EVSE when component is located at EVSE level, also specifies the connector when
-   * component is located at Connector level.
-   *
-   * @return {@link EVSEType}
-   */
-  public EVSEType getEvse() {
-    return evse;
   }
 
   /**

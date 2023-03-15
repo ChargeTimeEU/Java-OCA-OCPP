@@ -32,8 +32,11 @@ import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+import lombok.Getter;
+
 import java.util.Objects;
 
+@Getter
 public class SetVariableDataType implements Validatable {
   private transient Validator<Object> requiredValidator = new RequiredValidator();
   private transient Validator attributeValueValidator =
@@ -45,30 +48,12 @@ public class SetVariableDataType implements Validatable {
   private VariableType variable;
 
   /**
-   * Type of attribute: Actual, Target, MinSet, MaxSet. Default is Actual when omitted.
-   *
-   * @return {@link AttributeEnumType}
-   */
-  public AttributeEnumType getAttributeType() {
-    return attributeType;
-  }
-
-  /**
    * Optional. Type of attribute: Actual, Target, MinSet, MaxSet. Default is Actual when omitted.
    *
    * @param attributeType {@link AttributeEnumType}
    */
   public void setAttributeType(AttributeEnumType attributeType) {
     this.attributeType = attributeType;
-  }
-
-  /**
-   * Value to be assigned to attribute of variable.
-   *
-   * @return string[0..1000]
-   */
-  public String getAttributeValue() {
-    return attributeValue;
   }
 
   /**
@@ -84,15 +69,6 @@ public class SetVariableDataType implements Validatable {
   }
 
   /**
-   * The component for which the variable data is set.
-   *
-   * @return {@link ComponentType}
-   */
-  public ComponentType getComponent() {
-    return component;
-  }
-
-  /**
    * Required. The component for which the variable data is set.
    *
    * @param component {@link ComponentType}
@@ -101,15 +77,6 @@ public class SetVariableDataType implements Validatable {
     requiredValidator.validate(component);
 
     this.component = component;
-  }
-
-  /**
-   * Specifies the that needs to be set.
-   *
-   * @return {@link VariableType}
-   */
-  public VariableType getVariable() {
-    return variable;
   }
 
   /**

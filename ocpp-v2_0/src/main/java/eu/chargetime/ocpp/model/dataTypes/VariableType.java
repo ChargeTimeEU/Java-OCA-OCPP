@@ -30,9 +30,12 @@ import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+import lombok.Getter;
+
 import java.util.Objects;
 
 /** Reference key to a component-variable. */
+@Getter
 public class VariableType implements Validatable {
   private transient Validator nameValidator =
       new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string50()).build();
@@ -43,16 +46,6 @@ public class VariableType implements Validatable {
   private String instance;
 
   /**
-   * Name of the variable. Name should be taken from the list of standardized variable names
-   * whenever possible. Case Insensitive. strongly advised to use Camel Case.
-   *
-   * @return string[0..50]
-   */
-  public String getName() {
-    return name;
-  }
-
-  /**
    * Required. Name of the variable. Name should be taken from the list of standardized variable
    * names whenever possible. Case Insensitive. strongly advised to use Camel Case.
    *
@@ -61,16 +54,6 @@ public class VariableType implements Validatable {
   public void setName(String name) {
     nameValidator.validate(name);
     this.name = name;
-  }
-
-  /**
-   * Name of instance in case the variable exists as multiple instances. Case Insensitive. strongly
-   * advised to use Camel Case.
-   *
-   * @return string[0..50]
-   */
-  public String getInstance() {
-    return instance;
   }
 
   /**

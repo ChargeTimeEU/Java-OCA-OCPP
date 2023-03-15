@@ -7,7 +7,9 @@ import eu.chargetime.ocpp.model.Validatable;
 import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 
 /**
@@ -22,6 +24,8 @@ import lombok.Getter;
         "additionalInfo"
 })
 @Getter
+@ToString
+@EqualsAndHashCode
 public class StatusInfoType implements Validatable {
 
     private transient Validator reasonCodeValidator =
