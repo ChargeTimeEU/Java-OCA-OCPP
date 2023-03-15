@@ -119,7 +119,7 @@ public class IdTokenInfo implements Validatable {
      *
      */
     @JsonProperty("personalMessage")
-    public MessageContent personalMessage;
+    public MessageContentType personalMessage;
 
     public IdTokenInfo(AuthorizationStatusEnumType status) {
         requiredValidator.validate(status);
@@ -161,7 +161,7 @@ public class IdTokenInfo implements Validatable {
         this.language2 = language2;
     }
 
-    public void setPersonalMessage(MessageContent personalMessage) {
+    public void setPersonalMessage(MessageContentType personalMessage) {
         this.personalMessage = personalMessage;
     }
 
