@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.model.dataTypes.CustomDataType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -14,6 +16,8 @@ import lombok.Getter;
         "reservationId"
 })
 @Getter
+@ToString
+@EqualsAndHashCode
 public class CancelReservationRequest extends RequestWithId {
 
     private transient RequiredValidator requiredValidator = new RequiredValidator();
