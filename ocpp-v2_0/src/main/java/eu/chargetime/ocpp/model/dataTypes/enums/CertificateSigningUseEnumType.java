@@ -3,9 +3,6 @@ package eu.chargetime.ocpp.model.dataTypes.enums;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static eu.chargetime.ocpp.util.EnumUtil.findByField;
 
 
