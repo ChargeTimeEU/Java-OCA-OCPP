@@ -25,6 +25,7 @@ package eu.chargetime.ocpp.model.request;
    SOFTWARE.
 */
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.model.dataTypes.ChargingStationType;
 import eu.chargetime.ocpp.model.dataTypes.enums.BootReasonEnumType;
@@ -34,10 +35,11 @@ import lombok.Getter;
 
 import java.util.Objects;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 /** Sent by the Charging Station to the CSMS. */
 public class BootNotificationRequest extends RequestWithId {
-  private transient RequiredValidator validator = new RequiredValidator();
+  private transient RequiredValidator requiredValidator = new RequiredValidator();
 
   private BootReasonEnumType reason;
   private ChargingStationType chargingStation;
@@ -50,7 +52,7 @@ public class BootNotificationRequest extends RequestWithId {
    * @param reason {@link BootReasonEnumType}
    */
   public void setReason(BootReasonEnumType reason) {
-    validator.validate(reason);
+    requiredValidator.validate(reason);
     this.reason = reason;
   }
 
@@ -65,8 +67,8 @@ public class BootNotificationRequest extends RequestWithId {
 
   @Override
   public boolean validate() {
-    return validator.safeValidate(reason)
-        && validator.safeValidate(chargingStation)
+    return requiredValidator.safeValidate(reason)
+        && requiredValidator.safeValidate(chargingStation)
         && chargingStation.validate();
   }
 
