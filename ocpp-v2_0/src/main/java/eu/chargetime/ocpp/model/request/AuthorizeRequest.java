@@ -28,7 +28,7 @@ public class AuthorizeRequest extends RequestWithId {
     private transient Validator certificateValidator =
             new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string5500()).build();
 
-    private transient RequiredValidator validator = new RequiredValidator();
+    private transient RequiredValidator requiredValidator = new RequiredValidator();
 
     /**
      * This class does not get 'AdditionalProperties = false' in the schema generation, so it can be extended with arbitrary JSON properties to allow adding custom data.
@@ -79,6 +79,6 @@ public class AuthorizeRequest extends RequestWithId {
 
     @Override
     public boolean validate() {
-        return validator.safeValidate(idTokenType);
+        return requiredValidator.safeValidate(idTokenType);
     }
 }
