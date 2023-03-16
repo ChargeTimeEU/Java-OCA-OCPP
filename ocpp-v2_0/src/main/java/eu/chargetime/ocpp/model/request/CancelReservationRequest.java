@@ -17,7 +17,7 @@ import lombok.ToString;
 })
 @Getter
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 public class CancelReservationRequest extends RequestWithId {
 
     private transient RequiredValidator requiredValidator = new RequiredValidator();
