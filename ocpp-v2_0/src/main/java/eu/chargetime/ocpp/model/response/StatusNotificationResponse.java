@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.confirmation;
+package eu.chargetime.ocpp.model.response;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -30,7 +30,7 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 
-public class StatusNotificationConfirmation extends Confirmation {
+public class StatusNotificationResponse extends Confirmation {
 
   @Override
   public boolean validate() {
@@ -44,7 +44,7 @@ public class StatusNotificationConfirmation extends Confirmation {
 
   @Override
   public int hashCode() {
-    return Objects.hash(StatusNotificationConfirmation.class);
+    return Objects.hash(StatusNotificationResponse.class);
   }
 
   @Override

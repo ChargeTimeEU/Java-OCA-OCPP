@@ -29,7 +29,7 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.features.basic.handlers.IClientGetVariablesRequestHandler;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.confirmation.GetVariablesConfirmation;
+import eu.chargetime.ocpp.model.response.GetVariablesResponse;
 import eu.chargetime.ocpp.model.request.GetVariablesRequest;
 import java.util.UUID;
 
@@ -53,7 +53,7 @@ public class GetVariablesFeature implements Feature {
 
   @Override
   public Class<? extends Confirmation> getConfirmationType() {
-    return GetVariablesConfirmation.class;
+    return GetVariablesResponse.class;
   }
 
   @Override

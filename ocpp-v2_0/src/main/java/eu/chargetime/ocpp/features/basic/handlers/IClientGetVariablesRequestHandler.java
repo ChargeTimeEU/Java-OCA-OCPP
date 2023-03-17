@@ -25,9 +25,9 @@ package eu.chargetime.ocpp.features.basic.handlers;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.confirmation.GetVariablesConfirmation;
+import eu.chargetime.ocpp.model.response.GetVariablesResponse;
 import eu.chargetime.ocpp.model.request.GetVariablesRequest;
 
 public interface IClientGetVariablesRequestHandler {
-  GetVariablesConfirmation handleGetVariablesRequest(GetVariablesRequest request);
+  GetVariablesResponse handleGetVariablesRequest(GetVariablesRequest request);
 }

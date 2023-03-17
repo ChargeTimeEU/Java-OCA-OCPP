@@ -29,7 +29,7 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.features.basic.handlers.IServerBootNotificationRequestHandler;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.confirmation.BootNotificationConfirmation;
+import eu.chargetime.ocpp.model.response.BootNotificationResponse;
 import eu.chargetime.ocpp.model.request.BootNotificationRequest;
 import java.util.UUID;
 
@@ -53,7 +53,7 @@ public class BootNotificationFeature implements Feature {
 
   @Override
   public Class<? extends Confirmation> getConfirmationType() {
-    return BootNotificationConfirmation.class;
+    return BootNotificationResponse.class;
   }
 
   @Override

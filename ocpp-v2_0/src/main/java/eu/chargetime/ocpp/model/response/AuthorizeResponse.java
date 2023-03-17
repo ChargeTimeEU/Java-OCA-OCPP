@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.confirmation;
+package eu.chargetime.ocpp.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,7 +21,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = false)
-public class AuthorizeConfirmation extends Confirmation {
+public class AuthorizeResponse extends Confirmation {
 
     private transient RequiredValidator requiredValidator = new RequiredValidator();
 
@@ -52,7 +52,7 @@ public class AuthorizeConfirmation extends Confirmation {
     @JsonProperty("certificateStatus")
     public AuthorizeCertificateStatusEnumType certificateStatus;
 
-    public AuthorizeConfirmation(IdTokenInfoType idTokenInfo) {
+    public AuthorizeResponse(IdTokenInfoType idTokenInfo) {
         requiredValidator.validate(idTokenInfo);
         this.idTokenInfo = idTokenInfo;
     }

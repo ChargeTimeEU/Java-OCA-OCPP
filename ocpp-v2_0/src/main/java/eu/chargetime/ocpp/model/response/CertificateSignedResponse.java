@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.confirmation;
+package eu.chargetime.ocpp.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.dataTypes.CustomDataType;
 import eu.chargetime.ocpp.model.dataTypes.StatusInfoType;
-import eu.chargetime.ocpp.model.dataTypes.enums.CancelReservationStatusEnumType;
+import eu.chargetime.ocpp.model.dataTypes.enums.CertificateSignedStatusEnumType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,8 +20,8 @@ import lombok.ToString;
 })
 @Getter
 @ToString
-@EqualsAndHashCode
-public class CancelReservationConfirmation extends Confirmation {
+@EqualsAndHashCode(callSuper = false)
+public class CertificateSignedResponse extends Confirmation {
 
     private transient RequiredValidator requiredValidator = new RequiredValidator();
 
@@ -32,13 +32,13 @@ public class CancelReservationConfirmation extends Confirmation {
     @JsonProperty("customData")
     public CustomDataType customData;
     /**
-     * This indicates the success or failure of the canceling of a reservation by CSMS.
+     * Returns whether certificate signing has been accepted, otherwise rejected.
      *
      * (Required)
      *
      */
     @JsonProperty("status")
-    public CancelReservationStatusEnumType status;
+    public CertificateSignedStatusEnumType status;
     /**
      * Element providing more information about the status.
      *
@@ -47,7 +47,8 @@ public class CancelReservationConfirmation extends Confirmation {
     @JsonProperty("statusInfo")
     public StatusInfoType statusInfo;
 
-    public CancelReservationConfirmation(CancelReservationStatusEnumType status) {
+    public CertificateSignedResponse(CertificateSignedStatusEnumType status) {
+        requiredValidator.validate(status);
         this.status = status;
     }
 
@@ -55,7 +56,7 @@ public class CancelReservationConfirmation extends Confirmation {
         this.customData = customData;
     }
 
-    public void setStatus(CancelReservationStatusEnumType status) {
+    public void setStatus(CertificateSignedStatusEnumType status) {
         requiredValidator.validate(status);
         this.status = status;
     }

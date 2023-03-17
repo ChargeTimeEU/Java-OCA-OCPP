@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.confirmation;
+package eu.chargetime.ocpp.model.response;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -36,7 +36,7 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /** sent by the CSMS to the Charging Station in response to a {@link BootNotificationRequest}. */
-public class BootNotificationConfirmation extends Confirmation {
+public class BootNotificationResponse extends Confirmation {
   private transient RequiredValidator validator = new RequiredValidator();
 
   private ZonedDateTime currentTime;
@@ -112,7 +112,7 @@ public class BootNotificationConfirmation extends Confirmation {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    BootNotificationConfirmation that = (BootNotificationConfirmation) o;
+    BootNotificationResponse that = (BootNotificationResponse) o;
     return currentTime.compareTo(that.currentTime) == 0
         && Objects.equals(interval, that.interval)
         && Objects.equals(status, that.status);

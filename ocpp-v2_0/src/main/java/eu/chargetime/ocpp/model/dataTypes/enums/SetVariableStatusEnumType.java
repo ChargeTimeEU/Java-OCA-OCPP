@@ -27,13 +27,13 @@ package eu.chargetime.ocpp.model.dataTypes.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import eu.chargetime.ocpp.model.confirmation.SetVariablesConfirmation;
+import eu.chargetime.ocpp.model.response.SetVariablesResponse;
 
 import static eu.chargetime.ocpp.util.EnumUtil.findByField;
 
 /**
  * SetVariableStatusEnumType is used by {@link
- * SetVariablesConfirmation}
+ * SetVariablesResponse}
  */
 public enum SetVariableStatusEnumType {
 

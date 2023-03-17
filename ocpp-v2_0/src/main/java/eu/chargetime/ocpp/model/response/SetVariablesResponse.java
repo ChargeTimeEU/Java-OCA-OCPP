@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.confirmation;
+package eu.chargetime.ocpp.model.response;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -27,56 +27,64 @@ package eu.chargetime.ocpp.model.confirmation;
 */
 
 import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.dataTypes.GetVariableResultType;
+import eu.chargetime.ocpp.model.dataTypes.SetVariableResultType;
+import eu.chargetime.ocpp.model.validation.RequiredValidator;
+import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class GetVariablesConfirmation extends Confirmation {
+/**
+ * This contains the field definition of the SetVariablesResponse PDU sent by the Charging Station
+ * to the CSMS in response to a SetVariablesRequest.
+ */
+public class SetVariablesResponse extends Confirmation {
+  private transient Validator<Object> requiredValidator = new RequiredValidator();
 
-  private GetVariableResultType[] getVariableResult;
+  private SetVariableResultType[] setVariableResult;
 
   /**
-   * List of requested variables and their values.
+   * List of result statuses per Component-Variable.
    *
-   * @return {@link GetVariableResultType}
+   * @return SetVariableResultType[]
    */
-  public GetVariableResultType[] getGetVariableResult() {
-    return getVariableResult;
+  public SetVariableResultType[] getSetVariableResult() {
+    return setVariableResult;
   }
 
   /**
-   * Required. List of requested variables and their values.
+   * Required. List of result statuses per Component-Variable.
    *
-   * @param getVariableResult {@link GetVariableResultType}
+   * @param setVariableResult SetVariableResultType[]
    */
-  public void setGetVariableResult(GetVariableResultType[] getVariableResult) {
-    this.getVariableResult = getVariableResult;
+  public void setSetVariableResult(SetVariableResultType[] setVariableResult) {
+    requiredValidator.validate(setVariableResult);
+    this.setVariableResult = setVariableResult;
   }
 
   @Override
   public boolean validate() {
-    return getVariableResult != null
-        && getVariableResult.length > 0
-        && Arrays.stream(getVariableResult)
-            .allMatch(getVariableResult -> getVariableResult.validate());
+    return setVariableResult != null
+        && setVariableResult.length > 0
+        && Arrays.stream(setVariableResult)
+            .allMatch(setVariableResult -> setVariableResult.validate());
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    GetVariablesConfirmation that = (GetVariablesConfirmation) o;
-    return Arrays.equals(getVariableResult, that.getVariableResult);
+    SetVariablesResponse that = (SetVariablesResponse) o;
+    return Arrays.equals(setVariableResult, that.setVariableResult);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getVariableResult);
+    return Objects.hash(setVariableResult);
   }
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("getVariableResult", getVariableResult).toString();
+    return MoreObjects.toStringHelper(this).add("setVariableResult", setVariableResult).toString();
   }
 }

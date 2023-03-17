@@ -26,7 +26,7 @@ package eu.chargetime.ocpp.model.dataTypes;
 */
 
 import eu.chargetime.ocpp.model.Validatable;
-import eu.chargetime.ocpp.model.confirmation.SetVariablesConfirmation;
+import eu.chargetime.ocpp.model.response.SetVariablesResponse;
 import eu.chargetime.ocpp.model.dataTypes.enums.AttributeEnumType;
 import eu.chargetime.ocpp.model.dataTypes.enums.SetVariableStatusEnumType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
@@ -37,7 +37,7 @@ import lombok.Getter;
 import java.util.Objects;
 
 /**
- * VariableAttributeType is used by {@link SetVariablesConfirmation}
+ * VariableAttributeType is used by {@link SetVariablesResponse}
  */
 @Getter
 public class SetVariableResultType implements Validatable {

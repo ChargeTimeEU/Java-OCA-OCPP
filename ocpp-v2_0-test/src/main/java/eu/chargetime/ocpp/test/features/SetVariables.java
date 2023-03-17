@@ -29,7 +29,7 @@ import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 
 import eu.chargetime.ocpp.features.basic.SetVariablesFeature;
 import eu.chargetime.ocpp.features.basic.handlers.IClientSetVariablesRequestHandler;
-import eu.chargetime.ocpp.model.confirmation.SetVariablesConfirmation;
+import eu.chargetime.ocpp.model.response.SetVariablesResponse;
 import eu.chargetime.ocpp.model.dataTypes.*;
 import eu.chargetime.ocpp.model.dataTypes.enums.SetVariableStatusEnumType;
 import eu.chargetime.ocpp.model.request.SetVariablesRequest;
@@ -37,14 +37,14 @@ import eu.chargetime.ocpp.model.basic.types.*;
 
 public class SetVariables implements IClientSetVariablesRequestHandler {
   private SetVariablesFeature feature;
-  private SetVariablesConfirmation confirmation;
+  private SetVariablesResponse confirmation;
 
   public SetVariables() {
     feature = new SetVariablesFeature(this);
     confirmation = createConfirmation();
   }
 
-  private SetVariablesConfirmation createConfirmation() {
+  private SetVariablesResponse createConfirmation() {
     VariableType variableType = new VariableType();
     variableType.setName("A name");
 
@@ -56,12 +56,12 @@ public class SetVariables implements IClientSetVariablesRequestHandler {
     setVariableResultType.setComponent(componentType);
     setVariableResultType.setVariable(variableType);
 
-    SetVariablesConfirmation confirmation = new SetVariablesConfirmation();
+    SetVariablesResponse confirmation = new SetVariablesResponse();
     confirmation.setSetVariableResult(aList(setVariableResultType));
     return confirmation;
   }
 
-  public SetVariablesConfirmation getConfirmation() {
+  public SetVariablesResponse getConfirmation() {
     return confirmation;
   }
 
@@ -70,7 +70,7 @@ public class SetVariables implements IClientSetVariablesRequestHandler {
   }
 
   @Override
-  public SetVariablesConfirmation handleSetVariablesRequest(SetVariablesRequest request) {
+  public SetVariablesResponse handleSetVariablesRequest(SetVariablesRequest request) {
     return confirmation;
   }
 

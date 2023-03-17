@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.confirmation;
+package eu.chargetime.ocpp.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,11 +6,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.dataTypes.CustomDataType;
 import eu.chargetime.ocpp.model.dataTypes.StatusInfoType;
-import eu.chargetime.ocpp.model.dataTypes.enums.CertificateSignedStatusEnumType;
+import eu.chargetime.ocpp.model.dataTypes.enums.ChangeAvailabilityStatusEnumType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -18,10 +15,7 @@ import lombok.ToString;
         "status",
         "statusInfo"
 })
-@Getter
-@ToString
-@EqualsAndHashCode(callSuper = false)
-public class CertificateSignedConfirmation extends Confirmation {
+public class ChangeAvailabilityResponse extends Confirmation {
 
     private transient RequiredValidator requiredValidator = new RequiredValidator();
 
@@ -32,13 +26,13 @@ public class CertificateSignedConfirmation extends Confirmation {
     @JsonProperty("customData")
     public CustomDataType customData;
     /**
-     * Returns whether certificate signing has been accepted, otherwise rejected.
+     * This indicates whether the Charging Station is able to perform the availability change.
      *
      * (Required)
      *
      */
     @JsonProperty("status")
-    public CertificateSignedStatusEnumType status;
+    public ChangeAvailabilityStatusEnumType status;
     /**
      * Element providing more information about the status.
      *
@@ -47,7 +41,7 @@ public class CertificateSignedConfirmation extends Confirmation {
     @JsonProperty("statusInfo")
     public StatusInfoType statusInfo;
 
-    public CertificateSignedConfirmation(CertificateSignedStatusEnumType status) {
+    public ChangeAvailabilityResponse(ChangeAvailabilityStatusEnumType status) {
         requiredValidator.validate(status);
         this.status = status;
     }
@@ -56,7 +50,7 @@ public class CertificateSignedConfirmation extends Confirmation {
         this.customData = customData;
     }
 
-    public void setStatus(CertificateSignedStatusEnumType status) {
+    public void setStatus(ChangeAvailabilityStatusEnumType status) {
         requiredValidator.validate(status);
         this.status = status;
     }

@@ -29,7 +29,7 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.features.basic.handlers.IServerStatusNotificationRequestHandler;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.confirmation.StatusNotificationConfirmation;
+import eu.chargetime.ocpp.model.response.StatusNotificationResponse;
 import eu.chargetime.ocpp.model.request.StatusNotificationRequest;
 import java.util.UUID;
 
@@ -54,7 +54,7 @@ public class StatusNotificationFeature implements Feature {
 
   @Override
   public Class<? extends Confirmation> getConfirmationType() {
-    return StatusNotificationConfirmation.class;
+    return StatusNotificationResponse.class;
   }
 
   @Override

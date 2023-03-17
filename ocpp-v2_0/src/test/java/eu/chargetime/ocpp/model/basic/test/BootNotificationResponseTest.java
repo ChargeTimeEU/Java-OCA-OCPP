@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.basic;
+package eu.chargetime.ocpp.model.basic.test;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -25,45 +25,23 @@ package eu.chargetime.ocpp.model.basic;
    SOFTWARE.
 */
 
-import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import eu.chargetime.ocpp.PropertyConstraintException;
-import eu.chargetime.ocpp.model.confirmation.SetVariablesConfirmation;
-import eu.chargetime.ocpp.model.dataTypes.SetVariableResultType;
-import org.junit.Assert;
+import eu.chargetime.ocpp.model.response.BootNotificationResponse;
 import org.junit.Test;
 
-public class SetVariablesConfirmationTest {
+public class BootNotificationResponseTest {
 
   @Test(expected = PropertyConstraintException.class)
-  public void setSetVariableResult_Null_ThrowsPropertyConstraintException() {
-    SetVariablesConfirmation sut = new SetVariablesConfirmation();
+  public void setCurrentTime_null_throwsPropertyConstraintException() {
+    BootNotificationResponse sut = new BootNotificationResponse();
 
-    sut.setSetVariableResult(null);
+    sut.setCurrentTime(null);
   }
 
-  @Test
-  public void validate_default_returnsFalse() {
-    boolean expected = false;
-    SetVariablesConfirmation sut = new SetVariablesConfirmation();
+  @Test(expected = PropertyConstraintException.class)
+  public void setStatus_null_throwsPropertyConstraintException() {
+    BootNotificationResponse sut = new BootNotificationResponse();
 
-    boolean result = sut.validate();
-
-    Assert.assertEquals(expected, result);
-  }
-
-  @Test
-  public void validate_SetVariableResultIsSet_returnsTrue() {
-    boolean expected = true;
-    SetVariableResultType setVariableResultTypeStub = mock(SetVariableResultType.class);
-    when(setVariableResultTypeStub.validate()).thenReturn(true);
-    SetVariablesConfirmation sut = new SetVariablesConfirmation();
-    sut.setSetVariableResult(aList(setVariableResultTypeStub));
-
-    boolean result = sut.validate();
-
-    Assert.assertEquals(expected, result);
+    sut.setStatus(null);
   }
 }

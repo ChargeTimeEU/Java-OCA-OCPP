@@ -28,7 +28,7 @@ package eu.chargetime.ocpp.test.features;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.features.basic.StatusNotificationFeature;
 import eu.chargetime.ocpp.features.basic.handlers.IServerStatusNotificationRequestHandler;
-import eu.chargetime.ocpp.model.confirmation.StatusNotificationConfirmation;
+import eu.chargetime.ocpp.model.response.StatusNotificationResponse;
 import eu.chargetime.ocpp.model.request.StatusNotificationRequest;
 import eu.chargetime.ocpp.model.dataTypes.enums.ConnectorStatusEnumType;
 import java.time.ZonedDateTime;
@@ -37,21 +37,21 @@ import java.util.UUID;
 public class StatusNotification implements IServerStatusNotificationRequestHandler {
 
   private StatusNotificationFeature feature;
-  private StatusNotificationConfirmation confirmation;
+  private StatusNotificationResponse confirmation;
 
   public StatusNotification() {
     feature = new StatusNotificationFeature(this);
 
-    confirmation = new StatusNotificationConfirmation();
+    confirmation = new StatusNotificationResponse();
   }
 
   @Override
-  public StatusNotificationConfirmation handleStatusNotificationRequest(
+  public StatusNotificationResponse handleStatusNotificationRequest(
       UUID sessionIndex, StatusNotificationRequest request) {
     return confirmation;
   }
 
-  public StatusNotificationConfirmation getConfirmation() {
+  public StatusNotificationResponse getConfirmation() {
     return confirmation;
   }
 

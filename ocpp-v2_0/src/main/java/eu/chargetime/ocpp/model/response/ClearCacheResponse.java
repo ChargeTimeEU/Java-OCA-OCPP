@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.model.confirmation;
+package eu.chargetime.ocpp.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,7 +16,7 @@ import eu.chargetime.ocpp.model.validation.Validator;
         "status",
         "statusInfo"
 })
-public class ClearCacheConfirmation extends Confirmation {
+public class ClearCacheResponse extends Confirmation {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();
 
@@ -42,7 +42,7 @@ public class ClearCacheConfirmation extends Confirmation {
     @JsonProperty("statusInfo")
     public StatusInfoType statusInfo;
 
-    public ClearCacheConfirmation(ClearCacheStatusEnumType status) {
+    public ClearCacheResponse(ClearCacheStatusEnumType status) {
         requiredValidator.validate(status);
         this.status = status;
     }

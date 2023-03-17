@@ -25,12 +25,12 @@ package eu.chargetime.ocpp.features.basic.handlers;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.confirmation.StatusNotificationConfirmation;
+import eu.chargetime.ocpp.model.response.StatusNotificationResponse;
 import eu.chargetime.ocpp.model.request.StatusNotificationRequest;
 import java.util.UUID;
 
 /** Central system handler of {@link StatusNotificationRequest}s. */
 public interface IServerStatusNotificationRequestHandler {
-  StatusNotificationConfirmation handleStatusNotificationRequest(
+  StatusNotificationResponse handleStatusNotificationRequest(
       UUID sessionIndex, StatusNotificationRequest request);
 }
