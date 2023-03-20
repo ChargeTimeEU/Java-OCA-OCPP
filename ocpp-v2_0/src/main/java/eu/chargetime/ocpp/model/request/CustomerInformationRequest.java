@@ -123,8 +123,6 @@ public class CustomerInformationRequest extends RequestWithId {
     public boolean validate() {
         return requiredValidator.safeValidate(requestId)
                 &&requiredValidator.safeValidate(report)
-                &&requiredValidator.safeValidate(clear)
-                &&idToken.validate()
-                &&customerCertificate.validate();
+                &&requiredValidator.safeValidate(clear);
     }
 }
