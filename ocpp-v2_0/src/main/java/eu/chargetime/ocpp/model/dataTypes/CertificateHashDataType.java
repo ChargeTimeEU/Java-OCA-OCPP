@@ -9,6 +9,9 @@ import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -18,6 +21,9 @@ import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
         "issuerKeyHash",
         "serialNumber"
 })
+@Getter
+@EqualsAndHashCode
+@ToString
 public class CertificateHashDataType implements Validatable {
 
     private final transient Validator identifierString128Validator =
