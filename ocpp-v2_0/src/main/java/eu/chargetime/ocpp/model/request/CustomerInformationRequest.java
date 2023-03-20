@@ -9,6 +9,9 @@ import eu.chargetime.ocpp.model.dataTypes.CustomDataType;
 import eu.chargetime.ocpp.model.dataTypes.IdTokenType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -20,6 +23,9 @@ import eu.chargetime.ocpp.model.validation.Validator;
         "clear",
         "customerIdentifier"
 })
+@Getter
+@ToString
+@EqualsAndHashCode(callSuper = false)
 public class CustomerInformationRequest extends RequestWithId {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();

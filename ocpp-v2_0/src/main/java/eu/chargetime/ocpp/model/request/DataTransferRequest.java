@@ -8,6 +8,9 @@ import eu.chargetime.ocpp.model.dataTypes.CustomDataType;
 import eu.chargetime.ocpp.model.validation.OCPP2PrimDatatypes;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -16,6 +19,9 @@ import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
         "data",
         "vendorId"
 })
+@Getter
+@ToString
+@EqualsAndHashCode(callSuper = false)
 public class DataTransferRequest extends RequestWithId {
 
     private transient Validator messageIdValidator =
