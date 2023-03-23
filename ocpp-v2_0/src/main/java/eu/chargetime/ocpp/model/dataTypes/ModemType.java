@@ -46,8 +46,6 @@ import java.util.Objects;
         "imsi"
 })
 @Getter
-@ToString
-@EqualsAndHashCode
 public class ModemType implements Validatable {
   private transient Validator validator =
       new ValidatorBuilder()
