@@ -125,6 +125,10 @@ public class ReportChargingProfilesRequest extends RequestWithId {
 
     @Override
     public boolean validate() {
-        return false;
+        return requiredValidator.safeValidate(requestId)
+                &&requiredValidator.safeValidate(chargingLimitSource)
+                &&requiredValidator.safeValidate(chargingProfile)
+                &&requiredValidator.safeValidate(evseId)
+                &&chargingProfile.stream().filter(ChargingProfileType::validate).count() == chargingProfile.size();
     }
 }
