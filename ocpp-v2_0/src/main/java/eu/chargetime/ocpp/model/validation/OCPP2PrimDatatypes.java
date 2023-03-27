@@ -39,6 +39,10 @@ public class OCPP2PrimDatatypes {
     return new StringMaxLengthValidationRule(20);
   }
 
+  public static IValidationRule string32() {
+    return new StringMaxLengthValidationRule(32);
+  }
+
   public static IValidationRule string36() {
     return new StringMaxLengthValidationRule(36);
   }
