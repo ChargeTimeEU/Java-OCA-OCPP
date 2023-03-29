@@ -7,6 +7,6 @@ import java.util.UUID;
 
 /** Central system handler of {@link ClearedChargingLimitRequest}s. */
 public interface IServerClearedChargingLimitRequestHandler {
-    ClearedChargingLimitResponse handleAuthorizeRequest(
+    ClearedChargingLimitResponse handleClearedChargingLimitRequest(
             UUID sessionIndex, ClearedChargingLimitRequest request);
 }
