@@ -4,6 +4,6 @@ import eu.chargetime.ocpp.model.request.GetMonitoringReportRequest;
 import eu.chargetime.ocpp.model.response.GetMonitoringReportResponse;
 
 /** Charging Station handler of {@link GetMonitoringReportRequest} */
-public interface IClientGetMonitoringReportRestHandler {
+public interface IClientGetMonitoringReportRequestHandler {
     GetMonitoringReportResponse handleGetMonitoringReportRequest(GetMonitoringReportRequest request);
 }
