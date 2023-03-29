@@ -25,12 +25,14 @@ package eu.chargetime.ocpp.features.basic;
    SOFTWARE.
 */
 
+import eu.chargetime.ocpp.constants.FeatureConstants;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.features.basic.handlers.IServerStatusNotificationRequestHandler;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.response.StatusNotificationResponse;
 import eu.chargetime.ocpp.model.request.StatusNotificationRequest;
+import eu.chargetime.ocpp.model.response.StatusNotificationResponse;
+
 import java.util.UUID;
 
 public class StatusNotificationFeature implements Feature {
@@ -59,6 +61,6 @@ public class StatusNotificationFeature implements Feature {
 
   @Override
   public String getAction() {
-    return "StatusNotification";
+    return FeatureConstants.STATUS_NOTIFICATION.value();
   }
 }

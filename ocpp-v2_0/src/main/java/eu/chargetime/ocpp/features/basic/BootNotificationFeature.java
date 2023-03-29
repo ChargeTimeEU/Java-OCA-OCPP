@@ -25,6 +25,7 @@ package eu.chargetime.ocpp.features.basic;
    SOFTWARE.
 */
 
+import eu.chargetime.ocpp.constants.FeatureConstants;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.features.basic.handlers.IServerBootNotificationRequestHandler;
 import eu.chargetime.ocpp.model.Confirmation;
@@ -58,6 +59,6 @@ public class BootNotificationFeature implements Feature {
 
   @Override
   public String getAction() {
-    return "BootNotification";
+    return FeatureConstants.BOOT_NOTIFICATION.value();
   }
 }
