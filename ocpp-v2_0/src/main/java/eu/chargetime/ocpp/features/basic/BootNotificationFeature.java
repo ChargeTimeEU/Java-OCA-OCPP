@@ -27,7 +27,7 @@ package eu.chargetime.ocpp.features.basic;
 
 import eu.chargetime.ocpp.constants.FeatureConstants;
 import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.features.basic.handlers.IServerBootNotificationRequestHandler;
+import eu.chargetime.ocpp.features.basic.handlers.server.IServerBootNotificationRequestHandler;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.response.BootNotificationResponse;
