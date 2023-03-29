@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.features.basic.handlers;
+package eu.chargetime.ocpp.features.basic.handlers.client;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 

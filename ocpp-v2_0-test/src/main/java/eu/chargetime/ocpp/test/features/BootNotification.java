@@ -28,7 +28,7 @@ package eu.chargetime.ocpp.test.features;
 
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.features.basic.BootNotificationFeature;
-import eu.chargetime.ocpp.features.basic.handlers.IServerBootNotificationRequestHandler;
+import eu.chargetime.ocpp.features.basic.handlers.server.IServerBootNotificationRequestHandler;
 import eu.chargetime.ocpp.model.response.BootNotificationResponse;
 import eu.chargetime.ocpp.model.dataTypes.enums.BootReasonEnumType;
 import eu.chargetime.ocpp.model.dataTypes.enums.RegistrationStatusEnumType;

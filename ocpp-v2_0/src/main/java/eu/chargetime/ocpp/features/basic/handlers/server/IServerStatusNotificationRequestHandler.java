@@ -1,10 +1,10 @@
-package eu.chargetime.ocpp.features.basic.handlers;
+package eu.chargetime.ocpp.features.basic.handlers.server;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
    MIT License
 
-   Copyright (C) 2018 Thomas Volden <tv@chargetime.eu>
+   Copyright (C) 2021 John Michael Luy <johnmichael.luy@gmail.com>
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,12 @@ package eu.chargetime.ocpp.features.basic.handlers;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.response.GetVariablesResponse;
-import eu.chargetime.ocpp.model.request.GetVariablesRequest;
+import eu.chargetime.ocpp.model.response.StatusNotificationResponse;
+import eu.chargetime.ocpp.model.request.StatusNotificationRequest;
+import java.util.UUID;
 
-public interface IClientGetVariablesRequestHandler {
-  GetVariablesResponse handleGetVariablesRequest(GetVariablesRequest request);
+/** Central system handler of {@link StatusNotificationRequest}s. */
+public interface IServerStatusNotificationRequestHandler {
+  StatusNotificationResponse handleStatusNotificationRequest(
+      UUID sessionIndex, StatusNotificationRequest request);
 }

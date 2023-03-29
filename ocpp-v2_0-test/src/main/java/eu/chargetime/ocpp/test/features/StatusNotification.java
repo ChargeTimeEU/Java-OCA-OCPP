@@ -27,7 +27,7 @@ package eu.chargetime.ocpp.test.features;
 
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.features.basic.StatusNotificationFeature;
-import eu.chargetime.ocpp.features.basic.handlers.IServerStatusNotificationRequestHandler;
+import eu.chargetime.ocpp.features.basic.handlers.server.IServerStatusNotificationRequestHandler;
 import eu.chargetime.ocpp.model.response.StatusNotificationResponse;
 import eu.chargetime.ocpp.model.request.StatusNotificationRequest;
 import eu.chargetime.ocpp.model.dataTypes.enums.ConnectorStatusEnumType;
