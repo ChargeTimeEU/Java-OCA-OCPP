@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.features;
+package eu.chargetime.ocpp.features;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -25,46 +25,42 @@ package eu.chargetime.ocpp.test.features;
    SOFTWARE.
 */
 
+import eu.chargetime.ocpp.constants.FeatureConstants;
 import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.features.StatusNotificationFeature;
 import eu.chargetime.ocpp.features.handlers.server.IServerStatusNotificationRequestHandler;
-import eu.chargetime.ocpp.model.response.StatusNotificationResponse;
+import eu.chargetime.ocpp.model.Confirmation;
+import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.request.StatusNotificationRequest;
-import eu.chargetime.ocpp.model.dataTypes.enums.ConnectorStatusEnumType;
-import java.time.ZonedDateTime;
+import eu.chargetime.ocpp.model.response.StatusNotificationResponse;
+
 import java.util.UUID;
 
-public class StatusNotification implements IServerStatusNotificationRequestHandler {
+public class StatusNotificationFeature implements Feature {
 
-  private StatusNotificationFeature feature;
-  private StatusNotificationResponse confirmation;
+  private final IServerStatusNotificationRequestHandler handler;
 
-  public StatusNotification() {
-    feature = new StatusNotificationFeature(this);
-
-    confirmation = new StatusNotificationResponse();
+  public StatusNotificationFeature(IServerStatusNotificationRequestHandler handler) {
+    this.handler = handler;
   }
 
   @Override
-  public StatusNotificationResponse handleStatusNotificationRequest(
-      UUID sessionIndex, StatusNotificationRequest request) {
-    return confirmation;
+  public Confirmation handleRequest(UUID sessionIndex, Request request) {
+    return handler.handleStatusNotificationRequest(
+        sessionIndex, (StatusNotificationRequest) request);
   }
 
-  public StatusNotificationResponse getConfirmation() {
-    return confirmation;
+  @Override
+  public Class<? extends Request> getRequestType() {
+    return StatusNotificationRequest.class;
   }
 
-  public StatusNotificationRequest createRequest() {
-    StatusNotificationRequest request = new StatusNotificationRequest();
-    request.setTimestamp(ZonedDateTime.now());
-    request.setConnectorStatus(ConnectorStatusEnumType.AVAILABLE);
-    request.setEvseId(1);
-    request.setConnectorId(1);
-    return request;
+  @Override
+  public Class<? extends Confirmation> getConfirmationType() {
+    return StatusNotificationResponse.class;
   }
 
-  public Feature getFeature() {
-    return feature;
+  @Override
+  public String getAction() {
+    return FeatureConstants.STATUS_NOTIFICATION.value();
   }
 }

@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.features;
+package eu.chargetime.ocpp.features.handlers.server;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -25,46 +25,12 @@ package eu.chargetime.ocpp.test.features;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.features.StatusNotificationFeature;
-import eu.chargetime.ocpp.features.handlers.server.IServerStatusNotificationRequestHandler;
 import eu.chargetime.ocpp.model.response.StatusNotificationResponse;
 import eu.chargetime.ocpp.model.request.StatusNotificationRequest;
-import eu.chargetime.ocpp.model.dataTypes.enums.ConnectorStatusEnumType;
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
-public class StatusNotification implements IServerStatusNotificationRequestHandler {
-
-  private StatusNotificationFeature feature;
-  private StatusNotificationResponse confirmation;
-
-  public StatusNotification() {
-    feature = new StatusNotificationFeature(this);
-
-    confirmation = new StatusNotificationResponse();
-  }
-
-  @Override
-  public StatusNotificationResponse handleStatusNotificationRequest(
-      UUID sessionIndex, StatusNotificationRequest request) {
-    return confirmation;
-  }
-
-  public StatusNotificationResponse getConfirmation() {
-    return confirmation;
-  }
-
-  public StatusNotificationRequest createRequest() {
-    StatusNotificationRequest request = new StatusNotificationRequest();
-    request.setTimestamp(ZonedDateTime.now());
-    request.setConnectorStatus(ConnectorStatusEnumType.AVAILABLE);
-    request.setEvseId(1);
-    request.setConnectorId(1);
-    return request;
-  }
-
-  public Feature getFeature() {
-    return feature;
-  }
+/** Central system handler of {@link StatusNotificationRequest}s. */
+public interface IServerStatusNotificationRequestHandler {
+  StatusNotificationResponse handleStatusNotificationRequest(
+      UUID sessionIndex, StatusNotificationRequest request);
 }
