@@ -5,5 +5,5 @@ import eu.chargetime.ocpp.model.response.CertificateSignedResponse;
 
 /** Charging Station handler of {@link CertificateSignedRequest} */
 public interface IClientCertificateSignedRequestHandler {
-    CertificateSignedResponse handleGetVariablesRequest(CertificateSignedRequest request);
+    CertificateSignedResponse handleCertificateSignedRequest(CertificateSignedRequest request);
 }

@@ -5,5 +5,5 @@ import eu.chargetime.ocpp.model.response.CostUpdatedResponse;
 
 /** Charging Station handler of {@link CostUpdatedRequest} */
 public interface IClientCostUpdatedRequestHandler {
-    CostUpdatedResponse handleGetVariablesRequest(CostUpdatedRequest request);
+    CostUpdatedResponse handleCostUpdatedRequest(CostUpdatedRequest request);
 }

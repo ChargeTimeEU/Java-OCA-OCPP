@@ -5,5 +5,5 @@ import eu.chargetime.ocpp.model.response.CancelReservationResponse;
 
 /** Charging Station handler of {@link CancelReservationRequest} */
 public interface IClientCancelReservationRequestHandler {
-    CancelReservationResponse handleGetVariablesRequest(CancelReservationRequest request);
+    CancelReservationResponse handleCancelReservationRequest(CancelReservationRequest request);
 }

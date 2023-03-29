@@ -5,5 +5,5 @@ import eu.chargetime.ocpp.model.response.ChangeAvailabilityResponse;
 
 /** Charging Station handler of {@link ChangeAvailabilityRequest} */
 public interface IClientChangeAvailabilityRequestHandler {
-    ChangeAvailabilityResponse handleGetVariablesRequest(ChangeAvailabilityRequest request);
+    ChangeAvailabilityResponse handleChangeAvailabilityRequest(ChangeAvailabilityRequest request);
 }
