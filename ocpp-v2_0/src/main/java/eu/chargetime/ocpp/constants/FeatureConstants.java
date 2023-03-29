@@ -7,6 +7,9 @@ import static eu.chargetime.ocpp.util.EnumUtil.findByField;
 
 public enum FeatureConstants {
 
+    AUTHORIZE("Authorize"),
+    CANCEL_RESERVATION("CancelReservation"),
+
     BOOT_NOTIFICATION("BootNotification"),
     GET_VARIABLES("GetVariables"),
     SET_VARIABLES("SetVariables"),
