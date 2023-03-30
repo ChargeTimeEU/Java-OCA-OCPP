@@ -94,7 +94,7 @@ public class MultiProtocolJSONClient implements IMultiProtocolClientAPI {
     }
     Draft draft = new Draft_6455(Collections.emptyList(), inputProtocols);
     transmitter = new MultiProtocolWebSocketTransmitter(featureRepository, configuration, draft);
-    JSONCommunicator communicator = new JSONCommunicator(transmitter);
+    JSONCommunicator communicator = new JSONCommunicator(transmitter, false);
     ISessionFactory sessionFactory = new MultiProtocolSessionFactory(featureRepository);
     ISession session = sessionFactory.createSession(communicator);
     client = new Client(session, new PromiseRepository());
