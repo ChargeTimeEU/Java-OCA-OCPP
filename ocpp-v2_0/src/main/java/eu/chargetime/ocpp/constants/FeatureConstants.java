@@ -42,7 +42,7 @@ public enum FeatureConstants {
     NOTIFY_CHARGING_LIMIT("NotifyChargingLimit"),
     NOTIFY_CUSTOMER_INFORMATION("NotifyCustomerInformation"),
     NOTIFY_DISPLAY_MESSAGES("NotifyDisplayMessages"),
-    NOTIFY_EVC_HARGING_NEEDS("NotifyEVChargingNeeds"),
+    NOTIFY_EV_CHARGING_NEEDS("NotifyEVChargingNeeds"),
     NOTIFY_EV_CHARGING_SCHEDULE("NotifyEVChargingSchedule"),
     NOTIFY_EVENT("NotifyEvent"),
     NOTIFY_MONITORING_REPORT("NotifyMonitoringReport"),
