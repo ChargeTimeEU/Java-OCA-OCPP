@@ -10,6 +10,7 @@ import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
@@ -30,6 +31,7 @@ import java.util.List;
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
 public class MeterValuesRequest extends RequestWithId {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();

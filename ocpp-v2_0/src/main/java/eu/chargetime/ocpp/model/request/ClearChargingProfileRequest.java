@@ -6,10 +6,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.model.dataTypes.ClearChargingProfileType;
 import eu.chargetime.ocpp.model.dataTypes.CustomDataType;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -21,6 +18,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
 public class ClearChargingProfileRequest extends RequestWithId {
 
     /**

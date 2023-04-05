@@ -5,11 +5,13 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.dataTypes.CustomDataType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
 public class FirmwareStatusNotificationResponse extends Confirmation {
 
 

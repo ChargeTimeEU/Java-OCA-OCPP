@@ -8,6 +8,10 @@ import eu.chargetime.ocpp.model.dataTypes.CustomDataType;
 import eu.chargetime.ocpp.model.dataTypes.StatusInfoType;
 import eu.chargetime.ocpp.model.dataTypes.enums.ChangeAvailabilityStatusEnumType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -15,6 +19,10 @@ import eu.chargetime.ocpp.model.validation.RequiredValidator;
         "status",
         "statusInfo"
 })
+@Getter
+@ToString
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
 public class ChangeAvailabilityResponse extends Confirmation {
 
     private transient RequiredValidator requiredValidator = new RequiredValidator();

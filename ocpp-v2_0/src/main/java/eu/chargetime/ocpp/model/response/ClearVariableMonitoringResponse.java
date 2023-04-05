@@ -9,6 +9,7 @@ import eu.chargetime.ocpp.model.dataTypes.CustomDataType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
 public class ClearVariableMonitoringResponse extends Confirmation {
 
     private transient RequiredValidator requiredValidator = new RequiredValidator();

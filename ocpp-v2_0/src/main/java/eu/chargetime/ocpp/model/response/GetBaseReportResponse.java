@@ -8,11 +8,13 @@ import eu.chargetime.ocpp.model.dataTypes.enums.GenericDeviceModelStatusEnumType
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
 public class GetBaseReportResponse extends Confirmation {
 
     private transient RequiredValidator requiredValidator = new RequiredValidator();

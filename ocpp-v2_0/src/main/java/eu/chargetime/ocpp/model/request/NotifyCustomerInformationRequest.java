@@ -11,6 +11,7 @@ import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Date;
@@ -27,6 +28,7 @@ import java.util.Date;
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
 public class NotifyCustomerInformationRequest extends RequestWithId {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();
