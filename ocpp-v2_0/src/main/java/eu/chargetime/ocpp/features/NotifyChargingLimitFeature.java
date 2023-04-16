@@ -19,7 +19,7 @@ public class NotifyChargingLimitFeature implements Feature {
 
     @Override
     public Confirmation handleRequest(UUID sessionIndex, Request request) {
-        return handler.handleMeterValuesRequest(sessionIndex, (NotifyChargingLimitRequest) request);
+        return handler.handleNotifyChargingLimitRequest(sessionIndex, (NotifyChargingLimitRequest) request);
     }
 
     @Override

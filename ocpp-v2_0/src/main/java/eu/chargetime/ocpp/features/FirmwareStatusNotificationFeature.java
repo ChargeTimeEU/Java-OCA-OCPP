@@ -19,7 +19,7 @@ public class FirmwareStatusNotificationFeature implements Feature {
 
     @Override
     public Confirmation handleRequest(UUID sessionIndex, Request request) {
-        return handler.handleAuthorizeRequest(sessionIndex, (FirmwareStatusNotificationRequest) request);
+        return handler.handleFirmwareStatusNotification(sessionIndex, (FirmwareStatusNotificationRequest) request);
     }
 
     @Override
