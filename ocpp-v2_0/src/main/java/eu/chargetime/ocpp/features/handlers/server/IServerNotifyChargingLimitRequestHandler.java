@@ -7,6 +7,6 @@ import java.util.UUID;
 
 /** Central system handler of {@link NotifyChargingLimitRequest}s. */
 public interface IServerNotifyChargingLimitRequestHandler {
-    NotifyChargingLimitResponse handleMeterValuesRequest(
+    NotifyChargingLimitResponse handleNotifyChargingLimitRequest(
             UUID sessionIndex, NotifyChargingLimitRequest request);
 }
