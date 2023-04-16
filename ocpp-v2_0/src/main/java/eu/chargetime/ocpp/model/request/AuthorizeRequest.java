@@ -41,7 +41,7 @@ public class AuthorizeRequest extends RequestWithId {
      *
      */
     @JsonProperty("customData")
-    public CustomDataType customDataType;
+    public CustomDataType customData;
     /**
      * Contains a case insensitive identifier to use for the authorization and the type of authorization to support multiple forms of identifiers.
      *
@@ -49,7 +49,7 @@ public class AuthorizeRequest extends RequestWithId {
      *
      */
     @JsonProperty("idToken")
-    public IdTokenType idTokenType;
+    public IdTokenType idToken;
     /**
      * The X.509 certificated presented by EV and encoded in PEM format.
      *
@@ -66,12 +66,16 @@ public class AuthorizeRequest extends RequestWithId {
         return false;
     }
 
-    public void setCustomDataType(CustomDataType customDataType) {
-        this.customDataType = customDataType;
+    public AuthorizeRequest(IdTokenType idTokenType) {
+        this.idToken = idTokenType;
     }
 
-    public void setIdTokenType(IdTokenType idTokenType) {
-        this.idTokenType = idTokenType;
+    public void setCustomData(CustomDataType customData) {
+        this.customData = customData;
+    }
+
+    public void setIdToken(IdTokenType idToken) {
+        this.idToken = idToken;
     }
 
     public void setCertificate(String certificate) {
@@ -85,6 +89,6 @@ public class AuthorizeRequest extends RequestWithId {
 
     @Override
     public boolean validate() {
-        return requiredValidator.safeValidate(idTokenType);
+        return requiredValidator.safeValidate(idToken);
     }
 }
