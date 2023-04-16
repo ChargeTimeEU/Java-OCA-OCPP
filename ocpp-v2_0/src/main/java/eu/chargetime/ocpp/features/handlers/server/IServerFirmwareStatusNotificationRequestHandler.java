@@ -7,6 +7,6 @@ import java.util.UUID;
 
 /** Central system handler of {@link FirmwareStatusNotificationRequest}s. */
 public interface IServerFirmwareStatusNotificationRequestHandler {
-    FirmwareStatusNotificationResponse handleAuthorizeRequest(
+    FirmwareStatusNotificationResponse handleFirmwareStatusNotification(
             UUID sessionIndex, FirmwareStatusNotificationRequest request);
 }
