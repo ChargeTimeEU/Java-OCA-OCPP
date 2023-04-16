@@ -26,8 +26,14 @@ package eu.chargetime.ocpp;
 */
 
 import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.features.AuthorizeFeature;
+import eu.chargetime.ocpp.features.handlers.server.IServerAuthorizeRequestHandler;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.dataTypes.IdTokenInfoType;
+import eu.chargetime.ocpp.model.dataTypes.enums.AuthorizationStatusEnumType;
+import eu.chargetime.ocpp.model.request.AuthorizeRequest;
+import eu.chargetime.ocpp.model.response.AuthorizeResponse;
 import eu.chargetime.ocpp.wss.BaseWssFactoryBuilder;
 import eu.chargetime.ocpp.wss.WssFactoryBuilder;
 import java.io.IOException;
@@ -62,7 +68,7 @@ public class JSONServer implements IServerAPI {
     SessionFactory sessionFactory = new SessionFactory(featureRepository);
 
     ArrayList<IProtocol> protocols = new ArrayList<>();
-    protocols.add(new Protocol("ocpp1.6"));
+    protocols.add(new Protocol("ocpp2.0.1"));
     protocols.add(new Protocol(""));
     draftOcppOnly = new Draft_6455(Collections.emptyList(), protocols);
     logger.info("JSONServer 2.0 without HttpHealthCheckDraft");
