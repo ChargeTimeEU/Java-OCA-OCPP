@@ -26,8 +26,12 @@ package eu.chargetime.ocpp;
  */
 
 import eu.chargetime.ocpp.feature.Feature;
+import eu.chargetime.ocpp.features.AuthorizeFeature;
+import eu.chargetime.ocpp.features.handlers.server.IServerAuthorizeRequestHandler;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import eu.chargetime.ocpp.model.request.AuthorizeRequest;
+import eu.chargetime.ocpp.model.response.AuthorizeResponse;
 import eu.chargetime.ocpp.wss.BaseWssSocketBuilder;
 import eu.chargetime.ocpp.wss.WssSocketBuilder;
 import java.io.IOException;
@@ -65,7 +69,7 @@ public class JSONClient implements IClientAPI {
   public JSONClient(String identity, JSONConfiguration configuration) {
     this.identity = identity;
     draftOcppOnly =
-        new Draft_6455(Collections.emptyList(), Collections.singletonList(new Protocol("ocpp1.6")));
+            new Draft_6455(Collections.emptyList(), Collections.singletonList(new Protocol("ocpp2.0.1")));
     transmitter = new WebSocketTransmitter(configuration, draftOcppOnly);
     JSONCommunicator communicator = new JSONCommunicator(transmitter);
     featureRepository = new FeatureRepository();
