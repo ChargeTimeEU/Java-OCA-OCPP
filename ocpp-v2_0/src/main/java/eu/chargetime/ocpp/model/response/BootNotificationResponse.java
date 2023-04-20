@@ -32,32 +32,43 @@ import eu.chargetime.ocpp.model.dataTypes.enums.RegistrationStatusEnumType;
 import eu.chargetime.ocpp.model.request.BootNotificationRequest;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-import java.time.ZonedDateTime;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /** sent by the CSMS to the Charging Station in response to a {@link BootNotificationRequest}. */
+@NoArgsConstructor
 public class BootNotificationResponse extends Confirmation {
   private transient RequiredValidator validator = new RequiredValidator();
 
-  private ZonedDateTime currentTime;
+  private LocalDateTime currentTime;
   private int interval;
   private RegistrationStatusEnumType status;
+
+  public BootNotificationResponse(LocalDateTime currentTime, int interval, RegistrationStatusEnumType status) {
+    validator.validate(currentTime);
+    validator.validate(status);
+    this.currentTime = currentTime;
+    this.interval = interval;
+    this.status = status;
+  }
 
   /**
    * This contains the CSMS’s current time.
    *
-   * @return {@link ZonedDateTime}
+   * @return {@link LocalDateTime}
    */
-  public ZonedDateTime getCurrentTime() {
+  public LocalDateTime getCurrentTime() {
     return currentTime;
   }
 
   /**
    * Required. This contains the CSMS’s current time.
    *
-   * @param currentTime {@link ZonedDateTime}
+   * @param currentTime {@link LocalDateTime}
    */
-  public void setCurrentTime(ZonedDateTime currentTime) {
+  public void setCurrentTime(LocalDateTime currentTime) {
     validator.validate(currentTime);
     this.currentTime = currentTime;
   }

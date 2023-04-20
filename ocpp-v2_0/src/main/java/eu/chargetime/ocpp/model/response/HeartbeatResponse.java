@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -40,9 +40,9 @@ public class HeartbeatResponse extends Confirmation {
      *
      */
     @JsonProperty("currentTime")
-    public Date currentTime;
+    public LocalDateTime currentTime;
 
-    public HeartbeatResponse(Date currentTime) {
+    public HeartbeatResponse(LocalDateTime currentTime) {
         requiredValidator.validate(currentTime);
         this.currentTime = currentTime;
     }
@@ -51,7 +51,7 @@ public class HeartbeatResponse extends Confirmation {
         this.customData = customData;
     }
 
-    public void setCurrentTime(Date currentTime) {
+    public void setCurrentTime(LocalDateTime currentTime) {
         requiredValidator.validate(currentTime);
         this.currentTime = currentTime;
     }
