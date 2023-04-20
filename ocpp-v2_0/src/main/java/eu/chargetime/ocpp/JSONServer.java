@@ -26,14 +26,8 @@ package eu.chargetime.ocpp;
 */
 
 import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.features.AuthorizeFeature;
-import eu.chargetime.ocpp.features.handlers.server.IServerAuthorizeRequestHandler;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.dataTypes.IdTokenInfoType;
-import eu.chargetime.ocpp.model.dataTypes.enums.AuthorizationStatusEnumType;
-import eu.chargetime.ocpp.model.request.AuthorizeRequest;
-import eu.chargetime.ocpp.model.response.AuthorizeResponse;
 import eu.chargetime.ocpp.wss.BaseWssFactoryBuilder;
 import eu.chargetime.ocpp.wss.WssFactoryBuilder;
 import java.io.IOException;
