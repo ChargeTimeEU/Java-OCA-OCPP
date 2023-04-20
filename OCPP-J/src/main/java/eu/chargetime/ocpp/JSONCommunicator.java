@@ -8,6 +8,7 @@ import eu.chargetime.ocpp.model.Message;
 import eu.chargetime.ocpp.model.Exclude;
 
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
@@ -80,19 +81,37 @@ public class JSONCommunicator extends Communicator {
   }
 
   private static class ZonedDateTimeSerializer
-      implements JsonSerializer<ZonedDateTime>, JsonDeserializer<ZonedDateTime> {
+          implements JsonSerializer<ZonedDateTime>, JsonDeserializer<ZonedDateTime> {
 
     @Override
     public JsonElement serialize(
-        ZonedDateTime zonedDateTime, Type type, JsonSerializationContext jsonSerializationContext) {
+            ZonedDateTime zonedDateTime, Type type, JsonSerializationContext jsonSerializationContext) {
       return new JsonPrimitive(zonedDateTime.format(DateTimeFormatter.ISO_INSTANT));
     }
 
     @Override
     public ZonedDateTime deserialize(
-        JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)
-        throws JsonParseException {
+            JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)
+            throws JsonParseException {
       return ZonedDateTime.parse(jsonElement.getAsJsonPrimitive().getAsString());
+    }
+  }
+
+  private static class LocalDateTimeSerializer
+          implements JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+    @Override
+    public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
+      String dateTimeString = json.getAsJsonPrimitive().getAsString();
+      return LocalDateTime.parse(dateTimeString, formatter);
+    }
+
+    @Override
+    public JsonElement serialize(LocalDateTime localDateTime, Type type, JsonSerializationContext jsonSerializationContext) {
+      return new JsonPrimitive(formatter.format(localDateTime));
     }
   }
 
@@ -101,6 +120,7 @@ public class JSONCommunicator extends Communicator {
   static {
     GsonBuilder builder = new GsonBuilder();
     builder.registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeSerializer());
+    builder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
     builder.addSerializationExclusionStrategy(new ExclusionStrategy() {
       @Override
       public boolean shouldSkipClass(Class<?> clazz) {
