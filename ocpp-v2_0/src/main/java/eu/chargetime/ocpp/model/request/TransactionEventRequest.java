@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -65,7 +65,7 @@ public class TransactionEventRequest extends RequestWithId {
      *
      */
     @JsonProperty("timestamp")
-    public Date timestamp;
+    public LocalDateTime timestamp;
     /**
      * Reason the Charging Station sends this message to the CSMS
      *
@@ -137,7 +137,7 @@ public class TransactionEventRequest extends RequestWithId {
     public IdTokenType idToken;
 
     public TransactionEventRequest(TransactionEventEnumType eventType,
-                                   Date timestamp,
+                                   LocalDateTime timestamp,
                                    TriggerReasonEnumType triggerReason,
                                    Integer seqNo,
                                    TransactionType transactionInfo) {
@@ -166,7 +166,7 @@ public class TransactionEventRequest extends RequestWithId {
         this.meterValue = meterValue;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         requiredValidator.validate(timestamp);
         this.timestamp = timestamp;
     }

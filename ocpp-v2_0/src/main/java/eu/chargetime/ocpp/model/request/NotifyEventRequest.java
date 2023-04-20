@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,7 +45,7 @@ public class NotifyEventRequest extends RequestWithId {
      *
      */
     @JsonProperty("generatedAt")
-    public Date generatedAt;
+    public LocalDateTime generatedAt;
     /**
      * “to be continued” indicator. Indicates whether another part of the report follows in an upcoming notifyEventRequest message. Default value when omitted is false.
      *
@@ -69,7 +69,7 @@ public class NotifyEventRequest extends RequestWithId {
     @JsonProperty("eventData")
     public List<EventDataType> eventData;
 
-    public NotifyEventRequest(Date generatedAt, Integer seqNo, List<EventDataType> eventData) {
+    public NotifyEventRequest(LocalDateTime generatedAt, Integer seqNo, List<EventDataType> eventData) {
         requiredValidator.validate(generatedAt);
         requiredValidator.validate(seqNo);
         requiredValidator.validate(eventData);
@@ -82,7 +82,7 @@ public class NotifyEventRequest extends RequestWithId {
         this.customData = customData;
     }
 
-    public void setGeneratedAt(Date generatedAt) {
+    public void setGeneratedAt(LocalDateTime generatedAt) {
         requiredValidator.validate(generatedAt);
         this.generatedAt = generatedAt;
     }

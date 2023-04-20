@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -54,7 +54,7 @@ public class NotifyReportRequest extends RequestWithId {
      *
      */
     @JsonProperty("generatedAt")
-    public Date generatedAt;
+    public LocalDateTime generatedAt;
     @JsonProperty("reportData")
     public List<ReportDataType> reportData;
     /**
@@ -74,7 +74,7 @@ public class NotifyReportRequest extends RequestWithId {
     @JsonProperty("seqNo")
     public Integer seqNo;
 
-    public NotifyReportRequest(Integer requestId, Date generatedAt, Integer seqNo) {
+    public NotifyReportRequest(Integer requestId, LocalDateTime generatedAt, Integer seqNo) {
         requiredValidator.validate(requestId);
         requiredValidator.validate(generatedAt);
         requiredValidator.validate(seqNo);
@@ -92,7 +92,7 @@ public class NotifyReportRequest extends RequestWithId {
         this.requestId = requestId;
     }
 
-    public void setGeneratedAt(Date generatedAt) {
+    public void setGeneratedAt(LocalDateTime generatedAt) {
         requiredValidator.validate(generatedAt);
         this.generatedAt = generatedAt;
     }

@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -55,7 +55,7 @@ public class ReserveNowRequest extends RequestWithId {
      *
      */
     @JsonProperty("expiryDateTime")
-    public Date expiryDateTime;
+    public LocalDateTime expiryDateTime;
     /**
      * This field specifies the connector type.
      *
@@ -86,7 +86,7 @@ public class ReserveNowRequest extends RequestWithId {
     @JsonProperty("groupIdToken")
     public IdTokenType groupIdToken;
 
-    public ReserveNowRequest(Integer id, Date expiryDateTime, IdTokenType idToken) {
+    public ReserveNowRequest(Integer id, LocalDateTime expiryDateTime, IdTokenType idToken) {
         requiredValidator.validate(id);
         requiredValidator.validate(expiryDateTime);
         requiredValidator.validate(idToken);
@@ -104,7 +104,7 @@ public class ReserveNowRequest extends RequestWithId {
         this.id = id;
     }
 
-    public void setExpiryDateTime(Date expiryDateTime) {
+    public void setExpiryDateTime(LocalDateTime expiryDateTime) {
         requiredValidator.validate(expiryDateTime);
         this.expiryDateTime = expiryDateTime;
     }

@@ -46,6 +46,12 @@ public class BootNotificationRequest extends RequestWithId {
 
   public BootNotificationRequest() {}
 
+  public BootNotificationRequest(BootReasonEnumType reason, ChargingStationType chargingStation) {
+    requiredValidator.validate(reason);
+    this.reason = reason;
+    this.chargingStation = chargingStation;
+  }
+
   /**
    * Required. This contains the reason for sending this message to the CSMS.
    *
@@ -62,6 +68,7 @@ public class BootNotificationRequest extends RequestWithId {
    * @param chargingStation {@link ChargingStationType}
    */
   public void setChargingStation(ChargingStationType chargingStation) {
+    requiredValidator.validate(chargingStation);
     this.chargingStation = chargingStation;
   }
 

@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -43,7 +43,7 @@ public class NotifyEVChargingScheduleRequest extends RequestWithId {
      *
      */
     @JsonProperty("timeBase")
-    public Date timeBase;
+    public LocalDateTime timeBase;
     /**
      * Charging_ Schedule
      * urn:x-oca:ocpp:uid:2:233256
@@ -63,7 +63,7 @@ public class NotifyEVChargingScheduleRequest extends RequestWithId {
     @JsonProperty("evseId")
     public Integer evseId;
 
-    public NotifyEVChargingScheduleRequest(Date timeBase, ChargingScheduleType chargingSchedule, Integer evseId) {
+    public NotifyEVChargingScheduleRequest(LocalDateTime timeBase, ChargingScheduleType chargingSchedule, Integer evseId) {
         requiredValidator.validate(timeBase);
         requiredValidator.validate(chargingSchedule);
         requiredValidator.validate(evseId);
@@ -76,7 +76,7 @@ public class NotifyEVChargingScheduleRequest extends RequestWithId {
         this.customData = customData;
     }
 
-    public void setTimeBase(Date timeBase) {
+    public void setTimeBase(LocalDateTime timeBase) {
         requiredValidator.validate(timeBase);
         this.timeBase = timeBase;
     }

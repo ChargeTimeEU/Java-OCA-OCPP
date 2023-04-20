@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -64,7 +64,7 @@ public class SecurityEventNotificationRequest extends RequestWithId {
      *
      */
     @JsonProperty("timestamp")
-    public Date timestamp;
+    public LocalDateTime timestamp;
     /**
      * Additional information about the occurred security event.
      *
@@ -73,7 +73,7 @@ public class SecurityEventNotificationRequest extends RequestWithId {
     @JsonProperty("techInfo")
     public String techInfo;
 
-    public SecurityEventNotificationRequest(String type, Date timestamp) {
+    public SecurityEventNotificationRequest(String type, LocalDateTime timestamp) {
         typeValidator.validate(type);
         requiredValidator.validate(timestamp);
         this.type = type;
@@ -89,7 +89,7 @@ public class SecurityEventNotificationRequest extends RequestWithId {
         this.type = type;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         requiredValidator.validate(timestamp);
         this.timestamp = timestamp;
     }

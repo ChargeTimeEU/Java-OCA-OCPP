@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -75,7 +75,7 @@ public class NotifyCustomerInformationRequest extends RequestWithId {
      *
      */
     @JsonProperty("generatedAt")
-    public Date generatedAt;
+    public LocalDateTime generatedAt;
     /**
      * The Id of the request.
      *
@@ -86,7 +86,7 @@ public class NotifyCustomerInformationRequest extends RequestWithId {
     @JsonProperty("requestId")
     public Integer requestId;
 
-    public NotifyCustomerInformationRequest(String data, Integer seqNo, Date generatedAt, Integer requestId) {
+    public NotifyCustomerInformationRequest(String data, Integer seqNo, LocalDateTime generatedAt, Integer requestId) {
         dataValidator.validate(data);
         requiredValidator.validate(seqNo);
         requiredValidator.validate(generatedAt);
@@ -114,7 +114,7 @@ public class NotifyCustomerInformationRequest extends RequestWithId {
         this.seqNo = seqNo;
     }
 
-    public void setGeneratedAt(Date generatedAt) {
+    public void setGeneratedAt(LocalDateTime generatedAt) {
         requiredValidator.validate(generatedAt);
         this.generatedAt = generatedAt;
     }
