@@ -37,9 +37,9 @@ import java.util.Objects;
 /** Reference key to a component-variable. */
 @Getter
 public class VariableType implements Validatable {
-  private transient Validator nameValidator =
+  private final transient Validator nameValidator =
       new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string50()).build();
-  private transient Validator instanceValidator =
+  private final transient Validator instanceValidator =
       new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string50()).build();
 
   private String name;

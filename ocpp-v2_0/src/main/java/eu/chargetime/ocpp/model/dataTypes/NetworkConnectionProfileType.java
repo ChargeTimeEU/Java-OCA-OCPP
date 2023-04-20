@@ -42,9 +42,9 @@ import lombok.ToString;
 @NoArgsConstructor
 public class NetworkConnectionProfileType implements Validatable {
 
-    private transient Validator<Object> requiredValidator = new RequiredValidator();
+    private final transient Validator<Object> requiredValidator = new RequiredValidator();
 
-    private transient Validator ocppCsmsUrlValidator =
+    private final transient Validator ocppCsmsUrlValidator =
             new ValidatorBuilder()
                     .setRequired(true)
                     .addRule(OCPP2PrimDatatypes.string512())

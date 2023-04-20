@@ -29,15 +29,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class SecurityEventNotificationRequest extends RequestWithId {
 
-    private transient Validator<Object> requiredValidator = new RequiredValidator();
+    private final transient Validator<Object> requiredValidator = new RequiredValidator();
 
-    private transient Validator typeValidator =
+    private final transient Validator typeValidator =
             new ValidatorBuilder()
                     .setRequired(true)
                     .addRule(OCPP2PrimDatatypes.string50())
                     .build();
 
-    private transient Validator techInfoValidator =
+    private final transient Validator techInfoValidator =
             new ValidatorBuilder()
                     .setRequired(true)
                     .addRule(OCPP2PrimDatatypes.string255())

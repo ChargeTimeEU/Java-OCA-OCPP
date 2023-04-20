@@ -40,7 +40,7 @@ import java.util.Objects;
 /** sent by the CSMS to the Charging Station in response to a {@link BootNotificationRequest}. */
 @NoArgsConstructor
 public class BootNotificationResponse extends Confirmation {
-  private transient RequiredValidator validator = new RequiredValidator();
+  private final transient RequiredValidator validator = new RequiredValidator();
 
   private LocalDateTime currentTime;
   private int interval;

@@ -24,7 +24,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class RequestStopTransactionRequest extends RequestWithId {
 
-    private transient Validator transactionIdValidator =
+    private final transient Validator transactionIdValidator =
             new ValidatorBuilder()
                     .addRule(OCPP2PrimDatatypes.identifierString())
                     .addRule(OCPP2PrimDatatypes.string36())

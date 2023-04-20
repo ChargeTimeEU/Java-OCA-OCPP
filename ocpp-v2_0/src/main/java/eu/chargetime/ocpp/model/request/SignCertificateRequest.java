@@ -26,7 +26,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class SignCertificateRequest extends RequestWithId {
 
-    private transient Validator csrValidator =
+    private final transient Validator csrValidator =
             new ValidatorBuilder()
                     .setRequired(true)
                     .addRule(OCPP2PrimDatatypes.string5500())

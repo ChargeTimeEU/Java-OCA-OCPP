@@ -38,20 +38,20 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class FirmwareType implements Validatable {
 
-    private transient Validator<Object> requiredValidator = new RequiredValidator();
+    private final transient Validator<Object> requiredValidator = new RequiredValidator();
 
-    private transient Validator locationValidator =
+    private final transient Validator locationValidator =
             new ValidatorBuilder()
                     .setRequired(true)
                     .addRule(OCPP2PrimDatatypes.string512())
                     .build();
 
-    private transient Validator signingCertificateValidator =
+    private final transient Validator signingCertificateValidator =
             new ValidatorBuilder()
                     .addRule(OCPP2PrimDatatypes.string5500())
                     .build();
 
-    private transient Validator signatureValidator =
+    private final transient Validator signatureValidator =
             new ValidatorBuilder()
                     .addRule(OCPP2PrimDatatypes.string800())
                     .build();

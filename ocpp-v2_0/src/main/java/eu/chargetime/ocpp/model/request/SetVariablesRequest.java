@@ -38,7 +38,7 @@ import java.util.Objects;
  * Charging Station.
  */
 public class SetVariablesRequest extends RequestWithId {
-  private transient Validator<Object> requiredValidator = new RequiredValidator();
+  private final transient Validator<Object> requiredValidator = new RequiredValidator();
   private SetVariableDataType[] setVariableData;
 
   @Override

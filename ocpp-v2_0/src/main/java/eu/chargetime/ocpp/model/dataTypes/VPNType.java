@@ -38,36 +38,36 @@ import lombok.ToString;
 @NoArgsConstructor
 public class VPNType implements Validatable {
 
-    private transient Validator serverValidator =
+    private final transient Validator serverValidator =
             new ValidatorBuilder()
                     .setRequired(true)
                     .addRule(OCPP2PrimDatatypes.string512())
                     .build();
 
-    private transient Validator userValidator =
+    private final transient Validator userValidator =
             new ValidatorBuilder()
                     .setRequired(true)
                     .addRule(OCPP2PrimDatatypes.string20())
                     .build();
 
-    private transient Validator groupValidator =
+    private final transient Validator groupValidator =
             new ValidatorBuilder()
                     .addRule(OCPP2PrimDatatypes.string20())
                     .build();
 
-    private transient Validator passwordValidator =
+    private final transient Validator passwordValidator =
             new ValidatorBuilder()
                     .setRequired(true)
                     .addRule(OCPP2PrimDatatypes.string20())
                     .build();
 
-    private transient Validator keyValidator =
+    private final transient Validator keyValidator =
             new ValidatorBuilder()
                     .setRequired(true)
                     .addRule(OCPP2PrimDatatypes.string255())
                     .build();
 
-    private transient Validator<Object> requiredValidator = new RequiredValidator();
+    private final transient Validator<Object> requiredValidator = new RequiredValidator();
 
     /**
      * This class does not get 'AdditionalProperties = false' in the schema generation, so it can be extended with arbitrary JSON properties to allow adding custom data.

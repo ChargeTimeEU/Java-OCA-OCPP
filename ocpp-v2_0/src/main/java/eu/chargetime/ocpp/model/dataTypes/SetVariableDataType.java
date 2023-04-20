@@ -38,8 +38,8 @@ import java.util.Objects;
 
 @Getter
 public class SetVariableDataType implements Validatable {
-  private transient Validator<Object> requiredValidator = new RequiredValidator();
-  private transient Validator attributeValueValidator =
+  private final transient Validator<Object> requiredValidator = new RequiredValidator();
+  private final transient Validator attributeValueValidator =
       new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string1000()).build();
 
   private AttributeEnumType attributeType;

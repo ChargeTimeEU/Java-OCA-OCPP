@@ -24,7 +24,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class UnpublishFirmwareRequest extends RequestWithId {
 
-    private transient Validator checksumValidator =
+    private final transient Validator checksumValidator =
             new ValidatorBuilder()
                     .addRule(OCPP2PrimDatatypes.identifierString())
                     .addRule(OCPP2PrimDatatypes.string32())

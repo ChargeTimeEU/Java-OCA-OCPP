@@ -46,25 +46,25 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class EventDataType implements Validatable {
 
-    private transient Validator<Object> requiredValidator = new RequiredValidator();
+    private final transient Validator<Object> requiredValidator = new RequiredValidator();
 
-    private transient Validator actualValueValidator =
+    private final transient Validator actualValueValidator =
             new ValidatorBuilder()
                     .setRequired(true)
                     .addRule(OCPP2PrimDatatypes.string2500())
                     .build();
 
-    private transient Validator techCodeValidator =
+    private final transient Validator techCodeValidator =
             new ValidatorBuilder()
                     .addRule(OCPP2PrimDatatypes.string50())
                     .build();
 
-    private transient Validator techInfoValidator =
+    private final transient Validator techInfoValidator =
             new ValidatorBuilder()
                     .addRule(OCPP2PrimDatatypes.string500())
                     .build();
 
-    private transient Validator transactionIdValidator =
+    private final transient Validator transactionIdValidator =
             new ValidatorBuilder()
                     .addRule(OCPP2PrimDatatypes.identifierString())
                     .addRule(OCPP2PrimDatatypes.string36())

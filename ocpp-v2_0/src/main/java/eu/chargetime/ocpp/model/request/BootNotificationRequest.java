@@ -39,7 +39,7 @@ import java.util.Objects;
 @Getter
 /** Sent by the Charging Station to the CSMS. */
 public class BootNotificationRequest extends RequestWithId {
-  private transient RequiredValidator requiredValidator = new RequiredValidator();
+  private final transient RequiredValidator requiredValidator = new RequiredValidator();
 
   private BootReasonEnumType reason;
   private ChargingStationType chargingStation;

@@ -39,7 +39,7 @@ import java.util.Objects;
  * to the CSMS in response to a SetVariablesRequest.
  */
 public class SetVariablesResponse extends Confirmation {
-  private transient Validator<Object> requiredValidator = new RequiredValidator();
+  private final transient Validator<Object> requiredValidator = new RequiredValidator();
 
   private SetVariableResultType[] setVariableResult;
 

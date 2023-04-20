@@ -42,29 +42,29 @@ import lombok.ToString;
 @NoArgsConstructor
 public class APNType implements Validatable {
 
-    private transient Validator apnValidator =
+    private final transient Validator apnValidator =
             new ValidatorBuilder()
                     .setRequired(true)
                     .addRule(OCPP2PrimDatatypes.string512())
                     .build();
 
-    private transient Validator apnUserNameValidator =
+    private final transient Validator apnUserNameValidator =
             new ValidatorBuilder()
                     .addRule(OCPP2PrimDatatypes.string20())
                     .build();
 
-    private transient Validator apnPasswordValidator =
+    private final transient Validator apnPasswordValidator =
             new ValidatorBuilder()
                     .addRule(OCPP2PrimDatatypes.string20())
                     .build();
 
-    private transient Validator preferredNetworkValidator =
+    private final transient Validator preferredNetworkValidator =
             new ValidatorBuilder()
                     .addRule(OCPP2PrimDatatypes.string20())
                     .addRule(OCPP2PrimDatatypes.identifierString())
                     .build();
 
-    private transient Validator<Object> requiredValidator = new RequiredValidator();
+    private final transient Validator<Object> requiredValidator = new RequiredValidator();
 
     /**
      * This class does not get 'AdditionalProperties = false' in the schema generation, so it can be extended with arbitrary JSON properties to allow adding custom data.

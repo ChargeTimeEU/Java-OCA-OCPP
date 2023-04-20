@@ -34,7 +34,7 @@ import java.util.Objects;
 
 public class StatusNotificationRequest extends RequestWithId {
 
-  private transient RequiredValidator validator = new RequiredValidator();
+  private final transient RequiredValidator validator = new RequiredValidator();
 
   private ZonedDateTime timestamp;
 

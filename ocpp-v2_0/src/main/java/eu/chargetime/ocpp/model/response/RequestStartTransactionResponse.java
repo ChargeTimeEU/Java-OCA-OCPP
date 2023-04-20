@@ -29,9 +29,9 @@ import lombok.ToString;
 @NoArgsConstructor
 public class RequestStartTransactionResponse extends Confirmation {
 
-    private transient Validator<Object> requiredValidator = new RequiredValidator();
+    private final transient Validator<Object> requiredValidator = new RequiredValidator();
 
-    private transient Validator transactionIdValidator =
+    private final transient Validator transactionIdValidator =
             new ValidatorBuilder()
                     .addRule(OCPP2PrimDatatypes.identifierString())
                     .addRule(OCPP2PrimDatatypes.string36())
@@ -69,10 +69,6 @@ public class RequestStartTransactionResponse extends Confirmation {
     public RequestStartTransactionResponse(RequestStartStopStatusEnumType status) {
         requiredValidator.validate(status);
         this.status = status;
-    }
-
-    public void setTransactionIdValidator(Validator transactionIdValidator) {
-        this.transactionIdValidator = transactionIdValidator;
     }
 
     public void setCustomData(CustomDataType customData) {

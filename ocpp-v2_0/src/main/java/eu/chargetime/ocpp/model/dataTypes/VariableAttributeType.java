@@ -35,7 +35,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class VariableAttributeType implements Validatable {
 
-    private transient Validator valueValidator =
+    private final transient Validator valueValidator =
             new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string2500()).build();
 
     /**
