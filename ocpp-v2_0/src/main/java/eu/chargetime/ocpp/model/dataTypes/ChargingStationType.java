@@ -31,10 +31,12 @@ import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 @Getter
+@NoArgsConstructor
 public class ChargingStationType implements Validatable {
   private transient Validator serialNumberValidator =
       new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string20()).build();
@@ -50,6 +52,13 @@ public class ChargingStationType implements Validatable {
   private String vendorName;
   private String firmwareVersion;
   private ModemType modem;
+
+  public ChargingStationType(String model, String vendorName) {
+    modelValidator.validate(model);
+    vendorNameValidator.validate(vendorName);
+    this.model = model;
+    this.vendorName = vendorName;
+  }
 
   /**
    * Optional. Vendor-specific device identifier.

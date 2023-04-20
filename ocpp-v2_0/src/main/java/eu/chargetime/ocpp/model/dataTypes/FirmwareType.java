@@ -10,9 +10,10 @@ import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 
 /**
@@ -34,6 +35,7 @@ import java.util.Date;
 @Getter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 public class FirmwareType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();
@@ -79,7 +81,7 @@ public class FirmwareType implements Validatable {
      *
      */
     @JsonProperty("retrieveDateTime")
-    public Date retrieveDateTime;
+    public LocalDateTime retrieveDateTime;
     /**
      * Firmware. Install. Date_ Time
      * urn:x-enexis:ecdm:uid:1:569462
@@ -88,7 +90,7 @@ public class FirmwareType implements Validatable {
      *
      */
     @JsonProperty("installDateTime")
-    public Date installDateTime;
+    public LocalDateTime installDateTime;
     /**
      * Certificate with which the firmware was signed.
      * PEM encoded X.509 certificate.
@@ -107,7 +109,7 @@ public class FirmwareType implements Validatable {
     @JsonProperty("signature")
     public String signature;
 
-    public FirmwareType(String location, Date retrieveDateTime) {
+    public FirmwareType(String location, LocalDateTime retrieveDateTime) {
         locationValidator.validate(location);
         requiredValidator.validate(retrieveDateTime);
         this.location = location;
@@ -123,12 +125,12 @@ public class FirmwareType implements Validatable {
         this.location = location;
     }
 
-    public void setRetrieveDateTime(Date retrieveDateTime) {
+    public void setRetrieveDateTime(LocalDateTime retrieveDateTime) {
         requiredValidator.validate(retrieveDateTime);
         this.retrieveDateTime = retrieveDateTime;
     }
 
-    public void setInstallDateTime(Date installDateTime) {
+    public void setInstallDateTime(LocalDateTime installDateTime) {
         this.installDateTime = installDateTime;
     }
 

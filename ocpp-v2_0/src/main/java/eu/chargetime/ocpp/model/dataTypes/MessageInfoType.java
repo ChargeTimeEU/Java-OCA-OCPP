@@ -11,7 +11,7 @@ import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 
 /**
@@ -91,7 +91,7 @@ public class MessageInfoType implements Validatable {
      *
      */
     @JsonProperty("startDateTime")
-    public Date startDateTime;
+    public LocalDateTime startDateTime;
     /**
      * Message_ Info. End. Date_ Time
      * urn:x-enexis:ecdm:uid:1:569257
@@ -100,7 +100,7 @@ public class MessageInfoType implements Validatable {
      *
      */
     @JsonProperty("endDateTime")
-    public Date endDateTime;
+    public LocalDateTime endDateTime;
     /**
      * During which transaction shall this message be shown.
      * Message SHALL be removed by the Charging Station after transaction has
@@ -151,11 +151,11 @@ public class MessageInfoType implements Validatable {
         this.state = state;
     }
 
-    public void setStartDateTime(Date startDateTime) {
+    public void setStartDateTime(LocalDateTime startDateTime) {
         this.startDateTime = startDateTime;
     }
 
-    public void setEndDateTime(Date endDateTime) {
+    public void setEndDateTime(LocalDateTime endDateTime) {
         this.endDateTime = endDateTime;
     }
 

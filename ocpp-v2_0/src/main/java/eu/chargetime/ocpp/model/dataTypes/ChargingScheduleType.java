@@ -9,9 +9,10 @@ import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -36,6 +37,7 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 public class ChargingScheduleType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();
@@ -62,7 +64,7 @@ public class ChargingScheduleType implements Validatable {
      *
      */
     @JsonProperty("startSchedule")
-    private Date startSchedule;
+    private LocalDateTime startSchedule;
     /**
      * Charging_ Schedule. Duration. Elapsed_ Time
      * urn:x-oca:ocpp:uid:1:569236
@@ -126,7 +128,7 @@ public class ChargingScheduleType implements Validatable {
         this.id = id;
     }
 
-    public void setStartSchedule(Date startSchedule) {
+    public void setStartSchedule(LocalDateTime startSchedule) {
         this.startSchedule = startSchedule;
     }
 

@@ -13,9 +13,10 @@ import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -42,6 +43,7 @@ import java.util.List;
 @Getter
 @ToString
 @EqualsAndHashCode
+@NoArgsConstructor
 public class ChargingProfileType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();
@@ -115,7 +117,7 @@ public class ChargingProfileType implements Validatable {
      *
      */
     @JsonProperty("validFrom")
-    private Date validFrom;
+    private LocalDateTime validFrom;
     /**
      * Charging_ Profile. Valid_ To. Date_ Time
      * urn:x-oca:ocpp:uid:1:569235
@@ -124,7 +126,7 @@ public class ChargingProfileType implements Validatable {
      *
      */
     @JsonProperty("validTo")
-    private Date validTo;
+    private LocalDateTime validTo;
     /**
      *
      * (Required)
@@ -185,11 +187,11 @@ public class ChargingProfileType implements Validatable {
         this.recurrencyKind = recurrencyKind;
     }
 
-    public void setValidFrom(Date validFrom) {
+    public void setValidFrom(LocalDateTime validFrom) {
         this.validFrom = validFrom;
     }
 
-    public void setValidTo(Date validTo) {
+    public void setValidTo(LocalDateTime validTo) {
         this.validTo = validTo;
     }
 

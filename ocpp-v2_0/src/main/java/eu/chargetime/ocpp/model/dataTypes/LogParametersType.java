@@ -9,9 +9,10 @@ import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 
 /**
@@ -31,6 +32,7 @@ import java.util.Date;
 @Getter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 public class LogParametersType implements Validatable {
 
     private transient Validator remoteLocationValidator =
@@ -63,7 +65,7 @@ public class LogParametersType implements Validatable {
      *
      */
     @JsonProperty("oldestTimestamp")
-    public Date oldestTimestamp;
+    public LocalDateTime oldestTimestamp;
     /**
      * Log. Latest_ Timestamp. Date_ Time
      * urn:x-enexis:ecdm:uid:1:569482
@@ -72,7 +74,7 @@ public class LogParametersType implements Validatable {
      *
      */
     @JsonProperty("latestTimestamp")
-    public Date latestTimestamp;
+    public LocalDateTime latestTimestamp;
 
     public LogParametersType(String remoteLocation) {
         remoteLocationValidator.validate(remoteLocation);
@@ -88,11 +90,11 @@ public class LogParametersType implements Validatable {
         this.remoteLocation = remoteLocation;
     }
 
-    public void setOldestTimestamp(Date oldestTimestamp) {
+    public void setOldestTimestamp(LocalDateTime oldestTimestamp) {
         this.oldestTimestamp = oldestTimestamp;
     }
 
-    public void setLatestTimestamp(Date latestTimestamp) {
+    public void setLatestTimestamp(LocalDateTime latestTimestamp) {
         this.latestTimestamp = latestTimestamp;
     }
 

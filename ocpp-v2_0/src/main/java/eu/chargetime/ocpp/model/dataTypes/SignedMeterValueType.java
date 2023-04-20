@@ -9,6 +9,7 @@ import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 
@@ -28,6 +29,7 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 public class SignedMeterValueType implements Validatable {
 
     private transient Validator signedMeterDataValidator =

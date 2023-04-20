@@ -12,9 +12,10 @@ import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 
 /**
@@ -42,6 +43,7 @@ import java.util.Date;
 @Getter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 public class EventDataType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();
@@ -90,7 +92,7 @@ public class EventDataType implements Validatable {
      *
      */
     @JsonProperty("timestamp")
-    public Date timestamp;
+    public LocalDateTime timestamp;
     /**
      * Type of monitor that triggered this event, e.g. exceeding a threshold value.
      *
@@ -182,7 +184,7 @@ public class EventDataType implements Validatable {
     public VariableType variable;
 
     public EventDataType(Integer eventId,
-                         Date timestamp,
+                         LocalDateTime timestamp,
                          EventTriggerEnumType trigger,
                          String actualValue,
                          ComponentType component,
@@ -213,7 +215,7 @@ public class EventDataType implements Validatable {
         this.eventId = eventId;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         requiredValidator.validate(timestamp);
         this.timestamp = timestamp;
     }

@@ -10,6 +10,7 @@ import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 
@@ -32,6 +33,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @Getter
 @ToString
+@NoArgsConstructor
 public class SetMonitoringDataType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();

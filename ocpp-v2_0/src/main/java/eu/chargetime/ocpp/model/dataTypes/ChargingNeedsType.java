@@ -9,9 +9,10 @@ import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 
 /**
@@ -31,6 +32,7 @@ import java.util.Date;
 @Getter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 public class ChargingNeedsType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();
@@ -80,7 +82,7 @@ public class ChargingNeedsType implements Validatable {
      *
      */
     @JsonProperty("departureTime")
-    public Date departureTime;
+    public LocalDateTime departureTime;
 
     public ChargingNeedsType(EnergyTransferModeEnumType requestedEnergyTransfer) {
         requiredValidator.validate(requestedEnergyTransfer);
@@ -104,7 +106,7 @@ public class ChargingNeedsType implements Validatable {
         this.requestedEnergyTransfer = requestedEnergyTransfer;
     }
 
-    public void setDepartureTime(Date departureTime) {
+    public void setDepartureTime(LocalDateTime departureTime) {
         this.departureTime = departureTime;
     }
 

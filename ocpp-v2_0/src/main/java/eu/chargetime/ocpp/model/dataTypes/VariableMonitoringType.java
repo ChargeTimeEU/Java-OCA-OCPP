@@ -10,6 +10,7 @@ import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 
@@ -30,6 +31,7 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 public class VariableMonitoringType implements Validatable {
 
     private transient Validator<Integer> integerBetweenZeroAndNineValidator = new IntegerBetweenZeroAndNine();

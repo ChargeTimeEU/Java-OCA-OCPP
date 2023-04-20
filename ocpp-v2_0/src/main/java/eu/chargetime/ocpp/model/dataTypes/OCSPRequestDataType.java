@@ -11,6 +11,7 @@ import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,6 +26,7 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 public class OCSPRequestDataType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();

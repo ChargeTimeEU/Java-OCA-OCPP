@@ -9,6 +9,7 @@ import eu.chargetime.ocpp.model.dataTypes.enums.ReasonEnumType;
 import eu.chargetime.ocpp.model.validation.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 
@@ -30,9 +31,10 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
+@NoArgsConstructor
 public class TransactionType implements Validatable {
 
-    private transient Validator transactionIdValidator =
+    private final transient Validator transactionIdValidator =
             new ValidatorBuilder()
                     .addRule(OCPP2PrimDatatypes.identifierString())
                     .addRule(OCPP2PrimDatatypes.string36())

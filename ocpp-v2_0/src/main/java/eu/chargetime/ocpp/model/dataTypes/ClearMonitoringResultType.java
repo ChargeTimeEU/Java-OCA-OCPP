@@ -8,6 +8,7 @@ import eu.chargetime.ocpp.model.dataTypes.enums.ClearMonitoringStatusEnumType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -17,6 +18,7 @@ import lombok.Getter;
         "statusInfo"
 })
 @Getter
+@NoArgsConstructor
 public class ClearMonitoringResultType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();

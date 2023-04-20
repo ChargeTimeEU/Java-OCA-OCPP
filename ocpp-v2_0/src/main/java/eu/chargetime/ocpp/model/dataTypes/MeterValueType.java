@@ -8,6 +8,7 @@ import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
@@ -30,6 +31,7 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 public class MeterValueType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();

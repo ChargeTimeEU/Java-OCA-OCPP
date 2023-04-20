@@ -11,9 +11,10 @@ import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -40,6 +41,7 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 public class IdTokenInfoType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();
@@ -70,7 +72,7 @@ public class IdTokenInfoType implements Validatable {
      *
      */
     @JsonProperty("cacheExpiryDateTime")
-    public Date cacheExpiryDateTime;
+    public LocalDateTime cacheExpiryDateTime;
     /**
      * Priority from a business point of view. Default priority is 0, The range is from -9 to 9. Higher values indicate a higher priority. The chargingPriority in &lt;<transactioneventresponse,TransactionEventResponse>> overrules this one.
      *
@@ -137,7 +139,7 @@ public class IdTokenInfoType implements Validatable {
         this.status = status;
     }
 
-    public void setCacheExpiryDateTime(Date cacheExpiryDateTime) {
+    public void setCacheExpiryDateTime(LocalDateTime cacheExpiryDateTime) {
         this.cacheExpiryDateTime = cacheExpiryDateTime;
     }
 

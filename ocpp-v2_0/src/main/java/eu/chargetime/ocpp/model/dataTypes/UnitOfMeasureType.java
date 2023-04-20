@@ -9,6 +9,7 @@ import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Objects;
@@ -28,6 +29,7 @@ import java.util.Objects;
 @Getter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 public class UnitOfMeasureType implements Validatable {
 
     private transient Validator unitValidator =

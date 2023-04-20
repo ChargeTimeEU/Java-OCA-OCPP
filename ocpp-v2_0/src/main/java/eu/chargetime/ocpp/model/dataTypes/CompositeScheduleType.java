@@ -9,9 +9,10 @@ import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -33,6 +34,7 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode
 @Getter
+@NoArgsConstructor
 public class CompositeScheduleType implements Validatable {
 
     private transient Validator<Object> requiredValidator = new RequiredValidator();
@@ -78,7 +80,7 @@ public class CompositeScheduleType implements Validatable {
      *
      */
     @JsonProperty("scheduleStart")
-    public Date scheduleStart;
+    public LocalDateTime scheduleStart;
     /**
      * The unit of measure Limit is
      * expressed in.
@@ -91,7 +93,7 @@ public class CompositeScheduleType implements Validatable {
 
     public CompositeScheduleType(List<ChargingSchedulePeriodType> chargingSchedulePeriod,
                                  Integer evseId, Integer duration,
-                                 Date scheduleStart,
+                                 LocalDateTime scheduleStart,
                                  ChargingRateUnitEnumType chargingRateUnit) {
         requiredValidator.validate(chargingSchedulePeriod);
         requiredValidator.validate(evseId);
@@ -124,7 +126,7 @@ public class CompositeScheduleType implements Validatable {
         this.duration = duration;
     }
 
-    public void setScheduleStart(Date scheduleStart) {
+    public void setScheduleStart(LocalDateTime scheduleStart) {
         requiredValidator.validate(scheduleStart);
         this.scheduleStart = scheduleStart;
     }
