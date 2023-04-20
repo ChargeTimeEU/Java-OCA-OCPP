@@ -27,14 +27,15 @@ package eu.chargetime.ocpp.test.features;
 */
 
 import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.features.BootNotificationFeature;
-import eu.chargetime.ocpp.features.handlers.server.IServerBootNotificationRequestHandler;
+import eu.chargetime.ocpp.features.server.BootNotificationFeature;
+import eu.chargetime.ocpp.features.server.handlers.IServerBootNotificationRequestHandler;
 import eu.chargetime.ocpp.model.response.BootNotificationResponse;
 import eu.chargetime.ocpp.model.dataTypes.enums.BootReasonEnumType;
 import eu.chargetime.ocpp.model.dataTypes.enums.RegistrationStatusEnumType;
 import eu.chargetime.ocpp.model.request.BootNotificationRequest;
 import eu.chargetime.ocpp.model.dataTypes.ChargingStationType;
 
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -47,7 +48,7 @@ public class BootNotification implements IServerBootNotificationRequestHandler {
     feature = new BootNotificationFeature(this);
 
     confirmation = new BootNotificationResponse();
-    ZonedDateTime calendar = ZonedDateTime.now(ZoneOffset.UTC);
+    LocalDateTime calendar = LocalDateTime.now(ZoneOffset.UTC);
     confirmation.setCurrentTime(calendar);
     confirmation.setInterval(42);
     confirmation.setStatus(RegistrationStatusEnumType.ACCEPTED);

@@ -27,8 +27,8 @@ package eu.chargetime.ocpp.test.features;
 
 import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 
-import eu.chargetime.ocpp.features.SetVariablesFeature;
-import eu.chargetime.ocpp.features.handlers.client.IClientSetVariablesRequestHandler;
+import eu.chargetime.ocpp.features.client.SetVariablesFeature;
+import eu.chargetime.ocpp.features.client.handlers.IClientSetVariablesRequestHandler;
 import eu.chargetime.ocpp.model.response.SetVariablesResponse;
 import eu.chargetime.ocpp.model.dataTypes.*;
 import eu.chargetime.ocpp.model.dataTypes.enums.SetVariableStatusEnumType;
