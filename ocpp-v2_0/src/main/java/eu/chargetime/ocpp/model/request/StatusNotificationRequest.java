@@ -29,14 +29,18 @@ import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.model.dataTypes.enums.ConnectorStatusEnumType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+@NoArgsConstructor
 public class StatusNotificationRequest extends RequestWithId {
 
   private final transient RequiredValidator validator = new RequiredValidator();
 
-  private ZonedDateTime timestamp;
+  private LocalDateTime timestamp;
 
   private ConnectorStatusEnumType connectorStatus;
 
@@ -44,12 +48,23 @@ public class StatusNotificationRequest extends RequestWithId {
 
   private Integer connectorId;
 
+  public StatusNotificationRequest(LocalDateTime timestamp, ConnectorStatusEnumType connectorStatus, Integer evseId, Integer connectorId) {
+    validator.validate(timestamp);
+    validator.validate(connectorStatus);
+    validator.validate(evseId);
+    validator.validate(connectorId);
+    this.timestamp = timestamp;
+    this.connectorStatus = connectorStatus;
+    this.evseId = evseId;
+    this.connectorId = connectorId;
+  }
+
   /**
    * This is the time for which the status is reported
    *
    * @return {@link ZonedDateTime}
    */
-  public ZonedDateTime getTimestamp() {
+  public LocalDateTime getTimestamp() {
     return timestamp;
   }
 
@@ -58,7 +73,7 @@ public class StatusNotificationRequest extends RequestWithId {
    *
    * @param timestamp {@link ZonedDateTime}
    */
-  public void setTimestamp(ZonedDateTime timestamp) {
+  public void setTimestamp(LocalDateTime timestamp) {
     validator.validate(timestamp);
     this.timestamp = timestamp;
   }
