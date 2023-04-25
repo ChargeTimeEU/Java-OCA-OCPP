@@ -31,20 +31,27 @@ import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 /** A physical or logical component. */
 @Getter
+@NoArgsConstructor
 public class ComponentType implements Validatable {
-  private transient Validator nameValidator =
+  private final transient Validator nameValidator =
       new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string50()).build();
-  private transient Validator instanceValidator =
+  private final transient Validator instanceValidator =
       new ValidatorBuilder().addRule(OCPP2PrimDatatypes.string50()).build();
 
   private String name;
   private String instance;
   private EVSEType evse;
+
+  public ComponentType(String name) {
+    nameValidator.validate(name);
+    this.name = name;
+  }
 
   /**
    * Name of the component. Name should be taken from the list of standardized component names
@@ -64,7 +71,6 @@ public class ComponentType implements Validatable {
    */
   public void setName(String name) {
     nameValidator.validate(name);
-
     this.name = name;
   }
 
