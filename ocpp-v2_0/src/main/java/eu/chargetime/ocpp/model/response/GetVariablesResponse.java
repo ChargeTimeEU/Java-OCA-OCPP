@@ -29,12 +29,19 @@ package eu.chargetime.ocpp.model.response;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.dataTypes.GetVariableResultType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+import lombok.NoArgsConstructor;
+
 import java.util.Arrays;
 import java.util.Objects;
 
+@NoArgsConstructor
 public class GetVariablesResponse extends Confirmation {
 
   private GetVariableResultType[] getVariableResult;
+
+  public GetVariablesResponse(GetVariableResultType[] getVariableResult) {
+    this.getVariableResult = getVariableResult;
+  }
 
   /**
    * List of requested variables and their values.
