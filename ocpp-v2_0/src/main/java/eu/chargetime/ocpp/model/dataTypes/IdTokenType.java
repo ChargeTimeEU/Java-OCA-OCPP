@@ -95,9 +95,7 @@ public class IdTokenType implements Validatable {
 
     @Override
     public boolean validate() {
-        return (additionalInfoType != null
-                    && additionalInfoType.stream().filter(AdditionalInfoType::validate).count() == additionalInfoType.size())
-                && requiredValidator.safeValidate(type)
-                && requiredValidator.safeValidate(idToken);
+        return (requiredValidator.safeValidate(type)
+                && requiredValidator.safeValidate(idToken));
     }
 }
