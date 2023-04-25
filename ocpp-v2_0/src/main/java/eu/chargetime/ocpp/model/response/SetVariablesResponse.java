@@ -31,6 +31,8 @@ import eu.chargetime.ocpp.model.dataTypes.SetVariableResultType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+import lombok.NoArgsConstructor;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -38,10 +40,16 @@ import java.util.Objects;
  * This contains the field definition of the SetVariablesResponse PDU sent by the Charging Station
  * to the CSMS in response to a SetVariablesRequest.
  */
+@NoArgsConstructor
 public class SetVariablesResponse extends Confirmation {
   private final transient Validator<Object> requiredValidator = new RequiredValidator();
 
   private SetVariableResultType[] setVariableResult;
+
+  public SetVariablesResponse(SetVariableResultType[] setVariableResult) {
+    requiredValidator.validate(setVariableResult);
+    this.setVariableResult = setVariableResult;
+  }
 
   /**
    * List of result statuses per Component-Variable.
