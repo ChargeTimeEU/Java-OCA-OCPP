@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.features;
+package extrawest.ocpp.test.features;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -25,15 +25,17 @@ package eu.chargetime.ocpp.test.features;
    SOFTWARE.
 */
 
-import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
+import static extrawest.ocpp.utilities.TestUtilities.aList;
 
-import eu.chargetime.ocpp.features.client.GetVariablesFeature;
-import eu.chargetime.ocpp.features.client.handlers.IClientGetVariablesRequestHandler;
-import eu.chargetime.ocpp.model.response.GetVariablesResponse;
-import eu.chargetime.ocpp.model.dataTypes.*;
-import eu.chargetime.ocpp.model.dataTypes.enums.GetVariableStatusEnumType;
-import eu.chargetime.ocpp.model.request.GetVariablesRequest;
-import eu.chargetime.ocpp.model.basic.types.*;
+import extrawest.ocpp.features.client.GetVariablesFeature;
+import extrawest.ocpp.features.client.handlers.IClientGetVariablesRequestHandler;
+import extrawest.ocpp.model.dataTypes.ComponentType;
+import extrawest.ocpp.model.dataTypes.GetVariableDataType;
+import extrawest.ocpp.model.dataTypes.GetVariableResultType;
+import extrawest.ocpp.model.dataTypes.VariableType;
+import extrawest.ocpp.model.response.GetVariablesResponse;
+import extrawest.ocpp.model.dataTypes.enums.GetVariableStatusEnumType;
+import extrawest.ocpp.model.request.GetVariablesRequest;
 
 public class GetVariables implements IClientGetVariablesRequestHandler {
   private GetVariablesFeature feature;

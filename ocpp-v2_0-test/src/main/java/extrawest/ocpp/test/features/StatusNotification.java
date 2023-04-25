@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.features;
+package extrawest.ocpp.test.features;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -25,12 +25,14 @@ package eu.chargetime.ocpp.test.features;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.features.server.StatusNotificationFeature;
-import eu.chargetime.ocpp.features.server.handlers.IServerStatusNotificationRequestHandler;
-import eu.chargetime.ocpp.model.response.StatusNotificationResponse;
-import eu.chargetime.ocpp.model.request.StatusNotificationRequest;
-import eu.chargetime.ocpp.model.dataTypes.enums.ConnectorStatusEnumType;
+import extrawest.ocpp.feature.Feature;
+import extrawest.ocpp.features.server.StatusNotificationFeature;
+import extrawest.ocpp.features.server.handlers.IServerStatusNotificationRequestHandler;
+import extrawest.ocpp.model.response.StatusNotificationResponse;
+import extrawest.ocpp.model.request.StatusNotificationRequest;
+import extrawest.ocpp.model.dataTypes.enums.ConnectorStatusEnumType;
+
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -57,7 +59,7 @@ public class StatusNotification implements IServerStatusNotificationRequestHandl
 
   public StatusNotificationRequest createRequest() {
     StatusNotificationRequest request = new StatusNotificationRequest();
-    request.setTimestamp(ZonedDateTime.now());
+    request.setTimestamp(LocalDateTime.now());
     request.setConnectorStatus(ConnectorStatusEnumType.AVAILABLE);
     request.setEvseId(1);
     request.setConnectorId(1);

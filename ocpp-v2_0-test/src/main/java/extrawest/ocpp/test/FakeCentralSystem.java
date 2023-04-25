@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test;
+package extrawest.ocpp.test;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -25,20 +25,21 @@ package eu.chargetime.ocpp.test;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.AuthenticationException;
-import eu.chargetime.ocpp.IServerAPI;
-import eu.chargetime.ocpp.JSONConfiguration;
-import eu.chargetime.ocpp.JSONServer;
-import eu.chargetime.ocpp.NotConnectedException;
-import eu.chargetime.ocpp.OccurenceConstraintException;
-import eu.chargetime.ocpp.ServerEvents;
-import eu.chargetime.ocpp.UnsupportedFeatureException;
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.SessionInformation;
+import extrawest.ocpp.AuthenticationException;
+import extrawest.ocpp.IServerAPI;
+import extrawest.ocpp.JSONConfiguration;
+import extrawest.ocpp.JSONServer;
+import extrawest.ocpp.NotConnectedException;
+import extrawest.ocpp.OccurenceConstraintException;
+import extrawest.ocpp.ServerEvents;
+import extrawest.ocpp.UnsupportedFeatureException;
+import extrawest.ocpp.feature.Feature;
+import extrawest.ocpp.model.Confirmation;
+import extrawest.ocpp.model.Request;
+import extrawest.ocpp.model.SessionInformation;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

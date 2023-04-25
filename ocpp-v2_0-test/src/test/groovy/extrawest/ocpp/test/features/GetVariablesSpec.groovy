@@ -1,15 +1,15 @@
-package eu.chargetime.ocpp.test.features
+package extrawest.ocpp.test.features
 
-import eu.chargetime.ocpp.test.base.json.BaseSpec
+
 import spock.util.concurrent.PollingConditions
 
-class SetVariablesSpec extends BaseSpec
+class GetVariablesSpec extends BaseSpec
 {
-    def "The central system sends a Set Variables request and receives a response"() {
+    def "The central system sends a Get Variables request and receives a response"() {
         def conditions = new PollingConditions(timeout: 11)
 
         given:
-        def tester = new SetVariables()
+        def tester = new GetVariables()
         chargePoint.addFeature(tester.feature)
         centralSystem.addFeature(tester.feature)
         def request = tester.createRequest()

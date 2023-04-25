@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.features;
+package extrawest.ocpp.test.features;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -26,18 +26,17 @@ package eu.chargetime.ocpp.test.features;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.features.server.BootNotificationFeature;
-import eu.chargetime.ocpp.features.server.handlers.IServerBootNotificationRequestHandler;
-import eu.chargetime.ocpp.model.response.BootNotificationResponse;
-import eu.chargetime.ocpp.model.dataTypes.enums.BootReasonEnumType;
-import eu.chargetime.ocpp.model.dataTypes.enums.RegistrationStatusEnumType;
-import eu.chargetime.ocpp.model.request.BootNotificationRequest;
-import eu.chargetime.ocpp.model.dataTypes.ChargingStationType;
+import extrawest.ocpp.feature.Feature;
+import extrawest.ocpp.features.server.BootNotificationFeature;
+import extrawest.ocpp.features.server.handlers.IServerBootNotificationRequestHandler;
+import extrawest.ocpp.model.response.BootNotificationResponse;
+import extrawest.ocpp.model.dataTypes.enums.BootReasonEnumType;
+import extrawest.ocpp.model.dataTypes.enums.RegistrationStatusEnumType;
+import extrawest.ocpp.model.request.BootNotificationRequest;
+import extrawest.ocpp.model.dataTypes.ChargingStationType;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public class BootNotification implements IServerBootNotificationRequestHandler {

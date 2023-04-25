@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test;
+package extrawest.ocpp.test;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -25,9 +25,9 @@ package eu.chargetime.ocpp.test;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.feature.Feature;
-import eu.chargetime.ocpp.model.Confirmation;
-import eu.chargetime.ocpp.model.Request;
+import extrawest.ocpp.feature.Feature;
+import extrawest.ocpp.model.Confirmation;
+import extrawest.ocpp.model.Request;
 import java.util.UUID;
 
 public class FeatureTestDecorator implements Feature {

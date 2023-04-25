@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.test.features;
+package extrawest.ocpp.test.features;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -25,15 +25,17 @@ package eu.chargetime.ocpp.test.features;
    SOFTWARE.
 */
 
-import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
+import static extrawest.ocpp.utilities.TestUtilities.aList;
 
-import eu.chargetime.ocpp.features.client.SetVariablesFeature;
-import eu.chargetime.ocpp.features.client.handlers.IClientSetVariablesRequestHandler;
-import eu.chargetime.ocpp.model.response.SetVariablesResponse;
-import eu.chargetime.ocpp.model.dataTypes.*;
-import eu.chargetime.ocpp.model.dataTypes.enums.SetVariableStatusEnumType;
-import eu.chargetime.ocpp.model.request.SetVariablesRequest;
-import eu.chargetime.ocpp.model.basic.types.*;
+import extrawest.ocpp.features.client.SetVariablesFeature;
+import extrawest.ocpp.features.client.handlers.IClientSetVariablesRequestHandler;
+import extrawest.ocpp.model.dataTypes.ComponentType;
+import extrawest.ocpp.model.dataTypes.SetVariableDataType;
+import extrawest.ocpp.model.dataTypes.SetVariableResultType;
+import extrawest.ocpp.model.dataTypes.VariableType;
+import extrawest.ocpp.model.response.SetVariablesResponse;
+import extrawest.ocpp.model.dataTypes.enums.SetVariableStatusEnumType;
+import extrawest.ocpp.model.request.SetVariablesRequest;
 
 public class SetVariables implements IClientSetVariablesRequestHandler {
   private SetVariablesFeature feature;

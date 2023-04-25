@@ -1,6 +1,6 @@
-package eu.chargetime.ocpp.test.features
+package extrawest.ocpp.test.features
 
-import eu.chargetime.ocpp.test.base.json.BaseSpec
+
 import spock.util.concurrent.PollingConditions
 
 class StatusNotificationSpec extends BaseSpec {

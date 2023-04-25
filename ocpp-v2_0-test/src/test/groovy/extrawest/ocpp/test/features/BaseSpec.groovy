@@ -1,7 +1,7 @@
-package eu.chargetime.ocpp.test.base.json
+package extrawest.ocpp.test.features
 
-import eu.chargetime.ocpp.test.FakeCentralSystem
-import eu.chargetime.ocpp.test.FakeChargePoint
+import extrawest.ocpp.test.FakeCentralSystem
+import extrawest.ocpp.test.FakeChargePoint
 import spock.lang.Shared
 import spock.lang.Specification
 
