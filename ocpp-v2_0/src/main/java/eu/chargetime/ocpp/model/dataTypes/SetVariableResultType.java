@@ -33,6 +33,7 @@ import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
@@ -40,6 +41,7 @@ import java.util.Objects;
  * VariableAttributeType is used by {@link SetVariablesResponse}
  */
 @Getter
+@NoArgsConstructor
 public class SetVariableResultType implements Validatable {
   private transient Validator<Object> requiredValidator = new RequiredValidator();
 
@@ -47,6 +49,25 @@ public class SetVariableResultType implements Validatable {
   private SetVariableStatusEnumType attributeStatus;
   private ComponentType component;
   private VariableType variable;
+  private StatusInfoType statusInfoType;
+
+  public SetVariableResultType(SetVariableStatusEnumType attributeStatus, ComponentType component, VariableType variable) {
+    requiredValidator.validate(attributeStatus);
+    requiredValidator.validate(component);
+    requiredValidator.validate(variable);
+    this.attributeStatus = attributeStatus;
+    this.component = component;
+    this.variable = variable;
+  }
+
+  /**
+   * Optional. Detailed attribute status information.
+   *
+   * @param statusInfoType StatusInfoType
+   */
+  public void setStatusInfoType(StatusInfoType statusInfoType) {
+    this.statusInfoType = statusInfoType;
+  }
 
   /**
    * Optional. Type of attribute: Actual, Target, MinSet, MaxSet. Default is Actual when omitted.
