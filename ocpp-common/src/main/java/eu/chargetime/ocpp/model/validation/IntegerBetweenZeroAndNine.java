@@ -7,7 +7,7 @@ public class IntegerBetweenZeroAndNine extends Validator<Integer> {
 
     @Override
     public void validate(Integer value) throws PropertyConstraintException {
-        if (0 < value && 9 > value) {
+        if (0 > value && 9 > value) {
             throw new PropertyConstraintException(value, ERROR_MESSAGE);
         }
     }
