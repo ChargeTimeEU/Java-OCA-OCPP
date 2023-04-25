@@ -28,12 +28,19 @@ package eu.chargetime.ocpp.model.request;
 import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.model.dataTypes.GetVariableDataType;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+import lombok.NoArgsConstructor;
+
 import java.util.Arrays;
 import java.util.Objects;
 
+@NoArgsConstructor
 public class GetVariablesRequest extends RequestWithId {
 
   private GetVariableDataType[] getVariableData;
+
+  public GetVariablesRequest(GetVariableDataType[] getVariableData) {
+    this.getVariableData = getVariableData;
+  }
 
   /**
    * List of requested variables.
