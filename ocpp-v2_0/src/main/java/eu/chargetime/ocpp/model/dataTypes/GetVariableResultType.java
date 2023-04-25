@@ -34,13 +34,15 @@ import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 @Getter
+@NoArgsConstructor
 public class GetVariableResultType implements Validatable {
-  private transient Validator<Object> requiredValidator = new RequiredValidator();
-  private transient Validator attributeValueValidator =
+  private final transient Validator<Object> requiredValidator = new RequiredValidator();
+  private final transient Validator attributeValueValidator =
       new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string1000()).build();
 
   private GetVariableStatusEnumType attributeStatus;
@@ -48,6 +50,15 @@ public class GetVariableResultType implements Validatable {
   private String attributeValue;
   private ComponentType component;
   private VariableType variable;
+
+  public GetVariableResultType(GetVariableStatusEnumType attributeStatus, ComponentType component, VariableType variable) {
+    requiredValidator.validate(attributeStatus);
+    requiredValidator.validate(component);
+    requiredValidator.validate(variable);
+    this.attributeStatus = attributeStatus;
+    this.component = component;
+    this.variable = variable;
+  }
 
   /**
    * Required. Result status of getting the variable.
@@ -108,8 +119,6 @@ public class GetVariableResultType implements Validatable {
   @Override
   public boolean validate() {
     return requiredValidator.safeValidate(attributeStatus)
-        && (attributeStatus != GetVariableStatusEnumType.ACCEPTED
-            || requiredValidator.safeValidate(attributeValue))
         && requiredValidator.safeValidate(component)
         && requiredValidator.safeValidate(variable)
         && component.validate()
