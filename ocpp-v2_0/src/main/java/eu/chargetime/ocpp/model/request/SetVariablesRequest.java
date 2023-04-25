@@ -30,6 +30,8 @@ import eu.chargetime.ocpp.model.dataTypes.SetVariableDataType;
 import eu.chargetime.ocpp.model.validation.RequiredValidator;
 import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+import lombok.NoArgsConstructor;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -37,9 +39,14 @@ import java.util.Objects;
  * This contains the field definition of the SetVariablesRequest PDU sent by the CSMS to the
  * Charging Station.
  */
+@NoArgsConstructor
 public class SetVariablesRequest extends RequestWithId {
   private final transient Validator<Object> requiredValidator = new RequiredValidator();
   private SetVariableDataType[] setVariableData;
+
+  public SetVariablesRequest(SetVariableDataType[] setVariableData) {
+    this.setVariableData = setVariableData;
+  }
 
   @Override
   public boolean transactionRelated() {
