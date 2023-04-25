@@ -5,7 +5,6 @@ import eu.chargetime.ocpp.SOAPClient;
 import eu.chargetime.ocpp.feature.profile.ClientCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ClientCoreProfile;
 import eu.chargetime.ocpp.model.Request;
-import eu.chargetime.ocpp.model.core.*;
 
 import java.net.URL;
 
