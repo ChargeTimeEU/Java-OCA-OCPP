@@ -32,17 +32,26 @@ import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Objects;
 
 @Getter
+@NoArgsConstructor
 public class GetVariableDataType implements Validatable {
   private transient Validator<Object> requiredValidator = new RequiredValidator();
 
   private AttributeEnumType attributeType;
   private ComponentType component;
   private VariableType variable;
+
+  public GetVariableDataType(ComponentType component, VariableType variable) {
+    requiredValidator.validate(component);
+    requiredValidator.validate(variable);
+    this.component = component;
+    this.variable = variable;
+  }
 
   /**
    * Optional. Attribute type for which value is requested. When absent, default Actual is assumed.
