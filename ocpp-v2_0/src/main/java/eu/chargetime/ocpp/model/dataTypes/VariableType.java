@@ -31,11 +31,13 @@ import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 /** Reference key to a component-variable. */
 @Getter
+@NoArgsConstructor
 public class VariableType implements Validatable {
   private final transient Validator nameValidator =
       new ValidatorBuilder().setRequired(true).addRule(OCPP2PrimDatatypes.string50()).build();
@@ -44,6 +46,11 @@ public class VariableType implements Validatable {
 
   private String name;
   private String instance;
+
+  public VariableType(String name) {
+    nameValidator.validate(name);
+    this.name = name;
+  }
 
   /**
    * Required. Name of the variable. Name should be taken from the list of standardized variable
