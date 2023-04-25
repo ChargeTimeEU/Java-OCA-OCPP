@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp;
+package extrawest.ocpp;
 /*
  * Based ON https://github.com/TooTallNate/Java-WebSocket/issues/1077
  */

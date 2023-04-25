@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.wss;
+package extrawest.ocpp.wss;
 /*
  ubitricity.com - Java-OCA-OCPP
 

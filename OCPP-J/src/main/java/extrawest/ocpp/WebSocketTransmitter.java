@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp;
+package extrawest.ocpp;
 /*
  ChargeTime.eu - Java-OCA-OCPP
  Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -26,7 +26,7 @@ package eu.chargetime.ocpp;
  SOFTWARE.
 */
 
-import eu.chargetime.ocpp.wss.WssSocketBuilder;
+import extrawest.ocpp.wss.WssSocketBuilder;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Proxy;

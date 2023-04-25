@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp;
+package extrawest.ocpp;
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -25,8 +25,8 @@ package eu.chargetime.ocpp;
    SOFTWARE.
 */
 
-import eu.chargetime.ocpp.model.SessionInformation;
-import eu.chargetime.ocpp.wss.WssFactoryBuilder;
+import extrawest.ocpp.model.SessionInformation;
+import extrawest.ocpp.wss.WssFactoryBuilder;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;

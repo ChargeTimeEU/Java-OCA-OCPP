@@ -1,12 +1,12 @@
-package eu.chargetime.ocpp.wss.test;
+package extrawest.ocpp.wss.test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
-import eu.chargetime.ocpp.wss.BaseWssFactoryBuilder;
-import eu.chargetime.ocpp.wss.BaseWssSocketBuilder;
+import extrawest.ocpp.wss.BaseWssFactoryBuilder;
+import extrawest.ocpp.wss.BaseWssSocketBuilder;
 import java.io.IOException;
 import java.net.*;
 import javax.net.ssl.SSLSocketFactory;

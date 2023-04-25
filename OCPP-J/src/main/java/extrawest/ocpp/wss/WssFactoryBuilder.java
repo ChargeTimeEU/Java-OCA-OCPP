@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.wss;
+package extrawest.ocpp.wss;
 /*
  ubitricity.com - Java-OCA-OCPP
 
@@ -25,30 +25,21 @@ package eu.chargetime.ocpp.wss;
  SOFTWARE.
 */
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.URI;
+import org.java_websocket.WebSocketServerFactory;
 
-/** To build SSL {@link Socket} to support WSS scheme. */
-public interface WssSocketBuilder {
+/** To build {@link WebSocketServerFactory} factory to support WSS scheme. */
+public interface WssFactoryBuilder {
+
   /**
-   * Set URI to identify endpoint for the connection.
+   * Builds {@link WebSocketServerFactory} to support WSS scheme.
    *
-   * @param uri to identify endpoint for the connection.
-   * @return instance of {@link WssSocketBuilder}
+   * @return {@link WebSocketServerFactory}
    */
-  WssSocketBuilder uri(URI uri);
+  WebSocketServerFactory build();
 
   /**
-   * Builds SSL {@link Socket} to support WSS scheme.
-   *
-   * @return SSL {@link Socket}
-   */
-  Socket build() throws IOException;
-
-  /**
-   * Verifies if all required by the client creation time parameters are set. The idea is to allow
-   * the client to fail fast if required parameters are missing without exposing implementation
+   * Verifies if all required by the server creation time parameters are set. The idea is to allow
+   * the server to fail fast if required parameters are missing without exposing implementation
    * details.
    *
    * @throws IllegalStateException if verification fails.

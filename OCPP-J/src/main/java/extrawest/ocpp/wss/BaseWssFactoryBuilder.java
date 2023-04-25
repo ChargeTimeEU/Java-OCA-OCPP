@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp.wss;
+package extrawest.ocpp.wss;
 /*
  ubitricity.com - Java-OCA-OCPP
 
@@ -25,43 +25,46 @@ package eu.chargetime.ocpp.wss;
  SOFTWARE.
 */
 
-import java.io.IOException;
-import java.nio.channels.ByteChannel;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.SocketChannel;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLEngine;
-import org.java_websocket.SSLSocketChannel2;
+import org.java_websocket.WebSocketServerFactory;
 import org.java_websocket.server.DefaultSSLWebSocketServerFactory;
 
-/**
- * Overriding wrapping of channel from DefaultSSLWebSocketServerFactory to restrict enabled ciphers.
- */
-public final class CustomSSLWebSocketServerFactory extends DefaultSSLWebSocketServerFactory {
+/** Base implementation of WssFactoryBuilder. */
+public class BaseWssFactoryBuilder implements WssFactoryBuilder {
 
+  private SSLContext sslContext;
   private List<String> ciphers;
 
-  public CustomSSLWebSocketServerFactory(SSLContext sslContext, List<String> ciphers) {
-    super(sslContext);
+  private BaseWssFactoryBuilder() {}
+
+  public static BaseWssFactoryBuilder builder() {
+    return new BaseWssFactoryBuilder();
+  }
+
+  public BaseWssFactoryBuilder ciphers(List<String> ciphers) {
     this.ciphers = ciphers;
+    return this;
+  }
+
+  public BaseWssFactoryBuilder sslContext(SSLContext sslContext) {
+    this.sslContext = sslContext;
+    return this;
   }
 
   @Override
-  public ByteChannel wrapChannel(SocketChannel channel, SelectionKey key) throws IOException {
-    SSLEngine e = sslcontext.createSSLEngine();
-    /*
-     * See https://github.com/TooTallNate/Java-WebSocket/issues/466
-     *
-     * For TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 you must patch your java installation directly.
-     */
-    List<String> enabledCiphers = new ArrayList<String>(Arrays.asList(e.getEnabledCipherSuites()));
-    enabledCiphers.retainAll(ciphers);
+  public WebSocketServerFactory build() {
+    verify();
 
-    e.setEnabledCipherSuites(enabledCiphers.toArray(new String[enabledCiphers.size()]));
-    e.setUseClientMode(false);
-    return new SSLSocketChannel2(channel, e, exec, key);
+    return ciphers == null
+        ? new DefaultSSLWebSocketServerFactory(sslContext)
+        : new CustomSSLWebSocketServerFactory(sslContext, ciphers);
+  }
+
+  @Override
+  public void verify() {
+    if (sslContext == null) {
+      throw new IllegalStateException("sslContext must be set");
+    }
   }
 }

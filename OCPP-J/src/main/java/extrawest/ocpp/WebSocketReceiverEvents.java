@@ -1,4 +1,4 @@
-package eu.chargetime.ocpp; /*
+package extrawest.ocpp; /*
                                ChargeTime.eu - Java-OCA-OCPP
 
                                MIT License

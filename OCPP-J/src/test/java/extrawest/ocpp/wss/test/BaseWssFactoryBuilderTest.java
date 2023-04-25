@@ -1,7 +1,7 @@
-package eu.chargetime.ocpp.wss.test;
+package extrawest.ocpp.wss.test;
 
-import eu.chargetime.ocpp.wss.BaseWssFactoryBuilder;
-import eu.chargetime.ocpp.wss.CustomSSLWebSocketServerFactory;
+import extrawest.ocpp.wss.BaseWssFactoryBuilder;
+import extrawest.ocpp.wss.CustomSSLWebSocketServerFactory;
 import java.util.List;
 import javax.net.ssl.SSLContext;
 import org.hamcrest.CoreMatchers;

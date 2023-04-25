@@ -1,10 +1,10 @@
-package eu.chargetime.ocpp.wss.test;
+package extrawest.ocpp.wss.test;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
-import eu.chargetime.ocpp.wss.CustomSSLWebSocketServerFactory;
+import extrawest.ocpp.wss.CustomSSLWebSocketServerFactory;
 import java.io.IOException;
 import java.nio.channels.ByteChannel;
 import java.nio.channels.SelectionKey;
