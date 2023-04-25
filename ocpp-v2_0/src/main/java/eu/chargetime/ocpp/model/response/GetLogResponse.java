@@ -29,9 +29,9 @@ import lombok.ToString;
 @NoArgsConstructor
 public class GetLogResponse extends Confirmation {
 
-    private transient Validator<Object> requiredValidator = new RequiredValidator();
+    private final transient Validator<Object> requiredValidator = new RequiredValidator();
 
-    private transient Validator filenameValidator =
+    private final transient Validator filenameValidator =
             new ValidatorBuilder()
                     .addRule(OCPP2PrimDatatypes.string255())
                     .build();
@@ -90,6 +90,6 @@ public class GetLogResponse extends Confirmation {
 
     @Override
     public boolean validate() {
-        return false;
+        return requiredValidator.safeValidate(status);
     }
 }
