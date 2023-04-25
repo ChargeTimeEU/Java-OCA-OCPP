@@ -74,6 +74,6 @@ public class ResetRequest extends RequestWithId {
 
     @Override
     public boolean validate() {
-        return false;
+        return true;
     }
 }
