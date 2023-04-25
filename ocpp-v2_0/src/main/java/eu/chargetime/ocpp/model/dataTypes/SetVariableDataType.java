@@ -33,10 +33,12 @@ import eu.chargetime.ocpp.model.validation.Validator;
 import eu.chargetime.ocpp.model.validation.ValidatorBuilder;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 @Getter
+@NoArgsConstructor
 public class SetVariableDataType implements Validatable {
   private final transient Validator<Object> requiredValidator = new RequiredValidator();
   private final transient Validator attributeValueValidator =
@@ -46,6 +48,15 @@ public class SetVariableDataType implements Validatable {
   private String attributeValue;
   private ComponentType component;
   private VariableType variable;
+
+  public SetVariableDataType(String attributeValue, ComponentType component, VariableType variable) {
+    attributeValueValidator.validate(attributeValue);
+    requiredValidator.validate(component);
+    requiredValidator.validate(variable);
+    this.attributeValue = attributeValue;
+    this.component = component;
+    this.variable = variable;
+  }
 
   /**
    * Optional. Type of attribute: Actual, Target, MinSet, MaxSet. Default is Actual when omitted.
