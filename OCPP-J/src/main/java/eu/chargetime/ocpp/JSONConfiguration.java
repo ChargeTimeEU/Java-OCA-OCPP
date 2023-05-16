@@ -36,6 +36,7 @@ public class JSONConfiguration {
   public static final String PING_INTERVAL_PARAMETER = "PING_INTERVAL";
   public static final String USERNAME_PARAMETER = "USERNAME";
   public static final String PASSWORD_PARAMETER = "PASSWORD";
+  public static final String CONNECT_NON_BLOCKING_PARAMETER = "CONNECT_NON_BLOCKING";
   public static final String CONNECT_TIMEOUT_IN_MS_PARAMETER = "CONNECT_TIMEOUT_IN_MS";
   public static final String WEBSOCKET_WORKER_COUNT = "WEBSOCKET_WORKER_COUNT";
 
