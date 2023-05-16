@@ -26,6 +26,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+import static eu.chargetime.ocpp.ProtocolVersion.OCPP1_6;
+
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
@@ -166,8 +168,8 @@ public class Session implements ISession {
   }
 
   private class CommunicatorEventHandler implements CommunicatorEvents {
-    private static final String OCCURENCE_CONSTRAINT_VIOLATION =
-        "Payload for Action is syntactically correct but at least one of the fields violates occurence constraints";
+    private static final String OCCURRENCE_CONSTRAINT_VIOLATION =
+        "Payload for Action is syntactically correct but at least one of the fields violates occurrence constraints";
     private static final String INTERNAL_ERROR =
         "An internal error occurred and the receiver was not able to process the requested Action successfully";
     private static final String UNABLE_TO_PROCESS = "Unable to process action";
@@ -183,8 +185,8 @@ public class Session implements ISession {
           if (confirmation.validate()) {
             events.handleConfirmation(id, confirmation);
           } else {
-            communicator.sendCallError(
-                id, action, "OccurenceConstraintViolation", OCCURENCE_CONSTRAINT_VIOLATION);
+            communicator.sendCallError(id, action, isLegacyRPC() ? "OccurenceConstraintViolation" :
+                    "OccurrenceConstraintViolation", OCCURRENCE_CONSTRAINT_VIOLATION);
           }
         } else {
           logger.warn(INTERNAL_ERROR);
@@ -198,7 +200,8 @@ public class Session implements ISession {
         communicator.sendCallError(id, action, "InternalError", INTERNAL_ERROR);
       } catch (Exception ex) {
         logger.warn(UNABLE_TO_PROCESS, ex);
-        communicator.sendCallError(id, action, "FormationViolation", UNABLE_TO_PROCESS);
+        communicator.sendCallError(id, action, isLegacyRPC() ? "FormationViolation" :
+                "FormatViolation", UNABLE_TO_PROCESS);
       }
     }
 
@@ -219,15 +222,16 @@ public class Session implements ISession {
             addPendingPromise(id, action, promise);
             dispatcher.handleRequest(promise, request);
           } else {
-            communicator.sendCallError(
-                id, action, "OccurenceConstraintViolation", OCCURENCE_CONSTRAINT_VIOLATION);
+            communicator.sendCallError(id, action, isLegacyRPC() ? "OccurenceConstraintViolation" :
+                    "OccurrenceConstraintViolation", OCCURRENCE_CONSTRAINT_VIOLATION);
           }
         } catch (PropertyConstraintException ex) {
           logger.warn(ex.getMessage(), ex);
           communicator.sendCallError(id, action, "TypeConstraintViolation", ex.getMessage());
         } catch (Exception ex) {
           logger.warn(UNABLE_TO_PROCESS, ex);
-          communicator.sendCallError(id, action, "FormationViolation", UNABLE_TO_PROCESS);
+          communicator.sendCallError(id, action, isLegacyRPC() ? "FormationViolation" :
+                  "FormatViolation", UNABLE_TO_PROCESS);
         }
       }
     }
@@ -245,6 +249,11 @@ public class Session implements ISession {
     @Override
     public void onConnected() {
       events.handleConnectionOpened();
+    }
+
+    private boolean isLegacyRPC() {
+      ProtocolVersion protocolVersion = featureRepository.getProtocolVersion();
+      return protocolVersion == null || protocolVersion.equals(OCPP1_6);
     }
   }
 
