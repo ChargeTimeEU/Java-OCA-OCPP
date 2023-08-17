@@ -76,6 +76,20 @@ public class StopTransactionRequestTest {
   }
 
   @Test
+  public void setIdTag_nullGiven_doesNotRaiseException() {
+    request.setIdTag(null);
+    Assert.assertNull(request.getIdTag());
+  }
+  @Test
+  public void setIdTag_nullGiven_passesValidation() {
+    request.setMeterStop(2);
+    request.setTransactionId(5);
+    request.setTimestamp(ZonedDateTime.now());
+    request.setIdTag(null);
+    Assert.assertTrue(request.validate());
+  }
+
+  @Test
   public void setMeterStop_anInteger_meterStopIsSet() {
     // Given
     Integer anInteger = 42;
