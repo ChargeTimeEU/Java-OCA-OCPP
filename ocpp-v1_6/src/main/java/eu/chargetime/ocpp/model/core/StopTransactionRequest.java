@@ -103,7 +103,7 @@ public class StopTransactionRequest extends RequestWithId {
    */
   @XmlElement
   public void setIdTag(String idTag) {
-    if (!ModelUtil.validate(idTag, 20)) {
+    if (idTag != null && !ModelUtil.validate(idTag, 20)) {
       throw new PropertyConstraintException(idTag.length(), "Exceeded limit of 20 chars");
     }
 
