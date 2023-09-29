@@ -168,7 +168,8 @@ public final class PublishFirmwareStatusNotificationRequest extends RequestWithI
    * @return {@code true} if location is valid, {@code false} if not
    */
   private boolean isValidLocation(@Nullable String[] location) {
-    return location == null || (location.length >= 1);
+    return location == null
+        || (location.length >= 1 && Arrays.stream(location).allMatch(item -> item.length() <= 512));
   }
 
   /**
