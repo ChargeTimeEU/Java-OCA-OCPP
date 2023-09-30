@@ -5,14 +5,14 @@
 Java-OCA-OCPP
 =============
 
-A client and server library of Open Charge-Point Protocol from openchargealliance.org
+A library for the Open Charge-Point Protocol from openchargealliance.org
 
-With this library, you can easily get started with the Open Charge-Point Protocol.
-The design is driven by test, which will ensure premium software that is easy to adapt and modify to your needs.
-
+This library is made to support anyone who wants to implement a Central System or Charge Point that follows the Open Charge-Point Protocol.
 Please note, this is a library and not an application, so there is no main method. 
 
-Currently we support 1.6 SOAP or Web socket.
+The design is driven by test, which will ensure premium software that is easy to adapt and modify to your needs.
+
+The library supports version 2.0.1 and 1.6 SOAP and web sockets.
 
 Incoming request events are split into feature profiles as described in the OCPP specification.
 I recommend that you download and read the specification from openchargealliance.org
@@ -20,29 +20,10 @@ I recommend that you download and read the specification from openchargealliance
 See the project plan here:
     https://tree.taiga.io/project/tvolden-java-oca-ocpp/
 
-!! If you have an implementation for 0.4 or earlier, please read:  
-https://github.com/ChargeTimeEU/Java-OCA-OCPP/wiki/External-interface-change-from-version-0.4-to-0.5
-
 Maven
 =====
 
 Find the maven repo here: https://mvnrepository.com/artifact/eu.chargetime.ocpp
-
-Dependencies
-============
-
-Java-OCA-OCPP uses the following libraries:
-
-* [Groovy-2.4](http://www.groovy-lang.org/)
-* [JUnit4](http://junit.org/junit4/)
-* [org.hamcrest:hamcrest-all:1.3](http://hamcrest.org)
-* [org.mockito:mockito-core:1.10.19](http://mockito.org)
-* [spock-core-0.7-groovy-2.0](http://spockframework.org)
-
-To use version 1.6 you need the following libraries:
-
-* [com.google.code.gson](https://github.com/google/gson)
-* [org.java_websocket](https://github.com/TooTallNate/Java-WebSocket)
 
 License
 =======
