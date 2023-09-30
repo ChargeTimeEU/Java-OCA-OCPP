@@ -30,6 +30,8 @@ import java.util.UUID;
    SOFTWARE.
 */
 public interface ISession {
+  IFeatureRepository getFeatureRepository();
+
   UUID getSessionId();
 
   void open(String uri, SessionEvents eventHandler);

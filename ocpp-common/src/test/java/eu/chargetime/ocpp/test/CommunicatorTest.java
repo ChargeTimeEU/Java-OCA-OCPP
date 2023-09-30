@@ -60,9 +60,12 @@ public class CommunicatorTest {
     doAnswer(invocation -> eventHandler = invocation.getArgumentAt(0, RadioEvents.class))
         .when(receiver)
         .accept(any());
+    setupCommunicator(true);
+  }
 
+  private void setupCommunicator(boolean enableTransactionQueue) throws Exception {
     communicator =
-        new Communicator(receiver) {
+        new Communicator(receiver, enableTransactionQueue) {
           @Override
           public <T> T unpackPayload(Object payload, Class<T> type) throws Exception {
             return null;
@@ -94,7 +97,6 @@ public class CommunicatorTest {
             return null;
           }
         };
-
     communicator.accept(events);
   }
 
@@ -202,12 +204,13 @@ public class CommunicatorTest {
   @Test
   public void confirmationCallback_Handler() {
     // Given
-    Confirmation conf = new Confirmation() {
-      @Override
-      public boolean validate() {
-        return true;
-      }
-    };
+    Confirmation conf =
+        new Confirmation() {
+          @Override
+          public boolean validate() {
+            return true;
+          }
+        };
 
     ConfirmationCompletedHandler handler = mock(ConfirmationCompletedHandler.class);
     conf.setCompletedHandler(handler);
@@ -226,15 +229,35 @@ public class CommunicatorTest {
   public void confirmationCallback_noHandler() {
     // Make sure it's not crashing because it has no handler set
 
-    Confirmation conf = new Confirmation() {
-      @Override
-      public boolean validate() {
-        return true;
-      }
-    };
+    Confirmation conf =
+        new Confirmation() {
+          @Override
+          public boolean validate() {
+            return true;
+          }
+        };
 
     String uniqueId = "some id";
     String action = "some action";
     communicator.sendCallResult(uniqueId, action, conf);
+  }
+
+  @Test
+  public void
+      connected_transactionRelatedRequestsQueued_sendIsNotCalled_whenTransactionQueueIsDisabled()
+          throws Exception {
+    // Given
+    setupCommunicator(false);
+    doThrow(new NotConnectedException()).when(receiver).send(anyString());
+    String uniqueId = "some id";
+    String action = "some action";
+    communicator.sendCall(uniqueId, action, transactionRelatedRequest);
+
+    // When
+    reset(receiver);
+    eventHandler.connected();
+    Thread.sleep(100);
+
+    verifyNoMoreInteractions(receiver);
   }
 }

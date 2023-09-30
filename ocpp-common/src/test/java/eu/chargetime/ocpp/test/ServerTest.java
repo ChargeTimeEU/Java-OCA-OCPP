@@ -76,7 +76,8 @@ public class ServerTest {
         .newSession(any(), any());
 
     when(featureRepository.findFeature(any())).thenReturn(Optional.of(feature));
-    server = new Server(listener, featureRepository, promiseRepository);
+    when(session.getFeatureRepository()).thenReturn(featureRepository);
+    server = new Server(listener, promiseRepository);
   }
 
   @Test

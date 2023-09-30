@@ -6,7 +6,7 @@
 
     <groupId>eu.chargetime.ocpp</groupId>
     <artifactId>v2_0</artifactId>
-    <version>1.0.2</version>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
 
     <name>Java-OCA-OCPP v2.0</name>
@@ -50,12 +50,12 @@
         <dependency>
             <groupId>eu.chargetime.ocpp</groupId>
             <artifactId>common</artifactId>
-            <version>1.0.2</version>
+            <version>1.2.0</version>
         </dependency>
         <dependency>
             <groupId>eu.chargetime.ocpp</groupId>
             <artifactId>OCPP-J</artifactId>
-            <version>1.0.2</version>
+            <version>1.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.java-websocket</groupId>

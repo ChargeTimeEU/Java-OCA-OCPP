@@ -6,7 +6,7 @@
 
     <groupId>eu.chargetime.ocpp</groupId>
     <artifactId>all</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <packaging>pom</packaging>
 
     <name>Java-OCA-OCPP</name>
@@ -42,6 +42,8 @@
         <module>ocpp-v1_6-test</module>
         <module>ocpp-v2_0</module>
         <module>ocpp-v2_0-test</module>
+        <module>ocpp-v2</module>
+        <module>ocpp-v2-test</module>
     </modules>
 
     <distributionManagement>

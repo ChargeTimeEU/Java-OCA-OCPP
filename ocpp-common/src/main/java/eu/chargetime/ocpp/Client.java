@@ -44,22 +44,20 @@ import org.slf4j.LoggerFactory;
 public class Client {
   private static final Logger logger = LoggerFactory.getLogger(Client.class);
 
-  private ISession session;
-  private final IFeatureRepository featureRepository;
+  private final ISession session;
   private final IPromiseRepository promiseRepository;
 
   /**
    * Handle required injections.
    *
    * @param session Inject session object
+   * @param promiseRepository Inject promise repository
    * @see Session
    */
   public Client(
       ISession session,
-      IFeatureRepository featureRepository,
       IPromiseRepository promiseRepository) {
     this.session = session;
-    this.featureRepository = featureRepository;
     this.promiseRepository = promiseRepository;
   }
 
@@ -88,7 +86,7 @@ public class Client {
 
           @Override
           public Confirmation handleRequest(Request request) throws UnsupportedFeatureException {
-            Optional<Feature> featureOptional = featureRepository.findFeature(request);
+            Optional<Feature> featureOptional = session.getFeatureRepository().findFeature(request);
             if (featureOptional.isPresent()) {
               return featureOptional.get().handleRequest(getSessionId(), request);
             } else {
@@ -149,7 +147,7 @@ public class Client {
    */
   public CompletableFuture<Confirmation> send(Request request)
       throws UnsupportedFeatureException, OccurenceConstraintException {
-    Optional<Feature> featureOptional = featureRepository.findFeature(request);
+    Optional<Feature> featureOptional = session.getFeatureRepository().findFeature(request);
     if (!featureOptional.isPresent()) {
       logger.error("Can't send request: unsupported feature. Payload: {}", request);
       throw new UnsupportedFeatureException();

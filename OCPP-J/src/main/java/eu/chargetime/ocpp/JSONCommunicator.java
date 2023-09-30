@@ -4,9 +4,8 @@ import com.google.gson.*;
 import eu.chargetime.ocpp.model.CallErrorMessage;
 import eu.chargetime.ocpp.model.CallMessage;
 import eu.chargetime.ocpp.model.CallResultMessage;
-import eu.chargetime.ocpp.model.Message;
 import eu.chargetime.ocpp.model.Exclude;
-
+import eu.chargetime.ocpp.model.Message;
 import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -79,6 +78,16 @@ public class JSONCommunicator extends Communicator {
     super(radio);
   }
 
+  /**
+   * Handle required injections.
+   *
+   * @param radio instance of the {@link Radio}.
+   * @param enableTransactionQueue true if transaction queue should be enabled.
+   */
+  public JSONCommunicator(Radio radio, boolean enableTransactionQueue) {
+    super(radio, enableTransactionQueue);
+  }
+
   private static class ZonedDateTimeSerializer
       implements JsonSerializer<ZonedDateTime>, JsonDeserializer<ZonedDateTime> {
 
@@ -101,17 +110,18 @@ public class JSONCommunicator extends Communicator {
   static {
     GsonBuilder builder = new GsonBuilder();
     builder.registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeSerializer());
-    builder.addSerializationExclusionStrategy(new ExclusionStrategy() {
-      @Override
-      public boolean shouldSkipClass(Class<?> clazz) {
-        return false;
-      }
+    builder.addSerializationExclusionStrategy(
+        new ExclusionStrategy() {
+          @Override
+          public boolean shouldSkipClass(Class<?> clazz) {
+            return false;
+          }
 
-      @Override
-      public boolean shouldSkipField(FieldAttributes field) {
-        return field.getAnnotation(Exclude.class) != null;
-      }
-    });
+          @Override
+          public boolean shouldSkipField(FieldAttributes field) {
+            return field.getAnnotation(Exclude.class) != null;
+          }
+        });
 
     gson = builder.disableHtmlEscaping().create();
   }
@@ -147,26 +157,35 @@ public class JSONCommunicator extends Communicator {
     Message message;
     JsonParser parser = new JsonParser();
     JsonArray array = parser.parse(json.toString()).getAsJsonArray();
+    String messageId = "-1";
 
-    if (array.get(INDEX_MESSAGEID).getAsInt() == TYPENUMBER_CALL) {
-      message = new CallMessage();
-      message.setAction(array.get(INDEX_CALL_ACTION).getAsString());
-      message.setPayload(array.get(INDEX_CALL_PAYLOAD).toString());
-    } else if (array.get(INDEX_MESSAGEID).getAsInt() == TYPENUMBER_CALLRESULT) {
-      message = new CallResultMessage();
-      message.setPayload(array.get(INDEX_CALLRESULT_PAYLOAD).toString());
-    } else if (array.get(INDEX_MESSAGEID).getAsInt() == TYPENUMBER_CALLERROR) {
-      message = new CallErrorMessage();
-      ((CallErrorMessage) message).setErrorCode(array.get(INDEX_CALLERROR_ERRORCODE).getAsString());
-      ((CallErrorMessage) message)
-          .setErrorDescription(array.get(INDEX_CALLERROR_DESCRIPTION).getAsString());
-      ((CallErrorMessage) message).setRawPayload(array.get(INDEX_CALLERROR_PAYLOAD).toString());
-    } else {
-      logger.error("Unknown message type of message: {}", json.toString());
-      throw new IllegalArgumentException("Unknown message type");
+    try {
+      messageId = array.get(INDEX_UNIQUEID).getAsString();
+      if (array.get(INDEX_MESSAGEID).getAsInt() == TYPENUMBER_CALL) {
+        message = new CallMessage();
+        message.setAction(array.get(INDEX_CALL_ACTION).getAsString());
+        message.setPayload(array.get(INDEX_CALL_PAYLOAD).toString());
+      } else if (array.get(INDEX_MESSAGEID).getAsInt() == TYPENUMBER_CALLRESULT) {
+        message = new CallResultMessage();
+        message.setPayload(array.get(INDEX_CALLRESULT_PAYLOAD).toString());
+      } else if (array.get(INDEX_MESSAGEID).getAsInt() == TYPENUMBER_CALLERROR) {
+        message = new CallErrorMessage();
+        ((CallErrorMessage) message).setErrorCode(array.get(INDEX_CALLERROR_ERRORCODE).getAsString());
+        ((CallErrorMessage) message)
+            .setErrorDescription(array.get(INDEX_CALLERROR_DESCRIPTION).getAsString());
+        ((CallErrorMessage) message).setRawPayload(array.get(INDEX_CALLERROR_PAYLOAD).toString());
+      } else {
+        logger.error("Unknown message type of message: {}", json.toString());
+        sendCallError(messageId, null, "MessageTypeNotSupported", null);
+        return null;
+      }
+    } catch (Exception e) {
+      logger.error("Exception while parsing message: {}", json.toString());
+      sendCallError(messageId, null, "RpcFrameworkError", e.getMessage());
+      return null;
     }
 
-    message.setId(array.get(INDEX_UNIQUEID).getAsString());
+    message.setId(messageId);
 
     return message;
   }

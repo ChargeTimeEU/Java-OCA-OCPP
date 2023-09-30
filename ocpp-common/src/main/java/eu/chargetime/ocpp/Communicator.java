@@ -115,9 +115,20 @@ public abstract class Communicator {
    * @param transmitter Injected {@link Transmitter}
    */
   public Communicator(Radio transmitter) {
+    this(transmitter, true);
+  }
+
+  /**
+   * Handle required injections.
+   *
+   * @param transmitter Injected {@link Transmitter}
+   * @param enableTransactionQueue flag to enable/disable the transaction queue and associated
+   *     processing
+   */
+  public Communicator(Radio transmitter, boolean enableTransactionQueue) {
     this.radio = transmitter;
-    this.transactionQueue = new ArrayDeque<>();
-    this.retryRunner = new RetryRunner();
+    this.transactionQueue = enableTransactionQueue ? new ArrayDeque<>() : null;
+    this.retryRunner = enableTransactionQueue ? new RetryRunner() : null;
     this.failedFlag = false;
   }
 
@@ -164,7 +175,7 @@ public abstract class Communicator {
 
     try {
       if (radio.isClosed()) {
-        if (request.transactionRelated()) {
+        if (request.transactionRelated() && transactionQueue != null) {
           logger.warn("Not connected: storing request to queue: {}", request);
           transactionQueue.add(call);
         } else {
@@ -175,7 +186,9 @@ public abstract class Communicator {
               "The request can't be sent due to the lack of connection",
               request);
         }
-      } else if (request.transactionRelated() && transactionQueue.size() > 0) {
+      } else if (request.transactionRelated()
+          && transactionQueue != null
+          && transactionQueue.size() > 0) {
         transactionQueue.add(call);
         processTransactionQueue();
       } else {
@@ -183,7 +196,7 @@ public abstract class Communicator {
       }
     } catch (NotConnectedException ex) {
       logger.warn("sendCall() failed: not connected");
-      if (request.transactionRelated()) {
+      if (request.transactionRelated() && transactionQueue != null) {
         transactionQueue.add(call);
       } else {
         events.onError(
@@ -211,7 +224,11 @@ public abstract class Communicator {
         try {
           completedHandler.onConfirmationCompleted();
         } catch (Throwable e) {
-          events.onError(uniqueId, "ConfirmationCompletedHandlerFailed", "The confirmation completed callback handler failed with exception " + e.toString(), confirmation);
+          events.onError(
+              uniqueId,
+              "ConfirmationCompletedHandlerFailed",
+              "The confirmation completed callback handler failed with exception " + e.toString(),
+              confirmation);
         }
       }
     } catch (NotConnectedException ex) {
@@ -257,7 +274,7 @@ public abstract class Communicator {
   }
 
   private synchronized void processTransactionQueue() {
-    if (!retryRunner.isAlive()) {
+    if (retryRunner != null && !retryRunner.isAlive()) {
       if (retryRunner.getState() != Thread.State.NEW) {
         retryRunner = new RetryRunner();
       }
@@ -315,7 +332,7 @@ public abstract class Communicator {
    */
   private Object getRetryMessage() {
     Object result = null;
-    if (!transactionQueue.isEmpty()) result = transactionQueue.peek();
+    if (transactionQueue != null && !transactionQueue.isEmpty()) result = transactionQueue.peek();
     return result;
   }
 
@@ -329,7 +346,7 @@ public abstract class Communicator {
   }
 
   private void popRetryMessage() {
-    if (!transactionQueue.isEmpty()) transactionQueue.pop();
+    if (transactionQueue != null && !transactionQueue.isEmpty()) transactionQueue.pop();
   }
 
   /** Will resend transaction related requests. */

@@ -134,13 +134,24 @@ public class WebSocketTransmitter implements Transmitter {
 
     configure();
 
-    logger.debug("Trying to connect to: {}", resource);
+    boolean isNonBlocking = isNonBlockingParameterSet();
 
-    try {
-      client.connectBlocking();
-      closed = false;
-    } catch (Exception ex) {
-      logger.warn("client.connectBlocking() failed", ex);
+    logger.debug("Trying to connect to: {}{}", resource, isNonBlocking ? "" : " [blocking]");
+
+    if (isNonBlocking) {
+      try {
+        client.connect();
+        closed = false;
+      } catch (Exception ex) {
+        logger.warn("client.connect() failed", ex);
+      }
+    } else {
+      try {
+        client.connectBlocking();
+        closed = false;
+      } catch (Exception ex) {
+        logger.warn("client.connectBlocking() failed", ex);
+      }
     }
   }
 
@@ -175,14 +186,35 @@ public class WebSocketTransmitter implements Transmitter {
     if (client == null) {
       return;
     }
-    try {
-      client.closeBlocking();
-    } catch (Exception ex) {
-      logger.info("client.closeBlocking() failed", ex);
-    } finally {
-      client = null;
-      closed = true;
+
+    boolean isNonBlocking = isNonBlockingParameterSet();
+
+    logger.debug("Disconnecting{}", isNonBlocking ? "" : " [blocking]");
+
+    if (isNonBlocking) {
+      try {
+        client.close();
+      } catch (Exception ex) {
+        logger.info("client.close() failed", ex);
+      } finally {
+        client = null;
+        closed = true;
+      }
+    } else {
+      try {
+        client.closeBlocking();
+      } catch (Exception ex) {
+        logger.info("client.closeBlocking() failed", ex);
+      } finally {
+        client = null;
+        closed = true;
+      }
     }
+  }
+
+  private boolean isNonBlockingParameterSet() {
+    Object rawParam = configuration.getParameter(JSONConfiguration.CONNECT_NON_BLOCKING_PARAMETER);
+    return rawParam instanceof Boolean ? (Boolean) rawParam : false;
   }
 
   @Override

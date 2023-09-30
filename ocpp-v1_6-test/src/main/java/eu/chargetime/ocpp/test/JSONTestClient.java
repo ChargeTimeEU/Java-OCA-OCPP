@@ -57,7 +57,7 @@ public class JSONTestClient implements IClientAPI {
     JSONCommunicator communicator = new JSONCommunicator(transmitter);
     featureRepository = new FeatureRepository();
     ISession session = new TestSessionFactory(featureRepository).createSession(communicator);
-    client = new Client(session, featureRepository, new PromiseRepository());
+    client = new Client(session, new PromiseRepository());
     featureRepository.addFeatureProfile(coreProfile);
   }
 

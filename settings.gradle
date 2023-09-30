@@ -6,6 +6,8 @@ rootProject.name = 'all'
 include(':common')
 project(':common').projectDir = file('ocpp-common')
 include(':OCPP-J')
+include(':ocpp-v2')
+include(':ocpp-v2-test')
 include(':v2_0')
 include(':v2_0-test')
 project(':v2_0').projectDir = file('ocpp-v2_0')

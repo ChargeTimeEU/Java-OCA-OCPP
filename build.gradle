@@ -15,7 +15,7 @@ buildscript {
 
 allprojects {
     group = 'eu.chargetime.ocpp'
-    version = '1.1'
+    version = '1.2'
 }
 
 subprojects {

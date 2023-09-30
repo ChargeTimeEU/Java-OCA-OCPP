@@ -67,7 +67,7 @@ public class JSONServer implements IServerAPI {
     draftOcppOnly = new Draft_6455(Collections.emptyList(), protocols);
     logger.info("JSONServer 2.0 without HttpHealthCheckDraft");
     this.listener = new WebSocketListener(sessionFactory, configuration, draftOcppOnly);
-    server = new Server(this.listener, featureRepository, new PromiseRepository());
+    server = new Server(this.listener, new PromiseRepository());
   }
 
   /** The constructor creates WS-ready server. */

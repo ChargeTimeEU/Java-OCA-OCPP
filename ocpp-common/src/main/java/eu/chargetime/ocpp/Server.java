@@ -47,22 +47,20 @@ public class Server {
 
   public static final int INITIAL_SESSIONS_NUMBER = 1000;
 
-  private Map<UUID, ISession> sessions;
-  private Listener listener;
-  private final IFeatureRepository featureRepository;
+  private final Map<UUID, ISession> sessions;
+  private final Listener listener;
   private final IPromiseRepository promiseRepository;
 
   /**
    * Constructor. Handles the required injections.
    *
    * @param listener injected listener.
+   * @param promiseRepository injected promise repository.
    */
   public Server(
       Listener listener,
-      IFeatureRepository featureRepository,
       IPromiseRepository promiseRepository) {
     this.listener = listener;
-    this.featureRepository = featureRepository;
     this.promiseRepository = promiseRepository;
     this.sessions = new ConcurrentHashMap<>(INITIAL_SESSIONS_NUMBER);
   }
@@ -108,7 +106,7 @@ public class Server {
                   @Override
                   public Confirmation handleRequest(Request request)
                       throws UnsupportedFeatureException {
-                    Optional<Feature> featureOptional = featureRepository.findFeature(request);
+                    Optional<Feature> featureOptional = session.getFeatureRepository().findFeature(request);
                     if (featureOptional.isPresent()) {
                       Optional<UUID> sessionIdOptional = getSessionID(session);
                       if (sessionIdOptional.isPresent()) {
@@ -200,15 +198,6 @@ public class Server {
    */
   public CompletableFuture<Confirmation> send(UUID sessionIndex, Request request)
       throws UnsupportedFeatureException, OccurenceConstraintException, NotConnectedException {
-    Optional<Feature> featureOptional = featureRepository.findFeature(request);
-    if (!featureOptional.isPresent()) {
-      throw new UnsupportedFeatureException();
-    }
-
-    if (!request.validate()) {
-      throw new OccurenceConstraintException();
-    }
-
     ISession session = sessions.get(sessionIndex);
 
     if (session == null) {
@@ -216,6 +205,15 @@ public class Server {
 
       // No session found means client disconnected and request should be cancelled
       throw new NotConnectedException();
+    }
+
+    Optional<Feature> featureOptional = session.getFeatureRepository().findFeature(request);
+    if (!featureOptional.isPresent()) {
+      throw new UnsupportedFeatureException();
+    }
+
+    if (!request.validate()) {
+      throw new OccurenceConstraintException();
     }
 
     String id = session.storeRequest(request);

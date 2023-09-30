@@ -29,5 +29,7 @@ import eu.chargetime.ocpp.feature.Feature;
 import java.util.Optional;
 
 public interface IFeatureRepository {
+  ProtocolVersion getProtocolVersion();
+
   Optional<Feature> findFeature(Object needle);
 }

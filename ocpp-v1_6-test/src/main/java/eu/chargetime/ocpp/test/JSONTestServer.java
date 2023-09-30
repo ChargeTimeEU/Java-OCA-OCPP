@@ -60,7 +60,7 @@ public class JSONTestServer implements IServerAPI {
     draftOcppOnly =
         new Draft_6455(Collections.emptyList(), Collections.singletonList(new Protocol("ocpp1.6")));
     this.listener = new WebSocketListener(sessionFactory, configuration, draftOcppOnly);
-    server = new Server(this.listener, featureRepository, new PromiseRepository());
+    server = new Server(this.listener, new PromiseRepository());
     featureRepository.addFeatureProfile(coreProfile);
   }
 
