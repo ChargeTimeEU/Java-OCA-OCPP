@@ -19,7 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /*
 ChargeTime.eu - Java-OCA-OCPP
@@ -300,7 +300,7 @@ public class JSONCommunicatorTest {
     communicator.disconnect();
 
     // Then
-    verify(transmitter, times(1)).disconnect();
+    verify(transmitter).disconnect();
   }
 
   @Test
@@ -313,7 +313,7 @@ public class JSONCommunicatorTest {
     communicator.sendCallError(null, null, errorCode, errorDescription);
 
     // Then
-    verify(transmitter, times(1)).send(anyString());
+    verify(transmitter).send(anyString());
   }
 
   private ZonedDateTime createDateTimeInMillis(long dateInMillis) {

@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /*
 ChargeTime.eu - Java-OCA-OCPP
@@ -69,6 +69,6 @@ public class AuthorizeConfirmationTest {
     confirmation.validate();
 
     // Then
-    verify(infoTag, times(1)).validate();
+    verify(infoTag).validate();
   }
 }

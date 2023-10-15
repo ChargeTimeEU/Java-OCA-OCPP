@@ -182,7 +182,7 @@ public class StopTransactionRequestTest {
     request.validate();
 
     // Then
-    verify(meterValue, times(1)).validate();
+    verify(meterValue).validate();
   }
 
   @Test

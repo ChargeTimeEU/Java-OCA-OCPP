@@ -16,7 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /*
 ChargeTime.eu - Java-OCA-OCPP
@@ -63,7 +63,7 @@ public class SessionTest {
   public void setup() throws Exception {
     when(featureRepository.findFeature(any())).thenReturn(Optional.of(feature));
     session = new Session(communicator, queue, fulfiller, featureRepository);
-    doAnswer(invocation -> eventHandler = invocation.getArgumentAt(1, CommunicatorEvents.class))
+    doAnswer(invocation -> eventHandler = invocation.getArgument(1, CommunicatorEvents.class))
         .when(communicator)
         .connect(any(), any());
     session.open(null, sessionEvents);
@@ -103,7 +103,8 @@ public class SessionTest {
     session.sendRequest(someAction, someRequest, null);
 
     // Then
-    verify(communicator, times(1)).sendCall(anyString(), eq(someAction), eq(someRequest));
+    // TODO uniqueid should not be nullable
+    verify(communicator).sendCall(nullable(String.class), eq(someAction), eq(someRequest));
   }
 
   @Test
@@ -115,7 +116,8 @@ public class SessionTest {
     session.sendRequest(null, null, someUniqueId);
 
     // Then
-    verify(communicator, times(1)).sendCall(eq(someUniqueId), anyString(), any());
+    // TODO uuid and request should not be nullable
+    verify(communicator).sendCall(eq(someUniqueId), nullable(String.class), nullable(Request.class));
   }
 
   @Test
@@ -134,7 +136,7 @@ public class SessionTest {
     session.sendConfirmation(someUniqueId, action, conf);
 
     // Then
-    verify(communicator, times(1)).sendCallResult(eq(someUniqueId), eq(action), eq(conf));
+    verify(communicator).sendCallResult(eq(someUniqueId), eq(action), eq(conf));
   }
 
   @Test
@@ -146,14 +148,14 @@ public class SessionTest {
     session.open(someUri, null);
 
     // Then
-    verify(communicator, times(1)).connect(eq(someUri), any());
+    verify(communicator).connect(eq(someUri), any());
   }
 
   @Test
   public void onCall_unhandledCallback_callSendCallError() throws Exception {
     // Given
     String someId = "Some id";
-    doAnswer(invocation -> invocation.getArgumentAt(0, CompletableFuture.class).complete(null))
+    doAnswer(invocation -> invocation.getArgument(0, CompletableFuture.class).complete(null))
         .when(fulfiller)
         .fulfill(any(), any(), any());
     when(communicator.unpackPayload(any(), any())).thenReturn(new TestRequest());
@@ -162,7 +164,8 @@ public class SessionTest {
     eventHandler.onCall(someId, null, null);
 
     // then
-    verify(communicator, times(1)).sendCallError(eq(someId), anyString(), anyString(), anyString());
+    // TODO action should not be nullable
+    verify(communicator).sendCallError(eq(someId), nullable(String.class), anyString(), anyString());
   }
 
   @Test
@@ -178,7 +181,7 @@ public class SessionTest {
 
     doAnswer(
             invocation ->
-                invocation.getArgumentAt(0, CompletableFuture.class).complete(aConfirmation))
+                invocation.getArgument(0, CompletableFuture.class).complete(aConfirmation))
         .when(fulfiller)
         .fulfill(any(), any(), any());
     when(communicator.unpackPayload(any(), any())).thenReturn(new TestRequest());
@@ -187,7 +190,8 @@ public class SessionTest {
     eventHandler.onCall(someId, null, null);
 
     // then
-    verify(communicator, times(1)).sendCallResult(anyString(), anyString(), eq(aConfirmation));
+    // TODO action should not be nullable
+    verify(communicator).sendCallResult(anyString(), nullable(String.class), eq(aConfirmation));
   }
 
   @Test
@@ -197,7 +201,7 @@ public class SessionTest {
     doAnswer(
             invocation ->
                 invocation
-                    .getArgumentAt(0, CompletableFuture.class)
+                    .getArgument(0, CompletableFuture.class)
                     .completeExceptionally(new Exception()))
         .when(fulfiller)
         .fulfill(any(), any(), any());
@@ -207,7 +211,8 @@ public class SessionTest {
     eventHandler.onCall(someId, null, null);
 
     // then
-    verify(communicator, times(1)).sendCallError(eq(someId), anyString(), anyString(), anyString());
+    // TODO uniqueid should not be nullable
+    verify(communicator).sendCallError(eq(someId), nullable(String.class), anyString(), anyString());
   }
 
   @Test
@@ -216,7 +221,7 @@ public class SessionTest {
     session.close();
 
     // Then
-    verify(communicator, times(1)).disconnect();
+    verify(communicator).disconnect();
   }
 
   @Test
@@ -229,6 +234,7 @@ public class SessionTest {
     eventHandler.onCall(someId, null, null);
 
     // Then
-    verify(communicator, times(1)).sendCallError(eq(someId), anyString(), anyString(), anyString());
+    // TODO uniqueid should not be nullable
+    verify(communicator).sendCallError(eq(someId), nullable(String.class), anyString(), anyString());
   }
 }

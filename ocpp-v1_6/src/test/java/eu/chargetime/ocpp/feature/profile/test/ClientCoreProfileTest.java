@@ -17,7 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /*
 ChargeTime.eu - Java-OCA-OCPP
@@ -303,7 +303,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler, times(1)).handleChangeAvailabilityRequest(eq(request));
+    verify(handler).handleChangeAvailabilityRequest(eq(request));
   }
 
   @Test
@@ -316,7 +316,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler, times(1)).handleRemoteStartTransactionRequest(eq(request));
+    verify(handler).handleRemoteStartTransactionRequest(eq(request));
   }
 
   @Test
@@ -329,7 +329,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler, times(1)).handleRemoteStopTransactionRequest(eq(request));
+    verify(handler).handleRemoteStopTransactionRequest(eq(request));
   }
 
   @Test
@@ -341,7 +341,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler, times(1)).handleResetRequest(eq(request));
+    verify(handler).handleResetRequest(eq(request));
   }
 
   @Test
@@ -353,7 +353,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler, times(1)).handleUnlockConnectorRequest(eq(request));
+    verify(handler).handleUnlockConnectorRequest(eq(request));
   }
 
   @Test
@@ -380,7 +380,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler, times(1)).handleGetConfigurationRequest(eq(request));
+    verify(handler).handleGetConfigurationRequest(eq(request));
   }
 
   @Test
@@ -406,7 +406,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler, times(1)).handleDataTransferRequest(eq(request));
+    verify(handler).handleDataTransferRequest(eq(request));
   }
 
   @Test
@@ -431,7 +431,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler, times(1)).handleChangeConfigurationRequest(eq(request));
+    verify(handler).handleChangeConfigurationRequest(eq(request));
   }
 
   @Test
@@ -457,7 +457,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler, times(1)).handleClearCacheRequest(request);
+    verify(handler).handleClearCacheRequest(request);
   }
 
   @Test

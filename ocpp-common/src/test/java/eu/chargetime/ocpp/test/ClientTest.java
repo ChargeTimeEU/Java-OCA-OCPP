@@ -41,7 +41,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClientTest {
@@ -59,7 +59,7 @@ public class ClientTest {
   @Before
   public void setup() {
     when(request.validate()).thenReturn(true);
-    doAnswer(invocation -> eventHandler = invocation.getArgumentAt(1, SessionEvents.class))
+    doAnswer(invocation -> eventHandler = invocation.getArgument(1, SessionEvents.class))
         .when(session)
         .open(any(), any());
 
@@ -77,7 +77,7 @@ public class ClientTest {
     client.connect(someUrl, events);
 
     // Then
-    verify(session, times(1)).open(eq(someUrl), anyObject());
+    verify(session).open(eq(someUrl), any());
   }
 
   @Test
@@ -89,7 +89,7 @@ public class ClientTest {
     this.eventHandler.handleConnectionOpened();
 
     // Then
-    verify(events, times(1)).connectionOpened();
+    verify(events).connectionOpened();
     verify(events, never()).connectionClosed();
   }
 
@@ -102,7 +102,7 @@ public class ClientTest {
     this.eventHandler.handleConnectionClosed();
 
     // Then
-    verify(events, times(1)).connectionClosed();
+    verify(events).connectionClosed();
     verify(events, never()).connectionOpened();
   }
 
@@ -112,14 +112,15 @@ public class ClientTest {
     client.send(request);
 
     // Then
-    verify(session, times(1)).sendRequest(anyString(), eq(request), anyString());
+    // TODO action and uuid should not be nullable
+    verify(session).sendRequest(nullable(String.class), eq(request), nullable(String.class));
   }
 
   @Test
   public void responseReceived_aMessageWasSend_PromiseIsCompleted() throws Exception {
     // Given
     String someUniqueId = "Some id";
-    when(session.storeRequest(any())).thenReturn(someUniqueId);
+    lenient().when(session.storeRequest(any())).thenReturn(someUniqueId);
     when(promiseRepository.getPromise(any())).thenReturn(Optional.of(completableFuture));
 
     // When
@@ -152,7 +153,7 @@ public class ClientTest {
     eventHandler.handleRequest(request);
 
     // Then
-    verify(feature, times(1)).handleRequest(any(), eq(request));
+    verify(feature).handleRequest(any(), eq(request));
   }
 
   @Test
@@ -161,6 +162,6 @@ public class ClientTest {
     client.send(request);
 
     // Then
-    verify(request, times(1)).validate();
+    verify(request).validate();
   }
 }

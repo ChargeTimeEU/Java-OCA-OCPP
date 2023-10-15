@@ -28,7 +28,7 @@ package eu.chargetime.ocpp.feature.profile.test;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -45,7 +45,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClientLocalAuthListProfileTest extends ProfileTest {
@@ -89,7 +89,7 @@ public class ClientLocalAuthListProfileTest extends ProfileTest {
     profile.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler, times(1)).handleGetLocalListVersionRequest(eq(request));
+    verify(handler).handleGetLocalListVersionRequest(eq(request));
   }
 
   public void handleRequest_SendLocalList_callsHandleSendLocalListRequest() {
@@ -100,6 +100,6 @@ public class ClientLocalAuthListProfileTest extends ProfileTest {
     profile.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler, times(1)).handleSendLocalListRequest(eq(request));
+    verify(handler).handleSendLocalListRequest(eq(request));
   }
 }

@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -123,7 +123,7 @@ public class MeterValuesRequestTest {
     request.validate();
 
     // Then
-    verify(meterValueMock, times(1)).validate();
+    verify(meterValueMock).validate();
   }
 
   @Test

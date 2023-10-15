@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.test;
 
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 import eu.chargetime.ocpp.*;
@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /*
    ChargeTime.eu - Java-OCA-OCPP
@@ -57,7 +57,7 @@ public class CommunicatorTest {
 
     when(transactionRelatedRequest.transactionRelated()).thenReturn(true);
     when(normalRequest.transactionRelated()).thenReturn(false);
-    doAnswer(invocation -> eventHandler = invocation.getArgumentAt(0, RadioEvents.class))
+    doAnswer(invocation -> eventHandler = invocation.getArgument(0, RadioEvents.class))
         .when(receiver)
         .accept(any());
     setupCommunicator(true);
@@ -126,7 +126,7 @@ public class CommunicatorTest {
     communicator.sendCall(uniqueId, action, normalRequest);
 
     // Then
-    verify(events, times(1)).onError(eq(uniqueId), any(), any(), any());
+    verify(events).onError(eq(uniqueId), any(), any(), any());
   }
 
   @Test
@@ -164,7 +164,7 @@ public class CommunicatorTest {
 
     // Then
     verify(receiver, times(2)).send(eq(firstId));
-    verify(receiver, times(1)).send(eq(secondId));
+    verify(receiver).send(eq(secondId));
   }
 
   @Test
@@ -222,7 +222,7 @@ public class CommunicatorTest {
     communicator.sendCallResult(uniqueId, action, conf);
 
     // Then
-    verify(handler, times(1)).onConfirmationCompleted();
+    verify(handler).onConfirmationCompleted();
   }
 
   @Test

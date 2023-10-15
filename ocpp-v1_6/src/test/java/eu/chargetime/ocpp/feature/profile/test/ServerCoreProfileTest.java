@@ -3,7 +3,7 @@ package eu.chargetime.ocpp.feature.profile.test;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -17,7 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /*
    ChargeTime.eu - Java-OCA-OCPP
@@ -77,7 +77,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     core.handleRequest(sessionId, request);
 
     // Then
-    verify(handler, times(1)).handleAuthorizeRequest(eq(sessionId), eq(request));
+    verify(handler).handleAuthorizeRequest(eq(sessionId), eq(request));
   }
 
   @Test
@@ -100,7 +100,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     core.handleRequest(sessionId, request);
 
     // Then
-    verify(handler, times(1)).handleBootNotificationRequest(eq(sessionId), eq(request));
+    verify(handler).handleBootNotificationRequest(eq(sessionId), eq(request));
   }
 
   @Test
@@ -202,7 +202,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     core.handleRequest(sessionId, request);
 
     // Then
-    verify(handler, times(1)).handleDataTransferRequest(eq(sessionId), eq(request));
+    verify(handler).handleDataTransferRequest(eq(sessionId), eq(request));
   }
 
   @Test
@@ -244,7 +244,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     core.handleRequest(sessionId, request);
 
     // Then
-    verify(handler, times(1)).handleHeartbeatRequest(eq(sessionId), eq(request));
+    verify(handler).handleHeartbeatRequest(eq(sessionId), eq(request));
   }
 
   @Test
@@ -266,7 +266,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     core.handleRequest(sessionId, request);
 
     // Then
-    verify(handler, times(1)).handleMeterValuesRequest(eq(sessionId), eq(request));
+    verify(handler).handleMeterValuesRequest(eq(sessionId), eq(request));
   }
 
   @Test
@@ -359,7 +359,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     core.handleRequest(sessionId, request);
 
     // Then
-    verify(handler, times(1)).handleStartTransactionRequest(eq(sessionId), eq(request));
+    verify(handler).handleStartTransactionRequest(eq(sessionId), eq(request));
   }
 
   @Test
@@ -385,7 +385,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     core.handleRequest(sessionId, request);
 
     // Then
-    verify(handler, times(1)).handleStatusNotificationRequest(eq(sessionId), eq(request));
+    verify(handler).handleStatusNotificationRequest(eq(sessionId), eq(request));
   }
 
   @Test
@@ -408,7 +408,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     core.handleRequest(sessionId, request);
 
     // Then
-    verify(handler, times(1)).handleStopTransactionRequest(eq(sessionId), eq(request));
+    verify(handler).handleStopTransactionRequest(eq(sessionId), eq(request));
   }
 
   @Test

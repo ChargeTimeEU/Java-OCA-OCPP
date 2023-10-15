@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.test;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import eu.chargetime.ocpp.ISession;
@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /*
    ChargeTime.eu - Java-OCA-OCPP
@@ -50,10 +50,10 @@ public class TimeoutSessionTest {
   @Before
   public void setup() throws Exception {
     session = new TimeoutSessionDecorator(timeoutTimer, sessionMock);
-    doAnswer(invocation -> sessionEvents = invocation.getArgumentAt(0, SessionEvents.class))
+    doAnswer(invocation -> sessionEvents = invocation.getArgument(0, SessionEvents.class))
         .when(sessionMock)
         .accept(any());
-    doAnswer(invocation -> sessionEvents = invocation.getArgumentAt(1, SessionEvents.class))
+    doAnswer(invocation -> sessionEvents = invocation.getArgument(1, SessionEvents.class))
         .when(sessionMock)
         .open(any(), any());
   }
@@ -67,7 +67,7 @@ public class TimeoutSessionTest {
     sessionEvents.handleConnectionOpened();
 
     // Then
-    verify(timeoutTimer, times(1)).begin();
+    verify(timeoutTimer).begin();
   }
 
   @Test
@@ -79,7 +79,7 @@ public class TimeoutSessionTest {
     sessionEvents.handleConnectionClosed();
 
     // Then
-    verify(timeoutTimer, times(1)).end();
+    verify(timeoutTimer).end();
   }
 
   @Test
@@ -91,7 +91,7 @@ public class TimeoutSessionTest {
     sessionEvents.handleConnectionOpened();
 
     // Then
-    verify(timeoutTimer, times(1)).begin();
+    verify(timeoutTimer).begin();
   }
 
   @Test
@@ -103,7 +103,7 @@ public class TimeoutSessionTest {
     sessionEvents.handleConnectionClosed();
 
     // Then
-    verify(timeoutTimer, times(1)).end();
+    verify(timeoutTimer).end();
   }
 
   @Test
@@ -115,7 +115,7 @@ public class TimeoutSessionTest {
     sessionEvents.handleRequest(null);
 
     // Then
-    verify(timeoutTimer, times(1)).reset();
+    verify(timeoutTimer).reset();
   }
 
   @Test
@@ -127,6 +127,6 @@ public class TimeoutSessionTest {
     sessionEvents.handleConfirmation(null, null);
 
     // Then
-    verify(timeoutTimer, times(1)).reset();
+    verify(timeoutTimer).reset();
   }
 }

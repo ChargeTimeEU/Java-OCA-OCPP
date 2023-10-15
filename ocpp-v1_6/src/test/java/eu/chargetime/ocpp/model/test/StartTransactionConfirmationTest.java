@@ -113,7 +113,7 @@ public class StartTransactionConfirmationTest {
     confirmation.validate();
 
     // Then
-    verify(idTagInfo, times(1)).validate();
+    verify(idTagInfo).validate();
   }
 
   @Test

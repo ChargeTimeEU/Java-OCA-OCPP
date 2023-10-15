@@ -20,7 +20,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SendLocalListRequestTest {
@@ -120,8 +120,8 @@ public class SendLocalListRequestTest {
 
     // Then
     assertThat(request.validate(), equalTo(true));
-    verify(data, times(1)).getIdTagInfo();
-    verify(data, times(1)).validate();
+    verify(data).getIdTagInfo();
+    verify(data).validate();
   }
 
   @Test

@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -65,7 +65,7 @@ public class ClientSmartChargingProfileTest {
     smartCharging.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler, times(1)).handleSetChargingProfileRequest(request);
+    verify(handler).handleSetChargingProfileRequest(request);
   }
 
   @Test
@@ -91,7 +91,7 @@ public class ClientSmartChargingProfileTest {
     smartCharging.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler, times(1)).handleGetCompositeScheduleRequest(request);
+    verify(handler).handleGetCompositeScheduleRequest(request);
   }
 
   @Test
