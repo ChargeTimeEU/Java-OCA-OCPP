@@ -89,7 +89,7 @@ public class ClientLocalAuthListProfileTest extends ProfileTest {
     profile.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleGetLocalListVersionRequest(eq(request));
+    verify(handler, times(1)).handleGetLocalListVersionRequest(eq(request));
   }
 
   public void handleRequest_SendLocalList_callsHandleSendLocalListRequest() {
@@ -100,6 +100,6 @@ public class ClientLocalAuthListProfileTest extends ProfileTest {
     profile.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleSendLocalListRequest(eq(request));
+    verify(handler, times(1)).handleSendLocalListRequest(eq(request));
   }
 }

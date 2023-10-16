@@ -86,7 +86,7 @@ public class ClientFirmwareManagementProfileTest extends ProfileTest {
     profile.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleGetDiagnosticsRequest(eq(request));
+    verify(handler, times(1)).handleGetDiagnosticsRequest(eq(request));
   }
 
   @Test
@@ -98,7 +98,7 @@ public class ClientFirmwareManagementProfileTest extends ProfileTest {
     profile.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleUpdateFirmwareRequest(eq(request));
+    verify(handler, times(1)).handleUpdateFirmwareRequest(eq(request));
   }
 
   @Test

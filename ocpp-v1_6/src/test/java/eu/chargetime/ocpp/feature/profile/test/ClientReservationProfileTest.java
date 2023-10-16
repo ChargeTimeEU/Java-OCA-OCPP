@@ -89,7 +89,7 @@ public class ClientReservationProfileTest extends ProfileTest {
     profile.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleReserveNowRequest(eq(request));
+    verify(handler, times(1)).handleReserveNowRequest(eq(request));
   }
 
   @Test
@@ -101,6 +101,6 @@ public class ClientReservationProfileTest extends ProfileTest {
     profile.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleCancelReservationRequest(eq(request));
+    verify(handler, times(1)).handleCancelReservationRequest(eq(request));
   }
 }

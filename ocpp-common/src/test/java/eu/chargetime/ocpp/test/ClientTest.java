@@ -77,7 +77,7 @@ public class ClientTest {
     client.connect(someUrl, events);
 
     // Then
-    verify(session).open(eq(someUrl), any());
+    verify(session, times(1)).open(eq(someUrl), any());
   }
 
   @Test
@@ -89,7 +89,7 @@ public class ClientTest {
     this.eventHandler.handleConnectionOpened();
 
     // Then
-    verify(events).connectionOpened();
+    verify(events, times(1)).connectionOpened();
     verify(events, never()).connectionClosed();
   }
 
@@ -102,7 +102,7 @@ public class ClientTest {
     this.eventHandler.handleConnectionClosed();
 
     // Then
-    verify(events).connectionClosed();
+    verify(events, times(1)).connectionClosed();
     verify(events, never()).connectionOpened();
   }
 
@@ -113,7 +113,7 @@ public class ClientTest {
 
     // Then
     // TODO action and uuid should not be nullable
-    verify(session).sendRequest(nullable(String.class), eq(request), nullable(String.class));
+    verify(session, times(1)).sendRequest(nullable(String.class), eq(request), nullable(String.class));
   }
 
   @Test
@@ -153,7 +153,7 @@ public class ClientTest {
     eventHandler.handleRequest(request);
 
     // Then
-    verify(feature).handleRequest(any(), eq(request));
+    verify(feature, times(1)).handleRequest(any(), eq(request));
   }
 
   @Test
@@ -162,6 +162,6 @@ public class ClientTest {
     client.send(request);
 
     // Then
-    verify(request).validate();
+    verify(request, times(1)).validate();
   }
 }

@@ -300,7 +300,7 @@ public class JSONCommunicatorTest {
     communicator.disconnect();
 
     // Then
-    verify(transmitter).disconnect();
+    verify(transmitter, times(1)).disconnect();
   }
 
   @Test
@@ -313,7 +313,7 @@ public class JSONCommunicatorTest {
     communicator.sendCallError(null, null, errorCode, errorDescription);
 
     // Then
-    verify(transmitter).send(anyString());
+    verify(transmitter, times(1)).send(anyString());
   }
 
   private ZonedDateTime createDateTimeInMillis(long dateInMillis) {

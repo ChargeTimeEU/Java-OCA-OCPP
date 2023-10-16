@@ -65,7 +65,6 @@ public class ServerTest {
     UUID sessionId = UUID.randomUUID();
     when(request.validate()).thenReturn(true);
     when(session.getSessionId()).thenReturn(sessionId);
-//    when(session.storeRequest(any())).thenReturn(UUID.randomUUID().toString());
     doAnswer(invocation -> listenerEvents = invocation.getArgument(2, ListenerEvents.class))
         .when(listener)
         .open(anyString(), anyInt(), any());
@@ -90,7 +89,7 @@ public class ServerTest {
     listenerEvents.newSession(session, information);
 
     // Then
-    verify(session).accept(any());
+    verify(session, times(1)).accept(any());
   }
 
   @Test
@@ -102,7 +101,7 @@ public class ServerTest {
     listenerEvents.newSession(session, information);
 
     // Then
-    verify(serverEvents).newSession(any(UUID.class), eq(information));
+    verify(serverEvents, times(1)).newSession(any(UUID.class), eq(information));
   }
 
   @Test
@@ -116,7 +115,7 @@ public class ServerTest {
 
     // Then
     // TODO action and uuid should not be nullable
-    verify(session).sendRequest(nullable(String.class), eq(request), nullable(String.class));
+    verify(session, times(1)).sendRequest(nullable(String.class), eq(request), nullable(String.class));
   }
 
   @Test
@@ -129,7 +128,7 @@ public class ServerTest {
     sessionEvents.handleRequest(request);
 
     // Then
-    verify(feature).handleRequest(any(UUID.class), eq(request));
+    verify(feature, times(1)).handleRequest(any(UUID.class), eq(request));
   }
 
   @Test
@@ -142,6 +141,6 @@ public class ServerTest {
     server.send(sessionIndex, request);
 
     // Then
-    verify(request).validate();
+    verify(request, times(1)).validate();
   }
 }

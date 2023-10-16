@@ -65,7 +65,7 @@ public class ClientSmartChargingProfileTest {
     smartCharging.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleSetChargingProfileRequest(request);
+    verify(handler, times(1)).handleSetChargingProfileRequest(request);
   }
 
   @Test
@@ -91,7 +91,7 @@ public class ClientSmartChargingProfileTest {
     smartCharging.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleGetCompositeScheduleRequest(request);
+    verify(handler, times(1)).handleGetCompositeScheduleRequest(request);
   }
 
   @Test

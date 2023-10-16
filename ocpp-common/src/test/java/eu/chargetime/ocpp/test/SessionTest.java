@@ -104,7 +104,7 @@ public class SessionTest {
 
     // Then
     // TODO uniqueid should not be nullable
-    verify(communicator).sendCall(nullable(String.class), eq(someAction), eq(someRequest));
+    verify(communicator, times(1)).sendCall(nullable(String.class), eq(someAction), eq(someRequest));
   }
 
   @Test
@@ -117,7 +117,7 @@ public class SessionTest {
 
     // Then
     // TODO uuid and request should not be nullable
-    verify(communicator).sendCall(eq(someUniqueId), nullable(String.class), nullable(Request.class));
+    verify(communicator, times(1)).sendCall(eq(someUniqueId), nullable(String.class), nullable(Request.class));
   }
 
   @Test
@@ -136,7 +136,7 @@ public class SessionTest {
     session.sendConfirmation(someUniqueId, action, conf);
 
     // Then
-    verify(communicator).sendCallResult(eq(someUniqueId), eq(action), eq(conf));
+    verify(communicator, times(1)).sendCallResult(eq(someUniqueId), eq(action), eq(conf));
   }
 
   @Test
@@ -148,7 +148,7 @@ public class SessionTest {
     session.open(someUri, null);
 
     // Then
-    verify(communicator).connect(eq(someUri), any());
+    verify(communicator, times(1)).connect(eq(someUri), any());
   }
 
   @Test
@@ -165,7 +165,7 @@ public class SessionTest {
 
     // then
     // TODO action should not be nullable
-    verify(communicator).sendCallError(eq(someId), nullable(String.class), anyString(), anyString());
+    verify(communicator, times(1)).sendCallError(eq(someId), nullable(String.class), anyString(), anyString());
   }
 
   @Test
@@ -191,7 +191,7 @@ public class SessionTest {
 
     // then
     // TODO action should not be nullable
-    verify(communicator).sendCallResult(anyString(), nullable(String.class), eq(aConfirmation));
+    verify(communicator, times(1)).sendCallResult(anyString(), nullable(String.class), eq(aConfirmation));
   }
 
   @Test
@@ -212,7 +212,7 @@ public class SessionTest {
 
     // then
     // TODO uniqueid should not be nullable
-    verify(communicator).sendCallError(eq(someId), nullable(String.class), anyString(), anyString());
+    verify(communicator, times(1)).sendCallError(eq(someId), nullable(String.class), anyString(), anyString());
   }
 
   @Test
@@ -221,7 +221,7 @@ public class SessionTest {
     session.close();
 
     // Then
-    verify(communicator).disconnect();
+    verify(communicator, times(1)).disconnect();
   }
 
   @Test
@@ -235,6 +235,6 @@ public class SessionTest {
 
     // Then
     // TODO uniqueid should not be nullable
-    verify(communicator).sendCallError(eq(someId), nullable(String.class), anyString(), anyString());
+    verify(communicator, times(1)).sendCallError(eq(someId), nullable(String.class), anyString(), anyString());
   }
 }

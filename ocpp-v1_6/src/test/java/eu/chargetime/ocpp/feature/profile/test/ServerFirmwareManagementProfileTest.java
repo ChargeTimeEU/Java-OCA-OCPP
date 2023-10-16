@@ -92,7 +92,8 @@ public class ServerFirmwareManagementProfileTest extends ProfileTest {
     profile.handleRequest(sessionId, request);
 
     // Then
-    verify(handler).handleDiagnosticsStatusNotificationRequest(eq(sessionId), eq(request));
+    verify(handler, times(1))
+        .handleDiagnosticsStatusNotificationRequest(eq(sessionId), eq(request));
   }
 
   @Test
@@ -107,6 +108,6 @@ public class ServerFirmwareManagementProfileTest extends ProfileTest {
     profile.handleRequest(sessionId, request);
 
     // Then
-    verify(handler).handleFirmwareStatusNotificationRequest(eq(sessionId), eq(request));
+    verify(handler, times(1)).handleFirmwareStatusNotificationRequest(eq(sessionId), eq(request));
   }
 }

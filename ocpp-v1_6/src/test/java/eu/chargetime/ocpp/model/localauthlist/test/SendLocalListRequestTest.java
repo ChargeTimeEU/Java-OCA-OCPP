@@ -120,8 +120,8 @@ public class SendLocalListRequestTest {
 
     // Then
     assertThat(request.validate(), equalTo(true));
-    verify(data).getIdTagInfo();
-    verify(data).validate();
+    verify(data, times(1)).getIdTagInfo();
+    verify(data, times(1)).validate();
   }
 
   @Test

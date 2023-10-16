@@ -67,7 +67,7 @@ public class TimeoutSessionTest {
     sessionEvents.handleConnectionOpened();
 
     // Then
-    verify(timeoutTimer).begin();
+    verify(timeoutTimer, times(1)).begin();
   }
 
   @Test
@@ -79,7 +79,7 @@ public class TimeoutSessionTest {
     sessionEvents.handleConnectionClosed();
 
     // Then
-    verify(timeoutTimer).end();
+    verify(timeoutTimer, times(1)).end();
   }
 
   @Test
@@ -91,7 +91,7 @@ public class TimeoutSessionTest {
     sessionEvents.handleConnectionOpened();
 
     // Then
-    verify(timeoutTimer).begin();
+    verify(timeoutTimer, times(1)).begin();
   }
 
   @Test
@@ -103,7 +103,7 @@ public class TimeoutSessionTest {
     sessionEvents.handleConnectionClosed();
 
     // Then
-    verify(timeoutTimer).end();
+    verify(timeoutTimer, times(1)).end();
   }
 
   @Test
@@ -115,7 +115,7 @@ public class TimeoutSessionTest {
     sessionEvents.handleRequest(null);
 
     // Then
-    verify(timeoutTimer).reset();
+    verify(timeoutTimer, times(1)).reset();
   }
 
   @Test
@@ -127,6 +127,6 @@ public class TimeoutSessionTest {
     sessionEvents.handleConfirmation(null, null);
 
     // Then
-    verify(timeoutTimer).reset();
+    verify(timeoutTimer, times(1)).reset();
   }
 }

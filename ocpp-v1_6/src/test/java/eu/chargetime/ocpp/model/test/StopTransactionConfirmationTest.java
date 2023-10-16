@@ -74,7 +74,7 @@ public class StopTransactionConfirmationTest {
     confirmation.validate();
 
     // Then
-    verify(idTagInfo).validate();
+    verify(idTagInfo, times(1)).validate();
   }
 
   @Test

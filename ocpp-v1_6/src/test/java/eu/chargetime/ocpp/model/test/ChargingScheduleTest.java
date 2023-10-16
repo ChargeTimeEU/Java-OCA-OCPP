@@ -120,7 +120,7 @@ public class ChargingScheduleTest {
     chargingSchedule.validate();
 
     // Then
-    verify(chargingSchedulePeriod).validate();
+    verify(chargingSchedulePeriod, times(1)).validate();
   }
 
   @Test

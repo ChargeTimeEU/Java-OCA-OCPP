@@ -84,7 +84,7 @@ public class MeterValueTest {
     meterValue.validate();
 
     // Then
-    verify(sampledValueMock).validate();
+    verify(sampledValueMock, times(1)).validate();
   }
 
   @Test

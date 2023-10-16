@@ -126,7 +126,7 @@ public class CommunicatorTest {
     communicator.sendCall(uniqueId, action, normalRequest);
 
     // Then
-    verify(events).onError(eq(uniqueId), any(), any(), any());
+    verify(events, times(1)).onError(eq(uniqueId), any(), any(), any());
   }
 
   @Test
@@ -164,7 +164,7 @@ public class CommunicatorTest {
 
     // Then
     verify(receiver, times(2)).send(eq(firstId));
-    verify(receiver).send(eq(secondId));
+    verify(receiver, times(1)).send(eq(secondId));
   }
 
   @Test
@@ -222,7 +222,7 @@ public class CommunicatorTest {
     communicator.sendCallResult(uniqueId, action, conf);
 
     // Then
-    verify(handler).onConfirmationCompleted();
+    verify(handler, times(1)).onConfirmationCompleted();
   }
 
   @Test

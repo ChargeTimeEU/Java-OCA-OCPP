@@ -135,7 +135,7 @@ public class GetConfigurationConfirmationTest {
     confirmation.validate();
 
     // Then
-    verify(keyValueType).validate();
+    verify(keyValueType, times(1)).validate();
   }
 
   @Test

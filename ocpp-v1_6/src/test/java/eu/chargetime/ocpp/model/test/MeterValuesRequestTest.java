@@ -123,7 +123,7 @@ public class MeterValuesRequestTest {
     request.validate();
 
     // Then
-    verify(meterValueMock).validate();
+    verify(meterValueMock, times(1)).validate();
   }
 
   @Test

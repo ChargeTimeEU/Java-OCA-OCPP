@@ -25,7 +25,8 @@ package eu.chargetime.ocpp.test;
    SOFTWARE.
 */
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -34,7 +35,6 @@ import eu.chargetime.ocpp.SimplePromiseFulfiller;
 import eu.chargetime.ocpp.UnsupportedFeatureException;
 import eu.chargetime.ocpp.model.Confirmation;
 import java.util.concurrent.CompletableFuture;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -65,6 +65,6 @@ public class SimpleRequestDispatcherTest {
     sut.fulfill(promise, eventsMock, null);
 
     // Then
-    assertEquals(result[0], expectedException);
+    assertThat(result[0], is(expectedException));
   }
 }

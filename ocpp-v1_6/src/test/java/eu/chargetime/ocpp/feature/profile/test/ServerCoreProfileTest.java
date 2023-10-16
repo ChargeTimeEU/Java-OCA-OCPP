@@ -77,7 +77,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     core.handleRequest(sessionId, request);
 
     // Then
-    verify(handler).handleAuthorizeRequest(eq(sessionId), eq(request));
+    verify(handler, times(1)).handleAuthorizeRequest(eq(sessionId), eq(request));
   }
 
   @Test
@@ -100,7 +100,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     core.handleRequest(sessionId, request);
 
     // Then
-    verify(handler).handleBootNotificationRequest(eq(sessionId), eq(request));
+    verify(handler, times(1)).handleBootNotificationRequest(eq(sessionId), eq(request));
   }
 
   @Test
@@ -202,7 +202,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     core.handleRequest(sessionId, request);
 
     // Then
-    verify(handler).handleDataTransferRequest(eq(sessionId), eq(request));
+    verify(handler, times(1)).handleDataTransferRequest(eq(sessionId), eq(request));
   }
 
   @Test
@@ -244,7 +244,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     core.handleRequest(sessionId, request);
 
     // Then
-    verify(handler).handleHeartbeatRequest(eq(sessionId), eq(request));
+    verify(handler, times(1)).handleHeartbeatRequest(eq(sessionId), eq(request));
   }
 
   @Test
@@ -266,7 +266,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     core.handleRequest(sessionId, request);
 
     // Then
-    verify(handler).handleMeterValuesRequest(eq(sessionId), eq(request));
+    verify(handler, times(1)).handleMeterValuesRequest(eq(sessionId), eq(request));
   }
 
   @Test
@@ -359,7 +359,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     core.handleRequest(sessionId, request);
 
     // Then
-    verify(handler).handleStartTransactionRequest(eq(sessionId), eq(request));
+    verify(handler, times(1)).handleStartTransactionRequest(eq(sessionId), eq(request));
   }
 
   @Test
@@ -385,7 +385,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     core.handleRequest(sessionId, request);
 
     // Then
-    verify(handler).handleStatusNotificationRequest(eq(sessionId), eq(request));
+    verify(handler, times(1)).handleStatusNotificationRequest(eq(sessionId), eq(request));
   }
 
   @Test
@@ -408,7 +408,7 @@ public class ServerCoreProfileTest extends ProfileTest {
     core.handleRequest(sessionId, request);
 
     // Then
-    verify(handler).handleStopTransactionRequest(eq(sessionId), eq(request));
+    verify(handler, times(1)).handleStopTransactionRequest(eq(sessionId), eq(request));
   }
 
   @Test

@@ -137,7 +137,7 @@ public class RemoteStartTransactionRequestTest {
     request.validate();
 
     // Then
-    verify(chargingProfile).validate();
+    verify(chargingProfile, times(1)).validate();
   }
 
   @Test

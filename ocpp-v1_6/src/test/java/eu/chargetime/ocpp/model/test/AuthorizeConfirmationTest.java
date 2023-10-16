@@ -69,6 +69,6 @@ public class AuthorizeConfirmationTest {
     confirmation.validate();
 
     // Then
-    verify(infoTag).validate();
+    verify(infoTag, times(1)).validate();
   }
 }

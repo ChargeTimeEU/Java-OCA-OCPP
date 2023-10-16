@@ -303,7 +303,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleChangeAvailabilityRequest(eq(request));
+    verify(handler, times(1)).handleChangeAvailabilityRequest(eq(request));
   }
 
   @Test
@@ -316,7 +316,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleRemoteStartTransactionRequest(eq(request));
+    verify(handler, times(1)).handleRemoteStartTransactionRequest(eq(request));
   }
 
   @Test
@@ -329,7 +329,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleRemoteStopTransactionRequest(eq(request));
+    verify(handler, times(1)).handleRemoteStopTransactionRequest(eq(request));
   }
 
   @Test
@@ -341,7 +341,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleResetRequest(eq(request));
+    verify(handler, times(1)).handleResetRequest(eq(request));
   }
 
   @Test
@@ -353,7 +353,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleUnlockConnectorRequest(eq(request));
+    verify(handler, times(1)).handleUnlockConnectorRequest(eq(request));
   }
 
   @Test
@@ -380,7 +380,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleGetConfigurationRequest(eq(request));
+    verify(handler, times(1)).handleGetConfigurationRequest(eq(request));
   }
 
   @Test
@@ -406,7 +406,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleDataTransferRequest(eq(request));
+    verify(handler, times(1)).handleDataTransferRequest(eq(request));
   }
 
   @Test
@@ -431,7 +431,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleChangeConfigurationRequest(eq(request));
+    verify(handler, times(1)).handleChangeConfigurationRequest(eq(request));
   }
 
   @Test
@@ -457,7 +457,7 @@ public class ClientCoreProfileTest extends ProfileTest {
     core.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleClearCacheRequest(request);
+    verify(handler, times(1)).handleClearCacheRequest(request);
   }
 
   @Test

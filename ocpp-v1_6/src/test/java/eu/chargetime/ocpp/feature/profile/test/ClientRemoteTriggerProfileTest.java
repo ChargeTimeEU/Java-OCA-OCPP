@@ -68,7 +68,7 @@ public class ClientRemoteTriggerProfileTest {
     profile.handleRequest(SESSION_NULL, request);
 
     // Then
-    verify(handler).handleTriggerMessageRequest(request);
+    verify(handler, times(1)).handleTriggerMessageRequest(request);
   }
 
   @Test
