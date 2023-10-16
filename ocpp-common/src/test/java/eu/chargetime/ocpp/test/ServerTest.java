@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /*
    ChargeTime.eu - Java-OCA-OCPP
@@ -65,13 +65,13 @@ public class ServerTest {
     UUID sessionId = UUID.randomUUID();
     when(request.validate()).thenReturn(true);
     when(session.getSessionId()).thenReturn(sessionId);
-    doAnswer(invocation -> listenerEvents = invocation.getArgumentAt(2, ListenerEvents.class))
+    doAnswer(invocation -> listenerEvents = invocation.getArgument(2, ListenerEvents.class))
         .when(listener)
         .open(anyString(), anyInt(), any());
-    doAnswer(invocation -> sessionEvents = invocation.getArgumentAt(0, SessionEvents.class))
+    doAnswer(invocation -> sessionEvents = invocation.getArgument(0, SessionEvents.class))
         .when(session)
         .accept(any());
-    doAnswer(invocation -> sessionIndex = invocation.getArgumentAt(0, UUID.class))
+    doAnswer(invocation -> sessionIndex = invocation.getArgument(0, UUID.class))
         .when(serverEvents)
         .newSession(any(), any());
 
@@ -114,7 +114,8 @@ public class ServerTest {
     server.send(sessionIndex, request);
 
     // Then
-    verify(session, times(1)).sendRequest(anyString(), eq(request), anyString());
+    // TODO action and uuid should not be nullable
+    verify(session, times(1)).sendRequest(nullable(String.class), eq(request), nullable(String.class));
   }
 
   @Test

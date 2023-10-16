@@ -1,6 +1,6 @@
 package eu.chargetime.ocpp.test;
 
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 import eu.chargetime.ocpp.*;
@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /*
    ChargeTime.eu - Java-OCA-OCPP
@@ -57,7 +57,7 @@ public class CommunicatorTest {
 
     when(transactionRelatedRequest.transactionRelated()).thenReturn(true);
     when(normalRequest.transactionRelated()).thenReturn(false);
-    doAnswer(invocation -> eventHandler = invocation.getArgumentAt(0, RadioEvents.class))
+    doAnswer(invocation -> eventHandler = invocation.getArgument(0, RadioEvents.class))
         .when(receiver)
         .accept(any());
     setupCommunicator(true);

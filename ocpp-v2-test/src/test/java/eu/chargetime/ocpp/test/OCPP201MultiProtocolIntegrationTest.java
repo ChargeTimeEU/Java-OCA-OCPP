@@ -42,7 +42,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /** multiple protocol capable client and server integration test up to OCPP 2.0.1 */
 @RunWith(MockitoJUnitRunner.class)

@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /*
  * ChargeTime.eu - Java-OCA-OCPP
@@ -107,7 +107,7 @@ public class MeterValueTest {
     // Given
     meterValue.setSampledValue(aList(sampledValueMock));
 
-    when(sampledValueMock.validate()).thenReturn(true);
+    lenient().when(sampledValueMock.validate()).thenReturn(true);
 
     // When
     boolean isValid = meterValue.validate();
