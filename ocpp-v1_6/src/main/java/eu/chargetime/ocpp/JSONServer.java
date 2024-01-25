@@ -69,7 +69,7 @@ public class JSONServer implements IServerAPI {
     protocols.add(new Protocol(""));
     draftOcppOnly = new Draft_6455(Collections.emptyList(), protocols);
 
-    if(configuration.getParameter("HTTP_HEALTH_CHECK_ENABLED", true)) {
+    if(configuration.getParameter(JSONConfiguration.HTTP_HEALTH_CHECK_ENABLED, true)) {
       logger.info("JSONServer 1.6 with HttpHealthCheckDraft");
       this.listener = new WebSocketListener(sessionFactory, configuration, draftOcppOnly, new Draft_HttpHealthCheck());
     } else {
