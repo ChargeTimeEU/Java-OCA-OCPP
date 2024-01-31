@@ -73,7 +73,7 @@ public class MultiProtocolJSONServer implements IMultiProtocolServerAPI {
     }
     Draft draft = new Draft_6455(Collections.emptyList(), protocols);
 
-    if (configuration.getParameter("HTTP_HEALTH_CHECK_ENABLED", true)) {
+    if (configuration.getParameter(JSONConfiguration.HTTP_HEALTH_CHECK_ENABLED, true)) {
       logger.info("JSONServer with HttpHealthCheckDraft");
       listener =
           new MultiProtocolWebSocketListener(
