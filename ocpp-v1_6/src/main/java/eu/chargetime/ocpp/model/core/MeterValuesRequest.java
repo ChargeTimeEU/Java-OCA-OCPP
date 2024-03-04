@@ -64,7 +64,7 @@ public class MeterValuesRequest extends RequestWithId {
 
   @Override
   public boolean validate() {
-    boolean valid = this.connectorId != null && this.connectorId >= 0 && this.meterValue != null;
+    boolean valid = this.connectorId != null && this.connectorId >= 0 && this.meterValue != null && meterValue.length > 0;
 
     if (valid) {
       for (MeterValue current : this.meterValue) {
