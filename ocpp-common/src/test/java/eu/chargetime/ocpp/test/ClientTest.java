@@ -41,7 +41,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -222,11 +221,11 @@ public class ClientTest {
     // When
     CompletableFuture<Confirmation> returnedFuture = client.send(request);
     // If the client uses at least Java 9, it could use CompletableFuture::orTimeout(..) ..
-    returnedFuture.orTimeout(50, TimeUnit.MILLISECONDS);
+//    returnedFuture.orTimeout(50, TimeUnit.MILLISECONDS);
     assertThat(returnedFuture.isDone(), is(false));
     Thread.sleep(100);
     // .. alternatively, it can be implemented manually
-//    returnedFuture.completeExceptionally(new TimeoutException());
+    returnedFuture.completeExceptionally(new TimeoutException());
 
     // Then
     assertThat(returnedFuture, is(internalFuture));
