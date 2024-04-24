@@ -51,7 +51,7 @@ public class WebSocketListener implements Listener {
   private static final int TIMEOUT_IN_MILLIS = 10000;
 
   private static final int OCPPJ_CP_MIN_PASSWORD_LENGTH = 16;
-  private static final int OCPPJ_CP_MAX_PASSWORD_LENGTH = 20;
+  private static final int OCPPJ_CP_MAX_PASSWORD_LENGTH = 40;
 
   private static final String HTTP_HEADER_PROXIED_ADDRESS = "X-Forwarded-For";
 
