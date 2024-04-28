@@ -81,7 +81,7 @@ public class Server {
 
           @Override
           public void authenticateSession(
-              SessionInformation information, String username, byte[] password)
+              SessionInformation information, String username, String password)
               throws AuthenticationException {
             serverEvents.authenticateSession(information, username, password);
           }
