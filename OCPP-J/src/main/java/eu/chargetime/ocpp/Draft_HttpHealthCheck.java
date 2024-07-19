@@ -22,7 +22,7 @@ class Draft_HttpHealthCheck extends Draft {
 
     static Boolean isHttp(ClientHandshake handshakedata) {
         String upgradeField = handshakedata.getFieldValue("Upgrade");
-        return upgradeField == null || upgradeField == "";
+        return upgradeField == null || upgradeField.isEmpty();
     }
 
     @Override

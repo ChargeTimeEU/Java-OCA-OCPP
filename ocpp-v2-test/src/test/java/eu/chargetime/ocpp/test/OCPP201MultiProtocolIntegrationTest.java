@@ -74,6 +74,8 @@ public class OCPP201MultiProtocolIntegrationTest {
     try {
       Thread.sleep(100);
     } catch (InterruptedException e) {
+      // restore thread interrupted state
+      Thread.currentThread().interrupt();
       throw new RuntimeException(e);
     }
     assertThat(csms.getPort(), not(0));

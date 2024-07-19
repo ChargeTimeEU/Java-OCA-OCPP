@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 
 public class IdentifierStringValidationRule implements IValidationRule {
   private final String ERROR_MESSAGE = "Illegal character(s) in IdentifierString.";
-  private final String PATTERN = "([a-zA-Z0-9]|\\*|\\-|\\_|\\=|\\:|\\+|\\||\\@|\\.)+";
+  private final String PATTERN = "^[\\w\\Q*-=:+|@.\\E]{0,255}$";
 
   @Override
   public void validate(String value) throws PropertyConstraintException {

@@ -363,6 +363,10 @@ public abstract class Communicator {
           Thread.sleep(DELAY_IN_MILLISECONDS);
           if (!hasFailed()) popRetryMessage();
         }
+      } catch (InterruptedException ex) {
+        logger.warn("RetryRunner::run() interrupted", ex);
+        // restore thread interrupted state
+        Thread.currentThread().interrupt();
       } catch (Exception ex) {
         logger.warn("RetryRunner::run() failed", ex);
       }

@@ -14,6 +14,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.time.ZonedDateTime;
 import java.util.Locale;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -69,6 +70,9 @@ public class SOAPCommunicatorTest {
     try {
       StringWriter sw = new StringWriter();
       TransformerFactory tf = TransformerFactory.newInstance();
+      // disable access to external entities to prevent XXE attacks
+      tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+      tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
       Transformer transformer = tf.newTransformer();
       transformer.transform(new DOMSource(doc), new StreamResult(sw));
       return sw.toString();
@@ -79,6 +83,10 @@ public class SOAPCommunicatorTest {
 
   public static Document stringToDocument(String xml) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    // disable access to external entities to prevent XXE attacks
+    factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+    factory.setExpandEntityReferences(false);
     factory.setNamespaceAware(true);
     DocumentBuilder db = factory.newDocumentBuilder();
 
