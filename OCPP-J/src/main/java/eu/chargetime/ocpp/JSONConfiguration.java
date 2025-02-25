@@ -58,11 +58,13 @@ public class JSONConfiguration {
     return this;
   }
 
+  @SuppressWarnings("unchecked")
   public <T> T getParameter(String name) {
     //noinspection unchecked
     return (T) parameters.get(name);
   }
 
+  @SuppressWarnings("unchecked")
   public <T> T getParameter(String name, T defaultValue) {
     //noinspection unchecked
     T value = (T) parameters.get(name);
