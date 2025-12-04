@@ -25,14 +25,22 @@ package eu.chargetime.ocpp.model.firmware.test;
    SOFTWARE.
 */
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.firmware.GetDiagnosticsRequest;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class GetDiagnosticsRequestTest {
+
+  @Rule
+  public ExpectedException thrownException = ExpectedException.none();
 
   private GetDiagnosticsRequest request;
 
@@ -61,5 +69,55 @@ public class GetDiagnosticsRequestTest {
 
     // Then
     assertThat(result, is(true));
+  }
+
+  @Test
+  public void setRetries_asPositive_isAccepted() {
+    request.setRetries(42);
+
+    assertThat(request.getRetries(), equalTo(42));
+  }
+
+  @Test
+  public void setRetries_asZero_isAccepted() {
+    request.setRetries(0);
+
+    assertThat(request.getRetries(), equalTo(0));
+  }
+
+  @Test
+  public void setRetries_asNegative_throwsPropertyConstraintException() {
+    int retries = -42;
+    thrownException.expect(instanceOf(PropertyConstraintException.class));
+    thrownException.expectMessage(
+        equalTo("Validation failed: [retries must be >= 0]. Current Value: [" + retries + "]"));
+
+    request.setRetries(retries);
+  }
+
+  @Test
+  public void setRetryInterval_asPositive_isAccepted() {
+    request.setRetryInterval(42);
+
+    assertThat(request.getRetryInterval(), equalTo(42));
+  }
+
+  @Test
+  public void setRetryInterval_asZero_isAccepted() {
+    request.setRetryInterval(0);
+
+    assertThat(request.getRetryInterval(), equalTo(0));
+  }
+
+  @Test
+  public void setRetryInterval_asNegative_throwsPropertyConstraintException() {
+    int retryInterval = -42;
+    thrownException.expect(instanceOf(PropertyConstraintException.class));
+    thrownException.expectMessage(
+        equalTo("Validation failed: [retryInterval must be >= 0]. Current Value: ["
+            + retryInterval
+            + "]"));
+
+    request.setRetryInterval(retryInterval);
   }
 }

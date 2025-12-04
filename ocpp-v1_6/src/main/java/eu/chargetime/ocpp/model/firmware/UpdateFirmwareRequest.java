@@ -112,8 +112,8 @@ public class UpdateFirmwareRequest extends RequestWithId {
    */
   @XmlElement
   public void setRetries(int retries) {
-    if (retries <= 0) {
-      throw new PropertyConstraintException(retries, "retries must be > 0");
+    if (retries < 0) {
+      throw new PropertyConstraintException(retries, "retries must be >= 0");
     }
 
     this.retries = retries;
@@ -157,8 +157,8 @@ public class UpdateFirmwareRequest extends RequestWithId {
    */
   @XmlElement
   public void setRetryInterval(int retryInterval) {
-    if (retryInterval <= 0) {
-      throw new PropertyConstraintException(retryInterval, "retryInterval must be > 0");
+    if (retryInterval < 0) {
+      throw new PropertyConstraintException(retryInterval, "retryInterval must be >= 0");
     }
 
     this.retryInterval = retryInterval;

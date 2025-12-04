@@ -89,19 +89,11 @@ public class UpdateFirmwareRequestTest {
 
   @Test
   public void setRetries_asNegative_throwsPropertyConstraintException() {
-    testInvalidRetries(-42);
-  }
-
-  @Test
-  public void setRetries_asZero_throwsPropertyConstraintException() {
-    testInvalidRetries(0);
-  }
-
-  private void testInvalidRetries(int retryInvalidRetries) {
+    int retries = -42;
     defineThrownException(
-        "Validation failed: [retries must be > 0]. Current Value: [" + retryInvalidRetries + "]");
+        "Validation failed: [retries must be >= 0]. Current Value: [" + retries + "]");
 
-    request.setRetries(retryInvalidRetries);
+    request.setRetries(retries);
   }
 
   private void defineThrownException(String expectedExceptionMessage) {
@@ -117,22 +109,21 @@ public class UpdateFirmwareRequestTest {
   }
 
   @Test
-  public void setRetryInterval_asNegative_throwsPropertyConstraintException() {
-    testInvalidRetryInterval(-42);
+  public void setRetries_asZero_isAccepted() {
+    request.setRetries(0);
+
+    assertThat(request.getRetries(), equalTo(0));
   }
 
   @Test
-  public void setRetryInterval_asZero_throwsPropertyConstraintException() {
-    testInvalidRetryInterval(0);
-  }
-
-  private void testInvalidRetryInterval(int invalidRetryValue) {
+  public void setRetryInterval_asNegative_throwsPropertyConstraintException() {
+    int retryInterval = -42;
     defineThrownException(
-        "Validation failed: [retryInterval must be > 0]. Current Value: ["
-            + invalidRetryValue
+        "Validation failed: [retryInterval must be >= 0]. Current Value: ["
+            + retryInterval
             + "]");
 
-    request.setRetryInterval(invalidRetryValue);
+    request.setRetryInterval(retryInterval);
   }
 
   @Test
@@ -140,5 +131,12 @@ public class UpdateFirmwareRequestTest {
     request.setRetryInterval(42);
 
     assertThat(request.getRetryInterval(), equalTo(42));
+  }
+
+  @Test
+  public void setRetryInterval_asZero_isAccepted() {
+    request.setRetryInterval(0);
+
+    assertThat(request.getRetryInterval(), equalTo(0));
   }
 }

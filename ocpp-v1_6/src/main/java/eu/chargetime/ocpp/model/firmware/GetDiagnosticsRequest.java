@@ -26,6 +26,7 @@ package eu.chargetime.ocpp.model.firmware;
   SOFTWARE.
 */
 
+import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.time.ZonedDateTime;
@@ -107,6 +108,10 @@ public class GetDiagnosticsRequest extends RequestWithId {
    */
   @XmlElement
   public void setRetries(Integer retries) {
+    if (retries < 0) {
+      throw new PropertyConstraintException(retries, "retries must be >= 0");
+    }
+
     this.retries = retries;
   }
 
@@ -128,6 +133,10 @@ public class GetDiagnosticsRequest extends RequestWithId {
    */
   @XmlElement
   public void setRetryInterval(Integer retryInterval) {
+    if (retryInterval < 0) {
+      throw new PropertyConstraintException(retryInterval, "retryInterval must be >= 0");
+    }
+
     this.retryInterval = retryInterval;
   }
 
