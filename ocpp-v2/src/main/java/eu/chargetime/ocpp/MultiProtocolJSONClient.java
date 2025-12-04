@@ -35,14 +35,16 @@ import eu.chargetime.ocpp.wss.BaseWssSocketBuilder;
 import eu.chargetime.ocpp.wss.WssSocketBuilder;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
+import java.util.zip.Deflater;
 import javax.annotation.Nullable;
 import javax.net.ssl.SSLContext;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
+import org.java_websocket.extensions.IExtension;
+import org.java_websocket.extensions.permessage_deflate.PerMessageDeflateExtension;
 import org.java_websocket.protocols.IProtocol;
 import org.java_websocket.protocols.Protocol;
 import org.slf4j.Logger;
@@ -88,11 +90,20 @@ public class MultiProtocolJSONClient implements IMultiProtocolClientAPI {
       List<ProtocolVersion> protocolVersions, String identity, JSONConfiguration configuration) {
     this.identity = identity;
     featureRepository = new MultiProtocolFeatureRepository(protocolVersions);
+    List<IExtension> inputExtensions = new ArrayList<>();
+    if (configuration.getParameter(JSONConfiguration.WEBSOCKET_COMPRESSION_SUPPORT, false)) {
+      PerMessageDeflateExtension perMessageDeflateExtension =
+          new PerMessageDeflateExtension(Deflater.BEST_COMPRESSION);
+      perMessageDeflateExtension.setThreshold(0);
+      perMessageDeflateExtension.setServerNoContextTakeover(false);
+      perMessageDeflateExtension.setClientNoContextTakeover(false);
+      inputExtensions.add(perMessageDeflateExtension);
+    }
     List<IProtocol> inputProtocols = new ArrayList<>(protocolVersions.size());
     for (ProtocolVersion protocolVersion : protocolVersions) {
       inputProtocols.add(new Protocol(protocolVersion.getSubProtocolName()));
     }
-    Draft draft = new Draft_6455(Collections.emptyList(), inputProtocols);
+    Draft draft = new Draft_6455(inputExtensions, inputProtocols);
     transmitter = new MultiProtocolWebSocketTransmitter(featureRepository, configuration, draft);
     JSONCommunicator communicator = new JSONCommunicator(transmitter, false);
     ISessionFactory sessionFactory = new MultiProtocolSessionFactory(featureRepository);
