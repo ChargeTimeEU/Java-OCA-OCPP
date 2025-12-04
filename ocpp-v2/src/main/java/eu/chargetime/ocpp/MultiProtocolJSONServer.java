@@ -35,7 +35,6 @@ import eu.chargetime.ocpp.wss.BaseWssFactoryBuilder;
 import eu.chargetime.ocpp.wss.WssFactoryBuilder;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
