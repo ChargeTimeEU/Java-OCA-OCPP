@@ -27,6 +27,7 @@ package eu.chargetime.ocpp;
 */
 
 import eu.chargetime.ocpp.model.*;
+import eu.chargetime.ocpp.utilities.SugarUtil;
 import javax.xml.bind.*;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -125,7 +126,11 @@ public class SOAPCommunicator extends Communicator {
 
   @Override
   protected Object makeCall(String uniqueId, String action, Object payload) {
-    return createMessage(uniqueId, action, (Document) payload, false);
+    SOAPMessage message = createMessage(uniqueId, action, (Document) payload, false);
+    if (message != null) {
+      logger.trace("Send a message: {}", SugarUtil.soapMessageToString(message));
+    }
+    return message;
   }
 
   private QName blameSomeone(String errorCode) {
@@ -161,7 +166,7 @@ public class SOAPCommunicator extends Communicator {
     return message;
   }
 
-  private Object createMessage(
+  private SOAPMessage createMessage(
       String uniqueId, String action, Document payload, boolean isResponse) {
     SOAPMessage message = null;
 
@@ -251,6 +256,15 @@ public class SOAPCommunicator extends Communicator {
     SOAPParser soapParser = new SOAPParser((SOAPMessage) message);
 
     if (soapParser.isAddressedToMe()) output = soapParser.parseMessage();
+
+    if (output != null) {
+      Object payload = output.getPayload();
+      if (payload instanceof Document) {
+        logger.trace("Receive a message: {}", SugarUtil.docToString((Document) payload));
+      } else {
+        logger.trace("Receive a message: {}", message);
+      }
+    }
 
     return output;
   }

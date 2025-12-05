@@ -28,12 +28,9 @@ SOFTWARE.
 */
 
 import eu.chargetime.ocpp.model.*;
-import eu.chargetime.ocpp.utilities.SugarUtil;
 import java.util.ArrayDeque;
-import javax.xml.soap.SOAPMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
 
 /**
  * Abstract class. Handles basic communication: Pack and send messages. Receive and unpack messages.
@@ -165,14 +162,6 @@ public abstract class Communicator {
   public synchronized void sendCall(String uniqueId, String action, Request request) {
     Object call = makeCall(uniqueId, action, packPayload(request));
 
-    if (call != null) {
-      if (call instanceof SOAPMessage) {
-        logger.trace("Send a message: {}", SugarUtil.soapMessageToString((SOAPMessage) call));
-      } else {
-        logger.trace("Send a message: {}", call);
-      }
-    }
-
     try {
       if (radio.isClosed()) {
         if (request.transactionRelated() && transactionQueue != null) {
@@ -298,14 +287,6 @@ public abstract class Communicator {
     @Override
     public void receivedMessage(Object input) {
       Message message = parse(input);
-      if (message != null) {
-        Object payload = message.getPayload();
-        if (payload instanceof Document) {
-          logger.trace("Receive a message: {}", SugarUtil.docToString((Document) payload));
-        } else {
-          logger.trace("Receive a message: {}", message);
-        }
-      }
       if (message instanceof CallResultMessage) {
         events.onCallResult(message.getId(), message.getAction(), message.getPayload());
       } else if (message instanceof CallErrorMessage) {

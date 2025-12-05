@@ -30,7 +30,6 @@ package eu.chargetime.ocpp.utilities;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.time.ZonedDateTime;
 import javax.xml.XMLConstants;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
@@ -41,11 +40,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 
 public class SugarUtil {
-
-  public static String zonedDateTimeToString(ZonedDateTime zonedDateTime) {
-    if (zonedDateTime == null) return "";
-    return zonedDateTime.toString();
-  }
 
   public static String docToString(Document doc) {
     try {
