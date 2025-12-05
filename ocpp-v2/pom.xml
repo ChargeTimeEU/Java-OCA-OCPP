@@ -9,8 +9,8 @@
     <version>1.2.0</version>
     <packaging>jar</packaging>
 
-    <name>Java-OCA-OCPP v2</name>
-    <description>Implementation of Open Charge-Point Protocol version 2.x.</description>
+    <name>Java-OCA-OCPP OCPP 2.x</name>
+    <description>OCPP 2.x multi-protocol capable</description>
     <url>https://github.com/ChargeTimeEU/Java-OCA-OCPP</url>
 
     <licenses>
@@ -55,11 +55,6 @@
         <dependency>
             <groupId>eu.chargetime.ocpp</groupId>
             <artifactId>OCPP-J</artifactId>
-            <version>1.2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.chargetime.ocpp</groupId>
-            <artifactId>v1_6</artifactId>
             <version>1.2.0</version>
         </dependency>
         <dependency>

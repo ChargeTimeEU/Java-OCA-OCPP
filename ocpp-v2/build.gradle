@@ -5,7 +5,6 @@
 dependencies {
     compile project(':common')
     compile project(':OCPP-J')
-    compile project(':v1_6')
     compile 'com.google.code.findbugs:jsr305:3.0.1'
     compile 'org.java-websocket:Java-WebSocket:1.6.0'
     testCompile 'junit:junit:4.13.2'
@@ -18,5 +17,5 @@ task javadocJar(type: Jar) {
     from(javadoc.destinationDir)
 }
 
-description = 'Java-OCA-OCPP v2'
+description = 'Java-OCA-OCPP OCPP 2.x'
 publishing.publications.maven.artifact(javadocJar)
