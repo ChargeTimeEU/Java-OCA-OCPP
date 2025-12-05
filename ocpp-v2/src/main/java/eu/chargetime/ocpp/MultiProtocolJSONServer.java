@@ -35,13 +35,15 @@ import eu.chargetime.ocpp.wss.BaseWssFactoryBuilder;
 import eu.chargetime.ocpp.wss.WssFactoryBuilder;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
+import java.util.zip.Deflater;
 import javax.net.ssl.SSLContext;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
+import org.java_websocket.extensions.IExtension;
+import org.java_websocket.extensions.permessage_deflate.PerMessageDeflateExtension;
 import org.java_websocket.protocols.IProtocol;
 import org.java_websocket.protocols.Protocol;
 import org.slf4j.Logger;
@@ -67,11 +69,20 @@ public class MultiProtocolJSONServer implements IMultiProtocolServerAPI {
     featureRepository = new MultiProtocolFeatureRepository(protocolVersions);
     MultiProtocolSessionFactory sessionFactory = new MultiProtocolSessionFactory(featureRepository);
 
+    List<IExtension> extensions = new ArrayList<>();
+    if (configuration.getParameter(JSONConfiguration.WEBSOCKET_COMPRESSION_SUPPORT, true)) {
+      PerMessageDeflateExtension perMessageDeflateExtension =
+          new PerMessageDeflateExtension(Deflater.BEST_COMPRESSION);
+      perMessageDeflateExtension.setThreshold(0);
+      perMessageDeflateExtension.setServerNoContextTakeover(false);
+      perMessageDeflateExtension.setClientNoContextTakeover(false);
+      extensions.add(perMessageDeflateExtension);
+    }
     List<IProtocol> protocols = new ArrayList<>(protocolVersions.size());
     for (ProtocolVersion protocolVersion : protocolVersions) {
       protocols.add(new Protocol(protocolVersion.getSubProtocolName()));
     }
-    Draft draft = new Draft_6455(Collections.emptyList(), protocols);
+    Draft draft = new Draft_6455(extensions, protocols);
 
     if (configuration.getParameter(JSONConfiguration.HTTP_HEALTH_CHECK_ENABLED, true)) {
       logger.info("JSONServer with HttpHealthCheckDraft");
