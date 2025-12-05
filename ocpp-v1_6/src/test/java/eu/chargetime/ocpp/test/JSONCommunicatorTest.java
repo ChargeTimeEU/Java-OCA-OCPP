@@ -103,6 +103,22 @@ public class JSONCommunicatorTest {
   }
 
   @Test
+  public void unpackPayload_aCalendarPayload_parsesNoFractionalAsZeroFractional() throws Exception {
+    // Given
+    String aCalendar = "2016-04-28T07:16:11Z";
+    String payload = "{\"calendarTest\":\"%s\"}";
+
+    ZonedDateTime someDate = ZonedDateTime.parse("2016-04-28T07:16:11.000Z");
+
+    // When
+    TestModel model =
+        communicator.unpackPayload(String.format(payload, aCalendar), TestModel.class);
+
+    // Then
+    assertThat(model.getCalendarTest().compareTo(someDate), is(0));
+  }
+
+  @Test
   public void unpackPayload_anIntegerPayload_returnsTestModelWithAnInteger() throws Exception {
     // Given
     Integer anInteger = 1337;
@@ -277,6 +293,24 @@ public class JSONCommunicatorTest {
   }
 
   @Test
+  public void pack_bootNotificationConfirmation_limitsTimeFractionalDigitsToThree()
+      throws Exception {
+    // Given
+    String expected =
+        "{\"currentTime\":\"2016-04-28T06:41:13.123Z\",\"interval\":300,\"status\":\"Accepted\"}";
+    BootNotificationConfirmation confirmation = new BootNotificationConfirmation();
+    confirmation.setCurrentTime(createDateTimeInNanos(1461825673123456789L)); // will be truncated
+    confirmation.setInterval(300);
+    confirmation.setStatus(RegistrationStatus.Accepted);
+
+    // When
+    Object payload = communicator.packPayload(confirmation);
+
+    // Then
+    assertThat(payload, equalTo(expected));
+  }
+
+  @Test
   public void pack_bootNotificationConfirmation_returnsBootNotificationConfirmationPayload()
       throws Exception {
     // Given
@@ -284,6 +318,24 @@ public class JSONCommunicatorTest {
         "{\"currentTime\":\"2016-04-28T06:41:13.720Z\",\"interval\":300,\"status\":\"Accepted\"}";
     BootNotificationConfirmation confirmation = new BootNotificationConfirmation();
     confirmation.setCurrentTime(createDateTimeInMillis(1461825673720L));
+    confirmation.setInterval(300);
+    confirmation.setStatus(RegistrationStatus.Accepted);
+
+    // When
+    Object payload = communicator.packPayload(confirmation);
+
+    // Then
+    assertThat(payload, equalTo(expected));
+  }
+
+  @Test
+  public void pack_bootNotificationConfirmation_alwaysFormatsTimeWithThreeFractionalDigits()
+      throws Exception {
+    // Given
+    String expected =
+        "{\"currentTime\":\"2016-04-28T06:41:13.000Z\",\"interval\":300,\"status\":\"Accepted\"}";
+    BootNotificationConfirmation confirmation = new BootNotificationConfirmation();
+    confirmation.setCurrentTime(createDateTimeInMillis(1461825673000L)); // will not be truncated
     confirmation.setInterval(300);
     confirmation.setStatus(RegistrationStatus.Accepted);
 
@@ -318,5 +370,10 @@ public class JSONCommunicatorTest {
 
   private ZonedDateTime createDateTimeInMillis(long dateInMillis) {
     return Instant.ofEpochMilli(dateInMillis).atOffset(ZoneOffset.UTC).toZonedDateTime();
+  }
+
+  private ZonedDateTime createDateTimeInNanos(long dateInNanos) {
+    return Instant.ofEpochSecond(dateInNanos / 1000000000, dateInNanos % 1000000000)
+        .atOffset(ZoneOffset.UTC).toZonedDateTime();
   }
 }

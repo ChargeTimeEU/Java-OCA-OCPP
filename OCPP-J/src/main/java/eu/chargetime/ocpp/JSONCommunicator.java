@@ -9,6 +9,8 @@ import eu.chargetime.ocpp.model.Message;
 import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.ResolverStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +47,16 @@ SOFTWARE.
 public class JSONCommunicator extends Communicator {
 
   private static final Logger logger = LoggerFactory.getLogger(JSONCommunicator.class);
+
+  /**
+   * a derivation of ISO_INSTANT that always serializes to three millisecond digits, even if zero
+   */
+  public static final DateTimeFormatter ISO_INSTANT_WITH_MILLIS_PRECISION =
+      new DateTimeFormatterBuilder()
+          .parseCaseInsensitive()
+          .appendInstant(3)
+          .toFormatter()
+          .withResolverStyle(ResolverStyle.STRICT);
 
   private static final int INDEX_MESSAGEID = 0;
   private static final int TYPENUMBER_CALL = 2;
@@ -94,7 +106,7 @@ public class JSONCommunicator extends Communicator {
     @Override
     public JsonElement serialize(
         ZonedDateTime zonedDateTime, Type type, JsonSerializationContext jsonSerializationContext) {
-      return new JsonPrimitive(zonedDateTime.format(DateTimeFormatter.ISO_INSTANT));
+      return new JsonPrimitive(zonedDateTime.format(ISO_INSTANT_WITH_MILLIS_PRECISION));
     }
 
     @Override
