@@ -47,8 +47,13 @@ public class OCPPHandlerTest {
                     .toCompletableFuture().get();
             assertTrue(true);
             assertEquals(AuthorizationStatus.Accepted,authorizeConfirmation.getIdTagInfo().getStatus());
-        } catch (OccurenceConstraintException | UnsupportedFeatureException
-                | ExecutionException | InterruptedException e) {
+        } catch (InterruptedException e) {
+          log.error("Thread interrupted: " + e);
+          // restore thread interrupted state
+          Thread.currentThread().interrupt();
+          log.error("Test will fail");
+          assertTrue(false);
+        } catch (OccurenceConstraintException | UnsupportedFeatureException | ExecutionException e) {
             log.error("Exception occurred: " + e);
             log.error("Test will fail");
             assertTrue(false);

@@ -150,7 +150,9 @@ public class SOAPClient implements IClientAPI {
                 try {
                   soapMessage = transmitter.relay(message.getMessage()).get();
                 } catch (InterruptedException e) {
-                  logger.warn("openWS() transmitter.relay failed", e);
+                  logger.warn("openWS() transmitter.relay interrupted", e);
+                  // restore thread interrupted state
+                  Thread.currentThread().interrupt();
                 } catch (ExecutionException e) {
                   logger.warn("openWS() transmitter.relay failed", e);
                 }

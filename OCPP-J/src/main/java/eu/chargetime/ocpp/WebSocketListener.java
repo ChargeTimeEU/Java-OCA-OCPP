@@ -271,7 +271,11 @@ public class WebSocketListener implements Listener {
         server.stop();
       } catch (InterruptedException ex) {
         logger.error("Failed to close listener", ex);
+        // restore thread interrupted state
+        Thread.currentThread().interrupt();
       }
+      // restore thread interrupted state
+      Thread.currentThread().interrupt();
     } finally {
       closed = true;
       server = null;

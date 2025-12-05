@@ -31,6 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.time.ZonedDateTime;
+import javax.xml.XMLConstants;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.transform.Transformer;
@@ -50,6 +51,9 @@ public class SugarUtil {
     try {
       StringWriter sw = new StringWriter();
       TransformerFactory tf = TransformerFactory.newInstance();
+      // disable access to external entities to prevent XXE attacks
+      tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+      tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
       Transformer transformer = tf.newTransformer();
       transformer.transform(new DOMSource(doc), new StreamResult(sw));
       return sw.toString();
