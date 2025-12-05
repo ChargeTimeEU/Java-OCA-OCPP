@@ -1,0 +1,20 @@
+/*
+ * Java-OCA-OCPP ocpp-v1_6-soap gradle build configuration
+ */
+
+dependencies {
+    compile project(':v1_6')
+    compile group: 'javax.xml.soap', name: 'javax.xml.soap-api', version: '1.4.0'
+
+    testCompile 'junit:junit:4.13.2'
+    testCompile 'org.mockito:mockito-core:4.11.0'
+    testCompile 'org.hamcrest:hamcrest-core:3.0'
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from(javadoc.destinationDir)
+}
+
+description = 'Java-OCA-OCPP OCPP 1.6S'
+publishing.publications.maven.artifact(javadocJar)

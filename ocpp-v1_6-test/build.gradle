@@ -8,7 +8,7 @@ plugins {
 
 dependencies {
     compile project(':common')
-    compile project(':v1_6')
+    compile project(':v1_6s')
     testCompile 'junit:junit:4.13.2'
     testCompile 'org.codehaus.groovy:groovy-all:2.4.11'
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
