@@ -1,9 +1,9 @@
 /*
- * Java-OCA-OCPP ocpp-v1_6-soap gradle build configuration
+ * Java-OCA-OCPP ocpp16s gradle build configuration
  */
 
 dependencies {
-    compile project(':v1_6')
+    compile project(':ocpp16')
     compile group: 'javax.xml.soap', name: 'javax.xml.soap-api', version: '1.4.0'
 
     testCompile 'junit:junit:4.13.2'

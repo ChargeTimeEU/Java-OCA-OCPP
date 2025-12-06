@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>eu.chargetime.ocpp</groupId>
-	<artifactId>json-server-implementation </artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>json-server-implementation </name>
-	<description>Example Spring Application of a json server </description>
+	<artifactId>ocpp16-json-server-example</artifactId>
+	<version>1.2.0</version>
+	<name>Example OCPP 1.6 JSON Server Implementation</name>
+	<description>Example Spring Application of an OCPP 1.6 JSON Server</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -21,31 +21,19 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.java-websocket</groupId>
-			<artifactId>Java-WebSocket</artifactId>
-			<version>1.6.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.8.9</version>
-		</dependency>
-		<dependency>
 			<groupId>eu.chargetime.ocpp</groupId>
-			<artifactId>v1_6</artifactId>
+			<artifactId>ocpp16j</artifactId>
 			<version>1.2.0</version>
 		</dependency>
 		<dependency>

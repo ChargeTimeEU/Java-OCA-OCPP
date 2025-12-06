@@ -1,9 +1,9 @@
 /*
- * Java-OCA-OCPP ocpp-v1_6-json gradle build configuration
+ * Java-OCA-OCPP ocpp16j gradle build configuration
  */
 
 dependencies {
-    compile project(':v1_6')
+    compile project(':ocpp16')
     compile project(':ocpp-json')
 
     testCompile 'junit:junit:4.13.2'

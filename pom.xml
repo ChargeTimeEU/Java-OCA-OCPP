@@ -5,35 +5,35 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>eu.chargetime.ocpp</groupId>
-    <artifactId>all</artifactId>
+    <artifactId>java-oca-ocpp</artifactId>
     <version>1.2</version>
     <packaging>pom</packaging>
 
     <name>Java-OCA-OCPP</name>
-    <description>Implementation of Open Charge-Point Protocol common library.</description>
+    <description>A JAVA library for the Open Charge-Point Protocol from openchargealliance.org</description>
     <url>https://github.com/ChargeTimeEU/Java-OCA-OCPP</url>
 
     <licenses>
-        <license>
-            <name>MIT License</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
-        </license>
+      <license>
+        <name>MIT License</name>
+        <url>http://www.opensource.org/licenses/mit-license.php</url>
+      </license>
     </licenses>
 
     <developers>
-        <developer>
-            <name>Thomas Volden</name>
-            <email>tv@chargetime.eu</email>
-            <organization>chargetime.eu</organization>
-            <organizationUrl>http://www.chargetime.eu</organizationUrl>
-        </developer>
-    </developers>
+       <developer>
+         <name>Thomas Volden</name>
+         <email>tv@chargetime.eu</email>
+         <organization>chargetime.eu</organization>
+         <organizationUrl>http://www.chargetime.eu</organizationUrl>
+       </developer>
+     </developers>
 
-    <scm>
-        <connection>scm:git:git://github.com/ChargeTimeEU/Java-OCA-OCPP.git</connection>
-        <developerConnection>scm:git:ssh://github.com:ChargeTimeEU/Java-OCA-OCPP.git</developerConnection>
-        <url>https://github.com/ChargeTimeEU/Java-OCA-OCPP.git</url>
-    </scm>
+     <scm>
+       <connection>scm:git:git://github.com/ChargeTimeEU/Java-OCA-OCPP.git</connection>
+       <developerConnection>scm:git:ssh://github.com:ChargeTimeEU/Java-OCA-OCPP.git</developerConnection>
+       <url>https://github.com/ChargeTimeEU/Java-OCA-OCPP.git</url>
+     </scm>
 
     <modules>
         <module>ocpp-common</module>
@@ -68,7 +68,6 @@
                 </configuration>
                 <version>3.14.1</version>
             </plugin>
-
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>

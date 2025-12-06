@@ -5,35 +5,35 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>eu.chargetime.ocpp</groupId>
-    <artifactId>OCPP-J</artifactId>
+    <artifactId>ocpp-json</artifactId>
     <version>1.2.0</version>
     <packaging>jar</packaging>
 
-    <name>Java-OCA-OCPP OCPP-J</name>
-    <description>Implementation of Open Charge-Point Protocols OCPP-J</description>
+    <name>Java-OCA-OCPP OCPP JSON Transport</name>
+    <description>JSON transport dependency package</description>
     <url>https://github.com/ChargeTimeEU/Java-OCA-OCPP</url>
 
     <licenses>
-        <license>
-            <name>MIT License</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
-        </license>
+      <license>
+        <name>MIT License</name>
+        <url>http://www.opensource.org/licenses/mit-license.php</url>
+      </license>
     </licenses>
 
     <developers>
-        <developer>
-            <name>Thomas Volden</name>
-            <email>tv@chargetime.eu</email>
-            <organization>chargetime.eu</organization>
-            <organizationUrl>http://www.chargetime.eu</organizationUrl>
-        </developer>
-    </developers>
+       <developer>
+         <name>Thomas Volden</name>
+         <email>tv@chargetime.eu</email>
+         <organization>chargetime.eu</organization>
+         <organizationUrl>http://www.chargetime.eu</organizationUrl>
+       </developer>
+     </developers>
 
-    <scm>
-        <connection>scm:git:git://github.com/ChargeTimeEU/Java-OCA-OCPP.git</connection>
-        <developerConnection>scm:git:ssh://github.com:ChargeTimeEU/Java-OCA-OCPP.git</developerConnection>
-        <url>https://github.com/ChargeTimeEU/Java-OCA-OCPP.git</url>
-    </scm>
+     <scm>
+       <connection>scm:git:git://github.com/ChargeTimeEU/Java-OCA-OCPP.git</connection>
+       <developerConnection>scm:git:ssh://github.com:ChargeTimeEU/Java-OCA-OCPP.git</developerConnection>
+       <url>https://github.com/ChargeTimeEU/Java-OCA-OCPP.git</url>
+     </scm>
 
     <distributionManagement>
         <snapshotRepository>
@@ -49,7 +49,7 @@
     <dependencies>
         <dependency>
             <groupId>eu.chargetime.ocpp</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>ocpp-common</artifactId>
             <version>1.2.0</version>
         </dependency>
         <dependency>
@@ -81,76 +81,70 @@
             <version>3.0</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.3.16</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
         <plugins>
-          <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-compiler-plugin</artifactId>
-              <configuration>
-                  <source>1.8</source>
-                  <target>1.8</target>
-              </configuration>
-              <version>3.14.1</version>
-          </plugin>
-          <plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+                <version>3.14.1</version>
+            </plugin>
+            <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-source-plugin</artifactId>
               <version>3.4.0</version>
               <executions>
-                  <execution>
-                      <id>attach-sources</id>
-                      <phase>verify</phase>
-                      <goals>
-                          <goal>jar-no-fork</goal>
-                      </goals>
-                  </execution>
+                <execution>
+                  <id>attach-sources</id>
+                    <phase>verify</phase>
+                  <goals>
+                    <goal>jar-no-fork</goal>
+                  </goals>
+                </execution>
               </executions>
-          </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.12.0</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>3.2.8</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <version>3.12.0</version>
+              <executions>
+                <execution>
+                  <id>attach-javadocs</id>
+                  <goals>
+                    <goal>jar</goal>
+                  </goals>
+                </execution>
+              </executions>
             </plugin>
             <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.7.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-gpg-plugin</artifactId>
+              <version>3.2.8</version>
+              <executions>
+                <execution>
+                  <id>sign-artifacts</id>
+                  <phase>verify</phase>
+                  <goals>
+                    <goal>sign</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <groupId>org.sonatype.plugins</groupId>
+              <artifactId>nexus-staging-maven-plugin</artifactId>
+              <version>1.7.0</version>
+              <extensions>true</extensions>
+              <configuration>
+                <serverId>ossrh</serverId>
+                <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                <autoReleaseAfterClose>true</autoReleaseAfterClose>
+              </configuration>
             </plugin>
         </plugins>
     </build>
