@@ -99,7 +99,8 @@ public class SOAPTestClient implements IClientAPI {
   }
 
   @Override
-  public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException {
+  public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation)
+      throws UnsupportedFeatureException, OccurenceConstraintException {
     return client.asyncCompleteRequest(uniqueId, confirmation);
   }
 

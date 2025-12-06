@@ -54,9 +54,7 @@ public class Client {
    * @param promiseRepository Inject promise repository
    * @see Session
    */
-  public Client(
-      ISession session,
-      IPromiseRepository promiseRepository) {
+  public Client(ISession session, IPromiseRepository promiseRepository) {
     this.session = session;
     this.promiseRepository = promiseRepository;
   }
@@ -94,7 +92,8 @@ public class Client {
           }
 
           @Override
-          public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException {
+          public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation)
+              throws UnsupportedFeatureException, OccurenceConstraintException {
             return session.completePendingPromise(uniqueId, confirmation);
           }
 
@@ -104,7 +103,8 @@ public class Client {
             Optional<CompletableFuture<Confirmation>> promiseOptional =
                 promiseRepository.getPromise(uniqueId);
             if (promiseOptional.isPresent()) {
-              promiseOptional.get()
+              promiseOptional
+                  .get()
                   .completeExceptionally(
                       new CallErrorException(errorCode, errorDescription, payload));
             } else {
@@ -158,11 +158,13 @@ public class Client {
     String requestUuid = session.storeRequest(request);
     CompletableFuture<Confirmation> promise = promiseRepository.createPromise(requestUuid);
 
-    // Clean up after the promise has completed, no matter if it was successful or had an error or a timeout.
-    promise.whenComplete((confirmation, throwable) -> {
-      session.removeRequest(requestUuid);
-      promiseRepository.removePromise(requestUuid);
-    });
+    // Clean up after the promise has completed, no matter if it was successful or had an error or a
+    // timeout.
+    promise.whenComplete(
+        (confirmation, throwable) -> {
+          session.removeRequest(requestUuid);
+          promiseRepository.removePromise(requestUuid);
+        });
 
     session.sendRequest(featureOptional.get().getAction(), request, requestUuid);
     return promise;
@@ -172,7 +174,8 @@ public class Client {
     return this.session.getSessionId();
   }
 
-  public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException {
+  public boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation)
+      throws UnsupportedFeatureException, OccurenceConstraintException {
     return session.completePendingPromise(uniqueId, confirmation);
   }
 }

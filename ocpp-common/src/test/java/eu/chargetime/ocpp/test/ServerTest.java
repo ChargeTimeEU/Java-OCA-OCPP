@@ -1,28 +1,27 @@
 package eu.chargetime.ocpp.test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.*;
+
 import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.SessionInformation;
 import eu.chargetime.ocpp.model.TestConfirmation;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /*
    ChargeTime.eu - Java-OCA-OCPP
@@ -85,7 +84,8 @@ public class ServerTest {
         .when(serverEvents)
         .newSession(any(), any());
 
-    when(promiseRepository.createPromise(any())).then(invocation -> new CompletableFuture<Confirmation>());
+    when(promiseRepository.createPromise(any()))
+        .then(invocation -> new CompletableFuture<Confirmation>());
     when(featureRepository.findFeature(any())).thenReturn(Optional.of(feature));
     when(session.getFeatureRepository()).thenReturn(featureRepository);
     when(session.storeRequest(any())).thenAnswer(invocation -> UUID.randomUUID().toString());
@@ -127,7 +127,8 @@ public class ServerTest {
 
     // Then
     // TODO action and uuid should not be nullable
-    verify(session, times(1)).sendRequest(nullable(String.class), eq(request), nullable(String.class));
+    verify(session, times(1))
+        .sendRequest(nullable(String.class), eq(request), nullable(String.class));
   }
 
   @Test
@@ -193,7 +194,8 @@ public class ServerTest {
     assertThat(returnedFuture, is(internalFuture));
     assertThat(returnedFuture.isDone(), is(true));
     assertThat(returnedFuture.isCompletedExceptionally(), is(true));
-    ExecutionException executionException = assertThrows(ExecutionException.class, returnedFuture::get);
+    ExecutionException executionException =
+        assertThrows(ExecutionException.class, returnedFuture::get);
     assertThat(executionException.getCause().getClass(), is(equalTo(IllegalStateException.class)));
     verify(session, times(1)).removeRequest(any());
     verify(promiseRepository, times(1)).removePromise(any());
@@ -210,7 +212,7 @@ public class ServerTest {
     // When
     CompletableFuture<Confirmation> returnedFuture = server.send(sessionIndex, request);
     // If the client uses at least Java 9, it could use CompletableFuture::orTimeout(..).
-//    returnedFuture.orTimeout(50, TimeUnit.MILLISECONDS);
+    //    returnedFuture.orTimeout(50, TimeUnit.MILLISECONDS);
     assertThat(returnedFuture.isDone(), is(false));
     Thread.sleep(100);
     // .. alternatively, it can be implemented manually
@@ -220,7 +222,8 @@ public class ServerTest {
     assertThat(returnedFuture, is(internalFuture));
     assertThat(returnedFuture.isDone(), is(true));
     assertThat(returnedFuture.isCompletedExceptionally(), is(true));
-    ExecutionException executionException = assertThrows(ExecutionException.class, returnedFuture::get);
+    ExecutionException executionException =
+        assertThrows(ExecutionException.class, returnedFuture::get);
     assertThat(executionException.getCause().getClass(), is(equalTo(TimeoutException.class)));
     verify(session, times(1)).removeRequest(any());
     verify(promiseRepository, times(1)).removePromise(any());

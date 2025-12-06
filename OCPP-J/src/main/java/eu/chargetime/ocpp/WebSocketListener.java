@@ -87,7 +87,7 @@ public class WebSocketListener implements Listener {
             drafts) {
           @Override
           public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
-            if(Draft_HttpHealthCheck.isHttp(clientHandshake)){
+            if (Draft_HttpHealthCheck.isHttp(clientHandshake)) {
               logger.debug("On HTTP Request, for heathcheck");
               webSocket.close(Draft_HttpHealthCheck.HTTP_HEALTH_CHECK_CLOSE_CODE);
               return;
@@ -166,8 +166,14 @@ public class WebSocketListener implements Listener {
                 }
               }
               if (password == null
-                  || password.length < configuration.getParameter(JSONConfiguration.OCPPJ_CP_MIN_PASSWORD_LENGTH, OCPPJ_CP_MIN_PASSWORD_LENGTH)
-                  || password.length > configuration.getParameter(JSONConfiguration.OCPPJ_CP_MAX_PASSWORD_LENGTH, OCPPJ_CP_MAX_PASSWORD_LENGTH))
+                  || password.length
+                      < configuration.getParameter(
+                          JSONConfiguration.OCPPJ_CP_MIN_PASSWORD_LENGTH,
+                          OCPPJ_CP_MIN_PASSWORD_LENGTH)
+                  || password.length
+                      > configuration.getParameter(
+                          JSONConfiguration.OCPPJ_CP_MAX_PASSWORD_LENGTH,
+                          OCPPJ_CP_MAX_PASSWORD_LENGTH))
                 throw new InvalidDataException(401, "Invalid password length");
             }
 
@@ -190,8 +196,7 @@ public class WebSocketListener implements Listener {
                 reason,
                 remote);
 
-            if(code == Draft_HttpHealthCheck.HTTP_HEALTH_CHECK_CLOSE_CODE)
-              return;
+            if (code == Draft_HttpHealthCheck.HTTP_HEALTH_CHECK_CLOSE_CODE) return;
 
             WebSocketReceiver receiver = sockets.get(webSocket);
             if (receiver != null) {

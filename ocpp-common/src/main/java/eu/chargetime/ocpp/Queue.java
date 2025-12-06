@@ -90,8 +90,8 @@ public class Queue {
   }
 
   /**
-   * Remove a stored {@link Request} using a unique identifier.
-   * If no request is found for the identifier this method has no effect.
+   * Remove a stored {@link Request} using a unique identifier. If no request is found for the
+   * identifier this method has no effect.
    *
    * @param ticket unique identifier returned when {@link Request} was initially stored.
    */

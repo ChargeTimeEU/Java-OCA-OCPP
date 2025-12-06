@@ -230,49 +230,58 @@ public class FakeChargePoint {
             });
 
     securityExt =
-      new ClientSecurityExtProfile(new ClientSecurityExtEventHandler() {
-        @Override
-        public CertificateSignedConfirmation handleCertificateSignedRequest(CertificateSignedRequest request) {
-          receivedRequest = request;
-          return new CertificateSignedConfirmation(CertificateSignedStatusEnumType.Accepted);
-        }
+        new ClientSecurityExtProfile(
+            new ClientSecurityExtEventHandler() {
+              @Override
+              public CertificateSignedConfirmation handleCertificateSignedRequest(
+                  CertificateSignedRequest request) {
+                receivedRequest = request;
+                return new CertificateSignedConfirmation(CertificateSignedStatusEnumType.Accepted);
+              }
 
-        @Override
-        public DeleteCertificateConfirmation handleDeleteCertificateRequest(DeleteCertificateRequest request) {
-          receivedRequest = request;
-          return new DeleteCertificateConfirmation(DeleteCertificateStatusEnumType.Accepted);
-        }
+              @Override
+              public DeleteCertificateConfirmation handleDeleteCertificateRequest(
+                  DeleteCertificateRequest request) {
+                receivedRequest = request;
+                return new DeleteCertificateConfirmation(DeleteCertificateStatusEnumType.Accepted);
+              }
 
-        @Override
-        public ExtendedTriggerMessageConfirmation handleExtendedTriggerMessageRequest(ExtendedTriggerMessageRequest request) {
-          receivedRequest = request;
-          return new ExtendedTriggerMessageConfirmation(TriggerMessageStatusEnumType.Accepted);
-        }
+              @Override
+              public ExtendedTriggerMessageConfirmation handleExtendedTriggerMessageRequest(
+                  ExtendedTriggerMessageRequest request) {
+                receivedRequest = request;
+                return new ExtendedTriggerMessageConfirmation(
+                    TriggerMessageStatusEnumType.Accepted);
+              }
 
-        @Override
-        public GetInstalledCertificateIdsConfirmation handleGetInstalledCertificateIdsRequest(GetInstalledCertificateIdsRequest request) {
-          receivedRequest = request;
-          return new GetInstalledCertificateIdsConfirmation(GetInstalledCertificateStatusEnumType.Accepted);
-        }
+              @Override
+              public GetInstalledCertificateIdsConfirmation handleGetInstalledCertificateIdsRequest(
+                  GetInstalledCertificateIdsRequest request) {
+                receivedRequest = request;
+                return new GetInstalledCertificateIdsConfirmation(
+                    GetInstalledCertificateStatusEnumType.Accepted);
+              }
 
-        @Override
-        public GetLogConfirmation handleGetLogRequest(GetLogRequest request) {
-          receivedRequest = request;
-          return new GetLogConfirmation(LogStatusEnumType.Accepted);
-        }
+              @Override
+              public GetLogConfirmation handleGetLogRequest(GetLogRequest request) {
+                receivedRequest = request;
+                return new GetLogConfirmation(LogStatusEnumType.Accepted);
+              }
 
-        @Override
-        public InstallCertificateConfirmation handleInstallCertificateRequest(InstallCertificateRequest request) {
-          receivedRequest = request;
-          return new InstallCertificateConfirmation(CertificateStatusEnumType.Accepted);
-        }
+              @Override
+              public InstallCertificateConfirmation handleInstallCertificateRequest(
+                  InstallCertificateRequest request) {
+                receivedRequest = request;
+                return new InstallCertificateConfirmation(CertificateStatusEnumType.Accepted);
+              }
 
-        @Override
-        public SignedUpdateFirmwareConfirmation handleSignedUpdateFirmwareRequest(SignedUpdateFirmwareRequest request) {
-          receivedRequest = request;
-          return new SignedUpdateFirmwareConfirmation(UpdateFirmwareStatusEnumType.Accepted);
-        }
-      });
+              @Override
+              public SignedUpdateFirmwareConfirmation handleSignedUpdateFirmwareRequest(
+                  SignedUpdateFirmwareRequest request) {
+                receivedRequest = request;
+                return new SignedUpdateFirmwareConfirmation(UpdateFirmwareStatusEnumType.Accepted);
+              }
+            });
 
     switch (type) {
       case JSON:
@@ -390,13 +399,17 @@ public class FakeChargePoint {
     send(request);
   }
 
-  public void sendLogStatusNotificationRequest(UploadLogStatusEnumType uploadLogStatusEnumType) throws Exception {
-    LogStatusNotificationRequest request = securityExt.createLogStatusNotificationRequest(uploadLogStatusEnumType);
+  public void sendLogStatusNotificationRequest(UploadLogStatusEnumType uploadLogStatusEnumType)
+      throws Exception {
+    LogStatusNotificationRequest request =
+        securityExt.createLogStatusNotificationRequest(uploadLogStatusEnumType);
     send(request);
   }
 
-  public void sendSecurityEventNotificationRequest(String type, ZonedDateTime timestamp) throws Exception {
-    SecurityEventNotificationRequest request = securityExt.createSecurityEventNotificationRequest(type, timestamp);
+  public void sendSecurityEventNotificationRequest(String type, ZonedDateTime timestamp)
+      throws Exception {
+    SecurityEventNotificationRequest request =
+        securityExt.createSecurityEventNotificationRequest(type, timestamp);
     send(request);
   }
 
@@ -405,8 +418,10 @@ public class FakeChargePoint {
     send(request);
   }
 
-  public void sendSignedFirmwareStatusNotificationRequest(FirmwareStatusEnumType status) throws Exception {
-    SignedFirmwareStatusNotificationRequest request = securityExt.createSignedFirmwareStatusNotificationRequest(status);
+  public void sendSignedFirmwareStatusNotificationRequest(FirmwareStatusEnumType status)
+      throws Exception {
+    SignedFirmwareStatusNotificationRequest request =
+        securityExt.createSignedFirmwareStatusNotificationRequest(status);
     send(request);
   }
 

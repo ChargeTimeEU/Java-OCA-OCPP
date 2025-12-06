@@ -42,7 +42,6 @@ import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationConfirmation;
 import eu.chargetime.ocpp.model.firmware.FirmwareStatusNotificationRequest;
 import eu.chargetime.ocpp.model.securityext.*;
 import eu.chargetime.ocpp.model.securityext.types.GenericStatusEnumType;
-
 import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -170,30 +169,38 @@ public class DummyHandlers {
     return new ServerSecurityExtEventHandler() {
 
       @Override
-      public LogStatusNotificationConfirmation handleLogStatusNotificationRequest(UUID sessionIndex, LogStatusNotificationRequest request) {
+      public LogStatusNotificationConfirmation handleLogStatusNotificationRequest(
+          UUID sessionIndex, LogStatusNotificationRequest request) {
         receivedRequest = request;
         LogStatusNotificationConfirmation confirmation = new LogStatusNotificationConfirmation();
         return failurePoint(confirmation);
       }
 
       @Override
-      public SecurityEventNotificationConfirmation handleSecurityEventNotificationRequest(UUID sessionIndex, SecurityEventNotificationRequest request) {
+      public SecurityEventNotificationConfirmation handleSecurityEventNotificationRequest(
+          UUID sessionIndex, SecurityEventNotificationRequest request) {
         receivedRequest = request;
-        SecurityEventNotificationConfirmation confirmation = new SecurityEventNotificationConfirmation();
+        SecurityEventNotificationConfirmation confirmation =
+            new SecurityEventNotificationConfirmation();
         return failurePoint(confirmation);
       }
 
       @Override
-      public SignCertificateConfirmation handleSignCertificateRequest(UUID sessionIndex, SignCertificateRequest request) {
+      public SignCertificateConfirmation handleSignCertificateRequest(
+          UUID sessionIndex, SignCertificateRequest request) {
         receivedRequest = request;
-        SignCertificateConfirmation confirmation = new SignCertificateConfirmation(GenericStatusEnumType.Accepted);
+        SignCertificateConfirmation confirmation =
+            new SignCertificateConfirmation(GenericStatusEnumType.Accepted);
         return failurePoint(confirmation);
       }
 
       @Override
-      public SignedFirmwareStatusNotificationConfirmation handleSignedFirmwareStatusNotificationRequest(UUID sessionIndex, SignedFirmwareStatusNotificationRequest request) {
+      public SignedFirmwareStatusNotificationConfirmation
+          handleSignedFirmwareStatusNotificationRequest(
+              UUID sessionIndex, SignedFirmwareStatusNotificationRequest request) {
         receivedRequest = request;
-        SignedFirmwareStatusNotificationConfirmation confirmation = new SignedFirmwareStatusNotificationConfirmation();
+        SignedFirmwareStatusNotificationConfirmation confirmation =
+            new SignedFirmwareStatusNotificationConfirmation();
         return failurePoint(confirmation);
       }
     };
@@ -203,7 +210,8 @@ public class DummyHandlers {
     return new ServerEvents() {
       @Override
       public void authenticateSession(
-          SessionInformation information, String username, byte[] password) throws AuthenticationException {}
+          SessionInformation information, String username, byte[] password)
+          throws AuthenticationException {}
 
       @Override
       public void newSession(UUID sessionIndex, SessionInformation information) {

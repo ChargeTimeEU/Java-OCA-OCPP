@@ -104,7 +104,8 @@ public class SessionTest {
 
     // Then
     // TODO uniqueid should not be nullable
-    verify(communicator, times(1)).sendCall(nullable(String.class), eq(someAction), eq(someRequest));
+    verify(communicator, times(1))
+        .sendCall(nullable(String.class), eq(someAction), eq(someRequest));
   }
 
   @Test
@@ -117,18 +118,20 @@ public class SessionTest {
 
     // Then
     // TODO uuid and request should not be nullable
-    verify(communicator, times(1)).sendCall(eq(someUniqueId), nullable(String.class), nullable(Request.class));
+    verify(communicator, times(1))
+        .sendCall(eq(someUniqueId), nullable(String.class), nullable(Request.class));
   }
 
   @Test
   public void sendConfirmation_sendsConfirmationToCommunicator() {
     // Given
-    Confirmation conf = new Confirmation() {
-      @Override
-      public boolean validate() {
-        return false;
-      }
-    };
+    Confirmation conf =
+        new Confirmation() {
+          @Override
+          public boolean validate() {
+            return false;
+          }
+        };
     String someUniqueId = "Some id";
     String action = "Some action";
 
@@ -165,19 +168,21 @@ public class SessionTest {
 
     // then
     // TODO action should not be nullable
-    verify(communicator, times(1)).sendCallError(eq(someId), nullable(String.class), anyString(), anyString());
+    verify(communicator, times(1))
+        .sendCallError(eq(someId), nullable(String.class), anyString(), anyString());
   }
 
   @Test
   public void onCall_handledCallback_callSendCallResult() throws Exception {
     // Given
     String someId = "Some id";
-    Confirmation aConfirmation = new Confirmation() {
-      @Override
-      public boolean validate() {
-        return false;
-      }
-    };
+    Confirmation aConfirmation =
+        new Confirmation() {
+          @Override
+          public boolean validate() {
+            return false;
+          }
+        };
 
     doAnswer(
             invocation ->
@@ -191,7 +196,8 @@ public class SessionTest {
 
     // then
     // TODO action should not be nullable
-    verify(communicator, times(1)).sendCallResult(anyString(), nullable(String.class), eq(aConfirmation));
+    verify(communicator, times(1))
+        .sendCallResult(anyString(), nullable(String.class), eq(aConfirmation));
   }
 
   @Test
@@ -212,7 +218,8 @@ public class SessionTest {
 
     // then
     // TODO uniqueid should not be nullable
-    verify(communicator, times(1)).sendCallError(eq(someId), nullable(String.class), anyString(), anyString());
+    verify(communicator, times(1))
+        .sendCallError(eq(someId), nullable(String.class), anyString(), anyString());
   }
 
   @Test
@@ -235,6 +242,7 @@ public class SessionTest {
 
     // Then
     // TODO uniqueid should not be nullable
-    verify(communicator, times(1)).sendCallError(eq(someId), nullable(String.class), anyString(), anyString());
+    verify(communicator, times(1))
+        .sendCallError(eq(someId), nullable(String.class), anyString(), anyString());
   }
 }

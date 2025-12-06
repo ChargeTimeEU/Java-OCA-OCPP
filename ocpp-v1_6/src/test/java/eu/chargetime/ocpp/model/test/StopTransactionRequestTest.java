@@ -80,6 +80,7 @@ public class StopTransactionRequestTest {
     request.setIdTag(null);
     Assert.assertNull(request.getIdTag());
   }
+
   @Test
   public void setIdTag_nullGiven_passesValidation() {
     request.setMeterStop(2);

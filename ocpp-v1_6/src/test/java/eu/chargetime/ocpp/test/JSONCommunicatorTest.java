@@ -374,6 +374,7 @@ public class JSONCommunicatorTest {
 
   private ZonedDateTime createDateTimeInNanos(long dateInNanos) {
     return Instant.ofEpochSecond(dateInNanos / 1000000000, dateInNanos % 1000000000)
-        .atOffset(ZoneOffset.UTC).toZonedDateTime();
+        .atOffset(ZoneOffset.UTC)
+        .toZonedDateTime();
   }
 }

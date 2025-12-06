@@ -26,28 +26,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+
 import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.TestConfirmation;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClientTest {
@@ -69,7 +68,8 @@ public class ClientTest {
         .when(session)
         .open(any(), any());
 
-    when(promiseRepository.createPromise(any())).then(invocation -> new CompletableFuture<Confirmation>());
+    when(promiseRepository.createPromise(any()))
+        .then(invocation -> new CompletableFuture<Confirmation>());
     when(featureRepository.findFeature(any())).thenReturn(Optional.of(feature));
     when(session.getFeatureRepository()).thenReturn(featureRepository);
     when(session.storeRequest(any())).then(invocation -> UUID.randomUUID().toString());
@@ -121,7 +121,8 @@ public class ClientTest {
 
     // Then
     // TODO action and uuid should not be nullable
-    verify(session, times(1)).sendRequest(nullable(String.class), eq(request), nullable(String.class));
+    verify(session, times(1))
+        .sendRequest(nullable(String.class), eq(request), nullable(String.class));
   }
 
   @Test
@@ -206,7 +207,8 @@ public class ClientTest {
     assertThat(returnedFuture, is(internalFuture));
     assertThat(returnedFuture.isDone(), is(true));
     assertThat(returnedFuture.isCompletedExceptionally(), is(true));
-    ExecutionException executionException = assertThrows(ExecutionException.class, returnedFuture::get);
+    ExecutionException executionException =
+        assertThrows(ExecutionException.class, returnedFuture::get);
     assertThat(executionException.getCause().getClass(), is(equalTo(IllegalStateException.class)));
     verify(session, times(1)).removeRequest(any());
     verify(promiseRepository, times(1)).removePromise(any());
@@ -221,7 +223,7 @@ public class ClientTest {
     // When
     CompletableFuture<Confirmation> returnedFuture = client.send(request);
     // If the client uses at least Java 9, it could use CompletableFuture::orTimeout(..) ..
-//    returnedFuture.orTimeout(50, TimeUnit.MILLISECONDS);
+    //    returnedFuture.orTimeout(50, TimeUnit.MILLISECONDS);
     assertThat(returnedFuture.isDone(), is(false));
     Thread.sleep(100);
     // .. alternatively, it can be implemented manually
@@ -231,7 +233,8 @@ public class ClientTest {
     assertThat(returnedFuture, is(internalFuture));
     assertThat(returnedFuture.isDone(), is(true));
     assertThat(returnedFuture.isCompletedExceptionally(), is(true));
-    ExecutionException executionException = assertThrows(ExecutionException.class, returnedFuture::get);
+    ExecutionException executionException =
+        assertThrows(ExecutionException.class, returnedFuture::get);
     assertThat(executionException.getCause().getClass(), is(equalTo(TimeoutException.class)));
     verify(session, times(1)).removeRequest(any());
     verify(promiseRepository, times(1)).removePromise(any());
