@@ -6,7 +6,7 @@
 
     <groupId>eu.chargetime.ocpp</groupId>
     <artifactId>ocpp-common</artifactId>
-    <version>1.2.0</version>
+    <version>2.0.0</version>
 
     <name>Java-OCA-OCPP OCPP Common Package</name>
     <description>Java-OCA-OCPP common dependency package</description>

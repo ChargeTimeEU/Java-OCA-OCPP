@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>eu.chargetime.ocpp</groupId>
 	<artifactId>ocpp16-json-client-example</artifactId>
-	<version>1.2.0</version>
+	<version>2.0.0</version>
 	<name>Example OCPP 1.6 JSON Client Implementation</name>
 	<description>Demo project for an OCPP 1.6 JSON client application, written in form of tests</description>
 	<properties>
@@ -36,7 +36,7 @@
 		<dependency>
 			<groupId>eu.chargetime.ocpp</groupId>
 			<artifactId>ocpp16j</artifactId>
-			<version>1.2.0</version>
+			<version>2.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

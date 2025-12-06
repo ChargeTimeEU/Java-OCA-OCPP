@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>eu.chargetime.ocpp</groupId>
 	<artifactId>ocpp16-json-server-example</artifactId>
-	<version>1.2.0</version>
+	<version>2.0.0</version>
 	<name>Example OCPP 1.6 JSON Server Implementation</name>
 	<description>Example Spring Application of an OCPP 1.6 JSON Server</description>
 	<properties>
@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>eu.chargetime.ocpp</groupId>
 			<artifactId>ocpp16j</artifactId>
-			<version>1.2.0</version>
+			<version>2.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
