@@ -5,7 +5,7 @@
 rootProject.name = 'all'
 include(':common')
 project(':common').projectDir = file('ocpp-common')
-include(':OCPP-J')
+include(':ocpp-json')
 include(':ocpp-v2')
 include(':ocpp-v2-test')
 include(':v1_6')

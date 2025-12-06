@@ -37,7 +37,7 @@
 
     <modules>
         <module>ocpp-common</module>
-        <module>OCPP-J</module>
+        <module>ocpp-json</module>
         <module>ocpp-v1_6</module>
         <module>ocpp-v1_6-json</module>
         <module>ocpp-v1_6-soap</module>
