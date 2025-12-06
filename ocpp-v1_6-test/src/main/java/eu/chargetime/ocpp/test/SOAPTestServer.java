@@ -89,7 +89,8 @@ public class SOAPTestServer implements IServerAPI {
   }
 
   @Override
-  public boolean asyncCompleteRequest(UUID sessionIndex, String uniqueId, Confirmation confirmation) throws NotConnectedException, UnsupportedFeatureException, OccurenceConstraintException {
+  public boolean asyncCompleteRequest(UUID sessionIndex, String uniqueId, Confirmation confirmation)
+      throws NotConnectedException, UnsupportedFeatureException, OccurenceConstraintException {
     return server.asyncCompleteRequest(sessionIndex, uniqueId, confirmation);
   }
 }

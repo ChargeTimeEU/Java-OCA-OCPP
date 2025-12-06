@@ -96,9 +96,8 @@ public class FakeCentralSystem {
     ServerReservationProfile serverReservationProfile = new ServerReservationProfile();
     server.addFeatureProfile(serverReservationProfile);
 
-    ServerSecurityExtProfile serverSecurityExtProfile = new ServerSecurityExtProfile(
-      dummyHandlers.createServerSecurityExtEventHandler()
-    );
+    ServerSecurityExtProfile serverSecurityExtProfile =
+        new ServerSecurityExtProfile(dummyHandlers.createServerSecurityExtEventHandler());
     server.addFeatureProfile(serverSecurityExtProfile);
   }
 
@@ -395,62 +394,67 @@ public class FakeCentralSystem {
 
   public boolean hasReceivedCertificateSignedConfirmation(String status) {
     CertificateSignedConfirmation confirmation =
-      dummyHandlers.getReceivedConfirmation(CertificateSignedConfirmation.class);
+        dummyHandlers.getReceivedConfirmation(CertificateSignedConfirmation.class);
     return confirmation != null && confirmation.getStatus().toString().equals(status);
   }
 
-  public void sendDeleteCertificateRequest(CertificateHashDataType certificateHashDataType) throws Exception {
+  public void sendDeleteCertificateRequest(CertificateHashDataType certificateHashDataType)
+      throws Exception {
     Request request = new DeleteCertificateRequest(certificateHashDataType);
     send(request);
   }
 
   public boolean hasReceivedDeleteCertificateConfirmation(String status) {
     DeleteCertificateConfirmation confirmation =
-      dummyHandlers.getReceivedConfirmation(DeleteCertificateConfirmation.class);
+        dummyHandlers.getReceivedConfirmation(DeleteCertificateConfirmation.class);
     return confirmation != null && confirmation.getStatus().toString().equals(status);
   }
 
-  public void sendExtendedTriggerMessageRequest(MessageTriggerEnumType requestedMessage) throws Exception {
+  public void sendExtendedTriggerMessageRequest(MessageTriggerEnumType requestedMessage)
+      throws Exception {
     Request request = new ExtendedTriggerMessageRequest(requestedMessage);
     send(request);
   }
 
   public boolean hasReceivedExtendedTriggerMessageConfirmation(String status) {
     ExtendedTriggerMessageConfirmation confirmation =
-      dummyHandlers.getReceivedConfirmation(ExtendedTriggerMessageConfirmation.class);
+        dummyHandlers.getReceivedConfirmation(ExtendedTriggerMessageConfirmation.class);
     return confirmation != null && confirmation.getStatus().toString().equals(status);
   }
 
-  public void sendGetInstalledCertificateIdsRequest(CertificateUseEnumType certificateType) throws Exception {
+  public void sendGetInstalledCertificateIdsRequest(CertificateUseEnumType certificateType)
+      throws Exception {
     Request request = new GetInstalledCertificateIdsRequest(certificateType);
     send(request);
   }
 
   public boolean hasReceivedGetInstalledCertificateIdsConfirmation(String status) {
     GetInstalledCertificateIdsConfirmation confirmation =
-      dummyHandlers.getReceivedConfirmation(GetInstalledCertificateIdsConfirmation.class);
+        dummyHandlers.getReceivedConfirmation(GetInstalledCertificateIdsConfirmation.class);
     return confirmation != null && confirmation.getStatus().toString().equals(status);
   }
 
-  public void sendGetLogRequest(LogEnumType logType, Integer requestId, LogParametersType log) throws Exception {
+  public void sendGetLogRequest(LogEnumType logType, Integer requestId, LogParametersType log)
+      throws Exception {
     Request request = new GetLogRequest(logType, requestId, log);
     send(request);
   }
 
   public boolean hasReceivedGetLogConfirmation(String status) {
     GetLogConfirmation confirmation =
-      dummyHandlers.getReceivedConfirmation(GetLogConfirmation.class);
+        dummyHandlers.getReceivedConfirmation(GetLogConfirmation.class);
     return confirmation != null && confirmation.getStatus().toString().equals(status);
   }
 
-  public void sendInstallCertificateRequest(CertificateUseEnumType certificateType, String certificate) throws Exception {
+  public void sendInstallCertificateRequest(
+      CertificateUseEnumType certificateType, String certificate) throws Exception {
     Request request = new InstallCertificateRequest(certificateType, certificate);
     send(request);
   }
 
   public boolean hasReceivedInstallCertificateConfirmation(String status) {
     InstallCertificateConfirmation confirmation =
-      dummyHandlers.getReceivedConfirmation(InstallCertificateConfirmation.class);
+        dummyHandlers.getReceivedConfirmation(InstallCertificateConfirmation.class);
     return confirmation != null && confirmation.getStatus().toString().equals(status);
   }
 
@@ -470,14 +474,15 @@ public class FakeCentralSystem {
     return dummyHandlers.wasLatestRequest(SignedFirmwareStatusNotificationRequest.class);
   }
 
-  public void sendSignedUpdateFirmwareRequest(Integer requestId, FirmwareType firmware) throws Exception {
+  public void sendSignedUpdateFirmwareRequest(Integer requestId, FirmwareType firmware)
+      throws Exception {
     Request request = new SignedUpdateFirmwareRequest(requestId, firmware);
     send(request);
   }
 
   public boolean hasReceivedSignedUpdateFirmwareConfirmation(String status) {
     SignedUpdateFirmwareConfirmation confirmation =
-      dummyHandlers.getReceivedConfirmation(SignedUpdateFirmwareConfirmation.class);
+        dummyHandlers.getReceivedConfirmation(SignedUpdateFirmwareConfirmation.class);
     return confirmation != null && confirmation.getStatus().toString().equals(status);
   }
 

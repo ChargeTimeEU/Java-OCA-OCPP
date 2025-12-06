@@ -32,11 +32,11 @@ import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.MoreObjects;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.AbstractMap;
 import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +55,9 @@ public class Session implements ISession {
   private final RequestDispatcher dispatcher;
   private final IFeatureRepository featureRepository;
   private SessionEvents events;
-  private final Map<String, AbstractMap.SimpleImmutableEntry<String, CompletableFuture<Confirmation>>> pendingPromises = new HashMap<>();
+  private final Map<
+          String, AbstractMap.SimpleImmutableEntry<String, CompletableFuture<Confirmation>>>
+      pendingPromises = new HashMap<>();
 
   /**
    * Handles required injections.
@@ -115,8 +117,8 @@ public class Session implements ISession {
   }
 
   /**
-   * Remove a stored {@link Request} using a unique identifier.
-   * If no request is found for the identifier this method has no effect.
+   * Remove a stored {@link Request} using a unique identifier. If no request is found for the
+   * identifier this method has no effect.
    *
    * @param ticket unique identifier returned when {@link Request} was initially stored.
    */
@@ -195,8 +197,11 @@ public class Session implements ISession {
           if (confirmation.validate()) {
             events.handleConfirmation(id, confirmation);
           } else {
-            communicator.sendCallError(id, action, isLegacyRPC() ? "OccurenceConstraintViolation" :
-                    "OccurrenceConstraintViolation", OCCURRENCE_CONSTRAINT_VIOLATION);
+            communicator.sendCallError(
+                id,
+                action,
+                isLegacyRPC() ? "OccurenceConstraintViolation" : "OccurrenceConstraintViolation",
+                OCCURRENCE_CONSTRAINT_VIOLATION);
           }
         } else {
           logger.warn(INTERNAL_ERROR);
@@ -210,8 +215,11 @@ public class Session implements ISession {
         communicator.sendCallError(id, action, "InternalError", INTERNAL_ERROR);
       } catch (Exception ex) {
         logger.warn(UNABLE_TO_PROCESS, ex);
-        communicator.sendCallError(id, action, isLegacyRPC() ? "FormationViolation" :
-                "FormatViolation", UNABLE_TO_PROCESS);
+        communicator.sendCallError(
+            id,
+            action,
+            isLegacyRPC() ? "FormationViolation" : "FormatViolation",
+            UNABLE_TO_PROCESS);
       }
     }
 
@@ -232,8 +240,11 @@ public class Session implements ISession {
             addPendingPromise(id, action, promise);
             dispatcher.handleRequest(promise, request);
           } else {
-            communicator.sendCallError(id, action, isLegacyRPC() ? "OccurenceConstraintViolation" :
-                    "OccurrenceConstraintViolation", OCCURRENCE_CONSTRAINT_VIOLATION);
+            communicator.sendCallError(
+                id,
+                action,
+                isLegacyRPC() ? "OccurenceConstraintViolation" : "OccurrenceConstraintViolation",
+                OCCURRENCE_CONSTRAINT_VIOLATION);
           }
         } catch (PropertyConstraintException ex) {
           logger.warn(ex.getMessage(), ex);
@@ -243,8 +254,11 @@ public class Session implements ISession {
           communicator.sendCallError(id, action, "SecurityError", ex.getMessage());
         } catch (Exception ex) {
           logger.warn(UNABLE_TO_PROCESS, ex);
-          communicator.sendCallError(id, action, isLegacyRPC() ? "FormationViolation" :
-                  "FormatViolation", UNABLE_TO_PROCESS);
+          communicator.sendCallError(
+              id,
+              action,
+              isLegacyRPC() ? "FormationViolation" : "FormatViolation",
+              UNABLE_TO_PROCESS);
         }
       }
     }
@@ -270,16 +284,19 @@ public class Session implements ISession {
     }
   }
 
-  private void addPendingPromise(String id, String action, CompletableFuture<Confirmation> promise) {
+  private void addPendingPromise(
+      String id, String action, CompletableFuture<Confirmation> promise) {
     synchronized (pendingPromises) {
       pendingPromises.put(id, new AbstractMap.SimpleImmutableEntry<>(action, promise));
     }
   }
 
   @Override
-  public boolean completePendingPromise(String id, Confirmation confirmation) throws UnsupportedFeatureException, OccurenceConstraintException {
+  public boolean completePendingPromise(String id, Confirmation confirmation)
+      throws UnsupportedFeatureException, OccurenceConstraintException {
     AbstractMap.SimpleImmutableEntry<String, CompletableFuture<Confirmation>> promiseAction = null;
-    // synchronization prevents from confirming one promise more than once, as we remove found promise
+    // synchronization prevents from confirming one promise more than once, as we remove found
+    // promise
     synchronized (pendingPromises) {
       promiseAction = pendingPromises.get(id);
       if (promiseAction == null) return false;
@@ -294,7 +311,8 @@ public class Session implements ISession {
       }
     } else {
       logger.debug("Feature for confirmation with id: {} not found in session: {}", id, this);
-      throw new UnsupportedFeatureException("Error with getting confirmation type by request id = " + id);
+      throw new UnsupportedFeatureException(
+          "Error with getting confirmation type by request id = " + id);
     }
     promiseAction.getValue().complete(confirmation);
     return true;

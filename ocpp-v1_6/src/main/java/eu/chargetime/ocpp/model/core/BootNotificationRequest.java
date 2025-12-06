@@ -160,7 +160,8 @@ public class BootNotificationRequest extends RequestWithId {
    */
   @Deprecated()
   public void setChargeBoxSerialNumber(String chargeBoxSerialNumber) {
-    if (chargeBoxSerialNumber != null && !ModelUtil.validate(chargeBoxSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
+    if (chargeBoxSerialNumber != null
+        && !ModelUtil.validate(chargeBoxSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
       throw new PropertyConstraintException(
           chargeBoxSerialNumber.length(), validationErrorMessage(STRING_25_CHAR_MAX_LENGTH));
     }
@@ -184,7 +185,8 @@ public class BootNotificationRequest extends RequestWithId {
    */
   @XmlElement
   public void setChargePointSerialNumber(String chargePointSerialNumber) {
-    if (chargePointSerialNumber != null && !ModelUtil.validate(chargePointSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
+    if (chargePointSerialNumber != null
+        && !ModelUtil.validate(chargePointSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
       throw new PropertyConstraintException(
           chargePointSerialNumber.length(), validationErrorMessage(STRING_25_CHAR_MAX_LENGTH));
     }
@@ -208,7 +210,8 @@ public class BootNotificationRequest extends RequestWithId {
    */
   @XmlElement
   public void setFirmwareVersion(String firmwareVersion) {
-    if (firmwareVersion != null && !ModelUtil.validate(firmwareVersion, STRING_50_CHAR_MAX_LENGTH)) {
+    if (firmwareVersion != null
+        && !ModelUtil.validate(firmwareVersion, STRING_50_CHAR_MAX_LENGTH)) {
       throw new PropertyConstraintException(
           firmwareVersion.length(), validationErrorMessage(STRING_50_CHAR_MAX_LENGTH));
     }
@@ -280,7 +283,8 @@ public class BootNotificationRequest extends RequestWithId {
    */
   @XmlElement
   public void setMeterSerialNumber(String meterSerialNumber) {
-    if (meterSerialNumber != null && !ModelUtil.validate(meterSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
+    if (meterSerialNumber != null
+        && !ModelUtil.validate(meterSerialNumber, STRING_25_CHAR_MAX_LENGTH)) {
       throw new PropertyConstraintException(
           meterSerialNumber.length(), validationErrorMessage(STRING_25_CHAR_MAX_LENGTH));
     }

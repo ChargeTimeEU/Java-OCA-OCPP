@@ -182,7 +182,8 @@ public class JSONCommunicator extends Communicator {
         message.setPayload(array.get(INDEX_CALLRESULT_PAYLOAD).toString());
       } else if (array.get(INDEX_MESSAGEID).getAsInt() == TYPENUMBER_CALLERROR) {
         message = new CallErrorMessage();
-        ((CallErrorMessage) message).setErrorCode(array.get(INDEX_CALLERROR_ERRORCODE).getAsString());
+        ((CallErrorMessage) message)
+            .setErrorCode(array.get(INDEX_CALLERROR_ERRORCODE).getAsString());
         ((CallErrorMessage) message)
             .setErrorDescription(array.get(INDEX_CALLERROR_DESCRIPTION).getAsString());
         ((CallErrorMessage) message).setRawPayload(array.get(INDEX_CALLERROR_PAYLOAD).toString());

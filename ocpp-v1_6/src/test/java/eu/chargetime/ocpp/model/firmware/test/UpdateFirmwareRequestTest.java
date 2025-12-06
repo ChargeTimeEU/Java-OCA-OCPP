@@ -119,9 +119,7 @@ public class UpdateFirmwareRequestTest {
   public void setRetryInterval_asNegative_throwsPropertyConstraintException() {
     int retryInterval = -42;
     defineThrownException(
-        "Validation failed: [retryInterval must be >= 0]. Current Value: ["
-            + retryInterval
-            + "]");
+        "Validation failed: [retryInterval must be >= 0]. Current Value: [" + retryInterval + "]");
 
     request.setRetryInterval(retryInterval);
   }

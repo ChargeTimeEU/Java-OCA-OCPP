@@ -39,8 +39,7 @@ import org.junit.rules.ExpectedException;
 
 public class GetDiagnosticsRequestTest {
 
-  @Rule
-  public ExpectedException thrownException = ExpectedException.none();
+  @Rule public ExpectedException thrownException = ExpectedException.none();
 
   private GetDiagnosticsRequest request;
 
@@ -114,9 +113,10 @@ public class GetDiagnosticsRequestTest {
     int retryInterval = -42;
     thrownException.expect(instanceOf(PropertyConstraintException.class));
     thrownException.expectMessage(
-        equalTo("Validation failed: [retryInterval must be >= 0]. Current Value: ["
-            + retryInterval
-            + "]"));
+        equalTo(
+            "Validation failed: [retryInterval must be >= 0]. Current Value: ["
+                + retryInterval
+                + "]"));
 
     request.setRetryInterval(retryInterval);
   }
