@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>eu.chargetime.ocpp</groupId>
-    <artifactId>v1_6</artifactId>
+    <artifactId>v1_6j</artifactId>
     <version>1.2.0</version>
     <packaging>jar</packaging>
 
-    <name>Java-OCA-OCPP OCPP 1.6 (no transport)</name>
-    <description>OCPP 1.6 base dependency package</description>
+    <name>Java-OCA-OCPP OCPP 1.6J</name>
+    <description>OCPP 1.6 with JSON transport</description>
     <url>https://github.com/ChargeTimeEU/Java-OCA-OCPP</url>
 
     <licenses>
@@ -49,7 +49,12 @@
     <dependencies>
         <dependency>
             <groupId>eu.chargetime.ocpp</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>v1_6</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.chargetime.ocpp</groupId>
+            <artifactId>OCPP-J</artifactId>
             <version>1.2.0</version>
         </dependency>
         <dependency>

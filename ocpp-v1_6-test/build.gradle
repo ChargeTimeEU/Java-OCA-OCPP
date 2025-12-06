@@ -8,6 +8,7 @@ plugins {
 
 dependencies {
     compile project(':common')
+    compile project(':v1_6j')
     compile project(':v1_6s')
     testCompile 'junit:junit:4.13.2'
     testCompile 'org.codehaus.groovy:groovy-all:2.4.11'
