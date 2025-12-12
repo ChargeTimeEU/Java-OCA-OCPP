@@ -12,7 +12,22 @@ Please note, this is a library and not an application, so there is no main metho
 
 The design is driven by test, which will ensure premium software that is easy to adapt and modify to your needs.
 
-The library supports version 2.0.1 and 1.6 SOAP and web sockets.
+The library supports OCPP 1.6 with JSON and SOAP transports and OCPP 2.0.1.
+
+The following packages are built from the sources:
+
+| Package     | Description                                                       |
+|-------------|-------------------------------------------------------------------|
+| ocpp16j     | OCPP 1.6 with JSON transport (only)                               |
+| ocpp16s     | OCPP 1.6 with SOAP transport (only)                               |
+| ocpp2       | OCPP 2.0.1 (multi-protocol capable, ocpp16j integration possible) |
+|             |                                                                   |
+| ocpp16      | OCPP 1.6 base dependency package                                  |
+| ocpp-common | common dependency package                                         |
+| ocpp-json   | JSON transport dependency package                                 |
+|             |                                                                   |
+| ocpp16-test | OCPP 1.6 integration tests                                        |
+| ocpp2-test  | OCPP 1.6 and 2.0.1 integration tests                              |
 
 Incoming request events are split into feature profiles as described in the OCPP specification.
 I recommend that you download and read the specification from openchargealliance.org

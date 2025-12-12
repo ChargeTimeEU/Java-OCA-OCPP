@@ -900,7 +900,7 @@ public final class MoreObjects {
 
     private ToStringHelperImpl addHolder(String name, ZonedDateTime value) {
       ValueHolder valueHolder = addHolder();
-      valueHolder.value = "\"" + SugarUtil.zonedDateTimeToString(value) + "\"";
+      valueHolder.value = "\"" + zonedDateTimeToString(value) + "\"";
       valueHolder.name = name;
       return this;
     }
@@ -910,5 +910,10 @@ public final class MoreObjects {
       Object value;
       ValueHolder next;
     }
+  }
+
+  public static String zonedDateTimeToString(ZonedDateTime zonedDateTime) {
+    if (zonedDateTime == null) return "";
+    return zonedDateTime.toString();
   }
 }

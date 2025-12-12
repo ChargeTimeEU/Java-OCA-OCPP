@@ -155,7 +155,9 @@ public class JSONCommunicator extends Communicator {
 
   @Override
   protected Object makeCall(String uniqueId, String action, Object payload) {
-    return String.format(CALL_FORMAT, uniqueId, action, payload);
+    String message = String.format(CALL_FORMAT, uniqueId, action, payload);
+    logger.trace("Send a message: {}", message);
+    return message;
   }
 
   @Override
@@ -200,6 +202,7 @@ public class JSONCommunicator extends Communicator {
 
     message.setId(messageId);
 
+    logger.trace("Receive a message: {}", message);
     return message;
   }
 }

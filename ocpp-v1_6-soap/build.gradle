@@ -1,12 +1,10 @@
 /*
- * Java-OCA-OCPP ocpp2 gradle build configuration
+ * Java-OCA-OCPP ocpp16s gradle build configuration
  */
 
 dependencies {
-    compile project(':ocpp-common')
-    compile project(':ocpp-json')
-
-    compile 'com.google.code.findbugs:jsr305:3.0.2'
+    compile project(':ocpp16')
+    compile group: 'javax.xml.soap', name: 'javax.xml.soap-api', version: '1.4.0'
 
     testCompile 'junit:junit:4.13.2'
     testCompile 'org.mockito:mockito-core:4.11.0'
@@ -18,5 +16,5 @@ task javadocJar(type: Jar) {
     from(javadoc.destinationDir)
 }
 
-description = 'Java-OCA-OCPP OCPP 2.x'
+description = 'Java-OCA-OCPP OCPP 1.6S'
 publishing.publications.maven.artifact(javadocJar)

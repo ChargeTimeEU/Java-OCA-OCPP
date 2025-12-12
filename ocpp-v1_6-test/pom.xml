@@ -5,34 +5,34 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>eu.chargetime.ocpp</groupId>
-    <artifactId>v1_6-test</artifactId>
-    <version>1.2.0</version>
+    <artifactId>ocpp16-test</artifactId>
+    <version>2.0.0</version>
 
-    <name>Java-OCA-OCPP v1.6 - Integration test</name>
-    <description>Integration test of OCA OCPP version 1.6</description>
+    <name>Java-OCA-OCPP OCPP 1.6 Integration Tests</name>
+    <description>OCPP 1.6 integration tests</description>
     <url>https://github.com/ChargeTimeEU/Java-OCA-OCPP</url>
 
     <licenses>
-        <license>
-            <name>MIT License</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
-        </license>
+      <license>
+        <name>MIT License</name>
+        <url>http://www.opensource.org/licenses/mit-license.php</url>
+      </license>
     </licenses>
 
     <developers>
-        <developer>
-            <name>Thomas Volden</name>
-            <email>tv@chargetime.eu</email>
-            <organization>chargetime.eu</organization>
-            <organizationUrl>http://www.chargetime.eu</organizationUrl>
-        </developer>
-    </developers>
+       <developer>
+         <name>Thomas Volden</name>
+         <email>tv@chargetime.eu</email>
+         <organization>chargetime.eu</organization>
+         <organizationUrl>http://www.chargetime.eu</organizationUrl>
+       </developer>
+     </developers>
 
-    <scm>
-        <connection>scm:git:git://github.com/ChargeTimeEU/Java-OCA-OCPP.git</connection>
-        <developerConnection>scm:git:ssh://github.com:ChargeTimeEU/Java-OCA-OCPP.git</developerConnection>
-        <url>https://github.com/ChargeTimeEU/Java-OCA-OCPP.git</url>
-    </scm>
+     <scm>
+       <connection>scm:git:git://github.com/ChargeTimeEU/Java-OCA-OCPP.git</connection>
+       <developerConnection>scm:git:ssh://github.com:ChargeTimeEU/Java-OCA-OCPP.git</developerConnection>
+       <url>https://github.com/ChargeTimeEU/Java-OCA-OCPP.git</url>
+     </scm>
 
     <distributionManagement>
         <snapshotRepository>
@@ -48,13 +48,13 @@
     <dependencies>
         <dependency>
             <groupId>eu.chargetime.ocpp</groupId>
-            <artifactId>common</artifactId>
-            <version>1.2.0</version>
+            <artifactId>ocpp16j</artifactId>
+            <version>2.0.0</version>
         </dependency>
         <dependency>
             <groupId>eu.chargetime.ocpp</groupId>
-            <artifactId>v1_6</artifactId>
-            <version>1.2.0</version>
+            <artifactId>ocpp16s</artifactId>
+            <version>2.0.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -74,24 +74,24 @@
             <version>3.0</version>
             <scope>test</scope>
         </dependency>
-		<dependency>
-		    <groupId>ch.qos.logback</groupId>
-		    <artifactId>logback-core</artifactId>
-		    <version>1.3.16</version>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>1.3.16</version>
             <scope>test</scope>
-		</dependency>
-		<dependency>
-		    <groupId>ch.qos.logback</groupId>
-		    <artifactId>logback-classic</artifactId>
-		    <version>1.3.16</version>
-		    <scope>test</scope>
-		</dependency>
-		<dependency>
-		    <groupId>org.slf4j</groupId>
-		    <artifactId>jul-to-slf4j</artifactId>
-		    <version>2.0.17</version>
-		    <scope>test</scope>
-		</dependency>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.3.16</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>2.0.17</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
