@@ -32,7 +32,8 @@ import java.util.Map;
 /** enum of protocol versions along with their registered WebSocket sub-protocol names */
 public enum ProtocolVersion {
   OCPP1_6("ocpp1.6"),
-  OCPP2_0_1("ocpp2.0.1");
+  OCPP2_0_1("ocpp2.0.1"),
+  OCPP2_1("ocpp2.1");
 
   private static final Map<String, ProtocolVersion> MAP = new HashMap<>();
 
