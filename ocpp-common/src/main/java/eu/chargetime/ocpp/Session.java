@@ -27,17 +27,18 @@ SOFTWARE.
 */
 
 import static eu.chargetime.ocpp.ProtocolVersion.OCPP1_6;
+import static eu.chargetime.ocpp.ProtocolVersion.OCPP2_0_1;
 
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.utilities.MoreObjects;
-import java.util.AbstractMap;
-import java.util.HashMap;
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,10 +55,9 @@ public class Session implements ISession {
   private final Queue queue;
   private final RequestDispatcher dispatcher;
   private final IFeatureRepository featureRepository;
+  private final Map<String, SimpleImmutableEntry<String, CompletableFuture<Confirmation>>>
+      pendingPromises = new ConcurrentHashMap<>();
   private SessionEvents events;
-  private final Map<
-          String, AbstractMap.SimpleImmutableEntry<String, CompletableFuture<Confirmation>>>
-      pendingPromises = new HashMap<>();
 
   /**
    * Handles required injections.
@@ -107,6 +107,26 @@ public class Session implements ISession {
   }
 
   /**
+   * Send a {@link Request} which has no confirmation.
+   *
+   * @param action action name to identify the feature.
+   * @param payload the {@link Request} payload to send
+   * @param uuid unique identification to identify the request
+   */
+  public void sendMessage(String action, Request payload, String uuid) {
+    if (isSendCapableRPC()) {
+      communicator.send(uuid, action, payload);
+      events.handleConfirmation(uuid, null);
+    } else {
+      events.handleError(
+          uuid,
+          "MessageTypeNotSupported",
+          "SEND message type is not supported in " + featureRepository.getProtocolVersion(),
+          payload);
+    }
+  }
+
+  /**
    * Store a {@link Request} and get the unique id.
    *
    * @param payload the {@link Request} payload to send
@@ -143,7 +163,7 @@ public class Session implements ISession {
     if (requestOptional.isPresent()) {
       Optional<Feature> featureOptional = featureRepository.findFeature(requestOptional.get());
       if (featureOptional.isPresent()) {
-        return Optional.of(featureOptional.get().getConfirmationType());
+        return Optional.ofNullable(featureOptional.get().getConfirmationType());
       } else {
         logger.debug("Feature for request with id: {} not found in session: {}", uniqueId, this);
         throw new UnsupportedFeatureException(
@@ -182,6 +202,8 @@ public class Session implements ISession {
   private class CommunicatorEventHandler implements CommunicatorEvents {
     private static final String OCCURRENCE_CONSTRAINT_VIOLATION =
         "Payload for Action is syntactically correct but at least one of the fields violates occurrence constraints";
+    private static final String PROPERTY_CONSTRAINT_VIOLATION =
+        "Payload is syntactically correct but at least one field contains an invalid value";
     private static final String INTERNAL_ERROR =
         "An internal error occurred and the receiver was not able to process the requested Action successfully";
     private static final String UNABLE_TO_PROCESS = "Unable to process action";
@@ -197,36 +219,53 @@ public class Session implements ISession {
           if (confirmation.validate()) {
             events.handleConfirmation(id, confirmation);
           } else {
-            communicator.sendCallError(
-                id,
-                action,
-                isLegacyRPC() ? "OccurenceConstraintViolation" : "OccurrenceConstraintViolation",
-                OCCURRENCE_CONSTRAINT_VIOLATION);
+            logger.warn(PROPERTY_CONSTRAINT_VIOLATION);
+            if (isCallResultErrorCapableRPC()) {
+              communicator.sendCallResultError(
+                  id, action, "PropertyConstraintViolation", PROPERTY_CONSTRAINT_VIOLATION);
+            }
           }
         } else {
           logger.warn(INTERNAL_ERROR);
-          communicator.sendCallError(id, action, "InternalError", INTERNAL_ERROR);
+          if (isCallResultErrorCapableRPC()) {
+            communicator.sendCallResultError(id, action, "InternalError", INTERNAL_ERROR);
+          }
+        }
+      } catch (OccurenceConstraintException ex) {
+        logger.warn(ex.getMessage(), ex);
+        if (isCallResultErrorCapableRPC()) {
+          communicator.sendCallResultError(
+              id, action, "OccurrenceConstraintViolation", ex.getMessage());
         }
       } catch (PropertyConstraintException ex) {
         logger.warn(ex.getMessage(), ex);
-        communicator.sendCallError(id, action, "TypeConstraintViolation", ex.getMessage());
+        if (isCallResultErrorCapableRPC()) {
+          communicator.sendCallResultError(
+              id, action, "PropertyConstraintViolation", ex.getMessage());
+        }
+      } catch (SecurityErrorException ex) {
+        logger.warn(ex.getMessage(), ex);
+        if (isCallResultErrorCapableRPC()) {
+          communicator.sendCallResultError(id, action, "SecurityError", ex.getMessage());
+        }
       } catch (UnsupportedFeatureException ex) {
-        logger.warn(INTERNAL_ERROR, ex);
-        communicator.sendCallError(id, action, "InternalError", INTERNAL_ERROR);
+        logger.warn(ex.getMessage(), ex);
+        if (isCallResultErrorCapableRPC()) {
+          communicator.sendCallResultError(id, action, "NotSupported", ex.getMessage());
+        }
       } catch (Exception ex) {
-        logger.warn(UNABLE_TO_PROCESS, ex);
-        communicator.sendCallError(
-            id,
-            action,
-            isLegacyRPC() ? "FormationViolation" : "FormatViolation",
-            UNABLE_TO_PROCESS);
+        logger.warn(ex.getMessage(), ex);
+        if (isCallResultErrorCapableRPC()) {
+          communicator.sendCallResultError(
+              id, action, "InternalError", ex.getClass().getSimpleName() + ": " + ex.getMessage());
+        }
       }
     }
 
     @Override
     public synchronized void onCall(String id, String action, Object payload) {
       Optional<Feature> featureOptional = featureRepository.findFeature(action);
-      if (!featureOptional.isPresent()) {
+      if (!featureOptional.isPresent() || featureOptional.get().getConfirmationType() == null) {
         communicator.sendCallError(
             id, action, "NotImplemented", "Requested Action is not known by receiver");
       } else {
@@ -269,6 +308,45 @@ public class Session implements ISession {
     }
 
     @Override
+    public void onCallResultError(
+        String id, String errorCode, String errorDescription, Object payload) {
+      if (!isCallResultErrorCapableRPC()) {
+        logger.warn(
+            "Received CALLRESULTERROR message type is not supported in {}",
+            featureRepository.getProtocolVersion());
+        return;
+      }
+      events.handleConfirmationError(id, errorCode, errorDescription, payload);
+    }
+
+    @Override
+    public void onSend(String id, String action, Object payload) {
+      if (!isSendCapableRPC()) {
+        logger.warn(
+            "Received SEND message type is not supported in {}",
+            featureRepository.getProtocolVersion());
+        return;
+      }
+      Optional<Feature> featureOptional = featureRepository.findFeature(action);
+      if (!featureOptional.isPresent() || featureOptional.get().getConfirmationType() != null) {
+        logger.warn("Requested Action {} is not known by receiver", action);
+      } else {
+        try {
+          Request request =
+              communicator.unpackPayload(payload, featureOptional.get().getRequestType());
+          request.setOcppMessageId(id);
+          if (request.validate()) {
+            dispatcher.handleRequest(null, request);
+          }
+        } catch (PropertyConstraintException | SecurityErrorException ex) {
+          logger.warn(ex.getMessage(), ex);
+        } catch (Exception ex) {
+          logger.warn(UNABLE_TO_PROCESS, ex);
+        }
+      }
+    }
+
+    @Override
     public void onDisconnected() {
       events.handleConnectionClosed();
     }
@@ -284,28 +362,36 @@ public class Session implements ISession {
     }
   }
 
+  private boolean isCallResultErrorCapableRPC() {
+    ProtocolVersion protocolVersion = featureRepository.getProtocolVersion();
+    return protocolVersion != null
+        && !protocolVersion.equals(OCPP1_6)
+        && !protocolVersion.equals(OCPP2_0_1);
+  }
+
+  private boolean isSendCapableRPC() {
+    ProtocolVersion protocolVersion = featureRepository.getProtocolVersion();
+    return protocolVersion != null
+        && !protocolVersion.equals(OCPP1_6)
+        && !protocolVersion.equals(OCPP2_0_1);
+  }
+
   private void addPendingPromise(
       String id, String action, CompletableFuture<Confirmation> promise) {
-    synchronized (pendingPromises) {
-      pendingPromises.put(id, new AbstractMap.SimpleImmutableEntry<>(action, promise));
-    }
+    pendingPromises.put(id, new SimpleImmutableEntry<>(action, promise));
   }
 
   @Override
   public boolean completePendingPromise(String id, Confirmation confirmation)
       throws UnsupportedFeatureException, OccurenceConstraintException {
-    AbstractMap.SimpleImmutableEntry<String, CompletableFuture<Confirmation>> promiseAction = null;
-    // synchronization prevents from confirming one promise more than once, as we remove found
-    // promise
-    synchronized (pendingPromises) {
-      promiseAction = pendingPromises.get(id);
-      if (promiseAction == null) return false;
-      // remove promise from store
-      pendingPromises.remove(id);
+    SimpleImmutableEntry<String, CompletableFuture<Confirmation>> promiseAction =
+        pendingPromises.remove(id);
+    if (promiseAction == null) {
+      return false;
     }
     // check confirmation type, it has to correspond to original request type
     Optional<Feature> featureOptional = featureRepository.findFeature(promiseAction.getKey());
-    if (featureOptional.isPresent()) {
+    if (featureOptional.isPresent() && featureOptional.get().getConfirmationType() != null) {
       if (!featureOptional.get().getConfirmationType().isInstance(confirmation)) {
         throw new OccurenceConstraintException();
       }

@@ -1,12 +1,12 @@
-package eu.chargetime.ocpp;
+package eu.chargetime.ocpp.model;
 
 /*
 ChargeTime.eu - Java-OCA-OCPP
-Copyright (C) 2017 Emil Christopher Solli Melar <emil@iconsultable.no>
+Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
 
 MIT License
 
-Copyright (C) 2017 Emil Christopher Solli Melar
+Copyright (C) 2016-2018 Thomas Volden
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -27,11 +27,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-public interface ClientEvents {
-  void connectionOpened();
-
-  void connectionClosed();
-
-  default void confirmationError(
-      String uniqueId, String errorCode, String errorDescription, Object payload) {};
-}
+public class CallResultErrorMessage extends CallErrorMessage {}

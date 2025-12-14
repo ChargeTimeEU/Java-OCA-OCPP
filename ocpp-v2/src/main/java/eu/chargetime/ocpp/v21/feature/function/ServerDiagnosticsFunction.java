@@ -53,6 +53,7 @@ public class ServerDiagnosticsFunction implements Function {
     features.add(new LogStatusNotificationFeature(this));
     features.add(new NotifyCustomerInformationFeature(this));
     features.add(new NotifyMonitoringReportFeature(this));
+    features.add(new NotifyPeriodicEventStreamFeature(this));
     features.add(new OpenPeriodicEventStreamFeature(this));
     features.add(new SetMonitoringBaseFeature(null));
     features.add(new SetMonitoringLevelFeature(null));
@@ -75,6 +76,10 @@ public class ServerDiagnosticsFunction implements Function {
     } else if (request instanceof NotifyMonitoringReportRequest) {
       return eventHandler.handleNotifyMonitoringReportRequest(
           sessionIndex, (NotifyMonitoringReportRequest) request);
+    } else if (request instanceof NotifyPeriodicEventStream) {
+      eventHandler.handleNotifyPeriodicEventStream(
+          sessionIndex, (NotifyPeriodicEventStream) request);
+      return null;
     } else if (request instanceof OpenPeriodicEventStreamRequest) {
       return eventHandler.handleOpenPeriodicEventStreamRequest(
           sessionIndex, (OpenPeriodicEventStreamRequest) request);

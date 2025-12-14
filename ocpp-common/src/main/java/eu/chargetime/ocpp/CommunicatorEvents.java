@@ -66,6 +66,31 @@ public interface CommunicatorEvents {
    */
   void onError(String id, String errorCode, String errorDescription, Object payload);
 
+  /**
+   * Handle call result error.
+   *
+   * <p>Hint: Use the id to identify the original call result. You can use {@link Communicator}s
+   * unpackPayload method.
+   *
+   * @param id unique id used to identify the original call result.
+   * @param errorCode short text to categorize the error.
+   * @param errorDescription a longer text to describe the error.
+   * @param payload Object payload attached to the error.
+   */
+  void onCallResultError(String id, String errorCode, String errorDescription, Object payload);
+
+  /**
+   * Handle send.
+   *
+   * <p>Hint: Use the action name to identify the feature, you can then choose to use {@link
+   * Communicator}s unpackPayload method.
+   *
+   * @param id unique id.
+   * @param action action name used to identify the feature.
+   * @param payload raw payload.
+   */
+  void onSend(String id, String action, Object payload);
+
   /** The connection was disconnected. */
   void onDisconnected();
 

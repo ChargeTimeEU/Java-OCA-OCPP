@@ -63,6 +63,14 @@ public interface ServerDiagnosticsEventHandler {
       UUID sessionIndex, NotifyMonitoringReportRequest request);
 
   /**
+   * Handle a {@link NotifyPeriodicEventStream}.
+   *
+   * @param sessionIndex identifier of the session on which the request was received.
+   * @param request incoming {@link NotifyPeriodicEventStream} to handle.
+   */
+  void handleNotifyPeriodicEventStream(UUID sessionIndex, NotifyPeriodicEventStream request);
+
+  /**
    * Handle a {@link OpenPeriodicEventStreamRequest} and return a {@link
    * OpenPeriodicEventStreamResponse}.
    *

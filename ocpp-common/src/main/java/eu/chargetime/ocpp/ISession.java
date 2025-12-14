@@ -47,5 +47,7 @@ public interface ISession {
   boolean completePendingPromise(String id, Confirmation confirmation)
       throws UnsupportedFeatureException, OccurenceConstraintException;
 
+  void sendMessage(String action, Request payload, String uuid);
+
   void close();
 }

@@ -25,6 +25,7 @@
 package eu.chargetime.ocpp.v21.model.messages;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
+import eu.chargetime.ocpp.model.RequestWithId;
 import eu.chargetime.ocpp.utilities.MoreObjects;
 import eu.chargetime.ocpp.v21.model.types.CustomData;
 import eu.chargetime.ocpp.v21.model.types.StreamDataElement;
@@ -39,7 +40,7 @@ import javax.annotation.Nullable;
  * <p>OCPP 2.1 Edition 1 (c) OCA, Creative Commons Attribution-NoDerivatives 4.0 International
  * Public License
  */
-public final class NotifyPeriodicEventStream {
+public final class NotifyPeriodicEventStream extends RequestWithId {
   /** data */
   private StreamDataElement[] data;
 
@@ -240,12 +241,18 @@ public final class NotifyPeriodicEventStream {
     return this;
   }
 
+  @Override
   public boolean validate() {
     return isValidData(data)
         && isValidId(id)
         && isValidPending(pending)
         && isValidBasetime(basetime)
         && isValidCustomData(customData);
+  }
+
+  @Override
+  public boolean transactionRelated() {
+    return false;
   }
 
   @Override

@@ -54,6 +54,7 @@ public class ClientDiagnosticsFunction implements Function {
     features.add(new LogStatusNotificationFeature(null));
     features.add(new NotifyCustomerInformationFeature(null));
     features.add(new NotifyMonitoringReportFeature(null));
+    features.add(new NotifyPeriodicEventStreamFeature(null));
     features.add(new OpenPeriodicEventStreamFeature(null));
     features.add(new SetMonitoringBaseFeature(this));
     features.add(new SetMonitoringLevelFeature(this));
@@ -133,6 +134,20 @@ public class ClientDiagnosticsFunction implements Function {
   public NotifyMonitoringReportRequest createNotifyMonitoringReportRequest(
       Integer requestId, Integer seqNo, ZonedDateTime generatedAt) {
     return new NotifyMonitoringReportRequest(requestId, seqNo, generatedAt);
+  }
+
+  /**
+   * Create a client {@link NotifyPeriodicEventStream} with all required fields.
+   *
+   * @param data data
+   * @param id Id of stream.
+   * @param pending Number of data elements still pending to be sent.
+   * @param basetime Base timestamp to add to time offset of values.
+   * @return an instance of {@link NotifyPeriodicEventStream}
+   */
+  public NotifyPeriodicEventStream createNotifyPeriodicEventStream(
+      StreamDataElement[] data, Integer id, Integer pending, ZonedDateTime basetime) {
+    return new NotifyPeriodicEventStream(data, id, pending, basetime);
   }
 
   /**

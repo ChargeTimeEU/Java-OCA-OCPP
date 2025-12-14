@@ -32,6 +32,8 @@ import eu.chargetime.ocpp.model.Request;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,11 +73,23 @@ public class Client {
         new SessionEvents() {
 
           @Override
-          public void handleConfirmation(String uniqueId, Confirmation confirmation) {
+          public void handleConfirmation(String uniqueId, @Nullable Confirmation confirmation) {
             Optional<CompletableFuture<Confirmation>> promiseOptional =
                 promiseRepository.getPromise(uniqueId);
             if (promiseOptional.isPresent()) {
               promiseOptional.get().complete(confirmation);
+              // join completion to catch and rethrow any exceptions thrown in the last added
+              // completion action, so that a CALLRESULTERROR may be produced from it.
+              try {
+                promiseOptional.get().join();
+              } catch (CompletionException e) {
+                Throwable cause = e.getCause() != null ? e.getCause() : e;
+                if (cause instanceof RuntimeException) {
+                  throw (RuntimeException) cause;
+                } else {
+                  throw new RuntimeException(cause);
+                }
+              }
             } else {
               logger.debug("Promise not found for confirmation {}", confirmation);
             }
@@ -113,6 +127,18 @@ public class Client {
           }
 
           @Override
+          public void handleConfirmationError(
+              String uniqueId, String errorCode, String errorDescription, Object payload) {
+            logger.error(
+                "Received an error which occurred while processing a call result: "
+                    + "uniqueId {}: errorCode: {}, errorDescription: {}",
+                uniqueId,
+                errorCode,
+                errorDescription);
+            events.confirmationError(uniqueId, errorCode, errorDescription, payload);
+          }
+
+          @Override
           public void handleConnectionClosed() {
             if (events != null) events.connectionClosed();
           }
@@ -137,7 +163,8 @@ public class Client {
    * Send a {@link Request} to the server. Can only send {@link Request} that the client supports.
    *
    * @param request outgoing request
-   * @return call back object, will be fulfilled with confirmation when received
+   * @return call back object, will be fulfilled with confirmation when received or {@code null} if
+   *     the request has no confirmation, or exceptionally if a local or remote error occurred.
    * @throws UnsupportedFeatureException trying to send a request from an unsupported feature
    * @throws OccurenceConstraintException Thrown if the request isn't valid.
    * @see CompletableFuture
@@ -166,7 +193,11 @@ public class Client {
           promiseRepository.removePromise(requestUuid);
         });
 
-    session.sendRequest(featureOptional.get().getAction(), request, requestUuid);
+    if (featureOptional.get().getConfirmationType() != null) {
+      session.sendRequest(featureOptional.get().getAction(), request, requestUuid);
+    } else {
+      session.sendMessage(featureOptional.get().getAction(), request, requestUuid);
+    }
     return promise;
   }
 
