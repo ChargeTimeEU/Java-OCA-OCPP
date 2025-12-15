@@ -63,7 +63,7 @@
                 <configuration>
                     <skip>true</skip>
                 </configuration>
-                <version>3.1.2</version>
+                <version>3.1.4</version>
             </plugin>
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
