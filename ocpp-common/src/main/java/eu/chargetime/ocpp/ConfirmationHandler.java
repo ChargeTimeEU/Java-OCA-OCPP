@@ -29,7 +29,7 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.model.Confirmation;
 import java.util.function.BiConsumer;
 
-class ConfirmationHandler implements BiConsumer<Confirmation, Throwable> {
+public class ConfirmationHandler implements BiConsumer<Confirmation, Throwable> {
 
   private String id;
   private String action;
