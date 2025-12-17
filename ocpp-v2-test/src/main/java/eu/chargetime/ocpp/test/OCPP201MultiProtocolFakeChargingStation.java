@@ -29,10 +29,7 @@ package eu.chargetime.ocpp.test;
 import static eu.chargetime.ocpp.ProtocolVersion.OCPP1_6;
 import static eu.chargetime.ocpp.ProtocolVersion.OCPP2_0_1;
 
-import eu.chargetime.ocpp.MultiProtocolJSONClient;
-import eu.chargetime.ocpp.OccurenceConstraintException;
-import eu.chargetime.ocpp.ProtocolVersion;
-import eu.chargetime.ocpp.UnsupportedFeatureException;
+import eu.chargetime.ocpp.*;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
@@ -51,18 +48,12 @@ import eu.chargetime.ocpp.v201.model.messages.SetNetworkProfileRequest;
 import eu.chargetime.ocpp.v201.model.messages.SetNetworkProfileResponse;
 import eu.chargetime.ocpp.v201.model.messages.SetVariablesRequest;
 import eu.chargetime.ocpp.v201.model.messages.SetVariablesResponse;
-import eu.chargetime.ocpp.v201.model.types.BootReasonEnum;
-import eu.chargetime.ocpp.v201.model.types.ChargingStation;
-import eu.chargetime.ocpp.v201.model.types.GenericDeviceModelStatusEnum;
-import eu.chargetime.ocpp.v201.model.types.GetVariableResult;
-import eu.chargetime.ocpp.v201.model.types.Modem;
-import eu.chargetime.ocpp.v201.model.types.ResetStatusEnum;
-import eu.chargetime.ocpp.v201.model.types.SetNetworkProfileStatusEnum;
-import eu.chargetime.ocpp.v201.model.types.SetVariableResult;
+import eu.chargetime.ocpp.v201.model.types.*;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 
@@ -96,7 +87,17 @@ public class OCPP201MultiProtocolFakeChargingStation extends FakeChargePoint
               @Override
               public GetVariablesResponse handleGetVariablesRequest(GetVariablesRequest request) {
                 receivedRequest = request;
-                return new GetVariablesResponse(new GetVariableResult[] {});
+                return new GetVariablesResponse(
+                    new GetVariableResult[] {
+                      new GetVariableResult(
+                          GetVariableStatusEnum.UnknownVariable,
+                          new Component(""),
+                          new Variable("")),
+                      new GetVariableResult(
+                          GetVariableStatusEnum.UnknownVariable,
+                          new Component(""),
+                          new Variable(""))
+                    });
               }
 
               @Override
@@ -177,7 +178,8 @@ public class OCPP201MultiProtocolFakeChargingStation extends FakeChargePoint
     sendRequestAndWaitForResponse(request, responseClass);
   }
 
-  void sendRequestAndWaitForResponse(Request request, Class<? extends Confirmation> responseClass) {
+  void sendRequestAndWaitForResponse(
+      Request request, @Nullable Class<? extends Confirmation> responseClass) {
     try {
       CompletableFuture<Confirmation> future = client.send(request).toCompletableFuture();
       BiConsumer<Confirmation, Throwable> action =
@@ -185,6 +187,7 @@ public class OCPP201MultiProtocolFakeChargingStation extends FakeChargePoint
             if (confirmation != null) {
               receivedConfirmation = confirmation;
               receivedException = null;
+              checkConfirmation(confirmation);
             } else if (throwable != null) {
               receivedConfirmation = null;
               receivedException = throwable;
@@ -194,19 +197,44 @@ public class OCPP201MultiProtocolFakeChargingStation extends FakeChargePoint
             }
           };
       future.whenComplete(action);
-      future.join();
+      try {
+        future.join();
+      } catch (CompletionException e) {
+        // ignore
+      }
     } catch (OccurenceConstraintException | UnsupportedFeatureException e) {
       throw new RuntimeException(e);
     }
     if (receivedException != null) {
       throw new RuntimeException("Received exception in response to request", receivedException);
     }
-    if (receivedConfirmation != null) {
+    if (receivedConfirmation != null && responseClass != null) {
       if (!responseClass.isInstance(receivedConfirmation)) {
         throw new IllegalArgumentException("Received confirmation is not of expected class");
       }
-    } else {
+    } else if (responseClass != null) {
       throw new IllegalStateException("Received neither a confirmation nor a throwable");
+    }
+  }
+
+  @Nullable
+  public Confirmation getReceivedConfirmation() {
+    return receivedConfirmation;
+  }
+
+  @Nullable
+  public Throwable getReceivedException() {
+    return receivedException;
+  }
+
+  void checkConfirmation(Confirmation confirmation) {
+    if (confirmation instanceof BootNotificationResponse) {
+      BootNotificationResponse bootNotificationResponse = (BootNotificationResponse) confirmation;
+      if (bootNotificationResponse.getInterval() < 0) {
+        throw new PropertyConstraintException(
+            bootNotificationResponse.getInterval(),
+            "BootNotificationResponse interval must be >= 0");
+      }
     }
   }
 }

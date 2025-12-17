@@ -129,6 +129,7 @@ public class OCPP201MultiProtocolIntegrationTest {
     reconnectChargingStation(cs16, csms);
     cs16.sendBootNotification("vendor", "model");
 
+    reconnectChargingStation(cs201, csms);
     cs201.sendBootNotification("vendor", "model");
   }
 }
