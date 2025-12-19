@@ -31,6 +31,7 @@ import eu.chargetime.ocpp.model.core.BootNotificationConfirmation;
 import eu.chargetime.ocpp.model.core.RegistrationStatus;
 import eu.chargetime.ocpp.utilities.TimeoutTimer;
 import java.util.UUID;
+import javax.annotation.Nullable;
 
 public class TimeoutSessionDecorator implements ISession {
 
@@ -104,6 +105,11 @@ public class TimeoutSessionDecorator implements ISession {
   }
 
   @Override
+  public void sendMessage(String action, Request payload, String uuid) {
+    this.session.sendMessage(action, payload, uuid);
+  }
+
+  @Override
   public void close() {
     this.session.close();
   }
@@ -111,7 +117,7 @@ public class TimeoutSessionDecorator implements ISession {
   private SessionEvents createEventHandler(SessionEvents eventHandler) {
     return new SessionEvents() {
       @Override
-      public void handleConfirmation(String uniqueId, Confirmation confirmation) {
+      public void handleConfirmation(String uniqueId, @Nullable Confirmation confirmation) {
         resetTimer();
         eventHandler.handleConfirmation(uniqueId, confirmation);
       }
@@ -142,6 +148,12 @@ public class TimeoutSessionDecorator implements ISession {
       public void handleError(
           String uniqueId, String errorCode, String errorDescription, Object payload) {
         eventHandler.handleError(uniqueId, errorCode, errorDescription, payload);
+      }
+
+      @Override
+      public void handleConfirmationError(
+          String uniqueId, String errorCode, String errorDescription, Object payload) {
+        eventHandler.handleConfirmationError(uniqueId, errorCode, errorDescription, payload);
       }
 
       @Override

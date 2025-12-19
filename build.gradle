@@ -32,6 +32,10 @@ subprojects {
 
     sourceCompatibility = '1.8'
 
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+    }
+
     publishing {
         publications {
             maven(MavenPublication) {

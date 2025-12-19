@@ -62,6 +62,7 @@ public class SessionTest {
   @Before
   public void setup() throws Exception {
     when(featureRepository.findFeature(any())).thenReturn(Optional.of(feature));
+    when(feature.getConfirmationType()).thenAnswer(invocation -> Confirmation.class);
     session = new Session(communicator, queue, fulfiller, featureRepository);
     doAnswer(invocation -> eventHandler = invocation.getArgument(1, CommunicatorEvents.class))
         .when(communicator)

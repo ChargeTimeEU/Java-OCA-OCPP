@@ -30,6 +30,7 @@ import eu.chargetime.ocpp.model.Request;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javax.annotation.Nullable;
 
 public class AsyncPromiseFulfillerDecorator implements PromiseFulfiller {
 
@@ -43,7 +44,9 @@ public class AsyncPromiseFulfillerDecorator implements PromiseFulfiller {
 
   @Override
   public void fulfill(
-      CompletableFuture<Confirmation> promise, SessionEvents eventHandler, Request request) {
+      @Nullable CompletableFuture<Confirmation> promise,
+      SessionEvents eventHandler,
+      Request request) {
     executor.submit(() -> promiseFulfiller.fulfill(promise, eventHandler, request));
   }
 

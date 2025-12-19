@@ -71,6 +71,7 @@ public class ClientTest {
     when(promiseRepository.createPromise(any()))
         .then(invocation -> new CompletableFuture<Confirmation>());
     when(featureRepository.findFeature(any())).thenReturn(Optional.of(feature));
+    when(feature.getConfirmationType()).thenAnswer(invocation -> Confirmation.class);
     when(session.getFeatureRepository()).thenReturn(featureRepository);
     when(session.storeRequest(any())).then(invocation -> UUID.randomUUID().toString());
     client = new Client(session, promiseRepository);

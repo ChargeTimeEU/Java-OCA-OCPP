@@ -28,6 +28,7 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import java.util.concurrent.CompletableFuture;
+import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,16 +37,20 @@ public class SimplePromiseFulfiller implements PromiseFulfiller {
 
   @Override
   public void fulfill(
-      CompletableFuture<Confirmation> promise, SessionEvents eventHandler, Request request) {
+      @Nullable CompletableFuture<Confirmation> promise,
+      SessionEvents eventHandler,
+      Request request) {
     try {
       Confirmation conf = eventHandler.handleRequest(request);
-      // Confirmation may be null, in this case asynchronous execution is assumed
+      // Confirmation is optional, for asynchronous completion or requests without confirmation
       if (conf != null) {
         eventHandler.asyncCompleteRequest(request.getOcppMessageId(), conf);
       }
     } catch (Exception ex) {
-      logger.warn("fulfillPromis() failed", ex);
-      promise.completeExceptionally(ex);
+      logger.warn("fulfillPromise() failed", ex);
+      if (promise != null) {
+        promise.completeExceptionally(ex);
+      }
     }
   }
 }

@@ -48,14 +48,18 @@ public class OCPP201MultiProtocolDummyHandlers extends DummyHandlers {
       @Override
       public BootNotificationResponse handleBootNotificationRequest(
           UUID sessionIndex, BootNotificationRequest request) {
+        setReceivedRequest(request);
         BootNotificationResponse response =
             new BootNotificationResponse(
-                ZonedDateTime.now(ZoneOffset.UTC), 20100, RegistrationStatusEnum.Accepted);
+                ZonedDateTime.now(ZoneOffset.UTC),
+                isRiggedToSendInvalidResponse() ? -1 : 1,
+                RegistrationStatusEnum.Accepted);
         return failurePoint(response);
       }
 
       @Override
       public HeartbeatResponse handleHeartbeatRequest(UUID sessionIndex, HeartbeatRequest request) {
+        setReceivedRequest(request);
         HeartbeatResponse response = new HeartbeatResponse(ZonedDateTime.now(ZoneOffset.UTC));
         return failurePoint(response);
       }
@@ -63,6 +67,7 @@ public class OCPP201MultiProtocolDummyHandlers extends DummyHandlers {
       @Override
       public NotifyReportResponse handleNotifyReportRequest(
           UUID sessionIndex, NotifyReportRequest request) {
+        setReceivedRequest(request);
         NotifyReportResponse response = new NotifyReportResponse();
         return failurePoint(response);
       }

@@ -32,6 +32,7 @@ import eu.chargetime.ocpp.feature.FunctionFeature;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import java.util.UUID;
+import javax.annotation.Nullable;
 
 /** Interface used for Feature Profiles. */
 public interface Function {
@@ -48,7 +49,8 @@ public interface Function {
    *
    * @param sessionIndex source of the request.
    * @param request the {@link Request} to be handled.
-   * @return the {@link Confirmation} to be send.
+   * @return the {@link Confirmation} to be sent or {@code null} if none to be sent.
    */
+  @Nullable
   Confirmation handleRequest(UUID sessionIndex, Request request);
 }
