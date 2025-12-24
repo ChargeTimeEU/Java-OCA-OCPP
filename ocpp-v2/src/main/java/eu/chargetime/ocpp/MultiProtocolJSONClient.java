@@ -44,7 +44,6 @@ import javax.net.ssl.SSLContext;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.extensions.IExtension;
-import org.java_websocket.extensions.permessage_deflate.PerMessageDeflateExtension;
 import org.java_websocket.protocols.IProtocol;
 import org.java_websocket.protocols.Protocol;
 import org.slf4j.Logger;
@@ -58,6 +57,7 @@ public class MultiProtocolJSONClient implements IMultiProtocolClientAPI {
   private final String identity;
   private final MultiProtocolFeatureRepository featureRepository;
   private final MultiProtocolWebSocketTransmitter transmitter;
+  private final WebSocketPerMessageDeflateExtension compressionExtension;
   private final Client client;
 
   /**
@@ -92,12 +92,13 @@ public class MultiProtocolJSONClient implements IMultiProtocolClientAPI {
     featureRepository = new MultiProtocolFeatureRepository(protocolVersions);
     List<IExtension> inputExtensions = new ArrayList<>();
     if (configuration.getParameter(JSONConfiguration.WEBSOCKET_COMPRESSION_SUPPORT, false)) {
-      PerMessageDeflateExtension perMessageDeflateExtension =
-          new PerMessageDeflateExtension(Deflater.BEST_COMPRESSION);
-      perMessageDeflateExtension.setThreshold(0);
-      perMessageDeflateExtension.setServerNoContextTakeover(false);
-      perMessageDeflateExtension.setClientNoContextTakeover(false);
-      inputExtensions.add(perMessageDeflateExtension);
+      compressionExtension = new WebSocketPerMessageDeflateExtension(Deflater.BEST_COMPRESSION);
+      compressionExtension.setThreshold(64);
+      compressionExtension.setServerNoContextTakeover(false);
+      compressionExtension.setClientNoContextTakeover(false);
+      inputExtensions.add(compressionExtension);
+    } else {
+      compressionExtension = null;
     }
     List<IProtocol> inputProtocols = new ArrayList<>(protocolVersions.size());
     for (ProtocolVersion protocolVersion : protocolVersions) {
@@ -219,6 +220,10 @@ public class MultiProtocolJSONClient implements IMultiProtocolClientAPI {
 
   public Exception getLastError() {
     return transmitter.getLastError();
+  }
+
+  public double getCompressionRatio() {
+    return compressionExtension != null ? compressionExtension.getCompressionRatio() : 1;
   }
 
   @Override

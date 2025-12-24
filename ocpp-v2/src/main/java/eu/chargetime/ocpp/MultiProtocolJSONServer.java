@@ -43,7 +43,6 @@ import javax.net.ssl.SSLContext;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.extensions.IExtension;
-import org.java_websocket.extensions.permessage_deflate.PerMessageDeflateExtension;
 import org.java_websocket.protocols.IProtocol;
 import org.java_websocket.protocols.Protocol;
 import org.slf4j.Logger;
@@ -71,12 +70,12 @@ public class MultiProtocolJSONServer implements IMultiProtocolServerAPI {
 
     List<IExtension> extensions = new ArrayList<>();
     if (configuration.getParameter(JSONConfiguration.WEBSOCKET_COMPRESSION_SUPPORT, true)) {
-      PerMessageDeflateExtension perMessageDeflateExtension =
-          new PerMessageDeflateExtension(Deflater.BEST_COMPRESSION);
-      perMessageDeflateExtension.setThreshold(0);
-      perMessageDeflateExtension.setServerNoContextTakeover(false);
-      perMessageDeflateExtension.setClientNoContextTakeover(false);
-      extensions.add(perMessageDeflateExtension);
+      WebSocketPerMessageDeflateExtension compressionExtension =
+          new WebSocketPerMessageDeflateExtension(Deflater.BEST_COMPRESSION);
+      compressionExtension.setThreshold(64);
+      compressionExtension.setServerNoContextTakeover(false);
+      compressionExtension.setClientNoContextTakeover(false);
+      extensions.add(compressionExtension);
     }
     List<IProtocol> protocols = new ArrayList<>(protocolVersions.size());
     for (ProtocolVersion protocolVersion : protocolVersions) {
