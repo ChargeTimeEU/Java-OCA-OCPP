@@ -45,7 +45,7 @@ public class ServerTransactionsFunction implements Function {
     features = new ArrayList<>();
     features.add(new BatterySwapFeature(this));
     features.add(new GetTransactionStatusFeature(null));
-    features.add(new RequestBatterySwapFeature(this));
+    features.add(new RequestBatterySwapFeature(null));
     features.add(new TransactionEventFeature(this));
   }
 
@@ -58,9 +58,6 @@ public class ServerTransactionsFunction implements Function {
   public Confirmation handleRequest(UUID sessionIndex, Request request) {
     if (request instanceof BatterySwapRequest) {
       return eventHandler.handleBatterySwapRequest(sessionIndex, (BatterySwapRequest) request);
-    } else if (request instanceof RequestBatterySwapRequest) {
-      return eventHandler.handleRequestBatterySwapRequest(
-          sessionIndex, (RequestBatterySwapRequest) request);
     } else if (request instanceof TransactionEventRequest) {
       return eventHandler.handleTransactionEventRequest(
           sessionIndex, (TransactionEventRequest) request);
@@ -75,5 +72,18 @@ public class ServerTransactionsFunction implements Function {
    */
   public GetTransactionStatusRequest createGetTransactionStatusRequest() {
     return new GetTransactionStatusRequest();
+  }
+
+  /**
+   * Create a server {@link RequestBatterySwapRequest} with all required fields.
+   *
+   * @param idToken A case insensitive identifier to use for the authorization and the type of
+   *     authorization to support multiple forms of identifiers.
+   * @param requestId Request id to match with BatterySwapRequest.
+   * @return an instance of {@link RequestBatterySwapRequest}
+   */
+  public RequestBatterySwapRequest createRequestBatterySwapRequest(
+      IdToken idToken, Integer requestId) {
+    return new RequestBatterySwapRequest(idToken, requestId);
   }
 }

@@ -46,7 +46,7 @@ public class ClientDiagnosticsFunction implements Function {
     features = new ArrayList<>();
     features.add(new AdjustPeriodicEventStreamFeature(this));
     features.add(new ClearVariableMonitoringFeature(this));
-    features.add(new ClosePeriodicEventStreamFeature(this));
+    features.add(new ClosePeriodicEventStreamFeature(null));
     features.add(new CustomerInformationFeature(this));
     features.add(new GetLogFeature(this));
     features.add(new GetMonitoringReportFeature(this));
@@ -74,9 +74,6 @@ public class ClientDiagnosticsFunction implements Function {
     } else if (request instanceof ClearVariableMonitoringRequest) {
       return eventHandler.handleClearVariableMonitoringRequest(
           (ClearVariableMonitoringRequest) request);
-    } else if (request instanceof ClosePeriodicEventStreamRequest) {
-      return eventHandler.handleClosePeriodicEventStreamRequest(
-          (ClosePeriodicEventStreamRequest) request);
     } else if (request instanceof CustomerInformationRequest) {
       return eventHandler.handleCustomerInformationRequest((CustomerInformationRequest) request);
     } else if (request instanceof GetLogRequest) {
@@ -95,6 +92,16 @@ public class ClientDiagnosticsFunction implements Function {
           (SetVariableMonitoringRequest) request);
     }
     return null;
+  }
+
+  /**
+   * Create a client {@link ClosePeriodicEventStreamRequest} with all required fields.
+   *
+   * @param id Id of stream to close.
+   * @return an instance of {@link ClosePeriodicEventStreamRequest}
+   */
+  public ClosePeriodicEventStreamRequest createClosePeriodicEventStreamRequest(Integer id) {
+    return new ClosePeriodicEventStreamRequest(id);
   }
 
   /**

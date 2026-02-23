@@ -48,7 +48,7 @@ public class ClientDERControlFunction implements Function {
     features.add(new GetDERControlFeature(this));
     features.add(new NotifyDERAlarmFeature(null));
     features.add(new NotifyDERStartStopFeature(null));
-    features.add(new ReportDERControlFeature(this));
+    features.add(new ReportDERControlFeature(null));
     features.add(new SetDERControlFeature(this));
   }
 
@@ -63,8 +63,6 @@ public class ClientDERControlFunction implements Function {
       return eventHandler.handleClearDERControlRequest((ClearDERControlRequest) request);
     } else if (request instanceof GetDERControlRequest) {
       return eventHandler.handleGetDERControlRequest((GetDERControlRequest) request);
-    } else if (request instanceof ReportDERControlRequest) {
-      return eventHandler.handleReportDERControlRequest((ReportDERControlRequest) request);
     } else if (request instanceof SetDERControlRequest) {
       return eventHandler.handleSetDERControlRequest((SetDERControlRequest) request);
     }
@@ -95,5 +93,15 @@ public class ClientDERControlFunction implements Function {
   public NotifyDERStartStopRequest createNotifyDERStartStopRequest(
       String controlId, Boolean started, ZonedDateTime timestamp) {
     return new NotifyDERStartStopRequest(controlId, started, timestamp);
+  }
+
+  /**
+   * Create a client {@link ReportDERControlRequest} with all required fields.
+   *
+   * @param requestId RequestId from GetDERControlRequest.
+   * @return an instance of {@link ReportDERControlRequest}
+   */
+  public ReportDERControlRequest createReportDERControlRequest(Integer requestId) {
+    return new ReportDERControlRequest(requestId);
   }
 }

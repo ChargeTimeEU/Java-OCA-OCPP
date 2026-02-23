@@ -49,16 +49,6 @@ public interface ClientDiagnosticsEventHandler {
       ClearVariableMonitoringRequest request);
 
   /**
-   * Handle a {@link ClosePeriodicEventStreamRequest} and return a {@link
-   * ClosePeriodicEventStreamResponse}.
-   *
-   * @param request incoming {@link ClosePeriodicEventStreamRequest} to handle.
-   * @return outgoing {@link ClosePeriodicEventStreamResponse} to reply with.
-   */
-  ClosePeriodicEventStreamResponse handleClosePeriodicEventStreamRequest(
-      ClosePeriodicEventStreamRequest request);
-
-  /**
    * Handle a {@link CustomerInformationRequest} and return a {@link CustomerInformationResponse}.
    *
    * @param request incoming {@link CustomerInformationRequest} to handle.

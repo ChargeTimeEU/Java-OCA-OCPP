@@ -36,4 +36,12 @@ public interface ClientTransactionsEventHandler {
    */
   GetTransactionStatusResponse handleGetTransactionStatusRequest(
       GetTransactionStatusRequest request);
+
+  /**
+   * Handle a {@link RequestBatterySwapRequest} and return a {@link RequestBatterySwapResponse}.
+   *
+   * @param request incoming {@link RequestBatterySwapRequest} to handle.
+   * @return outgoing {@link RequestBatterySwapResponse} to reply with.
+   */
+  RequestBatterySwapResponse handleRequestBatterySwapRequest(RequestBatterySwapRequest request);
 }

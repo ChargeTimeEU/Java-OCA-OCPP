@@ -30,6 +30,17 @@ import java.util.UUID;
 /** Call back handler for server events of the Diagnostics functional block. */
 public interface ServerDiagnosticsEventHandler {
   /**
+   * Handle a {@link ClosePeriodicEventStreamRequest} and return a {@link
+   * ClosePeriodicEventStreamResponse}.
+   *
+   * @param sessionIndex identifier of the session on which the request was received.
+   * @param request incoming {@link ClosePeriodicEventStreamRequest} to handle.
+   * @return outgoing {@link ClosePeriodicEventStreamResponse} to reply with.
+   */
+  ClosePeriodicEventStreamResponse handleClosePeriodicEventStreamRequest(
+      UUID sessionIndex, ClosePeriodicEventStreamRequest request);
+
+  /**
    * Handle a {@link LogStatusNotificationRequest} and return a {@link
    * LogStatusNotificationResponse}.
    *

@@ -39,16 +39,6 @@ public interface ServerTransactionsEventHandler {
   BatterySwapResponse handleBatterySwapRequest(UUID sessionIndex, BatterySwapRequest request);
 
   /**
-   * Handle a {@link RequestBatterySwapRequest} and return a {@link RequestBatterySwapResponse}.
-   *
-   * @param sessionIndex identifier of the session on which the request was received.
-   * @param request incoming {@link RequestBatterySwapRequest} to handle.
-   * @return outgoing {@link RequestBatterySwapResponse} to reply with.
-   */
-  RequestBatterySwapResponse handleRequestBatterySwapRequest(
-      UUID sessionIndex, RequestBatterySwapRequest request);
-
-  /**
    * Handle a {@link TransactionEventRequest} and return a {@link TransactionEventResponse}.
    *
    * @param sessionIndex identifier of the session on which the request was received.

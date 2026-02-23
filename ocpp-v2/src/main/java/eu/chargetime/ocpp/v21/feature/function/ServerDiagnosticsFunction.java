@@ -45,7 +45,7 @@ public class ServerDiagnosticsFunction implements Function {
     features = new ArrayList<>();
     features.add(new AdjustPeriodicEventStreamFeature(null));
     features.add(new ClearVariableMonitoringFeature(null));
-    features.add(new ClosePeriodicEventStreamFeature(null));
+    features.add(new ClosePeriodicEventStreamFeature(this));
     features.add(new CustomerInformationFeature(null));
     features.add(new GetLogFeature(null));
     features.add(new GetMonitoringReportFeature(null));
@@ -67,7 +67,10 @@ public class ServerDiagnosticsFunction implements Function {
 
   @Override
   public Confirmation handleRequest(UUID sessionIndex, Request request) {
-    if (request instanceof LogStatusNotificationRequest) {
+    if (request instanceof ClosePeriodicEventStreamRequest) {
+      return eventHandler.handleClosePeriodicEventStreamRequest(
+          sessionIndex, (ClosePeriodicEventStreamRequest) request);
+    } else if (request instanceof LogStatusNotificationRequest) {
       return eventHandler.handleLogStatusNotificationRequest(
           sessionIndex, (LogStatusNotificationRequest) request);
     } else if (request instanceof NotifyCustomerInformationRequest) {
@@ -107,16 +110,6 @@ public class ServerDiagnosticsFunction implements Function {
    */
   public ClearVariableMonitoringRequest createClearVariableMonitoringRequest(Integer[] id) {
     return new ClearVariableMonitoringRequest(id);
-  }
-
-  /**
-   * Create a server {@link ClosePeriodicEventStreamRequest} with all required fields.
-   *
-   * @param id Id of stream to close.
-   * @return an instance of {@link ClosePeriodicEventStreamRequest}
-   */
-  public ClosePeriodicEventStreamRequest createClosePeriodicEventStreamRequest(Integer id) {
-    return new ClosePeriodicEventStreamRequest(id);
   }
 
   /**

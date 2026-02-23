@@ -48,4 +48,14 @@ public interface ServerDERControlEventHandler {
    */
   NotifyDERStartStopResponse handleNotifyDERStartStopRequest(
       UUID sessionIndex, NotifyDERStartStopRequest request);
+
+  /**
+   * Handle a {@link ReportDERControlRequest} and return a {@link ReportDERControlResponse}.
+   *
+   * @param sessionIndex identifier of the session on which the request was received.
+   * @param request incoming {@link ReportDERControlRequest} to handle.
+   * @return outgoing {@link ReportDERControlResponse} to reply with.
+   */
+  ReportDERControlResponse handleReportDERControlRequest(
+      UUID sessionIndex, ReportDERControlRequest request);
 }

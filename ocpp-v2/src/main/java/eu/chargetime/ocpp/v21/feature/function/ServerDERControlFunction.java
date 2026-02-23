@@ -47,7 +47,7 @@ public class ServerDERControlFunction implements Function {
     features.add(new GetDERControlFeature(null));
     features.add(new NotifyDERAlarmFeature(this));
     features.add(new NotifyDERStartStopFeature(this));
-    features.add(new ReportDERControlFeature(null));
+    features.add(new ReportDERControlFeature(this));
     features.add(new SetDERControlFeature(null));
   }
 
@@ -64,6 +64,9 @@ public class ServerDERControlFunction implements Function {
     } else if (request instanceof NotifyDERStartStopRequest) {
       return eventHandler.handleNotifyDERStartStopRequest(
           sessionIndex, (NotifyDERStartStopRequest) request);
+    } else if (request instanceof ReportDERControlRequest) {
+      return eventHandler.handleReportDERControlRequest(
+          sessionIndex, (ReportDERControlRequest) request);
     }
     return null;
   }
@@ -86,16 +89,6 @@ public class ServerDERControlFunction implements Function {
    */
   public GetDERControlRequest createGetDERControlRequest(Integer requestId) {
     return new GetDERControlRequest(requestId);
-  }
-
-  /**
-   * Create a server {@link ReportDERControlRequest} with all required fields.
-   *
-   * @param requestId RequestId from GetDERControlRequest.
-   * @return an instance of {@link ReportDERControlRequest}
-   */
-  public ReportDERControlRequest createReportDERControlRequest(Integer requestId) {
-    return new ReportDERControlRequest(requestId);
   }
 
   /**

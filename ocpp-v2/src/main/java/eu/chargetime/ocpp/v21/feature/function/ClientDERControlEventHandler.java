@@ -45,14 +45,6 @@ public interface ClientDERControlEventHandler {
   GetDERControlResponse handleGetDERControlRequest(GetDERControlRequest request);
 
   /**
-   * Handle a {@link ReportDERControlRequest} and return a {@link ReportDERControlResponse}.
-   *
-   * @param request incoming {@link ReportDERControlRequest} to handle.
-   * @return outgoing {@link ReportDERControlResponse} to reply with.
-   */
-  ReportDERControlResponse handleReportDERControlRequest(ReportDERControlRequest request);
-
-  /**
    * Handle a {@link SetDERControlRequest} and return a {@link SetDERControlResponse}.
    *
    * @param request incoming {@link SetDERControlRequest} to handle.
