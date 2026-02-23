@@ -27,15 +27,14 @@ package eu.chargetime.ocpp.v21.feature.function;
 import eu.chargetime.ocpp.v21.model.messages.*;
 import java.util.UUID;
 
-/** Call back handler for server events of the Transactions functional block. */
-public interface ServerTransactionsEventHandler {
+/** Call back handler for server events of the BatterySwapping functional block. */
+public interface ServerBatterySwappingEventHandler {
   /**
-   * Handle a {@link TransactionEventRequest} and return a {@link TransactionEventResponse}.
+   * Handle a {@link BatterySwapRequest} and return a {@link BatterySwapResponse}.
    *
    * @param sessionIndex identifier of the session on which the request was received.
-   * @param request incoming {@link TransactionEventRequest} to handle.
-   * @return outgoing {@link TransactionEventResponse} to reply with.
+   * @param request incoming {@link BatterySwapRequest} to handle.
+   * @return outgoing {@link BatterySwapResponse} to reply with.
    */
-  TransactionEventResponse handleTransactionEventRequest(
-      UUID sessionIndex, TransactionEventRequest request);
+  BatterySwapResponse handleBatterySwapRequest(UUID sessionIndex, BatterySwapRequest request);
 }

@@ -34,17 +34,17 @@ import eu.chargetime.ocpp.v21.model.types.*;
 import java.util.ArrayList;
 import java.util.UUID;
 
-/** Class with server request creators and handlers for the Transactions functional block. */
-public class ServerTransactionsFunction implements Function {
+/** Class with client request creators and handlers for the BatterySwapping functional block. */
+public class ClientBatterySwappingFunction implements Function {
 
-  private final ServerTransactionsEventHandler eventHandler;
+  private final ClientBatterySwappingEventHandler eventHandler;
   private final ArrayList<FunctionFeature> features;
 
-  public ServerTransactionsFunction(ServerTransactionsEventHandler eventHandler) {
+  public ClientBatterySwappingFunction(ClientBatterySwappingEventHandler eventHandler) {
     this.eventHandler = eventHandler;
     features = new ArrayList<>();
-    features.add(new GetTransactionStatusFeature(null));
-    features.add(new TransactionEventFeature(this));
+    features.add(new BatterySwapFeature(null));
+    features.add(new RequestBatterySwapFeature(this));
   }
 
   @Override
@@ -54,19 +54,28 @@ public class ServerTransactionsFunction implements Function {
 
   @Override
   public Confirmation handleRequest(UUID sessionIndex, Request request) {
-    if (request instanceof TransactionEventRequest) {
-      return eventHandler.handleTransactionEventRequest(
-          sessionIndex, (TransactionEventRequest) request);
+    if (request instanceof RequestBatterySwapRequest) {
+      return eventHandler.handleRequestBatterySwapRequest((RequestBatterySwapRequest) request);
     }
     return null;
   }
 
   /**
-   * Create a server {@link GetTransactionStatusRequest}.
+   * Create a client {@link BatterySwapRequest} with all required fields.
    *
-   * @return an instance of {@link GetTransactionStatusRequest}
+   * @param batteryData batteryData
+   * @param eventType Battery in/out
+   * @param idToken A case insensitive identifier to use for the authorization and the type of
+   *     authorization to support multiple forms of identifiers.
+   * @param requestId RequestId to correlate BatteryIn/Out events and optional
+   *     RequestBatterySwapRequest.
+   * @return an instance of {@link BatterySwapRequest}
    */
-  public GetTransactionStatusRequest createGetTransactionStatusRequest() {
-    return new GetTransactionStatusRequest();
+  public BatterySwapRequest createBatterySwapRequest(
+      BatteryData[] batteryData,
+      BatterySwapEventEnum eventType,
+      IdToken idToken,
+      Integer requestId) {
+    return new BatterySwapRequest(batteryData, eventType, idToken, requestId);
   }
 }

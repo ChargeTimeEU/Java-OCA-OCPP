@@ -34,17 +34,17 @@ import eu.chargetime.ocpp.v21.model.types.*;
 import java.util.ArrayList;
 import java.util.UUID;
 
-/** Class with server request creators and handlers for the Transactions functional block. */
-public class ServerTransactionsFunction implements Function {
+/** Class with server request creators and handlers for the BatterySwapping functional block. */
+public class ServerBatterySwappingFunction implements Function {
 
-  private final ServerTransactionsEventHandler eventHandler;
+  private final ServerBatterySwappingEventHandler eventHandler;
   private final ArrayList<FunctionFeature> features;
 
-  public ServerTransactionsFunction(ServerTransactionsEventHandler eventHandler) {
+  public ServerBatterySwappingFunction(ServerBatterySwappingEventHandler eventHandler) {
     this.eventHandler = eventHandler;
     features = new ArrayList<>();
-    features.add(new GetTransactionStatusFeature(null));
-    features.add(new TransactionEventFeature(this));
+    features.add(new BatterySwapFeature(this));
+    features.add(new RequestBatterySwapFeature(null));
   }
 
   @Override
@@ -54,19 +54,22 @@ public class ServerTransactionsFunction implements Function {
 
   @Override
   public Confirmation handleRequest(UUID sessionIndex, Request request) {
-    if (request instanceof TransactionEventRequest) {
-      return eventHandler.handleTransactionEventRequest(
-          sessionIndex, (TransactionEventRequest) request);
+    if (request instanceof BatterySwapRequest) {
+      return eventHandler.handleBatterySwapRequest(sessionIndex, (BatterySwapRequest) request);
     }
     return null;
   }
 
   /**
-   * Create a server {@link GetTransactionStatusRequest}.
+   * Create a server {@link RequestBatterySwapRequest} with all required fields.
    *
-   * @return an instance of {@link GetTransactionStatusRequest}
+   * @param idToken A case insensitive identifier to use for the authorization and the type of
+   *     authorization to support multiple forms of identifiers.
+   * @param requestId Request id to match with BatterySwapRequest.
+   * @return an instance of {@link RequestBatterySwapRequest}
    */
-  public GetTransactionStatusRequest createGetTransactionStatusRequest() {
-    return new GetTransactionStatusRequest();
+  public RequestBatterySwapRequest createRequestBatterySwapRequest(
+      IdToken idToken, Integer requestId) {
+    return new RequestBatterySwapRequest(idToken, requestId);
   }
 }

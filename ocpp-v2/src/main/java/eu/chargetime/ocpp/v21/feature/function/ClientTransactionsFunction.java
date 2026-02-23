@@ -44,9 +44,7 @@ public class ClientTransactionsFunction implements Function {
   public ClientTransactionsFunction(ClientTransactionsEventHandler eventHandler) {
     this.eventHandler = eventHandler;
     features = new ArrayList<>();
-    features.add(new BatterySwapFeature(null));
     features.add(new GetTransactionStatusFeature(this));
-    features.add(new RequestBatterySwapFeature(this));
     features.add(new TransactionEventFeature(null));
   }
 
@@ -59,29 +57,8 @@ public class ClientTransactionsFunction implements Function {
   public Confirmation handleRequest(UUID sessionIndex, Request request) {
     if (request instanceof GetTransactionStatusRequest) {
       return eventHandler.handleGetTransactionStatusRequest((GetTransactionStatusRequest) request);
-    } else if (request instanceof RequestBatterySwapRequest) {
-      return eventHandler.handleRequestBatterySwapRequest((RequestBatterySwapRequest) request);
     }
     return null;
-  }
-
-  /**
-   * Create a client {@link BatterySwapRequest} with all required fields.
-   *
-   * @param batteryData batteryData
-   * @param eventType Battery in/out
-   * @param idToken A case insensitive identifier to use for the authorization and the type of
-   *     authorization to support multiple forms of identifiers.
-   * @param requestId RequestId to correlate BatteryIn/Out events and optional
-   *     RequestBatterySwapRequest.
-   * @return an instance of {@link BatterySwapRequest}
-   */
-  public BatterySwapRequest createBatterySwapRequest(
-      BatteryData[] batteryData,
-      BatterySwapEventEnum eventType,
-      IdToken idToken,
-      Integer requestId) {
-    return new BatterySwapRequest(batteryData, eventType, idToken, requestId);
   }
 
   /**
