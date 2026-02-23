@@ -121,13 +121,6 @@ public class OCPP21MultiProtocolFakeChargingStation
               }
 
               @Override
-              public ClosePeriodicEventStreamResponse handleClosePeriodicEventStreamRequest(
-                  ClosePeriodicEventStreamRequest request) {
-                receivedRequest = request;
-                return new ClosePeriodicEventStreamResponse();
-              }
-
-              @Override
               public CustomerInformationResponse handleCustomerInformationRequest(
                   CustomerInformationRequest request) {
                 receivedRequest = request;
