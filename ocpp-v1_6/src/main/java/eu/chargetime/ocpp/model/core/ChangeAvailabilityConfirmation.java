@@ -46,6 +46,7 @@ public class ChangeAvailabilityConfirmation extends Confirmation {
    * @deprecated use {@link #ChangeAvailabilityConfirmation(AvailabilityStatus)} to be sure to set
    *     required fields
    */
+  @Deprecated
   public ChangeAvailabilityConfirmation() {}
 
   /**
