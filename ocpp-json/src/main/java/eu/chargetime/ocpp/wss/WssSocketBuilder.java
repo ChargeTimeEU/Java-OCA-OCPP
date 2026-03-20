@@ -43,6 +43,7 @@ public interface WssSocketBuilder {
    * Builds SSL {@link Socket} to support WSS scheme.
    *
    * @return SSL {@link Socket}
+   * @throws IOException if any I/O error occurred
    */
   Socket build() throws IOException;
 
