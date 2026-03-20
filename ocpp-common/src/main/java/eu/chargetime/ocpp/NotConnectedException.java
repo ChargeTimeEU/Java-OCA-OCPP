@@ -24,4 +24,6 @@ package eu.chargetime.ocpp; /*
                                SOFTWARE.
                             */
 
-public class NotConnectedException extends Exception {}
+public class NotConnectedException extends Exception {
+  private static final long serialVersionUID = -2192470845608175121L;
+}

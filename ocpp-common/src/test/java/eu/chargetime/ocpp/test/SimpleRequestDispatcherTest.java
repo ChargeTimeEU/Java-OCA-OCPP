@@ -26,7 +26,7 @@ package eu.chargetime.ocpp.test;
 */
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -43,7 +43,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleRequestDispatcherTest {
 
-  private SimplePromiseFulfiller sut;
+  private final SimplePromiseFulfiller sut;
 
   @Mock private SessionEvents eventsMock;
 

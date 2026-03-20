@@ -27,6 +27,7 @@ package eu.chargetime.ocpp;
 
 /** Exception returned to an outgoing request if an error is reported from the other end. */
 public class CallErrorException extends Exception {
+  private static final long serialVersionUID = 2491636769263746241L;
 
   private String errorCode;
   private String errorDescription;
