@@ -89,12 +89,16 @@ public class OCPP21MultiProtocolFakeCSMS extends OCPP201MultiProtocolFakeCSMS {
 
   @Override
   void checkConfirmation(Confirmation confirmation) {
-    if (confirmation instanceof GetVariablesResponse) {
-      GetVariablesResponse getVariablesResponse = (GetVariablesResponse) confirmation;
-      if (getVariablesResponse.getGetVariableResult().length != 1) {
-        throw new PropertyConstraintException(
-            getVariablesResponse.getGetVariableResult().length,
-            "GetVariablesResponse getVariableResult length must be 1");
+    if (!OCPP2_1.equals(getDummyHandlers().getCurrentProtocolVersion())) {
+      super.checkConfirmation(confirmation);
+    } else {
+      if (confirmation instanceof GetVariablesResponse) {
+        GetVariablesResponse getVariablesResponse = (GetVariablesResponse) confirmation;
+        if (getVariablesResponse.getGetVariableResult().length != 1) {
+          throw new PropertyConstraintException(
+              getVariablesResponse.getGetVariableResult().length,
+              "GetVariablesResponse getVariableResult length must be 1");
+        }
       }
     }
   }
