@@ -2,7 +2,7 @@ package eu.chargetime.ocpp.model.test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import eu.chargetime.ocpp.model.core.ClearCacheConfirmation;
 import eu.chargetime.ocpp.model.core.ClearCacheStatus;

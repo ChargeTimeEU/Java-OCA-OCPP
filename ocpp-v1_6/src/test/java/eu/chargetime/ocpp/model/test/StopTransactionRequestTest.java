@@ -210,6 +210,6 @@ public class StopTransactionRequestTest {
     boolean isTransactionRelated = request.transactionRelated();
 
     // Then
-    Assert.assertThat(isTransactionRelated, is(true));
+    assertThat(isTransactionRelated, is(true));
   }
 }

@@ -26,7 +26,7 @@ package eu.chargetime.ocpp.model.reservation.test;
    SOFTWARE.
 */
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import eu.chargetime.ocpp.model.reservation.ReservationStatus;
 import eu.chargetime.ocpp.model.reservation.ReserveNowConfirmation;
