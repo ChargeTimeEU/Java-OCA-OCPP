@@ -697,6 +697,7 @@ public final class MoreObjects {
      * Object#getClass()}.
      *
      * @param className the name of the instance type
+     * @return an instance of {@link ToStringHelperImpl}
      */
     public static ToStringHelperImpl toStringHelper(String className) {
       return new ToStringHelperImpl(className);
@@ -722,6 +723,8 @@ public final class MoreObjects {
      * Configures the {@link ToStringHelperImpl} so {@link #toString()} will ignore properties with
      * null value. The order of calling this method, relative to the {@code add()}/{@code
      * addValue()} methods, is not significant.
+     *
+     * @return this instance of {@link ToStringHelperImpl}
      */
     public ToStringHelperImpl omitNullValues() {
       omitNullValues = true;
@@ -732,42 +735,88 @@ public final class MoreObjects {
      * Adds a name/value pair to the formatted output in {@code name=value} format. If {@code value}
      * is {@code null}, the string {@code "null"} is used, unless {@link #omitNullValues()} is
      * called, in which case this name/value pair will not be added.
+     *
+     * @param name the name
+     * @param value the {@link Object} value
+     * @return this instance of {@link ToStringHelperImpl}
      */
     public ToStringHelperImpl add(String name, Object value) {
       return addHolder(name, value);
     }
 
-    /** Adds a name/value pair to the formatted output in {@code name=value} format. */
+    /**
+     * Adds a name/value pair to the formatted output in {@code name=value} format.
+     *
+     * @param name the name
+     * @param value the {@link ZonedDateTime} value
+     * @return this instance of {@link ToStringHelperImpl}
+     */
     public ToStringHelperImpl add(String name, ZonedDateTime value) {
       return addHolder(name, value);
     }
 
-    /** Adds a name/value pair to the formatted output in {@code name=value} format. */
+    /**
+     * Adds a name/value pair to the formatted output in {@code name=value} format.
+     *
+     * @param name the name
+     * @param value the {@code boolean} value
+     * @return this instance of {@link ToStringHelperImpl}
+     */
     public ToStringHelperImpl add(String name, boolean value) {
       return addHolder(name, String.valueOf(value));
     }
 
-    /** Adds a name/value pair to the formatted output in {@code name=value} format. */
+    /**
+     * Adds a name/value pair to the formatted output in {@code name=value} format.
+     *
+     * @param name the name
+     * @param value the {@code char} value
+     * @return this instance of {@link ToStringHelperImpl}
+     */
     public ToStringHelperImpl add(String name, char value) {
       return addHolder(name, String.valueOf(value));
     }
 
-    /** Adds a name/value pair to the formatted output in {@code name=value} format. */
+    /**
+     * Adds a name/value pair to the formatted output in {@code name=value} format.
+     *
+     * @param name the name
+     * @param value the {@code double} value
+     * @return this instance of {@link ToStringHelperImpl}
+     */
     public ToStringHelperImpl add(String name, double value) {
       return addHolder(name, String.valueOf(value));
     }
 
-    /** Adds a name/value pair to the formatted output in {@code name=value} format. */
+    /**
+     * Adds a name/value pair to the formatted output in {@code name=value} format.
+     *
+     * @param name the name
+     * @param value the {@code float} value
+     * @return this instance of {@link ToStringHelperImpl}
+     */
     public ToStringHelperImpl add(String name, float value) {
       return addHolder(name, String.valueOf(value));
     }
 
-    /** Adds a name/value pair to the formatted output in {@code name=value} format. */
+    /**
+     * Adds a name/value pair to the formatted output in {@code name=value} format.
+     *
+     * @param name the name
+     * @param value the {@code int} value
+     * @return this instance of {@link ToStringHelperImpl}
+     */
     public ToStringHelperImpl add(String name, int value) {
       return addHolder(name, String.valueOf(value));
     }
 
-    /** Adds a name/value pair to the formatted output in {@code name=value} format. */
+    /**
+     * Adds a name/value pair to the formatted output in {@code name=value} format.
+     *
+     * @param name the name
+     * @param value the {@code long} value
+     * @return this instance of {@link ToStringHelperImpl}
+     */
     public ToStringHelperImpl add(String name, long value) {
       return addHolder(name, String.valueOf(value));
     }
@@ -777,6 +826,9 @@ public final class MoreObjects {
      *
      * <p>It is strongly encouraged to use {@link #add(String, Object)} instead and give value a
      * readable name.
+     *
+     * @param value the {@link Object} value
+     * @return this instance of {@link ToStringHelperImpl}
      */
     public ToStringHelperImpl addValue(Object value) {
       return addHolder(value);
@@ -787,6 +839,9 @@ public final class MoreObjects {
      *
      * <p>It is strongly encouraged to use {@link #add(String, boolean)} instead and give value a
      * readable name.
+     *
+     * @param value the {@code boolean} value
+     * @return this instance of {@link ToStringHelperImpl}
      */
     public ToStringHelperImpl addValue(boolean value) {
       return addHolder(String.valueOf(value));
@@ -797,6 +852,9 @@ public final class MoreObjects {
      *
      * <p>It is strongly encouraged to use {@link #add(String, char)} instead and give value a
      * readable name.
+     *
+     * @param value the {@code char} value
+     * @return this instance of {@link ToStringHelperImpl}
      */
     public ToStringHelperImpl addValue(char value) {
       return addHolder(String.valueOf(value));
@@ -807,6 +865,9 @@ public final class MoreObjects {
      *
      * <p>It is strongly encouraged to use {@link #add(String, double)} instead and give value a
      * readable name.
+     *
+     * @param value the {@code double} value
+     * @return this instance of {@link ToStringHelperImpl}
      */
     public ToStringHelperImpl addValue(double value) {
       return addHolder(String.valueOf(value));
@@ -817,6 +878,9 @@ public final class MoreObjects {
      *
      * <p>It is strongly encouraged to use {@link #add(String, float)} instead and give value a
      * readable name.
+     *
+     * @param value the {@code float} value
+     * @return this instance of {@link ToStringHelperImpl}
      */
     public ToStringHelperImpl addValue(float value) {
       return addHolder(String.valueOf(value));
@@ -827,6 +891,9 @@ public final class MoreObjects {
      *
      * <p>It is strongly encouraged to use {@link #add(String, int)} instead and give value a
      * readable name.
+     *
+     * @param value the {@code int} value
+     * @return this instance of {@link ToStringHelperImpl}
      */
     public ToStringHelperImpl addValue(int value) {
       return addHolder(String.valueOf(value));
@@ -837,6 +904,9 @@ public final class MoreObjects {
      *
      * <p>It is strongly encouraged to use {@link #add(String, long)} instead and give value a
      * readable name.
+     *
+     * @param value the {@code long} value
+     * @return this instance of {@link ToStringHelperImpl}
      */
     public ToStringHelperImpl addValue(long value) {
       return addHolder(String.valueOf(value));

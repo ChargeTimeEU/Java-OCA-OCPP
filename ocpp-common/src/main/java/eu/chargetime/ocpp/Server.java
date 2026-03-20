@@ -227,6 +227,7 @@ public class Server {
    * @throws UnsupportedFeatureException Thrown if the feature isn't among the list of supported
    *     features.
    * @throws OccurenceConstraintException Thrown if the request isn't valid.
+   * @throws NotConnectedException Thrown if session with passed sessionIndex is not found
    */
   public CompletableFuture<Confirmation> send(UUID sessionIndex, Request request)
       throws UnsupportedFeatureException, OccurenceConstraintException, NotConnectedException {
@@ -275,6 +276,9 @@ public class Server {
    * @param confirmation the {@link Confirmation} to the original {@link Request}.
    * @return a boolean indicating if pending request was found.
    * @throws NotConnectedException Thrown if session with passed sessionIndex is not found
+   * @throws UnsupportedFeatureException Thrown if the feature isn't among the list of supported
+   *     features.
+   * @throws OccurenceConstraintException Thrown if the request isn't valid.
    */
   public boolean asyncCompleteRequest(UUID sessionIndex, String uniqueId, Confirmation confirmation)
       throws NotConnectedException, UnsupportedFeatureException, OccurenceConstraintException {
