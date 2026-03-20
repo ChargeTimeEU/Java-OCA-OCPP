@@ -49,6 +49,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.ZonedDateTime;
 
+@SuppressWarnings("deprecation")
 public class FakeChargePoint {
   final ClientCoreProfile core;
   final ClientSmartChargingProfile smartCharging;
