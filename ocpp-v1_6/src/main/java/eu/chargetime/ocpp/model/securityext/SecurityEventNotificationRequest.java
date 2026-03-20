@@ -36,13 +36,13 @@ import java.util.Objects;
 
 public class SecurityEventNotificationRequest extends RequestWithId {
 
-  private static final transient Validator typeValidator =
+  private static final Validator<String> typeValidator =
       new ValidatorBuilder()
           .addRule(new StringMaxLengthValidationRule(50))
           .setRequired(true)
           .build();
 
-  private static final transient Validator techInfoValidator =
+  private static final Validator<String> techInfoValidator =
       new ValidatorBuilder().addRule(new StringMaxLengthValidationRule(255)).build();
 
   private String type;

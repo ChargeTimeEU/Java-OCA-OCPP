@@ -36,7 +36,7 @@ import java.util.Objects;
 
 public class InstallCertificateRequest extends RequestWithId {
 
-  private static final transient Validator certificateValidator =
+  private static final Validator<String> certificateValidator =
       new ValidatorBuilder()
           .addRule(new StringMaxLengthValidationRule(5500))
           .setRequired(true)

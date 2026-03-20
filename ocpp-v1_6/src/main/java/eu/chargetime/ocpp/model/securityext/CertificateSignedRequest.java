@@ -35,7 +35,7 @@ import java.util.Objects;
 
 public class CertificateSignedRequest extends RequestWithId {
 
-  private static final transient Validator certificateChainValidator =
+  private static final Validator<String> certificateChainValidator =
       new ValidatorBuilder()
           .addRule(new StringMaxLengthValidationRule(10000))
           .setRequired(true)

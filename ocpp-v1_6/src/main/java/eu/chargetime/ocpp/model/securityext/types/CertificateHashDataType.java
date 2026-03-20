@@ -35,14 +35,14 @@ import eu.chargetime.ocpp.utilities.MoreObjects;
 import java.util.Objects;
 
 public class CertificateHashDataType implements Validatable {
-  private static final transient Validator identifierString128Validator =
+  private static final Validator<String> identifierString128Validator =
       new ValidatorBuilder()
           .addRule(OCPPSecurityExtDatatypes.identifierString())
           .addRule(new StringMaxLengthValidationRule(128))
           .setRequired(true)
           .build();
 
-  private static final transient Validator serialNumberValidator =
+  private static final Validator<String> serialNumberValidator =
       new ValidatorBuilder().addRule(OCPPSecurityExtDatatypes.string40()).setRequired(true).build();
 
   private HashAlgorithmEnumType hashAlgorithm;

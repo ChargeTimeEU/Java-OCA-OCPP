@@ -41,19 +41,19 @@ import java.util.Objects;
  * used by {@link SignedUpdateFirmwareRequest}
  */
 public class FirmwareType implements Validatable {
-  private static final transient Validator locationValidator =
+  private static final Validator<String> locationValidator =
       new ValidatorBuilder()
           .addRule(OCPPSecurityExtDatatypes.string512())
           .setRequired(true)
           .build();
 
-  private static final transient Validator signingCertificateValidator =
+  private static final Validator<String> signingCertificateValidator =
       new ValidatorBuilder()
           .addRule(new StringMaxLengthValidationRule(5500))
           .setRequired(true)
           .build();
 
-  private static final transient Validator signatureValidator =
+  private static final Validator<String> signatureValidator =
       new ValidatorBuilder()
           .addRule(new StringMaxLengthValidationRule(800))
           .setRequired(true)

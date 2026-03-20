@@ -35,7 +35,7 @@ import java.util.Objects;
 
 public class SignCertificateRequest extends RequestWithId {
 
-  private static final transient Validator csrValidator =
+  private static final Validator<String> csrValidator =
       new ValidatorBuilder()
           .addRule(new StringMaxLengthValidationRule(5500))
           .setRequired(true)
