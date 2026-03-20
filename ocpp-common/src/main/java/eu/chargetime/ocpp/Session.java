@@ -337,6 +337,8 @@ public class Session implements ISession {
           request.setOcppMessageId(id);
           if (request.validate()) {
             dispatcher.handleRequest(null, request);
+          } else {
+            logger.warn("Received SEND message with id {} is invalid: {}", id, request);
           }
         } catch (PropertyConstraintException | SecurityErrorException ex) {
           logger.warn(ex.getMessage(), ex);
