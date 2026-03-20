@@ -43,6 +43,7 @@ import org.mockito.junit.MockitoJUnitRunner;
  * SOFTWARE.
  */
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("deprecation")
 public class MeterValuesRequestTest {
 
   @Rule public ExpectedException thrownException = ExpectedException.none();

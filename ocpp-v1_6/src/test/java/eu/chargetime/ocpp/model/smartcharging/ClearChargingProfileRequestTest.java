@@ -11,6 +11,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+@SuppressWarnings("deprecation")
 public class ClearChargingProfileRequestTest {
 
   @Rule public ExpectedException thrownException = ExpectedException.none();

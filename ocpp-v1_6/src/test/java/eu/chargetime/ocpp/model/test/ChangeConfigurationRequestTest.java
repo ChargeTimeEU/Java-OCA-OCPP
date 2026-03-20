@@ -39,6 +39,7 @@ import org.junit.rules.ExpectedException;
  * SOFTWARE.
  */
 
+@SuppressWarnings("deprecation")
 public class ChangeConfigurationRequestTest {
 
   private static final String EXCEPTION_MESSAGE_TEMPLATE =

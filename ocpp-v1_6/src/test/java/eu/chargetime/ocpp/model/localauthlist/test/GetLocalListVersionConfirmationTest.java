@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("deprecation")
 public class GetLocalListVersionConfirmationTest {
 
   @Rule public ExpectedException thrownException = ExpectedException.none();

@@ -37,6 +37,7 @@ import org.junit.rules.ExpectedException;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@SuppressWarnings("deprecation")
 public class UnlockConnectorRequestTest {
 
   @Rule public ExpectedException thrownException = ExpectedException.none();

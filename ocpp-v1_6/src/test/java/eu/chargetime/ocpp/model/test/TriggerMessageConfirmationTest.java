@@ -9,6 +9,7 @@ import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageStatus;
 import org.junit.Before;
 import org.junit.Test;
 
+@SuppressWarnings("deprecation")
 public class TriggerMessageConfirmationTest {
   TriggerMessageConfirmation confirmation;
 

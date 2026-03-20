@@ -43,6 +43,7 @@ import org.mockito.junit.MockitoJUnitRunner;
  */
 
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("deprecation")
 public class ServerSmartChargingProfileTest extends ProfileTest {
 
   private ServerSmartChargingProfile smartCharging;

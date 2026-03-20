@@ -36,6 +36,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+@SuppressWarnings("deprecation")
 public class DataTransferRequestTest {
 
   private static final String EXCEPTION_MESSAGE_TEMPLATE =

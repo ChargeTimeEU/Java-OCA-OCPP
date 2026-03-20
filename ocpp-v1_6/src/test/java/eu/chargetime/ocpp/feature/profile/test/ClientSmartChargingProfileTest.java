@@ -44,6 +44,7 @@ import org.mockito.junit.MockitoJUnitRunner;
  */
 
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("deprecation")
 public class ClientSmartChargingProfileTest {
 
   private static final UUID SESSION_NULL = null;

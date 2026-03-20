@@ -31,6 +31,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+@SuppressWarnings("deprecation")
 public class BootNotificationRequestTest {
 
   @Rule public ExpectedException thrownException = ExpectedException.none();

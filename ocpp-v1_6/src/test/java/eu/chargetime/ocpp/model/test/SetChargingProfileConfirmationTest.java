@@ -35,6 +35,7 @@ import org.junit.Test;
  * SOFTWARE.
  */
 
+@SuppressWarnings("deprecation")
 public class SetChargingProfileConfirmationTest {
   SetChargingProfileConfirmation confirmation;
 

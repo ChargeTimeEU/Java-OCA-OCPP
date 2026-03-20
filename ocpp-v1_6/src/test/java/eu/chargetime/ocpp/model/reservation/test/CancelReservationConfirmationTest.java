@@ -34,6 +34,7 @@ import eu.chargetime.ocpp.model.reservation.CancelReservationStatus;
 import org.junit.Before;
 import org.junit.Test;
 
+@SuppressWarnings("deprecation")
 public class CancelReservationConfirmationTest {
 
   private CancelReservationConfirmation request;

@@ -37,6 +37,7 @@ import org.junit.rules.ExpectedException;
  * SOFTWARE.
  */
 
+@SuppressWarnings("deprecation")
 public class SetChargingProfileRequestTest {
 
   private static final String EXPECTED_ERROR_MESSAGE =

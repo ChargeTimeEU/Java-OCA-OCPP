@@ -42,6 +42,7 @@ import org.mockito.junit.MockitoJUnitRunner;
  * SOFTWARE.
  */
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("deprecation")
 public class MeterValueTest {
 
   private MeterValue meterValue;

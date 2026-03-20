@@ -40,6 +40,7 @@ import org.mockito.junit.MockitoJUnitRunner;
  * SOFTWARE.
  */
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("deprecation")
 public class GetCompositeScheduleRequestTest {
 
   @Rule public ExpectedException thrownException = ExpectedException.none();

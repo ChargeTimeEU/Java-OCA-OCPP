@@ -33,6 +33,7 @@ import org.junit.Test;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@SuppressWarnings("deprecation")
 public class RemoteStopTransactionRequestTest {
   RemoteStopTransactionRequest request;
 
