@@ -170,9 +170,11 @@ public class OCPP21MultiProtocolIntegrationTest {
         (OCPP21MultiProtocolFakeCSMS) setupAndStartCSMS(OCPP2_1_FIRST);
     FakeChargingStation cs = buildAndConnectChargingStation(OCPP2_1_ONLY, csms);
     cs.sendBootNotification("vendor", "model");
+    cs.setRiggedToSendInvalidResponse(true);
 
     csms.sendGetVariablesRequest();
     Thread.sleep(100);
+    assertThat(cs.getReceivedConfirmationError(), is(notNullValue()));
     assertThat(cs.getReceivedConfirmationError(), is("PropertyConstraintViolation"));
     assertThat(
         cs.getReceivedConfirmationErrorDescription(),
@@ -187,6 +189,7 @@ public class OCPP21MultiProtocolIntegrationTest {
         (OCPP21MultiProtocolFakeCSMS) setupAndStartCSMS(OCPP2_1_FIRST);
     FakeChargingStation cs = buildAndConnectChargingStation(OCPP2_0_1_ONLY, csms);
     cs.sendBootNotification("vendor", "model");
+    cs.setRiggedToSendInvalidResponse(true);
 
     csms.sendGetVariablesRequest();
     Thread.sleep(100);

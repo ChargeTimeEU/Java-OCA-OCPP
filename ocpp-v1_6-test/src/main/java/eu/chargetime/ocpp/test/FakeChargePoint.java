@@ -64,6 +64,7 @@ public class FakeChargePoint {
   String receivedConfirmationError;
   String receivedConfirmationErrorDescription;
   String receivedConfirmationErrorUniqueId;
+  boolean riggedToSendInvalidResponse = false;
   String url;
 
   public FakeChargePoint() throws MalformedURLException {
@@ -652,5 +653,13 @@ public class FakeChargePoint {
 
   public String getReceivedConfirmationErrorUniqueId() {
     return receivedConfirmationErrorUniqueId;
+  }
+
+  public void setRiggedToSendInvalidResponse(boolean riggedToSendInvalidResponse) {
+    this.riggedToSendInvalidResponse = riggedToSendInvalidResponse;
+  }
+
+  public boolean isRiggedToSendInvalidResponse() {
+    return riggedToSendInvalidResponse;
   }
 }

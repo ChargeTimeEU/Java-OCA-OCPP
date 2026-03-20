@@ -47,4 +47,6 @@ public interface FakeChargingStation {
   String getReceivedConfirmationErrorDescription();
 
   String getReceivedConfirmationErrorUniqueId();
+
+  void setRiggedToSendInvalidResponse(boolean riggedToSendInvalidResponse);
 }

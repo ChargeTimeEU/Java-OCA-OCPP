@@ -87,17 +87,24 @@ public class OCPP201MultiProtocolFakeChargingStation extends FakeChargePoint
               @Override
               public GetVariablesResponse handleGetVariablesRequest(GetVariablesRequest request) {
                 receivedRequest = request;
-                return new GetVariablesResponse(
-                    new GetVariableResult[] {
-                      new GetVariableResult(
-                          GetVariableStatusEnum.UnknownVariable,
-                          new Component(""),
-                          new Variable("")),
-                      new GetVariableResult(
-                          GetVariableStatusEnum.UnknownVariable,
-                          new Component(""),
-                          new Variable(""))
-                    });
+                int results =
+                    isRiggedToSendInvalidResponse()
+                        ? request.getGetVariableData().length + 1
+                        : request.getGetVariableData().length;
+                GetVariableResult[] result = new GetVariableResult[results];
+                for (int i = 0; i < results; i++) {
+                  result[i] =
+                      i < request.getGetVariableData().length
+                          ? new GetVariableResult(
+                              GetVariableStatusEnum.UnknownVariable,
+                              request.getGetVariableData()[i].getComponent(),
+                              request.getGetVariableData()[i].getVariable())
+                          : new GetVariableResult(
+                              GetVariableStatusEnum.UnknownVariable,
+                              new Component(""),
+                              new Variable(""));
+                }
+                return new GetVariablesResponse(result);
               }
 
               @Override
