@@ -78,7 +78,7 @@ public class OCPP21MultiProtocolDummyHandlers extends OCPP201MultiProtocolDummyH
     return new ServerDiagnosticsEventHandler() {
       @Override
       public ClosePeriodicEventStreamResponse handleClosePeriodicEventStreamRequest(
-              UUID sessionIndex, ClosePeriodicEventStreamRequest request) {
+          UUID sessionIndex, ClosePeriodicEventStreamRequest request) {
         setReceivedRequest(request);
         ClosePeriodicEventStreamResponse response = new ClosePeriodicEventStreamResponse();
         return failurePoint(response);
