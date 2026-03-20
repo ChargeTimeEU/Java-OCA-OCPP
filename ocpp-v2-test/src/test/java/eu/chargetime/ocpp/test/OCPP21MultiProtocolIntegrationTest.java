@@ -140,21 +140,27 @@ public class OCPP21MultiProtocolIntegrationTest {
     FakeCSMS csms = setupAndStartCSMS(OCPP2_1_FIRST);
 
     FakeChargingStation cs16 = buildAndConnectChargingStation(OCPP1_6_ONLY, csms);
+    assertThat(cs16.getProtocolVersion(), is(OCPP1_6));
     cs16.sendBootNotification("vendor", "model");
 
     FakeChargingStation cs201 = buildAndConnectChargingStation(OCPP2_0_1_ONLY, csms);
+    assertThat(cs201.getProtocolVersion(), is(OCPP2_0_1));
     cs201.sendBootNotification("vendor", "model");
 
     FakeChargingStation cs21 = buildAndConnectChargingStation(OCPP2_1_ONLY, csms);
+    assertThat(cs21.getProtocolVersion(), is(OCPP2_1));
     cs21.sendBootNotification("vendor", "model");
 
     reconnectChargingStation(cs16, csms);
+    assertThat(cs16.getProtocolVersion(), is(OCPP1_6));
     cs16.sendBootNotification("vendor", "model");
 
     reconnectChargingStation(cs201, csms);
+    assertThat(cs201.getProtocolVersion(), is(OCPP2_0_1));
     cs201.sendBootNotification("vendor", "model");
 
     reconnectChargingStation(cs21, csms);
+    assertThat(cs21.getProtocolVersion(), is(OCPP2_1));
     cs21.sendBootNotification("vendor", "model");
   }
 
