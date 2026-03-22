@@ -28,6 +28,7 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import java.util.concurrent.CompletableFuture;
+import javax.annotation.Nullable;
 
 public class RequestDispatcher implements IRequestDispactcher {
 
@@ -38,7 +39,7 @@ public class RequestDispatcher implements IRequestDispactcher {
     this.fulfiller = fulfiller;
   }
 
-  public void handleRequest(CompletableFuture<Confirmation> promise, Request request) {
+  public void handleRequest(@Nullable CompletableFuture<Confirmation> promise, Request request) {
     fulfiller.fulfill(promise, eventHandler, request);
   }
 

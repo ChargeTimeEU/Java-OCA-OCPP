@@ -73,7 +73,9 @@ public class FeatureRepository implements IFeatureRepository {
   public void addFeature(Feature feature) {
     actionMap.put(feature.getAction(), feature);
     classMap.put(feature.getRequestType(), feature);
-    classMap.put(feature.getConfirmationType(), feature);
+    if (feature.getConfirmationType() != null) {
+      classMap.put(feature.getConfirmationType(), feature);
+    }
   }
 
   /**

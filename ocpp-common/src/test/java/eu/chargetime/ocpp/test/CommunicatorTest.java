@@ -93,6 +93,17 @@ public class CommunicatorTest {
           }
 
           @Override
+          protected Object makeCallResultError(
+              String uniqueId, String action, String errorCode, String errorDescription) {
+            return null;
+          }
+
+          @Override
+          protected Object makeSend(String uniqueId, String action, Object payload) {
+            return uniqueId;
+          }
+
+          @Override
           protected Message parse(Object message) {
             return null;
           }

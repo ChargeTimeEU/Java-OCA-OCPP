@@ -61,6 +61,10 @@ public class FakeChargePoint {
   Confirmation receivedConfirmation;
   Request receivedRequest;
   Throwable receivedException;
+  String receivedConfirmationError;
+  String receivedConfirmationErrorDescription;
+  String receivedConfirmationErrorUniqueId;
+  boolean riggedToSendInvalidResponse = false;
   String url;
 
   public FakeChargePoint() throws MalformedURLException {
@@ -317,6 +321,14 @@ public class FakeChargePoint {
 
             @Override
             public void connectionClosed() {}
+
+            @Override
+            public void confirmationError(
+                String uniqueId, String errorCode, String errorDescription, Object payload) {
+              receivedConfirmationError = errorCode;
+              receivedConfirmationErrorDescription = errorDescription;
+              receivedConfirmationErrorUniqueId = uniqueId;
+            }
           });
     } catch (Exception ex) {
       ex.printStackTrace();
@@ -427,11 +439,14 @@ public class FakeChargePoint {
 
   public void clearMemory() {
     receivedConfirmation = null;
+    receivedConfirmationError = null;
+    receivedConfirmationErrorDescription = null;
+    receivedConfirmationErrorUniqueId = null;
     receivedException = null;
     receivedRequest = null;
   }
 
-  private void send(Request request) throws Exception {
+  void send(Request request) throws Exception {
     try {
       client
           .send(request)
@@ -621,5 +636,30 @@ public class FakeChargePoint {
     if (receivedException instanceof CallErrorException)
       return ((CallErrorException) receivedException).getErrorCode().equals("Not connected");
     return false;
+  }
+
+  public String getReceivedRequestUniqueId() {
+    Request request = receivedRequest;
+    return request != null ? request.getOcppMessageId() : null;
+  }
+
+  public String getReceivedConfirmationError() {
+    return receivedConfirmationError;
+  }
+
+  public String getReceivedConfirmationErrorDescription() {
+    return receivedConfirmationErrorDescription;
+  }
+
+  public String getReceivedConfirmationErrorUniqueId() {
+    return receivedConfirmationErrorUniqueId;
+  }
+
+  public void setRiggedToSendInvalidResponse(boolean riggedToSendInvalidResponse) {
+    this.riggedToSendInvalidResponse = riggedToSendInvalidResponse;
+  }
+
+  public boolean isRiggedToSendInvalidResponse() {
+    return riggedToSendInvalidResponse;
   }
 }

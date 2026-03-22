@@ -166,6 +166,17 @@ public class SOAPCommunicator extends Communicator {
     return message;
   }
 
+  @Override
+  protected Object makeCallResultError(
+      String uniqueId, String action, String errorCode, String errorDescription) {
+    throw new UnsupportedOperationException("CALLRESULTERROR is not specified for SOAP");
+  }
+
+  @Override
+  protected Object makeSend(String uniqueId, String action, Object payload) {
+    throw new UnsupportedOperationException("SEND is not specified for SOAP");
+  }
+
   private SOAPMessage createMessage(
       String uniqueId, String action, Document payload, boolean isResponse) {
     SOAPMessage message = null;

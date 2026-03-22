@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PromiseRepository implements IPromiseRepository {
 
-  private Map<String, CompletableFuture<Confirmation>> promises;
+  private final Map<String, CompletableFuture<Confirmation>> promises;
 
   public PromiseRepository() {
     this.promises = new ConcurrentHashMap<>();
@@ -47,7 +47,7 @@ public class PromiseRepository implements IPromiseRepository {
    * @return call back {@link CompletableFuture}
    */
   public CompletableFuture<Confirmation> createPromise(String uniqueId) {
-    CompletableFuture<Confirmation> promise = new CompletableFuture<>();
+    CompletableFuture<Confirmation> promise = new Promise<>();
     promises.put(uniqueId, promise);
     return promise;
   }

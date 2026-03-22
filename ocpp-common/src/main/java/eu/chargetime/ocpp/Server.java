@@ -33,7 +33,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,12 +91,24 @@ public class Server {
             session.accept(
                 new SessionEvents() {
                   @Override
-                  public void handleConfirmation(String uniqueId, Confirmation confirmation) {
-
+                  public void handleConfirmation(
+                      String uniqueId, @Nullable Confirmation confirmation) {
                     Optional<CompletableFuture<Confirmation>> promiseOptional =
                         promiseRepository.getPromise(uniqueId);
                     if (promiseOptional.isPresent()) {
                       promiseOptional.get().complete(confirmation);
+                      // join completion to catch and rethrow any exceptions thrown in the last
+                      // added completion action, so that a CALLRESULTERROR may be produced from it.
+                      try {
+                        promiseOptional.get().join();
+                      } catch (CompletionException e) {
+                        Throwable cause = e.getCause() != null ? e.getCause() : e;
+                        if (cause instanceof RuntimeException) {
+                          throw (RuntimeException) cause;
+                        } else {
+                          throw new RuntimeException(cause);
+                        }
+                      }
                     } else {
                       logger.debug("Promise not found for confirmation {}", confirmation);
                     }
@@ -145,6 +159,24 @@ public class Server {
                   }
 
                   @Override
+                  public void handleConfirmationError(
+                      String uniqueId, String errorCode, String errorDescription, Object payload) {
+                    logger.error(
+                        "Received an error which occurred while processing a call result: "
+                            + "uniqueId {}: errorCode: {}, errorDescription: {}",
+                        uniqueId,
+                        errorCode,
+                        errorDescription);
+                    Optional<UUID> sessionIdOptional = getSessionID(session);
+                    if (sessionIdOptional.isPresent()) {
+                      serverEvents.confirmationError(
+                          sessionIdOptional.get(), uniqueId, errorCode, errorDescription, payload);
+                    } else {
+                      logger.warn("Active session not found for {}", session.getSessionId());
+                    }
+                  }
+
+                  @Override
                   public void handleConnectionClosed() {
                     Optional<UUID> sessionIdOptional = getSessionID(session);
                     if (sessionIdOptional.isPresent()) {
@@ -190,9 +222,10 @@ public class Server {
    *
    * @param sessionIndex Session index of the client.
    * @param request Request for the client.
-   * @return Callback handler for when the client responds.
+   * @return call back object, will be fulfilled with confirmation when received or {@code null} if
+   *     the request has no confirmation, or exceptionally if a local or remote error occurred.
    * @throws UnsupportedFeatureException Thrown if the feature isn't among the list of supported
-   *     featured.
+   *     features.
    * @throws OccurenceConstraintException Thrown if the request isn't valid.
    */
   public CompletableFuture<Confirmation> send(UUID sessionIndex, Request request)
@@ -226,7 +259,11 @@ public class Server {
           promiseRepository.removePromise(requestUuid);
         });
 
-    session.sendRequest(featureOptional.get().getAction(), request, requestUuid);
+    if (featureOptional.get().getConfirmationType() != null) {
+      session.sendRequest(featureOptional.get().getAction(), request, requestUuid);
+    } else {
+      session.sendMessage(featureOptional.get().getAction(), request, requestUuid);
+    }
     return promise;
   }
 

@@ -33,4 +33,8 @@ public interface FakeCSMS {
   int getPort();
 
   void stopServer();
+
+  void sendGetVariablesRequest();
+
+  DummyHandlers getDummyHandlers();
 }

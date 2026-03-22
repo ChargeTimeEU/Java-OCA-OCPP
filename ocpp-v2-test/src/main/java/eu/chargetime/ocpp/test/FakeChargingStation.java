@@ -39,4 +39,14 @@ public interface FakeChargingStation {
   ProtocolVersion getProtocolVersion();
 
   void sendBootNotification(String vendor, String model);
+
+  String getReceivedRequestUniqueId();
+
+  String getReceivedConfirmationError();
+
+  String getReceivedConfirmationErrorDescription();
+
+  String getReceivedConfirmationErrorUniqueId();
+
+  void setRiggedToSendInvalidResponse(boolean riggedToSendInvalidResponse);
 }

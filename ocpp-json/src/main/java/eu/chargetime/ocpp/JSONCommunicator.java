@@ -3,9 +3,11 @@ package eu.chargetime.ocpp;
 import com.google.gson.*;
 import eu.chargetime.ocpp.model.CallErrorMessage;
 import eu.chargetime.ocpp.model.CallMessage;
+import eu.chargetime.ocpp.model.CallResultErrorMessage;
 import eu.chargetime.ocpp.model.CallResultMessage;
 import eu.chargetime.ocpp.model.Exclude;
 import eu.chargetime.ocpp.model.Message;
+import eu.chargetime.ocpp.model.SendMessage;
 import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -71,15 +73,21 @@ public class JSONCommunicator extends Communicator {
   private static final int INDEX_CALLERROR_DESCRIPTION = 3;
   private static final int INDEX_CALLERROR_PAYLOAD = 4;
 
+  private static final int TYPENUMBER_CALLRESULTERROR = 5;
+  private static final int INDEX_CALLRESULTERROR_ERRORCODE = 2;
+  private static final int INDEX_CALLRESULTERROR_DESCRIPTION = 3;
+  private static final int INDEX_CALLRESULTERROR_PAYLOAD = 4;
+
+  private static final int TYPENUMBER_SEND = 6;
+  private static final int INDEX_SEND_ACTION = 2;
+  private static final int INDEX_SEND_PAYLOAD = 3;
+
   private static final int INDEX_UNIQUEID = 1;
   private static final String CALL_FORMAT = "[2,\"%s\",\"%s\",%s]";
   private static final String CALLRESULT_FORMAT = "[3,\"%s\",%s]";
   private static final String CALLERROR_FORMAT = "[4,\"%s\",\"%s\",\"%s\",%s]";
-  private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-  private static final String DATE_FORMAT_WITH_MS = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-  private static final int DATE_FORMAT_WITH_MS_LENGTH = 24;
-
-  private boolean hasLongDateFormat = false;
+  private static final String CALLRESULTERROR_FORMAT = "[5,\"%s\",\"%s\",\"%s\",%s]";
+  private static final String SEND_FORMAT = "[6,\"%s\",\"%s\",%s]";
 
   /**
    * Handle required injections.
@@ -117,7 +125,7 @@ public class JSONCommunicator extends Communicator {
     }
   }
 
-  private static Gson gson;
+  private static final Gson gson;
 
   static {
     GsonBuilder builder = new GsonBuilder();
@@ -139,7 +147,7 @@ public class JSONCommunicator extends Communicator {
   }
 
   @Override
-  public <T> T unpackPayload(Object payload, Class<T> type) throws Exception {
+  public <T> T unpackPayload(Object payload, Class<T> type) {
     return gson.fromJson(payload.toString(), type);
   }
 
@@ -156,7 +164,7 @@ public class JSONCommunicator extends Communicator {
   @Override
   protected Object makeCall(String uniqueId, String action, Object payload) {
     String message = String.format(CALL_FORMAT, uniqueId, action, payload);
-    logger.trace("Send a message: {}", message);
+    logger.trace("Send a request: {}", message);
     return message;
   }
 
@@ -167,35 +175,62 @@ public class JSONCommunicator extends Communicator {
   }
 
   @Override
+  protected Object makeCallResultError(
+      String uniqueId, String action, String errorCode, String errorDescription) {
+    return String.format(CALLRESULTERROR_FORMAT, uniqueId, errorCode, errorDescription, "{}");
+  }
+
+  @Override
+  protected Object makeSend(String uniqueId, String action, Object payload) {
+    String message = String.format(SEND_FORMAT, uniqueId, action, payload);
+    logger.trace("Send a message: {}", message);
+    return message;
+  }
+
+  @Override
   protected Message parse(Object json) {
     Message message;
-    JsonParser parser = new JsonParser();
-    JsonArray array = parser.parse(json.toString()).getAsJsonArray();
+    JsonArray array = JsonParser.parseString(json.toString()).getAsJsonArray();
     String messageId = "-1";
 
     try {
       messageId = array.get(INDEX_UNIQUEID).getAsString();
-      if (array.get(INDEX_MESSAGEID).getAsInt() == TYPENUMBER_CALL) {
-        message = new CallMessage();
-        message.setAction(array.get(INDEX_CALL_ACTION).getAsString());
-        message.setPayload(array.get(INDEX_CALL_PAYLOAD).toString());
-      } else if (array.get(INDEX_MESSAGEID).getAsInt() == TYPENUMBER_CALLRESULT) {
-        message = new CallResultMessage();
-        message.setPayload(array.get(INDEX_CALLRESULT_PAYLOAD).toString());
-      } else if (array.get(INDEX_MESSAGEID).getAsInt() == TYPENUMBER_CALLERROR) {
-        message = new CallErrorMessage();
-        ((CallErrorMessage) message)
-            .setErrorCode(array.get(INDEX_CALLERROR_ERRORCODE).getAsString());
-        ((CallErrorMessage) message)
-            .setErrorDescription(array.get(INDEX_CALLERROR_DESCRIPTION).getAsString());
-        ((CallErrorMessage) message).setRawPayload(array.get(INDEX_CALLERROR_PAYLOAD).toString());
-      } else {
-        logger.error("Unknown message type of message: {}", json.toString());
-        sendCallError(messageId, null, "MessageTypeNotSupported", null);
-        return null;
+      switch (array.get(INDEX_MESSAGEID).getAsInt()) {
+        case TYPENUMBER_CALL:
+          message = new CallMessage();
+          message.setAction(array.get(INDEX_CALL_ACTION).getAsString());
+          message.setPayload(array.get(INDEX_CALL_PAYLOAD).toString());
+          break;
+        case TYPENUMBER_CALLRESULT:
+          message = new CallResultMessage();
+          message.setPayload(array.get(INDEX_CALLRESULT_PAYLOAD).toString());
+          break;
+        case TYPENUMBER_CALLERROR:
+          CallErrorMessage error = new CallErrorMessage();
+          error.setErrorCode(array.get(INDEX_CALLERROR_ERRORCODE).getAsString());
+          error.setErrorDescription(array.get(INDEX_CALLERROR_DESCRIPTION).getAsString());
+          error.setRawPayload(array.get(INDEX_CALLERROR_PAYLOAD).toString());
+          message = error;
+          break;
+        case TYPENUMBER_CALLRESULTERROR:
+          CallResultErrorMessage resultError = new CallResultErrorMessage();
+          resultError.setErrorCode(array.get(INDEX_CALLRESULTERROR_ERRORCODE).getAsString());
+          resultError.setErrorDescription(
+              array.get(INDEX_CALLRESULTERROR_DESCRIPTION).getAsString());
+          resultError.setRawPayload(array.get(INDEX_CALLRESULTERROR_PAYLOAD).toString());
+          message = resultError;
+          break;
+        case TYPENUMBER_SEND:
+          message = new SendMessage();
+          message.setAction(array.get(INDEX_SEND_ACTION).getAsString());
+          message.setPayload(array.get(INDEX_SEND_PAYLOAD).toString());
+          break;
+        default:
+          logger.error("Unknown message type of message: {}", json);
+          return null;
       }
     } catch (Exception e) {
-      logger.error("Exception while parsing message: {}", json.toString());
+      logger.error("Exception while parsing message: {}", json);
       sendCallError(messageId, null, "RpcFrameworkError", e.getMessage());
       return null;
     }

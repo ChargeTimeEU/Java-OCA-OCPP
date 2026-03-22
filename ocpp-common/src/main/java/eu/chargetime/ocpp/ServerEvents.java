@@ -35,4 +35,11 @@ public interface ServerEvents {
   void newSession(UUID sessionIndex, SessionInformation information);
 
   void lostSession(UUID sessionIndex);
+
+  default void confirmationError(
+      UUID sessionIndex,
+      String uniqueId,
+      String errorCode,
+      String errorDescription,
+      Object payload) {};
 }

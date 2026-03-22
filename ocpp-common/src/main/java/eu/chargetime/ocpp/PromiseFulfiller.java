@@ -28,8 +28,11 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import java.util.concurrent.CompletableFuture;
+import javax.annotation.Nullable;
 
 public interface PromiseFulfiller {
   void fulfill(
-      CompletableFuture<Confirmation> promise, SessionEvents eventHandler, Request request);
+      @Nullable CompletableFuture<Confirmation> promise,
+      SessionEvents eventHandler,
+      Request request);
 }

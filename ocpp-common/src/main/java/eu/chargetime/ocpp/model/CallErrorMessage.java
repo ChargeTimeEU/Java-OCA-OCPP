@@ -25,6 +25,8 @@ package eu.chargetime.ocpp.model;
    SOFTWARE.
 */
 
+import eu.chargetime.ocpp.utilities.MoreObjects;
+
 public class CallErrorMessage extends Message {
   private String errorCode;
   private String errorDescription;
@@ -52,5 +54,15 @@ public class CallErrorMessage extends Message {
 
   public void setRawPayload(String rawPayload) {
     this.rawPayload = rawPayload;
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("id", getId())
+        .add("errorCode", errorCode)
+        .add("errorDescription", errorDescription)
+        .add("rawPayload", rawPayload)
+        .toString();
   }
 }

@@ -30,6 +30,7 @@ import eu.chargetime.ocpp.feature.function.Function;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import java.util.UUID;
+import javax.annotation.Nullable;
 
 public abstract class FunctionFeature implements Feature {
 
@@ -49,8 +50,9 @@ public abstract class FunctionFeature implements Feature {
    *
    * @param sessionIndex source of the request.
    * @param request the {@link Request} to be handled.
-   * @return the {@link Confirmation} to be send back.
+   * @return the {@link Confirmation} to be sent back, or {@code null} if none to be sent back.
    */
+  @Nullable
   public Confirmation handleRequest(UUID sessionIndex, Request request) {
     return function.handleRequest(sessionIndex, request);
   }

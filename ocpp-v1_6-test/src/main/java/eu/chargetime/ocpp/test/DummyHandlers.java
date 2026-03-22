@@ -28,6 +28,7 @@ package eu.chargetime.ocpp.test;
 */
 
 import eu.chargetime.ocpp.AuthenticationException;
+import eu.chargetime.ocpp.ProtocolVersion;
 import eu.chargetime.ocpp.ServerEvents;
 import eu.chargetime.ocpp.feature.profile.ServerCoreEventHandler;
 import eu.chargetime.ocpp.feature.profile.ServerFirmwareManagementEventHandler;
@@ -50,12 +51,18 @@ import java.util.function.BiConsumer;
 public class DummyHandlers {
 
   private boolean riggedToFail;
+  private boolean riggedToSendInvalidResponse;
 
   private Request receivedRequest;
   private Confirmation receivedConfirmation;
 
+  private String receivedConfirmationError;
+  private String receivedConfirmationErrorDescription;
+  private String receivedConfirmationErrorUniqueId;
+
   private String currentIdentifier;
   private UUID currentSessionIndex;
+  private ProtocolVersion currentProtocolVersion;
 
   public ServerCoreEventHandler createServerCoreEventHandler() {
     return new ServerCoreEventHandler() {
@@ -217,21 +224,45 @@ public class DummyHandlers {
       public void newSession(UUID sessionIndex, SessionInformation information) {
         currentSessionIndex = sessionIndex;
         currentIdentifier = information.getIdentifier();
+        currentProtocolVersion = information.getProtocolVersion();
       }
 
       @Override
       public void lostSession(UUID identity) {
         currentSessionIndex = null;
         currentIdentifier = null;
+        currentProtocolVersion = null;
         // clear
         receivedConfirmation = null;
         receivedRequest = null;
+        receivedConfirmationError = null;
+        receivedConfirmationErrorDescription = null;
+        receivedConfirmationErrorUniqueId = null;
+      }
+
+      @Override
+      public void confirmationError(
+          UUID sessionIndex,
+          String uniqueId,
+          String errorCode,
+          String errorDescription,
+          Object payload) {
+        receivedConfirmationError = errorCode;
+        receivedConfirmationErrorDescription = errorDescription;
+        receivedConfirmationErrorUniqueId = uniqueId;
       }
     };
   }
 
   public BiConsumer<Confirmation, Throwable> generateWhenCompleteHandler() {
     return (confirmation, throwable) -> receivedConfirmation = confirmation;
+  }
+
+  void setReceivedRequest(Request receivedRequest) {
+    this.receivedRequest = receivedRequest;
+    receivedConfirmationError = null;
+    receivedConfirmationErrorDescription = null;
+    receivedConfirmationErrorUniqueId = null;
   }
 
   <T extends Confirmation> T failurePoint(T confirmation) {
@@ -262,6 +293,18 @@ public class DummyHandlers {
     return wasLatestConfirmation(clazz) ? (T) receivedConfirmation : null;
   }
 
+  public String getReceivedConfirmationError() {
+    return receivedConfirmationError;
+  }
+
+  public String getReceivedConfirmationErrorDescription() {
+    return receivedConfirmationErrorDescription;
+  }
+
+  public String getReceivedConfirmationErrorUniqueId() {
+    return receivedConfirmationErrorUniqueId;
+  }
+
   public void setRiggedToFail(boolean riggedToFail) {
     this.riggedToFail = riggedToFail;
   }
@@ -270,11 +313,23 @@ public class DummyHandlers {
     return riggedToFail;
   }
 
+  public void setRiggedToSendInvalidResponse(boolean riggedToSendInvalidResponse) {
+    this.riggedToSendInvalidResponse = riggedToSendInvalidResponse;
+  }
+
+  public boolean isRiggedToSendInvalidResponse() {
+    return riggedToSendInvalidResponse;
+  }
+
   public String getCurrentIdentifier() {
     return currentIdentifier;
   }
 
   public UUID getCurrentSessionIndex() {
     return currentSessionIndex;
+  }
+
+  public ProtocolVersion getCurrentProtocolVersion() {
+    return currentProtocolVersion;
   }
 }

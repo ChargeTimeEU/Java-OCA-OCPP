@@ -87,6 +87,7 @@ public class ServerTest {
     when(promiseRepository.createPromise(any()))
         .then(invocation -> new CompletableFuture<Confirmation>());
     when(featureRepository.findFeature(any())).thenReturn(Optional.of(feature));
+    when(feature.getConfirmationType()).thenAnswer(invocation -> Confirmation.class);
     when(session.getFeatureRepository()).thenReturn(featureRepository);
     when(session.storeRequest(any())).thenAnswer(invocation -> UUID.randomUUID().toString());
     server = new Server(listener, promiseRepository);

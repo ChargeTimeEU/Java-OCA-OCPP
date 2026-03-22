@@ -31,4 +31,7 @@ public interface ClientEvents {
   void connectionOpened();
 
   void connectionClosed();
+
+  default void confirmationError(
+      String uniqueId, String errorCode, String errorDescription, Object payload) {};
 }

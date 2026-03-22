@@ -41,9 +41,9 @@ import org.slf4j.LoggerFactory;
 public abstract class Communicator {
   private static final Logger logger = LoggerFactory.getLogger(Communicator.class);
 
+  private final ArrayDeque<Object> transactionQueue;
   private RetryRunner retryRunner;
   protected Radio radio;
-  private ArrayDeque<Object> transactionQueue;
   private CommunicatorEvents events;
   private boolean failedFlag;
 
@@ -96,6 +96,27 @@ public abstract class Communicator {
    */
   protected abstract Object makeCallError(
       String uniqueId, String action, String errorCode, String errorDescription);
+
+  /**
+   * Create a call result error envelope to transmit.
+   *
+   * @param uniqueId the id the receiver expects.
+   * @param errorCode an OCPP error code.
+   * @param errorDescription an associated error description.
+   * @return a fully packed message ready to send.
+   */
+  protected abstract Object makeCallResultError(
+      String uniqueId, String action, String errorCode, String errorDescription);
+
+  /**
+   * Create a send envelope to transmit to the server.
+   *
+   * @param uniqueId the id of the message.
+   * @param action action name of the feature.
+   * @param payload packed payload.
+   * @return a fully packed message ready to send.
+   */
+  protected abstract Object makeSend(String uniqueId, String action, Object payload);
 
   /**
    * Identify an incoming call and parse it into one of the following: {@link CallMessage} a
@@ -177,7 +198,7 @@ public abstract class Communicator {
         }
       } else if (request.transactionRelated()
           && transactionQueue != null
-          && transactionQueue.size() > 0) {
+          && !transactionQueue.isEmpty()) {
         transactionQueue.add(call);
         processTransactionQueue();
       } else {
@@ -216,7 +237,7 @@ public abstract class Communicator {
           events.onError(
               uniqueId,
               "ConfirmationCompletedHandlerFailed",
-              "The confirmation completed callback handler failed with exception " + e.toString(),
+              "The confirmation completed callback handler failed with exception " + e,
               confirmation);
         }
       }
@@ -240,7 +261,7 @@ public abstract class Communicator {
   public void sendCallError(
       String uniqueId, String action, String errorCode, String errorDescription) {
     logger.error(
-        "An error occurred. Sending this information: uniqueId {}: action: {}, errorCore: {}, errorDescription: {}",
+        "An error occurred. Sending this information: uniqueId {}: action: {}, errorCode: {}, errorDescription: {}",
         uniqueId,
         action,
         errorCode,
@@ -254,6 +275,65 @@ public abstract class Communicator {
           "Not connected",
           "The error couldn't be send due to the lack of connection",
           errorCode);
+    }
+  }
+
+  /**
+   * Send a call result error. If offline, the message is thrown away.
+   *
+   * @param uniqueId the id the receiver expects a response to.
+   * @param errorCode an OCPP error Code
+   * @param errorDescription a associated error description.
+   */
+  public void sendCallResultError(
+      String uniqueId, String action, String errorCode, String errorDescription) {
+    logger.error(
+        "An error occurred while processing a call result. Sending this information: "
+            + "uniqueId {}: action: {}, errorCode: {}, errorDescription: {}",
+        uniqueId,
+        action,
+        errorCode,
+        errorDescription);
+    try {
+      radio.send(makeCallResultError(uniqueId, action, errorCode, errorDescription));
+    } catch (NotConnectedException ex) {
+      logger.warn("sendCallResultError() failed", ex);
+      events.onError(
+          uniqueId,
+          "Not connected",
+          "The call result error couldn't be sent due to the lack of connection",
+          errorCode);
+    }
+  }
+
+  /**
+   * Send a {@link Request} which has no confirmation.
+   *
+   * @param uniqueId the id of the {@link Request}.
+   * @param action action name of the {@link eu.chargetime.ocpp.feature.Feature}.
+   * @param request the outgoing {@link Request}
+   */
+  public synchronized void send(String uniqueId, String action, Request request) {
+    Object call = makeSend(uniqueId, action, packPayload(request));
+
+    try {
+      if (radio.isClosed()) {
+        logger.warn("Not connected: can't send request: {}", request);
+        events.onError(
+            uniqueId,
+            "Not connected",
+            "The request can't be sent due to the lack of connection",
+            request);
+      } else {
+        radio.send(call);
+      }
+    } catch (NotConnectedException ex) {
+      logger.warn("sendCall() failed: not connected");
+      events.onError(
+          uniqueId,
+          "Not connected",
+          "The request can't be sent due to the lack of connection",
+          request);
     }
   }
 
@@ -289,6 +369,10 @@ public abstract class Communicator {
       Message message = parse(input);
       if (message instanceof CallResultMessage) {
         events.onCallResult(message.getId(), message.getAction(), message.getPayload());
+      } else if (message instanceof CallResultErrorMessage) {
+        CallResultErrorMessage call = (CallResultErrorMessage) message;
+        events.onCallResultError(
+            call.getId(), call.getErrorCode(), call.getErrorDescription(), call.getRawPayload());
       } else if (message instanceof CallErrorMessage) {
         failedFlag = true;
         CallErrorMessage call = (CallErrorMessage) message;
@@ -297,6 +381,9 @@ public abstract class Communicator {
       } else if (message instanceof CallMessage) {
         CallMessage call = (CallMessage) message;
         events.onCall(call.getId(), call.getAction(), call.getPayload());
+      } else if (message instanceof SendMessage) {
+        SendMessage send = (SendMessage) message;
+        events.onSend(send.getId(), send.getAction(), send.getPayload());
       }
     }
 
@@ -318,7 +405,7 @@ public abstract class Communicator {
   }
 
   /**
-   * Check if a error message was received.
+   * Check if an error message was received.
    *
    * @return whether a fail flag has been raised.
    */

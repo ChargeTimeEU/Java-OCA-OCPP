@@ -28,7 +28,9 @@ SOFTWARE.
 
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+import java.lang.reflect.Type;
 import java.util.UUID;
+import javax.annotation.Nullable;
 
 /**
  * Abstract class. Feature ties {@link Request} and {@link Confirmation} types together with an
@@ -40,22 +42,23 @@ public interface Feature {
    *
    * @param sessionIndex source of the request.
    * @param request the {@link Request} to be handled.
-   * @return the {@link Confirmation} to be send back.
+   * @return the {@link Confirmation} to be sent back.
    */
   Confirmation handleRequest(UUID sessionIndex, Request request);
 
   /**
-   * Get the {@link Request} {@link java.lang.reflect.Type} for the feature.
+   * Get the {@link Request} {@link Type} for the feature.
    *
-   * @return the {@link Request} {@link java.lang.reflect.Type}
+   * @return the {@link Request} {@link Type}
    */
   Class<? extends Request> getRequestType();
 
   /**
-   * Get the {@link Confirmation} {@link java.lang.reflect.Type} for the feature.
+   * Get the {@link Confirmation} {@link Type} for the feature.
    *
-   * @return the {@link Confirmation} {@link java.lang.reflect.Type}.
+   * @return the {@link Confirmation} {@link Type} or {@code null} if the feature has none.
    */
+  @Nullable
   Class<? extends Confirmation> getConfirmationType();
 
   /**
