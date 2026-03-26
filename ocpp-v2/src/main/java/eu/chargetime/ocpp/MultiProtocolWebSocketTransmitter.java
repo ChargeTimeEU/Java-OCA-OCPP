@@ -35,9 +35,12 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import javax.net.SocketFactory;
+import org.java_websocket.WebSocket;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
+import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
+import org.java_websocket.extensions.IExtension;
 import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -262,6 +265,20 @@ public class MultiProtocolWebSocketTransmitter implements Transmitter {
     } catch (WebsocketNotConnectedException ex) {
       throw new NotConnectedException();
     }
+  }
+
+  public IExtension getExtension() {
+    WebSocketClient webSocketClient = client;
+    if (webSocketClient != null) {
+      WebSocket webSocket = webSocketClient.getConnection();
+      if (webSocket != null) {
+        Draft draft = webSocket.getDraft();
+        if (draft instanceof Draft_6455) {
+          return ((Draft_6455) draft).getExtension();
+        }
+      }
+    }
+    return null;
   }
 
   public Exception getLastError() {
