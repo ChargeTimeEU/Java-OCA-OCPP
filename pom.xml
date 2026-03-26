@@ -62,7 +62,7 @@
                         <arg>-Xlint:all</arg>
                     </compilerArgs>
                 </configuration>
-                <version>3.14.1</version>
+                <version>3.15.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
