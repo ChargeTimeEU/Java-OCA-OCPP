@@ -89,11 +89,14 @@ public class MultiProtocolJSONClient implements IMultiProtocolClientAPI {
       List<ProtocolVersion> protocolVersions, String identity, JSONConfiguration configuration) {
     this.identity = identity;
     featureRepository = new MultiProtocolFeatureRepository(protocolVersions);
+    int maxFrameSize = configuration.getParameter(JSONConfiguration.WEBSOCKET_MAX_FRAME_SIZE, 0);
     List<IExtension> inputExtensions = new ArrayList<>();
     if (configuration.getParameter(JSONConfiguration.WEBSOCKET_COMPRESSION_SUPPORT, false)) {
       PerMessageDeflateExtension perMessageDeflateExtension =
-          new PerMessageDeflateExtension(Deflater.BEST_COMPRESSION);
-      perMessageDeflateExtension.setThreshold(0);
+          maxFrameSize > 0
+              ? new PerMessageDeflateExtension(Deflater.BEST_COMPRESSION, maxFrameSize)
+              : new PerMessageDeflateExtension(Deflater.BEST_COMPRESSION);
+      perMessageDeflateExtension.setThreshold(64);
       perMessageDeflateExtension.setServerNoContextTakeover(false);
       perMessageDeflateExtension.setClientNoContextTakeover(false);
       inputExtensions.add(perMessageDeflateExtension);
@@ -102,7 +105,10 @@ public class MultiProtocolJSONClient implements IMultiProtocolClientAPI {
     for (ProtocolVersion protocolVersion : protocolVersions) {
       inputProtocols.add(new Protocol(protocolVersion.getSubProtocolName()));
     }
-    Draft draft = new Draft_6455(inputExtensions, inputProtocols);
+    Draft draft =
+        maxFrameSize > 0
+            ? new Draft_6455(inputExtensions, inputProtocols, maxFrameSize)
+            : new Draft_6455(inputExtensions, inputProtocols);
     transmitter = new MultiProtocolWebSocketTransmitter(featureRepository, configuration, draft);
     JSONCommunicator communicator = new JSONCommunicator(transmitter, false);
     ISessionFactory sessionFactory = new MultiProtocolSessionFactory(featureRepository);
@@ -214,6 +220,14 @@ public class MultiProtocolJSONClient implements IMultiProtocolClientAPI {
   @Override
   public void disconnect() {
     client.disconnect();
+  }
+
+  public double getCompressionRatio() {
+    IExtension extension = transmitter.getExtension();
+    if (extension instanceof PerMessageDeflateExtension) {
+      return ((PerMessageDeflateExtension) extension).getCompressionRatio();
+    }
+    return 1;
   }
 
   public Exception getLastError() {

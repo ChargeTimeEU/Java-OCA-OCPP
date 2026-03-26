@@ -67,12 +67,14 @@ public class MultiProtocolJSONServer implements IMultiProtocolServerAPI {
       List<ProtocolVersion> protocolVersions, JSONConfiguration configuration) {
     featureRepository = new MultiProtocolFeatureRepository(protocolVersions);
     MultiProtocolSessionFactory sessionFactory = new MultiProtocolSessionFactory(featureRepository);
-
+    int maxFrameSize = configuration.getParameter(JSONConfiguration.WEBSOCKET_MAX_FRAME_SIZE, 0);
     List<IExtension> extensions = new ArrayList<>();
     if (configuration.getParameter(JSONConfiguration.WEBSOCKET_COMPRESSION_SUPPORT, true)) {
       PerMessageDeflateExtension perMessageDeflateExtension =
-          new PerMessageDeflateExtension(Deflater.BEST_COMPRESSION);
-      perMessageDeflateExtension.setThreshold(0);
+          maxFrameSize > 0
+              ? new PerMessageDeflateExtension(Deflater.BEST_COMPRESSION, maxFrameSize)
+              : new PerMessageDeflateExtension(Deflater.BEST_COMPRESSION);
+      perMessageDeflateExtension.setThreshold(64);
       perMessageDeflateExtension.setServerNoContextTakeover(false);
       perMessageDeflateExtension.setClientNoContextTakeover(false);
       extensions.add(perMessageDeflateExtension);
@@ -81,8 +83,10 @@ public class MultiProtocolJSONServer implements IMultiProtocolServerAPI {
     for (ProtocolVersion protocolVersion : protocolVersions) {
       protocols.add(new Protocol(protocolVersion.getSubProtocolName()));
     }
-    Draft draft = new Draft_6455(extensions, protocols);
-
+    Draft draft =
+        maxFrameSize > 0
+            ? new Draft_6455(extensions, protocols, maxFrameSize)
+            : new Draft_6455(extensions, protocols);
     if (configuration.getParameter(JSONConfiguration.HTTP_HEALTH_CHECK_ENABLED, true)) {
       logger.info("JSONServer with HttpHealthCheckDraft");
       listener =
