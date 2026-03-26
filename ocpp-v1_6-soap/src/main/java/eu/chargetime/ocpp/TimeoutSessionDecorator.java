@@ -38,7 +38,12 @@ public class TimeoutSessionDecorator implements ISession {
   private TimeoutTimer timeoutTimer;
   private final ISession session;
 
-  /** Handles required injections. */
+  /**
+   * Handles required injections.
+   *
+   * @param timeoutTimer the {@link TimeoutTimer} to use
+   * @param session the {@link ISession} to decorate
+   */
   public TimeoutSessionDecorator(TimeoutTimer timeoutTimer, ISession session) {
     this.timeoutTimer = timeoutTimer;
     this.session = session;

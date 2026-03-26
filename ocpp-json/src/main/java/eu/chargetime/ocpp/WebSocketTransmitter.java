@@ -29,12 +29,15 @@ package eu.chargetime.ocpp;
 import eu.chargetime.ocpp.wss.WssSocketBuilder;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.net.InetAddress;
 import java.net.Proxy;
+import java.net.Socket;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import javax.net.SocketFactory;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
@@ -125,11 +128,32 @@ public class WebSocketTransmitter implements Transmitter {
             "wssSocketBuilder must be set to support " + WSS_SCHEME + " scheme");
       }
 
-      try {
-        client.setSocket(wssSocketBuilder.uri(resource).build());
-      } catch (IOException ex) {
-        logger.error("SSL socket creation failed", ex);
-      }
+      SocketFactory socketFactory =
+          new SocketFactory() {
+            public Socket createSocket() throws IOException {
+              return wssSocketBuilder.uri(resource).build();
+            }
+
+            public Socket createSocket(String host, int port) {
+              throw new UnsupportedOperationException();
+            }
+
+            public Socket createSocket(
+                String host, int port, InetAddress clientAddress, int clientPort) {
+              throw new UnsupportedOperationException();
+            }
+
+            public Socket createSocket(InetAddress address, int port) {
+              throw new UnsupportedOperationException();
+            }
+
+            public Socket createSocket(
+                InetAddress address, int port, InetAddress clientAddress, int clientPort) {
+              throw new UnsupportedOperationException();
+            }
+          };
+
+      client.setSocketFactory(socketFactory);
     }
 
     configure();

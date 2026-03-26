@@ -97,8 +97,8 @@ public class ServerCoreProfile implements Profile {
   /**
    * Create a {@link ChangeAvailabilityRequest} with required values.
    *
-   * @param connectorId integer, must be a non-negative number. * @param type the {@link
-   *     AvailabilityType} of the connector.
+   * @param type the {@link AvailabilityType} of the connector.
+   * @param connectorId integer, must be a non-negative number.
    * @return an instance of {@link ChangeAvailabilityRequest}.
    * @see ChangeAvailabilityRequest
    * @see ChangeAvailabilityFeature

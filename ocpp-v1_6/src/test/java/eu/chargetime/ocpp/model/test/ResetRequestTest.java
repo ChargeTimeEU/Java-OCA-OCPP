@@ -2,7 +2,7 @@ package eu.chargetime.ocpp.model.test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import eu.chargetime.ocpp.model.core.ResetRequest;
 import eu.chargetime.ocpp.model.core.ResetType;
@@ -34,6 +34,7 @@ import org.junit.Test;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@SuppressWarnings("deprecation")
 public class ResetRequestTest {
   ResetRequest request;
 

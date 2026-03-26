@@ -2,7 +2,7 @@ package eu.chargetime.ocpp.model.localauthlist.test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.localauthlist.GetLocalListVersionConfirmation;
@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("deprecation")
 public class GetLocalListVersionConfirmationTest {
 
   @Rule public ExpectedException thrownException = ExpectedException.none();

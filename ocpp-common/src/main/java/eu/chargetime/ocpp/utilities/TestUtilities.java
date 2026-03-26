@@ -26,7 +26,7 @@ package eu.chargetime.ocpp.utilities;
  * SOFTWARE.
  */
 
-/** Utilities for tests. Used to quickly create usefull objects. */
+/** Utilities for tests. Used to quickly create useful objects. */
 public final class TestUtilities {
 
   /**
@@ -57,6 +57,7 @@ public final class TestUtilities {
    * @param <T> The type of the elements.
    * @return An array of the given elements.
    */
+  @SuppressWarnings({"varargs", "unchecked"})
   public static <T> T[] aList(T... objects) {
     return objects;
   }
@@ -73,6 +74,6 @@ public final class TestUtilities {
 
     for (Object current : array) output.append(String.format("%s%s", delimiter, current));
 
-    return output.toString().substring(1);
+    return output.substring(1);
   }
 }

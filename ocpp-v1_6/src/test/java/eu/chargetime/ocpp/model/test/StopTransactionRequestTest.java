@@ -43,6 +43,7 @@ import org.junit.rules.ExpectedException;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@SuppressWarnings("deprecation")
 public class StopTransactionRequestTest {
 
   @Rule public ExpectedException thrownException = ExpectedException.none();
@@ -210,6 +211,6 @@ public class StopTransactionRequestTest {
     boolean isTransactionRelated = request.transactionRelated();
 
     // Then
-    Assert.assertThat(isTransactionRelated, is(true));
+    assertThat(isTransactionRelated, is(true));
   }
 }

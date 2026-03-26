@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -40,6 +40,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("deprecation")
 public class AuthorizeConfirmationTest {
   AuthorizeConfirmation confirmation;
 

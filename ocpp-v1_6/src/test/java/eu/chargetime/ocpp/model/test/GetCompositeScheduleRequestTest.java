@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.model.test;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.smartcharging.ChargingRateUnitType;
@@ -40,6 +40,7 @@ import org.mockito.junit.MockitoJUnitRunner;
  * SOFTWARE.
  */
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("deprecation")
 public class GetCompositeScheduleRequestTest {
 
   @Rule public ExpectedException thrownException = ExpectedException.none();

@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.wss.test;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 
 import eu.chargetime.ocpp.wss.CustomSSLWebSocketServerFactory;
@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.nio.channels.ByteChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
-import java.security.KeyManagementException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
@@ -54,7 +53,7 @@ public class CustomSSLWebSocketServerFactoryTest {
 
   static class TestSSLContextSpi extends SSLContextSpi {
 
-    private SSLEngine sslEngine;
+    private final SSLEngine sslEngine;
 
     public TestSSLContextSpi(SSLEngine sslEngine) {
       this.sslEngine = sslEngine;
@@ -62,8 +61,7 @@ public class CustomSSLWebSocketServerFactoryTest {
 
     @Override
     protected void engineInit(
-        KeyManager[] keyManagers, TrustManager[] trustManagers, SecureRandom secureRandom)
-        throws KeyManagementException {
+        KeyManager[] keyManagers, TrustManager[] trustManagers, SecureRandom secureRandom) {
       throw new UnsupportedOperationException();
     }
 

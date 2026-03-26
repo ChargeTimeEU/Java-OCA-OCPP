@@ -2,7 +2,7 @@ package eu.chargetime.ocpp.feature.profile.test;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import eu.chargetime.ocpp.feature.ClearChargingProfileFeature;
 import eu.chargetime.ocpp.feature.Feature;
@@ -43,6 +43,7 @@ import org.mockito.junit.MockitoJUnitRunner;
  */
 
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("deprecation")
 public class ServerSmartChargingProfileTest extends ProfileTest {
 
   private ServerSmartChargingProfile smartCharging;

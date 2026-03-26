@@ -52,6 +52,7 @@ import java.time.ZonedDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SuppressWarnings("deprecation")
 public class FakeCentralSystem {
   private static final Logger logger = LoggerFactory.getLogger(FakeCentralSystem.class);
 

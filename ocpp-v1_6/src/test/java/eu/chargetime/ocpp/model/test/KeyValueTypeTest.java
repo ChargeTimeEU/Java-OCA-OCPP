@@ -4,7 +4,7 @@ import static eu.chargetime.ocpp.utilities.TestUtilities.aString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.KeyValueType;
@@ -38,6 +38,7 @@ import org.junit.rules.ExpectedException;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@SuppressWarnings("deprecation")
 public class KeyValueTypeTest {
 
   @Rule public ExpectedException thrownException = ExpectedException.none();

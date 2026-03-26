@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.feature.profile.test;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 
 import eu.chargetime.ocpp.feature.profile.ClientSmartChargingEventHandler;
@@ -44,6 +44,7 @@ import org.mockito.junit.MockitoJUnitRunner;
  */
 
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("deprecation")
 public class ClientSmartChargingProfileTest {
 
   private static final UUID SESSION_NULL = null;

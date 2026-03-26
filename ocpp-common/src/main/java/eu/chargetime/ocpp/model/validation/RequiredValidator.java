@@ -27,11 +27,11 @@ package eu.chargetime.ocpp.model.validation;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 
-public class RequiredValidator extends Validator<Object> {
-  private final String ERROR_MESSAGE = "Field is required and must not be Null.";
+public class RequiredValidator<T> extends Validator<T> {
+  private static final String ERROR_MESSAGE = "Field is required and must not be Null.";
 
   @Override
-  public void validate(Object value) throws PropertyConstraintException {
+  public void validate(T value) throws PropertyConstraintException {
     if (value == null) {
       throw new PropertyConstraintException(ERROR_MESSAGE, null);
     }

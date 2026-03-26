@@ -27,13 +27,14 @@ package eu.chargetime.ocpp.model.reservation.test;
 */
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import eu.chargetime.ocpp.model.reservation.CancelReservationConfirmation;
 import eu.chargetime.ocpp.model.reservation.CancelReservationStatus;
 import org.junit.Before;
 import org.junit.Test;
 
+@SuppressWarnings("deprecation")
 public class CancelReservationConfirmationTest {
 
   private CancelReservationConfirmation request;

@@ -47,6 +47,8 @@ public interface SessionEvents {
    *
    * @param request the {@link Request}.
    * @return a {@link Confirmation} to send as a response or {@code null} if none to send.
+   * @throws UnsupportedFeatureException Thrown if the feature isn't among the list of supported
+   *     features.
    */
   @Nullable
   Confirmation handleRequest(Request request) throws UnsupportedFeatureException;
@@ -57,6 +59,9 @@ public interface SessionEvents {
    * @param uniqueId the unique id used for the {@link Request}.
    * @param confirmation the {@link Confirmation} to the {@link Request}.
    * @return a boolean indicating if pending request was found.
+   * @throws UnsupportedFeatureException Thrown if the feature isn't among the list of supported
+   *     features.
+   * @throws OccurenceConstraintException Thrown if the request isn't valid.
    */
   boolean asyncCompleteRequest(String uniqueId, Confirmation confirmation)
       throws UnsupportedFeatureException, OccurenceConstraintException;

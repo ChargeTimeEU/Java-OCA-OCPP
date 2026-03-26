@@ -1,7 +1,7 @@
 package eu.chargetime.ocpp.test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 
 import eu.chargetime.ocpp.*;
@@ -60,7 +60,7 @@ public class SessionTest {
   @Mock private PromiseFulfiller fulfiller;
 
   @Before
-  public void setup() throws Exception {
+  public void setup() {
     when(featureRepository.findFeature(any())).thenReturn(Optional.of(feature));
     when(feature.getConfirmationType()).thenAnswer(invocation -> Confirmation.class);
     session = new Session(communicator, queue, fulfiller, featureRepository);
@@ -159,7 +159,12 @@ public class SessionTest {
   public void onCall_unhandledCallback_callSendCallError() throws Exception {
     // Given
     String someId = "Some id";
-    doAnswer(invocation -> invocation.getArgument(0, CompletableFuture.class).complete(null))
+    doAnswer(
+            invocation -> {
+              CompletableFuture<Confirmation> future = invocation.getArgument(0);
+              future.complete(null);
+              return null;
+            })
         .when(fulfiller)
         .fulfill(any(), any(), any());
     when(communicator.unpackPayload(any(), any())).thenReturn(new TestRequest());
@@ -186,8 +191,11 @@ public class SessionTest {
         };
 
     doAnswer(
-            invocation ->
-                invocation.getArgument(0, CompletableFuture.class).complete(aConfirmation))
+            invocation -> {
+              CompletableFuture<Confirmation> future = invocation.getArgument(0);
+              future.complete(aConfirmation);
+              return null;
+            })
         .when(fulfiller)
         .fulfill(any(), any(), any());
     when(communicator.unpackPayload(any(), any())).thenReturn(new TestRequest());

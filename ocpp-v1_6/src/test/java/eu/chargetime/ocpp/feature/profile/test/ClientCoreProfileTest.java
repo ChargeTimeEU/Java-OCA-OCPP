@@ -2,7 +2,7 @@ package eu.chargetime.ocpp.feature.profile.test;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 
 import eu.chargetime.ocpp.feature.*;
@@ -48,6 +48,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("deprecation")
 public class ClientCoreProfileTest extends ProfileTest {
   private static final UUID SESSION_NULL = null;
 

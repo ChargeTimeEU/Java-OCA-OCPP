@@ -29,6 +29,8 @@ SOFTWARE.
 
 /** A security issue occurred */
 public class SecurityErrorException extends IllegalStateException {
+  private static final long serialVersionUID = 630599636179474207L;
+
   public SecurityErrorException(String s) {
     super(s);
   }

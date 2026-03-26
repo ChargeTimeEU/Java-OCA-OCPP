@@ -116,6 +116,7 @@ public class ServerSecurityExtProfile implements Profile {
   /**
    * Create a client {@link CertificateSignedRequest} with required values.
    *
+   * @param certificateChain the certificate chain as a PEM encoded {@link String}
    * @return an instance of {@link CertificateSignedRequest}
    * @see CertificateSignedRequest
    * @see CertificateSignedFeature
@@ -127,6 +128,7 @@ public class ServerSecurityExtProfile implements Profile {
   /**
    * Create a client {@link DeleteCertificateRequest} with required values.
    *
+   * @param certificateHashData the {@link CertificateHashDataType}
    * @return an instance of {@link DeleteCertificateRequest}
    * @see DeleteCertificateRequest
    * @see DeleteCertificateFeature
@@ -139,6 +141,7 @@ public class ServerSecurityExtProfile implements Profile {
   /**
    * Create a client {@link ExtendedTriggerMessageFeature}.
    *
+   * @param requestedMessage the {@link MessageTriggerEnumType}
    * @return an instance of {@link ExtendedTriggerMessageRequest}
    * @see ExtendedTriggerMessageRequest
    * @see ExtendedTriggerMessageFeature
@@ -151,6 +154,7 @@ public class ServerSecurityExtProfile implements Profile {
   /**
    * Create a client {@link GetInstalledCertificateIdsRequest} required values.
    *
+   * @param certificateType the {@link CertificateUseEnumType}
    * @return an instance of {@link GetInstalledCertificateIdsRequest}
    * @see GetInstalledCertificateIdsRequest
    * @see GetInstalledCertificateIdsFeature
@@ -163,6 +167,9 @@ public class ServerSecurityExtProfile implements Profile {
   /**
    * Create a client {@link GetLogRequest}.
    *
+   * @param logType the {@link LogEnumType}
+   * @param requestId the request identifier
+   * @param log the {@link LogParametersType}
    * @return an instance of {@link GetLogRequest}
    * @see GetLogRequest
    * @see GetLogFeature
@@ -175,6 +182,8 @@ public class ServerSecurityExtProfile implements Profile {
   /**
    * Create a client {@link InstallCertificateRequest} with required values.
    *
+   * @param certificateType the {@link CertificateUseEnumType}
+   * @param certificate the certificate as a PEM encoded {@link String}
    * @return an instance of {@link InstallCertificateRequest}
    * @see InstallCertificateRequest
    * @see InstallCertificateFeature
@@ -187,6 +196,8 @@ public class ServerSecurityExtProfile implements Profile {
   /**
    * Create a client {@link SignedUpdateFirmwareRequest} with required values.
    *
+   * @param requestId the request identifier
+   * @param firmware the {@link FirmwareType}
    * @return an instance of {@link SignedUpdateFirmwareRequest}
    * @see SignedUpdateFirmwareRequest
    * @see SignedUpdateFirmwareFeature

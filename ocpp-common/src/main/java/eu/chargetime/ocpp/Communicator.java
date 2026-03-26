@@ -27,6 +27,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.*;
 import java.util.ArrayDeque;
 import org.slf4j.Logger;
@@ -54,6 +55,7 @@ public abstract class Communicator {
    * @param payload the raw formatted payload.
    * @param type the expected return type.
    * @return the unpacked payload.
+   * @param <T> the type of the unpacked payload.
    * @throws Exception error occurred while converting.
    */
   public abstract <T> T unpackPayload(Object payload, Class<T> type) throws Exception;
@@ -70,7 +72,7 @@ public abstract class Communicator {
    * Create a call result envelope to transmit.
    *
    * @param uniqueId the id the receiver expects.
-   * @param action action name of the feature.
+   * @param action action name of the {@link Feature}.
    * @param payload packed payload.
    * @return a fully packed message ready to send.
    */
@@ -80,7 +82,7 @@ public abstract class Communicator {
    * Create a call envelope to transmit to the server.
    *
    * @param uniqueId the id the receiver must reply with.
-   * @param action action name of the feature.
+   * @param action action name of the {@link Feature}.
    * @param payload packed payload.
    * @return a fully packed message ready to send.
    */
@@ -90,6 +92,7 @@ public abstract class Communicator {
    * Create a call error envelope to transmit.
    *
    * @param uniqueId the id the receiver expects.
+   * @param action action name of the {@link Feature}.
    * @param errorCode an OCPP error code.
    * @param errorDescription an associated error description.
    * @return a fully packed message ready to send.
@@ -101,6 +104,7 @@ public abstract class Communicator {
    * Create a call result error envelope to transmit.
    *
    * @param uniqueId the id the receiver expects.
+   * @param action action name of the {@link Feature}.
    * @param errorCode an OCPP error code.
    * @param errorDescription an associated error description.
    * @return a fully packed message ready to send.
@@ -112,7 +116,7 @@ public abstract class Communicator {
    * Create a send envelope to transmit to the server.
    *
    * @param uniqueId the id of the message.
-   * @param action action name of the feature.
+   * @param action action name of the {@link Feature}.
    * @param payload packed payload.
    * @return a fully packed message ready to send.
    */
@@ -177,7 +181,7 @@ public abstract class Communicator {
    * Request}s.
    *
    * @param uniqueId the id the receiver should use to reply.
-   * @param action action name of the {@link eu.chargetime.ocpp.feature.Feature}.
+   * @param action action name of the {@link Feature}.
    * @param request the outgoing {@link Request}
    */
   public synchronized void sendCall(String uniqueId, String action, Request request) {
@@ -222,6 +226,7 @@ public abstract class Communicator {
    * Send a {@link Confirmation} reply to a {@link Request}.
    *
    * @param uniqueId the id the receiver expects.
+   * @param action action name of the {@link Feature}.
    * @param confirmation the outgoing {@link Confirmation}
    */
   public void sendCallResult(String uniqueId, String action, Confirmation confirmation) {
@@ -255,7 +260,8 @@ public abstract class Communicator {
    * Send an error. If offline, the message is thrown away.
    *
    * @param uniqueId the id the receiver expects a response to.
-   * @param errorCode an OCPP error Code
+   * @param action action name of the {@link Feature}.
+   * @param errorCode an OCPP error Code.
    * @param errorDescription a associated error description.
    */
   public void sendCallError(
@@ -282,7 +288,8 @@ public abstract class Communicator {
    * Send a call result error. If offline, the message is thrown away.
    *
    * @param uniqueId the id the receiver expects a response to.
-   * @param errorCode an OCPP error Code
+   * @param action action name of the {@link Feature}.
+   * @param errorCode an OCPP error Code.
    * @param errorDescription a associated error description.
    */
   public void sendCallResultError(
@@ -310,7 +317,7 @@ public abstract class Communicator {
    * Send a {@link Request} which has no confirmation.
    *
    * @param uniqueId the id of the {@link Request}.
-   * @param action action name of the {@link eu.chargetime.ocpp.feature.Feature}.
+   * @param action action name of the {@link Feature}.
    * @param request the outgoing {@link Request}
    */
   public synchronized void send(String uniqueId, String action, Request request) {

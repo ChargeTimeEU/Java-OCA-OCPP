@@ -37,7 +37,7 @@ import java.util.Objects;
 
 public class GetLogConfirmation extends Confirmation {
 
-  private static final transient Validator filenameValidator =
+  private static final Validator<String> filenameValidator =
       new ValidatorBuilder().addRule(new StringMaxLengthValidationRule(255)).build();
 
   private LogStatusEnumType status;

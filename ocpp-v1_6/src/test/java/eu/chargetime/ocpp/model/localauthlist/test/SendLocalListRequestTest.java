@@ -3,7 +3,7 @@ package eu.chargetime.ocpp.model.localauthlist.test;
 import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -23,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("deprecation")
 public class SendLocalListRequestTest {
 
   @Rule public ExpectedException thrownException = ExpectedException.none();

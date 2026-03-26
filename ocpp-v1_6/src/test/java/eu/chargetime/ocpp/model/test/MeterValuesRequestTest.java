@@ -2,7 +2,7 @@ package eu.chargetime.ocpp.model.test;
 
 import static eu.chargetime.ocpp.utilities.TestUtilities.aList;
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
@@ -43,6 +43,7 @@ import org.mockito.junit.MockitoJUnitRunner;
  * SOFTWARE.
  */
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("deprecation")
 public class MeterValuesRequestTest {
 
   @Rule public ExpectedException thrownException = ExpectedException.none();

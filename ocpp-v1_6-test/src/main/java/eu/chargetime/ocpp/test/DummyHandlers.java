@@ -48,6 +48,7 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 
+@SuppressWarnings("deprecation")
 public class DummyHandlers {
 
   private boolean riggedToFail;
@@ -279,6 +280,7 @@ public class DummyHandlers {
         && requestType.equals(receivedRequest.getClass());
   }
 
+  @SuppressWarnings("unchecked")
   public <T extends Request> T getReceivedRequest(Class<T> clazz) {
     return wasLatestRequest(clazz) ? (T) receivedRequest : null;
   }
@@ -289,6 +291,7 @@ public class DummyHandlers {
         && confirmationType.equals(receivedConfirmation.getClass());
   }
 
+  @SuppressWarnings("unchecked")
   public <T extends Confirmation> T getReceivedConfirmation(Class<T> clazz) {
     return wasLatestConfirmation(clazz) ? (T) receivedConfirmation : null;
   }

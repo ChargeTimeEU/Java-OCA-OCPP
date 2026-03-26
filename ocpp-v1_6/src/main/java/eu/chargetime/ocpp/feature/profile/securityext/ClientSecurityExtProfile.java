@@ -117,6 +117,7 @@ public class ClientSecurityExtProfile implements Profile {
   /**
    * Create a client {@link LogStatusNotificationRequest} with required values.
    *
+   * @param status the {@link UploadLogStatusEnumType}.
    * @return an instance of {@link LogStatusNotificationRequest}.
    * @see LogStatusNotificationRequest
    * @see LogStatusNotificationFeature
@@ -129,6 +130,8 @@ public class ClientSecurityExtProfile implements Profile {
   /**
    * Create a client {@link SecurityEventNotificationRequest} with required values.
    *
+   * @param type the type {@link String}
+   * @param timestamp the {@link ZonedDateTime} stamp
    * @return an instance of {@link SecurityEventNotificationRequest}
    * @see SecurityEventNotificationRequest
    * @see SecurityEventNotificationFeature
@@ -141,6 +144,7 @@ public class ClientSecurityExtProfile implements Profile {
   /**
    * Create a client {@link SignCertificateRequest} with required values.
    *
+   * @param csr the certificate signing request as a PEM encoded {@link String}
    * @return an instance of {@link SignCertificateRequest}.
    * @see SignCertificateRequest
    * @see SignCertificateFeature
@@ -152,6 +156,7 @@ public class ClientSecurityExtProfile implements Profile {
   /**
    * Create a client {@link SignedFirmwareStatusNotificationRequest}.
    *
+   * @param status the {@link FirmwareStatusEnumType}
    * @return an instance of {@link SignedFirmwareStatusNotificationRequest}
    * @see SignedFirmwareStatusNotificationRequest
    * @see SignedFirmwareStatusNotificationFeature

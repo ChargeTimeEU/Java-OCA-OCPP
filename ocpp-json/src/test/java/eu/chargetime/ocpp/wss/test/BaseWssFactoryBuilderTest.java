@@ -1,13 +1,15 @@
 package eu.chargetime.ocpp.wss.test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import eu.chargetime.ocpp.wss.BaseWssFactoryBuilder;
 import eu.chargetime.ocpp.wss.CustomSSLWebSocketServerFactory;
+import java.util.Collections;
 import java.util.List;
 import javax.net.ssl.SSLContext;
 import org.hamcrest.CoreMatchers;
 import org.java_websocket.WebSocketServerFactory;
 import org.java_websocket.server.DefaultSSLWebSocketServerFactory;
-import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -17,7 +19,7 @@ public class BaseWssFactoryBuilderTest {
   @Test
   public void builder_returnsBuilder() {
     BaseWssFactoryBuilder builder = BaseWssFactoryBuilder.builder();
-    Assert.assertThat(builder, CoreMatchers.is(CoreMatchers.any(BaseWssFactoryBuilder.class)));
+    assertThat(builder, CoreMatchers.is(CoreMatchers.any(BaseWssFactoryBuilder.class)));
   }
 
   @Test
@@ -29,11 +31,11 @@ public class BaseWssFactoryBuilderTest {
   @Test
   public void builder_builtWithCiphers_returnsCustomSSLWebSocketServerFactory() {
     SSLContext sslContext = Mockito.mock(SSLContext.class);
-    List<String> cihpers = Mockito.mock(List.class);
+    List<String> ciphers = Collections.emptyList();
     WebSocketServerFactory factory =
-        BaseWssFactoryBuilder.builder().sslContext(sslContext).ciphers(cihpers).build();
+        BaseWssFactoryBuilder.builder().sslContext(sslContext).ciphers(ciphers).build();
 
-    Assert.assertThat(
+    assertThat(
         factory, CoreMatchers.is(CoreMatchers.instanceOf(CustomSSLWebSocketServerFactory.class)));
   }
 
@@ -42,7 +44,7 @@ public class BaseWssFactoryBuilderTest {
     SSLContext sslContext = Mockito.mock(SSLContext.class);
     WebSocketServerFactory factory = BaseWssFactoryBuilder.builder().sslContext(sslContext).build();
 
-    Assert.assertThat(
+    assertThat(
         factory, CoreMatchers.is(CoreMatchers.instanceOf(DefaultSSLWebSocketServerFactory.class)));
   }
 

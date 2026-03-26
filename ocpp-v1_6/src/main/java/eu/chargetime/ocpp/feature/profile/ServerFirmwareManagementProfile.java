@@ -88,8 +88,8 @@ public class ServerFirmwareManagementProfile implements Profile {
   /**
    * Create a client {@link UpdateFirmwareRequest} with required values.
    *
-   * @param location String, a URI with the firmware * @param retrieveDate ZonedDateTime, date and
-   *     time of retrieving
+   * @param location String, a URI with the firmware
+   * @param retrieveDate ZonedDateTime, date and time of retrieving
    * @return an instance of {@link UpdateFirmwareRequest}
    * @see UpdateFirmwareRequest
    * @see UpdateFirmwareFeature

@@ -29,7 +29,7 @@ package eu.chargetime.ocpp.model.firmware.test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.firmware.FirmwareStatus;
@@ -39,6 +39,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+@SuppressWarnings("deprecation")
 public class FirmwareStatusNotificationRequestTest {
 
   @Rule public ExpectedException thrownException = ExpectedException.none();

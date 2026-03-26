@@ -29,8 +29,8 @@ import java.util.ArrayList;
 
 public class ValidatorBuilder {
 
+  private final ArrayList<IValidationRule> rules;
   private boolean required = false;
-  private ArrayList<IValidationRule> rules;
 
   public ValidatorBuilder() {
     rules = new ArrayList<>();
@@ -46,10 +46,10 @@ public class ValidatorBuilder {
     return this;
   }
 
-  public Validator build() {
-    Validator validator = new StringValidator(rules.toArray(new IValidationRule[0]));
+  public Validator<String> build() {
+    Validator<String> validator = new StringValidator(rules.toArray(new IValidationRule[0]));
 
-    if (required) validator = new RequiredDecorator(validator);
+    if (required) validator = new RequiredDecorator<>(validator);
     else validator = new OptionalDecorator(validator);
 
     return validator;

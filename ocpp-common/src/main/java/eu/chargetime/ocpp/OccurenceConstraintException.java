@@ -25,4 +25,6 @@ package eu.chargetime.ocpp; /*
                             */
 
 /** Exception thrown when trying to send a request that isn't valid. */
-public class OccurenceConstraintException extends Exception {}
+public class OccurenceConstraintException extends Exception {
+  private static final long serialVersionUID = -8870111792165582976L;
+}

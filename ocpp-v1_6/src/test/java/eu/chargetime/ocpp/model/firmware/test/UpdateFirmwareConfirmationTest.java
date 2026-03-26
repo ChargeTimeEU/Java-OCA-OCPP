@@ -26,8 +26,8 @@ package eu.chargetime.ocpp.model.firmware.test;
    SOFTWARE.
 */
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
 import eu.chargetime.ocpp.model.firmware.UpdateFirmwareConfirmation;
 import org.junit.Before;

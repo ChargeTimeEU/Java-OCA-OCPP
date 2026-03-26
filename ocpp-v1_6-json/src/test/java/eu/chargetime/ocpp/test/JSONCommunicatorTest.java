@@ -298,10 +298,11 @@ public class JSONCommunicatorTest {
     // Given
     String expected =
         "{\"currentTime\":\"2016-04-28T06:41:13.123Z\",\"interval\":300,\"status\":\"Accepted\"}";
-    BootNotificationConfirmation confirmation = new BootNotificationConfirmation();
-    confirmation.setCurrentTime(createDateTimeInNanos(1461825673123456789L)); // will be truncated
-    confirmation.setInterval(300);
-    confirmation.setStatus(RegistrationStatus.Accepted);
+    BootNotificationConfirmation confirmation =
+        new BootNotificationConfirmation(
+            createDateTimeInNanos(1461825673123456789L), // will be truncated
+            300,
+            RegistrationStatus.Accepted);
 
     // When
     Object payload = communicator.packPayload(confirmation);
@@ -316,10 +317,9 @@ public class JSONCommunicatorTest {
     // Given
     String expected =
         "{\"currentTime\":\"2016-04-28T06:41:13.720Z\",\"interval\":300,\"status\":\"Accepted\"}";
-    BootNotificationConfirmation confirmation = new BootNotificationConfirmation();
-    confirmation.setCurrentTime(createDateTimeInMillis(1461825673720L));
-    confirmation.setInterval(300);
-    confirmation.setStatus(RegistrationStatus.Accepted);
+    BootNotificationConfirmation confirmation =
+        new BootNotificationConfirmation(
+            createDateTimeInMillis(1461825673720L), 300, RegistrationStatus.Accepted);
 
     // When
     Object payload = communicator.packPayload(confirmation);
@@ -334,10 +334,11 @@ public class JSONCommunicatorTest {
     // Given
     String expected =
         "{\"currentTime\":\"2016-04-28T06:41:13.000Z\",\"interval\":300,\"status\":\"Accepted\"}";
-    BootNotificationConfirmation confirmation = new BootNotificationConfirmation();
-    confirmation.setCurrentTime(createDateTimeInMillis(1461825673000L)); // will not be truncated
-    confirmation.setInterval(300);
-    confirmation.setStatus(RegistrationStatus.Accepted);
+    BootNotificationConfirmation confirmation =
+        new BootNotificationConfirmation(
+            createDateTimeInMillis(1461825673000L), // will not be truncated
+            300,
+            RegistrationStatus.Accepted);
 
     // When
     Object payload = communicator.packPayload(confirmation);

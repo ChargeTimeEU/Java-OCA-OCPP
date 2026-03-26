@@ -3,7 +3,7 @@ package eu.chargetime.ocpp.model.test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import eu.chargetime.ocpp.PropertyConstraintException;
 import eu.chargetime.ocpp.model.core.UnlockConnectorRequest;
@@ -37,6 +37,7 @@ import org.junit.rules.ExpectedException;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+@SuppressWarnings("deprecation")
 public class UnlockConnectorRequestTest {
 
   @Rule public ExpectedException thrownException = ExpectedException.none();
