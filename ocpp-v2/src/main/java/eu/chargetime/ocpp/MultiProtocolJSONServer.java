@@ -43,7 +43,6 @@ import javax.net.ssl.SSLContext;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.extensions.IExtension;
-import org.java_websocket.extensions.permessage_deflate.PerMessageDeflateExtension;
 import org.java_websocket.protocols.IProtocol;
 import org.java_websocket.protocols.Protocol;
 import org.slf4j.Logger;
