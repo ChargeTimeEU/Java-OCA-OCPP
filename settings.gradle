@@ -4,7 +4,11 @@
 
 rootProject.name = 'java-oca-ocpp'
 
-enableFeaturePreview('STABLE_PUBLISHING')
+import org.gradle.util.GradleVersion
+
+if (GradleVersion.current() < GradleVersion.version("5.0")) {
+    enableFeaturePreview('STABLE_PUBLISHING')
+}
 
 include(':ocpp16')
 include(':ocpp16j')
