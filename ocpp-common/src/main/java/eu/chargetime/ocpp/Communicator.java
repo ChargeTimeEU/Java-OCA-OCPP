@@ -1,4 +1,5 @@
 package eu.chargetime.ocpp;
+
 /*
 ChargeTime.eu - Java-OCA-OCPP
 Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -29,7 +30,8 @@ SOFTWARE.
 
 import eu.chargetime.ocpp.feature.Feature;
 import eu.chargetime.ocpp.model.*;
-import java.util.ArrayDeque;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,11 +44,11 @@ import org.slf4j.LoggerFactory;
 public abstract class Communicator {
   private static final Logger logger = LoggerFactory.getLogger(Communicator.class);
 
-  private final ArrayDeque<Object> transactionQueue;
+  private final ConcurrentLinkedDeque<Object> transactionQueue;
   private RetryRunner retryRunner;
   protected Radio radio;
   private CommunicatorEvents events;
-  private boolean failedFlag;
+  private final AtomicBoolean failedFlag = new AtomicBoolean(false);
 
   /**
    * Convert a formatted string into a {@link Request}/{@link Confirmation}. This is useful for call
@@ -149,9 +151,8 @@ public abstract class Communicator {
    */
   public Communicator(Radio transmitter, boolean enableTransactionQueue) {
     this.radio = transmitter;
-    this.transactionQueue = enableTransactionQueue ? new ArrayDeque<>() : null;
+    this.transactionQueue = enableTransactionQueue ? new ConcurrentLinkedDeque<>() : null;
     this.retryRunner = enableTransactionQueue ? new RetryRunner() : null;
-    this.failedFlag = false;
   }
 
   /**
@@ -267,7 +268,8 @@ public abstract class Communicator {
   public void sendCallError(
       String uniqueId, String action, String errorCode, String errorDescription) {
     logger.error(
-        "An error occurred. Sending this information: uniqueId {}: action: {}, errorCode: {}, errorDescription: {}",
+        "An error occurred. Sending this information: uniqueId {}: action: {}, errorCode: {},"
+            + " errorDescription: {}",
         uniqueId,
         action,
         errorCode,
@@ -381,7 +383,7 @@ public abstract class Communicator {
         events.onCallResultError(
             call.getId(), call.getErrorCode(), call.getErrorDescription(), call.getRawPayload());
       } else if (message instanceof CallErrorMessage) {
-        failedFlag = true;
+        failedFlag.set(true);
         CallErrorMessage call = (CallErrorMessage) message;
         events.onError(
             call.getId(), call.getErrorCode(), call.getErrorDescription(), call.getRawPayload());
@@ -417,11 +419,11 @@ public abstract class Communicator {
    * @return whether a fail flag has been raised.
    */
   private boolean hasFailed() {
-    return failedFlag;
+    return failedFlag.get();
   }
 
   private void popRetryMessage() {
-    if (transactionQueue != null && !transactionQueue.isEmpty()) transactionQueue.pop();
+    if (transactionQueue != null) transactionQueue.pollFirst();
   }
 
   /** Will resend transaction related requests. */
@@ -433,7 +435,7 @@ public abstract class Communicator {
       Object call;
       try {
         while ((call = getRetryMessage()) != null) {
-          failedFlag = false;
+          failedFlag.set(false);
           radio.send(call);
           Thread.sleep(DELAY_IN_MILLISECONDS);
           if (!hasFailed()) popRetryMessage();

@@ -1,4 +1,5 @@
 package eu.chargetime.ocpp;
+
 /*
 ChargeTime.eu - Java-OCA-OCPP
 Copyright (C) 2015-2016 Thomas Volden <tv@chargetime.eu>
@@ -204,11 +205,13 @@ public class Session implements ISession {
 
   private class CommunicatorEventHandler implements CommunicatorEvents {
     private static final String OCCURRENCE_CONSTRAINT_VIOLATION =
-        "Payload for Action is syntactically correct but at least one of the fields violates occurrence constraints";
+        "Payload for Action is syntactically correct but at least one of the fields violates"
+            + " occurrence constraints";
     private static final String PROPERTY_CONSTRAINT_VIOLATION =
         "Payload is syntactically correct but at least one field contains an invalid value";
     private static final String INTERNAL_ERROR =
-        "An internal error occurred and the receiver was not able to process the requested Action successfully";
+        "An internal error occurred and the receiver was not able to process the requested Action"
+            + " successfully";
     private static final String UNABLE_TO_PROCESS = "Unable to process action";
 
     @Override
@@ -266,7 +269,7 @@ public class Session implements ISession {
     }
 
     @Override
-    public synchronized void onCall(String id, String action, Object payload) {
+    public void onCall(String id, String action, Object payload) {
       Optional<Feature> featureOptional = featureRepository.findFeature(action);
       if (!featureOptional.isPresent() || featureOptional.get().getConfirmationType() == null) {
         communicator.sendCallError(
@@ -279,6 +282,7 @@ public class Session implements ISession {
           if (request.validate()) {
             CompletableFuture<Confirmation> promise = new CompletableFuture<>();
             promise.whenComplete(new ConfirmationHandler(id, action, communicator));
+            promise.whenComplete((result, error) -> pendingPromises.remove(id));
             addPendingPromise(id, action, promise);
             dispatcher.handleRequest(promise, request);
           } else {
