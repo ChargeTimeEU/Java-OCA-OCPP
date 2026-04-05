@@ -1,4 +1,5 @@
 package eu.chargetime.ocpp;
+
 /*
    ChargeTime.eu - Java-OCA-OCPP
 
@@ -29,14 +30,28 @@ import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
 
 public class AsyncPromiseFulfillerDecorator implements PromiseFulfiller {
 
   private final PromiseFulfiller promiseFulfiller;
 
-  private static ExecutorService executor = Executors.newCachedThreadPool();
+  private static ExecutorService executor = createDefaultExecutor();
+
+  private static ExecutorService createDefaultExecutor() {
+    int coreSize = Runtime.getRuntime().availableProcessors();
+    int maxSize = coreSize * 2;
+    return new ThreadPoolExecutor(
+        coreSize,
+        maxSize,
+        60L,
+        TimeUnit.SECONDS,
+        new LinkedBlockingQueue<>(1000),
+        new ThreadPoolExecutor.CallerRunsPolicy());
+  }
 
   public static void setExecutor(ExecutorService newExecutor) {
     executor = newExecutor;
