@@ -4,7 +4,7 @@
 
 dependencies {
     compile project(':ocpp-common')
-    compile 'com.google.code.gson:gson:2.13.2'
+    compile 'com.google.code.gson:gson:2.14.0'
     compile 'org.java-websocket:Java-WebSocket:1.6.0'
 
     testCompile 'junit:junit:4.13.2'
